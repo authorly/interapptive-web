@@ -13,14 +13,22 @@
     = yield(:head)
   %body
     %header.navbar.navbar-fixed-top
-      %nav.navbar-inner
+      %nav.navbar-inner.file-menu
         .container
-          = render 'layouts/navigation'
+          = render 'layouts/file_menu'
+      %nav.navbar-inner.toolbar
+        .container
+          = render 'layouts/toolbar'
+      %nav.navbar-inner.font-menu
+        .container
+          = render 'layouts/font_menu'
     #main{:role => "main"}
       .container
         .content
           .row
-            .span12
+            .span2
+              = render 'layouts/sidebar'
+            .span10
               - flash.each do |name, msg|
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
                   %a.close{"data-dismiss" => "alert"} ×

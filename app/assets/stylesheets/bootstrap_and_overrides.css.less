@@ -1,19 +1,205 @@
 @import "twitter/bootstrap/bootstrap";
-body { padding-top: 60px; }
 
 @import "twitter/bootstrap/responsive";
 
-// Set the correct sprite paths
+// Sprite paths
 @iconSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings.png');
 @iconWhiteSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings-white.png');
+           
+//
+// Variables
+//
 
-// Your custom LESS stylesheets goes here
+@darkBackground: 	#777777;
+
+// menus & toolbars
+@fileMenuBgStart:  #d7dae1;
+@fileMenuBgEnd: 	 #a7a9ae;
+@fileMenuHeight:	 23px;
+                   
+@toolbarBgStart:	 #e1dfe1;
+@toolbarBgEnd:		 #c7c6c6;
+@toolbarHeight:		 95px;
+@toolbarItemWidth:   72px;
+                   
+@fontMenuBg:			 #cacaca;
+@fontMenuHeight:	 25px;
+
+
+
 //
-// Since bootstrap was imported above you have access to its mixins which
-// you may use and inherit here
+// Mixins
 //
-// If you'd like to override bootstrap's own variables, you can do so here as well
-// See http://twitter.github.com/bootstrap/less.html for their names and documentation
+
+.gradient (@start: #333, @end: #222) {
+	background-image: -webkit-linear-gradient(top, @start, @end);
+	background-image: -o-linear-gradient(top, @start, @end);
+	background-image: linear-gradient(top, @start, @end);
+}
+.rounded-corners-bottom (@radius: 5px) {
+	-webkit-border-bottom-right-radius: @radius;
+	-webkit-border-bottom-left-radius: @radius;
+	-moz-border-radius-bottomright: @radius;
+	-moz-border-radius-bottomleft: @radius;
+	border-bottom-right-radius: @radius;
+	border-bottom-left-radius: @radius;
+}
+.no-margin () {
+	margin: 0;
+}
+.horizontal-menu () {
+	list-style-type:none;
+	display:inline block;
+	float: left;
+}
+
 //
-// Example:
-// @linkColor: #ff0000;
+// Styles
+//
+html,body{
+	background-color:@darkBackground;
+	background:url('grid.png') repeat;
+	padding-top: 60px;
+}
+.content {
+	background-color: transparent;
+}
+#main { 
+	margin-top:15px;
+	border: none;
+}
+.span10 { 
+	background-image:url('tablet.png');
+	background-repeat:no-repeat;
+	background-position:center;
+	min-height: 600px;
+}
+
+// tabs
+.nav-tabs {
+	margin-bottom: 0px;
+}
+.tab-content {
+	background-color: white;
+	border: 1px solid #CCC;
+	border-top: 0px;
+	padding: 10px;
+	width: 200px;
+	height: 524px;
+	
+	.rounded-corners-bottom;
+}
+
+// menus & toolbars
+.nav-tabs li a {
+	color: #777;
+	background-color: #CCC;
+	border: 1px solid #888;
+	border-bottom-color: transparent;
+	cursor: default;
+}
+nav.toolbar ul li.toolbar-group {
+	background-image:url('toolbar-separator.png');
+	background-repeat:no-repeat;
+	background-position:right center;
+}
+nav.toolbar ul li.toolbar-group.last {
+	background-image:none;
+}
+nav ul, nav ul li ul {
+	margin-right: 20px;
+	margin-left: 20px;
+}
+nav.file-menu {
+	.gradient(@fileMenuBgStart, @fileMenuBgEnd);
+	height: @fileMenuHeight;
+}
+nav.toolbar {
+	.gradient(@fileMenuBgStart, @fileMenuBgEnd);
+	height: @toolbarHeight;
+}
+nav.font-menu {
+	.gradient(@fileMenuBgStart, @fileMenuBgEnd);
+	height: @fontMenuHeight;
+}
+
+nav.toolbar ul li {
+
+	.horizontal-menu;
+}
+nav.toolbar ul li ul li {
+	width: 80px;
+	height: 92px;
+	position:relative;
+	background-image: url('toolbar.png');
+	background-position: 0 0;
+	
+	.horizontal-menu;
+}
+nav.toolbar ul li ul li.keyframe {
+		background-position: @toolbarItemWidth*-1 0;
+}
+nav.toolbar ul li ul li.edit-text {
+		background-position: @toolbarItemWidth*-2 0;
+}
+nav.toolbar ul li ul li.add-image {
+		background-position: @toolbarItemWidth*-3 0;
+}
+nav.toolbar ul li ul li.touch-zones {
+		background-position: @toolbarItemWidth*-4 0;
+}
+nav.toolbar ul li ul li.actions {
+		background-position: @toolbarItemWidth*-5 0;
+}
+nav.toolbar ul li ul li.videos {
+		background-position: @toolbarItemWidth*-6 0;
+}
+nav.toolbar ul li ul li.images {
+		background-position: @toolbarItemWidth*-7 0;
+}
+nav.toolbar ul li ul li.sounds {
+		background-position: @toolbarItemWidth*-8 0;
+}
+nav.toolbar ul li ul li.fonts {
+		background-position: @toolbarItemWidth*-9 0;
+}
+nav.toolbar ul li ul li.options {
+		background-position: @toolbarItemWidth*-10 0;
+}
+
+
+nav.toolbar ul li ul li a {
+	margin-top:70px;
+	text-align:center;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	text-shadow: 0px 1px 1px #ffffff;
+	color: #333;
+	width:  @toolbarItemWidth;
+	
+	.horizontal-menu;
+}
+nav.toolbar ul li ul li a:hover {
+	text-decoration:none;
+}
+nav.toolbar ul li ul li:hover a {
+	color: #000;
+}
+nav.toolbar ul li ul li:hover {
+	cursor: pointer;
+}
+nav.file-menu ul li {
+	width: 70px;
+	height: 20px;
+	border: 1px solid red;
+	
+	.horizontal-menu;
+}
+
+nav.font-menu ul li {
+	width: 200px;
+	height: 23px;
+	border: 1px solid green;
+	
+	.horizontal-menu;
+}
