@@ -8,7 +8,7 @@
     %meta{:content => "", :name => "description"}
     %meta{:content => "", :name => "author"}
     = stylesheet_link_tag    "application", :media => "all"
-    = javascript_include_tag "application"
+    = javascript_include_tag "nicEdit", "application"
     = csrf_meta_tags
     = yield(:head)
   %body
@@ -19,7 +19,7 @@
       %nav.navbar-inner.toolbar
         .container
           = render 'layouts/toolbar'
-      %nav.navbar-inner.font-menu
+      %nav#myNicPanel.navbar-inner.font-menu
         .container
           = render 'layouts/font_menu'
     #main{:role => "main"}
@@ -33,5 +33,8 @@
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
                   %a.close{"data-dismiss" => "alert"} ×
                   = msg
+              div#myInstance1
+                %p
+                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed magna dolor, faucibus ac, iaculis non, cursus et, dui. Donec non urna. Aliquam volutpat ornare augue. Phasellus egestas, nisl fermentum porttitor rutrum, magna metus rutrum risus, id fringilla magna mi nec lorem. Etiam eget metus sed justo ultricies rhoncus. Praesent rhoncus arcu non dolor. Proin eu eros. Curabitur vehicula. Nulla vehicula lectus eget eros. Nulla vel nulla at dui dictum mollis. Etiam purus felis, pretium vel, eleifend id, consectetuer nec, purus. Vivamus pretium orci ac sapien. Etiam at tortor. Nunc tincidunt mi sed sapien. Etiam lacus pede, fermentum eu, blandit ac, congue eget, metus. Quisque sed sem. Mauris at sapien. Ut luctus.
               = yield
           %footer

@@ -1,0 +1,12 @@
+%ul.nav.nav-tabs
+  %li
+    = link_to "&nbsp;Scenes&nbsp;".html_safe, "#scene-list", "data-toggle" => "tab"
+  %li.active
+    = link_to "Keyframes", "#keyframe-list", "data-toggle" => "tab"
+.tab-content
+  #scene-list.tab-pane
+    %p
+      Scene list
+  #keyframe-list.tab-pane.active
+    %p
+      Keyframe list
