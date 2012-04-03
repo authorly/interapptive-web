@@ -19,9 +19,10 @@
       %nav.navbar-inner.toolbar
         .container
           = render 'layouts/toolbar'
-      %nav#myNicPanel.navbar-inner.font-menu
-        .container
+      %nav.navbar-inner.font-menu
+        %div#font-menu-buttons.container
           = render 'layouts/font_menu'
+          = render 'layouts/editor'
     #main{:role => "main"}
       .container
         .content
@@ -31,10 +32,8 @@
             .span10
               - flash.each do |name, msg|
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
-                  %a.close{"data-dismiss" => "alert"} ×
+                  %a.close{"data-dismiss" => "alert"}
                   = msg
-              div#myInstance1
-                %p
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed magna dolor, faucibus ac, iaculis non, cursus et, dui. Donec non urna. Aliquam volutpat ornare augue. Phasellus egestas, nisl fermentum porttitor rutrum, magna metus rutrum risus, id fringilla magna mi nec lorem. Etiam eget metus sed justo ultricies rhoncus. Praesent rhoncus arcu non dolor. Proin eu eros. Curabitur vehicula. Nulla vehicula lectus eget eros. Nulla vel nulla at dui dictum mollis. Etiam purus felis, pretium vel, eleifend id, consectetuer nec, purus. Vivamus pretium orci ac sapien. Etiam at tortor. Nunc tincidunt mi sed sapien. Etiam lacus pede, fermentum eu, blandit ac, congue eget, metus. Quisque sed sem. Mauris at sapien. Ut luctus.
+              %div#text
               = yield
           %footer

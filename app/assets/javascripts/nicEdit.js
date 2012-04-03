@@ -655,7 +655,7 @@ var nicEditorPanel = bkClass.extend({
 		this.panelButtons = new Array();
 		this.buttonList = bkExtend([],this.ne.options.buttonList);
 		
-		this.panelContain = new bkElement('DIV').setStyle({overflow : 'hidden', width : '100%', border : '1px solid #cccccc', backgroundColor : '#efefef'}).addClass('panelContain');
+		this.panelContain = new bkElement('DIV').setStyle({overflow : 'hidden', width : '100%', border : '0px solid #cccccc', backgroundColor : 'transparent'}).addClass('panelContain');
 		this.panelElm = new bkElement('DIV').setStyle({margin : '2px', marginTop : '0px', zoom : 1, overflow : 'hidden'}).addClass('panel').appendTo(this.panelContain);
 		this.panelContain.appendTo(e);
 
@@ -711,7 +711,7 @@ var nicEditorButton = bkClass.extend({
 
 		this.margin = new bkElement('DIV').setStyle({'float' : 'left', marginTop : '2px'}).appendTo(e);
 		this.contain = new bkElement('DIV').setStyle({width : '20px', height : '20px'}).addClass('buttonContain').appendTo(this.margin);
-		this.border = new bkElement('DIV').setStyle({backgroundColor : '#efefef', border : '1px solid #efefef'}).appendTo(this.contain);
+		this.border = new bkElement('DIV').setStyle({backgroundColor : 'transparent', border : '0px solid #efefef'}).appendTo(this.contain);
 		this.button = new bkElement('DIV').setStyle({width : '18px', height : '18px', overflow : 'hidden', zoom : 1, cursor : 'pointer'}).addClass('button').setStyle(this.ne.getIcon(buttonName,options)).appendTo(this.border);
 		this.button.addEvent('mouseover', this.hoverOn.closure(this)).addEvent('mouseout',this.hoverOff.closure(this)).addEvent('mousedown',this.mouseClick.closure(this)).noSelect();
 		
@@ -747,7 +747,7 @@ var nicEditorButton = bkClass.extend({
 				var stateStyle = {border : '1px solid #666', backgroundColor : '#ccc'};
 				break;
 			default:
-				var stateStyle = {border : '1px solid #efefef', backgroundColor : '#efefef'};	
+				var stateStyle = {border : '0px solid #efefef', backgroundColor : 'transparent'};	
 		}
 		this.border.setStyle(stateStyle).addClass('button-'+state);
 	},
@@ -801,7 +801,7 @@ var nicEditorButton = bkClass.extend({
 	
 	disable : function(ins,t) {		
 		this.isDisabled = true;
-		this.contain.setStyle({'opacity' : 0.6}).removeClass('buttonEnabled');
+		this.contain.setStyle({'opacity' : 0.3}).removeClass('buttonEnabled');
 		this.updateState();	
 	},
 	
