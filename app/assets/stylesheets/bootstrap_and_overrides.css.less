@@ -12,17 +12,23 @@
 @darkBackground: 	#777777;
 
 // menus & toolbars
-@fileMenuBgStart:    #d7dae1;
+@fileMenuBgStart:  #d7dae1;
 @fileMenuBgEnd: 	 #a7a9ae;
 @fileMenuHeight:	 23px;
                    
 @toolbarBgStart:	 #e1dfe1;
 @toolbarBgEnd:		 #c7c6c6;
 @toolbarHeight:		 95px;
-@toolbarItemWidth:   72px;
+@toolbarItemWidth: 72px;
                    
-@fontMenuBg:		 #cacaca;
-@fontMenuHeight:	 25px;
+@fontMenuBg:		  #cacaca;
+@fontMenuHeight:  26px;
+
+@slidePreviewActiveBgBegin:  #f9de50;
+@slidePreviewActiveBgEnd:		 #e4aa3c;
+@slidePreviewWidth:		 			 154px;
+@slidePreviewHeight:		 		 120px;
+@slidePreviewPadding:  			 7px;
 
 //
 // Mixins
@@ -31,6 +37,11 @@
 	background-image: -webkit-linear-gradient(top, @start, @end);
 	background-image: -o-linear-gradient(top, @start, @end);
 	background-image: linear-gradient(top, @start, @end);
+}
+.rounded-corners (@radius: 5px) {
+	border-radius: @radius; 
+	-moz-border-radius: @radius; 
+	-webkit-border-radius: @radius;
 }
 .rounded-corners-bottom (@radius: 5px) {
 	-webkit-border-bottom-right-radius: @radius;
@@ -83,10 +94,39 @@ html, body{
 	border: 1px solid #CCC;
 	border-top: 0px;
 	padding: 10px;
-	width: 200px;
+	width:  168px;
 	height: 524px;
 	
 	.rounded-corners-bottom;
+}
+.tab-content ul {
+	.no-margin;
+	
+	li {
+		width: @slidePreviewWidth;
+		padding: @slidePreviewPadding;
+		height: @slidePreviewHeight;
+		list-style: none;
+		background-color: @grayDark;
+		margin-top: 10px;
+		
+		.rounded-corners();
+	}
+	
+	li.first {
+		margin-top: 0;
+	}
+	
+	li.active {
+		.gradient (@slidePreviewActiveBgBegin, @slidePreviewActiveBgEnd);
+	}
+	
+	li span {
+		display: block;
+		height: @slidePreviewHeight;
+		width: @slidePreviewWidth;
+		background-color:black;
+	}
 }
 
 // menus & toolbars
@@ -118,12 +158,23 @@ nav.toolbar ul, nav.toolbar ul li ul {
 nav.file-menu {
 	.gradient(@fileMenuBgStart, @fileMenuBgEnd);
 	height: @fileMenuHeight;
+	
+	a {
+		color: @grayDark;
+	}
+	
+	a:hover {
+		text-decoration: none;
+		color: @grayDarker;
+	}
 }
+
 nav.toolbar {
 	.gradient(@fileMenuBgStart, @fileMenuBgEnd);
 	height: @toolbarHeight;
 }
 nav.font-menu {
+	padding-top: 2px;
 	.gradient(@fileMenuBgStart, @fileMenuBgEnd);
 	height: @fontMenuHeight;
 }
@@ -140,55 +191,71 @@ nav.toolbar ul li ul li {
 	
 	.horizontal-menu;
 }
-nav.toolbar ul li ul li.keyframe {
-	background-position: @toolbarItemWidth*-1 0;
-}
-nav.toolbar ul li ul li.edit-text {
-	background-position: @toolbarItemWidth*-2 0;
-}
-nav.toolbar ul li ul li.add-image {
-	background-position: @toolbarItemWidth*-3 0;
-}
-nav.toolbar ul li ul li.touch-zones {
-	background-position: @toolbarItemWidth*-4 0;
-}
-nav.toolbar ul li ul li.actions {
-	background-position: @toolbarItemWidth*-5 0;
-}
-nav.toolbar ul li ul li.videos {
-	background-position: @toolbarItemWidth*-6 0;
-}
-nav.toolbar ul li ul li.images {
-	background-position: @toolbarItemWidth*-7 0;
-}
-nav.toolbar ul li ul li.sounds {
-	background-position: @toolbarItemWidth*-8 0;
-}
-nav.toolbar ul li ul li.fonts {
-	background-position: @toolbarItemWidth*-9 0;
-}
-nav.toolbar ul li ul li.options {
-	background-position: @toolbarItemWidth*-10 0;
-}
-nav.toolbar ul li ul li a {
-	margin-top:70px;
-	text-align:center;
-	font-family: arial, sans-serif;
-	font-size: 11px;
-	text-shadow: 0px 1px 1px #ffffff;
-	color: #333;
-	width:  @toolbarItemWidth;
+
+nav.toolbar ul li ul {
+	li.keyframe {
+		background-position: @toolbarItemWidth*-1 0;
+	}
 	
-	.horizontal-menu;
-}
-nav.toolbar ul li ul li a:hover {
-	text-decoration:none;
-}
-nav.toolbar ul li ul li:hover a {
-	color: #000;
-}
-nav.toolbar ul li ul li:hover {
-	cursor: pointer;
+	li.edit-text {
+		background-position: @toolbarItemWidth*-2 0;
+	}
+	
+	li.add-image {
+		background-position: @toolbarItemWidth*-3 0;
+	}
+	
+	li.touch-zones {
+		background-position: @toolbarItemWidth*-4 0;
+	}
+	
+	li.videos {
+		background-position: @toolbarItemWidth*-6 0;
+	}
+	
+	li.actions {
+		background-position: @toolbarItemWidth*-5 0;
+	}
+	
+	li.images {
+		background-position: @toolbarItemWidth*-7 0;
+	}
+	
+	li.sounds {
+		background-position: @toolbarItemWidth*-8 0;
+	}
+	
+	li.fonts {
+		background-position: @toolbarItemWidth*-9 0;
+	}
+	
+	li.options {
+		background-position: @toolbarItemWidth*-10 0;
+	}
+	
+	li a {
+		margin-top:70px;
+		text-align:center;
+		font-family: arial, sans-serif;
+		font-size: 11px;
+		text-shadow: 0px 1px 1px #ffffff;
+		color: #333;
+		width:  @toolbarItemWidth;
+
+		.horizontal-menu;
+	}
+	
+	li:hover {
+		cursor: pointer;
+	}
+	
+	li:hover a {
+		color: #000;
+	}
+	
+	li a:hover {
+		text-decoration:none;
+	}
 }
 nav.file-menu ul {
 	margin-left:6px;

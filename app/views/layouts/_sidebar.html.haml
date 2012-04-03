@@ -8,5 +8,10 @@
     %p
       Scene list
   #keyframe-list.tab-pane.active
-    %p
-      Keyframe list
+    %ul
+      %li.first.active
+        %span
+          = link_to "&nbsp;Scenes&nbsp;".html_safe, "#scene-list", "data-toggle" => "tab"
+      %li
+        %span
+          = link_to "&nbsp;Scenes&nbsp;".html_safe, "#scene-list", "data-toggle" => "tab"
