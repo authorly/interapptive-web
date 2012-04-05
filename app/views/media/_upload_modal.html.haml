@@ -1,10 +1,10 @@
 #myModal.modal
   .modal-header
     = link_to 'x', '#', :class => 'close', 'data-dismiss' => 'modal'
-    %h3
-      Video Library
-  .modal-body
-    = render 'media/file_upload'
+    %h3#modal-title
+      = image_tag 'loading.gif'
+  %div#myModal1.modal-body
+    = image_tag 'loading.gif'
   .modal-footer
     = link_to "Close", "#", :class => 'btn'
     = link_to "Save Changes", "#", :class => 'btn btn-primary'

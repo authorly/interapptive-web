@@ -9,22 +9,22 @@
     %ul
       %li.edit-text
         = link_to "Edit Text", "#"
-      %li.add-image
-        = link_to "Touch Zones", "#"
       %li.touch-zones
-        = link_to "Add Image", "#"
+        = link_to "Touch Zones", media_path(:from => "scene_touch_zones"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
+      %li.add-image
+        = link_to "Add Image", media_path(:from => "scene_images"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
   %li.toolbar-group
     %ul
       %li.actions
-        = link_to "Actions", "#"
+        = link_to "Actions", media_path(:from => "actions"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
       %li.videos
-        = link_to "Videos", "#"
+        = link_to "Videos", media_path(:from => "videos"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
       %li.images
-        = link_to "Images", "#"
+        = link_to "Images", media_path(:from => "images"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
       %li.sounds
-        = link_to "Sounds", "#"
+        = link_to "Sounds", media_path(:from => "sounds"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
       %li.fonts
-        = link_to "Fonts", "#"
+        = link_to "Fonts", media_path(:from => "fonts"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
   %li.toolbar-group.last
     %ul
       %li.options

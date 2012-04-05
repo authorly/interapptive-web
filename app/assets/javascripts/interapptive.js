@@ -88,10 +88,16 @@ $(function() {
 			
 			// return early to avoid state change of menu background
 			return;
-		} else if($(this).hasClass("videos")) {
+		} else if($(this).hasClass("videos") || 
+							$(this).hasClass("fonts") || 
+							$(this).hasClass("actions") || 
+							$(this).hasClass("images") || 
+							$(this).hasClass("sounds") || 
+							$(this).hasClass("add-image") || 
+							$(this).hasClass("touch-zones")) {
 			// Show modal for videos
 			$('#myModal').modal('show');
-		}
+		}	
 		
 		// Proper toggle effect for menu items
 		$("ul#toolbar li ul li").not(this).removeClass("active");
