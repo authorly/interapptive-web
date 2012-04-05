@@ -14,4 +14,6 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require nicEdit
+//= require jquery.ui.custom.1.8.11
+//= require jquery.draggableList
 //= require interapptive

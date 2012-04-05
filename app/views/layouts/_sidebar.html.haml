@@ -1,17 +1,25 @@
 %ul.nav.nav-tabs
-  %li
+  %li.scene-tab
     = link_to "&nbsp;Scenes&nbsp;".html_safe, "#scene-list", "data-toggle" => "tab"
-  %li.active
+  %li.keyframe-tab.active
     = link_to "Keyframes", "#keyframe-list", "data-toggle" => "tab"
 .tab-content
   #scene-list.tab-pane
-    %p
-      Scene list
-  #keyframe-list.tab-pane.active
-    %ul
-      %li.first.active
+    %ul.scene-list
+      %li.active
         %span
-          = link_to "&nbsp;Scenes&nbsp;".html_safe, "#scene-list", "data-toggle" => "tab"
       %li
         %span
-          = link_to "&nbsp;Scenes&nbsp;".html_safe, "#scene-list", "data-toggle" => "tab"
+      %li
+        %span
+      %li
+        %span
+  #keyframe-list.tab-pane.active
+    %ul.keyframe-list
+      %li.active
+        %span
+      %li
+        %span
+      %li
+        %span
+    #list-wrapper
