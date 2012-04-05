@@ -22,7 +22,22 @@ bkLib.onDomLoaded(function() {
 });
 
 $(function() {
-	// initialize drop down menu
+	// Toolbar items (big icons)
+	var toolbar_item = $('ul#toolbar li ul li');
+	// Selector for all of our modals
+	var modals = $('#myModal');
+	
+	// Modal & modal related
+	// init modals
+	modals.modal({backdrop: true}).modal('hide');
+	
+	// remove active state from toolbar
+	modals.bind('hidden', function () {
+	  // remove active state from toolbar
+	 toolbar_item.removeClass('active');
+	});
+	
+	// Initialize drop down menu (for file menu)
 	$('.dropdown-toggle').dropdown()
 	
 	// Active states appropriation for sidebar
@@ -30,7 +45,6 @@ $(function() {
 		$('.keyframe-list li').removeClass('active');
 		$(this).addClass('active');
 	});
-	
 	$('.scene-list').on('click', 'li', function(e) {
 		$('.scene-list li').removeClass('active');
 		$(this).addClass('active');
@@ -40,19 +54,20 @@ $(function() {
 	$('.keyframe-list, .scene-list').draggableList({height:500, width:170, listPosition:0});
 	
 	// Toggle active state for toolbar on menu clicks
-	$('ul#toolbar li ul li').click(function() {
+	toolbar_item.click(function() {
+		// close any modals that are open
+		modals.modal('hide');
 		
 		// Check if user clicked specific buttons (by CSS classes, maybe use their own attribute for clarity)
 		if ($(this).hasClass("edit-text")) { 
-			// Should focus on text editor here FIXME
-
+				// Should focus on text editor here FIXME
 		// Append new elements for new scenes/keyframes 
 		// & adjust styles accordingly for showing tabs
 		} else if ($(this).hasClass("scene") || $(this).hasClass("keyframe")) {
-			
+
 			$('.nav-tabs li, .tab-pane ul li, .tab-pane').removeClass('active');
 			
-			if($(this).hasClass("keyframe")) {	
+			if($(this).hasClass("keyframe")) {
 				
 				// change border + write HTML to document for new keyframe
 				$('#keyframe-list, .nav-tabs li.keyframe-tab').addClass('active');
@@ -73,7 +88,10 @@ $(function() {
 			
 			// return early to avoid state change of menu background
 			return;
-		} 
+		} else if($(this).hasClass("videos")) {
+			// Show modal for videos
+			$('#myModal').modal('show');
+		}
 		
 		// Proper toggle effect for menu items
 		$("ul#toolbar li ul li").not(this).removeClass("active");

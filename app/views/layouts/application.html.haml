@@ -12,6 +12,7 @@
     = csrf_meta_tags
     = yield(:head)
   %body
+    = render 'media/upload_modal'
     %header.navbar.navbar-fixed-top
       %nav.navbar-inner.file-menu
         .container
@@ -36,3 +37,5 @@
               %div#text
               = yield
           %footer
+    = render 'media/gallery_modal'
+    = render 'media/upload_download_template'
