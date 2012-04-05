@@ -37,8 +37,7 @@ $(function() {
 	});
 	
 	// Draggable lists for keyframes + scenes on sidebar
-	$('.keyframe-list').draggableList({height:500, width:170, listPosition:0});
-	$('.scene-list').draggableList({height:500, width:170, listPosition:0});
+	$('.keyframe-list, .scene-list').draggableList({height:500, width:170, listPosition:0});
 	
 	// Toggle active state for toolbar on menu clicks
 	$('ul#toolbar li ul li').click(function() {
@@ -51,15 +50,12 @@ $(function() {
 		// & adjust styles accordingly for showing tabs
 		} else if ($(this).hasClass("scene") || $(this).hasClass("keyframe")) {
 			
-			$('.nav-tabs li').removeClass('active');
-			$('.tab-pane').removeClass('active');
-			$('.tab-pane ul li').removeClass('active');
+			$('.nav-tabs li, .tab-pane ul li, .tab-pane').removeClass('active');
 			
 			if($(this).hasClass("keyframe")) {	
 				
 				// change border + write HTML to document for new keyframe
-				$('#keyframe-list').addClass('active');
-				$('.nav-tabs li.keyframe-tab').addClass('active');
+				$('#keyframe-list, .nav-tabs li.keyframe-tab').addClass('active');
 				$('<li class="active"><span></span></li>').prependTo($('#keyframe-list ul'));
 				
 				// Set the draggable list container to account for new element
@@ -68,8 +64,7 @@ $(function() {
 			} else if($(this).hasClass("scene")) {
 				
 				// change border + write HTML to document for new scene
-				$('#scene-list').addClass('active');
-				$('.nav-tabs li.scene-tab').addClass('active');
+				$('#scene-list, .nav-tabs li.scene-tab').addClass('active');
 				$('<li class="active"><span></span></li>').prependTo($('#scene-list ul'));
 				
 				// Set the draggable list container to account for new element
