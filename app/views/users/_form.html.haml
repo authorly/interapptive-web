@@ -1,0 +1,17 @@
+= form_for @user, :html => { :class => 'well' } do |f|
+  - if @user.errors.any?
+    .errors
+      %h2 There were problems with your registration.
+
+      %ul
+        - @user.errors.full_messages.each do |message|
+          %li= message
+
+  %p
+    = f.text_field :email, :placeholder => 'email'
+  %p
+    = f.password_field :password, :placeholder => 'password'
+  %p
+    = f.password_field :password_confirmation, :placeholder => 'confirm password'
+
+  = f.submit 'Sign Up', :class => 'btn'

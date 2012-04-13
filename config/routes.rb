@@ -1,21 +1,18 @@
 Interapptive::Application.routes.draw do
-  root :to => "home#index"
+  root :to => 'home#index'
 
-  get "media/index", :as => :media
+  get 'media/index', :as => :media
 
-  # Authentication.
-  controller :user_sessions do
-    get  'account/sign_in'  => :new,     :as => :sign_in_users
-    post 'account/sign_in'  => :create,  :as => :sign_in_users
-    post 'account/sign_out' => :destroy, :as => :sign_out_users
-  end
+  get  'users/sign_up'  => 'users#new',             :as => 'sign_up'
+  get  'users/sign_in'  => 'user_sessions#new',     :as => 'sign_in'
+  post 'users/sign_in'  => 'user_sessions#create',  :as => ''
+  post 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
+  get  'users/settings' => 'users#edit'
 
-  get    'account/sign_up'             => 'users#new'
-  get    'account/settings'            => 'users#edit'
-  put    'account'                     => 'users#update'
-  delete 'account'                     => 'users#destroy'
-  get    'account/password_reset'      => 'password_resets#new',    :as => :new_password_reset
-  get    'account/password_resets/:id' => 'password_resets#edit',   :as => :edit_password_reset
-  put    'account/password_resets/:id' => 'password_resets#update'
-  post   'account/password_resets'     => 'password_resets#create', :as => :password_resets
+  resources :users, :except => [:new, :edit]
+  
+  get  'password_reset'      => 'password_resets#new',   :as => :new_password_reset
+  get  'password_resets/:id' => 'password_resets#edit',  :as => :edit_password_reset
+  put  'password_resets/:id' => 'password_resets#update'
+  post 'password_resets'     => 'password_resets#create'
 end

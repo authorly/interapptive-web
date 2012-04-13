@@ -4,10 +4,12 @@ class User < ActiveRecord::Base
   validates_length_of :password, :minimum => 6, :on => :create
 
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
-  validates_uniqueness_of :email, :case_sensitive => false, :message => "is in use."
+  validates_uniqueness_of :email, :case_sensitive => false, :message => 'is in use.'
   validates_presence_of :email
 
   before_create { generate_token(:auth_token) }
+
+  has_many :storybooks
 
   def generate_token(column)
     begin
