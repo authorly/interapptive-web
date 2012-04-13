@@ -4,7 +4,7 @@ class CreateScenes < ActiveRecord::Migration
       t.references :storybook
       t.references :audio
       t.references :image
-      t.int        :page_number
+      t.integer    :page_number
 
 
       t.timestamps
