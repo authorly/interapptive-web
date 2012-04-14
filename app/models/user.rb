@@ -7,9 +7,12 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email, :case_sensitive => false, :message => 'is in use.'
   validates_presence_of :email
 
+  validates_uniqueness_of :username
+
   before_create { generate_token(:auth_token) }
 
   has_many :storybooks
+  has_many :actions # TODO: sure about this?
 
   def generate_token(column)
     begin

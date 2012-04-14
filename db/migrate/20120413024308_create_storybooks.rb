@@ -2,6 +2,7 @@ class CreateStorybooks < ActiveRecord::Migration
   def change
     create_table :storybooks do |t|
       t.references :user
+      t.string     :title
 
       t.timestamps
     end

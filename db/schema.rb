@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20120413051618) do
 
   create_table "storybooks", :force => true do |t|
     t.integer  "user_id"
+    t.string   "title"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -77,6 +78,8 @@ ActiveRecord::Schema.define(:version => 20120413051618) do
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :null => false
+    t.string   "username"
+    t.string   "permalink"
     t.string   "password_digest",        :null => false
     t.string   "auth_token"
     t.string   "password_reset_token"
