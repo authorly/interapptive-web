@@ -1,3 +1,0 @@
-class Audio < Asset
-
-end
