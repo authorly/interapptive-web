@@ -6,7 +6,7 @@ class CreateTouchZones < ActiveRecord::Migration
       t.integer :origin_y
       t.integer :radius
       t.references :video
-      t.references :audio
+      t.references :sound
       t.timestamps
     end
 

@@ -2,7 +2,7 @@ class CreateScenes < ActiveRecord::Migration
   def change
     create_table :scenes do |t|
       t.references :storybook
-      t.references :audio
+      t.references :sound
       t.references :image
       t.integer    :page_number
 

@@ -9,4 +9,6 @@ class Scene < ActiveRecord::Base
   has_many :action_groups
   has_many :actions, :through => :action_groups
   has_one :scene_settings
+  belongs_to :background_image, :class_name => 'Image'
+  belongs_to :background_sound, :class_name => 'Sound' 
 end
