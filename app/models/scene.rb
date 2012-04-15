@@ -6,9 +6,12 @@ class Scene < ActiveRecord::Base
                     :conditions => { :type => 'Image' }
   has_many :sounds, :through => :asset_maps, :source => :asset,
                     :conditions => { :type => 'Sound' }
+  has_many :videos, :through => :touch_zones
   has_many :action_groups
   has_many :actions, :through => :action_groups
+  has_many :touch_zones
   has_one :scene_settings
+  has_one :font, :through => :scene_settings
   belongs_to :background_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound' 
 end

@@ -1,4 +1,5 @@
 class TouchZone < ActiveRecord::Base
-  has_one :video
-  has_one :audio
+  belongs_to :scene
+  belongs_to :video
+  belongs_to :audio
 end

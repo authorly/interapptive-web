@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(:version => 20120414021713) do
     t.string   "type"
     t.string   "image"
     t.string   "video"
-    t.string   "audio"
+    t.string   "sound"
     t.string   "font"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(:version => 20120414021713) do
 
   create_table "scenes", :force => true do |t|
     t.integer  "storybook_id"
-    t.integer  "audio_id"
+    t.integer  "sound_id"
     t.integer  "image_id"
     t.integer  "page_number"
     t.datetime "created_at",   :null => false
@@ -130,7 +130,7 @@ ActiveRecord::Schema.define(:version => 20120414021713) do
     t.integer  "origin_y"
     t.integer  "radius"
     t.integer  "video_id"
-    t.integer  "audio_id"
+    t.integer  "sound_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
