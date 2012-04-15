@@ -29,3 +29,5 @@
     %ul
       %li.options
         = link_to "Options", "#"
+      %li.preview
+        = link_to "Preview", media_path(:from => "preview"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
