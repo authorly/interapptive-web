@@ -36,7 +36,7 @@ class ScenesController < ApplicationController
         format.html { redirect_to show_storybook_scene_path(@storybook, @scene) }
         format.json { render :json => @scene, :status => :created }
       else
-        format.html { redirect_to new_storybook_scene_path(@storybook) }
+        format.html { render :new }
         format.json { render :json => @scene.errors, :status => :unprocessable_entity }
       end
     end
@@ -65,7 +65,7 @@ class ScenesController < ApplicationController
         format.html { redirect_to show_storybook_scene_path(@storybook, @scene) }
         format.json { render :json => @scene }
       else
-        format.html { redirect_to edit_storybook_scene_path(@storybook, @scene) }
+        format.html { render :edit }
         format.json { render :json => @scene.errors, :status => :unprocessable_entity }
       end
     end
