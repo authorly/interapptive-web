@@ -37,7 +37,7 @@ $(function() {
 	 toolbar_item.removeClass('active');
 	});
 	
-	// Initialize drop down menu (for file menu)
+	// Initialize drop down menu (for file/top-most menu)
 	$('.dropdown-toggle').dropdown()
 	
 	// Active states appropriation for sidebar
@@ -67,7 +67,7 @@ $(function() {
 
 			$('.nav-tabs li, .tab-pane ul li, .tab-pane').removeClass('active');
 			
-			if($(this).hasClass("keyframe")) {
+			if ($(this).hasClass("keyframe")) {
 				
 				// change border + write HTML to document for new keyframe
 				$('#keyframe-list, .nav-tabs li.keyframe-tab').addClass('active');
@@ -76,7 +76,7 @@ $(function() {
 				// Set the draggable list container to account for new element
 				$('.keyframe-list').adjustDraggableContainerDiv();
 				
-			} else if($(this).hasClass("scene")) {
+			} else if ($(this).hasClass("scene")) {
 				
 				// change border + write HTML to document for new scene
 				$('#scene-list, .nav-tabs li.scene-tab').addClass('active');
@@ -86,14 +86,15 @@ $(function() {
 				$('.scene-list').adjustDraggableContainerDiv();
 			}
 			
-			// return early to avoid state change of menu background
+			// return early to avoid state change of menu background (since adding a new scene or keyframe)
 			return;
 		} else if($(this).hasClass("videos") || 
 							$(this).hasClass("fonts") || 
 							$(this).hasClass("actions") || 
 							$(this).hasClass("images") || 
 							$(this).hasClass("sounds") || 
-							$(this).hasClass("add-image") || 
+							$(this).hasClass("add-image") ||
+							$(this).hasClass("preview") ||
 							$(this).hasClass("touch-zones")) {
 			// Show modal for videos
 			$('#myModal').modal('show');

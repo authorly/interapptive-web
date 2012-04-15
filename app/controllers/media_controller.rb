@@ -18,6 +18,8 @@ class MediaController < ApplicationController
         format.js { render(:scene_images) }
       when "scene_touch_zones"
         format.js { render(:scene_touch_zones) }
+      when "preview"
+        format.js { render(:preview) }
       end
     end
   end
