@@ -15,4 +15,8 @@ Interapptive::Application.routes.draw do
   get  'password_resets/:id' => 'password_resets#edit',  :as => :edit_password_reset
   put  'password_resets/:id' => 'password_resets#update'
   post 'password_resets'     => 'password_resets#create'
+
+  resources :storybooks do
+    resources :scenes
+  end
 end

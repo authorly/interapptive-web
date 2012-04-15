@@ -1,4 +1,4 @@
-class StorybookController < ApplicationController
+class StorybooksController < ApplicationController
   before_filter :authorize, :except => :show
 
   # GET /storybooks/:id
