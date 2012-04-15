@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.2'
 gem 'mysql2'
 gem 'bcrypt-ruby'
+gem 'cancan'
 gem 'jquery-rails'
 gem 'haml', '>= 3.1.4'
 gem 'haml-rails', '>= 0.3.4', :group => :development

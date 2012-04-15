@@ -14,6 +14,12 @@ class User < ActiveRecord::Base
   has_many :storybooks
   has_many :actions # TODO: sure about this?
 
+  ROLES = %w( user developer admin )
+
+  def admin?() role == 'admin' end
+
+  def developer?() role == 'developer' end
+
   def generate_token(column)
     begin
       self[column] = SecureRandom.urlsafe_base64

@@ -4,7 +4,7 @@ class CreateAssets < ActiveRecord::Migration
       t.string  :type
       t.string  :image
       t.string  :video
-      t.string  :audio
+      t.string  :sound
       t.string  :font
 
       t.timestamps
