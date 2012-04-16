@@ -5,9 +5,9 @@ gem 'mysql2'
 gem 'bcrypt-ruby'
 gem 'cancan'
 gem 'jquery-rails'
-gem 'haml', '>= 3.1.4'
-gem 'haml-rails', '>= 0.3.4', :group => :development
-gem 'twitter-bootstrap-rails', '>= 2.0.3', :group => :assets
+gem 'haml'
+gem 'backbone-rails'
+gem 'twitter-bootstrap-rails'
 gem 'carrierwave'
 gem 'fog', '~> 1.3.1'
 
@@ -20,6 +20,7 @@ end
 group :development do
   gem 'pry'
   gem 'pry-rails'
+  gem 'haml-rails'
 end
 
 group :test do

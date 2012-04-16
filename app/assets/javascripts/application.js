@@ -13,20 +13,27 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require nicEdit
-//= require jquery.ui.custom.1.8.11
-//= require jquery.draggableList
-//= require interapptive
+//= require underscore
+//= require backbone
+//= require ./vendor/nicEdit
+//= require ./vendor/jquery.ui.custom.1.8.11
+//= require ./vendor/jquery.draggableList
+
+//= require app
+
+//= require_tree ./app/models
+//= require_tree ./app/views
+//= require_tree ./app/templates
 
 // File upload stuff
-//= require jquery.ui.widget.js
-//= require tmpl.min.js
-//= require load-image.min.js
-//= require canvas-to-blob.min.js
-//= require bootstrap-image-gallery.min.js
-//= require jquery.iframe-transport.js
-//= require jquery.fileupload.js
-//= require jquery.fileupload-ip.js
-//= require jquery.fileupload-ui.js
-//= require locale.js
-//= require file-upload.main.js
+//= require ./vendor/jquery.ui.widget.js
+//= require ./vendor/tmpl.min.js
+//= require ./vendor/load-image.min.js
+//= require ./vendor/canvas-to-blob.min.js
+//= require ./vendor/bootstrap-image-gallery.min.js
+//= require ./vendor/jquery.iframe-transport.js
+//= require ./vendor/jquery.fileupload.js
+//= require ./vendor/jquery.fileupload-ip.js
+//= require ./vendor/jquery.fileupload-ui.js
+//= require ./vendor/locale.js
+//= require ./vendor/file-upload.main.js
