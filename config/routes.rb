@@ -19,4 +19,6 @@ Interapptive::Application.routes.draw do
   resources :storybooks do
     resources :scenes
   end
+
+  resources :images, :only => [:create, :destroy]
 end

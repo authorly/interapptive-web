@@ -9,6 +9,7 @@ class MediaController < ApplicationController
       when "sounds"
         format.js { render(:sounds) }
       when "images"
+        @images = Image.limit(5)
         format.js { render(:images) }
       when "fonts"
         format.js { render(:fonts) }
