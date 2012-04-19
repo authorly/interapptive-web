@@ -1,5 +1,6 @@
 Interapptive::Application.routes.draw do
-  root :to => 'home#index'
+  root :to => 'home#index', :constraints => lambda { |request| request.cookies['auth_token'] }
+  root :to => 'user_sessions#new'
 
   get 'media/index', :as => :media
 

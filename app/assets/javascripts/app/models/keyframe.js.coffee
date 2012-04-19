@@ -1,9 +1,8 @@
 class App.Models.Keyframe extends Backbone.Model
+  paramRoot: 'keyframe'
+  
   url: ->
     '/scenes/' + this.get('scene_id') + '/keyframes/' + this.get('id')
-
-  toJSON: ->
-    { keyframe: _.clone this.attributes }
 
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe

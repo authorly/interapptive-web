@@ -1,4 +1,5 @@
 !!!
+
 %html
   %head
     %meta{:charset => "utf-8"}
@@ -9,13 +10,15 @@
     %meta{:content => "", :name => "author"}
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
+    :javascript
+      App.currentUser(#{current_user.to_json(:only => :id)});
     = csrf_meta_tags
     = yield(:head)
   %body
     = render 'media/upload_modal'
     %header.navbar.navbar-fixed-top
       %nav.navbar-inner.file-menu
-        .container
+        #file-menu.container
           = render 'layouts/file_menu'
       %nav.navbar-inner.toolbar
         .container

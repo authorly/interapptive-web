@@ -3,6 +3,12 @@ window.App =
   Views: {}
   Collections: {}
 
+  currentUser: (user) ->
+    if user
+      @user = new App.Models.User(user)
+    else
+      return @user
+
 # Text editor setup/initialization
 bkLib.onDomLoaded ->
   # Initialize text editor
@@ -79,3 +85,6 @@ $ ->
                                        $(this).hasClass("touch-zones")
     $("ul#toolbar li ul li").not(this).removeClass "active"
     $(this).toggleClass "active"
+
+  fileMenuView = new App.Views.FileMenuView
+    el: $('#file-menu')

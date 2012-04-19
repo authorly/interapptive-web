@@ -22,6 +22,7 @@ group :development do
   gem 'pry'
   gem 'pry-rails'
   gem 'haml-rails'
+  gem 'quiet_assets'
 end
 
 group :test do

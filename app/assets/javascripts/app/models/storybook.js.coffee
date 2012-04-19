@@ -1,9 +1,8 @@
 class App.Models.Storybook extends Backbone.Model
-  url: ->
-    '/storybooks/' + this.get('id')
+  paramRoot: 'storybook'
 
-  toJSON: ->
-    { storybook: _.clone this.attributes }
+  url: ->
+    base = 'storybooks'
 
 class App.Collections.StorybooksCollection extends Backbone.Collection
   model: App.Models.Storybook

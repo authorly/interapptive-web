@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     @user = User.new
 
     respond_to do |format|
-      format.html # new.html.haml
+      format.html { render :layout => 'user_sessions' } # new.html.haml
       format.json { render :json => @user }
     end
   end

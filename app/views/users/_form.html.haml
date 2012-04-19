@@ -1,4 +1,7 @@
 = form_for @user, :html => { :class => 'well' } do |f|
+  %h1= title
+  %br/
+  
   - if @user.errors.any?
     .errors
       %h2 There were problems with your registration.
