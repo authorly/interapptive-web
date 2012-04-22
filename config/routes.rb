@@ -21,5 +21,9 @@ Interapptive::Application.routes.draw do
     resources :scenes
   end
 
+  resources :scenes do
+    resources :keyframes
+  end
+
   resources :images, :only => [:create, :destroy]
 end
