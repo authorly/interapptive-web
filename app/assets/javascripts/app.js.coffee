@@ -9,6 +9,12 @@ window.App =
     else
       return @user
 
+  currentStorybook: (storybook) ->
+    if storybook
+      @storybook = storybook
+    else
+      return @storybook
+
 # Text editor setup/initialization
 bkLib.onDomLoaded ->
   # Initialize text editor
@@ -86,5 +92,8 @@ $ ->
     $("ul#toolbar li ul li").not(this).removeClass "active"
     $(this).toggleClass "active"
 
-  fileMenuView = new App.Views.FileMenuView
+  fileMenuView: new App.Views.FileMenuView
     el: $('#file-menu')
+  
+  toolbarView: new App.Views.ToolbarView
+    el: $('#toolbar')

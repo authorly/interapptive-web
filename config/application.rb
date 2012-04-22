@@ -39,7 +39,7 @@ module Interapptive
     config.encoding = "utf-8"
 
     # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password]
+    config.filter_parameters += [:password, :password_confirmation]
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -54,6 +54,9 @@ module Interapptive
 
     # Enable the asset pipeline
     config.assets.enabled = true
+
+    # Disable asset pipeline logging
+    config.assets.logger = false
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'

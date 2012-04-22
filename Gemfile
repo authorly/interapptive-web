@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.2'
+gem 'puma'
 gem 'mysql2'
 gem 'bcrypt-ruby'
 gem 'cancan'
@@ -22,7 +23,6 @@ group :development do
   gem 'pry'
   gem 'pry-rails'
   gem 'haml-rails'
-  gem 'quiet_assets'
 end
 
 group :test do
