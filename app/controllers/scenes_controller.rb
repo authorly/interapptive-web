@@ -61,7 +61,7 @@ class ScenesController < ApplicationController
     @scene = @storybook.scenes.find params[:id]
 
     respond_to do |format|
-      if @scene.save
+      if @scene.update_attributes params[:scene]
         format.html { redirect_to show_storybook_scene_path(@storybook, @scene) }
         format.json { render :json => @scene }
       else

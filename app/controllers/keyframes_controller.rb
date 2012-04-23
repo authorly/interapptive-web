@@ -61,7 +61,7 @@ class KeyframesController < ApplicationController
     @keyframe = @scene.keyframes.find params[:id]
 
     respond_to do |format|
-      if @keyframe.save
+      if @keyframe.update_attributes params[:keyframe]
         format.html { redirect_to show_scene_keyframe_path(@scene, @keyframe) }
         format.json { render :json => @scene }
       else
