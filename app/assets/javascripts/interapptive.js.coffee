@@ -1,19 +1,7 @@
-window.App = 
+window.App =
   Models: {}
   Views: {}
   Collections: {}
-
-  currentUser: (user) ->
-    if user
-      @user = new App.Models.User(user)
-    else
-      return @user
-
-  currentStorybook: (storybook) ->
-    if storybook
-      @storybook = storybook
-    else
-      return @storybook
 
 # Text editor setup/initialization
 bkLib.onDomLoaded ->
@@ -60,7 +48,10 @@ $ ->
     $(".scene-list li").removeClass "active"
     $(this).addClass "active"
 
-  $(".keyframe-list, .scene-list").overscroll();
+  $(".keyframe-list, .scene-list").draggableList
+    height: 500
+    width: 170
+    listPosition: 0
 
   toolbarItem.click ->
     modals.modal "hide"
@@ -72,9 +63,11 @@ $ ->
       if $(this).hasClass("keyframe")
         $("#keyframe-list, .nav-tabs li.keyframe-tab").addClass "active"
         $("<li class=\"active\"><span></span></li>").prependTo $("#keyframe-list ul")
+        $(".keyframe-list").adjustDraggableContainerDiv()
       else if $(this).hasClass("scene")
         $("#scene-list, .nav-tabs li.scene-tab").addClass "active"
         $("<li class=\"active\"><span></span></li>").prependTo $("#scene-list ul")
+        $(".scene-list").adjustDraggableContainerDiv()
       return
     else $("#myModal").modal "show" if $(this).hasClass("videos") or
                                        $(this).hasClass("fonts") or
@@ -86,9 +79,3 @@ $ ->
                                        $(this).hasClass("touch-zones")
     $("ul#toolbar li ul li").not(this).removeClass "active"
     $(this).toggleClass "active"
-
-  fileMenuView: new App.Views.FileMenuView
-    el: $('#file-menu')
-  
-  toolbarView: new App.Views.ToolbarView
-    el: $('#toolbar')

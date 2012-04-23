@@ -17,7 +17,7 @@
 //= require backbone
 //= require ./vendor/nicEdit
 //= require ./vendor/jquery.ui.custom.1.8.11
-//= require ./vendor/jquery.draggableList
+//= require ./vendor/jquery.overflow
 
 //= require app
 
