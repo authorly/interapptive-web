@@ -1,19 +1,30 @@
 <div class="modal-header">
-	<h3 class="modal-title">Create or Open Storybook App...</h3>
+	<h3 class="modal-title"><i class="icon-book icon-black icon-large"></i>New or Open Storybook App...</h3>
 </div>
 <div id="storybooks" class="modal-body">
-<% if (storybooks.length < 1) { %>
-	&nbsp;
-<% } else { %>
-  <ul>
+<% if (storybooks.length > 0) { %>
+	<ul>
 	<% for(var i=0; i<storybooks.length ; i++) { %>
 	  <li class="storybook" data-id="<%= storybooks.at(i).get('id') %>"><%= storybooks.at(i).get('title') %></li>
 	<% } %>
 	</ul>
 <% } %>
-
 </div>
 <div class="modal-footer">
+	<span class="btn btn-success fileinput-button new-storybook-btn">
+		<i class="icon-plus icon-white"></i>
+		<span>New Storybook App...</span>
+	</span>
+	
+	<form class="form-inline left storybook-form" style="display:none">
+	  <a href="#" class="close left">x</a>
+	  <input type="text" class="input-medium" id="storybook-title" name="storybook-title" placeholder="Storybook Title">
+    <button type="submit" class="btn">Create App</button>
+  </form>
+
 	<a href="#" class="btn">Exit</a>
-  <div class="btn btn-primary open-storybook disabled">Open</div>
+  <div class="btn btn-primary open-storybook disabled">
+		<i class="icon-folder-open icon-white"></i>
+		Open
+	</div>
 </div>

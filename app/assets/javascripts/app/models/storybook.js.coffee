@@ -9,3 +9,9 @@ class App.Collections.StorybooksCollection extends Backbone.Collection
 
   url: ->
     '/storybooks.json'
+
+  comparator: (storybook) ->
+    date = new Date(storybook.get('created_at'));
+    -date
+    
+  

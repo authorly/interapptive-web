@@ -5,7 +5,24 @@ class App.Views.StorybookIndex extends Backbone.View
   events:
     'click .storybook': 'selectStorybook'
     'click .open-storybook': 'openStorybook'
+    'click .new-storybook-btn': 'showStorybookForm'
+    'click .close': 'closeStorybookForm'
+    'submit .storybook-form': 'addStorybook'
     
+  addStorybook: (e) ->
+    e.preventDefault()
+    @collection.create title: $('#storybook-title').val()
+  
+  closeStorybookForm: ->
+    $('.storybook-form').fadeOut(70)
+    $('.new-storybook-btn').delay(70).fadeIn(70)
+  
+  showStorybookForm: ->
+    $('.new-storybook-btn').fadeOut(70)
+    $('.storybook-form').delay(70).effect "bounce",
+      times: 3
+    , 300
+  
   openStorybook: ->
     # Hide modal unless 'Open' button is disabled
     $("#myStorybooksModal").modal "hide" unless $('.open-storybook').hasClass "disabled"
@@ -35,6 +52,7 @@ class App.Views.StorybookIndex extends Backbone.View
   initialize: ->
     # Ensure our collection is rendered upon loading
     @collection.on('reset', @render, this)
+    @collection.on('add', @render, this)
     
   render: ->
     # Render out Storybooks collection to our template

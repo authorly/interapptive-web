@@ -108,23 +108,64 @@ margin-left:-460px;
 .modal h3 {
   font-size: 14px;
 }
+#myStorybooksModal {
+  width: 870px;
+  margin-left:-435px !important;
+  margin-top: -320px;
+}
 .modal #storybooks {
   ul {
     .no-margin()
   }
+  .modal-title i {
+    position: relative;
+    top: 2px;
+    padding-right: 5px;
+  }
   
+  .storybook-form a.close {
+    padding-right: 9px;
+    position: relative;
+    top: 2px;
+  }
   li {
+    .rounded-corners();
+    
+    padding-left: 10px;
     font-size: 28px;
     line-height: 50px;
     color: @grayDark;
     list-style:none;
+    margin-top: 8px;
     margin-bottom: 0 !important;
+  }
+  
+  li:hover, li.active:hover {
+    color: @black;
+    cursor: pointer;
+    line-height: 48px;
+    background-color: #eef8fd;
+    border: 1px solid #d0ecf2;
+    padding-left: 10px;
+  }
+  li.active:hover {
+      line-height: 32px;
+      background-color: #c6e4f3;
+      border: 1px solid #BCE8F1;
   }
   
   li.active {
     color: @gray;
-    background-color: ;
+    line-height: 32px;
   }
+  
+  .btn-primary, .btn-success {
+    padding: 12px;
+  }
+}
+.modal .modal-footer form {
+  position: relative;
+  top: 8px;
 }
 // Sidebar & tabs
 .nav-tabs {
