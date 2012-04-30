@@ -40,6 +40,11 @@ class App.Views.StorybookIndex extends Backbone.View
 
         # Set users currentStorybook
         App.currentStorybook(storybook)
+        
+        # Hide new storybook form and show button
+        $('.storybook-form').fadeOut(130)
+        $('.new-storybook-btn').delay(130).fadeIn(130)
+        
       error: @handleError
       
   handleError: ->
