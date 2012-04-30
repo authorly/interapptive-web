@@ -109,6 +109,10 @@ margin-left:-460px;
   font-size: 14px;
 }
 #myStorybooksModal {
+  .modal-body {
+    height: 245px;
+  }
+  
   width: 870px;
   margin-left:-435px !important;
   margin-top: -320px;
@@ -117,6 +121,7 @@ margin-left:-460px;
   ul {
     .no-margin()
   }
+  
   .modal-title i {
     position: relative;
     top: 2px;
@@ -128,35 +133,40 @@ margin-left:-460px;
     position: relative;
     top: 2px;
   }
+  
+  a.storybook {
+    padding: 0 20px;
+    display: block;
+    width: 780px;
+    height: 48px;
+    padding-bottom: 6px;
+  }
+  
   li {
-    .rounded-corners();
     
+    line-height: 54px;
     padding-left: 10px;
+    padding-bottom: 6px;
     font-size: 28px;
-    line-height: 50px;
     color: @grayDark;
     list-style:none;
-    margin-top: 8px;
-    margin-bottom: 0 !important;
+    margin-bottom: 3px;
   }
   
-  li:hover, li.active:hover {
+  a:hover, a.active:hover {
     color: @black;
     cursor: pointer;
-    line-height: 48px;
     background-color: #eef8fd;
-    border: 1px solid #d0ecf2;
-    padding-left: 10px;
-  }
-  li.active:hover {
-      line-height: 32px;
-      background-color: #c6e4f3;
-      border: 1px solid #BCE8F1;
+    text-decoration:none;
   }
   
-  li.active {
-    color: @gray;
-    line-height: 32px;
+  a.active:hover {
+      background-color: #c6e4f3;
+  }
+  a.active {
+    margin-bottom: 0;
+    padding-bottom: 6px;
+    border:none;
   }
   
   .btn-primary, .btn-success {
