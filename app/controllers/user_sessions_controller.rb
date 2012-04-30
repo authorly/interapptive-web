@@ -9,7 +9,7 @@ class UserSessionsController < ApplicationController
 
     if user && user.authenticate(params[:password])
       cookies.permanent[:auth_token] = user.auth_token
-      redirect_to root_path, :notice => "Signed in!"
+      redirect_to root_path
     else
       flash.now.alert = "Invalid email or password."
       render "new"
