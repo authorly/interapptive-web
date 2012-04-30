@@ -63,6 +63,7 @@
 .no-margin () {
 	margin: 0;
 }
+
 .horizontal-menu () {
 	list-style-type:none;
 	display:inline block;
@@ -87,6 +88,9 @@ html, body{
 	margin-top:15px;
 	border: none;
 }
+.zero-z-index {
+  z-index: 0 !important;
+}
 .span10 { 
 	background-image:url('tablet.png');
 	background-repeat:no-repeat;
@@ -100,6 +104,27 @@ html, body{
 .modal{
 width:920px;
 margin-left:-460px;
+}
+.modal h3 {
+  font-size: 14px;
+}
+.modal #storybooks {
+  ul {
+    .no-margin()
+  }
+  
+  li {
+    font-size: 28px;
+    line-height: 50px;
+    color: @grayDark;
+    list-style:none;
+    margin-bottom: 0 !important;
+  }
+  
+  li.active {
+    color: @gray;
+    background-color: ;
+  }
 }
 // Sidebar & tabs
 .nav-tabs {

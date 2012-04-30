@@ -2,6 +2,10 @@ window.App =
   Models: {}
   Views: {}
   Collections: {}
+  Routers: {}
+  init: ->
+    new App.Routers.StorybooksRouter
+    Backbone.history.start()
 
   currentUser: (user) ->
     if user
@@ -38,14 +42,21 @@ bkLib.onDomLoaded ->
     $("ul#toolbar li ul li.edit-text").removeClass "active"
 
 $ ->
-  # Toolbar items
+  App.init()
+
+  # Selector for Toolbar items
   toolbarItem = $("ul#toolbar li ul li")
 
-  # Selector for all of our modals
-  modals = $("#myModal")
+  # Selectors for modals
+  modals = $("#myModal") # Toolbar modals
+  storybooksModal = $("#myStorybooksModal")
 
   # Init modals
   modals.modal(backdrop: true).modal "hide"
+  storybooksModal.modal(backdrop: "static", show: true, keyboard: false)
+  
+  # Hide navbar for storybooks list modals
+  $(".navbar").addClass "zero-z-index"
 
   modals.bind "hidden", ->
     toolbarItem.removeClass "active"
@@ -76,7 +87,7 @@ $ ->
         $("#scene-list, .nav-tabs li.scene-tab").addClass "active"
         $("<li class=\"active\"><span></span></li>").prependTo $("#scene-list ul")
       return
-    else $("#myModal").modal "show" if $(this).hasClass("videos") or
+    else modals.modal "show" if $(this).hasClass("videos") or
                                        $(this).hasClass("fonts") or
                                        $(this).hasClass("actions") or
                                        $(this).hasClass("images") or

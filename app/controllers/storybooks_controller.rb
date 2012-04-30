@@ -1,6 +1,17 @@
 class StorybooksController < ApplicationController
   before_filter :authorize, :except => :show
 
+  # GET /storybooks
+  # GET /storybooks.json
+  def index
+    @storybooks = current_user.storybooks.all
+    
+    respond_to do |format|
+      format.html # index.html.haml
+      format.json { render :json => @storybooks }
+    end
+  end
+  
   # GET /storybooks/:id
   # GET /storybooks/:id.json
   def show

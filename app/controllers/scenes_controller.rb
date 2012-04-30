@@ -1,6 +1,17 @@
 class ScenesController < ApplicationController
   before_filter :authorize
 
+  def index
+    @storybook = Storybook.find params[:storybook_id]
+    @scenes = @storybook.scenes
+    
+    respond_to do |format|
+      format.html
+      format.json { render :json => @scenes }
+    end
+  end
+  
+
   # GET /storybooks/:storybook_id/scenes/:id
   # GET /storybooks/:storybook_id/scenes/:id.json
   def show

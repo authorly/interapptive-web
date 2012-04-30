@@ -36,9 +36,13 @@ tmp/*
 /doc/app/
 /doc/features.html
 /doc/specs.html
+/public/assets/*
+/public/assets
 /public/cache
 /public/stylesheets/compiled
 /public/system
+/public/img/*
+/public/img
 /spec/tmp/*
 /cache
 /capybara*

@@ -21,9 +21,10 @@
 
 //= require app
 
+//= require_tree ./app/templates
 //= require_tree ./app/models
 //= require_tree ./app/views
-//= require_tree ./app/templates
+//= require_tree ./app/routers
 
 // File upload stuff
 //= require ./vendor/jquery.ui.widget.js

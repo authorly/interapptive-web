@@ -1,0 +1,19 @@
+<div class="modal-header">
+	<h3 class="modal-title">Create or Open Storybook App...</h3>
+</div>
+<div id="storybooks" class="modal-body">
+<% if (storybooks.length < 1) { %>
+	&nbsp;
+<% } else { %>
+  <ul>
+	<% for(var i=0; i<storybooks.length ; i++) { %>
+	  <li class="storybook" data-id="<%= storybooks.at(i).get('id') %>"><%= storybooks.at(i).get('title') %></li>
+	<% } %>
+	</ul>
+<% } %>
+
+</div>
+<div class="modal-footer">
+	<a href="#" class="btn">Exit</a>
+  <div class="btn btn-primary open-storybook disabled">Open</div>
+</div>
