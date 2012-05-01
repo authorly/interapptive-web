@@ -55,8 +55,8 @@ $ ->
   toolbarItem.click ->
     modals.modal "hide"
     
-    unless $(this).hasClass("scene") or $(this).hasClass("keyframe")
+    t = $(this)
+    unless t.hasClass("scene") or t.hasClass("keyframe") or t.hasClass("edit-text") or t.hasClass("disabled")
       modals.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"
-

@@ -122,8 +122,10 @@ class App.Views.StorybookIndex extends Backbone.View
     # Render view into scene list container
     $('#scene-list').html(view.render().el)
     
+    # For draggable/sliding element on sidebar
     $(".scene-list").overscroll()
 
+    $(".scene").removeClass "disabled"
   #
   # When user clicks an item from the list of storybooks
   #

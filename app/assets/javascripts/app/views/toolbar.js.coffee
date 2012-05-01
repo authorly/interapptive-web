@@ -19,6 +19,9 @@ class App.Views.ToolbarView extends Backbone.View
         
         # Assign current scene
         App.currentScene(scene)
+        
+        # For demo purposes, will likely be removed
+        $('nav.toolbar ul li ul li').removeClass('disabled')
 
   addKeyframe: ->
     @keyframe = new App.Models.Keyframe

@@ -1,33 +1,33 @@
 %ul#toolbar
   %li.toolbar-group
     %ul.first-toolbar-group
-      %li.scene
+      %li.scene.disabled
         %a.add-scene{:href => '#'} Scene
-      %li.keyframe
+      %li.keyframe.disabled
         %a.add-keyframe{:href => '#'} Keyframe
   %li.toolbar-group
     %ul
-      %li.edit-text
+      %li.edit-text.disabled
         = link_to "Edit Text", "#"
-      %li.touch-zones
+      %li.touch-zones.disabled
         = link_to "Touch Zones", media_path(:from => "scene_touch_zones"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-      %li.add-image
+      %li.add-image.disabled
         = link_to "Add Image", media_path(:from => "scene_images"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
   %li.toolbar-group
     %ul
-      %li.actions
+      %li.actions.disabled
         = link_to "Actions", media_path(:from => "actions"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-      %li.videos
+      %li.videos.disabled
         = link_to "Videos", media_path(:from => "videos"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-      %li.images
+      %li.images.disabled
         = link_to "Images", media_path(:from => "images"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-      %li.sounds
+      %li.sounds.disabled
         = link_to "Sounds", media_path(:from => "sounds"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-      %li.fonts
+      %li.fonts.disabled
         = link_to "Fonts", media_path(:from => "fonts"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
   %li.toolbar-group.last
     %ul
-      %li.options
+      %li.options.disabled
         = link_to "Options", "#"
-      %li.preview
+      %li.preview.disabled
         = link_to "Preview", media_path(:from => "preview"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
