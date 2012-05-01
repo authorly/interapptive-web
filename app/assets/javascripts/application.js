@@ -16,6 +16,7 @@
 //= require underscore
 //= require backbone
 //= require ./vendor/nicEdit
+//= require ./vendor/nicEditInit
 //= require ./vendor/jquery.ui.custom.1.8.11
 //= require ./vendor/jquery.overflow
 

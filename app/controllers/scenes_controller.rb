@@ -1,6 +1,8 @@
 class ScenesController < ApplicationController
   before_filter :authorize
-
+  
+  # GET /storybooks/:id/scenes
+  # GET /storybooks/:id/scenes.json
   def index
     @storybook = Storybook.find params[:storybook_id]
     @scenes = @storybook.scenes

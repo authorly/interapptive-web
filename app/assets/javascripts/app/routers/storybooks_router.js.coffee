@@ -8,4 +8,4 @@ class App.Routers.StorybooksRouter extends Backbone.Router
 
   index: ->
 	  view = new App.Views.StorybookIndex(collection: @collection)
-   $('#storybooks').html(view.render().el)
+	  $('#storybooks').html(view.render().el)

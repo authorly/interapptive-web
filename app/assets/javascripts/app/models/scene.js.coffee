@@ -2,13 +2,13 @@ class App.Models.Scene extends Backbone.Model
   paramRoot: 'scene'
   
   url: ->
-    '/storybooks/' + this.get('storybook_id') + '/scenes'
+    '/storybooks/' + App.currentStorybook().get('id') + '/scenes'
 
 class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
 
   initialize: (models, options) ->
-    this.storybook = options.storybook
+    this.storybook_id = options.storybook_id
 
   url: ->
-    '/storybooks/' + this.storybook.get('id') + '/scenes.json'
+    '/storybooks/' + this.storybook_id + '/scenes.json'

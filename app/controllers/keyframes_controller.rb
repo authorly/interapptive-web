@@ -1,5 +1,17 @@
 class KeyframesController < ApplicationController
   before_filter :authorize
+  
+  # GET /scenes/:id/keyframes
+  # GET /scenes/:id/keyframes.json
+  def index
+    @scene = Scene.find params[:scene_id]
+    @keyframes = @scene.keyframes
+    
+    respond_to do |format|
+      format.html
+      format.json { render :json => @keyframes }
+    end
+  end
 
   # GET /scenes/:scene_id/keyframes/:id
   # GET /scenes/:scene_id/keyframes/:id.json
