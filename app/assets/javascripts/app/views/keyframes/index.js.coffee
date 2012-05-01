@@ -14,10 +14,9 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(e.currentTarget).parent().addClass("active")
     
   initialize: ->
-    @collection.on('reset', @render, this)
-    @collection.each(@appendKeyframe)
     
   render: ->
+    @collection.fetch()
     @collection.each(@appendKeyframe)
     this
 
