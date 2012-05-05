@@ -7,12 +7,11 @@ gem 'bcrypt-ruby'
 gem 'cancan'
 gem 'jquery-rails'
 gem 'haml'
-gem 'backbone-rails'
+gem 'rails-backbone'
 gem 'twitter-bootstrap-rails'
 gem 'carrierwave'
 gem 'fog', '~> 1.3.1'
 gem 'mini_magick'
-gem 'rails-backbone'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
