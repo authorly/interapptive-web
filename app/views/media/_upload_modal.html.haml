@@ -6,5 +6,5 @@
   %div#mainModal.modal-body
     = image_tag 'loading.gif'
   .modal-footer
-    = link_to "Close", "#", :class => 'btn'
+    %a.btn{ :href => "#", :data => { :dismiss => 'modal' }} Close
     = link_to "Save Changes", "#", :class => 'btn btn-primary'
