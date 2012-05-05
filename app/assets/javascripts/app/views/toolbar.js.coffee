@@ -32,3 +32,5 @@ class App.Views.ToolbarView extends Backbone.View
         $('.keyframe-list').prepend(view.render().el)
         $(".keyframe-list li").removeClass "active"
         $(".keyframe-list li").first().addClass "active"
+
+        $(".keyframe-tab").click()
