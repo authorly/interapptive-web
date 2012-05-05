@@ -1,11 +1,9 @@
 class App.Views.FileMenuView extends Backbone.View
   events:
-    'click .create-storybook': 'createStorybook'
+    'click .switch-storybook': 'switchStorybook'
 
   render: ->
     $el = $(this.el)
 
-  createStorybook: ->
-    storybook = new App.Models.Storybook
-    storybook.save user_id: App.currentUser().get('id')
-    App.currentStorybook(storybook)
+  switchStorybook: ->
+    $("#myStorybooksModal").modal(backdrop: "static", show: true, keyboard: false)

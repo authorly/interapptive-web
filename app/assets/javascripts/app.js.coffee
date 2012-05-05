@@ -51,7 +51,7 @@ $ ->
   modals.bind "hidden", ->
     toolbarItem.removeClass "active"
 
-  # Toolbar stying and toggling modals
+  # Toolbar styling and toggling modals
   toolbarItem.click ->
     modals.modal "hide"
     

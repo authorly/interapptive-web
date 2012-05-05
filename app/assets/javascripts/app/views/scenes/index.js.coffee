@@ -1,10 +1,7 @@
 class App.Views.SceneIndex extends Backbone.View
   template: JST["app/templates/scenes/index"]
-  
   tagName: 'ul'
-  
   className: 'scene-list'  
-  
   events:
     'click .scene-list li span': 'setAsActive'
     
@@ -22,12 +19,13 @@ class App.Views.SceneIndex extends Backbone.View
     view = new App.Views.KeyframeIndex(collection: @keyframesCollection)
     $('#keyframe-list').html(view.render().el)
     $(".keyframe-list").overscroll()
+
+    $('nav.toolbar ul li ul li').removeClass('disabled')
     
   initialize: ->
     # Ensure our collection is rendered upon loading
     @collection.on('reset', @render, this)
     @collection.on('add', @appendScene, this)
-    @collection.fetch()
     
   render: ->
     @collection.each(@appendScene)
