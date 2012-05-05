@@ -2,6 +2,7 @@ class App.Views.ToolbarView extends Backbone.View
   events:
     'click .add-scene': 'addScene'
     'click .add-keyframe': 'addKeyframe'
+    'click .edit-text': 'editText'
 
   render: ->
     $el = $(this.el)
@@ -34,3 +35,6 @@ class App.Views.ToolbarView extends Backbone.View
         $(".keyframe-list li").first().addClass "active"
 
         $(".keyframe-tab").click()
+
+  editText: ->
+    $("#text").focus() unless $('.edit-text').hasClass('disabled')

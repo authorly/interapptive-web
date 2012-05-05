@@ -9,7 +9,6 @@
 
 ## Toolbar
 * "Close" button on toolbar modals should hide modals
-* Edit Text should focus on scene text area
 
 ## Sidebar
 
