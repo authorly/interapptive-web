@@ -37,7 +37,7 @@ $ ->
     
   # Commonly used selectors
   toolbarItem = $("ul#toolbar li ul li")
-  modals = $("#myModal") # Toolbar modals
+  modals = $("#modal") # Toolbar modals
   storybooksModal = $("#myStorybooksModal")
 
   # Init different modals
