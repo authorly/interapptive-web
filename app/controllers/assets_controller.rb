@@ -4,8 +4,6 @@ class AssetsController < ApplicationController
     respond_to do |format|
       # Which content to render for modal
       case params[:from]
-      when "videos"
-        format.js { render(:videos) }
       when "sounds"
         format.js { render(:sounds) }
       when "fonts"

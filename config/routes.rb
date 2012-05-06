@@ -18,6 +18,7 @@ Interapptive::Application.routes.draw do
   post 'password_resets'     => 'password_resets#create'
 
   resources :images
+  resources :videos
 
   resources :storybooks do
     resources :scenes
