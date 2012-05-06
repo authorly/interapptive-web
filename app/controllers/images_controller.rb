@@ -1,4 +1,12 @@
 class ImagesController < ApplicationController
+  def index
+    @images = Image.limit(5)
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def create
     @images = params[:files].map { |f| Image.create(:image => f) }
 

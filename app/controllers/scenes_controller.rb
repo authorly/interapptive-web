@@ -95,4 +95,17 @@ class ScenesController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  # GET /scenes/:id/images
+  # GET /scenes/:id/images.json
+  def images
+    @scene = Scene.find params[:id]
+    @images = @scene.images
+
+    respond_to do |format|
+      format.html
+      format.js
+      format.json { render :json => @images }
+    end
+  end
 end

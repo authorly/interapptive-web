@@ -17,12 +17,18 @@ Interapptive::Application.routes.draw do
   put  'password_resets/:id' => 'password_resets#update'
   post 'password_resets'     => 'password_resets#create'
 
+  resources :images
+
   resources :storybooks do
     resources :scenes
   end
 
   resources :scenes do
     resources :keyframes
+
+    member do
+      get 'images'
+    end
   end
 
   resources :keyframes do

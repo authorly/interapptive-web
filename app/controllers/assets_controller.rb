@@ -8,15 +8,10 @@ class AssetsController < ApplicationController
         format.js { render(:videos) }
       when "sounds"
         format.js { render(:sounds) }
-      when "images"
-        @images = Image.limit(5)
-        format.js { render(:images) }
       when "fonts"
         format.js { render(:fonts) }
       when "actions"
         format.js { render(:actions) }
-      when "scene_images"
-        format.js { render(:scene_images) }
       when "scene_touch_zones"
         format.js { render(:scene_touch_zones) }
       when "preview"
