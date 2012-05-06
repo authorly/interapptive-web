@@ -15,7 +15,7 @@
     = csrf_meta_tags
     = yield(:head)
   %body
-    = render 'media/upload_modal'
+    = render 'assets/upload_modal'
     = render 'storybooks/index'
     %header.navbar.navbar-fixed-top
       %nav.navbar-inner.file-menu
@@ -41,5 +41,5 @@
               %div#text
               = yield
           %footer
-    = render 'media/gallery_modal'
-    = render 'media/upload_download_template'
+    = render 'assets/gallery_modal'
+    = render 'assets/upload_download_template'

@@ -1,4 +1,4 @@
-class MediaController < ApplicationController
+class AssetsController < ApplicationController
   
   def index
     respond_to do |format|
