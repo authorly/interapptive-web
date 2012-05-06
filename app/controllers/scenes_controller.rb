@@ -108,4 +108,17 @@ class ScenesController < ApplicationController
       format.json { render :json => @images }
     end
   end
+
+  # GET /scenes/:id/touch_zones
+  # GET /scenes/:id/touch_zones.json
+  def images
+    @scene = Scene.find params[:id]
+    @touch_zones = @scene.touch_zones
+
+    respond_to do |format|
+      format.html
+      format.js
+      format.json { render :json => @touch_zones }
+    end
+  end
 end

@@ -10,7 +10,8 @@
       %li.edit-text.disabled
         = link_to "Edit Text", "#"
       %li.touch-zones.disabled
-        = link_to "Touch Zones", assets_path(:from => "scene_touch_zones"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
+        - # TODO: Make this scenes_touch_zones_path with the current scene. This will be easier when this is a backbone view.
+        = link_to "Touch Zones", touch_zones_path, {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
       %li.add-image.disabled
         - # TODO: Make this images_scene_path with the current scene. This will be easier when this is a backbone view.
         = link_to "Add Image", images_path, {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}

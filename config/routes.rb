@@ -23,6 +23,7 @@ Interapptive::Application.routes.draw do
   resources :fonts
 
   resources :actions
+  resources :touch_zones
 
   resources :storybooks do
     resources :scenes
@@ -33,6 +34,7 @@ Interapptive::Application.routes.draw do
 
     member do
       get 'images'
+      get 'touch_zones'
     end
   end
 
