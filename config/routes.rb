@@ -20,6 +20,7 @@ Interapptive::Application.routes.draw do
   resources :images
   resources :videos
   resources :sounds
+  resources :fonts
 
   resources :actions
 
