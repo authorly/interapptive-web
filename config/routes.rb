@@ -19,6 +19,7 @@ Interapptive::Application.routes.draw do
 
   resources :images
   resources :videos
+  resources :sounds
 
   resources :storybooks do
     resources :scenes
