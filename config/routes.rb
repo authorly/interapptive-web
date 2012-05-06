@@ -21,6 +21,8 @@ Interapptive::Application.routes.draw do
   resources :videos
   resources :sounds
 
+  resources :actions
+
   resources :storybooks do
     resources :scenes
   end
@@ -36,6 +38,4 @@ Interapptive::Application.routes.draw do
   resources :keyframes do
     resources :texts, :controller => :keyframe_texts
   end
-
-  resources :images, :only => [:create, :destroy]
 end
