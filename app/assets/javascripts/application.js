@@ -15,8 +15,6 @@
 //= require twitter/bootstrap
 //= require underscore
 //= require backbone
-//= require ./vendor/nicEdit
-//= require ./vendor/nicEditInit
 //= require ./vendor/jquery.ui.custom.1.8.11
 //= require ./vendor/jquery.overflow
 
@@ -27,6 +25,10 @@
 //= require_tree ./app/views
 //= require_tree ./app/routers
 
+// Jasmine-sinone related
+//= require ./vendor/sinone.js
+//= require ./vendor/jasmine-sinone.js
+
 // File upload stuff
 //= require ./vendor/jquery.ui.widget.js
 //= require ./vendor/tmpl.min.js
@@ -34,8 +36,4 @@
 //= require ./vendor/canvas-to-blob.min.js
 //= require ./vendor/bootstrap-image-gallery.min.js
 //= require ./vendor/jquery.iframe-transport.js
-//= require ./vendor/jquery.fileupload.js
-//= require ./vendor/jquery.fileupload-ip.js
-//= require ./vendor/jquery.fileupload-ui.js
 //= require ./vendor/locale.js
-//= require ./vendor/file-upload.main.js
