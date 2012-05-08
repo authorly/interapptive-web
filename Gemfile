@@ -30,5 +30,7 @@ group :test do
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'capybara'
+  gem 'capybara-webkit'
   gem 'miniskirt'
+  gem 'database_cleaner'
 end
