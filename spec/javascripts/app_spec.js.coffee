@@ -26,7 +26,6 @@ describe "Interapptive", ->
 
       App.initialize
       App.storybooks = data
-      console.log(App.storybooks.storybooks)
       expect(App.storybooks.storybooks).not.toEqual `undefined`
       expect(App.storybooks.storybooks.length).toEqual 2
       expect(App.storybooks.storybooks[0].title).toEqual "thing to do"

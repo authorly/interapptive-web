@@ -20,7 +20,13 @@ class App.Views.ToolbarView extends Backbone.View
         
         # Assign current scene
         App.currentScene(scene)
-        
+
+        # Prepare and render correlating keyframe list for clicked scene
+        @keyframesCollection = new App.Collections.KeyframesCollection([], {scene_id: App.currentScene().get("id")})
+        @keyframesCollection.fetch()
+        view = new App.Views.KeyframeIndex(collection: @keyframesCollection)
+        $('#keyframe-list').html(view.render().el)
+
         # For demo purposes, will likely be removed
         $('nav.toolbar ul li ul li').removeClass('disabled')
 

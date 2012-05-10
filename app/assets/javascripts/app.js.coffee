@@ -58,10 +58,11 @@ $ ->
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"
 
+  # FIXME, this is slightly quirky but it is bound to change before release.
+  # Low priotity.. C.W.
   # Dynamic sidebar height patch for draggable div
   $(window).load ->
     $("#scene-list").css height: ($(window).height()) + "px"
-
   $(window).resize ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"

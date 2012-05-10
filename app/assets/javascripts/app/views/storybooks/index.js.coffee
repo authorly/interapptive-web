@@ -25,6 +25,7 @@ class App.Views.StorybookIndex extends Backbone.View
   render: ->
     $(@el).html(@template())
     @collection.each(@appendStorybook) unless @collection.length == 0
+
     this
 
   #

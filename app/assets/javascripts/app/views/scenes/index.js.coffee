@@ -13,15 +13,14 @@ class App.Views.SceneIndex extends Backbone.View
     # Get out scene ID data attribute (this is the actual DB-ID)
     scene_id = $(e.currentTarget).data("id")
 
-    # Set scene that was clicked as active
     App.currentScene(@collection.get(scene_id))
     
     # Prepare and render correlating keyframe list for clicked scene
     @keyframesCollection = new App.Collections.KeyframesCollection([], {scene_id: App.currentScene().get("id")})
     @keyframesCollection.fetch()
     view = new App.Views.KeyframeIndex(collection: @keyframesCollection)
+    $('#keyframe-list').html("")
     $('#keyframe-list').html(view.render().el)
-
     $('nav.toolbar ul li ul li').removeClass('disabled')
     
   initialize: ->
