@@ -38,14 +38,11 @@ $ ->
   # Commonly used selectors
   toolbarItem = $("ul#toolbar li ul li")
   modals = $("#modal") # Toolbar modals
-  storybooksModal = $("#myStorybooksModal")
+  storybooksModal = $("#storybooks-modal")
 
   # Init different modals
   modals.modal(backdrop: true).modal "hide"
   storybooksModal.modal(backdrop: "static", show: true, keyboard: false)
-  
-  # Hide navbar for storybooks list modals
-  $(".navbar").addClass "zero-z-index"
 
   # Remove active style from toolbar items upon modal close
   modals.bind "hidden", ->
@@ -60,3 +57,11 @@ $ ->
       modals.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"
+
+  # Dynamic sidebar height patch for draggable div
+  $(window).load ->
+    $("#scene-list").css height: ($(window).height()) + "px"
+
+  $(window).resize ->
+    $("#scene-list").css height: ($(window).height()) + "px"
+    $(".scene-list").css height: ($(window).height()) + "px"

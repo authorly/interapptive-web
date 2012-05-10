@@ -19,10 +19,10 @@
     = render 'storybooks/index'
     %header.navbar.navbar-fixed-top
       %nav.navbar-inner.file-menu
-        #file-menu.container
+        #file-menu.container.left
           = render 'layouts/file_menu'
       %nav.navbar-inner.toolbar
-        .container
+        .container.left
           = render 'layouts/toolbar'
       %nav.navbar-inner.font-menu
         %div#font-menu-buttons.container
@@ -31,8 +31,8 @@
       .container
         .content
           .row
-            .span2
-              = render 'layouts/sidebar'
+            .span2.navbar.sidebar
+              #scene-list
             .span10
               - flash.each do |name, msg|
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
@@ -40,6 +40,10 @@
                   = msg
               %div#text
               = yield
-          %footer
+
+    %footer.navbar.navbar-fixed-bottom
+      %p
+        %footer
+          #keyframe-list
     = render 'assets/gallery_modal'
     = render 'assets/upload_download_template'

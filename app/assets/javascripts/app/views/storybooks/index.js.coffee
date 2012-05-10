@@ -110,7 +110,7 @@ class App.Views.StorybookIndex extends Backbone.View
   openStorybook: ->
   
     # Hide modal unless 'Open' button is disabled
-    $("#myStorybooksModal").modal "hide" unless $('.open-storybook').hasClass "disabled"
+    $("#storybooks-modal").modal "hide" unless $('.open-storybook').hasClass "disabled"
     
     # Get collection of scenes for chosen storybook 
     @scenesCollection = new App.Collections.ScenesCollection([], {storybook_id: App.currentStorybook().get("id")})
@@ -126,6 +126,7 @@ class App.Views.StorybookIndex extends Backbone.View
     
     # For draggable/sliding element on sidebar
     $(".scene-list").overscroll()
+    $(".scene-list").css height: ($(window).height()) + "px"
 
     $(".scene").removeClass "disabled"
   #

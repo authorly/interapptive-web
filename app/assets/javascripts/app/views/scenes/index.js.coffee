@@ -9,7 +9,10 @@ class App.Views.SceneIndex extends Backbone.View
     $(e.currentTarget).parent().siblings().removeClass("active")
     $(e.currentTarget).parent().removeClass("active")
     $(e.currentTarget).parent().addClass("active")
+
+    # Get out scene ID data attribute (this is the actual DB-ID)
     scene_id = $(e.currentTarget).data("id")
+
     # Set scene that was clicked as active
     App.currentScene(@collection.get(scene_id))
     
@@ -18,7 +21,6 @@ class App.Views.SceneIndex extends Backbone.View
     @keyframesCollection.fetch()
     view = new App.Views.KeyframeIndex(collection: @keyframesCollection)
     $('#keyframe-list').html(view.render().el)
-    $(".keyframe-list").overscroll()
 
     $('nav.toolbar ul li ul li').removeClass('disabled')
     
@@ -34,3 +36,17 @@ class App.Views.SceneIndex extends Backbone.View
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
     $('.scene-list').prepend(view.render().el)
+
+    # Update scene list index numbers on sidebar
+    $(".scene-list li").each (index) ->
+      scene_count = $(this).parent().find('span span.number').size() - index
+      number_holder =  $(this).find('span span span')
+      number_holder.html scene_count
+
+      # Different styles (font-sizes, placement) for different brackets (0-9,10-19,20-29, etc.)
+      if scene_count > 9
+        number_holder.removeClass "inner-single-digit"
+        number_holder.addClass "inner"
+      else
+        number_holder.removeClass "inner"
+        number_holder.addClass "inner-single-digit"
