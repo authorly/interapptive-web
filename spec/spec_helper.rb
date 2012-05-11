@@ -10,7 +10,7 @@ require 'capybara/rspec'
 require 'factories'
 require 'database_cleaner'
 
-Capybara.javascript_driver = :webkit
+Capybara.javascript_driver = :poltergeist
 
 
 # Requires supporting ruby files with custom matchers and macros, etc,
