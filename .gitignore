@@ -43,6 +43,7 @@ tmp/*
 /public/system
 /public/img/*
 /public/img
+public/uploads
 /spec/tmp/*
 /cache
 /capybara*

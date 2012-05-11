@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120414021713) do
+ActiveRecord::Schema.define(:version => 20120511031308) do
 
   create_table "action_groups", :force => true do |t|
     t.integer  "action_id"
@@ -118,8 +118,18 @@ ActiveRecord::Schema.define(:version => 20120414021713) do
   create_table "storybooks", :force => true do |t|
     t.integer  "user_id"
     t.string   "title"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
+    t.string   "author"
+    t.text     "description"
+    t.string   "publisher"
+    t.date     "published_at"
+    t.decimal  "price",          :precision => 8, :scale => 2
+    t.boolean  "build_ios",                                    :default => true
+    t.boolean  "build_android",                                :default => true
+    t.boolean  "build_tablet",                                 :default => true
+    t.boolean  "build_phone",                                  :default => true
+    t.string   "record_enabled"
   end
 
   add_index "storybooks", ["user_id"], :name => "index_storybooks_on_user_id"

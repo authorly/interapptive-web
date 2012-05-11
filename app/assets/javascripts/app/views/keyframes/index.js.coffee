@@ -6,7 +6,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   className: 'keyframe-list'
  
   events:
-    'click .keyframe-list li span': 'setAsActive'
+    'click .keyframe-list li div': 'setAsActive'
     
   setAsActive: (e) ->
     $(e.currentTarget).parent().siblings().removeClass("active")
