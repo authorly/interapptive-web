@@ -34,18 +34,16 @@ class App.Views.SceneIndex extends Backbone.View
 
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
-    $('.scene-list').prepend(view.render().el)
-
-    # Update scene list index numbers on sidebar
-    $(".scene-list li").each (index) ->
-      scene_count = $(this).parent().find('span span.number').size() - index
-      number_holder =  $(this).find('span span span')
-      number_holder.html scene_count
-
-      # Different styles (font-sizes, placement) for different brackets (0-9,10-19,20-29, etc.)
-      if scene_count > 9
-        number_holder.removeClass "inner-single-digit"
-        number_holder.addClass "inner"
-      else
-        number_holder.removeClass "inner"
-        number_holder.addClass "inner-single-digit"
+    $('.scene-list').append(view.render().el)
+    pageNumber = scene.get('page_number')
+    numberHolder = $(view.el).find('span span span')
+    
+    numberHolder.html pageNumber
+    
+    # Different styles (font-sizes, placement) for different brackets (0-9,10-19,20-29, etc.)
+    if pageNumber > 9
+      numberHolder.removeClass "inner-single-digit"
+      numberHolder.addClass "inner"
+    else
+      numberHolder.removeClass "inner"
+      numberHolder.addClass "inner-single-digit"
