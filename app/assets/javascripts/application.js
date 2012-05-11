@@ -26,8 +26,8 @@
 //= require_tree ./app/routers
 
 // Jasmine-sinone related
-//= require ./vendor/sinone.js
-//= require ./vendor/jasmine-sinone.js
+//= require ./vendor/sinon.js
+//= require ./vendor/jasmine-sinon.js
 
 // File upload stuff
 //= require ./vendor/jquery.ui.widget.js
