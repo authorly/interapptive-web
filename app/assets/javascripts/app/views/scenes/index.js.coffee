@@ -30,7 +30,11 @@ class App.Views.SceneIndex extends Backbone.View
     
   render: ->
     @collection.each(@appendScene)
-    this
+
+    # Select the first scene automatically upon rendering.
+    $(this.el).find('li:first span').click()
+
+    return this
 
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)

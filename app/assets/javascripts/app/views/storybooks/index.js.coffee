@@ -127,11 +127,6 @@ class App.Views.StorybookIndex extends Backbone.View
     $(".scene-list").css height: ($(window).height()) + "px"
 
     $(".scene").removeClass "disabled"
-
-    # Select first scene automatically
-    # This SHOULD work, but it seems that the view hasn't fully rendered by the
-    # time this line runs, so the query for that DOM element picks up nothing.
-    # $('#scene-list ul li:first span').click()
   #
   # When user clicks an item from the list of storybooks
   #
