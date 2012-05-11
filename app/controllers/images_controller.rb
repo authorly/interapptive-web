@@ -14,8 +14,8 @@ class ImagesController < ApplicationController
       format.json do
         # IE workaround: https://github.com/blueimp/jQuery-File-Upload/issues/123
         opts = (request.headers["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") ? {} : {:content_type => "text/html"}
-        json = @images.map(&:as_jquery_upload_response).to_json
-        format.json { render :json => json.merge(opts) }
+        json = @images.map { |img| img.as_jquery_upload_response.merge(opts) }
+        render :json => json
       end
     end
   end
