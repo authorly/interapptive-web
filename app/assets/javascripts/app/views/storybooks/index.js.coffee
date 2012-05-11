@@ -80,8 +80,7 @@ class App.Views.StorybookIndex extends Backbone.View
   # Client-side error validation callback definition
   #
   handleError: ->
-    # Temporary filler - FIXME
-    alert "Form input error"
+    alert "Your storybook must have a title!"
     
   #  
   # Hides inline form for adding storybooks (in the modal)
