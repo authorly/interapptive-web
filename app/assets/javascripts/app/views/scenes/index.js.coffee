@@ -48,12 +48,10 @@ class App.Views.SceneIndex extends Backbone.View
     App.currentScene scene
     
     # Prepare and render correlating keyframe list for clicked scene
-    keyframesCollection = new App.Collections.KeyframesCollection [],
-                                 scene_id: scene.get "id"
-    keyframesCollection.fetch()
-    App.keyframeList new App.Views.KeyframeIndex(collection: keyframesCollection)
+    App.keyframeList().collection.scene_id = scene.get('id')
+    App.keyframeList().collection.fetch()
     $('#keyframe-list').html("")
-    $('#keyframe-list').html(App.keyframeList().render().el)
+    $('#keyframe-list').html(App.keyframeList().el)
     $('nav.toolbar ul li ul li').removeClass('disabled')
 
   clickScene: (event) ->

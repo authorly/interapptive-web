@@ -110,16 +110,10 @@ class App.Views.StorybookIndex extends Backbone.View
     $("#storybooks-modal").modal "hide" unless $('.open-storybook').hasClass "disabled"
     
     # Get collection of scenes for chosen storybook 
-    scenesCollection = new App.Collections.ScenesCollection [], 
-                             storybook_id: App.currentStorybook().get "id"
-    
-    # Load scene list/index for current storybook
-    sceneIndex = new App.Views.SceneIndex
-                 collection: scenesCollection
-    App.sceneList sceneIndex
+    App.sceneList().collection.storybook_id = App.currentStorybook().get('id')
 
     # Retrieve data for objects, trigger a render event on the sceneList
-    scenesCollection.fetch()
+    App.sceneList().collection.fetch()
     $('#scene-list').html App.sceneList().el
     
     # For draggable/sliding element on sidebar

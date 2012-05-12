@@ -5,7 +5,17 @@ window.App =
   Routers: {}
 
   init: ->
-    new App.Routers.StorybooksRouter
+    # Preparation
+    scenesCollection = new App.Collections.ScenesCollection []
+    keyframesCollection = new App.Collections.KeyframesCollection []
+    @storybooksRouter = new App.Routers.StorybooksRouter
+
+    # Initialize the views!
+    @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
+    @toolbar = new App.Views.ToolbarView el: $('#toolbar')
+    @sceneList(new App.Views.SceneIndex collection: scenesCollection)
+    @keyframeList(new App.Views.KeyframeIndex collection: keyframesCollection)
+
     Backbone.history.start()
 
   currentUser: (user) ->
@@ -48,12 +58,6 @@ $ ->
   # Backbone.js initialization
   App.init()
 
-  fileMenuView = new App.Views.FileMenuView
-    el: $('#file-menu')
-  
-  toolbarView = new App.Views.ToolbarView
-    el: $('#toolbar')
-    
   # Commonly used selectors
   toolbarItem = $("ul#toolbar li ul li")
   modals = $("#modal") # Toolbar modals
