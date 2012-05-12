@@ -11,8 +11,9 @@ class App.Views.SceneIndex extends Backbone.View
     @collection.on('add', @appendScene, this)
     
   render: =>
+    $(@el).html('')
     @collection.each (scene) => @appendScene(scene)
-
+      
     # TODO: Figure out how to just use setActiveScene() to set the stylings
     $('.scene-list li:first span:first').click()
     return this

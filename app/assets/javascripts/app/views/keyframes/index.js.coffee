@@ -12,6 +12,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on('reset', @render, this)
     
   render: ->
+    $(@el).html('')
     @collection.each (keyframe) => @appendKeyframe(keyframe)
 
     # TODO: Figure out how to just use setActiveKeyframe() to set the stylings
