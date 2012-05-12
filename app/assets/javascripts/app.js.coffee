@@ -3,6 +3,7 @@ window.App =
   Views: {}
   Collections: {}
   Routers: {}
+
   init: ->
     new App.Routers.StorybooksRouter
     Backbone.history.start()
@@ -25,14 +26,26 @@ window.App =
     else
       return @scene
 
+  sceneList: (list) ->
+    if list
+      @sceneListView = list
+    else
+      return @sceneListView
+
+  keyframeList: (list) ->
+    if list
+      @keyframeListView = list
+    else
+      return @keyframeListView
+
 $ ->
   # Backbone.js initialization
   App.init()
 
-  fileMenuView: new App.Views.FileMenuView
+  fileMenuView = new App.Views.FileMenuView
     el: $('#file-menu')
   
-  toolbarView: new App.Views.ToolbarView
+  toolbarView = new App.Views.ToolbarView
     el: $('#toolbar')
     
   # Commonly used selectors

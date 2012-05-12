@@ -22,7 +22,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   appendKeyframe: (keyframe) ->
     view = new App.Views.Keyframe(model: keyframe)
-    $('.keyframe-list').prepend(view.render().el)
+    $('.keyframe-list').append(view.render().el)
 
 
     $(".keyframe-list li").removeClass "active"

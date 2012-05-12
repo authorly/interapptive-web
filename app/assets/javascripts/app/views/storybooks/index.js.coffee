@@ -106,21 +106,21 @@ class App.Views.StorybookIndex extends Backbone.View
   # Show slides & close modal for storybook after user has selected one
   #
   openStorybook: ->
-  
     # Hide modal unless 'Open' button is disabled
     $("#storybooks-modal").modal "hide" unless $('.open-storybook').hasClass "disabled"
     
     # Get collection of scenes for chosen storybook 
-    @scenesCollection = new App.Collections.ScenesCollection([], {storybook_id: App.currentStorybook().get("id")})
-    
-    # Retrieve data for objects
-    @scenesCollection.fetch()
+    scenesCollection = new App.Collections.ScenesCollection [], 
+                             storybook_id: App.currentStorybook().get "id"
     
     # Load scene list/index for current storybook
-    view = new App.Views.SceneIndex(collection: @scenesCollection)
-    
-    # Render view into scene list container
-    $('#scene-list').html(view.render().el)
+    sceneIndex = new App.Views.SceneIndex
+                 collection: scenesCollection
+    App.sceneList sceneIndex
+
+    # Retrieve data for objects, trigger a render event on the sceneList
+    scenesCollection.fetch()
+    $('#scene-list').html App.sceneList().el
     
     # For draggable/sliding element on sidebar
     $(".scene-list").overscroll()
