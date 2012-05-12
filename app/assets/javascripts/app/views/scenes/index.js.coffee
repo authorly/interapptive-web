@@ -13,7 +13,7 @@ class App.Views.SceneIndex extends Backbone.View
   render: =>
     @collection.each (scene) => @appendScene(scene)
 
-    # TODO: Figure out how to just use activeScene() to set the stylings
+    # TODO: Figure out how to just use setActiveScene() to set the stylings
     $('.scene-list li:first span:first').click()
     return this
 
@@ -48,12 +48,12 @@ class App.Views.SceneIndex extends Backbone.View
     App.currentScene scene
     
     # Prepare and render correlating keyframe list for clicked scene
-    @keyframesCollection = new App.Collections.KeyframesCollection [],
+    keyframesCollection = new App.Collections.KeyframesCollection [],
                                  scene_id: scene.get "id"
-    @keyframesCollection.fetch()
-    view = new App.Views.KeyframeIndex(collection: @keyframesCollection)
+    keyframesCollection.fetch()
+    App.keyframeList new App.Views.KeyframeIndex(collection: keyframesCollection)
     $('#keyframe-list').html("")
-    $('#keyframe-list').html(view.render().el)
+    $('#keyframe-list').html(App.keyframeList().render().el)
     $('nav.toolbar ul li ul li').removeClass('disabled')
 
   clickScene: (event) ->
@@ -63,5 +63,4 @@ class App.Views.SceneIndex extends Backbone.View
 
     # Get out scene ID data attribute (this is the actual DB-ID)
     scene = @collection.get $(event.currentTarget).data("id")
-    console.log scene
     this.setActiveScene scene

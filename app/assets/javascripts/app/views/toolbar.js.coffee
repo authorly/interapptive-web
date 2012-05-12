@@ -11,14 +11,7 @@ class App.Views.ToolbarView extends Backbone.View
     @scene = App.sceneList().createScene()
 
   addKeyframe: ->
-    @keyframe = new App.Models.Keyframe
-    @keyframe.save scene_id: App.currentScene().get('id'),
-      wait: true
-      success: (keyframe, response) ->
-        view = new App.Views.Keyframe(model: @keyframe)
-        $('.keyframe-list').prepend(view.render().el)
-        $(".keyframe-list li").removeClass "active"
-        $(".keyframe-list li").last().addClass "active"
+    App.keyframeList().createKeyframe()
 
   editText: ->
     $("#text").focus() unless $('.edit-text').hasClass('disabled')

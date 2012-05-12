@@ -26,6 +26,12 @@ window.App =
     else
       return @scene
 
+  currentKeyframe: (keyframe) ->
+    if keyframe
+      @keyframe = keyframe
+    else
+      return @keyframe
+
   sceneList: (list) ->
     if list
       @sceneListView = list
