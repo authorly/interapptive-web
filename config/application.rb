@@ -54,6 +54,7 @@ module Interapptive
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    config.app_generators.stylesheet_engine :less
 
     # Disable asset pipeline logging
     config.assets.logger = false

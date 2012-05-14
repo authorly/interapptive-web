@@ -6,4 +6,6 @@ class Storybook < ActiveRecord::Base
 
   has_one  :default_font, :through => :storybook_settings, :source => :font
   has_many :fonts, :through => :scenes
+
+  validates_presence_of :title
 end

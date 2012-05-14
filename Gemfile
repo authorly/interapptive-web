@@ -8,7 +8,7 @@ gem 'cancan'
 gem 'jquery-rails'
 gem 'haml'
 gem 'rails-backbone'
-gem 'twitter-bootstrap-rails'
+gem 'less-rails-bootstrap'
 gem 'carrierwave'
 gem 'fog', '~> 1.3.1'
 gem 'mini_magick'
@@ -16,7 +16,7 @@ gem "param_protected", "~> 4.0.0"
 gem "jasminerice", :group => [:development, :test]
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'less-rails'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
@@ -31,7 +31,7 @@ group :test do
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'capybara'
-  gem 'capybara-webkit'
+  gem 'poltergeist'
   gem 'miniskirt'
   gem 'database_cleaner'
 end

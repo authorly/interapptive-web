@@ -10,8 +10,8 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/new
-  # GET /users/new.json
+  # GET /users/sign_up
+  # GET /users/sign_up.json
   def new
     @user = User.new
 
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
         format.html { redirect_to root_path, :notice => 'Welcome to Interapptive!'}
         format.json { render :json => @user, :status => :created }
       else
-        format.html { render :action => :new }
+        format.html { render :action => 'new', :layout => 'user_sessions' }
         format.json { render :json => @user.errors, :status => :unprocessable_entity }
       end
     end

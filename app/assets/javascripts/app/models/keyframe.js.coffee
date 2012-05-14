@@ -8,7 +8,8 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
 
   initialize: (models, options) ->
-    this.scene_id = options.scene_id
+    if options
+      this.scene_id = options.scene_id
 
   url: ->
     '/scenes/' + this.scene_id + '/keyframes.json'

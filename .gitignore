@@ -43,6 +43,7 @@ tmp/*
 /public/system
 /public/img/*
 /public/img
+public/uploads
 /spec/tmp/*
 /cache
 /capybara*
@@ -67,7 +68,7 @@ tmp/*
 /nbproject/
 
 # RubyMine project files
-.idea
+.idea/**
 
 # Textmate project files
 /*.tmproj

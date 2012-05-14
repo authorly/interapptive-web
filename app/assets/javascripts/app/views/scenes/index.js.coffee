@@ -1,55 +1,65 @@
 class App.Views.SceneIndex extends Backbone.View
-  events:
-    'click .scene-list li span': 'setAsActive'
-
   template: JST["app/templates/scenes/index"]
-
   tagName: 'ul'
-
   className: 'scene-list'
-
+  events:
+    'click .scene-list li span': 'clickScene'
+    
   initialize: ->
     # Ensure our collection is rendered upon loading
     @collection.on('reset', @render, this)
     @collection.on('add', @appendScene, this)
 
-  render: ->
-    @collection.each(@appendScene)
-    this
-    
-  setAsActive: (e) ->
-    $(e.currentTarget).parent().siblings().removeClass("active")
-    $(e.currentTarget).parent().removeClass("active")
-    $(e.currentTarget).parent().addClass("active")
+  render: =>
+    $(this.el).html('')
+    @collection.each (scene) => @appendScene(scene)
+      
+    # TODO: Figure out how to just use setActiveScene() to set the stylings
+    $('.scene-list li:first span:first').click()
+    return this
 
-    # Get out scene ID data attribute (this is the actual DB-ID)
-    scene_id = $(e.currentTarget).data("id")
+  createScene: =>
+    scene = new App.Models.Scene
+    scene.save storybook_id: App.currentStorybook().get('id'),
+      wait: true
+      success: (scene, response) ->
+        @collection.add scene
+        App.currentScene(scene)
+        this.setActiveScene scene
 
-    # Set currentScene global/helper
-    App.currentScene(@collection.get(scene_id))
-    
-    # Prepare and render correlating keyframe list for clicked scene
-    @keyframesCollection = new App.Collections.KeyframesCollection([], {scene_id: App.currentScene().get("id")})
-    @keyframesCollection.fetch()
-    view = new App.Views.KeyframeIndex(collection: @keyframesCollection)
-    $('#keyframe-list').html("")
-    $('#keyframe-list').html(view.render().el)
-    $('nav.toolbar ul li ul li').removeClass('disabled')
+    return scene
 
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
-    $('.scene-list').prepend(view.render().el)
+    $('.scene-list').append(view.render().el)
+    pageNumber = scene.get('page_number')
+    numberHolder = $(view.el).find('span span span')
+    
+    numberHolder.html pageNumber
+    
+    # Different styles (font-sizes, placement) for different brackets (0-9,10-19,20-29, etc.)
+    if pageNumber > 9
+      numberHolder.removeClass "inner-single-digit"
+      numberHolder.addClass "inner"
+    else
+      numberHolder.removeClass "inner"
+      numberHolder.addClass "inner-single-digit"
 
-    # Update scene list index numbers on sidebar
-    $(".scene-list li").each (index) ->
-      scene_count = $(this).parent().find('span span.number').size() - index
-      number_holder =  $(this).find('span span span')
-      number_holder.html scene_count
+  setActiveScene: (scene) ->
+    App.currentScene scene
+    
+    # Prepare and render correlating keyframe list for clicked scene
+    App.keyframeList().collection.scene_id = scene.get('id')
+    App.keyframeList().collection.fetch()
+    $('#keyframe-list').html("")
+    $('#keyframe-list').html(App.keyframeList().el)
+    $('nav.toolbar ul li ul li').removeClass('disabled')
 
-      # Different styles (font-sizes, placement) for different brackets (0-9,10-19,20-29, etc.)
-      if scene_count > 9
-        number_holder.removeClass "inner-single-digit"
-        number_holder.addClass "inner"
-      else
-        number_holder.removeClass "inner"
-        number_holder.addClass "inner-single-digit"
+  clickScene: (event) ->
+    $(event.currentTarget).parent().siblings().removeClass("active")
+    $(event.currentTarget).parent().removeClass("active")
+    $(event.currentTarget).parent().addClass("active")
+
+    # Get out scene ID data attribute (this is the actual DB-ID)
+    scene = @collection.get $(event.currentTarget).data("id")
+    this.setActiveScene scene

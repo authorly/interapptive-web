@@ -10,7 +10,7 @@ Interapptive::Application.routes.draw do
   post 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
   get  'users/settings' => 'users#edit'
 
-  resources :users, :except => [:new, :edit]
+  resources :users, :except => [:new, :edit, :index]
   
   get  'password_reset'      => 'password_resets#new',   :as => :new_password_reset
   get  'password_resets/:id' => 'password_resets#edit',  :as => :edit_password_reset

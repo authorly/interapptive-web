@@ -1,7 +1,5 @@
 class App.Models.Storybook extends Backbone.Model
-    # Properties for backbone-forms to map w/ API
-    # These must match column names
-
+    paramRoot: 'storybook'
     schema:
       title:
         type:          "Text"
@@ -25,7 +23,6 @@ class App.Models.Storybook extends Backbone.Model
         selectedIndex: 1
       tablet_or_phone: "Text"
       record_enabled:  "Checkbox"
-
 
     url: ->
       '/storybooks/' + App.currentStorybook().get('id') + '.json'

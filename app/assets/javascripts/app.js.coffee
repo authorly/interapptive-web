@@ -3,8 +3,19 @@ window.App =
   Views: {}
   Collections: {}
   Routers: {}
+
   init: ->
-    new App.Routers.StorybooksRouter
+    # Preparation
+    scenesCollection = new App.Collections.ScenesCollection []
+    keyframesCollection = new App.Collections.KeyframesCollection []
+    @storybooksRouter = new App.Routers.StorybooksRouter
+
+    # Initialize the views!
+    @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
+    @toolbar = new App.Views.ToolbarView el: $('#toolbar')
+    @sceneList(new App.Views.SceneIndex collection: scenesCollection)
+    @keyframeList(new App.Views.KeyframeIndex collection: keyframesCollection)
+
     Backbone.history.start()
 
   currentUser: (user) ->
@@ -25,17 +36,29 @@ window.App =
     else
       return @scene
 
+  currentKeyframe: (keyframe) ->
+    if keyframe
+      @keyframe = keyframe
+    else
+      return @keyframe
+
+  sceneList: (list) ->
+    if list
+      @sceneListView = list
+    else
+      return @sceneListView
+
+  keyframeList: (list) ->
+    if list
+      @keyframeListView = list
+    else
+      return @keyframeListView
+
 $ ->
   # Backbone.js initialization
   App.init()
 
-  fileMenuView: new App.Views.FileMenuView
-    el: $('#file-menu')
-
-  toolbarView: new App.Views.ToolbarView
-    el: $('#toolbar')
-    
-  # Some selectors
+  # Commonly used selectors
   toolbarItem = $("ul#toolbar li ul li")
   modals = $("#modal") # Toolbar modals
   storybooks_modal = $("#storybooks-modal")
