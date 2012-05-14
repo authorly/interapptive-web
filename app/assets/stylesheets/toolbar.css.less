@@ -1,0 +1,217 @@
+nav.toolbar {
+  height: @toolbarHeight;
+  .gradient(@fileMenuBgStart, @fileMenuBgEnd);
+
+  ul, ul li ul {
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+
+  ul li {
+    .horizontal-menu;
+
+    ul li {
+      width: 73px;
+      height: 92px;
+      position: relative;
+      background-image: asset-url('toolbar.png');
+      .horizontal-menu;
+    }
+
+    ul {
+      li.scene {
+        background-position: 0 0;
+      }
+    
+      li.keyframe {
+        background-position: @toolbarItemWidth*-1 0;
+      }
+    
+      li.edit-text {
+        background-position: @toolbarItemWidth*-2 0;
+      }
+    
+      li.add-image {
+        background-position: @toolbarItemWidth*-4 0;
+      }
+    
+      li.touch-zones {
+        background-position: @toolbarItemWidth*-3 0;
+      }
+    
+      li.videos {
+        background-position: @toolbarItemWidth*-6 0;
+      }
+    
+      li.actions {
+        background-position: @toolbarItemWidth*-5 0;
+      }
+    
+      li.images {
+        background-position: @toolbarItemWidth*-7 0;
+      }
+    
+      li.sounds {
+        background-position: @toolbarItemWidth*-8 0;
+      }
+    
+      li.fonts {
+        background-position: @toolbarItemWidth*-9 0;
+      }
+    
+      li.options {
+        background-position: @toolbarItemWidth*-10 0;
+      }
+    
+      li.preview {
+        background-position: @toolbarItemWidth*-11 0;
+      }
+    
+      li.scene.active {
+        background-position: 0 @toolbarHeight;
+      }
+    
+      li.keyframe.active {
+        background-position: @toolbarItemWidth*-1 @toolbarHeight*2;
+      }
+    
+      li.edit-text.active {
+        background-position: @toolbarItemWidth*-2 @toolbarHeight*2;
+      }
+    
+      li.add-image.active {
+        background-position: @toolbarItemWidth*-4 @toolbarHeight*2;
+      }
+    
+      li.touch-zones.active {
+        background-position: @toolbarItemWidth*-3 @toolbarHeight*2;
+      }
+    
+      li.videos.active {
+        background-position: @toolbarItemWidth*-6 @toolbarHeight*2;
+      }
+    
+      li.actions.active {
+        background-position: @toolbarItemWidth*-5 @toolbarHeight*2;
+      }
+    
+      li.images.active {
+        background-position: @toolbarItemWidth*-7 @toolbarHeight*2;
+      }
+    
+      li.sounds.active {
+        background-position: @toolbarItemWidth*-8 @toolbarHeight*2;
+      }
+    
+      li.fonts.active {
+        background-position: @toolbarItemWidth*-9 @toolbarHeight*2;
+      }
+    
+      li.options.active {
+        background-position: @toolbarItemWidth*-10 @toolbarHeight*2;
+      }
+    
+      li.preview.active {
+        background-position: @toolbarItemWidth*-11 @toolbarHeight*2;
+      }
+    
+      li.scene.disabled {
+        background-position: 0 (@toolbarHeight - 2);
+      }
+    
+      li.keyframe.disabled {
+        background-position: @toolbarItemWidth*-1 (@toolbarHeight - 2);
+      }
+    
+      li.edit-text.disabled {
+        background-position: @toolbarItemWidth*-2 (@toolbarHeight - 2);
+      }
+    
+      li.add-image.disabled {
+        background-position: @toolbarItemWidth*-4 (@toolbarHeight - 2);
+      }
+    
+      li.touch-zones.disabled {
+        background-position: @toolbarItemWidth*-3 (@toolbarHeight - 2);
+      }
+    
+      li.videos.disabled {
+        background-position: @toolbarItemWidth*-6 (@toolbarHeight - 2);
+      }
+    
+      li.actions.disabled {
+        background-position: @toolbarItemWidth*-5 (@toolbarHeight - 2);
+      }
+    
+      li.images.disabled {
+        background-position: @toolbarItemWidth*-7 (@toolbarHeight - 2);
+      }
+    
+      li.sounds.disabled {
+        background-position: @toolbarItemWidth*-8 (@toolbarHeight - 2);
+      }
+    
+      li.fonts.disabled {
+        background-position: @toolbarItemWidth*-9 (@toolbarHeight - 2);
+      }
+    
+      li.options.disabled {
+        background-position: @toolbarItemWidth*-10 (@toolbarHeight - 2);
+      }
+    
+      li.preview.disabled {
+        background-position: @toolbarItemWidth*-11 (@toolbarHeight - 2);
+      }
+    
+      li.disabled a {
+        color: #888;
+      }
+    
+      li.disabled:hover, li.disabled a:hover {
+        cursor: default;
+      }
+    
+      li.disabled a:hover, li.disabled:hover a {
+        color:#888 !important;
+      }
+    
+      li a {
+        margin-top: 70px;
+        text-align: center;
+        font-family: arial, sans-serif;
+        font-size: 11px;
+        text-shadow: 0px 1px 1px #ffffff;
+        color: #333;
+        width: @toolbarItemWidth;
+    
+        .horizontal-menu;
+      }
+    
+      li:hover {
+        cursor: pointer;
+      }
+    
+      li:hover a {
+        color: #000;
+      }
+    
+      li a:hover {
+        text-decoration:none;
+      }
+    }
+  }
+
+  ul li.toolbar-group {
+    background-image: asset-url('toolbar-separator.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+  }
+
+  ul li.toolbar-group.last {
+    background-image:none;
+  }
+}
+
+nav ul#toolbar, ul.first-toolbar-group, li.first-toolbar-group {
+  margin-left: 0 !important;
+}
