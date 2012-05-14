@@ -11,7 +11,7 @@ class App.Views.StorybookIndex extends Backbone.View
     'click .close': 'closeStorybookForm'
     'submit .storybook-form': 'createStorybook'
   
-  #  
+  #
   # Fires upon class initializing
   #
   initialize: ->
@@ -24,8 +24,7 @@ class App.Views.StorybookIndex extends Backbone.View
   #
   render: ->
     $(@el).html(@template())
-    @collection.each(@appendStorybook) unless @collection.length == 0
-
+    @collection.each(@appendStorybook)
     this
 
   #
@@ -107,7 +106,9 @@ class App.Views.StorybookIndex extends Backbone.View
   # Show slides & close modal for storybook after user has selected one
   #
   openStorybook: ->
-  
+    appSettingsView: new App.Views.AppSettings
+      el: $('#storybook-settings')
+
     # Hide modal unless 'Open' button is disabled
     $("#storybooks-modal").modal "hide" unless $('.open-storybook').hasClass "disabled"
     
@@ -128,6 +129,7 @@ class App.Views.StorybookIndex extends Backbone.View
     $(".scene-list").css height: ($(window).height()) + "px"
 
     $(".scene").removeClass "disabled"
+
   #
   # When user clicks an item from the list of storybooks
   #

@@ -1,6 +1,9 @@
 class StorybooksController < ApplicationController
   before_filter :authorize, :except => :show
 
+  # Backbone.js extraneous parameter hack
+  param_protected [:action, :controller, :format, :storybook], :only => :update
+
   # GET /storybooks
   # GET /storybooks.json
   def index
@@ -66,8 +69,11 @@ class StorybooksController < ApplicationController
   def update
     @storybook = current_user.storybooks.find params[:id]
 
+    # Remove Backbone hack parameter from attributes
+    # params[:_method] = params.delete(:_method) if params.has_key? :_method
+
     respond_to do |format|
-      if @storybook.update_attributes params[:storybook]
+      if @storybook.update_attributes params
         format.html { redirect_to storybook_path(@storybook) }
         format.json { render :json => @storybook }
       else

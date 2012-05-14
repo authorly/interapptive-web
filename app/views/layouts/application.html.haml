@@ -8,15 +8,14 @@
     %title= content_for?(:title) ? yield(:title) : "Interapptive"
     %meta{:content => "", :name => "description"}
     %meta{:content => "", :name => "author"}
-    = stylesheet_link_tag    "application", :media => "all"
+    = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag "application"
     :javascript
       App.currentUser(#{current_user.to_json(:only => :id)});
     = csrf_meta_tags
     = yield(:head)
+
   %body
-    = render 'assets/upload_modal'
-    = render 'storybooks/index'
     %header.navbar.navbar-fixed-top
       %nav.navbar-inner.file-menu
         #file-menu.container.left
@@ -27,6 +26,7 @@
       %nav.navbar-inner.font-menu
         %div#font-menu-buttons.container
           = render 'layouts/font_menu'
+
     #main{:role => "main"}
       .container
         .content
@@ -42,8 +42,13 @@
               = yield
 
     %footer.navbar.navbar-fixed-bottom
-      %p
-        %footer
-          #keyframe-list
+      %footer
+        #keyframe-list
+
     = render 'assets/gallery_modal'
     = render 'assets/upload_download_template'
+    = render 'assets/upload_modal'
+    = render 'storybooks/index_modal'
+    = render 'storybooks/settings_modal'
+    = render 'scenes/settings_modal'
+    = render 'shared/about_modal'

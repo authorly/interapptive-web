@@ -113,6 +113,7 @@ GEM
       net-ssh (>= 1.99.1)
     net-ssh (2.3.0)
     nokogiri (1.5.2)
+    param_protected (4.0.0)
     polyglot (0.3.3)
     pry (0.9.8.4)
       coderay (~> 1.0.5)
@@ -224,6 +225,7 @@ DEPENDENCIES
   mini_magick
   miniskirt
   mysql2
+  param_protected (~> 4.0.0)
   pry
   pry-rails
   puma

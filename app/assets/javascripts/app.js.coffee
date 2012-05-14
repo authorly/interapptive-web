@@ -1,4 +1,4 @@
-window.App = 
+window.App =
   Models: {}
   Views: {}
   Collections: {}
@@ -31,18 +31,22 @@ $ ->
 
   fileMenuView: new App.Views.FileMenuView
     el: $('#file-menu')
-  
+
   toolbarView: new App.Views.ToolbarView
     el: $('#toolbar')
     
-  # Commonly used selectors
+  # Some selectors
   toolbarItem = $("ul#toolbar li ul li")
   modals = $("#modal") # Toolbar modals
-  storybooksModal = $("#storybooks-modal")
+  storybooks_modal = $("#storybooks-modal")
+  storybook_settings_modal = $("#storybook-settings-modal")
+  scene_settings_modal = $("#scene-settings-modal")
 
   # Init different modals
   modals.modal(backdrop: true).modal "hide"
-  storybooksModal.modal(backdrop: "static", show: true, keyboard: false)
+  storybook_settings_modal.modal(backdrop: true).modal "hide"
+  scene_settings_modal.modal(backdrop: true).modal "hide"
+  storybooks_modal.modal(backdrop: "static", show: true, keyboard: false)
 
   # Remove active style from toolbar items upon modal close
   modals.bind "hidden", ->

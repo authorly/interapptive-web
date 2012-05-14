@@ -12,6 +12,7 @@ gem 'twitter-bootstrap-rails'
 gem 'carrierwave'
 gem 'fog', '~> 1.3.1'
 gem 'mini_magick'
+gem "param_protected", "~> 4.0.0"
 gem "jasminerice", :group => [:development, :test]
 
 group :assets do
