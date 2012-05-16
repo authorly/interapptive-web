@@ -36,7 +36,7 @@
         render: function() {
             var $el = this.$el;
 
-            $el.html('<input style="z-index:999 !important"><i class="icon-calendar input-icon" style="z-index: 400 !important"></i></input');
+            $el.html('<input><i class="icon-calendar input-icon"></i></input');
 
             var input = $('input', $el);
 
@@ -46,8 +46,6 @@
                 dateFormat: 'MM, yy',
                 showButtonPanel: false
             });
-
-            $el.appendTo('<div>jdjd</div>');
 
             //Make sure setValue of this object is called, not of any objects extending it (e.g. DateTime)
             exports.Date.prototype.setValue.call(this, this.value);

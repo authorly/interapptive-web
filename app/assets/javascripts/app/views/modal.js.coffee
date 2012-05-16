@@ -1,7 +1,6 @@
 class App.Views.Modal extends Backbone.View
 
   render: ->
-    console.log(@el)
     $(@el).append @options.view.render().el
     this
 
