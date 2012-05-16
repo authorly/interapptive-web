@@ -11,9 +11,7 @@ class App.Views.AppSettings extends Backbone.View
 
     # Submit form with backbone-forms method
     @form.commit()
-    App.currentStorybook().save {},
-      success:
-        $('.content-modal').modal "hide"
+    App.currentStorybook().save()
 
   render: ->
     $(@el).append @form.el
