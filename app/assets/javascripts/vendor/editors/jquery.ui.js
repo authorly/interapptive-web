@@ -36,14 +36,18 @@
         render: function() {
             var $el = this.$el;
 
-            $el.html('<input>');
+            $el.html('<input style="z-index:999 !important"><i class="icon-calendar input-icon" style="z-index: 400 !important"></i></input');
 
             var input = $('input', $el);
 
+            input.addClass('input-small');
+
             input.datepicker({
-                dateFormat: 'mm/yy',
+                dateFormat: 'MM, yy',
                 showButtonPanel: false
             });
+
+            $el.appendTo('<div>jdjd</div>');
 
             //Make sure setValue of this object is called, not of any objects extending it (e.g. DateTime)
             exports.Date.prototype.setValue.call(this, this.value);

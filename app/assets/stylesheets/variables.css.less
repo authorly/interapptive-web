@@ -10,18 +10,20 @@
 
 // menus & toolbars
 @fileMenuBgStart:     #d7dae1;
-@fileMenuBgEnd:     #a7a9ae;
-@fileMenuHeight:    23px;
+@fileMenuBgEnd:       #a7a9ae;
+@fileMenuHeight:      23px;
 @fileMenuOpenBgStart: #5f82ec;
 @fileMenuOpenBgEnd:   #1956e3;
 
 @toolbarBgStart:   #e1dfe1;
 @toolbarBgEnd:     #c7c6c6;
 @toolbarHeight:    93px;
-@toolbarItemWidth:   72px;
+@toolbarItemWidth: 72px;
 
 @fontMenuBg:      #b3b3b3;
-@fontMenuHeight:      5px;
+@fontMenuHeight:  5px;
+
+@sidebarColor:    #aeb0b6;
 
 @slidePreviewActiveBgBegin:  #f9de50;
 @slidePreviewActiveBgEnd:  #e4aa3c;
@@ -29,11 +31,10 @@
 @slidePreviewHeight:     120px;
 @slidePreviewPadding:      7px;
 
-// sidebar
-@sidebarColor:    #aeb0b6;
-
-// footer
 @footerColor:     #98999e;
+
+@appSettingsModalWidth:      630px;
+@appSettingsModalHeight:     475px;
 
 //
 // Mixins
@@ -64,10 +65,10 @@
   border-top-left-radius: 0;
 }
 .dropShadow(@x:0, @y:0, @blur:0, @color:#444) {
-    box-shadow: @x @y @blur @color;
-    -o-box-shadow: @x @y @blur @color;
-    -webkit-box-shadow: @x @y @blur @color;
-    -moz-box-shadow: @x @y @blur @color;
+  box-shadow: @x @y @blur @color;
+  -o-box-shadow: @x @y @blur @color;
+  -webkit-box-shadow: @x @y @blur @color;
+  -moz-box-shadow: @x @y @blur @color;
 }
 .no-margin () {
   margin: 0;

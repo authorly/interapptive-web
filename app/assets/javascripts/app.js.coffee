@@ -11,12 +11,22 @@ window.App =
     @storybooksRouter = new App.Routers.StorybooksRouter
 
     # Initialize the views!
+    #  RE: Initialize the views!
+    #  But I wanna scatter them everywhere! ;) Ty.
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
+    @contentModal = new App.Views.Modal className: "content-modal"
     @sceneList(new App.Views.SceneIndex collection: scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: keyframesCollection)
 
+
     Backbone.history.start()
+
+  modalWithView: (modalView) ->
+    if modalView
+      @modalView = new App.Views.Modal modalView, className: "content-modal"
+    else
+      return @modalView
 
   currentUser: (user) ->
     if user
@@ -62,7 +72,7 @@ $ ->
   toolbarItem = $("ul#toolbar li ul li")
   modals = $("#modal") # Toolbar modals
   storybooks_modal = $("#storybooks-modal")
-  storybook_settings_modal = $("#storybook-settings-modal")
+  storybook_settings_modal = $(".content-modal")
   scene_settings_modal = $("#scene-settings-modal")
 
   # Init different modals

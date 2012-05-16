@@ -10,10 +10,8 @@ class App.Views.FileMenuView extends Backbone.View
     $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
 
   showSettings: ->
-    settingsForm = new App.Views.AppSettings(el: $('#storybook-settings'))
+    set_mod = new App.Views.AppSettings()
+    App.modalWithView(view: set_mod).showModal()
 
-    # Render() renders to our modal below
-    settingsForm.render()
 
-    $("#storybook-settings-modal").modal(backdrop: "static", show: true, keyboard: false)
 

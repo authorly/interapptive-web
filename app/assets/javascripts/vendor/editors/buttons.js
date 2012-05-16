@@ -10,10 +10,10 @@
     exports.Buttons = Base.extend({
 
         tagName: 'div',
-        className: 'fancy-btn-group',
+        className: 'btn-group',
 
         events: {
-            'click .fancy-btn': 'setActive'
+            'click .btn-primary': 'setActive'
         },
 
         initialize: function(options) {
@@ -49,7 +49,7 @@
             $el.attr('data-toggle', groupTypeCssClass);
 
             if (_.isString(labeling)) {
-                html = '<button class="btn fancy-btn" data-toggle="button">' + labeling + '</button>';
+                html = '<button class="btn">' + labeling + '</button>';
             }
 
             //Or array
@@ -78,7 +78,7 @@
 
         setActive: function(ev) {
             ev.preventDefault();
-            $('.btn').removeClass("active");
+            $(ev.target).siblings().removeClass("active");
             $(ev.target).addClass("active");
             this.setValue($(ev.target).text());
         },

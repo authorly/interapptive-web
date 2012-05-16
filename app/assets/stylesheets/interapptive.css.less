@@ -72,6 +72,26 @@ html, body{
   position: relative;
   top: 8px;
 }
+.content-modal {
+    width:  @appSettingsModalWidth;
+    height: @appSettingsModalHeight;
+    margin-left:-(@appSettingsModalWidth/2);
+
+    .form-actions {
+        .round-corners-bottom();
+
+        position: absolute;
+        bottom: 0;
+        width: @appSettingsModalWidth - 36px;
+        padding: 18px;
+        text-align: right;
+        margin: 0;
+    }
+
+    fieldset {
+        margin: 30px 0 0 80px;
+    }
+}
 
 // Footer
 footer {
@@ -89,6 +109,10 @@ footer {
 // Sidebar & tabs
 .sidebar {
   .dropShadow(1px, 0, 13px, #666);
+
+  background-image: url('scene-list-bg.png');
+  background-position: center center;
+  background-repeat: no-repeat;
   position: absolute;
   left: 0;
   top: 0;
@@ -115,15 +139,6 @@ footer {
   .round-corners-bottom;
 }
 
-#list-wrapper {
-  position: absolute;
-  bottom: 5px;
-  background-color: green;
-  height: 20px;
-  width: 180px;
-  background: asset-url('sidebar-bg-bottom.png') no-repeat center bottom;
-}
-
 // menus & toolbars
 .navbar-fixed-top .container {
   width: 1125px;
@@ -147,15 +162,17 @@ footer {
 }
 
 nav.font-menu {
-  padding-top: 2px;
   .gradient(@fileMenuBgStart, @fileMenuBgEnd);
+
+  padding-top: 2px;
   height: @fontMenuHeight;
 }
 
 nav.font-menu ul li.parent {
+  .horizontal-menu();
+
   width: 200px;
   height: 23px;
-  .horizontal-menu;
 }
 
 .dropdown-toggle {
@@ -189,3 +206,13 @@ nav.font-menu ul li.parent {
   overflow: hidden;
 }
 
+// Forms
+.bbf-date i {
+  position: relative;
+  left: -22px;
+  top: 1px;
+}
+.help-inline {
+  padding-top: 7px;
+  font-style: italic;
+}

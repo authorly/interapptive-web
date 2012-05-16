@@ -5,7 +5,9 @@
         {{fieldsets}}\
         <div class="form-actions">\
          <button class="btn">Cancel</button>\
-         <input type="submit" class="btn btn-primary" value="Save changes" />\
+         <button type="submit" data-loading-text="Saving..." class="btn btn-primary btn-submit">\
+            Save\
+         </button>\
         </div>\
       </form>\
     ',

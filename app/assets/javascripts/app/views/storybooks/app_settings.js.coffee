@@ -2,20 +2,19 @@ class App.Views.AppSettings extends Backbone.View
   events:
     "submit form": "updateAttributes"
 
-
   initialize: ->
-    @appSettingsForm = new Backbone.Form(model: App.currentStorybook(),
-                                         template: 'bootstrap').render()
+    @form = new Backbone.Form(model: App.currentStorybook(),
+                              template: 'bootstrap').render()
 
-  # Updates settings on model
-  updateAttributes: (ev) ->
-    # Stop propogation
-    ev.preventDefault()
+  updateAttributes: (event) ->
+    event.preventDefault()
 
     # Submit form with backbone-forms method
-    @appSettingsForm.commit()
-    App.currentStorybook().save()
+    @form.commit()
+    App.currentStorybook().save {},
+      success:
+        $('.content-modal').modal "hide"
 
   render: ->
-    # Render backbone-forms generated HTML form
-    $("#storybook-settings").html(@appSettingsForm.el)
+    $(@el).append @form.el
+    this
