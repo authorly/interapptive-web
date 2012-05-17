@@ -1,0 +1,71 @@
+CCBezierBy:
+  name:  "CCBezierBy"
+  description: "Move objects along a curve"
+
+CCBezierTo:
+  name: "CCBezierTo"
+  description: "Move objects along a curve"
+
+CCEaseBounceIn:
+  name: "CCEaseBounceIn"
+  description: "Bounce an object in"
+
+CCEaseBounceOut:
+  name: "CCEaseBounceOut"
+  description: "Bounce an object in"
+
+CCEaseIn:
+  name: "CCEaseIn"
+  description: "Ease an object in"
+
+CCEaseOut:
+  name: "CCEaseOut"
+  description: "Ease an object out"
+
+CCFadeIn:
+  name: "CCFadeIn"
+  description: "Fade in an object"
+
+CCFadeTo:
+  name: "CCFadeTo"
+  description: "Fade an object to a specified opacity"
+
+CCFlipX:
+  name: "CCFlipX"
+  description: "Flip object along the X-axis (up-down)"
+
+CCFlipY:
+  name: "CCFlipY"
+  description: "Flip object along the Y-axis (up-down)"
+
+CCFlipX3D:
+  name: "CCFlipX3D"
+  description: "Flip an object over X-axis with a 3D effect"
+
+CCFlipY3D:
+  name: "CCFlipY3D"
+  description: "Flip an object over Y-axis with a 3D effect"
+
+CCJumpTo:
+  name: "CCJumpTo"
+  description: "Jump an object to a specified coordinate"
+
+CCJumpBy:
+  name: "CCJumpBy"
+  description: "Jump an object by a given amount"
+
+CCRotateBy:
+  name: "CCRotateBy"
+  description: "Rotate an object a certain number of degrees"
+
+CCRotateTo:
+  name: "CCRotateTo"
+  description: "Rotate an object to a given angle"
+
+CCSkewBy:
+  name: "CCSkewBy"
+  description: "Skew object by specified amount"
+
+CCScaleTo:
+  name: "CCScaleTo"
+  description: "Scale an object to a given percentage"

@@ -1,0 +1,409 @@
+CCBezierTo_actionTag:
+  name: "actionTag"
+  type: "string"
+  action: CCBezierTo
+
+CCBezierTo_duration:
+  name: "duration"
+  type: "decimal"
+  action: CCBezierTo
+
+CCBezierTo_endPositionX:
+  name: "endPositionX"
+  type: "integer"
+  action: CCBezierTo
+
+CCBezierTo_endPositionY:
+  name: "endPositionY"
+  type: "integer"
+  action: CCBezierTo
+
+CCBezierTo_endPositionX:
+  name: "endPositionX"
+  type: "integer"
+  action: CCBezierTo
+
+CCBezierTo_controlPoint1X:
+  name: "controlPoint1X"
+  type: "integer"
+  action: CCBezierTo
+
+CCBezierTo_controlPoint1Y:
+  name: "controlPoint1Y"
+  type: "integer"
+  action: CCBezierTo
+
+CCBezierTo_controlPoint2X:
+  name: "controlPoint2X"
+  type: "integer"
+  action: CCBezierTo
+
+CCBezierTo_controlPoint2Y:
+  name: "controlPoint2Y"
+  type: "integer"
+  action: CCBezierTo
+
+CCBezierBy_actionTag:
+  name: "actionTag"
+  type: "string"
+  action: CCBezierBy
+
+CCBezierBy_duration:
+  name: "duration"
+  type: "decimal"
+  action: CCBezierBy
+
+CCBezierBy_endPositionX:
+  name: "endPositionX"
+  type: "integer"
+  action: CCBezierBy
+
+CCBezierBy_endPositionY:
+  name: "endPositionY"
+  type: "integer"
+  action: CCBezierBy
+
+CCBezierBy_endPositionX:
+  name: "endPositionX"
+  type: "integer"
+  action: CCBezierBy
+
+CCBezierBy_controlPoint1X:
+  name: "controlPoint1X"
+  type: "integer"
+  action: CCBezierBy
+
+CCBezierBy_controlPoint1Y:
+  name: "controlPoint1Y"
+  type: "integer"
+  action: CCBezierBy
+
+CCBezierBy_controlPoint2X:
+  name: "controlPoint2X"
+  type: "integer"
+  action: CCBezierBy
+
+CCBezierBy_controlPoint2Y:
+  name: "controlPoint2Y"
+  type: "integer"
+  action: CCBezierBy
+
+CCEaseBounceIn_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCEaseBounceIn
+
+CCEaseBounceIn_internalActionTag:
+  name: "internalActionTag"
+  type: "integer"
+  action: CCEaseBounceIn
+
+CCEaseBounceOut_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCEaseBounceOut
+
+CCEaseBounceOut_internalActionTag:
+  name: "internalActionTag"
+  type: "integer"
+  action: CCEaseBounceOut
+
+CCEaseIn_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCEaseIn
+
+CCEaseIn_internalActionTag:
+  name: "internalActionTag"
+  type: "integer"
+  action: CCEaseIn
+
+CCEaseIn_rate:
+  name: "rate"
+  type: "integer"
+  action: CCEaseIn
+
+CCEaseOut_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCEaseOut
+
+CCEaseOut_internalActionTag:
+  name: "internalActionTag"
+  type: "integer"
+  action: CCEaseOut
+
+CCEaseOut_rate:
+  name: "rate"
+  type: "integer"
+  action: CCEaseOut
+
+CCFadeIn_duration:
+  name: "duration"
+  type: "integer"
+  action: CCFadeIn
+
+CCFadeIn_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCFadeIn
+
+CCFadeOut_duration:
+  name: "duration"
+  type: "integer"
+  action: CCFadeOut
+
+CCFadeOut_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCFadeOut
+
+CCFlipX_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCFlipX
+
+CCFlipX_flip: -boolean
+  name: "flip"
+  type: "boolean"
+  action: CCFlipX
+
+CCFlipY_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCFlipY
+
+CCFlipY_flip:
+  name: "flip"
+  type: "integer"
+  action: CCFlipY
+
+CCFlipX3D_duration:
+  name: "duration"
+  type: "integer"
+  action: CCFlipX3D
+
+CCFlipX3D_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCFlipX3D
+
+CCFlipY3D_duration:
+  name: "duration"
+  type: "integer"
+  action: CCFlipY3D
+
+CCFlipY3D_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCFlipY3D
+
+CCJumpTo_positionX:
+  name: "positionX"
+  type: "integer"
+  action: CCJumpTo
+
+CCJumpTo_positionY:
+  name: "positionY"
+  type: "integer"
+  action: CCJumpTo
+
+CCJumpTo_duration:
+  name: "duration"
+  type: "decimal"
+  action: CCJumpTo
+
+CCJumpTo_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCJumpTo
+
+CCJumpTo_height:
+  name: "height"
+  type: "integer"
+  action: CCJumpTo
+
+CCJumpTo_jumps:
+  name: "jumps"
+  type: "integer"
+  action: CCJumpTo
+
+CCJumpBy_positionX:
+  name: "positionX"
+  type: "integer"
+  action: CCJumpBy
+
+CCJumpBy_positionY:
+  name: "positionY"
+  type: "integer"
+  action: CCJumpBy
+
+CCJumpBy_duration:
+  name: "duration"
+  type: "integer"
+  action: CCJumpBy
+
+CCJumpBy_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCJumpBy
+
+CCJumpBy_height:
+  name: "height"
+  type: "integer"
+  action: CCJumpBy
+
+CCJumpBy_jumps:
+  name: "jumps"
+  type: "integer"
+  action: CCJumpBy
+
+CCRotateBy_degrees:
+  name: "degrees"
+  type: "integer"
+  action: CCRotateBy
+
+CCRotateBy_duration:
+  name: "duration"
+  type: "integer"
+  action: CCRotateBy
+
+CCRotateBy_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCRotateBy
+
+CCRotateTo_degrees:
+  name: "degrees"
+  type: "integer"
+  action: CCRotateTo
+
+CCRotateTo_duration:
+  name: "duration"
+  type: "integer"
+  action: CCRotateTo
+
+CCRotateTo_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCRotateTo
+
+CCSkewBy_duration:
+  name: "duration"
+  type: "integer"
+  action: CCSkewBy
+
+CCSkewBy_deltaSkewX:
+  name: "deltaSkewX"
+  type: "integer"
+  action: CCSkewBy
+
+CCSkewBy_deltaSkewY:
+  name: "deltaSkewY"
+  type: "integer"
+  action: CCSkewBy
+
+CCSkewBy_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCSkewBy
+
+CCSkewTo_duration:
+  name: "duration"
+  type: "integer"
+  action: CCSkewTo
+
+CCSkewTo_deltaSkewX:
+  name: "deltaSkewX"
+  type: "integer"
+  action: CCSkewTo
+
+CCSkewTo_deltaSkewY:
+  name: "deltaSkewY"
+  type: "integer"
+  action: CCSkewTo
+
+CCSkewTo_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCSkewTo
+
+CCMoveBy_positionX:
+  name: "positionX"
+  type: "integer"
+  action: CCMoveBy
+
+CCMoveBy_positionY:
+  name: "positionY"
+  type: "integer"
+  action: CCMoveBy
+
+CCMoveBy_duration:
+  name: "duration"
+  type: "integer"
+  action: CCMoveBy
+
+CCMoveBy_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCMoveBy
+
+CCMoveTo_positionX:
+  name: "positionX"
+  type: "integer"
+  action: CCMoveTo
+
+CCMoveTo_positionY:
+  name: "positionY"
+  type: "integer"
+  action: CCMoveTo
+
+CCMoveTo_duration:
+  name: "duration"
+  type: "integer"
+  action: CCMoveTo
+
+CCMoveTo_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCMoveTo
+
+CCScaleBy_intensity:
+  name: "intensity"
+  type: "decimal"
+  action: CCScaleBy
+
+CCScaleBy_duration:
+  name: "duration"
+  type: "decimal"
+  action: CCScaleBy
+
+CCScaleBy_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCScaleBy
+
+CCScaleTo_intensity:
+  name: "intensity"
+  type: "decimal"
+  action: CCScaleTo
+
+CCScaleTo_duration:
+  name: "duration"
+  type: "integer"
+  action: CCScaleTo
+
+CCScaleTo_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCScaleTo
+
+CCDelayTime_duration:
+  name: "duration"
+  type: "integer"
+  action: CCDelayTime
+
+CCDelayTime_actionTag:
+  name: "actionTag"
+  type: "integer"
+  action: CCDelayTime

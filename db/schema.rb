@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120512065147) do
+ActiveRecord::Schema.define(:version => 20120516232236) do
 
   create_table "action_groups", :force => true do |t|
     t.integer  "action_id"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20120512065147) do
     t.string   "type"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "name"
   end
 
   add_index "attributes", ["action_id"], :name => "index_attributes_on_action_id"
