@@ -140,7 +140,7 @@ CCEaseOut_rate:
 
 CCFadeIn_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCFadeIn
 
 CCFadeIn_actionTag:
@@ -150,12 +150,12 @@ CCFadeIn_actionTag:
 
 CCFadeOut_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCFadeOut
 
 CCFadeOut_actionTag:
   name: "actionTag"
-  type: "integer"
+  type: "decimal"
   action: CCFadeOut
 
 CCFlipX_actionTag:
@@ -163,7 +163,7 @@ CCFlipX_actionTag:
   type: "integer"
   action: CCFlipX
 
-CCFlipX_flip: -boolean
+CCFlipX_flip:
   name: "flip"
   type: "boolean"
   action: CCFlipX
@@ -180,7 +180,7 @@ CCFlipY_flip:
 
 CCFlipX3D_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCFlipX3D
 
 CCFlipX3D_actionTag:
@@ -190,7 +190,7 @@ CCFlipX3D_actionTag:
 
 CCFlipY3D_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCFlipY3D
 
 CCFlipY3D_actionTag:
@@ -240,7 +240,7 @@ CCJumpBy_positionY:
 
 CCJumpBy_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCJumpBy
 
 CCJumpBy_actionTag:
@@ -265,7 +265,7 @@ CCRotateBy_degrees:
 
 CCRotateBy_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCRotateBy
 
 CCRotateBy_actionTag:
@@ -280,7 +280,7 @@ CCRotateTo_degrees:
 
 CCRotateTo_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCRotateTo
 
 CCRotateTo_actionTag:
@@ -290,7 +290,7 @@ CCRotateTo_actionTag:
 
 CCSkewBy_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCSkewBy
 
 CCSkewBy_deltaSkewX:
@@ -310,7 +310,7 @@ CCSkewBy_actionTag:
 
 CCSkewTo_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCSkewTo
 
 CCSkewTo_deltaSkewX:
@@ -340,7 +340,7 @@ CCMoveBy_positionY:
 
 CCMoveBy_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCMoveBy
 
 CCMoveBy_actionTag:
@@ -360,7 +360,7 @@ CCMoveTo_positionY:
 
 CCMoveTo_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCMoveTo
 
 CCMoveTo_actionTag:
@@ -390,7 +390,7 @@ CCScaleTo_intensity:
 
 CCScaleTo_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCScaleTo
 
 CCScaleTo_actionTag:
@@ -400,7 +400,7 @@ CCScaleTo_actionTag:
 
 CCDelayTime_duration:
   name: "duration"
-  type: "integer"
+  type: "decimal"
   action: CCDelayTime
 
 CCDelayTime_actionTag:
