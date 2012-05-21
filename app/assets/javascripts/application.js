@@ -36,10 +36,4 @@
 //= require ./vendor/jasmine-sinon.js
 
 // File upload stuff
-//= require ./vendor/jquery.ui.widget.js
-//= require ./vendor/tmpl.min.js
-//= require ./vendor/load-image.min.js
-//= require ./vendor/canvas-to-blob.min.js
-//= require ./vendor/bootstrap-image-gallery.min.js
-//= require ./vendor/jquery.iframe-transport.js
-//= require ./vendor/locale.js
+//= require jquery-fileupload
