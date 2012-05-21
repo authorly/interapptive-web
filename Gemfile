@@ -13,7 +13,7 @@ gem 'carrierwave'
 gem 'fog', '~> 1.3.1'
 gem 'mini_magick'
 gem "param_protected", "~> 4.0.0"
-gem "jquery-fileupload-rails"
+#gem "jquery-fileupload-rails"
 
 
 group :assets do

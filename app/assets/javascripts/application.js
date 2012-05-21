@@ -35,5 +35,3 @@
 //= require ./vendor/sinon.js
 //= require ./vendor/jasmine-sinon.js
 
-// File upload stuff
-//= require jquery-fileupload
