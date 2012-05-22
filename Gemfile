@@ -23,12 +23,12 @@ group :assets do
 end
 
 group :development, :test do
-  gem "unicorn"
   gem "therubyracer"
   gem "jasminerice"
 end
 
 group :development do
+  gem "unicorn"
   gem 'pry'
   gem 'pry-rails'
   gem 'haml-rails'
