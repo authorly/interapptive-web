@@ -23,6 +23,7 @@ group :assets do
 end
 
 group :development, :test do
+  gem "unicorn"
   gem "therubyracer"
   gem "jasminerice"
 end

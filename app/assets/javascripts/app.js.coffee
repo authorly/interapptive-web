@@ -5,20 +5,16 @@ window.App =
   Routers: {}
 
   init: ->
-    # Preparation
     scenesCollection = new App.Collections.ScenesCollection []
     keyframesCollection = new App.Collections.KeyframesCollection []
     @storybooksRouter = new App.Routers.StorybooksRouter
 
-    # Initialize the views!
-    #  RE: Initialize the views!
-    #  But I wanna scatter them everywhere! ;) Ty.
+    # Initialize views
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
     @contentModal = new App.Views.Modal className: "content-modal"
     @sceneList(new App.Views.SceneIndex collection: scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: keyframesCollection)
-
 
     Backbone.history.start()
 
@@ -39,7 +35,7 @@ window.App =
       @storybook = storybook
     else
       return @storybook
-      
+
   currentScene: (scene) ->
     if scene
       @scene = scene
@@ -68,38 +64,37 @@ $ ->
   # Backbone.js initialization
   App.init()
 
-  # Commonly used selectors
-  toolbarItem = $("ul#toolbar li ul li")
+  $("#image-upload-modal, .content-modal").modal(backdrop: true).modal "hide"
+  $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
+
   modals = $("#modal") # Toolbar modals
-  storybooks_modal = $("#storybooks-modal")
-  storybook_settings_modal = $(".content-modal")
-  scene_settings_modal = $("#scene-settings-modal")
-
-  # Init different modals
   modals.modal(backdrop: true).modal "hide"
-  storybook_settings_modal.modal(backdrop: true).modal "hide"
-  scene_settings_modal.modal(backdrop: true).modal "hide"
-  storybooks_modal.modal(backdrop: "static", show: true, keyboard: false)
 
-  # Remove active style from toolbar items upon modal close
   modals.bind "hidden", ->
-    toolbarItem.removeClass "active"
+    $("ul#toolbar li ul li").removeClass "active"
 
-  # Toolbar styling and toggling modals
-  toolbarItem.click ->
+  $("ul#toolbar li ul li").click ->
     modals.modal "hide"
-    
-    t = $(this)
-    unless t.hasClass("scene") or t.hasClass("keyframe") or t.hasClass("edit-text") or t.hasClass("disabled")
+
+    unless $(this).is('.scene, .keyframe, .edit-text, .disabled, .images')
       modals.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"
 
-  # FIXME, this is slightly quirky but it is bound to change before release.
-  # Low priotity.. C.W.
-  # Dynamic sidebar height patch for draggable div
+  # Resize drag-to-scroll container according to window height
   $(window).load ->
     $("#scene-list").css height: ($(window).height()) + "px"
   $(window).resize ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
+
+  # TODO: Move asset upload logic to a backbone view
+  $("#fileupload").fileupload()
+  $.getJSON $("#fileupload").prop("action"), (files) ->
+    fu = $("#fileupload").data("fileupload")
+    template = undefined
+    fu._adjustMaxNumberOfFiles -files.length
+    template = fu._renderDownload(files).prependTo($("#fileupload .files"))
+    fu._reflow = fu._transition and template.length and template[0].offsetWidth
+    template.addClass "in"
+    $("#loading").remove()

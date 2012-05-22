@@ -61,5 +61,8 @@ module Interapptive
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # For chunked HTTP responses (asset uploaders)
+    # config.middleware.use Rack::ContentLength
   end
 end

@@ -42,10 +42,10 @@ class ScenesController < ApplicationController
   # POST /storybooks/:storybook_id/scenes.json
   def create
     @storybook = Storybook.find params[:storybook_id]
-    next_page = (@storybook.scenes.map(&:page_number).max + 1) || 1
+    #next_page = (@storybook.scenes.map(&:page_number).max + 1) || 1
     
     @scene = @storybook.scenes.new params[:scene]
-    @scene.page_number = next_page
+    #@scene.page_number = next_page
 
     respond_to do |format|
       if @scene.save

@@ -22,7 +22,7 @@
 //= require ./vendor/editors/currency
 //= require ./vendor/editors/buttons
 //= require ./vendor/editors/jquery.ui
-//= require ./vendor/jquery.overflow
+//= require ./vendor/jquery.overscroll
 
 //= require app
 
@@ -31,7 +31,5 @@
 //= require_tree ./app/views
 //= require_tree ./app/routers
 
-// Jasmine-sinon related
-//= require ./vendor/sinon.js
-//= require ./vendor/jasmine-sinon.js
-
+// File upload stuff
+//= require jquery-fileupload
