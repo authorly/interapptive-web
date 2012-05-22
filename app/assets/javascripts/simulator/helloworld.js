@@ -42,16 +42,6 @@ cc.$ = function (x) {
 cc.$new = function (x) {
     return document.createElement(x);
 };
-//function to load files into html
-/*
- cc.loadjs = function(filename)
- {
- //get a ref to header
- var head = cc.$('head');
- var insert = document.createElement('script');
- insert.setAttribute('src',cc.Dir+filename);
- head.appendChild(insert);
- };*/
 
 cc.loadjs = function (filename) {
     //add the file to the que
@@ -62,6 +52,26 @@ cc.loadjs = function (filename) {
 
 
     script.onload = function () {
+        // Monkey patch to fix bugs in cocos2d-html5
+        cc.setupHTML = function(a){
+          var b = cc.canvas;
+          b.style.zIndex = 0;
+          var c = cc.$new("div");
+          c.id = "Cocos2dGameContainer";
+          c.style.overflow = "hidden";
+          c.style.height = b.clientHeight + "px";
+          c.style.width = b.clientWidth + "px";
+          a && c.setAttribute("fheight", a.getContentSize().height);
+          a = cc.$new("div");
+          a.id = "domlayers";
+          c.appendChild(a);
+          b.parentNode.insertBefore(c, b);
+          c.appendChild(b);
+
+          return a
+        };
+
+
         //file have finished loading,
         //if there is more file to load, we should put the next file on the head
         if (this.order + 1 < cc.loadQue.length) {
@@ -79,9 +89,9 @@ cc.loadjs = function (filename) {
             };
             //preload ressources
             cc.Loader.shareLoader().preload([
-                {type:"image", src:"/javascripts/cocos2d-html5/HelloWorld/Resources/HelloWorld.png"},
-                {type:"image", src:"/javascripts/cocos2d-html5/HelloWorld/Resources/grossini_dance_07.png"},
-                {type:"image", src:"/javascripts/cocos2d-html5/HelloWorld/Resources/cocos64.png"}
+                {type:"image", src:"/HelloWorld/Resources/HelloWorld.png"},
+                {type:"image", src:"/HelloWorld/Resources/grossini_dance_07.png"},
+                {type:"image", src:"/HelloWorld/Resources/cocos64.png"}
             ]);
         }
     };
@@ -93,5 +103,5 @@ cc.loadjs = function (filename) {
 
 cc.loadjs('/javascripts/cocos2d-html5/HelloWorld/cocos2dhtml5.js');
 cc.loadjs('/javascripts/cocos2d-html5/CocosDenshion/SimpleAudioEngine.js');
-cc.loadjs('/javascripts/cocos2d-html5/HelloWorld/Classes/AppDelegate.js');//17
-cc.loadjs('/javascripts/cocos2d-html5/HelloWorld/Helloworld.js');//19
+cc.loadjs('/HelloWorld/Classes/AppDelegate.js');//17
+cc.loadjs('/HelloWorld/Helloworld.js');//19
