@@ -41,12 +41,26 @@
   position: absolute !important;
   top: 300px !important;
 
+  form {
+    margin: 0;
+    padding: 0;
+    height:  260px;
+  }
+
   .modal-body {
-    height: 245px;
+    min-height: 260px;
   }
 
   td.delete {
     text-align: right;
   }
 
+}
+
+.template-upload  table, .template-download table {
+  width: 780px;
+}
+.template-upload td.cancel, .template-download td.cancel, .template-upload td.start, .template-download td.start {
+  text-align: right;
+  padding-right: 26px;
 }

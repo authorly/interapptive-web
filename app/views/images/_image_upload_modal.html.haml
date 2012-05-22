@@ -65,14 +65,14 @@
     %td
       .progress.progress-success.progress-striped.active
         .bar{:style => "width:0%;"}
-    %td.start
+    %td.start{:colspan => "4"}
       {% if (!o.options.autoUpload) { %}
       %button.btn.btn-primary
         %i.icon-upload.icon-white
         %span {%=locale.fileupload.start%}
       {% } %}
     {% } else { %}
-    %td{:colspan => "5"}
+    %td{:colspan => "3"}
     {% } %}
     %td.cancel
       {% if (!i) { %}
