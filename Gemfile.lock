@@ -82,6 +82,10 @@ GEM
       activesupport (~> 3.0)
       haml (~> 3.0)
       railties (~> 3.0)
+    haml_coffee_assets (0.9.3)
+      execjs (>= 1.2.9)
+      sprockets (>= 2.0.3)
+      tilt (>= 1.3.3)
     hike (1.2.1)
     http_parser.rb (0.5.3)
     i18n (0.6.0)
@@ -230,9 +234,11 @@ DEPENDENCIES
   carrierwave
   coffee-rails (~> 3.2.1)
   database_cleaner
+  execjs
   fog (~> 1.3.1)
   haml
   haml-rails
+  haml_coffee_assets
   jasminerice
   jquery-fileupload-rails
   jquery-rails

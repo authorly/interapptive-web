@@ -20,6 +20,8 @@ group :assets do
   gem 'less-rails'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
+  gem 'haml_coffee_assets'
+  gem 'execjs'
 end
 
 group :development, :test do
