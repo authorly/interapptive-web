@@ -44,37 +44,39 @@ cc.$new = function (x) {
 };
 cc.Log = cc.LOG = console.log.bind(console)
 
-// Monkey patch to fix bugs in cocos2d-html5
-cc.setupHTML = function(a){
-  var b = cc.canvas;
-  b.style.zIndex = 0;
-  var c = cc.$new("div");
-  c.id = "Cocos2dGameContainer";
-  c.style.overflow = "hidden";
-  c.style.height = b.clientHeight + "px";
-  c.style.width = b.clientWidth + "px";
-  a && c.setAttribute("fheight", a.getContentSize().height);
-  a = cc.$new("div");
-  a.id = "domlayers";
-  c.appendChild(a);
-  b.parentNode.insertBefore(c, b);
-  c.appendChild(b);
+$(function () {
+  // Monkey patch to fix bugs in cocos2d-html5
+  cc.setupHTML = function(a){
+    var b = cc.canvas;
+    b.style.zIndex = 0;
+    var c = cc.$new("div");
+    c.id = "Cocos2dGameContainer";
+    c.style.overflow = "hidden";
+    c.style.height = b.clientHeight + "px";
+    c.style.width = b.clientWidth + "px";
+    a && c.setAttribute("fheight", a.getContentSize().height);
+    a = cc.$new("div");
+    a.id = "domlayers";
+    c.appendChild(a);
+    b.parentNode.insertBefore(c, b);
+    c.appendChild(b);
 
-  return a
-};
+    return a
+  };
 
 
-cc.setup("simulator-canvas");
-//we are ready to run the game
-cc.Loader.shareLoader().onloading = function () {
-    cc.LoaderScene.shareLoaderScene().draw();
-};
-cc.Loader.shareLoader().onload = function () {
-    cc.AppController.shareAppController().didFinishLaunchingWithOptions();
-};
-//preload ressources
-cc.Loader.shareLoader().preload([
-    {type:"image", src:"/assets/simulator/HelloWorld.png"},
-    {type:"image", src:"/assets/simulator/grossini_dance_07.png"},
-    {type:"image", src:"/assets/simulator/cocos64.png"}
-]);
+  cc.setup("simulator-canvas");
+  //we are ready to run the game
+  cc.Loader.shareLoader().onloading = function () {
+      cc.LoaderScene.shareLoaderScene().draw();
+  };
+  cc.Loader.shareLoader().onload = function () {
+      cc.AppController.shareAppController().didFinishLaunchingWithOptions();
+  };
+  //preload ressources
+  cc.Loader.shareLoader().preload([
+      {type:"image", src:"/assets/simulator/HelloWorld.png"},
+      {type:"image", src:"/assets/simulator/grossini_dance_07.png"},
+      {type:"image", src:"/assets/simulator/cocos64.png"}
+  ]);
+})
