@@ -1,54 +1,60 @@
-// Sprite paths
-@iconSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings.png');
+@iconSpritePath:      asset-path('twitter/bootstrap/glyphicons-halflings.png');
 @iconWhiteSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings-white.png');
 
-//
-// Variables
-//
-@darkBackground:  #777777;
-@appHeight:         570px;
+@appHeight: 570px;
 
-// menus & toolbars
-@fileMenuBgStart:     #d7dae1;
-@fileMenuBgEnd:       #a7a9ae;
-@fileMenuHeight:      23px;
-@fileMenuOpenBgStart: #5f82ec;
-@fileMenuOpenBgEnd:   #1956e3;
+// File menu, toolbar
+@fileMenuBgStart:      #d7dae1;
+@fileMenuBgEnd:        #a7a9ae;
+@fileMenuHeight:       23px;
+@fileMenuOpenBgStart:  #5f82ec;
+@fileMenuOpenBgEnd:    #1956e3;
+@fileMenuBorderColor:  @gray;
+@toolbarBgStart:       #e1dfe1;
+@toolbarBgEnd:         #c7c6c6;
+@toolbarHeight:        93px;
+@toolbarItemWidth:     72px;
+@fontMenuBg:           #b3b3b3;
+@fontMenuHeight:       5px;
 
-@toolbarBgStart:   #e1dfe1;
-@toolbarBgEnd:     #c7c6c6;
-@toolbarHeight:    93px;
-@toolbarItemWidth: 72px;
+// Sidebar
+@sidebarColor:              #aeb0b6;
+@slidePreviewActiveBgBegin: #f9de50;
+@slidePreviewActiveBgEnd:   #e4aa3c;
+@slidePreviewWidth:         154px;
+@slidePreviewHeight:        120px;
+@slidePreviewPadding:       7px;
 
-@fontMenuBg:      #b3b3b3;
-@fontMenuHeight:  5px;
+// Footer
+@footerColor: #98999e;
 
-@sidebarColor:    #aeb0b6;
+// Modals
+@appSettingsModalWidth:    630px;
+@appSettingsModalHeight:   475px;
+@assetUploaderModalWidth:  830px;
+@assetUploaderModalHeight: 500px;
 
-@slidePreviewActiveBgBegin:  #f9de50;
-@slidePreviewActiveBgEnd:  #e4aa3c;
-@slidePreviewWidth:      154px;
-@slidePreviewHeight:     120px;
-@slidePreviewPadding:      7px;
 
-@footerColor:     #98999e;
 
-@appSettingsModalWidth:      630px;
-@appSettingsModalHeight:     475px;
-
-//
-// Mixins
-//
 .gradient (@start: #333, @end: #222) {
   background-image: -webkit-linear-gradient(top, @start, @end);
   background-image: -o-linear-gradient(top, @start, @end);
   background-image: linear-gradient(top, @start, @end);
 }
-.round-corners (@radius: 5px) {
+
+.opacity(@opacity: 0.5) {
+  -moz-opacity: @opacity;
+  -khtml-opacity: @opacity;
+  -webkit-opacity: @opacity;
+  opacity: @opacity;
+}
+
+.round-corners(@radius: 5px) {
   border-radius: @radius;
   -moz-border-radius: @radius;
   -webkit-border-radius: @radius;
 }
+
 .round-corners-bottom (@radius: 5px) {
   -webkit-border-bottom-right-radius: @radius;
   -webkit-border-bottom-left-radius: @radius;
@@ -64,18 +70,20 @@
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
-.dropShadow(@x:0, @y:0, @blur:0, @color:#444) {
+
+.drop-shadow(@x:0, @y:0, @blur:0, @color:#444) {
   box-shadow: @x @y @blur @color;
   -o-box-shadow: @x @y @blur @color;
   -webkit-box-shadow: @x @y @blur @color;
   -moz-box-shadow: @x @y @blur @color;
 }
-.no-margin () {
+
+.no-margin() {
   margin: 0;
 }
 
-.horizontal-menu () {
+.horizontal-menu() {
   list-style-type:none;
-  display:inline block;
+  display:inline;
   float: left;
 }

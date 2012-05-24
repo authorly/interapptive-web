@@ -1,22 +1,30 @@
 class ImagesController < ApplicationController
   def index
-    @images = Image.limit(5)
+    # TODO: Associate image with current_user and scene
+    @images = Image.all
 
-    respond_to do |format|
-      format.js
-    end
+    render :json => @images.collect { |p| p.as_jquery_upload_response }.to_json
   end
 
   def create
-    @images = params[:files].map { |f| Image.create(:image => f) }
+    attr = params[:image]
+    attr[:image] = params[:image][:image].first if params[:image][:image].class == Array
 
-    respond_to do |format|
-      format.json do
-        # IE workaround: https://github.com/blueimp/jQuery-File-Upload/issues/123
-        opts = (request.headers["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") ? {} : {:content_type => "text/html"}
-        json = @images.map { |img| img.as_jquery_upload_response.merge(opts) }
-        render :json => json
+    @image = Image.new(attr)
+
+    if @image.save
+      respond_to do |format|
+        format.html {
+          render :json => [@image.as_jquery_upload_response].to_json,
+                 :content_type => 'text/html',
+                 :layout => false
+        }
+        format.json {
+          render :json => [@image.as_jquery_upload_response].to_json
+        }
       end
+    else
+      render :json => [{:error => "custom_failure"}], :status => 304
     end
   end
 

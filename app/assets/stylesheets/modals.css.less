@@ -1,0 +1,92 @@
+.modal {
+  width: 920px;
+  margin-left: -460px;
+
+  h3 {
+    font-size: 16px;
+  }
+  
+  .modal-footer form {
+    position: relative;
+    top: 8px;
+  }
+}
+
+.content-modal {
+  width:  @appSettingsModalWidth;
+  height: @appSettingsModalHeight;
+  margin-left:-(@appSettingsModalWidth/2);
+  
+  fieldset {
+    margin: 30px 0 0 80px;
+  }
+
+  .form-actions {
+    .round-corners-bottom();
+
+    position: absolute;
+    bottom: 0;
+    width: @appSettingsModalWidth - 36px;
+    padding: 18px;
+    text-align: right;
+    margin: 0;
+  }
+}
+
+#image-upload-modal {
+  width:  @assetUploaderModalWidth;
+  margin-left:-(@assetUploaderModalWidth/2);
+  position: absolute !important;
+  top: 300px !important;
+
+  form {
+    margin: 0;
+    padding: 0;
+    height:  365px;
+  }
+
+  .modal-body {
+    min-height: 355px;
+  }
+
+  .fileupload-buttonbar {
+    margin-top: 4px;
+    margin-bottom: 14px;
+  }
+  
+  .table {
+    margin-top: 9px;
+  }
+   
+  td {
+    vertical-align: middle;
+  }
+  
+  td.delete {
+    text-align: right;
+  }
+  
+  td.cancel {
+    padding-right: 26px !important;
+    text-align: right;
+  }
+  
+  td.start button {
+    position: relative;
+    right: -34px !important;
+  }
+  
+  td.preview, td.name {
+    width: 115px;
+  }
+  
+  td.preview {
+    text-align: center;
+  }
+  
+  .template-upload, .template-download {
+    table {
+      width: 750px;
+    }
+  }
+}

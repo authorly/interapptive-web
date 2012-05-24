@@ -10,11 +10,15 @@
 @import 'storybooks.css.less';
 @import 'scenes.css.less';
 @import 'keyframes.css.less';
+@import 'modals.css.less';
 
-// Application-wide styles
 html, body{
-  background-color: @darkBackground;
+  background-color: @grayDarker;
   background: asset-url('grid.png') repeat;
+}
+
+#main {
+  border: none;
 }
 
 .content {
@@ -27,21 +31,14 @@ html, body{
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
   -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
   box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
-}
-
-.container {
-  background-color: transparent !important;
-}
-
-.content {
   background-color: transparent;
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
 }
 
-#main {
-  border: none;
+.container {
+  background-color: transparent !important;
 }
 
 .span10 {
@@ -58,41 +55,6 @@ html, body{
   float: left;
 }
 
-// Modals
-.modal{
-  width: 920px;
-  margin-left: -460px;
-}
-
-.modal h3 {
-  font-size: 14px;
-}
-
-.modal .modal-footer form {
-  position: relative;
-  top: 8px;
-}
-.content-modal {
-    width:  @appSettingsModalWidth;
-    height: @appSettingsModalHeight;
-    margin-left:-(@appSettingsModalWidth/2);
-
-    .form-actions {
-        .round-corners-bottom();
-
-        position: absolute;
-        bottom: 0;
-        width: @appSettingsModalWidth - 36px;
-        padding: 18px;
-        text-align: right;
-        margin: 0;
-    }
-
-    fieldset {
-        margin: 30px 0 0 80px;
-    }
-}
-
 // Footer
 footer {
   height: 80px;
@@ -106,9 +68,29 @@ footer {
   background-position: center center;
 }
 
-// Sidebar & tabs
+// File menu and toolbar
+header {
+  nav.font-menu {
+    .gradient(@fileMenuBgStart, @fileMenuBgEnd);
+
+    padding-top: 2px;
+    height: @fontMenuHeight;
+  }
+  
+  .navbar-fixed-top .container {
+    width: 1125px;
+  }
+
+  .navbar-fixed-top, .navbar {
+    margin-left: 0 !important;
+    margin-right: none;
+      z-index: 100;
+  }
+}
+
+// Sidebar
 .sidebar {
-  .dropShadow(1px, 0, 13px, #666);
+  .drop-shadow(1px, 0, 13px, #666);
 
   background-image: url('scene-list-bg.png');
   background-position: center center;
@@ -120,84 +102,11 @@ footer {
   margin-left: 0;
   margin-top: 0;
   height: 100%;
-  width: 200px;
+  width: 214px;
   z-index: 20 !important;
 }
 
-.nav-tabs {
-  margin-bottom: 0px;
-}
-
-.tab-content {
-  background-color: white;
-  border: 1px solid #CCC;
-  border-top: 0px;
-  padding: 10px;
-  width:  168px;
-  height: 500px;
-  position: relative;
-  .round-corners-bottom;
-}
-
-// menus & toolbars
-.navbar-fixed-top .container {
-  width: 1125px;
-}
-
-.navbar-fixed-top, .navbar {
-  margin-left: 0 !important;
-  margin-right: none;
-}
-
-.navbar {
-  z-index: 100;
-}
-
-.nav-tabs li a {
-  color: #777;
-  background-color: #CCC;
-  border: 1px solid #888;
-  border-bottom-color: transparent;
-  cursor: default;
-}
-
-nav.font-menu {
-  .gradient(@fileMenuBgStart, @fileMenuBgEnd);
-
-  padding-top: 2px;
-  height: @fontMenuHeight;
-}
-
-nav.font-menu ul li.parent {
-  .horizontal-menu();
-
-  width: 200px;
-  height: 23px;
-}
-
-.dropdown-toggle {
-  padding: 5px 9px;
-}
-
-.dropdown.open .dropdown-toggle {
-  color: white;
-  background-color: transparent;
-  .gradient(@fileMenuOpenBgStart, @fileMenuOpenBgEnd);
-}
-
-.dropdown-menu {
-  .round-corners-bottom();
-  letter-spacing: 0;
-}
-
-.dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover {
-  color: white;
-  text-decoration: none;
-  text-shadow: none;
-  .gradient(@fileMenuOpenBgStart, @fileMenuOpenBgEnd);
-}
-
-// text layer
+// Text layer - temporary
 #text {
   width: 580px;
   height: 430px;
@@ -212,7 +121,28 @@ nav.font-menu ul li.parent {
   left: -22px;
   top: 1px;
 }
+
 .help-inline {
   padding-top: 7px;
   font-style: italic;
+}
+
+// Bootstrap overrides
+.icon-white {
+  background-image: url("/assets/twitter/bootstrap/glyphicons-halflings-white.png") !important;
+}
+
+.icon-black {
+  background-image: url("/assets/twitter/bootstrap/glyphicons-halflings.png") !important;
+}
+
+.progress-animated .bar {
+  background: url(../assets/progressbar.gif) !important;
+  filter: none;
+}
+
+.progress-success {
+  position: relative;
+  bottom: -8px;
+  right: -24px;
 }

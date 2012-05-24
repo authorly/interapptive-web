@@ -1,10 +1,7 @@
 class App.Views.KeyframeIndex extends Backbone.View
   template: JST["app/templates/keyframes/index"]
-  
   tagName: 'ul'
-  
   className: 'keyframe-list'
- 
   events:
     'click .keyframe-list li div': 'clickKeyframe'
     
@@ -14,8 +11,6 @@ class App.Views.KeyframeIndex extends Backbone.View
   render: ->
     $(@el).html('')
     @collection.each (keyframe) => @appendKeyframe(keyframe)
-
-    # TODO: Figure out how to just use setActiveKeyframe() to set the stylings
     $('.keyframe-list li:first div:first').click()
     this
 
@@ -39,6 +34,5 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(event.currentTarget).parent().siblings().removeClass("active")
     $(event.currentTarget).parent().removeClass("active")
     $(event.currentTarget).parent().addClass("active")
-
     keyframe = @collection.get $(event.currentTarget).data("id")
     @setActiveKeyframe keyframe

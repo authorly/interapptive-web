@@ -1,6 +1,5 @@
 class App.Views.Scene extends Backbone.View
   template: JST["app/templates/scenes/scene"]
-  
   tagName: 'li'
 
   render: ->

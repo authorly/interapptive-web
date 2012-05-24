@@ -13,15 +13,23 @@ gem 'carrierwave'
 gem 'fog', '~> 1.3.1'
 gem 'mini_magick'
 gem "param_protected", "~> 4.0.0"
-gem "jasminerice", :group => [:development, :test]
+gem "jquery-fileupload-rails", :git => "git://github.com/whitmanc/jquery-fileupload-rails.git"
 
 group :assets do
   gem 'less-rails'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
+  gem 'haml_coffee_assets'
+  gem 'execjs'
+end
+
+group :development, :test do
+  gem "therubyracer"
+  gem "jasminerice"
 end
 
 group :development do
+  gem "unicorn"
   gem 'pry'
   gem 'pry-rails'
   gem 'haml-rails'

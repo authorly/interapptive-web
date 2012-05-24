@@ -1,0 +1,20 @@
+.modal-header
+  %h3.modal-title
+    %i.icon-book.icon-black.icon-large
+    New or Open Storybook App...    
+#storybooks.modal-body
+  %ul#storybook-list
+.modal-footer
+  %span.btn.btn-success.fileinput-button.new-storybook-btn.left
+    %i.icon-plus.icon-white
+    %span New Storybook App...
+  %form.form-inline.left.storybook-form{:style => "display:none"}
+    %a.close.left{:href => "#"} x
+    %input.input-medium.storybook-title{:name => "storybook-title", :placeholder => "Storybook Title", :type => "text"}
+      %button.btn{:type => "submit"} Create App
+  %a.btn{"data-method" => "post", :href => "/users/sign_out", :rel => "nofollow"}
+    %i.icon-off.icon-black
+    Exit
+  .btn.btn-primary.open-storybook.disabled
+    %i.icon-folder-open.icon-white
+    Open

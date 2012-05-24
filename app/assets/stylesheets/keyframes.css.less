@@ -3,7 +3,8 @@
   margin: 10px 0 0 205px;
 
   li {
-    .round-corners(5px);
+    .round-corners();
+    .opacity(0.84);
 
     display: inline;
     float: left;
@@ -21,6 +22,8 @@
   }
 
   li.active {
+    .opacity(1.0);
+    
     border: 1px solid @slidePreviewActiveBgBegin;
   }
 }

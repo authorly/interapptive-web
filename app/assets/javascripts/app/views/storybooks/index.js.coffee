@@ -1,6 +1,5 @@
 class App.Views.StorybookIndex extends Backbone.View
   template: JST["app/templates/storybooks/index"]
-
   events:
     'click .storybook': 'selectStorybook'
     'click .open-storybook': 'openStorybook'

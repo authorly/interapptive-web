@@ -1,0 +1,25 @@
+- for file in @files
+  %tr.template-download.fade
+    - if file.error
+      %td.name
+        %span file.name
+      %td.size
+        %span @formatFileSize(file.size)
+      %td.error{:colspan => "5"}
+        %span.label.label-important @locale.fileupload.error
+          = file.error
+    - else
+      %td.preview
+        - if file.thumbnail_url
+          %a{:download => "#{file.name}", :href => "#{file.url}", :rel => "gallery", :title => "#{file.name}"}
+            %img{:src => "#{file.thumbnail_url}"}
+      %td.name
+        %a{:download => "#{file.name}", :href => "#{file.url}", :rel => "#{file.thumbnail_url}", :title => "#{file.name}"}
+          = file.name
+      %td.size= @formatFileSize(file.size)
+      %td{:colspan => "7"}
+      %td.delete
+        %button.btn.btn-danger{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}"}
+          %i.icon-trash.icon-white
+          %span= locale.fileupload.destroy
+        %input{:name => "delete", :type => "checkbox", :value => "1"}

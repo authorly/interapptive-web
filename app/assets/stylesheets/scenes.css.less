@@ -7,6 +7,8 @@
   background-position: 30px center;
 
   li {
+    .round-corners();
+
     width: @slidePreviewWidth;
     padding: @slidePreviewPadding;
     height: @slidePreviewHeight;
@@ -16,8 +18,6 @@
     z-index: 10 !important;
     position: relative;
     top: 127px;
-
-    .round-corners();
   }
 
   li.first {
@@ -26,6 +26,7 @@
 
   li.active {
     .gradient(@slidePreviewActiveBgBegin, @slidePreviewActiveBgEnd);
+
     span span.number {
       margin: 37px 81px 0 0;
       border-color: transparent;
@@ -61,14 +62,6 @@
     float: right;
     width: 29px;
     height: 29px;
-
-    /*
-    Circles around the numbers
-
-    margin: 5px 5px;
-    border: 7px solid #333;
-    */
-
     margin: 5px 5px;
     color: #333;
     text-align: center;

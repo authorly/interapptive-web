@@ -3,6 +3,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .add-scene': 'addScene'
     'click .add-keyframe': 'addKeyframe'
     'click .edit-text': 'editText'
+    'click .images': 'showImageLibModal'
 
   render: ->
     $el = $(this.el)
@@ -15,3 +16,6 @@ class App.Views.ToolbarView extends Backbone.View
 
   editText: ->
     $("#text").focus() unless $('.edit-text').hasClass('disabled')
+
+  showImageLibModal: ->
+    $("#image-upload-modal").modal "show"
