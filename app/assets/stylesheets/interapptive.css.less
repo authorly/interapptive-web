@@ -12,10 +12,13 @@
 @import 'keyframes.css.less';
 @import 'modals.css.less';
 
-// Application-wide styles
 html, body{
   background-color: @grayDarker;
   background: asset-url('grid.png') repeat;
+}
+
+#main {
+  border: none;
 }
 
 .content {
@@ -28,21 +31,14 @@ html, body{
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
   -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
   box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
-}
-
-.container {
-  background-color: transparent !important;
-}
-
-.content {
   background-color: transparent;
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
 }
 
-#main {
-  border: none;
+.container {
+  background-color: transparent !important;
 }
 
 .span10 {
@@ -72,7 +68,27 @@ footer {
   background-position: center center;
 }
 
-// Sidebar & tabs
+// File menu and toolbar
+header {
+  nav.font-menu {
+    .gradient(@fileMenuBgStart, @fileMenuBgEnd);
+
+    padding-top: 2px;
+    height: @fontMenuHeight;
+  }
+  
+  .navbar-fixed-top .container {
+    width: 1125px;
+  }
+
+  .navbar-fixed-top, .navbar {
+    margin-left: 0 !important;
+    margin-right: none;
+      z-index: 100;
+  }
+}
+
+// Sidebar
 .sidebar {
   .drop-shadow(1px, 0, 13px, #666);
 
@@ -86,41 +102,11 @@ footer {
   margin-left: 0;
   margin-top: 0;
   height: 100%;
-  width: 200px;
+  width: 214px;
   z-index: 20 !important;
 }
 
-// menus & toolbars
-.navbar-fixed-top .container {
-  width: 1125px;
-}
-
-.navbar-fixed-top, .navbar {
-  margin-left: 0 !important;
-  margin-right: none;
-}
-
-.navbar {
-  z-index: 100;
-}
-
-.nav-tabs li a {
-  color: #777;
-  background-color: #CCC;
-  border: 1px solid #888;
-  border-bottom-color: transparent;
-  cursor: default;
-}
-
-nav.font-menu {
-  .gradient(@fileMenuBgStart, @fileMenuBgEnd);
-
-  padding-top: 2px;
-  height: @fontMenuHeight;
-}
-
-
-// text layer - temporary
+// Text layer - temporary
 #text {
   width: 580px;
   height: 430px;
@@ -135,6 +121,7 @@ nav.font-menu {
   left: -22px;
   top: 1px;
 }
+
 .help-inline {
   padding-top: 7px;
   font-style: italic;
@@ -144,6 +131,7 @@ nav.font-menu {
 .icon-white {
   background-image: url("/assets/twitter/bootstrap/glyphicons-halflings-white.png") !important;
 }
+
 .icon-black {
   background-image: url("/assets/twitter/bootstrap/glyphicons-halflings.png") !important;
 }
@@ -151,4 +139,10 @@ nav.font-menu {
 .progress-animated .bar {
   background: url(../assets/progressbar.gif) !important;
   filter: none;
+}
+
+.progress-success {
+  position: relative;
+  bottom: -8px;
+  right: -24px;
 }

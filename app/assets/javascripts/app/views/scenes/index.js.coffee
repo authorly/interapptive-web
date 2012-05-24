@@ -16,7 +16,8 @@ class App.Views.SceneIndex extends Backbone.View
       
     # TODO: Figure out how to just use setActiveScene() to set the stylings
     $('.scene-list li:first span:first').click()
-    return this
+
+    this
 
   createScene: =>
     scene = new App.Models.Scene
@@ -26,40 +27,23 @@ class App.Views.SceneIndex extends Backbone.View
         @collection.add scene
         App.currentScene(scene)
         this.setActiveScene scene
-
     return scene
 
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
     $('.scene-list').append(view.render().el)
-    pageNumber = scene.get('page_number')
-    numberHolder = $(view.el).find('span span span')
-    
-    numberHolder.html pageNumber
-    
-    # Different styles (font-sizes, placement) for different brackets (0-9,10-19,20-29, etc.)
-    if pageNumber > 9
-      numberHolder.removeClass "inner-single-digit"
-      numberHolder.addClass "inner"
-    else
-      numberHolder.removeClass "inner"
-      numberHolder.addClass "inner-single-digit"
 
   setActiveScene: (scene) ->
     App.currentScene scene
-    
-    # Prepare and render correlating keyframe list for clicked scene
-    App.keyframeList().collection.scene_id = scene.get('id')
+    App.keyframeList().collection.scene_id = scene.get "id"
     App.keyframeList().collection.fetch()
-    $('#keyframe-list').html("")
+    $('#keyframe-list').html ""
     $('#keyframe-list').html(App.keyframeList().el)
-    $('nav.toolbar ul li ul li').removeClass('disabled')
+    $('nav.toolbar ul li ul li').removeClass "disabled"
 
   clickScene: (event) ->
-    $(event.currentTarget).parent().siblings().removeClass("active")
-    $(event.currentTarget).parent().removeClass("active")
-    $(event.currentTarget).parent().addClass("active")
-
-    # Get out scene ID data attribute (this is the actual DB-ID)
-    scene = @collection.get $(event.currentTarget).data("id")
-    this.setActiveScene scene
+    sceneEl = $(event.currentTarget).parent()
+    sceneEl.siblings().removeClass "active"
+    sceneEl.removeClass "active"
+    sceneEl.addClass "active"
+    this.setActiveScene @collection.get($(event.currentTarget).data("id"))

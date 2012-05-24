@@ -1,11 +1,9 @@
-// Bootstrap icon sprite sheets
 @iconSpritePath:      asset-path('twitter/bootstrap/glyphicons-halflings.png');
 @iconWhiteSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings-white.png');
 
-// General
 @appHeight: 570px;
 
-// Top toolbars (file menu, main toolbar)
+// File menu, toolbar
 @fileMenuBgStart:      #d7dae1;
 @fileMenuBgEnd:        #a7a9ae;
 @fileMenuHeight:       23px;
@@ -36,10 +34,19 @@
 @assetUploaderModalWidth:  830px;
 @assetUploaderModalHeight: 500px;
 
+
+
 .gradient (@start: #333, @end: #222) {
   background-image: -webkit-linear-gradient(top, @start, @end);
   background-image: -o-linear-gradient(top, @start, @end);
   background-image: linear-gradient(top, @start, @end);
+}
+
+.opacity(@opacity: 0.5) {
+  -moz-opacity: @opacity;
+  -khtml-opacity: @opacity;
+  -webkit-opacity: @opacity;
+  opacity: @opacity;
 }
 
 .round-corners(@radius: 5px) {

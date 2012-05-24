@@ -1,21 +1,25 @@
-.modal{
+.modal {
   width: 920px;
   margin-left: -460px;
 
   h3 {
-    font-size: 14px;
+    font-size: 16px;
   }
-}
-
-.modal .modal-footer form {
-  position: relative;
-  top: 8px;
+  
+  .modal-footer form {
+    position: relative;
+    top: 8px;
+  }
 }
 
 .content-modal {
   width:  @appSettingsModalWidth;
   height: @appSettingsModalHeight;
   margin-left:-(@appSettingsModalWidth/2);
+  
+  fieldset {
+    margin: 30px 0 0 80px;
+  }
 
   .form-actions {
     .round-corners-bottom();
@@ -27,15 +31,10 @@
     text-align: right;
     margin: 0;
   }
-
-  fieldset {
-    margin: 30px 0 0 80px;
-  }
 }
 
 #image-upload-modal {
   width:  @assetUploaderModalWidth;
-  height: @assetUploaderModalHeight;
   margin-left:-(@assetUploaderModalWidth/2);
   position: absolute !important;
   top: 300px !important;
@@ -43,34 +42,52 @@
   form {
     margin: 0;
     padding: 0;
-    height:  355px;
+    height:  365px;
   }
 
   .modal-body {
     min-height: 355px;
   }
 
+  .fileupload-buttonbar {
+    margin-top: 4px;
+    margin-bottom: 14px;
+  }
+  
+  .table {
+    margin-top: 9px;
+  }
+   
+  td {
+    vertical-align: middle;
+  }
+  
   td.delete {
     text-align: right;
   }
-
-}
-
-.template-upload  table, .template-download table {
-  width: 780px;
-}
-
-.template-upload td.cancel, .template-download td.cancel {
-  text-align: right;
-  padding-right: 26px;
-}
-
-.template-upload td.start, .template-download td.start {
-  text-align: right;
-  padding-right: 0;
-
-  button {
+  
+  td.cancel {
+    padding-right: 26px !important;
+    text-align: right;
+  }
+  
+  td.start button {
     position: relative;
-    right: -26px
+    right: -35px !important;
+  }
+  
+  td.preview, td.name {
+    width: 115px;
+  }
+  
+  td.preview {
+    text-align: center;
+  }
+  
+  .template-upload, .template-download {
+    table {
+      width: 750px;
+    }
   }
 }
+

@@ -405,12 +405,12 @@
 
 
         /**
-         * Sets the templates to be used.
+         * Sets the form-templates to be used.
          *
-         * If the templates passed in are strings, they will be compiled, expecting Mustache style tags,
+         * If the form-templates passed in are strings, they will be compiled, expecting Mustache style tags,
          * i.e. <div>{{varName}}</div>
          *
-         * You can also pass in previously compiled Underscore templates, in which case you can use any style
+         * You can also pass in previously compiled Underscore form-templates, in which case you can use any style
          * tags.
          *
          * @param {Object} templates
@@ -422,7 +422,7 @@
             Form.templates = Form.templates || {};
             Form.classNames = Form.classNames || {};
 
-            //Set templates, compiling them if necessary
+            //Set form-templates, compiling them if necessary
             _.each(templates, function(template, key, index) {
                 if (_.isString(template)) template = createTemplate(template);
 
@@ -1517,7 +1517,7 @@
     Form.setTemplates = Form.helpers.setTemplates;
     Form.setTemplateCompiler = Form.helpers.setTemplateCompiler;
 
-    //Make default templates active
+    //Make default form-templates active
     Form.setTemplates(defaultTemplates, defaultClassNames);
 
 

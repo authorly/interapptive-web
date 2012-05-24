@@ -7,94 +7,71 @@ window.App =
   init: ->
     scenesCollection = new App.Collections.ScenesCollection []
     keyframesCollection = new App.Collections.KeyframesCollection []
-    @storybooksRouter = new App.Routers.StorybooksRouter
 
-    # Initialize views
-    @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
-    @toolbar = new App.Views.ToolbarView el: $('#toolbar')
-    @contentModal = new App.Views.Modal className: "content-modal"
     @sceneList(new App.Views.SceneIndex collection: scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: keyframesCollection)
 
+    @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
+    @toolbar = new App.Views.ToolbarView el: $('#toolbar')
+    @contentModal = new App.Views.Modal className: "content-modal"
+    @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
-  modalWithView: (modalView) ->
-    if modalView
-      @modalView = new App.Views.Modal modalView, className: "content-modal"
-    else
-      return @modalView
+  modalWithView: (view) ->
+    if view then @view = new App.Views.Modal(view, className: "content-modal") else @view
 
   currentUser: (user) ->
-    if user
-      @user = new App.Models.User(user)
-    else
-      return @user
+    if user then @user = new App.Models.User(user) else @user
 
   currentStorybook: (storybook) ->
-    if storybook
-      @storybook = storybook
-    else
-      return @storybook
+    if storybook then @storybook = storybook else @storybook
 
   currentScene: (scene) ->
-    if scene
-      @scene = scene
-    else
-      return @scene
+    if scene then @scene = scene else @scene
 
   currentKeyframe: (keyframe) ->
-    if keyframe
-      @keyframe = keyframe
-    else
-      return @keyframe
+    if keyframe then @keyframe = keyframe else @keyframe
 
   sceneList: (list) ->
-    if list
-      @sceneListView = list
-    else
-      return @sceneListView
+    if list then @sceneListView = list else @sceneListView
 
   keyframeList: (list) ->
-    if list
-      @keyframeListView = list
-    else
-      return @keyframeListView
+    if list then @keyframeListView = list else @keyframeListView
+
 
 $ ->
-  # Backbone.js initialization
   App.init()
 
   $("#image-upload-modal, .content-modal").modal(backdrop: true).modal "hide"
   $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
 
-  modals = $("#modal") # Toolbar modals
-  modals.modal(backdrop: true).modal "hide"
-
-  modals.bind "hidden", ->
+  toolbar_modal = $("#modal")
+  toolbar_modal.modal(backdrop: true).modal "hide"
+  toolbar_modal.bind "hidden", ->
     $("ul#toolbar li ul li").removeClass "active"
 
   $("ul#toolbar li ul li").click ->
-    modals.modal "hide"
-
+    toolbar_modal.modal "hide"
     unless $(this).is('.scene, .keyframe, .edit-text, .disabled, .images')
-      modals.modal "show"
+      toolbar_modal.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"
 
-  # Resize drag-to-scroll container according to window height
   $(window).load ->
     $("#scene-list").css height: ($(window).height()) + "px"
+
   $(window).resize ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
 
-  # TODO: Move asset upload logic to a backbone view
-  $("#fileupload").fileupload()
+  $("#fileupload").fileupload
+    downloadTemplate: JST["app/templates/images/download"]
+    uploadTemplate: JST["app/templates/images/upload"]
+
   $.getJSON $("#fileupload").prop("action"), (files) ->
-    fu = $("#fileupload").data("fileupload")
-    template = undefined
-    fu._adjustMaxNumberOfFiles -files.length
-    template = fu._renderDownload(files).prependTo($("#fileupload .files"))
-    fu._reflow = fu._transition and template.length and template[0].offsetWidth
+    fileData = $("#fileupload").data("fileupload")
+    fileData._adjustMaxNumberOfFiles -files.length
+    template = fileData._renderDownload(files).prependTo($("#fileupload .files"))
+    fileData._reflow = fileData._transition and template.length and template[0].offsetWidth
     template.addClass "in"
     $("#loading").remove()
