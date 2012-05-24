@@ -31,6 +31,7 @@ var cc = cc = cc || {};
 
  The reason for implement as private inheritance is to hide some interface call by CCDirector.
  */
+
 cc.AppDelegate = cc.Application.extend({
     ctor:function () {
         this._super();

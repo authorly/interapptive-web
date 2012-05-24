@@ -5,10 +5,6 @@
 
  http://www.cocos2d-x.org
 
- Created by JetBrains WebStorm.
- User: wuhao
- Date: 12-3-8
-
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
@@ -28,80 +24,145 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-var cc = cc = cc || {};
-//Cocos2d directory
-cc.Dir = '../cocos2d/';//in relate to the html file or use absolute
-cc.loadQue = [];//the load que which js files are loaded
-cc.COCOS2D_DEBUG = 2;
-cc._DEBUG = 1;
-cc._IS_RETINA_DISPLAY_SUPPORTED = 0;
-//html5 selector method
-cc.$ = function (x) {
-    return document.querySelector(x);
-};
-cc.$new = function (x) {
-    return document.createElement(x);
-};
+var CircleSprite = cc.Sprite.extend({
+    _radians:0,
+    ctor:function(){
+        this._super();
+    },
+    draw:function () {
+        cc.renderContext.fillStyle = "rgba(255,255,255,1)";
+        cc.renderContext.strokeStyle = "rgba(255,255,255,1)";
 
-cc.loadjs = function (filename) {
-    //add the file to the que
-    var script = cc.$new('script');
-    script.src = filename[0] == '/' ? filename : cc.Dir + filename;
-    script.order = cc.loadQue.length;
-    cc.loadQue.push(script);
+        if (this._radians < 0)
+            this._radians = 360;
+        cc.drawingUtil.drawCircle(cc.PointZero(), 30, cc.DEGREES_TO_RADIANS(this._radians), 60, true);
+    },
+    myUpdate:function (dt) {
+        this._radians -= 6;
+        //this._addDirtyRegionToDirector(this.boundingBoxToWorld());
+    }
+});
 
 
-    script.onload = function () {
-        // Monkey patch to fix bugs in cocos2d-html5
-        cc.setupHTML = function(a){
-          var b = cc.canvas;
-          b.style.zIndex = 0;
-          var c = cc.$new("div");
-          c.id = "Cocos2dGameContainer";
-          c.style.overflow = "hidden";
-          c.style.height = b.clientHeight + "px";
-          c.style.width = b.clientWidth + "px";
-          a && c.setAttribute("fheight", a.getContentSize().height);
-          a = cc.$new("div");
-          a.id = "domlayers";
-          c.appendChild(a);
-          b.parentNode.insertBefore(c, b);
-          c.appendChild(b);
+var Helloworld = cc.Layer.extend({
+    bIsMouseDown:false,
+    helloImg:null,
+    helloLb:null,
+    circle:null,
+    pSprite:null,
 
-          return a
-        };
-
-
-        //file have finished loading,
-        //if there is more file to load, we should put the next file on the head
-        if (this.order + 1 < cc.loadQue.length) {
-            cc.$('head').appendChild(cc.loadQue[this.order + 1]);
-            //console.log(this.order);
+    init:function () {
+        var selfPointer = this;
+        //////////////////////////////
+        // 1. super init first
+        var test = this._super();
+        cc.LOG(test);
+        if (!test) {
+            return false;
         }
-        else {
-            cc.setup("simulator-canvas");
-            //we are ready to run the game
-            cc.Loader.shareLoader().onloading = function () {
-                cc.LoaderScene.shareLoaderScene().draw();
-            };
-            cc.Loader.shareLoader().onload = function () {
-                cc.AppController.shareAppController().didFinishLaunchingWithOptions();
-            };
-            //preload ressources
-            cc.Loader.shareLoader().preload([
-                {type:"image", src:"/HelloWorld/Resources/HelloWorld.png"},
-                {type:"image", src:"/HelloWorld/Resources/grossini_dance_07.png"},
-                {type:"image", src:"/HelloWorld/Resources/cocos64.png"}
-            ]);
+
+        /////////////////////////////
+        // 2. add a menu item with "X" image, which is clicked to quit the program
+        //    you may modify it.
+
+        // add a "close" icon to exit the progress. it's an autorelease object
+        var pCloseItem = cc.MenuItemImage.itemFromNormalImage(
+            "/assets/simulator/CloseNormal.png",
+            "/assets/simulator/CloseSelected.png",
+            this,
+            function () {
+                history.go(-1);
+            });
+        pCloseItem.setPosition(cc.canvas.width - 20, 20);
+        var pMenu = cc.Menu.menuWithItems(pCloseItem, null);
+        //pMenu.setPosition( cc.PointZero() );
+        //this.addChild(pMenu, 1);
+
+
+        /////////////////////////////
+        // 3. add your codes below...
+        // ask director the window size
+        var size = cc.Director.sharedDirector().getWinSize();
+
+        // add a label shows "Hello World"
+        // create and initialize a label
+        this.helloLb = cc.LabelTTF.labelWithString("Hello World", "Arial", 24);
+        // position the label on the center of the screen
+        this.helloLb.setPosition(cc.ccp(cc.Director.sharedDirector().getWinSize().width / 2, 0));
+        // add the label as a child to this layer
+        this.addChild(this.helloLb, 5);
+
+        // add "HelloWorld" splash screen"
+        this.pSprite = cc.Sprite.spriteWithFile("/assets/simulator/HelloWorld.png");
+        this.pSprite.setPosition(cc.ccp(cc.Director.sharedDirector().getWinSize().width / 2, cc.Director.sharedDirector().getWinSize().height / 2));
+        this.pSprite.setIsVisible(true);
+        this.pSprite.setAnchorPoint(cc.ccp(0.5, 0.5));
+        this.pSprite.setScale(0.5);
+        this.pSprite.setRotation(180);
+        this.addChild(this.pSprite, 0);
+
+
+        var rotateToA = cc.RotateTo.actionWithDuration(2, 0);
+        var scaleToA = cc.ScaleTo.actionWithDuration(2, 1, 1);
+
+        this.pSprite.runAction(cc.Sequence.actions(rotateToA, scaleToA));
+
+        this.circle = new CircleSprite();
+        this.circle.setPosition(new cc.Point(40, 280));
+        this.addChild(this.circle, 2);
+        this.circle.schedule(this.circle.myUpdate, 1 / 60);
+
+        this.helloLb.runAction(cc.MoveBy.actionWithDuration(2.5, cc.ccp(0, 280)));
+
+        this.setIsTouchEnabled(true);
+
+        return true;
+    },
+
+    // a selector callback
+    menuCloseCallback:function (pSender) {
+        cc.Director.sharedDirector().end();
+    },
+    ccTouchesBegan:function (pTouches, pEvent) {
+        this.bIsMouseDown = true;
+    },
+    ccTouchesMoved:function (pTouches, pEvent) {
+        if (this.bIsMouseDown) {
+            if (pTouches) {
+                this.circle.setPosition(new cc.Point(pTouches[0].locationInView(0).x, pTouches[0].locationInView(0).y));
+            }
         }
-    };
-    if (script.order === 0)//if the first file to load, then we put it on the head
-    {
-        cc.$('head').appendChild(script);
+    },
+    ccTouchesEnded:function (pTouches, pEvent) {
+        this.bIsMouseDown = false;
+    },
+    ccTouchesCancelled:function (pTouches, pEvent) {
+        console.log("ccTouchesCancelled");
+    }
+});
+
+Helloworld.scene = function () {
+    // 'scene' is an autorelease object
+    var scene = cc.Scene.node();
+
+    // 'layer' is an autorelease object
+    var layer = this.node();
+    scene.addChild(layer);
+    return scene;
+};
+// implement the "static node()" method manually
+Helloworld.node = function () {
+    var pRet = new Helloworld();
+
+    // Init the helloworld display layer.
+    if (pRet && pRet.init()) {
+        return pRet;
+    }
+    else {
+        pRet = null;
+        return null;
     }
 };
 
-cc.loadjs('/javascripts/cocos2d-html5/HelloWorld/cocos2dhtml5.js');
-cc.loadjs('/javascripts/cocos2d-html5/CocosDenshion/SimpleAudioEngine.js');
-cc.loadjs('/HelloWorld/Classes/AppDelegate.js');//17
-cc.loadjs('/HelloWorld/Helloworld.js');//19
+
+
