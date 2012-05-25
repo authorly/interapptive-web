@@ -15,7 +15,7 @@ class App.Models.Storybook extends Backbone.Model
         type:           "Text"
         validators:    ["required"]
       description:
-        title:         "Decription"
+        title:         "Description"
         type:           "Text"
         validators:    ["required"]
       published_on:
