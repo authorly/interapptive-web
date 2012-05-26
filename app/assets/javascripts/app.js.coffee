@@ -65,7 +65,7 @@ $ ->
     $(".scene-list").css height: ($(window).height()) + "px"
 
   $("#fileupload").fileupload
-    downloadTemplateIdeId: null
+    downloadTemplateId: null
     uploadTemplateId: null
     downloadTemplate: JST["app/templates/images/download"]
     uploadTemplate: JST["app/templates/images/upload"]
