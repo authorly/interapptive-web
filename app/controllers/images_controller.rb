@@ -7,24 +7,10 @@ class ImagesController < ApplicationController
   end
 
   def create
-    attr = params[:image]
-    attr[:image] = params[:image][:image].first if params[:image][:image].class == Array
+    @images = params[:image][:files].map { |f| Image.create(:image => f) }
 
-    @image = Image.new(attr)
-
-    if @image.save
-      respond_to do |format|
-        format.html {
-          render :json => [@image.as_jquery_upload_response].to_json,
-                 :content_type => 'text/html',
-                 :layout => false
-        }
-        format.json {
-          render :json => [@image.as_jquery_upload_response].to_json
-        }
-      end
-    else
-      render :json => [{:error => "custom_failure"}], :status => 304
+    respond_to do |format|
+      format.json { render :json => @images.map(&:as_jquery_upload_response).to_json }
     end
   end
 
