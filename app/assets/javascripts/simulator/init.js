@@ -43,8 +43,10 @@ cc.$new = function (x) {
     return document.createElement(x);
 };
 cc.Log = cc.LOG = console.log.bind(console)
+cc.TransitionScene = function () {
+};
 
-$(function () {
+window.runSimulator = function () {
   // Monkey patch to fix bugs in cocos2d-html5
   cc.setupHTML = function(a){
     var b = cc.canvas;
@@ -79,4 +81,5 @@ $(function () {
       {type:"image", src:"/assets/simulator/grossini_dance_07.png"},
       {type:"image", src:"/assets/simulator/cocos64.png"}
   ]);
-})
+}
+

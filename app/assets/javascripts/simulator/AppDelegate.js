@@ -1,3 +1,11 @@
+// Namespace for simulator classes
+window.Sim = {
+  main: function () {
+    var json = document.getElementById('json-data').value
+    storybook = new Sim.Storybook(json)
+  }
+}
+
 /****************************************************************************
  Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2008-2010 Ricardo Quesada
@@ -64,10 +72,19 @@ cc.AppDelegate = cc.Application.extend({
         pDirector.setAnimationInterval(1.0 / 60);
 
         // create a scene. it's an autorelease object
-        var pScene = Helloworld.scene();
+        var pScene = new cc.Scene()
+
+        var label = cc.LabelTTF.labelWithString("Simulator ready", "Arial", 24)
+        label.setColor(new cc.Color3B(255, 0, 0))
+        var s = pDirector.getWinSize()
+        label.setPosition(new cc.Point(s.width / 2, s.height / 2))
+
+        pScene.addChild(label)
 
         // run
         pDirector.runWithScene(pScene);
+
+        Sim.main()
 
         return true;
     },

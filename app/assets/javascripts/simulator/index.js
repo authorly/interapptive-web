@@ -12,5 +12,4 @@
 //
 //= require ../libs/cocos2dhtml5.js
 //= require ../libs/SimpleAudioEngine.js
-//= require ./init
 //= require_tree ./
