@@ -1,11 +1,10 @@
-- i = 0
-- for file in @files
+- for file, index in @files
   %tr.template-upload.fade
     %td.preview
       %span.fade
-        %td.name #{@files[i].name}
+        %td.name #{file.name}
     %td.size
-      %span 
+      %span
         = @formatFileSize(file.size)
     - if file.error
       %td
@@ -13,10 +12,10 @@
         span.label.label-important
         = locale.fileupload.error
         = file.error
-    - else if @files.valid and !i
+    - else if @files.valid and not index
       %td
         .progress.progress-success.progress-striped.active
-        .bar{:style => "width:0%;"}  
+        .bar{:style => "width:0%;"}
       %td.start{:colspan => "4"}
         %button.btn.btn-primary
           %i.icon-upload.icon-white
@@ -24,12 +23,7 @@
     - else
       %td{:colspan => "3"}
     %td.cancel{:colspan => "3"}
-      - if !i
+      - if not index
         %button.btn.btn-warning
-          %i.icon-ban-circle.icon-white
-          %span= locale.fileupload.cancel
-
-  if i = @files.length
-    i = null
-
-  i++
+        %i.icon-ban-circle.icon-white
+        %span= locale.fileupload.cancel
