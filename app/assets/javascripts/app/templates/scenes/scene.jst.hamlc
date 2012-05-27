@@ -1,3 +1,4 @@
 %span.scene-frame{"data-id" => "#{@scene.get('id')}"}
   %span.number
     %span.inner-single-digit
+      = @scene.get('page_number')
