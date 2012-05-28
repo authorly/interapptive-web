@@ -13,16 +13,17 @@ class Sim.PageLayer extends cc.Scene
     @createMainMenuItem()
 
   createMainMenuItem: ->
-    menuItem = new cocos.nodes.MenuItemImage(
-      normalImage: "/resources/#{@storybook.config.homeButtonNormalStateImage}"
-      selectedImage: "/resources/#{@storybook.config.homeButtonTappedStateImage}"
-      callback: @storybook.showMainMenu.bind(@storybook)
+    menuItem = cc.MenuItemImage.itemFromNormalImage(
+      "/resources/#{@storybook.config.homeButtonNormalStateImage}"
+      "/resources/#{@storybook.config.homeButtonTappedStateImage}"
+      @storybook
+      'showMainMenu'
     )
 
-    menuItem.position = @storybook.config.homeButtonPosition
+    menuItem.setPosition(@storybook.config.homeButtonPosition)
 
-    mainMenu = @mainMenu = new cocos.nodes.Menu(items: [ menuItem ])
-    mainMenu.position = new cc.Point(0, 0)
+    mainMenu = @mainMenu = new cc.Menu(items: [ menuItem ])
+    mainMenu.setPosition(new cc.Point(0, 0))
 
     @addChild(mainMenu)
 
@@ -37,13 +38,10 @@ class Sim.PageLayer extends cc.Scene
       #unless path.exists(spriteFile)
       #  throw new Error("Unable to find Sprite file: " + spriteFile)
 
-      sprite = new cc.Sprite(file: spriteFile)
-      sprite.position = spriteInfo.position
+      sprite = cc.Sprite.spriteWithFile(spriteFile)
+      sprite.setPosition(spriteInfo.position)
 
-      @addChild(
-        child: sprite
-        tag: spriteInfo.spriteTag
-      )
+      @addChild(sprite, 1, spriteInfo.spriteTag)
 
   createParagraphs: ->
     @page.paragraphs.forEach (paragraphInfo) =>
@@ -74,7 +72,7 @@ class Sim.PageLayer extends cc.Scene
     menu = @touchNodeMenu = new cc.Menu(items: items)
     menu.setPosition(new cc.Point(0, 0))
 
-    @addChild(child: menu, z: 1)
+    @addChild(menu, 1)
 
   onEnter: ->
     super
