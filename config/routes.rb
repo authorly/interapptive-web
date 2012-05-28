@@ -22,7 +22,10 @@ Interapptive::Application.routes.draw do
   resources :sounds
   resources :fonts
 
-  resources :actions
+  resources :actions do
+    resources :attributes
+  end
+  
   resources :touch_zones
 
   resources :storybooks do

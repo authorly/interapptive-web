@@ -11,23 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120516232236) do
+ActiveRecord::Schema.define(:version => 20120527203327) do
 
-  create_table "action_groups", :force => true do |t|
-    t.integer  "action_id"
-    t.integer  "scene_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "action_groups", ["action_id", "scene_id"], :name => "index_action_groups_on_action_id_and_scene_id", :unique => true
-
-  create_table "actions", :force => true do |t|
+  create_table "action_definitions", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
+
+  create_table "actions", :force => true do |t|
+    t.integer "scene_id"
+    t.integer "action_definition_id"
+    t.string  "name"
+  end
+
+  add_index "actions", ["action_definition_id"], :name => "index_actions_on_action_definition_id"
+  add_index "actions", ["scene_id"], :name => "index_actions_on_scene_id"
 
   create_table "asset_maps", :force => true do |t|
     t.integer "asset_id"
@@ -51,15 +51,24 @@ ActiveRecord::Schema.define(:version => 20120516232236) do
 
   add_index "assets", ["type"], :name => "index_assets_on_type"
 
-  create_table "attributes", :force => true do |t|
-    t.integer  "action_id"
+  create_table "attribute_definitions", :force => true do |t|
+    t.integer  "action_definition_id"
     t.string   "type"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.string   "name"
   end
 
-  add_index "attributes", ["action_id"], :name => "index_attributes_on_action_id"
+  add_index "attribute_definitions", ["action_definition_id"], :name => "index_attributes_on_action_id"
+
+  create_table "attributes", :force => true do |t|
+    t.integer "attribute_definition_id"
+    t.integer "keyframe_id"
+    t.string  "value"
+  end
+
+  add_index "attributes", ["attribute_definition_id"], :name => "index_attributes_on_attribute_definition_id"
+  add_index "attributes", ["keyframe_id"], :name => "index_attributes_on_keyframe_id"
 
   create_table "keyframe_texts", :force => true do |t|
     t.integer  "keyframe_id"
