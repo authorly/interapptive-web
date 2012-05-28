@@ -8,7 +8,6 @@ class RenameActionsAndAttributesToDefinitions < ActiveRecord::Migration
     create_table :actions do |t|
       t.references :scene
       t.references :action_definition
-      t.string     :name
     end
 
     add_index :actions, :scene_id
