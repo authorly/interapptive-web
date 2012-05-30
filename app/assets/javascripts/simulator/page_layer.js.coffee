@@ -22,7 +22,9 @@ class Sim.PageLayer extends cc.Scene
 
     menuItem.setPosition(@storybook.config.homeButtonPosition)
 
-    mainMenu = @mainMenu = new cc.Menu(items: [ menuItem ])
+    mainMenu = @mainMenu = new cc.Menu
+    mainMenu.initWithItems([menuItem])
+
     mainMenu.setPosition(new cc.Point(0, 0))
 
     @addChild(mainMenu)
