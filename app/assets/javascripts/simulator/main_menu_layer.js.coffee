@@ -40,3 +40,14 @@ class Sim.MainMenuLayer extends Sim.PageLayer
     menu.setPosition(new cc.Point(0, 0))
 
     @addChild(menu, 1)
+
+  autoPlay: ->
+    @storyMode = Sim.kStoryModeAutoPlay
+
+  readItMyself: ->
+    @storyMode = Sim.kStoryModeReadItMyself
+    @storybook.showPage(1)
+
+  readToMe: ->
+    @storyMode = Sim.kStoryModeReadToMe
+    @storybook.showPage(1)
