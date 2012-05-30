@@ -16,8 +16,7 @@ class Sim.MainMenuLayer extends Sim.PageLayer
 
     items = []
     i = 0
-    @page.menuItems.forEach (menuItemInfo) ->
-
+    @page.menuItems.forEach (menuItemInfo) =>
       if typeof this[menuItemInfo.storyMode] is "function"
         menuItem = cc.MenuItemImage.itemFromNormalImage(
           "/resources/#{menuItemInfo.normalStateImage}"
