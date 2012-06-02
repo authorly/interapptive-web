@@ -82,25 +82,28 @@ class Sim.PageLayer extends cc.Scene
 
   addParagraph: (paragraph) ->
     @paragraphs.push(paragraph)
-    paragraph.setVisible(true)
+    paragraph.setIsVisible(true)
 
-    @addChild(paragraph)
+    @addChild(paragraph, 100)
 
 
   showParagraph: (index) ->
     return if @_busyWithAction
 
     show = =>
+      i = 0
       @paragraphs.forEach (p) =>
-        p.visible = (i is index)
-        if p.visible and @storybook.mainMenuLayer.storyMode is Sim.kStoryModeReadToMe
+        p.setIsVisible((i is index))
+        if p.getIsVisible() and @storybook.mainMenuLayer.storyMode is Sim.kStoryModeReadToMe
           p.startHighlight()
         else
           p.stopHighlight()
 
+        i++
+
     hide = =>
       @paragraphs.forEach (p) =>
-        p.visible = false
+        p.setIsVisible(false)
         p.stopHighlight()
 
 

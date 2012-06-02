@@ -110,9 +110,17 @@ class Sim.Storybook
     page.settings = pageElement.settings
 
     rgb = page.settings.fontColor
-    page.settings.fontColor = 'rgb(' + rgb.join(',') + ')'
+    page.settings.fontColor = new cc.Color3B()
+    page.settings.fontColor = rgb[0]
+    page.settings.fontColor = rgb[1]
+    page.settings.fontColor = rgb[2]
+
     rgb = page.settings.fontHighlightColor
-    page.settings.fontHighlightColor = 'rgb(' + rgb.join(',') + ')'
+    page.settings.fontHighlightColor = new cc.Color3B()
+    page.settings.fontHighlightColor = rgb[0]
+    page.settings.fontHighlightColor = rgb[1]
+    page.settings.fontHighlightColor = rgb[2]
+
     page.settings.fontType = page.settings.fontType.split('.')[0]
 
 
