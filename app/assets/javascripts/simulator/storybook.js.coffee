@@ -57,7 +57,7 @@ class Sim.Storybook
 
         # Sprite actions
         if sprite.actions
-          sprite.actions.forEach (action) ->
+          for action in sprite.actions
             spriteInfo.actions.push(action)
 
         page.sprites.push(spriteInfo)
@@ -175,29 +175,43 @@ class Sim.Storybook
 
         # Sprite actions
         if sprite.actions
-          sprite.actions.forEach (action) ->
-            spriteInfo.actions.push action
+          for action in sprite.actions
+            spriteInfo.actions.push(action)
 
         page.sprites.push spriteInfo
 
 
     for ccActionName of apiElement
       actionName = ccActionName.replace(/^CC/, '')
-      ActionConst = cc[actionName]
 
       # Unknown action
-      continue unless ActionConst
+      continue unless cc[actionName]
 
       apiElement[ccActionName].forEach (params) ->
-        # Make position a real Point instance
-        if params.position instanceof Array
-          params.position = new cc.Point(params.position[0], params.position[1])
+        console.log('Adding action', ccActionName)
 
-        if params.intensity
-          params.scale = params.intensity
+        # cocos2d-html5 doesn't support named arguments, so we need a huge
+        # switch statement to handle argument order instead
+        switch ccActionName
+          when 'CCScaleBy'
+            action = new cc.ScaleBy.actionWithDuration(params.duration, params.intensity)
+          when 'CCMoveBy'
+            if params.position
+              p = new cc.Point(params.position[0], params.position[1])
+            else
+              p = new cc.Point(0, 0)
 
-        action = new ActionConst(params)
-        page.addAction(params.actionTag, action)
+            action = new cc.MoveBy.actionWithDuration(params.duration, p)
+          when 'CCMoveTo'
+            if params.position
+              p = new cc.Point(params.position[0], params.position[1])
+            else
+              p = new cc.Point(0, 0)
+
+            action = new cc.MoveTo.actionWithDuration(params.duration, p)
+
+        if action
+          page.addAction(params.actionTag, action)
 
 
     # Swipe ended
