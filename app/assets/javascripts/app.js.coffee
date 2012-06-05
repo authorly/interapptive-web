@@ -38,11 +38,14 @@ window.App =
   keyframeList: (list) ->
     if list then @keyframeListView = list else @keyframeListView
 
+  # TODO: Refactor me
+  capitalizeWord: (word) ->
+    word.charAt(0).toUpperCase() + word.slice 1
 
 $ ->
   App.init()
 
-  $("#image-upload-modal, .content-modal").modal(backdrop: true).modal "hide"
+  $(".content-modal").modal(backdrop: true).modal "hide"
   $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
 
   toolbar_modal = $("#modal")
@@ -52,7 +55,7 @@ $ ->
 
   $("ul#toolbar li ul li").click ->
     toolbar_modal.modal "hide"
-    unless $(this).is('.scene, .keyframe, .edit-text, .disabled, .images')
+    unless $(this).is('.scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts')
       toolbar_modal.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"
@@ -63,17 +66,3 @@ $ ->
   $(window).resize ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
-
-  $("#fileupload").fileupload
-    downloadTemplateId: null
-    uploadTemplateId: null
-    downloadTemplate: JST["app/templates/images/download"]
-    uploadTemplate: JST["app/templates/images/upload"]
-
-  $.getJSON $("#fileupload").prop("action"), (files) ->
-    fileData = $("#fileupload").data("fileupload")
-    fileData._adjustMaxNumberOfFiles -files.length
-    template = fileData._renderDownload(files).prependTo($("#fileupload .files"))
-    fileData._reflow = fileData._transition and template.length and template[0].offsetWidth
-    template.addClass "in"
-    $("#loading").remove()

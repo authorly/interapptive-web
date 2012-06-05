@@ -14,7 +14,7 @@ class App.Views.StorybookIndex extends Backbone.View
   render: ->
     $(@el).html(@template())
     @collection.each (storybook) => @appendStorybook(storybook)
-    return this
+    this
 
   appendStorybook: (storybook) ->
     view = new App.Views.Storybook(model: storybook)

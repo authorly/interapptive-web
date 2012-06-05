@@ -6,15 +6,11 @@
       %td.size
         %span @formatFileSize(file.size)
       %td.error{:colspan => "5"}
-        %span.label.label-important @locale.fileupload.error
+        %span.label.label-important= locale.fileupload.error
           = file.error
     - else
-      %td.preview
-        - if file.thumbnail_url
-          %a{:download => "#{file.name}", :href => "#{file.url}", :rel => "gallery", :title => "#{file.name}"}
-            %img{:src => "#{file.thumbnail_url}"}
-      %td.name
-        %a{:download => "#{file.name}", :href => "#{file.url}", :rel => "#{file.thumbnail_url}", :title => "#{file.name}"}
+      %td.name{:colspan => "7"}
+        %a{:download => "#{file.name}", :href => "#{file.url}", :title => "#{file.name}"}
           = file.name
       %td.size= @formatFileSize(file.size)
       %td{:colspan => "7"}
