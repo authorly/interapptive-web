@@ -33,7 +33,7 @@
   }
 }
 
-#image-upload-modal {
+.asset-library-modal {
   width:  @assetUploaderModalWidth;
   margin-left:-(@assetUploaderModalWidth/2);
   position: absolute !important;
@@ -42,48 +42,53 @@
   form {
     margin: 0;
     padding: 0;
-    height:  365px;
   }
 
   .modal-body {
-    min-height: 355px;
+    height: 340px;
   }
 
   .fileupload-buttonbar {
     margin-top: 4px;
     margin-bottom: 14px;
   }
-  
+
   .table {
     margin-top: 9px;
   }
-   
+
   td {
     vertical-align: middle;
   }
-  
+
   td.delete {
     text-align: right;
   }
-  
+
   td.cancel {
     padding-right: 26px !important;
     text-align: right;
   }
-  
+
   td.start button {
     position: relative;
-    right: -34px !important;
+    right: -23px !important;
   }
-  
+
   td.preview, td.name {
     width: 115px;
   }
-  
+
   td.preview {
     text-align: center;
   }
-  
+
+  td.error span {
+    margin-right: 10px;
+    position: relative;
+    top: -2px;
+  }
+
   .template-upload, .template-download {
     table {
       width: 750px;

@@ -1,0 +1,30 @@
+.modal-header
+  %h3.modal-title= "#{App.capitalizeWord(@assetType) } Library"
+
+.modal-body
+  %form{:action => "/#{@assetType}s", :id => "fileupload", :method => "post", :multipart => true}
+    .row.fileupload-buttonbar
+      .span5
+        %span.btn.btn-success.fileinput-button
+          %i.icon-plus.icon-white
+          %span= "Add #{@assetType}s..."
+          %input{:multiple => true, :name => "#{@assetType}[files][]", :type => "file"}
+        %button.btn.btn-primary.start{:type => "submit"}
+          %i.icon-upload.icon-white
+          %span Start upload
+        %button.btn.btn-warning.cancel{:type => "reset"}
+          %i.icon-ban-circle.icon-white
+          %span Cancel upload
+        %button.btn.btn-danger.delete{:type => "button"}
+          %i.icon-trash.icon-white
+          %span Delete
+        %input.toggle{:type => "checkbox"}
+      .span3
+        .progress.progress-success.progress-striped.active.fade
+          .bar{:style => "width:0%;"}
+    .fileupload-loading
+    %table.table.table-striped
+      %tbody.files{"data-target" => "#modal-gallery", "data-toggle" => "modal-gallery"}
+
+.modal-footer
+  %a.btn{ :href => "#", :data => { :dismiss => 'modal' }} Close
