@@ -2,7 +2,17 @@
 window.Sim = {
   main: function () {
     var json = document.getElementById('json-data').value
-    storybook = new Sim.Storybook(json)
+    var storybook = new Sim.Storybook(json)
+
+    var np = $('#sim-next-page')
+      , pp = $('#sim-prev-page')
+
+    np.on('click', function () {
+      storybook.showNextPage()
+    })
+    pp.on('click', function () {
+      storybook.showPreviousPage()
+    })
   }
 }
 

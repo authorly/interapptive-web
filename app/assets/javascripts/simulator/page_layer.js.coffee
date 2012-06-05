@@ -116,12 +116,12 @@ class Sim.PageLayer extends cc.Scene
 
       actionsToRun.forEach (actionToRun) =>
         @_busyWithAction = true
-        sprite = @getChild(tag: actionToRun.spriteTag)
+        sprite = @getChildByTag(actionToRun.spriteTag)
         throw new Error("Unable to find sprite with tag: " + actionToRun.spriteTag)  unless sprite
 
         if actionToRun.actionTags.length > 1
           actions = actionToRun.actionTags.map(@page.getActionByTag.bind(@page))
-          action = new cocos.actions.Spawn(actions: actions)
+          action = cc.Spawn.actionsWithArray(actions)
         else
           action = @page.getActionByTag(actionToRun.actionTags[0])
 
