@@ -38,7 +38,7 @@ class Sim.MainMenuLayer extends Sim.PageLayer
 
     menu.setPosition(new cc.Point(0, 0))
 
-    @addChild(menu, 1)
+    @addChild(menu, 100)
 
   autoPlay: ->
     @storyMode = Sim.kStoryModeAutoPlay

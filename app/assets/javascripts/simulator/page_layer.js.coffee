@@ -27,7 +27,7 @@ class Sim.PageLayer extends cc.Scene
 
     mainMenu.setPosition(new cc.Point(0, 0))
 
-    @addChild(mainMenu)
+    @addChild(mainMenu, 100)
 
 
   createSprites: ->
@@ -43,7 +43,7 @@ class Sim.PageLayer extends cc.Scene
       sprite = cc.Sprite.spriteWithFile(spriteFile)
       sprite.setPosition(spriteInfo.position)
 
-      @addChild(sprite, 1, spriteInfo.spriteTag)
+      @addChild(sprite, 10, spriteInfo.spriteTag)
 
   createParagraphs: ->
     @page.paragraphs.forEach (paragraphInfo) =>
@@ -74,7 +74,7 @@ class Sim.PageLayer extends cc.Scene
     menu = @touchNodeMenu = new cc.Menu(items: items)
     menu.setPosition(new cc.Point(0, 0))
 
-    @addChild(menu, 1)
+    @addChild(menu, 100)
 
   onEnter: ->
     super
@@ -84,7 +84,7 @@ class Sim.PageLayer extends cc.Scene
     @paragraphs.push(paragraph)
     paragraph.setIsVisible(true)
 
-    @addChild(paragraph, 100)
+    @addChild(paragraph, 50)
 
 
   showParagraph: (index) ->
