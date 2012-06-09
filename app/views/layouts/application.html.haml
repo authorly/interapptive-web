@@ -11,7 +11,9 @@
     = stylesheet_link_tag "application", "http://jquery-ui.googlecode.com/svn/tags/1.8.20/themes/smoothness/jquery.ui.all.css", :media => "all"
     = javascript_include_tag "application"
     :javascript
-      App.currentUser(#{current_user.to_json(:only => :id)});
+      App.currentUser(#{current_user.to_json(:only => :id)})
+      window.runBuilder()
+
     = csrf_meta_tags
     = yield(:head)
 
