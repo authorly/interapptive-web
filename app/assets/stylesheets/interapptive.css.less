@@ -2,7 +2,6 @@
 @import 'twitter/bootstrap/responsive';
 @import 'bootstrap-image-gallery.css.less';
 @import 'jquery.fileupload-ui.css.less';
-
 @import 'variables.css.less';
 @import 'filemenu.css.less';
 @import 'toolbar.css.less';
@@ -41,6 +40,7 @@ html, body{
   background-color: transparent !important;
 }
 
+// Tablet & Builder
 .span10 {
   background-image: asset-url('tablet.png');
   background-repeat: no-repeat;
@@ -49,6 +49,14 @@ html, body{
   margin-top: 90px;
   width: 100%;
   overflow: visible;
+}
+
+canvas#scene-builder {
+  width: 580px;
+  height: 430px;
+  margin: 75px 0 0 185px;
+  padding: 10px;
+  overflow: hidden;
 }
 
 .left {
@@ -104,15 +112,6 @@ header {
   height: 100%;
   width: 200px;
   z-index: 20 !important;
-}
-
-// Text layer - temporary
-#text {
-  width: 580px;
-  height: 430px;
-  margin: 75px 0 0 185px;
-  padding: 10px;
-  overflow: hidden;
 }
 
 // Forms
