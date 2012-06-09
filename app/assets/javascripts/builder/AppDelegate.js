@@ -1,23 +1,19 @@
 // Namespace for simulator classes
 window.Builder = {
-    main: function () {
-        /// init director
-        // var pDirector = cc.Director.sharedDirector();
-        // var pScene =  pDirector.getRunningScene();
-        // var scene = cc.Scene.node();
+    main: function (scene) {
+        console.log(scene);
+        var pDirector = cc.Director.sharedDirector();
 
         // var for screen size
-        // var s = pDirector.getWinSize()
+        var s = pDirector.getWinSize()
 
+        console.log(scene);
         // add sample background image to screen
-        // var sprite = cc.Sprite.spriteWithFile("assets/builder/sample.jpg");
-        // sprite.setAnchorPoint(cc.ccp(0.5, 0.5));
-        // sprite.setPosition(cc.ccp(s.width / 2, s.height / 2));
+        var sprite = cc.Sprite.spriteWithFile("/assets/builder/sample.jpg");
+        sprite.setAnchorPoint(cc.ccp(0.5, 0.5));
+        sprite.setPosition(cc.ccp(s.width / 2, s.height / 2));
 
-        // var Helloworld = cc.Layer.extend();
-        // console.log(Helloworld);
-
-        // pScene.addChild(sprite, 0);
+        // scene.addChild(sprite, 0);
 
         // Example codes, can remove upon annoyance
         // np.on('click', function () {
@@ -76,7 +72,7 @@ cc.AppDelegate = cc.Application.extend({
         // run
         pDirector.runWithScene(pScene);
 
-        Builder.main();
+        Builder.main(pScene);
 
         return true;
     },

@@ -11,4 +11,5 @@
 # GO AFTER THE REQUIRES BELOW.
 #
 #= require cocos2d-html5
-#= require_tree ./
+#= require builder/init
+#= require builder/builder
