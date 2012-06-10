@@ -11,4 +11,6 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require cocos2d-html5
+//= require ./cocos2d_fixes
+//= require ./init
 //= require_tree ./
