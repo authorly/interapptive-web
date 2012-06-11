@@ -24,49 +24,32 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-var Helloworld = cc.Layer.extend({
+var Builder = cc.Layer.extend({
     isMouseDown:false,
     helloImg:null,
     helloLabel:null,
     circle:null,
     sprite:null,
+    tag: 1,
 
     init:function () {
 
-        //////////////////////////////
-        // 1. super init first
         this._super();
+        this.tag = 1;
+        var pDirector = cc.Director.sharedDirector()
+          , size      = pDirector.getWinSize()
 
-        /////////////////////////////
-        // 2. Do something
-        /////////////////////////////
-
-        /////////////////////////////
-        // 3. add your codes below...
-        // add a label shows "Hello World"
-        // create and initialize a label
         this.helloLabel = cc.LabelTTF.labelWithString("Hello World", "Arial", 38);
         // position the label on the center of the screen
         this.helloLabel.setPosition(cc.ccp(size.width / 2, size.height - 40));
         // add the label as a child to this layer
-        this.addChild(this.helloLabel, 5);
-
-        var lazyLayer = new cc.LazyLayer();
-        this.addChild(lazyLayer);
-
-        // add "HelloWorld" splash screen"
-        this.sprite = cc.Sprite.spriteWithFile("assets/builder/sample.jpg");
-        this.sprite.setAnchorPoint(cc.ccp(0.5, 0.5));
-        this.sprite.setPosition(cc.ccp(size.width / 2, size.height / 2));
-
-        lazyLayer.addChild(this.sprite, 0);
+        // this.addChild(this.helloLabel, 5);
 
         return true;
     }
-
 });
 
-Helloworld.scene = function () {
+Builder.scene = function () {
     // 'scene' is an autorelease object
     var scene = cc.Scene.node();
 
@@ -75,11 +58,12 @@ Helloworld.scene = function () {
     scene.addChild(layer);
     return scene;
 };
-// implement the "static node()" method manually
-Helloworld.node = function () {
-    var ret = new Helloworld();
 
-    // Init the helloworld display layer.
+// implement the "static node()" method manually
+Builder.node = function () {
+    var ret = new Builder();
+
+    // Init the Builder display layer.
     if (ret && ret.init()) {
         return ret;
     }

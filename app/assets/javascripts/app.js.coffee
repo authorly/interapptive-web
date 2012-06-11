@@ -7,9 +7,11 @@ window.App =
   init: ->
     scenesCollection = new App.Collections.ScenesCollection []
     keyframesCollection = new App.Collections.KeyframesCollection []
+    imagesCollection = new App.Collections.ImagesCollection []
 
     @sceneList(new App.Views.SceneIndex collection: scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: keyframesCollection)
+    @imageList(new App.Views.ImageIndex(collection: imagesCollection, tagName: "div"))
 
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
@@ -38,6 +40,9 @@ window.App =
   keyframeList: (list) ->
     if list then @keyframeListView = list else @keyframeListView
 
+  imageList: (list) ->
+    if list then @imageListView = list else @imageListView
+
   # TODO: Refactor me
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1
@@ -55,7 +60,7 @@ $ ->
 
   $("ul#toolbar li ul li").click ->
     toolbar_modal.modal "hide"
-    unless $(this).is('.scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts')
+    unless $(this).is('.scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image')
       toolbar_modal.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"

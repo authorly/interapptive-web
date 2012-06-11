@@ -2,7 +2,6 @@ class App.Views.AssetLibrary extends Backbone.View
   template: JST["app/templates/assets/library"]
 
   render: ->
-    console.log
     $(@el).html(@template(assetType: @activeAssetType))
     this
 
@@ -24,6 +23,8 @@ class App.Views.AssetLibrary extends Backbone.View
       fileData._reflow = fileData._transition and template.length and template[0].offsetWidth
       template.addClass "in"
       $("#loading").remove()
+
+  load: ->
 
   closeAssetLib: ->
     $("#fileupload").fileupload "disable"

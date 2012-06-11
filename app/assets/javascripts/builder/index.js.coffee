@@ -11,5 +11,6 @@
 # GO AFTER THE REQUIRES BELOW.
 #
 #= require cocos2d-html5
+#= require builder/AppDelegate
 #= require builder/init
 #= require builder/builder

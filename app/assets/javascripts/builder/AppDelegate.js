@@ -1,24 +1,11 @@
-// Namespace for simulator classes
-window.Builder = {
+// Namespace for builder classes
+App.Builder = {
     main: function (scene) {
-        console.log(scene);
-        var pDirector = cc.Director.sharedDirector();
+        var pDirector = cc.Director.sharedDirector()
+          , s = pDirector.getWinSize()
+          , ret = new Builder.node();
 
-        // var for screen size
-        var s = pDirector.getWinSize()
-
-        console.log(scene);
-        // add sample background image to screen
-        var sprite = cc.Sprite.spriteWithFile("/assets/builder/sample.jpg");
-        sprite.setAnchorPoint(cc.ccp(0.5, 0.5));
-        sprite.setPosition(cc.ccp(s.width / 2, s.height / 2));
-
-        // scene.addChild(sprite, 0);
-
-        // Example codes, can remove upon annoyance
-        // np.on('click', function () {
-        //     storybook.showNextPage()
-        // })
+        cc.Director.sharedDirector().replaceScene(ret);
     }
 }
 
@@ -72,7 +59,7 @@ cc.AppDelegate = cc.Application.extend({
         // run
         pDirector.runWithScene(pScene);
 
-        Builder.main(pScene);
+        App.Builder.main(pScene);
 
         return true;
     },

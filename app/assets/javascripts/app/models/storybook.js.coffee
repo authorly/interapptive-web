@@ -1,6 +1,5 @@
 class App.Models.Storybook extends Backbone.Model
   paramRoot: 'storybook'
-  
   schema:
     title:
       type:          "Text"

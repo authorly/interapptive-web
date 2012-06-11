@@ -85,5 +85,5 @@ window.runBuilder = function () {
     //preload ressources
     cc.Loader.shareLoader().preload([
         {type:"image", src:"/assets/builder/sample.jpg"}
-    ]);
+    ])
 }

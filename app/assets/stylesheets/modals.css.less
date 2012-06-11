@@ -12,9 +12,76 @@
   }
 }
 
+#image-picker {
+  .modal-header {
+    text-align: left !important;
+  }
+
+  ul {
+    padding: 0 0 0 15px;
+    list-style: none;
+    height: 245px;
+    margin: 20px 40px;
+
+    li {
+      display: inline-block;
+      width: 50px;
+      text-align: center;
+      padding: 20px !important;
+      margin: 0 50px 0 0;
+    }
+
+    li.zoomable {
+      .ease();
+
+      position: relative;
+      z-index:200;
+    }
+
+    li.zoomable:hover, li.zoomed-in {
+      .scale();
+    }
+
+    li.scaled {
+      .scale();
+    }
+
+    li:last {
+      margin-right: 0;
+    }
+
+    a.selected {
+      border-color: lighten(@blue, 25%);
+    }
+  }
+
+  .btn-primary, .btn-success {
+    padding: 12px;
+  }
+
+  .use-image.disabled {
+    background-color: #C5C4C3;
+    text-shadow: none;
+  }
+
+  .btn {
+    text-shadow: 1px 1px 1px @white;
+  }
+
+  .use-image, .btn-success {
+    text-shadow: 1px 1px 1px @black;
+  }
+
+  .btn-success {
+    text-shadow: 1px 1px 1px @grayDark;
+  }
+
+  text-align: center;
+}
+
 .content-modal {
   width:  @appSettingsModalWidth;
-  height: @appSettingsModalHeight;
+  max-height: @appSettingsModalHeight;
   margin-left:-(@appSettingsModalWidth/2);
   
   fieldset {

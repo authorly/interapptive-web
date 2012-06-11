@@ -2,7 +2,7 @@ class App.Views.ToolbarView extends Backbone.View
   events:
     'click .add-scene'   : 'addScene'
     'click .add-keyframe': 'addKeyframe'
-    'click .edit-text'   : 'editText'
+    'click .add-image'   : 'addImage'
     'click .images'      : 'showImageLibrary'
     'click .videos'      : 'showVideoLibrary'
     'click .fonts'       : 'showFontLibrary'
@@ -20,8 +20,8 @@ class App.Views.ToolbarView extends Backbone.View
   addKeyframe: ->
     App.keyframeList().createKeyframe()
 
-  editText: ->
-    $("#text").focus() unless $('.edit-text').hasClass "disabled"
+  addImage: ->
+    App.modalWithView(view: App.imageList()).show()
 
   showImageLibrary: ->
     @loadDataFor("image")
@@ -37,7 +37,7 @@ class App.Views.ToolbarView extends Backbone.View
 
   loadDataFor: (assetType) ->
     @assetLibraryView.activeAssetType = assetType
-    App.modalWithView(view: @assetLibraryView).showModal()
+    App.modalWithView(view: @assetLibraryView).show()
     @assetLibraryView.setAllowedFilesFor assetType + "s"
     @assetLibraryView.initAssetLibFor assetType + "s"
 

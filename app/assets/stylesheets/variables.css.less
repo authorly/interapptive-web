@@ -71,6 +71,22 @@
   border-top-left-radius: 0;
 }
 
+.ease(@direction: all, @duration: 0.2s) {
+  -webkit-transition: @direction @duration ease-in-out;
+  -moz-transition: @direction @duration ease-in-out;
+  -o-transition: @direction @duration ease-in-out;
+  -ms-transition: @direction @duration ease-in-out;
+  transition: @direction @duration ease-in-out;
+}
+
+.scale(@amount: 2.5) {
+  -webkit-transform:scale(@amount, @amount);
+  -moz-transform:scale(@amount, @amount);
+  -o-transform:scale(@amount, @amount);
+  -ms-transform:scale(@amount, @amount);
+  transform:scale(@amount, @amount);
+}
+
 .drop-shadow(@x:0, @y:0, @blur:0, @color:#444) {
   box-shadow: @x @y @blur @color;
   -o-box-shadow: @x @y @blur @color;
