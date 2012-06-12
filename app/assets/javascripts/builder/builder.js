@@ -26,10 +26,7 @@
 
 var Builder = cc.Layer.extend({
     isMouseDown:false,
-    helloImg:null,
-    helloLabel:null,
-    circle:null,
-    sprite:null,
+    backgroundSprite:null,
 
     init:function () {
 

@@ -20,12 +20,12 @@ class App.Views.ImageIndex extends Backbone.View
     $(@el).find('ul').append(view.render().el)
 
   setActiveImage: (event) ->
+    event.preventDefault()
     @submit  = $(@el).find('.use-image')
     @sender  = $(event.currentTarget)
     @imageId = @sender.addClass('selected').data('id')
     @image   = @collection.get(@imageId)
     @parent  = @sender.parent()
-    event.preventDefault()
     @submit.removeClass('disabled')
     @parent.addClass('zoomed-in')
     @parent.siblings().addClass('zoomable').removeClass('zoomed-in').children('a').removeClass('selected')
@@ -40,8 +40,8 @@ class App.Views.ImageIndex extends Backbone.View
       success: (model, response) =>
         @node = cc.Director.sharedDirector().getRunningScene()
         cc.TextureCache.sharedTextureCache().addImage(url)
-        @sprite = cc.Sprite.spriteWithFile(url)
-        @sprite.setAnchorPoint cc.ccp(0.5, 0.5)
-        @sprite.setPosition cc.ccp(500, 300)
-        @node.addChild @sprite
+        @node.backgroundSprite = cc.Sprite.spriteWithFile(url)
+        @node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
+        @node.backgroundSprite.setPosition cc.ccp(500, 300)
+        @node.addChild @node.sprite
         App.modalWithView().hide()
