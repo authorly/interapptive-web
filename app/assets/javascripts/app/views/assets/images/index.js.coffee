@@ -5,9 +5,6 @@ class App.Views.ImageIndex extends Backbone.View
     "touchstart, touchend .zoomable": "doZoom"
     "click .use-image": "setSceneBackground"
 
-  backgroundSpriteTag = ->
-    2
-
   initialize: ->
     @collection.bind('reset', @render, this);
     @collection.fetch()
@@ -43,11 +40,11 @@ class App.Views.ImageIndex extends Backbone.View
       success: (model, response) =>
         @node = cc.Director.sharedDirector().getRunningScene()
         cc.TextureCache.sharedTextureCache().addImage(url)
-        @node.removeChildByTag backgroundSpriteTag
+        @node.removeChildByTag 2
         @node.backgroundSprite = cc.Sprite.spriteWithFile(url)
         @node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
         @node.backgroundSprite.setPosition cc.ccp(500, 300)
-        @node.backgroundSprite.setTag backgroundSpriteTag()
+        @node.backgroundSprite.setTag 2
         @node.addChild @node.backgroundSprite
         App.modalWithView().hide()
 
