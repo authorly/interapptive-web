@@ -6,11 +6,13 @@ class App.Views.ImageIndex extends Backbone.View
     "click .use-image": "setSceneBackground"
 
   initialize: ->
+    @collection.bind('reset', @render, this);
     @collection.fetch()
 
   render: ->
     $(@el).html(@template())
     @collection.each (image) => @appendImage(image)
+    @delegateEvents()
     this
 
   appendImage: (image) ->
@@ -18,14 +20,14 @@ class App.Views.ImageIndex extends Backbone.View
     $(@el).find('ul').append(view.render().el)
 
   setActiveImage: (event) ->
-    @submit    = $(@el).find('.use-image')
-    @target    = $(event.currentTarget)
-    @id        = @target.addClass('selected').data('id')
-    @parent    = @target.parent()
-
     event.preventDefault()
-
-    @submit.removeClass('disabled zoomable')
+    console.log "HIT"
+    @submit  = $(@el).find('.use-image')
+    @sender  = $(event.currentTarget)
+    @imageId = @sender.addClass('selected').data('id')
+    @image   = @collection.get(@imageId)
+    @parent  = @sender.parent()
+    @submit.removeClass('disabled')
     @parent.addClass('zoomed-in')
     @parent.siblings().addClass('zoomable').removeClass('zoomed-in').children('a').removeClass('selected')
 
@@ -33,22 +35,16 @@ class App.Views.ImageIndex extends Backbone.View
     $('.zoomable').toggleClass('zoomed-in')
 
   setSceneBackground: ->
-    App.currentScene().set('image_id', @id)
+    url = @image.get('url')
+    App.currentScene().set('image_id', @imageId)
     App.currentScene().save {},
-      success: (model, response) ->
-        cc.Loader.shareLoader().onload = ->
-          @sprite = cc.Sprite.spriteWithFile("/assets/builder/sample.jpg")
-          @sprite.setAnchorPoint cc.ccp(0.5, 0.5)
-          @sprite.setPosition cc.ccp(500, 300)
-          @node = cc.Director.sharedDirector().getRunningScene()
-          @node.addChild(@sprite)
-
-        cc.Loader.shareLoader().preload [
-           type: "image"
-           src: '/assets/builder/sample.jpg'
-        ]
-
+      success: (model, response) =>
+        @node = cc.Director.sharedDirector().getRunningScene()
+        cc.TextureCache.sharedTextureCache().addImage(url)
+        @sprite = cc.Sprite.spriteWithFile(url)
+        @sprite.setAnchorPoint cc.ccp(0.5, 0.5)
+        @sprite.setPosition cc.ccp(500, 300)
+        @node.addChild @sprite
         App.modalWithView().hide()
-
 
 

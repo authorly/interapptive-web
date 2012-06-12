@@ -7,6 +7,9 @@ class App.Models.Image extends Backbone.Model
   toJSON: ->
     @attributes
 
+  change: ->
+    @trigger('change') # hack for modal
+
 class App.Collections.ImagesCollection extends Backbone.Collection
   model: App.Models.Image
 

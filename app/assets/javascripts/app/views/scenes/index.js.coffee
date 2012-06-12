@@ -6,17 +6,13 @@ class App.Views.SceneIndex extends Backbone.View
     'click .scene-list li span': 'clickScene'
     
   initialize: ->
-    # Ensure our collection is rendered upon loading
     @collection.on('reset', @render, this)
     @collection.on('add', @appendScene, this)
 
   render: =>
     $(this.el).html('')
     @collection.each (scene) => @appendScene(scene)
-      
-    # TODO: Figure out how to just use setActiveScene() to set the stylings
     $('.scene-list li:first span:first').click()
-
     this
 
   createScene: =>

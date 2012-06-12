@@ -30,18 +30,16 @@ var Builder = cc.Layer.extend({
     helloLabel:null,
     circle:null,
     sprite:null,
-    tag: 1,
 
     init:function () {
 
         this._super();
-        this.tag = 1;
-        var pDirector = cc.Director.sharedDirector()
-          , size      = pDirector.getWinSize()
 
-        this.helloLabel = cc.LabelTTF.labelWithString("Hello World", "Arial", 38);
+        //var pDirector = cc.Director.sharedDirector()
+        //  , size      = pDirector.getWinSize()
+        // this.helloLabel = cc.LabelTTF.labelWithString("Hello World", "Arial", 38);
         // position the label on the center of the screen
-        this.helloLabel.setPosition(cc.ccp(size.width / 2, size.height - 40));
+        // this.helloLabel.setPosition(cc.ccp(size.width / 2, size.height - 40));
         // add the label as a child to this layer
         // this.addChild(this.helloLabel, 5);
 

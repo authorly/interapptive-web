@@ -6,13 +6,11 @@ class App.Views.AppSettings extends Backbone.View
     @form = new Backbone.Form(model: App.currentStorybook(),
                               template: 'bootstrap').render()
 
-  updateAttributes: (event) ->
-    event.preventDefault()
-
-    # Submit form with backbone-forms method
-    @form.commit()
-    App.currentStorybook().save()
-
   render: ->
     $(@el).append @form.el
     this
+
+  updateAttributes: (event) ->
+    event.preventDefault()
+    @form.commit()
+    App.currentStorybook().save()
