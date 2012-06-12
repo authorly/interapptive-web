@@ -12,7 +12,7 @@ class App.Views.ImageIndex extends Backbone.View
   render: ->
     $(@el).html(@template())
     @collection.each (image) => @appendImage(image)
-    @delegateEvents()
+    @delegateEvents() # patch for re-delegating events when the view is lost
     this
 
   appendImage: (image) ->
@@ -20,13 +20,12 @@ class App.Views.ImageIndex extends Backbone.View
     $(@el).find('ul').append(view.render().el)
 
   setActiveImage: (event) ->
-    event.preventDefault()
-    console.log "HIT"
     @submit  = $(@el).find('.use-image')
     @sender  = $(event.currentTarget)
     @imageId = @sender.addClass('selected').data('id')
     @image   = @collection.get(@imageId)
     @parent  = @sender.parent()
+    event.preventDefault()
     @submit.removeClass('disabled')
     @parent.addClass('zoomed-in')
     @parent.siblings().addClass('zoomable').removeClass('zoomed-in').children('a').removeClass('selected')
@@ -46,5 +45,3 @@ class App.Views.ImageIndex extends Backbone.View
         @sprite.setPosition cc.ccp(500, 300)
         @node.addChild @sprite
         App.modalWithView().hide()
-
-
