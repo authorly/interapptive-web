@@ -43,5 +43,5 @@ class App.Views.ImageIndex extends Backbone.View
         @node.backgroundSprite = cc.Sprite.spriteWithFile(url)
         @node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
         @node.backgroundSprite.setPosition cc.ccp(500, 300)
-        @node.addChild @node.sprite
+        @node.addChild @node.backgroundSprite
         App.modalWithView().hide()
