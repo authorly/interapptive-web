@@ -42,7 +42,6 @@ window.runBuilder = function () {
     cc.Touch.prototype.locationInView = function () {
         var p = this._m_point;
 
-
         // Ratio of canvas to element size
         var ratioW = cc.canvas.width / $(cc.canvas).width()
             , ratioH = cc.canvas.height / $(cc.canvas).height()
@@ -83,6 +82,7 @@ window.runBuilder = function () {
     };
 
     //preload ressources
+    // TODO: Not sure if keeping this here is necessary for cocos2d-html5
     cc.Loader.shareLoader().preload([
         // {type:"image", src:"/assets/builder/choose-background.png"}
     ])

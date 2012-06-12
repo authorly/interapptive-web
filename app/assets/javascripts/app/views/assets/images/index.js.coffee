@@ -2,8 +2,11 @@ class App.Views.ImageIndex extends Backbone.View
   template: JST["app/templates/assets/images/index"]
   events:
     "click a": "setActiveImage"
-    "touchstart, touchend .zoomable": "zoomSequence"
+    "touchstart, touchend .zoomable": "doZoom"
     "click .use-image": "setSceneBackground"
+
+  backgroundSpriteTag = ->
+    2
 
   initialize: ->
     @collection.bind('reset', @render, this);
@@ -30,7 +33,7 @@ class App.Views.ImageIndex extends Backbone.View
     @parent.addClass('zoomed-in')
     @parent.siblings().addClass('zoomable').removeClass('zoomed-in').children('a').removeClass('selected')
 
-  zoomSequence: ->
+  doZoom: ->
     $('.zoomable').toggleClass('zoomed-in')
 
   setSceneBackground: ->
@@ -40,8 +43,11 @@ class App.Views.ImageIndex extends Backbone.View
       success: (model, response) =>
         @node = cc.Director.sharedDirector().getRunningScene()
         cc.TextureCache.sharedTextureCache().addImage(url)
+        @node.removeChildByTag backgroundSpriteTag
         @node.backgroundSprite = cc.Sprite.spriteWithFile(url)
         @node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
         @node.backgroundSprite.setPosition cc.ccp(500, 300)
+        @node.backgroundSprite.setTag backgroundSpriteTag()
         @node.addChild @node.backgroundSprite
         App.modalWithView().hide()
+
