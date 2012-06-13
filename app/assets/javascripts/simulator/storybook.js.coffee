@@ -125,7 +125,7 @@ class Sim.Storybook
 
 
     # Page text
-    pageElement.text.paragraphs.forEach (paragraph) ->
+    for paragraph in pageElement.text.paragraphs
       paragraphInfo = new Sim.ParagraphInfo
       page.paragraphs.push paragraphInfo
 
@@ -146,7 +146,7 @@ class Sim.Storybook
 
     # Touchable nodes
     if apiElement.CCStoryTouchableNode
-      apiElement.CCStoryTouchableNode.nodes.forEach (node) ->
+      for node in apiElement.CCStoryTouchableNode.nodes
         touchNode = new Sim.StoryTouchableNode
         touchNode.position = new cc.Point(node.position[0], node.position[1])
 
@@ -165,7 +165,7 @@ class Sim.Storybook
 
     # Sprites -- DRY with MainMenu
     if apiElement.CCSprites
-      apiElement.CCSprites.forEach (sprite) ->
+      for sprite in apiElement.CCSprites
         spriteInfo = new Sim.SpriteInfo
 
         spriteInfo.image = sprite.image
@@ -187,7 +187,7 @@ class Sim.Storybook
       # Unknown action
       continue unless cc[actionName]
 
-      apiElement[ccActionName].forEach (params) ->
+      for params in apiElement[ccActionName]
         # cocos2d-html5 doesn't support named arguments, so we need a huge
         # switch statement to handle argument order instead
         switch ccActionName
@@ -215,7 +215,7 @@ class Sim.Storybook
     # Swipe ended
     if apiElement.CCStorySwipeEnded
       runAction = apiElement.CCStorySwipeEnded.runAction
-      runAction.forEach (actionInfo) ->
+      for actionInfo in runAction
         action = new Sim.StorySwipeEndedActionsToRun
         action.runAfterSwipeNumber = actionInfo.runAfterSwipeNumber
         action.spriteTag = actionInfo.spriteTag
