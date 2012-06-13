@@ -32,7 +32,6 @@ class Sim.Paragraph extends cc.Node
             @fontName
             @fontSize
           )
-          # FIXME colour not supported? fontColor: @fontColor
 
         label.setPosition(new cc.Point(xOffset, yOffset))
 
@@ -47,8 +46,6 @@ class Sim.Paragraph extends cc.Node
             @fontName
             @fontSize
           )
-          # FIXME colour not supported? fontColor: @fontColor
-          
           # ...increase offset to account for the next word in the line
           xOffset += label.getContentSize().width / 2 + nextLabel.getContentSize().width / 2 + WORD_SPACING
         else
