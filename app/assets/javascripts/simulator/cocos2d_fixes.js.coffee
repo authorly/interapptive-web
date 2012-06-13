@@ -5,7 +5,6 @@ cc.setupHTML = (a) ->
   c = cc.$new("div")
   c.id = "Cocos2dGameContainer"
   c.style.overflow = "hidden"
-  c.style.height = b.clientHeight + "px"
   c.style.width = b.clientWidth + "px"
   a && c.setAttribute("fheight", a.getContentSize().height)
   a = cc.$new("div")
@@ -48,5 +47,5 @@ cc.Touch.prototype.locationInView = ->
   return actualPoint
 
 
-# Cocos2d-html calls this a log, but doesn't define it anywhere
+# Cocos2d-html calls this a lot, but doesn't define it anywhere
 cc.Log = cc.LOG = console.log.bind(console)

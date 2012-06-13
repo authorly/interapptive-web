@@ -22,12 +22,12 @@ class Sim.PageLayer extends cc.Scene
 
     menuItem.setPosition(@storybook.config.homeButtonPosition)
 
-    mainMenu = @mainMenu = new cc.Menu
-    mainMenu.initWithItems([menuItem])
+    @mainMenu = new cc.Menu
+    @mainMenu.initWithItems([menuItem])
 
-    mainMenu.setPosition(new cc.Point(0, 0))
+    @mainMenu.setPosition(new cc.Point(0, 0))
 
-    @addChild(mainMenu, 100)
+    @addChild(@mainMenu, 100)
 
 
   createSprites: ->
@@ -92,7 +92,7 @@ class Sim.PageLayer extends cc.Scene
 
     show = =>
       i = 0
-      @paragraphs.forEach (p) =>
+      for p in @paragraphs
         p.setIsVisible((i is index))
         if p.getIsVisible() and @storybook.mainMenuLayer.storyMode is Sim.kStoryModeReadToMe
           p.startHighlight()
@@ -102,7 +102,7 @@ class Sim.PageLayer extends cc.Scene
         i++
 
     hide = =>
-      @paragraphs.forEach (p) =>
+      for p in @paragraphs
         p.setIsVisible(false)
         p.stopHighlight()
 
@@ -133,7 +133,7 @@ class Sim.PageLayer extends cc.Scene
         setTimeout =>
           show()
           @_busyWithAction = false
-        , action.duration * 1000
+        , action.getDuration() * 1000
     else
       show()
 
