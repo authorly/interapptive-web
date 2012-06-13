@@ -111,15 +111,15 @@ class Sim.Storybook
 
     rgb = page.settings.fontColor
     page.settings.fontColor = new cc.Color3B()
-    page.settings.fontColor = rgb[0]
-    page.settings.fontColor = rgb[1]
-    page.settings.fontColor = rgb[2]
+    page.settings.fontColor.r = rgb[0]
+    page.settings.fontColor.g = rgb[1]
+    page.settings.fontColor.b = rgb[2]
 
     rgb = page.settings.fontHighlightColor
     page.settings.fontHighlightColor = new cc.Color3B()
-    page.settings.fontHighlightColor = rgb[0]
-    page.settings.fontHighlightColor = rgb[1]
-    page.settings.fontHighlightColor = rgb[2]
+    page.settings.fontHighlightColor.r = rgb[0]
+    page.settings.fontHighlightColor.g = rgb[1]
+    page.settings.fontHighlightColor.b = rgb[2]
 
     page.settings.fontType = page.settings.fontType.split('.')[0]
 
@@ -188,8 +188,6 @@ class Sim.Storybook
       continue unless cc[actionName]
 
       apiElement[ccActionName].forEach (params) ->
-        console.log('Adding action', ccActionName)
-
         # cocos2d-html5 doesn't support named arguments, so we need a huge
         # switch statement to handle argument order instead
         switch ccActionName
