@@ -20,7 +20,8 @@ class App.Views.ImageIndex extends Backbone.View
     $(@el).find('ul').append(view.render().el)
 
   setActiveImage: (event) ->
-    event.preventDefault()
+    # TODO: Clean me up! These shouldn't all be properties
+    event.preventDefault() # stop default behavior of sender element
     @submit  = $(@el).find('.use-image')
     @sender  = $(event.currentTarget)
     @imageId = @sender.addClass('selected').data('id')
@@ -40,11 +41,11 @@ class App.Views.ImageIndex extends Backbone.View
       success: (model, response) =>
         @node = cc.Director.sharedDirector().getRunningScene()
         cc.TextureCache.sharedTextureCache().addImage(url)
-        @node.removeChildByTag 2
+        @node.removeChild @node.backgroundSprite
         @node.backgroundSprite = cc.Sprite.spriteWithFile(url)
         @node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
         @node.backgroundSprite.setPosition cc.ccp(500, 300)
-        @node.backgroundSprite.setTag 2
         @node.addChild @node.backgroundSprite
         App.modalWithView().hide()
+
 

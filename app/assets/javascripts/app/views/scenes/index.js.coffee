@@ -21,8 +21,8 @@ class App.Views.SceneIndex extends Backbone.View
       wait: true
       success: (scene, response) ->
         @collection.add scene
-        App.currentScene(scene)
-        this.setActiveScene scene
+        App.currentScene scene
+        @setActiveScene scene
     return scene
 
   appendScene: (scene) ->
@@ -37,9 +37,26 @@ class App.Views.SceneIndex extends Backbone.View
     $('#keyframe-list').html(App.keyframeList().el)
     $('nav.toolbar ul li ul li').removeClass "disabled"
 
+  somethin: ->
+    scene = cc.Director.sharedDirector().getRunningScene()
+    images = new App.Collections.ImagesCollection []
+    images.fetch success: ->
+      image = images.get(12)
+      console.log image.get('url')
+      # url    = image.get('url')
+      # cc.TextureCache.sharedTextureCache().addImage(url)
+      # node.removeChild node.backgroundSprite
+      # node.backgroundSprite = cc.Sprite.spriteWithFile(url)
+      # node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
+      # node.backgroundSprite.setPosition cc.ccp(500, 300)
+      # node.addChild node.backgroundSprite
+
   clickScene: (event) ->
-    sceneEl = $(event.currentTarget).parent()
+    target  = $(event.currentTarget)
+    sceneId = target.data("id")
+    sceneEl = target.parent()
     sceneEl.siblings().removeClass "active"
     sceneEl.removeClass "active"
     sceneEl.addClass "active"
-    this.setActiveScene @collection.get($(event.currentTarget).data("id"))
+    @setActiveScene @collection.get(sceneId)
+    @somethin()
