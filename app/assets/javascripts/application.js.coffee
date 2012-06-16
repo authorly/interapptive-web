@@ -8,6 +8,8 @@
 #= require jquery-fileupload
 
 #= require ./vendor/backbone-forms.js
+#= require ./vendor/backbone-forms-list.min.js
+#= require ./vendor/backbone.bootstrap-modal.min.js
 #= require ./vendor/jquery.ui.custom.1.8.11
 #= require ./vendor/form-templates/bootstrap
 #= require ./vendor/form-editors/currency

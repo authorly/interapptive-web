@@ -1,7 +1,9 @@
 class App.Models.Action extends Backbone.Model
   paramRoot: 'action'
 
-  schema:
-    attribute:
-      type: 'NestedModel'
-      model: App.Models.Attribute
+class App.Models.ActionDefinition extends Backbone.Model
+  paramRoot: 'action_definition'
+
+class App.Collections.ActionDefinitionsCollection extends Backbone.Collection
+  model: App.Models.ActionDefinition
+  url: '/actions/definitions.json'

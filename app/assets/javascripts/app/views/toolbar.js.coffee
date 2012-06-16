@@ -7,6 +7,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .videos'      : 'showVideoLibrary'
     'click .fonts'       : 'showFontLibrary'
     'click .sounds'      : 'showSoundLibrary'
+    'click .actions'     : 'showActionLibrary'
 
   initialize: ->
     @assetLibraryView = new App.Views.AssetLibrary()
@@ -19,6 +20,18 @@ class App.Views.ToolbarView extends Backbone.View
 
   addKeyframe: ->
     App.keyframeList().createKeyframe()
+
+  showActionLibrary: ->
+    definitions = new App.Collections.ActionDefinitionsCollection()
+    definitions.fetch
+      success: ->
+        action = new App.Models.Action
+          definition: definitions.first()
+          attributes: definitions.first().get('attribute_definitions')
+          scene: App.currentScene()
+
+        view = new App.Views.NewAction(model: action, definitions: definitions)
+        App.modalWithView(view: view).showModal()
 
   editText: ->
     $("#text").focus() unless $('.edit-text').hasClass "disabled"

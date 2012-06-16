@@ -55,7 +55,7 @@ $ ->
 
   $("ul#toolbar li ul li").click ->
     toolbar_modal.modal "hide"
-    unless $(this).is('.scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts')
+    unless $(this).is('.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts')
       toolbar_modal.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"

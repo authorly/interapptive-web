@@ -24,6 +24,10 @@ Interapptive::Application.routes.draw do
 
   resources :actions do
     resources :attributes
+
+    collection do
+      get 'definitions'
+    end
   end
   
   resources :touch_zones
