@@ -14,3 +14,4 @@
 #= require builder/AppDelegate
 #= require builder/init
 #= require builder/builder
+#= require ./widgets

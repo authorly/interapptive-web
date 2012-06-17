@@ -6,6 +6,8 @@ var Builder = cc.Layer.extend({
     init: function () {
         this._super();
         this.setIsTouchEnabled(true);
+
+        this.addChild(new App.Builder.Widgets.TouchEditorLayer, 100)
         return true;
     },
 
