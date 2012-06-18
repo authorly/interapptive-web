@@ -53,17 +53,6 @@ class App.Views.SceneIndex extends Backbone.View
         node.backgroundSprite.setPosition cc.ccp(500, 300)
         node.addChild node.backgroundSprite
 
-  setBackgroundLocation: (x, y) ->
-    # App.currentKeyframe().unset('id')
-    # console.log App.currentKeyframe().id
-    # App.currentKeyframe().previous('id')
-    App.currentKeyframe().set
-      background_x_coord: x
-      background_y_coord: y
-    App.currentKeyframe().save id:1,
-      success: (model, response) =>
-        alert('saved keyframe model')
-
   clickScene: (event) ->
     target  = $(event.currentTarget)
     sceneId = target.data("id")

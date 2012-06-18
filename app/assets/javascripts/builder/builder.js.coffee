@@ -20,10 +20,7 @@ class Builder extends cc.Layer
     @isMouseDown = false
     x = parseInt(touches[0].locationInView(0).x)
     y = parseInt(touches[0].locationInView(0).y)
-    App.sceneListView.setBackgroundLocation(parseInt(x), parseInt(y))
-
-  ccTouchesCancelled: (touches, event) ->
-    console.log "ccTouchesCancelled"
+    App.keyframeListView.setBackgroundLocation(x, y)
 
 Builder.scene = ->
   scene = cc.Scene.node()

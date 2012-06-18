@@ -10,7 +10,6 @@ class App.Collections.ScenesCollection extends Backbone.Collection
   initialize: (models, options) ->
     if options
       this.storybook_id = options.storybook_id
-      console.log options
 
   url: ->
     '/storybooks/' + this.storybook_id + '/scenes.json'
