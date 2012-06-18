@@ -11,7 +11,8 @@
 # GO AFTER THE REQUIRES BELOW.
 #
 #= require cocos2d-html5
-#= require builder/AppDelegate
+#= require builder/cocos2d_fixes
 #= require builder/init
+#= require builder/app_delegate
 #= require builder/builder
 #= require ./widgets
