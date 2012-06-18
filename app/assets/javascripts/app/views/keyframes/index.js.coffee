@@ -31,12 +31,11 @@ class App.Views.KeyframeIndex extends Backbone.View
     App.currentKeyframe(@keyframe)
 
   clickKeyframe: (event) ->
-    id = $(event.currentTarget).data("id")
+    @activeId = $(event.currentTarget).data("id")
+    @keyframe = @collection.get(@activeId)
     $(event.currentTarget).parent().siblings().removeClass("active")
     $(event.currentTarget).parent().removeClass("active")
     $(event.currentTarget).parent().addClass("active")
-    @keyframe = @collection.get id
-    @activeId = id
     @setActiveKeyframe()
 
   setBackgroundLocation: (x, y) ->
@@ -46,4 +45,4 @@ class App.Views.KeyframeIndex extends Backbone.View
       id: @activeId
     App.currentKeyframe().save {},
       success: ->
-        console.log "saved background location"
+        console.log "Saved background location"
