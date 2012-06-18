@@ -35,21 +35,31 @@ class App.Views.SceneIndex extends Backbone.View
     App.keyframeList().collection.fetch()
     $('#keyframe-list').html ""
     $('#keyframe-list').html(App.keyframeList().el)
-    $('nav.toolbar ul li ul li').removeClass "disabled"
+    $('nav.toolbar ul li ul li').removeClass 'disabled'
 
-  somethin: ->
-    scene = cc.Director.sharedDirector().getRunningScene()
+  setBackground: ->
     images = new App.Collections.ImagesCollection []
-    images.fetch success: ->
-      image = images.get(12)
-      console.log image.get('url')
-      # url    = image.get('url')
-      # cc.TextureCache.sharedTextureCache().addImage(url)
-      # node.removeChild node.backgroundSprite
-      # node.backgroundSprite = cc.Sprite.spriteWithFile(url)
-      # node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
-      # node.backgroundSprite.setPosition cc.ccp(500, 300)
-      # node.addChild node.backgroundSprite
+    scene  = App.currentScene()
+    node  = cc.Director.sharedDirector().getRunningScene()
+    node.removeChild node.backgroundSprite
+    images.fetch success: =>
+      if scene.has('image_id')
+        backgroundImageId = scene.get('image_id')
+        image = images.get(backgroundImageId)
+        url   = image.get('url')
+        cc.TextureCache.sharedTextureCache().addImage(url)
+        node.backgroundSprite = cc.Sprite.spriteWithFile(url)
+        node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
+        node.backgroundSprite.setPosition cc.ccp(500, 300)
+        node.addChild node.backgroundSprite
+
+  setBackgroundLocation: (x, y) ->
+    scene = App.CurrentScene()
+    scene.set
+      background_x_coord: x
+      background_y_coord: y
+    scene.save success: =>
+      console.log "saved scene background location"
 
   clickScene: (event) ->
     target  = $(event.currentTarget)
@@ -59,4 +69,4 @@ class App.Views.SceneIndex extends Backbone.View
     sceneEl.removeClass "active"
     sceneEl.addClass "active"
     @setActiveScene @collection.get(sceneId)
-    @somethin()
+    @setBackground()
