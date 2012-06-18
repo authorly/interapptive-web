@@ -81,8 +81,10 @@ ActiveRecord::Schema.define(:version => 20120618051230) do
 
   create_table "keyframes", :force => true do |t|
     t.integer  "scene_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "background_x_coord"
+    t.integer  "background_y_coord"
   end
 
   add_index "keyframes", ["scene_id"], :name => "index_keyframes_on_scene_id"
@@ -105,10 +107,8 @@ ActiveRecord::Schema.define(:version => 20120618051230) do
     t.integer  "sound_id"
     t.integer  "image_id"
     t.integer  "page_number"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
-    t.integer  "background_x_coord"
-    t.integer  "background_y_coord"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   add_index "scenes", ["storybook_id"], :name => "index_scenes_on_storybook_id"

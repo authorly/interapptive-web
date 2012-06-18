@@ -2,6 +2,7 @@ cc.Log = cc.LOG = console.log.bind(console)
 
 window.initBuilder = ->
   cc.setup "builder-canvas"
+
   cc.Loader.shareLoader().onloading = ->
     console.log "LOADING...."
 
