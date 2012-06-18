@@ -42,17 +42,21 @@ window.runBuilder = function () {
     cc.Touch.prototype.locationInView = function () {
         var p = this._m_point;
 
-        // Ratio of canvas to element size
-        var ratioW = cc.canvas.width / $(cc.canvas).width()
-            , ratioH = cc.canvas.height / $(cc.canvas).height()
+        var $c = $(cc.canvas)
 
-        // Fix coords ignoring scroll
+        // Ratio of canvas to element size
+        var ratioW = cc.canvas.width / $c.width()
+            , ratioH = cc.canvas.height / $c.height()
+
+        // Fix coords ignoring scroll of elements that aren't document.body
         var scrollV = 0
             , scrollH = 0
-        var x = $(cc.canvas)
+        var x = $c
         while (x.length > 0) {
-            scrollV += x.scrollTop()
-            scrollH += x.scrollLeft()
+            if (x[0] !== document.body && x[0] !== document) {
+                scrollV += x.scrollTop()
+                scrollH += x.scrollLeft()
+            }
 
             x = x.parent()
         }
@@ -61,8 +65,12 @@ window.runBuilder = function () {
         var realX = (p.x - scrollH) * ratioW
 
         // Y coord has wrong origin and doesn't consider ratio
-        var realY = (p.y - (cc.canvas.height - $(cc.canvas).height())) - scrollV
+        var realY = (p.y - (cc.canvas.height - $c.height())) - scrollV
         realY *= ratioH
+
+        // Adjust for padding/border
+        realX -= parseFloat($c.css('borderLeftWidth')) + parseFloat($c.css('paddingLeft'))
+        realY += parseFloat($c.css('borderTopWidth')) + parseFloat($c.css('paddingTop'))
 
         var actualPoint = new cc.Point(realX, realY)
 
