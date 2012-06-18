@@ -40,10 +40,10 @@ class App.Views.KeyframeIndex extends Backbone.View
     @setActiveKeyframe()
 
   setBackgroundLocation: (x, y) ->
-    @keyframe.set
+    App.currentKeyframe().set
       background_x_coord: x
       background_y_coord: y
       id: @activeId
-    @keyframe.save
+    App.currentKeyframe().save {},
       success: ->
         console.log "saved background location"
