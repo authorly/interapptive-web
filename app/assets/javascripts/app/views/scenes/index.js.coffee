@@ -54,6 +54,9 @@ class App.Views.SceneIndex extends Backbone.View
         node.addChild node.backgroundSprite
 
   setBackgroundLocation: (x, y) ->
+    # App.currentKeyframe().unset('id')
+    # console.log App.currentKeyframe().id
+    # App.currentKeyframe().previous('id')
     App.currentKeyframe().set
       background_x_coord: x
       background_y_coord: y
