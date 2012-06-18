@@ -1,8 +1,10 @@
 class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
-  
+
   url: ->
-    '/scenes/' + App.currentScene().get('id') + '/keyframes'
+    base = '/scenes/' + App.currentScene().get('id') + '/'
+    return  (base + 'keyframes.json') if @isNew()
+    base + 'keyframes/' + App.currentKeyframe().get('id') + '.json'
 
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe

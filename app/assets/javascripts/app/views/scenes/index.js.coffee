@@ -40,7 +40,7 @@ class App.Views.SceneIndex extends Backbone.View
   setBackground: ->
     images = new App.Collections.ImagesCollection []
     scene  = App.currentScene()
-    node  = cc.Director.sharedDirector().getRunningScene()
+    node   = cc.Director.sharedDirector().getRunningScene()
     node.removeChild node.backgroundSprite
     images.fetch success: =>
       if scene.has('image_id')
@@ -54,12 +54,12 @@ class App.Views.SceneIndex extends Backbone.View
         node.addChild node.backgroundSprite
 
   setBackgroundLocation: (x, y) ->
-    scene = App.CurrentScene()
-    scene.set
+    App.currentKeyframe().set
       background_x_coord: x
       background_y_coord: y
-    scene.save success: =>
-      console.log "saved scene background location"
+    App.currentKeyframe().save id:1,
+      success: (model, response) =>
+        alert('saved keyframe model')
 
   clickScene: (event) ->
     target  = $(event.currentTarget)

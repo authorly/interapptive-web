@@ -18,7 +18,9 @@ class Builder extends cc.Layer
 
   ccTouchesEnded: (touches, event) ->
     @isMouseDown = false
-    console.log "ccTouchesEnded"
+    x = parseInt(touches[0].locationInView(0).x)
+    y = parseInt(touches[0].locationInView(0).y)
+    App.sceneListView.setBackgroundLocation(parseInt(x), parseInt(y))
 
   ccTouchesCancelled: (touches, event) ->
     console.log "ccTouchesCancelled"
