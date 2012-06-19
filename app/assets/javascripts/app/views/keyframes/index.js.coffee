@@ -3,7 +3,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   tagName: 'ul'
   className: 'keyframe-list'
   events:
-    'click li': 'setActiveKeyframe'
+    'click .keyframe-list li div': 'setActiveKeyframe'
     
   initialize: ->
     @collection.on('reset', @render, this)
