@@ -28,14 +28,12 @@ class App.Views.KeyframeIndex extends Backbone.View
     $('.keyframe-list li').removeClass('active').first().addClass('active')
 
   setActiveKeyframe: (event) ->
-    target    = $(event.currentTarget)
-    @activeId = target.data("id")
-    @keyframe = @collection.get(@activeId)
     sprite    = cc.Director.sharedDirector().getRunningScene().backgroundSprite
-    console.log @keyframe.get('background_x_coord') + ", " +  @keyframe.get('background_y_coord') if @keyframe?
-    #if App.currentKeyframe()? and sprite?
-    #  @setBackgroundPosition @keyframe.get('background_x_coord'), @keyframe.get('background_y_coord')
-    target.parent().removeClass("active").addClass("active").siblings().removeClass("active")
+    @activeId = $(event.currentTarget).data("id")
+    @keyframe = @collection.get(@activeId)
+    if @keyframe? and sprite?
+      sprite.setPosition(cc.ccp(@keyframe.get('background_x_coord'), @keyframe.get('background_y_coord')))
+    $(event.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
     App.currentKeyframe(@keyframe)
 
   setBackgroundPosition: (x, y) ->
@@ -44,5 +42,6 @@ class App.Views.KeyframeIndex extends Backbone.View
       background_y_coord: y
       id: @activeId
     App.currentKeyframe().save {},
+      wait: true
       success: ->
         console.log "Saved background location"
