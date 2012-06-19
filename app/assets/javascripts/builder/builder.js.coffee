@@ -1,16 +1,15 @@
 class Builder extends cc.Layer
-  isMouseDown: false,
-  paragraphText: null,
+  isMouseDown: false
   backgroundSprite: null
 
   constructor: ->
     super
+    # this.addChild(new App.Builder.Widgets.TouchEditorLayer, 100)
     @setIsTouchEnabled true
     true
 
   ccTouchesBegan: (touches, event) ->
     @isMouseDown = true
-    console.log "ccTouchesBegin"
 
   ccTouchesMoved: (touches, event) ->
     currentPointerPosition = new cc.Point(touches[0].locationInView(0).x, touches[0].locationInView(0).y)
@@ -18,9 +17,8 @@ class Builder extends cc.Layer
 
   ccTouchesEnded: (touches, event) ->
     @isMouseDown = false
-    x = parseInt(touches[0].locationInView(0).x)
-    y = parseInt(touches[0].locationInView(0).y)
-    App.keyframeListView.setBackgroundLocation(x, y)
+    touchLocation = touches[0].locationInView(0)
+    App.keyframeListView.setBackgroundPosition(parseInt(touchLocation.x), parseInt(touchLocation.y))
 
 Builder.scene = ->
   scene = cc.Scene.node()
