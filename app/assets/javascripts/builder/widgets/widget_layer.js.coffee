@@ -1,0 +1,78 @@
+class App.Builder.Widgets.WidgetLayer extends cc.Layer
+
+  constructor: ->
+    super
+    @widgets = []
+    @_capturedWidget = null
+
+    @setIsTouchEnabled(true)
+
+  addWidget: (widget) ->
+    @widgets.push(widget)
+    @addChild(widget)
+
+    this
+
+  widgetAtTouch: (touch) ->
+    @widgetAtPoint(touch.locationInView())
+
+  widgetAtPoint: (point) ->
+    for widget in @_m_pChildren
+      if widget.getIsVisible()
+        local = widget.convertToNodeSpace(point)
+
+        r = widget.rect()
+        r.origin = new cc.Point(0, 0)
+
+        # Fix bug in cocos2d-html5; It doesn't convert to local space correctly
+        local.x += @getAnchorPoint().x * r.size.width
+        local.y += @getAnchorPoint().y * r.size.height
+
+        if cc.Rect.CCRectContainsPoint(r, local)
+          return widget
+
+    null
+
+  ccTouchesBegan: (touches) ->
+    widget = @widgetAtTouch(touches[0])
+    return unless widget
+
+    touch = touches[0].locationInView()
+
+    @_capturedWidget = widget
+    @_previousPoint = new cc.Point(touch.x, touch.y)
+
+    return true
+
+  ccTouchesMoved: (touches) ->
+    point = touches[0].locationInView()
+    if @_capturedWidget
+      @moveCapturedWidget(point)
+    else
+      @highlightWidgetAtPoint(point)
+
+  moveCapturedWidget: (point) ->
+    @_previousPoint ||= point
+    delta = cc.ccpSub(point, @_previousPoint)
+    newPos = cc.ccpAdd(delta, @_capturedWidget.getPosition())
+
+    @_capturedWidget.setPosition(newPos)
+    @_previousPoint = new cc.Point(point.x, point.y)
+
+  highlightWidgetAtPoint: (point) ->
+    @unhighlightAllWidgets()
+
+    widget = @widgetAtPoint(point)
+
+    return unless widget
+
+    widget.setOpacity(225)
+
+  unhighlightAllWidgets: ->
+    for widget in @widgets
+      widget.setOpacity(150)
+
+  ccTouchesEnded: (touches) ->
+    @_previousPoint = null
+    @_capturedWidget = null
+
