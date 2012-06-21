@@ -25,13 +25,14 @@ class App.Views.ToolbarView extends Backbone.View
     definitions = new App.Collections.ActionDefinitionsCollection()
     definitions.fetch
       success: ->
-        action = new App.Models.Action
+        defaultAction = new App.Models.Action
           definition: definitions.first()
           attributes: definitions.first().get('attribute_definitions')
           scene: App.currentScene()
 
-        view = new App.Views.NewAction(model: action, definitions: definitions)
-        App.modalWithView(view: view).showModal()
+        formView = new App.Views.NewAction(model: defaultAction)
+        libraryView = new App.Views.ActionIndex(actions: definitions, formView: formView)
+        App.modalWithView(view: libraryView).showModal()
 
   editText: ->
     $("#text").focus() unless $('.edit-text').hasClass "disabled"

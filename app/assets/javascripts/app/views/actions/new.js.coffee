@@ -5,10 +5,6 @@ class App.Views.NewAction extends Backbone.View
   initialize: (options) ->
     @definitions = options.definitions
 
-    schema = this.generateSchema()
-
-    @form = new Backbone.Form(schema: schema).render()
-
   createAction: (event) ->
     event.preventDefault()
 
@@ -16,6 +12,9 @@ class App.Views.NewAction extends Backbone.View
     @model.save()
 
   render: ->
+    $(@el).empty()
+    schema = this.generateSchema()
+    @form = new Backbone.Form(schema: schema).render()
     $(@el).append @form.el
     this
 
@@ -60,7 +59,6 @@ class App.Views.NewAction extends Backbone.View
         validators: validators
       }
 
-    console.log schema
     return schema
 
   attributeToString: (attribute) ->
