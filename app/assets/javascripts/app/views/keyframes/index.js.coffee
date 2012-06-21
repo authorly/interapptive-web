@@ -11,7 +11,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   render: ->
     $(@el).html('')
     @collection.each (keyframe) => @appendKeyframe(keyframe)
-    $('.keyframe-list li:first div:first').click()
+    $(@el).find('li:first div:first').click()
     @delegateEvents()
     this
 
@@ -23,20 +23,20 @@ class App.Views.KeyframeIndex extends Backbone.View
         @appendKeyframe(model)
 
   appendKeyframe: (keyframe) ->
-    view = new App.Views.Keyframe(model: keyframe)
-    $('.keyframe-list').append(view.render().el)
-    $('.keyframe-list li').removeClass('active').first().addClass('active')
+    view  = new App.Views.Keyframe(model: keyframe)
+    image = App.imageList().collection.get(keyframe.get('image_id'))
+    $(@el).append(view.render().el).removeClass('active').first().addClass('active')
+    if keyframe.has('image_id')
+      $(@el).find("[data-id='" + keyframe.id + "']").css("background-image", "url(" + image.get('url') + ")")
 
-  setActiveKeyframe: (event) ->
-    @activeId = $(event.currentTarget).data("id")
+  setActiveKeyframe: (e) ->
+    @activeId = $(e.currentTarget).data("id")
     @keyframe = @collection.get(@activeId)
     sprite    = cc.Director.sharedDirector().getRunningScene().backgroundSprite
     if @keyframe? and sprite?
       sprite.setPosition(cc.ccp(@keyframe.get('background_x_coord'), @keyframe.get('background_y_coord')))
-    $(event.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
+    $(e.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
     App.currentKeyframe(@keyframe)
-    console.log @keyframe
-    console.log @keyframe.has('image_id')
 
   setBackgroundPosition: (x, y) ->
     App.currentKeyframe().set
@@ -51,7 +51,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   setThumbnail: ->
     oCanvas = document.getElementById('builder-canvas')
     image   = Canvas2Image.saveAsPNG(oCanvas, true, 112, 84)
-    $(".keyframe-list").find("[data-id='" + App.currentKeyframe().get('id') + "']").html(image)
+    # $(".keyframe-list").find("[data-id='" + App.currentKeyframe().get('id') + "']").html(image)
     $.ajax
       type: "POST"
       url: "/images"
@@ -60,7 +60,11 @@ class App.Views.KeyframeIndex extends Backbone.View
       dataType: "json"
       success: (response) =>
         console.log "Canvas has been rendered and saved"
+        console.log response[0]
+        # Replace old image here
+        # $(".keyframe-list").find("[data-id='" + App.currentKeyframe().get('id') + "']").html(image)
         @setThumbnailId(response[0].id)
+
 
   setThumbnailId: (id) ->
     App.currentKeyframe().set image_id: id
