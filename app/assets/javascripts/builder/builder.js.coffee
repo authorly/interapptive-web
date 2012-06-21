@@ -7,7 +7,7 @@ class Builder extends cc.Layer
     @setIsTouchEnabled true
 
     @widgetLayer = new App.Builder.Widgets.WidgetLayer
-    this.addChild(@widgetLayer, 100)
+    #this.saddChild(@widgetLayer, 100)
 
     # Test text widget
     text = new App.Builder.Widgets.TextWidget(string: 'Test Text')
@@ -25,6 +25,19 @@ class Builder extends cc.Layer
     touch = new App.Builder.Widgets.TouchWidget
     touch.setPosition(new cc.Point(450, 100))
     @widgetLayer.addWidget(touch)
+
+  ccTouchesBegan: (touches, event) ->
+    @isMouseDown = true
+
+  ccTouchesMoved: (touches, event) ->
+    currentPointerPosition = new cc.Point(touches[0].locationInView(0).x, touches[0].locationInView(0).y)
+    @backgroundSprite.setPosition currentPointerPosition if touches and @isMouseDown
+
+  ccTouchesEnded: (touches, event) ->
+    @isMouseDown = false
+    touchLocation = touches[0].locationInView(0)
+    App.keyframeListView.setBackgroundPosition(parseInt(touchLocation.x), parseInt(touchLocation.y))
+
 
 Builder.scene = ->
   scene = cc.Scene.node()

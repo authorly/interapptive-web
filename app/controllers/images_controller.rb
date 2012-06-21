@@ -5,7 +5,7 @@ class ImagesController < ApplicationController
     @images = Image.all
 
     respond_to do |format|
-      format.json { render :json => @images.collect { |p| p.as_jquery_upload_response }.to_json }
+      format.json { render :json => @images.map(&:as_jquery_upload_response).to_json }
     end
   end
 
@@ -26,7 +26,7 @@ class ImagesController < ApplicationController
       filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
       file = File.open(filename, "wb")
       file.write(Base64.decode64(params[:image][:files][0]))
-      @images = params[:image][:files].map { |f| Image.create(:image => file) }
+      @images = [Image.create(:image => file)]
     else
       @images = params[:image][:files].map { |f| Image.create(:image => f) }
     end

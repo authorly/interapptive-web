@@ -41,7 +41,7 @@ class App.Models.Storybook extends Backbone.Model
       selectedIndex: 0
 
   url: ->
-    '/storybooks/' + App.currentStorybook().get('id') + '.json'
+    '/storybooks'
 
   toJSON: ->
     @attributes
