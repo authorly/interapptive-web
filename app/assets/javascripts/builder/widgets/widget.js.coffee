@@ -1,6 +1,7 @@
 class App.Builder.Widgets.Widget extends cc.Node
   constructor: (options={}) ->
     super
+    _.extend(this, Backbone.Events)
 
     @_opacity = 255
 

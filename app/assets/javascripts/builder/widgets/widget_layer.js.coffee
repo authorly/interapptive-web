@@ -7,6 +7,32 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     @setIsTouchEnabled(true)
 
+    # FIXME Need a cleaner way to check for doubleclicks
+    cc.canvas.addEventListener('dblclick', (event) =>
+      el = cc.canvas
+      pos = {left:0, top:0, height:el.height}
+
+      while el != null
+        pos.left += el.offsetLeft
+        pos.top += el.offsetTop
+        el = el.offsetParent
+
+      tx = event.pageX
+      ty = event.pageY
+
+      mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
+      mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
+
+      touch = new cc.Touch(0, mouseX, mouseY)
+      touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
+      cc.TouchDispatcher.preTouchPoint.x = mouseX
+      cc.TouchDispatcher.preTouchPoint.y = mouseY
+
+      widget = @widgetAtPoint(touch.locationInView())
+      widget.trigger('dblclick', touch, event)
+    )
+
+
   addWidget: (widget) ->
     @widgets.push(widget)
     @addChild(widget)
@@ -63,7 +89,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @unhighlightAllWidgets()
 
     widget = @widgetAtPoint(point)
-
     return unless widget
 
     widget.setOpacity(225)

@@ -3,6 +3,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .add-scene'   : 'addScene'
     'click .add-keyframe': 'addKeyframe'
     'click .add-image'   : 'addImage'
+    'click .add-text'    : 'addText'
     'click .images'      : 'showImageLibrary'
     'click .videos'      : 'showVideoLibrary'
     'click .fonts'       : 'showFontLibrary'
@@ -22,6 +23,11 @@ class App.Views.ToolbarView extends Backbone.View
 
   addImage: ->
     App.modalWithView(view: App.imageList()).show()
+
+  addText: ->
+    text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
+    text.setPosition(new cc.Point(100, 100))
+    window.builder.widgetLayer.addWidget(text)
 
   showImageLibrary: ->
     @loadDataFor("image")
