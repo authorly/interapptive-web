@@ -1,6 +1,6 @@
 class ImagesController < ApplicationController
-  # GET /images
-  # GET /images.json
+  require "base64"
+
   def index
     @images = Image.all
 
@@ -9,8 +9,6 @@ class ImagesController < ApplicationController
     end
   end
 
-  # GET /scenes/:scene_id/images/:id
-  # GET /scenes/:scene_id/image/:id.json
   def show
     @scene = Scene.find params[:scene_id]
     @image = @scene.images.find params[:id]
@@ -20,29 +18,22 @@ class ImagesController < ApplicationController
     end
   end
 
-  # POST /storybooks/:storybook_id/scenes
-  # POST /storybooks/:storybook_id/scenes.json
   def create
-    @images = params[:image][:files].map { |f| Image.create(:image => f) }
+    # We can use something other than the base64 param as a flag in the JSON,
+    # or use a hidden field flag instead of injecting into
+    # the .ajax() calls data in the JS (see keyframe index file)
+    if params[:base64]
+      filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
+      file = File.open(filename, "wb")
+      file.write(Base64.decode64(params[:image][:files][0]))
+      @images = params[:image][:files].map { |f| Image.create(:image => file) }
+    else
+      @images = params[:image][:files].map { |f| Image.create(:image => f) }
+    end
 
     respond_to do |format|
       format.json { render :json => @images.map(&:as_jquery_upload_response).to_json }
     end
-  end
-
-  # PUT /scenes/:scene_id/images/:id
-  # PUT /scenes/:scene_id/images/:id.json
-  def update
-    # @scene = Scene.find params[:scene_id]
-    # @image = @scene.images.find params[:id]
-    #
-    # respond_to do |format|
-    #   if @scene.update_attributes params[:scene]
-    #     format.json { render :json => @scene }
-    #   else
-    #     format.json { render :json => @scene.errors, :status => :unprocessable_entity }
-    #   end
-    # end
   end
 
   # DELETE /images/:id

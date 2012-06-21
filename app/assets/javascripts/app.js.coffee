@@ -50,6 +50,9 @@ window.App =
 $ ->
   App.init()
 
+  $('#convert').on 'click', ->
+    App.keyframeListView.setThumbnail()
+
   $(".content-modal").modal(backdrop: true).modal "hide"
   $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
 

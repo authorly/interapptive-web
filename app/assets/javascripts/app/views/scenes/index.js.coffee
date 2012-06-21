@@ -21,9 +21,8 @@ class App.Views.SceneIndex extends Backbone.View
       wait: true
       success: (scene, response) ->
         @collection.add scene
-        App.currentScene scene
         @setActiveScene scene
-    scene
+    return scene
 
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
@@ -40,7 +39,7 @@ class App.Views.SceneIndex extends Backbone.View
     images = new App.Collections.ImagesCollection []
     scene  = App.currentScene()
     node   = cc.Director.sharedDirector().getRunningScene()
-    node.removeChild node.backgroundSprite
+    node.removeChild(node.backgroundSprite)
     images.fetch success: =>
       if scene.has('image_id')
         bgImageId = scene.get('image_id')
@@ -49,7 +48,7 @@ class App.Views.SceneIndex extends Backbone.View
         cc.TextureCache.sharedTextureCache().addImage(url)
         node.backgroundSprite = cc.Sprite.spriteWithFile(url)
         node.backgroundSprite.setPosition cc.ccp(App.currentKeyframe().get('background_x_coord'), App.currentKeyframe().get('background_y_coord'))
-        node.addChild node.backgroundSprite, 50
+        node.addChild(node.backgroundSprite, 50)
 
   clickScene: (event) ->
     target  = $(event.currentTarget)

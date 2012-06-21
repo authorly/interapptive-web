@@ -4,7 +4,7 @@ class Builder extends cc.Layer
 
   constructor: ->
     super
-    # this.addChild(new App.Builder.Widgets.TouchEditorLayer, 100)
+    # @addChild(new App.Builder.Widgets.TouchEditorLayer, 100)
     @setIsTouchEnabled true
     true
 

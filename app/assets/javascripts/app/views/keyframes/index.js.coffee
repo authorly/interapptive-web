@@ -28,9 +28,9 @@ class App.Views.KeyframeIndex extends Backbone.View
     $('.keyframe-list li').removeClass('active').first().addClass('active')
 
   setActiveKeyframe: (event) ->
-    sprite    = cc.Director.sharedDirector().getRunningScene().backgroundSprite
     @activeId = $(event.currentTarget).data("id")
     @keyframe = @collection.get(@activeId)
+    sprite    = cc.Director.sharedDirector().getRunningScene().backgroundSprite
     if @keyframe? and sprite?
       sprite.setPosition(cc.ccp(@keyframe.get('background_x_coord'), @keyframe.get('background_y_coord')))
     $(event.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
@@ -45,3 +45,16 @@ class App.Views.KeyframeIndex extends Backbone.View
       wait: true
       success: ->
         console.log "Saved background location"
+
+  setThumbnail: ->
+    oCanvas = document.getElementById('builder-canvas')
+    image   = Canvas2Image.saveAsPNG(oCanvas, true, 100, 100)
+    $(".keyframe-list").find("[data-id='" + App.currentKeyframe().get('id') + "']").html(image)
+    $.ajax
+      type: "POST"
+      url: "/images"
+      data: '{"base64":true,"image" : {"files" : [ "' + image.src.replace('data:image/png;base64,', '') + '" ] }}'
+      contentType: "application/json; charset=utf-8"
+      dataType: "json"
+      success: (msg) ->
+        console.log "Canvas has been rendered and successfully sent to the server"

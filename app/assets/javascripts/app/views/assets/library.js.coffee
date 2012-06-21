@@ -24,8 +24,6 @@ class App.Views.AssetLibrary extends Backbone.View
       template.addClass "in"
       $("#loading").remove()
 
-  load: ->
-
   closeAssetLib: ->
     $("#fileupload").fileupload "disable"
     $('.content-modal').removeClass "asset-library-modal"
