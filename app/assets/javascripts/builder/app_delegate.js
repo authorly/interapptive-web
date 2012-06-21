@@ -5,6 +5,8 @@ App.Builder = {
           , s = pDirector.getWinSize()
           , ret = new Builder.node();
 
+        // FIXME need a better way to access builder from other places
+        window.builder = ret
         cc.Director.sharedDirector().replaceScene(ret);
     }
 }
