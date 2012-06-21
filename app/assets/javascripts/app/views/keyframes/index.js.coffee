@@ -60,9 +60,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       dataType: "json"
       success: (response) =>
         console.log "Canvas has been rendered and saved"
-        console.log response
-        console.log response.id
-        @setThumbnailId(response.id)
+        @setThumbnailId(response[0].id)
 
   setThumbnailId: (id) ->
     App.currentKeyframe().set image_id: id
