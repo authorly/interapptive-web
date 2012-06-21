@@ -1,9 +1,9 @@
-class App.Builder.Widgets.TouchEditor extends cc.Node
+#= require ./widget
+
+class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   constructor: (options={}) ->
     super
-
-    @_opacity = 255
 
     @setRadius(options.radius || 32)
     @setControlRadius(options.controlRadius || 12)
@@ -19,12 +19,6 @@ class App.Builder.Widgets.TouchEditor extends cc.Node
 
     this
 
-  setOpacity: (o) ->
-    @_opacity = o
-
-  getOpacity: ->
-    @_opacity
-
   getRadius: ->
     @_radius
 
@@ -35,6 +29,7 @@ class App.Builder.Widgets.TouchEditor extends cc.Node
     r = @getRadius()
     cr = @getControlRadius()
 
+    # FIXME We should monkey patch cocos2d-html5 to support opacity
     ctx.save()
     ctx.globalAlpha = @getOpacity() / 255.0
 
@@ -54,15 +49,3 @@ class App.Builder.Widgets.TouchEditor extends cc.Node
     ctx.fill()
 
     ctx.restore()
-
-  rect: ->
-    p = @getPosition()
-    s = @getContentSize()
-    a = @getAnchorPoint()
-
-    cc.RectMake(
-      p.x - s.width  * a.x
-      p.y - s.height * a.y
-      s.width
-      s.height
-    )

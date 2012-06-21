@@ -19,19 +19,20 @@ cc.setupHTML = (a) ->
 cc.Touch.prototype.locationInView = ->
   p = this._m_point
 
+  $c = $(cc.canvas)
 
   # Ratio of canvas to element size
-  ratioW = cc.canvas.width / $(cc.canvas).width()
-  ratioH = cc.canvas.height / $(cc.canvas).height()
+  ratioW = cc.canvas.width / $c.width()
+  ratioH = cc.canvas.height / $c.height()
 
-  # Fix coords ignoring scroll
+  # Fix coords ignoring scroll of elements that aren't document.body
   scrollV = 0
   scrollH = 0
-
-  x = $(cc.canvas)
+  x = $c
   while x.length > 0
-    scrollV += x.scrollTop()
-    scrollH += x.scrollLeft()
+    if x[0] != document.body && x[0] != document
+      scrollV += x.scrollTop()
+      scrollH += x.scrollLeft()
 
     x = x.parent()
 
@@ -39,8 +40,12 @@ cc.Touch.prototype.locationInView = ->
   realX = (p.x - scrollH) * ratioW
 
   # Y coord has wrong origin and doesn't consider ratio
-  realY = (p.y - (cc.canvas.height - $(cc.canvas).height())) - scrollV
+  realY = (p.y - (cc.canvas.height - $c.height())) - scrollV
   realY *= ratioH
+
+  # Adjust for padding/border
+  realX -= parseFloat($c.css('borderLeftWidth')) + parseFloat($c.css('paddingLeft'))
+  realY += parseFloat($c.css('borderTopWidth')) + parseFloat($c.css('paddingTop'))
 
   actualPoint = new cc.Point(realX, realY)
 
