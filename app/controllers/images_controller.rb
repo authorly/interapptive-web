@@ -19,9 +19,6 @@ class ImagesController < ApplicationController
   end
 
   def create
-    # We can use something other than the base64 param as a flag in the JSON,
-    # or use a hidden field flag instead of injecting into
-    # the .ajax() calls data in the JS (see keyframe index file)
     if params[:base64]
       filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
       file = File.open(filename, "wb")
@@ -33,6 +30,36 @@ class ImagesController < ApplicationController
 
     respond_to do |format|
       format.json { render :json => @images.map(&:as_jquery_upload_response).to_json }
+    end
+  end
+
+  # POST /images/:id
+  # PUT /images/:id.format
+  def update
+    @image = Image.find params[:id]
+
+    filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
+    file = File.open(filename, "wb")
+    file.write(Base64.decode64(params[:image][:files][0]))
+    debugger
+    # @place = Place.find(params[:id])
+    # params[:place][:images_attributes].each_key { |key|
+    #   if params[:place][:images_attributes][key.to_sym][:remove_image] == "1"
+    #     @image = Image.find(params[:place][:images_attributes][key.to_sym][:id])
+    #     @image.remove_image!
+    #     @image.destroy
+    #     params[:place][:images_attributes].delete(key.to_sym)
+    #   end
+    # }
+
+    #@place.update_attributes(params[:place])
+
+    respond_to do |format|
+      if @image.update_attribute(:file, params[:image][:files][0])
+        format.json { head :ok }
+      else
+        format.json { render json: @image.errors, status: :unprocessable_entity }
+      end
     end
   end
 
