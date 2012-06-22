@@ -25,29 +25,19 @@ class App.Views.KeyframeIndex extends Backbone.View
   appendKeyframe: (keyframe) ->
     view  = new App.Views.Keyframe(model: keyframe)
     $(@el).append(view.render().el).removeClass('active').first().addClass('active')
-    console.lot "hit outside"
     if keyframe.has "image_id"
-      console.lot "hit inside"
-      console.log "keyframe (image):"
-      console.log keyframe
-      console.log ""
       image    = App.imageList().collection.get(keyframe.get('image_id'))
       imageId  = keyframe.get('image_id')
-      console.log "imageId: #{imageId}"
-      console.log image
       activeKeyframeEl = $(@el).find("[data-image-id='#{imageId}']")
-      console.log "activeKeyframeEl src"
-      console.log activeKeyframeEl
-      #imageUrl   = image.get "url"
-      #console.log imageUrl
-      #activeKeyframeEl.css("background-image", "url(" + imageUrl + ")")
+      imageUrl   = image.get "url"
+      activeKeyframeEl.css("background-image", "url(" + imageUrl + ")")
 
   setActiveKeyframe: (e) ->
     @activeId = $(e.currentTarget).data "id"
     @keyframe = @collection.get @activeId
     sprite    = cc.Director.sharedDirector().getRunningScene().backgroundSprite
     $(e.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
-    sprite.setPosition cc.ccp(@keyframe.get("background_x_coord"), @keyframe.get("background_x_coord")) if @keyframe? and sprite?
+    if @keyframe? and sprite? then sprite.setPosition cc.ccp(@keyframe.get("background_x_coord"), @keyframe.get("background_x_coord"))
     App.currentKeyframe @keyframe
 
   setBackgroundPosition: (x, y) ->
@@ -64,7 +54,6 @@ class App.Views.KeyframeIndex extends Backbone.View
     oCanvas = document.getElementById "builder-canvas"
     image   = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
     imageId = $(@el).find('li.active div').attr "data-image-id"
-    console.log imageId
     postDataForUpdate = if @keyframe.has "image_id" then "\"image_id\" : \"#{imageId}\"," else ""
     $.ajax
       type: "PUT"
