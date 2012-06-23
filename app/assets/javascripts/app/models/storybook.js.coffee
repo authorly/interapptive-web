@@ -43,45 +43,8 @@ class App.Models.Storybook extends Backbone.Model
   url: ->
     '/storybooks'
 
-  initialize: ->
-    @document =
-      Configurations:
-        homeMenuForPages: {}
-        pageFlipSound: {}
-        pageFlipTransitionDuration: 0.5
-        paragraphTextFadeDuration: 0.5
-
-      MainMenu:
-        API: {}
-        CCSprites: []
-        MenuItems: []
-        audio: {}
-        runActionsOnEnter: []
-      Pages: []
-
   toJSON: ->
-    JSON.stringify(@document)
-
-  @fromJSON: (json) ->
-    book = new this
-    book.document = JSON.parse(json)
-
-    book
-
-  createPage: ->
-    page =
-      API: {}
-      Page:
-        settings: {}
-        text:
-          paragraphs: []
-
-    @document.Pages.push(page)
-
-    page
-
-  getPage: (pageNumber) ->
-    @document.Pages[pageNumber]
+    @attributes
 
 class App.Collections.StorybooksCollection extends Backbone.Collection
   model: App.Models.Storybook
