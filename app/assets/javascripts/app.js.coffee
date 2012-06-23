@@ -27,6 +27,8 @@ window.App =
 
   currentStorybook: (storybook) ->
     if storybook
+
+      # FIXME Need to remove events from old object
       @storybookJSON = new App.StorybookJSON
 
       @scenesCollection.on('reset', (scenes) =>
