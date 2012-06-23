@@ -43,7 +43,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgetAtPoint(touch.locationInView())
 
   widgetAtPoint: (point) ->
-    for widget in @_m_pChildren
+    for widget in @widgets
       if widget.getIsVisible()
         local = widget.convertToNodeSpace(point)
 

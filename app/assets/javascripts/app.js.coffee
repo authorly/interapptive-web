@@ -53,6 +53,10 @@ $ ->
   $('#convert').on 'click', ->
     App.keyframeListView.setThumbnail()
 
+  $('#export').on 'click', ->
+    alert(App.currentStorybook().toJSON())
+
+
   $(".content-modal").modal(backdrop: true).modal "hide"
   $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
 

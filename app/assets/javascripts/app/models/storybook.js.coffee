@@ -43,8 +43,45 @@ class App.Models.Storybook extends Backbone.Model
   url: ->
     '/storybooks'
 
+  initialize: ->
+    @document =
+      Configurations:
+        homeMenuForPages: {}
+        pageFlipSound: {}
+        pageFlipTransitionDuration: 0.5
+        paragraphTextFadeDuration: 0.5
+
+      MainMenu:
+        API: {}
+        CCSprites: []
+        MenuItems: []
+        audio: {}
+        runActionsOnEnter: []
+      Pages: []
+
   toJSON: ->
-    @attributes
+    JSON.stringify(@document)
+
+  @fromJSON: (json) ->
+    book = new this
+    book.document = JSON.parse(json)
+
+    book
+
+  createPage: ->
+    page =
+      API: {}
+      Page:
+        settings: {}
+        text:
+          paragraphs: []
+
+    @document.Pages.push(page)
+
+    page
+
+  getPage: (pageNumber) ->
+    @document.Pages[pageNumber]
 
 class App.Collections.StorybooksCollection extends Backbone.Collection
   model: App.Models.Storybook
@@ -54,5 +91,4 @@ class App.Collections.StorybooksCollection extends Backbone.Collection
 
   # Sorting
   comparator: (storybook) ->
-    date = new Date(storybook.get('created_at'));
-    date
+    new Date(storybook.get('created_at'))
