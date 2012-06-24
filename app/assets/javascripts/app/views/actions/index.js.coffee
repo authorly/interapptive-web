@@ -24,9 +24,9 @@ class App.Views.ActionIndex extends Backbone.View
 
     action = new App.Models.Action
           definition: definition
-          attributes: definition.get('attribute_definitions')
-          scene: App.currentScene()
 
     @formView.model = action
-    console.log action
+    @formView.definition = action.get('definition')
+    console.log @formView.model
+    console.log @formView.definition
     this.render(definition)

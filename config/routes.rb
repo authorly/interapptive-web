@@ -38,6 +38,7 @@ Interapptive::Application.routes.draw do
 
   resources :scenes do
     resources :keyframes
+    resources :actions
 
     member do
       get 'images'

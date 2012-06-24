@@ -3,7 +3,7 @@ class App.Views.NewAction extends Backbone.View
     'submit form': 'createAction'
 
   initialize: (options) ->
-    @definitions = options.definitions
+    @definition = @model.get('definition')
 
   createAction: (event) ->
     event.preventDefault()
@@ -14,26 +14,21 @@ class App.Views.NewAction extends Backbone.View
   render: ->
     $(@el).empty()
     schema = this.generateSchema()
-    @form = new Backbone.Form(schema: schema).render()
+    @form = new Backbone.Form(schema: schema, model: @model).render()
     $(@el).append @form.el
     this
 
   generateSchema: ->
     schema = {
-      name: 
-        type: 'Text'
-      scene_id:
-        type: 'Hidden'
-        title: ''
       action_definition_id:
         type: 'Hidden'
         title: ''
     }
 
-    _.each @model.get('attributes'), (attribute, i) ->
+    _.each @definition.get('attribute_definitions'), (attribute, i) ->
       validationType = switch attribute.type
                        when 'integer' then /^[-+]?\d+$/
-                       when 'decimal' then /^[-+]?\d*\.?\d+ $/
+                       when 'decimal' then /^[-+]?\d*\.?\d+$/
                        when 'string'  then /^.+$/
 
       validationMessage = switch attribute.type
@@ -53,11 +48,21 @@ class App.Views.NewAction extends Backbone.View
         }
       ]
       
-      schema["attribute#{i}"] = {
+      schema[attribute.name] = {
         type: 'Text'
         title: attribute.name
         validators: validators
       }
+
+    # schema['controller'] = {
+    #   type: 'Hidden'
+    #   value: 'actions'
+    # }
+    # 
+    # schema['action'] = {
+    #   type: 'Hidden'
+    #   value: 'create'
+    # }
 
     return schema
 

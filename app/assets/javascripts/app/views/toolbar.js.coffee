@@ -27,8 +27,6 @@ class App.Views.ToolbarView extends Backbone.View
       success: ->
         defaultAction = new App.Models.Action
           definition: definitions.first()
-          attributes: definitions.first().get('attribute_definitions')
-          scene: App.currentScene()
 
         formView = new App.Views.NewAction(model: defaultAction)
         libraryView = new App.Views.ActionIndex(actions: definitions, formView: formView)
