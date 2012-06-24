@@ -27,18 +27,19 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(@el).append(view.render().el).removeClass('active').first().addClass('active')
     if keyframe.has "image_id"
       image    = App.imageList().collection.get(keyframe.get('image_id'))
+      imageUrl = image.get "url"
       imageId  = keyframe.get('image_id')
       activeKeyframeEl = $(@el).find("[data-image-id='#{imageId}']")
-      imageUrl   = image.get "url"
       activeKeyframeEl.css("background-image", "url(" + imageUrl + ")")
 
   setActiveKeyframe: (e) ->
     @activeId = $(e.currentTarget).data "id"
     @keyframe = @collection.get @activeId
-    sprite    = cc.Director.sharedDirector().getRunningScene().backgroundSprite
-    $(e.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
-    if @keyframe? and sprite? then sprite.setPosition cc.ccp(@keyframe.get("background_x_coord"), @keyframe.get("background_x_coord"))
     App.currentKeyframe @keyframe
+    sprite = cc.Director.sharedDirector().getRunningScene().backgroundSprite
+    $(e.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
+    sprite.setPosition cc.ccp(@keyframe.get("background_x_coord"), @keyframe.get("background_x_coord")) if sprite?
+
 
   setBackgroundPosition: (x, y) ->
     @keyframe.set
@@ -51,29 +52,40 @@ class App.Views.KeyframeIndex extends Backbone.View
         console.log "Saved background location"
 
   setThumbnail: ->
+    console.log App.currentKeyframe().has "image_id"
     oCanvas = document.getElementById "builder-canvas"
     image   = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
     imageId = $(@el).find('li.active div').attr "data-image-id"
-    postDataForUpdate = if @keyframe.has "image_id" then "\"image_id\" : \"#{imageId}\"," else ""
+    console.log "Retrived imageId: #{imageId}"
+    if App.currentKeyframe().has "image_id"
+      url = "/images/#{imageId}"
+    else
+      url = "/images"
     $.ajax
-      type: "PUT"
-      url: if @keyframe.has "image_id" then "/images/#{imageId}" else "/images"
-      data: '{'+ postDataForUpdate + '"base64":true,"image" : {"files" : [ "' + image.src.replace('data:image/png;base64,', '') + '" ] }}'
+      type: "POST"
+      url: url
+      data: '{"base64":"true","image" : {"files" : [ "' + image.src.replace('data:image/png;base64,', '') + '" ] }}'
       contentType: "application/json; charset=utf-8"
       dataType: "json"
-      beforeSend: (xhr) ->
-        xhr.setRequestHeader("X-Http-Method-Override", "PUT")
+      beforeSend: (xhr) =>
+        xhr.setRequestHeader("X-Http-Method-Override", "PUT") if @keyframe.has "image_id"
       success: (model, response) =>
-        console.log "Canvas has been rendered and saved"
-        activeKeyframeEl = $(@el).find("[data-image-id='#{imageId}']")
-        image            = model[0]
-        activeKeyframeEl.css "background-image", "url(" + image.url + ")"  # TODO: Fixmeup
-        activeKeyframeEl.attr "data-image-id", image.id
-        @setThumbnailId image.id
+        if @keyframe.has "image_id"
+          thumbnail = model
+        else
+          thumbnail = model[0]
+        $(@el).find('li.active div').attr "data-image-id", thumbnail.id
+        $(@el).find('li.active div').attr "style", "background-image: url(#{thumbnail.url})"
+        $(@el).find('li.active div').css "background-image", "url("  # TODO: Fixmeup
+
+
+        @setThumbnailId thumbnail.id
 
   setThumbnailId: (id) ->
-    App.currentKeyframe().set image_id: id
-    App.currentKeyframe().save {},
+    @keyframe.set
+      image_id: id
+      id: @activeId
+    @keyframe.save {},
       wait: true
       success: ->
         console.log "Set the id of keyframe thumbnail"
