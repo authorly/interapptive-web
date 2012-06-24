@@ -5,13 +5,13 @@ window.App =
   Routers: {}
 
   init: ->
-    scenesCollection = new App.Collections.ScenesCollection []
-    keyframesCollection = new App.Collections.KeyframesCollection []
-    imagesCollection = new App.Collections.ImagesCollection []
+    @scenesCollection = new App.Collections.ScenesCollection []
+    @keyframesCollection = new App.Collections.KeyframesCollection []
+    @imagesCollection = new App.Collections.ImagesCollection []
 
-    @sceneList(new App.Views.SceneIndex collection: scenesCollection)
-    @keyframeList(new App.Views.KeyframeIndex collection: keyframesCollection)
-    @imageList(new App.Views.ImageIndex(collection: imagesCollection, tagName: "div"))
+    @sceneList(new App.Views.SceneIndex collection: @scenesCollection)
+    @keyframeList(new App.Views.KeyframeIndex collection: @keyframesCollection)
+    @imageList(new App.Views.ImageIndex(collection: @imagesCollection, tagName: "div"))
 
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
@@ -26,7 +26,36 @@ window.App =
     if user then @user = new App.Models.User(user) else @user
 
   currentStorybook: (storybook) ->
-    if storybook then @storybook = storybook else @storybook
+    if storybook
+
+      # FIXME Need to remove events from old object
+      @storybookJSON = new App.StorybookJSON
+
+      @scenesCollection.on('reset', (scenes) =>
+        scenes.each (scene) =>
+          @storybookJSON.resetPages()
+          @storybookJSON.createPage(scene)
+      )
+      @scenesCollection.on('add', (scene) =>
+        @storybookJSON.createPage(scene)
+      )
+
+      @keyframesCollection.on('reset', (keyframes) =>
+        scene = @currentScene()
+
+        @storybookJSON.resetParagraphs(scene)
+        keyframes.each (keyframe) =>
+          @storybookJSON.createParagraph(scene, keyframe)
+      )
+      @keyframesCollection.on('add', (keyframe) =>
+        scene = @currentScene()
+        @storybookJSON.createParagraph(scene, keyframe)
+      )
+
+
+      @storybook = storybook
+    else
+      @storybook
 
   currentScene: (scene) ->
     if scene then @scene = scene else @scene
@@ -52,6 +81,10 @@ $ ->
 
   $('#convert').on 'click', ->
     App.keyframeListView.setThumbnail()
+
+  $('#export').on 'click', ->
+    alert(App.storybookJSON)
+
 
   $(".content-modal").modal(backdrop: true).modal "hide"
   $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)

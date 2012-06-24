@@ -20,6 +20,7 @@
 
 #= require app
 
+#= require ./app/storybook_json
 #= require_tree ./app/templates
 #= require_tree ./app/models
 #= require_tree ./app/views

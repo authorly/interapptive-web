@@ -1,13 +1,14 @@
 class Builder extends cc.Layer
   isMouseDown: false
   backgroundSprite: null
+  book: null
 
   constructor: ->
     super
     @setIsTouchEnabled true
 
     @widgetLayer = new App.Builder.Widgets.WidgetLayer
-    #@addChild(@widgetLayer, 100)
+    @addChild(@widgetLayer, 100)
 
     # Test touch widget
     #touch = new App.Builder.Widgets.TouchWidget

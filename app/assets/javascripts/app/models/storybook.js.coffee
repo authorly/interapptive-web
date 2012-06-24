@@ -54,5 +54,4 @@ class App.Collections.StorybooksCollection extends Backbone.Collection
 
   # Sorting
   comparator: (storybook) ->
-    date = new Date(storybook.get('created_at'));
-    date
+    new Date(storybook.get('created_at'))

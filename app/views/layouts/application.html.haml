@@ -17,8 +17,10 @@
     %header.navbar.navbar-fixed-top
       %nav.file-menu
         #file-menu.container.left
-          = render 'layouts/file_menu'
+          = render 'layouts/file_menu
           / %button#convert "Render then save canvas to server"
+          %button#convert "Render then save canvas to server"
+          %button#export Export JSON
       %nav.toolbar
         .container.left
           = render 'layouts/toolbar'
