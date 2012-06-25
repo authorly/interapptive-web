@@ -36,6 +36,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   setActiveKeyframe: (e) ->
     @activeId = $(e.currentTarget).data "id"
+    #@collectiob.fetch()
     @keyframe = @collection.get @activeId
     App.currentKeyframe @keyframe
     sprite = cc.Director.sharedDirector().getRunningScene().backgroundSprite
