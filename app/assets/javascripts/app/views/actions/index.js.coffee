@@ -4,15 +4,17 @@ class App.Views.ActionIndex extends Backbone.View
     'change select': 'switchAction'
 
   initialize: (options) ->
-    @formView = options.formView
-    @actions = options.actions
+    @definitions = options.definitions
 
-  render: (selectedAction) ->
-    selectedAction ?= @actions.first()
+  render: (selectedDefinition) ->
+    selectedDefinition ?= @definitions.first()
 
-    $(@el).html @template(actions: @actions.models)
-    $(@el).find("option[value='#{selectedAction.id}']").attr('selected', 'selected')
+    $(@el).html @template(actions: @definitions.models)
+    $(@el).find("option[value='#{selectedDefinition.id}']").attr('selected', 'selected')
 
+    action = new App.Models.Action(definition: selectedDefinition)
+
+    @formView = new App.Views.NewAction(model: action)
     @formView.render()
     $(this.el).append $(@formView.el)
     this
@@ -20,13 +22,6 @@ class App.Views.ActionIndex extends Backbone.View
   switchAction: (event) ->
     field = $(event.currentTarget)
     definitionId = $("option:selected", field).val()
-    definition = @actions.get definitionId
+    definition = @definitions.get definitionId
 
-    action = new App.Models.Action
-      definition: definition
-
-    @formView.model = action
-    @formView.definition = action.get('definition')
-    console.log @formView.model
-    console.log @formView.definition
     this.render(definition)

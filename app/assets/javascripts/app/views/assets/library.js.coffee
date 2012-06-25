@@ -2,7 +2,6 @@ class App.Views.AssetLibrary extends Backbone.View
   template: JST["app/templates/assets/library"]
 
   render: ->
-    console.log
     $(@el).html(@template(assetType: @activeAssetType))
     this
 

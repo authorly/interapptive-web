@@ -2,14 +2,11 @@ class App.Views.NewAction extends Backbone.View
   events:
     'submit form': 'createAction'
 
-  initialize: (options) ->
-    @definition = @model.get('definition')
-
   createAction: (event) ->
     event.preventDefault()
 
-    @form.commit()
-    @model.save()
+    errors = @form.commit()
+    @model.save() unless errors
 
   render: ->
     $(@el).empty()
@@ -23,7 +20,7 @@ class App.Views.NewAction extends Backbone.View
   generateSchema: ->
     schema = {}
 
-    _.each @definition.get('attribute_definitions'), (attribute, i) ->
+    _.each @model.get('definition').get('attribute_definitions'), (attribute, i) ->
       validationType = switch attribute.type
                        when 'integer' then /^[-+]?\d+$/
                        when 'decimal' then /^[-+]?\d*\.?\d+$/
