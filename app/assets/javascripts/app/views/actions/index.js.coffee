@@ -23,7 +23,7 @@ class App.Views.ActionIndex extends Backbone.View
     definition = @actions.get definitionId
 
     action = new App.Models.Action
-          definition: definition
+      definition: definition
 
     @formView.model = action
     @formView.definition = action.get('definition')

@@ -16,14 +16,12 @@ class App.Views.NewAction extends Backbone.View
     schema = this.generateSchema()
     @form = new Backbone.Form(schema: schema, model: @model).render()
     $(@el).append @form.el
+
+    @delegateEvents()
     this
 
   generateSchema: ->
-    schema = {
-      action_definition_id:
-        type: 'Hidden'
-        title: ''
-    }
+    schema = {}
 
     _.each @definition.get('attribute_definitions'), (attribute, i) ->
       validationType = switch attribute.type
@@ -53,16 +51,6 @@ class App.Views.NewAction extends Backbone.View
         title: attribute.name
         validators: validators
       }
-
-    # schema['controller'] = {
-    #   type: 'Hidden'
-    #   value: 'actions'
-    # }
-    # 
-    # schema['action'] = {
-    #   type: 'Hidden'
-    #   value: 'create'
-    # }
 
     return schema
 

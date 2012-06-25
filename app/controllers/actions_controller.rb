@@ -10,7 +10,7 @@ class ActionsController < ApplicationController
     end
   end
 
-  # GET /scenes/:scene_id/actions.json
+  # GET /scenes/:scene_id/keyframes/:keyframe_id/actions.json
   def index
     @scene = Scene.find params[:scene_id]
     @actions = @scene.actions
@@ -20,7 +20,7 @@ class ActionsController < ApplicationController
     end
   end
 
-  # GET /scenes/:scene_id/actions/new.json
+  # GET /scenes/:scene_id/keyframes/:keyframe_id/actions/new.json
   def new
     @scene = Scene.find params[:scene_id]
     @action = @scene.actions.new
@@ -30,17 +30,24 @@ class ActionsController < ApplicationController
     end
   end
 
-  # POST /scene/:scene_id/actions.json
+  # POST /scene/:scene_id/keyframes/:keyframe_id/actions.json
   def create
-    @scene = Scene.find params[:scene_id]
-    @definition = ActionDefinition.find params[:definition][:id]
-    @attribute_definitions = @definition.attribute_definitions
-    @action = @scene.actions.new params[:action]
-    @definition 
+    @scene = Scene.find params.delete(:scene_id)
+    @keyframe = @scene.keyframes.find params.delete(:keyframe_id)
+    @definition = ActionDefinition.find params.delete(:definition)[:id]
+    @action = @scene.actions.create(:action_definition => @definition)
+    
+    @definition.attribute_definitions.each do |attr_definition|
+      @action.action_attributes.create({
+        :attribute_definition => attr_definition,
+        :value => params[attr_definition.name],
+        :keyframe => @keyframe
+      })
+    end
 
     respond_to do |format|
       if @action.save
-        format.json { render :json => @action.to_json(:include => :attributes), :status => :created }
+        format.json { render :json => @action.to_json(:include => :action_attributes), :status => :created }
       else
         format.json { render :json => @action.errors.to_json }
       end

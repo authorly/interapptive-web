@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120527203327) do
+ActiveRecord::Schema.define(:version => 20120625052222) do
 
   create_table "action_definitions", :force => true do |t|
     t.string   "name"
@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(:version => 20120527203327) do
   create_table "actions", :force => true do |t|
     t.integer "scene_id"
     t.integer "action_definition_id"
-    t.string  "name"
   end
 
   add_index "actions", ["action_definition_id"], :name => "index_actions_on_action_definition_id"
@@ -65,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20120527203327) do
     t.integer "attribute_definition_id"
     t.integer "keyframe_id"
     t.string  "value"
+    t.integer "action_id"
   end
 
   add_index "attributes", ["attribute_definition_id"], :name => "index_attributes_on_attribute_definition_id"

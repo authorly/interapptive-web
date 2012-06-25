@@ -37,9 +37,10 @@ Interapptive::Application.routes.draw do
   end
 
   resources :scenes do
-    resources :keyframes
-    resources :actions
-
+    resources :keyframes do
+      resources :actions
+    end
+    
     member do
       get 'images'
       get 'touch_zones'
