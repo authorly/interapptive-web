@@ -37,6 +37,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.push(widget)
     @addChild(widget)
 
+    App.storybookJSON.addWidget(App.currentKeyframe(), widget)
+
     this
 
   widgetAtTouch: (touch) ->

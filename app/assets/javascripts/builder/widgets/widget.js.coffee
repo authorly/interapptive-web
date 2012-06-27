@@ -7,9 +7,15 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   setOpacity: (o) ->
     @_opacity = o
+    @trigger('change', 'opacity')
 
   getOpacity: ->
     @_opacity
+
+  setPosition: ->
+    super
+    @trigger('change', 'position')
+
 
   rect: ->
     p = @getPosition()

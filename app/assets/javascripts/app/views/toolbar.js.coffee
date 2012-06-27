@@ -27,7 +27,7 @@ class App.Views.ToolbarView extends Backbone.View
   addText: ->
     text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
     text.setPosition(new cc.Point(100, 100))
-    window.builder.widgetLayer.addWidget(text)
+    App.builder.widgetLayer.addWidget(text)
 
   showImageLibrary: ->
     @loadDataFor("image")
