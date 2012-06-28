@@ -22,7 +22,6 @@ class App.Views.KeyframeIndex extends Backbone.View
       wait: true
       success: (model, response) =>
         @appendKeyframe(model)
-
     App.keyframesCollection.add(keyframe)
 
   appendKeyframe: (keyframe) ->
@@ -30,19 +29,24 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(@el).append(view.render().el).removeClass('active').first().addClass('active')
     if keyframe.has "image_id"
       image    = App.imageList().collection.get(keyframe.get('image_id'))
-      imageUrl = image.get "url"
-      imageId  = keyframe.get('image_id')
+      imageUrl = image.get("url")
+      imageId  = keyframe.get("image_id")
+      x_coord  = keyframe.get("background_x_coord")
+      y_coord  = keyframe.get("background_y_coord")
       activeKeyframeEl = $(@el).find("[data-image-id='#{imageId}']")
       activeKeyframeEl.css("background-image", "url(" + imageUrl + ")")
+      activeKeyframeEl.attr("data-x","#{x_coord}")
+      activeKeyframeEl.attr("data-y","#{y_coord}")
 
   setActiveKeyframe: (e) ->
-    @activeId = $(e.currentTarget).data "id"
+    x_coord   = $(e.currentTarget).attr "data-x"
+    y_coord   = $(e.currentTarget).attr "data-y"
+    @activeId = $(e.currentTarget).attr "data-id"
     @keyframe = @collection.get @activeId
     App.currentKeyframe @keyframe
     sprite = cc.Director.sharedDirector().getRunningScene().backgroundSprite
     $(e.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
-    if sprite?
-      sprite.setPosition(new cc.Point(@keyframe.get("background_x_coord"), @keyframe.get("background_y_coord")))
+    if sprite? then sprite.setPosition(new cc.Point(x_coord, y_coord))
 
   setBackgroundPosition: (x, y) ->
     App.currentKeyframe().set
@@ -71,6 +75,14 @@ class App.Views.KeyframeIndex extends Backbone.View
         @setThumbnailId thumbnail.id
 
   setThumbnailId: (id) =>
+    App.currentScene().set
+      preview_image_id: id
+      id: App.currentScene().get('id')
+    App.currentScene().save {},
+      wait: true
+      success: ->
+        console.log "Set the id of scene thumbnail"
+
     App.currentKeyframe().set
       image_id: id
       id: @activeId
