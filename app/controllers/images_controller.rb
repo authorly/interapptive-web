@@ -46,7 +46,7 @@ class ImagesController < ApplicationController
     @image.update_attribute(:image, file)
 
     respond_to do |format|
-      format.json { render :json => @image.as_jquery_upload_response.to_json }
+      format.json { render :json => [@image.as_jquery_upload_response.to_json] }
     end
   end
 
