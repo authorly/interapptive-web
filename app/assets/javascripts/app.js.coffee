@@ -85,9 +85,6 @@ window.App =
 $ ->
   App.init()
 
-  $('#convert').on 'click', ->
-    App.keyframeListView.setThumbnail()
-
   $('#export').on 'click', ->
     alert(App.storybookJSON)
 
