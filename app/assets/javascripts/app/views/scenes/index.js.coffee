@@ -29,6 +29,7 @@ class App.Views.SceneIndex extends Backbone.View
     $('.scene-list').append(view.render().el)
 
   setActiveScene: (scene) ->
+    if App.currentScene()? then App.toggleFooter()
     App.currentScene scene
     App.keyframeList().collection.scene_id = scene.get("id")
     App.keyframeList().collection.fetch()
@@ -49,6 +50,7 @@ class App.Views.SceneIndex extends Backbone.View
         node.backgroundSprite = cc.Sprite.spriteWithFile(url)
         node.backgroundSprite.setPosition cc.ccp(App.currentKeyframe().get('background_x_coord'), App.currentKeyframe().get('background_y_coord'))
         node.addChild(node.backgroundSprite, 50)
+        App.toggleFooter()
 
   clickScene: (event) ->
     target  = $(event.currentTarget)

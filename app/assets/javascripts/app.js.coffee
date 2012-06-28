@@ -72,6 +72,12 @@ window.App =
   imageList: (list) ->
     if list then @imageListView = list else @imageListView
 
+  toggleFooter: ->
+    $("footer").animate
+      height: "toggle"
+      opacity: "toggle"
+      , "slow"
+
   # TODO: Refactor me
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1

@@ -30,6 +30,7 @@ class Builder extends cc.Layer
     @isMouseDown = false
     touchLocation = touches[0].locationInView(0)
     App.keyframeListView.setBackgroundPosition(parseInt(touchLocation.x), parseInt(touchLocation.y))
+    App.keyframeListView.setThumbnail()
 
 
 Builder.scene = ->
