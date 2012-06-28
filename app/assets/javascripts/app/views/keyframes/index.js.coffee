@@ -46,11 +46,11 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   setBackgroundPosition: (x, y) ->
     console.log "x, y   (#{x}, #{y})"
-    @keyframe.set
+    App.currentKeyframe().set
       background_x_coord: x
       background_y_coord: y
       id: @activeId
-    @keyframe.save {},
+    App.currentKeyframe().save {},
       success: (model, response) ->
         console.log "Saved background location"
 
@@ -73,10 +73,10 @@ class App.Views.KeyframeIndex extends Backbone.View
         @setThumbnailId thumbnail.id
 
   setThumbnailId: (id) =>
-    @keyframe.set
+    App.currentKeyframe().set
       image_id: id
       id: @activeId
-    @keyframe.save {},
+    App.currentKeyframe().save {},
       wait: true
       success: ->
         console.log "Set the id of keyframe thumbnail"
