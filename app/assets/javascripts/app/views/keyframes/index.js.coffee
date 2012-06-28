@@ -82,6 +82,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       wait: true
       success: ->
         console.log "Set the id of scene thumbnail"
+
     App.currentKeyframe().set
       image_id: id
       id: @activeId

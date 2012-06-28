@@ -73,6 +73,7 @@ window.App =
     if list then @imageListView = list else @imageListView
 
   toggleFooter: ->
+
     $("footer").animate
       height: "toggle"
       opacity: "toggle"

@@ -52,6 +52,7 @@ class App.Views.SceneIndex extends Backbone.View
         node.addChild(node.backgroundSprite, 50)
         App.toggleFooter()
 
+
   clickScene: (event) ->
     target  = $(event.currentTarget)
     sceneId = target.data("id")
@@ -61,4 +62,3 @@ class App.Views.SceneIndex extends Backbone.View
     sceneEl.addClass("active")
     @setActiveScene @collection.get(sceneId)
     @setBackground()
-ground()
