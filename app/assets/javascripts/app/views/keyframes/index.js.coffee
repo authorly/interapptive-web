@@ -29,14 +29,15 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(@el).append(view.render().el).removeClass('active').first().addClass('active')
     if keyframe.has "image_id"
       image    = App.imageList().collection.get(keyframe.get('image_id'))
-      imageUrl = image.get("url")
-      imageId  = keyframe.get("image_id")
-      x_coord  = keyframe.get("background_x_coord")
-      y_coord  = keyframe.get("background_y_coord")
-      activeKeyframeEl = $(@el).find("[data-image-id='#{imageId}']")
-      activeKeyframeEl.css("background-image", "url(" + imageUrl + ")")
-      activeKeyframeEl.attr("data-x","#{x_coord}")
-      activeKeyframeEl.attr("data-y","#{y_coord}")
+      if image? and image.has("url")
+        imageUrl = image.get("url")
+        imageId  = keyframe.get("image_id")
+        x_coord  = keyframe.get("background_x_coord")
+        y_coord  = keyframe.get("background_y_coord")
+        activeKeyframeEl = $(@el).find("[data-image-id='#{imageId}']")
+        activeKeyframeEl.css("background-image", "url(" + imageUrl + ")")
+        activeKeyframeEl.attr("data-x","#{x_coord}")
+        activeKeyframeEl.attr("data-y","#{y_coord}")
 
   setActiveKeyframe: (e) ->
     x_coord   = $(e.currentTarget).attr "data-x"
@@ -49,6 +50,10 @@ class App.Views.KeyframeIndex extends Backbone.View
     if sprite? then sprite.setPosition(new cc.Point(x_coord, y_coord))
 
   setBackgroundPosition: (x, y) ->
+    activeKeyframeEl = $(@el).find('.active div')
+    activeKeyframeEl.attr("data-x","#{x}")
+    activeKeyframeEl.attr("data-y","#{y}")
+
     App.currentKeyframe().set
       background_x_coord: x
       background_y_coord: y
