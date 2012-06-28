@@ -73,10 +73,12 @@ window.App =
     if list then @imageListView = list else @imageListView
 
   toggleFooter: ->
+
     $("footer").animate
       height: "toggle"
       opacity: "toggle"
-      , "slow"
+    , 200, ->
+      $('.keyframe-list').find('li:first div:first').click()
 
   # TODO: Refactor me
   capitalizeWord: (word) ->
@@ -84,6 +86,9 @@ window.App =
 
 $ ->
   App.init()
+
+  $('#convert').on 'click', ->
+    App.keyframeListView.setThumbnail()
 
   $('#export').on 'click', ->
     alert(App.storybookJSON)
