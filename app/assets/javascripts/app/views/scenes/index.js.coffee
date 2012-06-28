@@ -27,7 +27,6 @@ class App.Views.SceneIndex extends Backbone.View
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
     $('.scene-list').append(view.render().el)
-    @setThumbnail()
 
   setActiveScene: (scene) ->
     if App.currentScene()? then App.toggleFooter()
@@ -62,7 +61,4 @@ class App.Views.SceneIndex extends Backbone.View
     sceneEl.addClass("active")
     @setActiveScene @collection.get(sceneId)
     @setBackground()
-
-  setThumbnail: ->
-
 
