@@ -6,7 +6,7 @@ App.Builder = {
           , ret = new Builder.node();
 
         // FIXME need a better way to access builder from other places
-        window.builder = ret
+        App.builder = ret
         cc.Director.sharedDirector().replaceScene(ret);
     }
 }
