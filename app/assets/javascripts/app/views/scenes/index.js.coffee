@@ -61,4 +61,4 @@ class App.Views.SceneIndex extends Backbone.View
     sceneEl.addClass("active")
     @setActiveScene @collection.get(sceneId)
     @setBackground()
-
+ground()
