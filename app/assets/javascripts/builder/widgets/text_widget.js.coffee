@@ -8,6 +8,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @_string = options.string
 
     @label = cc.LabelTTF.labelWithString(@_string, 'Arial', 24)
+    @label.setColor(new cc.Color3B(255, 0, 0))
 
     @addChild(@label)
     @setContentSize(@label.getContentSize())
