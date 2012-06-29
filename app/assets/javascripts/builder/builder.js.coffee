@@ -24,8 +24,6 @@ class Builder extends cc.Layer
     @isMouseDown = true
 
   ccTouchesMoved: (touches, event) ->
-    console.log "Can drag bg?"
-    console.log @canDragBackground
     if @canDragBackground
       currentPointerPosition = new cc.Point(touches[0].locationInView(0).x, touches[0].locationInView(0).y)
       @backgroundSprite.setPosition currentPointerPosition if touches and @isMouseDown

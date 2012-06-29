@@ -100,7 +100,6 @@ class App.Views.KeyframeIndex extends Backbone.View
       App.builder.widgetLayer.removeAllChildrenWithCleanup()
       App.keyframesTextCollection.fetch
         success: (collection, response) =>
-          console.log collection.models
           for keyframeText in collection.models
             text = new App.Builder.Widgets.TextWidget(string: keyframeText.get('content'))
             text.setPosition(new cc.Point(keyframeText.get('x_coord'), keyframeText.get('y_coord')))
