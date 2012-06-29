@@ -34,7 +34,12 @@ class Sim.PageLayer extends cc.Scene
     @page.sprites.forEach (spriteInfo) =>
       return unless spriteInfo
 
-      spriteFile = "/resources/#{spriteInfo.image}"
+      if /^https?:\/\//.test(spriteInfo.image)
+        spriteFile = spriteInfo.image
+      else
+        spriteFile = "/resources/#{spriteInfo.image}"
+
+      cc.TextureCache.sharedTextureCache().addImage(spriteFile)
 
       # FIXME Can't be done with cocos2d-html5
       #unless path.exists(spriteFile)
