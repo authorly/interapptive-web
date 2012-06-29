@@ -39,12 +39,12 @@ class App.Views.KeyframeIndex extends Backbone.View
         activeKeyframeEl.attr("data-y","#{y_coord}")
 
   setActiveKeyframe: (e) ->
-    @placeText()
     x_coord   = $(e.currentTarget).attr "data-x"
     y_coord   = $(e.currentTarget).attr "data-y"
     @activeId = $(e.currentTarget).attr "data-id"
     @keyframe = @collection.get @activeId
     App.currentKeyframe @keyframe
+    @placeText()
     sprite = cc.Director.sharedDirector().getRunningScene().backgroundSprite
     $(e.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
     if sprite? then sprite.setPosition(new cc.Point(x_coord, y_coord))
@@ -79,7 +79,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   setThumbnailId: (id) =>
     App.currentScene().set
-      preview_image_id: id
+      preview_image_id:  id
       id: App.currentScene().get('id')
     App.currentScene().save {},
       wait: true
@@ -96,20 +96,14 @@ class App.Views.KeyframeIndex extends Backbone.View
   placeText: ->
     if App.currentKeyframe()?
       scene = cc.Director.sharedDirector().getRunningScene()
-
-      #console.log scene.getChildren()
-      #console.log scene.getChildren()[1].getChildren()
-      console.log "-0"
-      for textWidget in scene.getChildren()[1].getChildren()
-        console.log textWidget._string
-      # textWidget.removeFromParentAndCleanup()
-      #console.log "---------"
-
-      collection = new App.Collections.KeyframeTextsCollection(keyframe_id: App.currentKeyframe().get('id'))
-      collection.fetch
+      keyframeTexts = scene.widgetLayer.widgets
+      App.builder.widgetLayer.removeAllChildrenWithCleanup()
+      App.keyframesTextCollection.fetch
         success: (collection, response) =>
+          console.log collection.models
           for keyframeText in collection.models
-            dice = Math.floor(Math.random() * 6) + 1
             text = new App.Builder.Widgets.TextWidget(string: keyframeText.get('content'))
-            text.setPosition(new cc.Point(100*dice, 100*dice))
+            text.setPosition(new cc.Point(keyframeText.get('x_coord'), keyframeText.get('y_coord')))
             App.builder.widgetLayer.addWidget(text)
+
+

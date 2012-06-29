@@ -91,8 +91,7 @@ window.App =
     $("footer").animate
       opacity: "toggle"
       height: "toggle"
-    , 900, ->
-      $('.keyframe-list').find('li:first div:first').click()
+    , 900
 
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1

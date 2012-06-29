@@ -2,6 +2,7 @@ class Builder extends cc.Layer
   isMouseDown: false
   backgroundSprite: null
   book: null
+  canDragBackground: true
 
   constructor: ->
     super
@@ -23,8 +24,9 @@ class Builder extends cc.Layer
     @isMouseDown = true
 
   ccTouchesMoved: (touches, event) ->
-    currentPointerPosition = new cc.Point(touches[0].locationInView(0).x, touches[0].locationInView(0).y)
-    @backgroundSprite.setPosition currentPointerPosition if touches and @isMouseDown
+    if @canDrag
+      currentPointerPosition = new cc.Point(touches[0].locationInView(0).x, touches[0].locationInView(0).y)
+      @backgroundSprite.setPosition currentPointerPosition if touches and @isMouseDown
 
   ccTouchesEnded: (touches, event) ->
     @isMouseDown = false
