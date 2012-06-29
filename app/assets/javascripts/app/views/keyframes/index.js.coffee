@@ -101,34 +101,8 @@ class App.Views.KeyframeIndex extends Backbone.View
       collection = new App.Collections.KeyframeTextsCollection(keyframe_id: App.currentKeyframe().get('id'))
       collection.fetch
         success: (collection, response) =>
-          console.log collection
           for keyframeText in collection.models
-            console.log "keyframe text: #{keyframeText.get('content')}"
             dice = Math.floor(Math.random() * 6) + 1
-            text = new App.Builder.Widgets.TextWidget(string: "SomeSoemSoem heLLo")
-            text.setPosition(new cc.Point(100*dice, 100*dice))
             text = new App.Builder.Widgets.TextWidget(string: keyframeText.get('content'))
             text.setPosition(new cc.Point(100*dice, 100*dice))
-            console.log "----"
-            console.log App.Builder.Widgets
-            console.log "----"
             App.builder.widgetLayer.addWidget(text)
-            #if @scene.getChildren()[1] then @scene.getChildren()[1].addChild(text)
-
-
-    # Iterate through labels
-    # if scene.getChildren()[1]
-    #console.log "---------"
-    #for textWidget in scene.getChildren()[1].getChildren()
-    #console.log textWidget._string
-    #
-    # ADD
-    #
-    # textWidget.removeFromParentAndCleanup()
-    #console.log "---------"
-
-    # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-    #                                                     #
-    # End add/iterate/remove text                         #
-    #                                                     #
-    # # # # # # # # # # # # # # # # # # # # # # # # # # # #
