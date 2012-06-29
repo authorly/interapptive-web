@@ -84,7 +84,7 @@ window.App =
     $("header").animate
       opacity: "toggle"
       height: "toggle"
-    , 1450, ->
+    , 1050, ->
       App.toggleSidebar()
 
   toggleFooter: ->

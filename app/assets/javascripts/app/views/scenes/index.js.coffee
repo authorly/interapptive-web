@@ -30,7 +30,6 @@ class App.Views.SceneIndex extends Backbone.View
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
     $('.scene-list').append(view.render().el)
-
     if scene.has "preview_image_id"
       image        = App.imageList().collection.get(scene.get('preview_image_id'))
       thumbnailUrl = image.get("url")

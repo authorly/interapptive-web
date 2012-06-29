@@ -95,8 +95,16 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   placeText: ->
     if App.currentKeyframe()?
-
       scene = cc.Director.sharedDirector().getRunningScene()
+
+      #console.log scene.getChildren()
+      #console.log scene.getChildren()[1].getChildren()
+      console.log "-0"
+      for textWidget in scene.getChildren()[1].getChildren()
+        console.log textWidget._string
+      # textWidget.removeFromParentAndCleanup()
+      #console.log "---------"
+
       collection = new App.Collections.KeyframeTextsCollection(keyframe_id: App.currentKeyframe().get('id'))
       collection.fetch
         success: (collection, response) =>
