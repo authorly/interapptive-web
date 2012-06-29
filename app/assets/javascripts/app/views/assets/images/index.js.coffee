@@ -47,7 +47,6 @@ class App.Views.ImageIndex extends Backbone.View
         # FIXME need to store the url someplace cleaner
         @node.backgroundSprite.url = url
 
-        @node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
         @node.backgroundSprite.setPosition cc.ccp(500, 300)
         @node.addChild @node.backgroundSprite
 

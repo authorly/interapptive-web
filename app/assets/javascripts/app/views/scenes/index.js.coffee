@@ -37,6 +37,7 @@ class App.Views.SceneIndex extends Backbone.View
       activeKeyframeEl.css("background-image", "url(" + thumbnailUrl + ")")
 
   setActiveScene: (scene) ->
+    App.builder.widgetLayer.removeAllChildrenWithCleanup()
     if App.currentScene()? then App.toggleFooter()
     App.currentScene scene
     App.keyframeList().collection.scene_id = scene.get("id")

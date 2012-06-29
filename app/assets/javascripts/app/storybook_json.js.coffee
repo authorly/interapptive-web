@@ -69,10 +69,10 @@ class App.StorybookJSON
       Page:
         settings:
           number: @Pages.length + 1,
-          fontType: "PoeticaChanceryIII.ttf",
+          fontType: "Arial",
           fontColor: [255, 0, 0],
           fontHighlightColor: [255, 255, 255],
-          fontSize: 48,
+          fontSize: 28,
           backgroundMusicFile:
             loop: true,
             audioFilePath: "background.mp3"
