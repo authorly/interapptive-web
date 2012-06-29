@@ -22,7 +22,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       wait: true
       success: (model, response) =>
         @appendKeyframe(model)
-    App.keyframesCollection.add(keyframe)
+    @collection.add(keyframe)
 
   appendKeyframe: (keyframe) ->
     view  = new App.Views.Keyframe(model: keyframe)
