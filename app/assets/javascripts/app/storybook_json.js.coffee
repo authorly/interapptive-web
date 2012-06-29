@@ -142,16 +142,46 @@ class App.StorybookJSON
 
     page.API.CCSprites ||= []
 
-    debugger
+    # Hardcoded actions
+    ###
+    page.API.CCMoveBy = [{
+      position: [-810, 100],
+      duration: 3,
+      actionTag: 30
+    }]
+    page.API.CCScaleBy = [{
+      intensity: 1.4,
+      duration: 3,
+      actionTag: 31
+    }, {
+      intensity: 1.0,
+      duration: 0,
+      actionTag: 32
+    }, {
+      intensity: 1.4,
+      duration: 3,
+      actionTag: 34
+    }]
+    page.API.CCStorySwipeEnded = {
+      runAction: [{
+        runAfterSwipeNumber: 1,
+        spriteTag: nextSpriteTag,
+        actionTags: [30, 34]
+      }]
+    }
+    ###
+
     spriteJSON =
       image: sprite.url
-      spriteTag: nextSpriteTag++
+      spriteTag: nextSpriteTag
       position: [sprite.getPosition().x, sprite.getPosition().y]
+      #actions: [32]
 
     page.API.CCSprites.push(spriteJSON)
 
     sprite.setTag(spriteJSON.spriteTag)
 
+    nextSpriteTag += 1
     return spriteJSON.spriteTag
 
   updateSprite: (scene, sprite) ->
