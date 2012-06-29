@@ -75,7 +75,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   ccTouchesMoved: (touches) ->
     point = touches[0].locationInView()
     if @_capturedWidget
-      #App.builder.canDragBackground = false
+      App.builder.canDragBackground = false
       @moveCapturedWidget(point)
     else
       @highlightWidgetAtPoint(point)
@@ -103,5 +103,5 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   ccTouchesEnded: (touches) ->
     @_previousPoint = null
     @_capturedWidget = null
-    #if App.builder.canDragBackground = false then App.builder.canDragBackground = true
+    if App.builder.canDragBackground is false then App.builder.canDragBackground = true
 
