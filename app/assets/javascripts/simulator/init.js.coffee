@@ -1,6 +1,7 @@
 window.Sim = {}
 
 initSimulator = (json) ->
+  Sim._initalized = true
   storybook = new Sim.Storybook(json)
 
   np = $('#sim-next-page')
@@ -13,6 +14,10 @@ initSimulator = (json) ->
 window.Sim.run = (json) ->
   cc.AppDelegate = Sim.AppDelegate
   cc.setup("simulator-canvas")
+
+  if Sim._initalized
+    initSimulator()
+    return 
 
   preloader = cc.Loader.shareLoader()
 
@@ -32,17 +37,6 @@ window.Sim.run = (json) ->
       #{type: 'font',  src: '/resources/PopplPontifexBE-Regular.ttf'},
       {type: 'image', src: '/resources/autoplay-over.png'},
       {type: 'image', src: '/resources/autoplay.png'},
-      {type: 'image', src: '/resources/background0000.jpg'},
-      {type: 'image', src: '/resources/background0010.jpg'},
-      {type: 'image', src: '/resources/background0020.jpg'},
-      {type: 'image', src: '/resources/background0030.jpg'},
-      {type: 'image', src: '/resources/background0040.jpg'},
-      {type: 'image', src: '/resources/background0050.jpg'},
-      {type: 'image', src: '/resources/background0060.jpg'},
-      {type: 'image', src: '/resources/background0070.jpg'},
-      {type: 'image', src: '/resources/background0080.jpg'},
-      {type: 'image', src: '/resources/background0090.jpg'},
-      {type: 'image', src: '/resources/background0100.jpg'},
       {type: 'image', src: '/resources/home-button-over.png'},
       {type: 'image', src: '/resources/home-button.png'},
       {type: 'image', src: '/resources/r1.png'},
