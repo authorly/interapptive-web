@@ -22,7 +22,7 @@ class App.Views.SceneIndex extends Backbone.View
     scene = new App.Models.Scene
     scene.save storybook_id: App.currentStorybook().get('id'),
       wait: true
-      success: (scene, response) ->
+      success: (scene, response) =>
         @collection.add scene
         @setActiveScene scene
     return scene
