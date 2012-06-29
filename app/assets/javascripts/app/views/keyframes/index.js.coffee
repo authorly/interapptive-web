@@ -40,6 +40,7 @@ class App.Views.KeyframeIndex extends Backbone.View
         activeKeyframeEl.attr("data-y","#{y_coord}")
 
   setActiveKeyframe: (e) ->
+    @placeText()
     x_coord   = $(e.currentTarget).attr "data-x"
     y_coord   = $(e.currentTarget).attr "data-y"
     @activeId = $(e.currentTarget).attr "data-id"
@@ -53,7 +54,6 @@ class App.Views.KeyframeIndex extends Backbone.View
     activeKeyframeEl = $(@el).find('.active div')
     activeKeyframeEl.attr("data-x","#{x}")
     activeKeyframeEl.attr("data-y","#{y}")
-
     App.currentKeyframe().set
       background_x_coord: x
       background_y_coord: y
@@ -66,7 +66,6 @@ class App.Views.KeyframeIndex extends Backbone.View
     oCanvas = document.getElementById "builder-canvas"
     image   = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
     imageId = $(@el).find('.active div').attr "data-image-id"
-
     $.ajax
       url: '/images'
       type: 'POST'
@@ -87,7 +86,6 @@ class App.Views.KeyframeIndex extends Backbone.View
       wait: true
       success: ->
         console.log "Set the id of scene thumbnail"
-
     App.currentKeyframe().set
       image_id: id
       id: @activeId
@@ -95,3 +93,42 @@ class App.Views.KeyframeIndex extends Backbone.View
       wait: true
       success: ->
         console.log "Set the id of keyframe thumbnail"
+
+  placeText: ->
+    if App.currentKeyframe()?
+
+      scene = cc.Director.sharedDirector().getRunningScene()
+      collection = new App.Collections.KeyframeTextsCollection(keyframe_id: App.currentKeyframe().get('id'))
+      collection.fetch
+        success: (collection, response) =>
+          console.log collection
+          for keyframeText in collection.models
+            console.log "keyframe text: #{keyframeText.get('content')}"
+            dice = Math.floor(Math.random() * 6) + 1
+            text = new App.Builder.Widgets.TextWidget(string: "SomeSoemSoem heLLo")
+            text.setPosition(new cc.Point(100*dice, 100*dice))
+            text = new App.Builder.Widgets.TextWidget(string: keyframeText.get('content'))
+            text.setPosition(new cc.Point(100*dice, 100*dice))
+            console.log "----"
+            console.log App.Builder.Widgets
+            console.log "----"
+            App.builder.widgetLayer.addWidget(text)
+            #if @scene.getChildren()[1] then @scene.getChildren()[1].addChild(text)
+
+
+    # Iterate through labels
+    # if scene.getChildren()[1]
+    #console.log "---------"
+    #for textWidget in scene.getChildren()[1].getChildren()
+    #console.log textWidget._string
+    #
+    # ADD
+    #
+    # textWidget.removeFromParentAndCleanup()
+    #console.log "---------"
+
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    #                                                     #
+    # End add/iterate/remove text                         #
+    #                                                     #
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # #

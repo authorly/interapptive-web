@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120628100619) do
+ActiveRecord::Schema.define(:version => 20120629064528) do
 
   create_table "action_definitions", :force => true do |t|
     t.string   "name"
@@ -74,8 +74,10 @@ ActiveRecord::Schema.define(:version => 20120628100619) do
     t.integer  "keyframe_id"
     t.text     "content"
     t.string   "content_highlight_times"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.integer  "x_coord",                 :default => 0
+    t.integer  "y_coord",                 :default => 0
   end
 
   add_index "keyframe_texts", ["keyframe_id"], :name => "index_keyframe_texts_on_keyframe_id"

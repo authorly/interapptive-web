@@ -8,6 +8,7 @@ window.App =
     @scenesCollection = new App.Collections.ScenesCollection []
     @keyframesCollection = new App.Collections.KeyframesCollection []
     @imagesCollection = new App.Collections.ImagesCollection []
+    @keyframesTextCollection = new App.Collections.KeyframeTextsCollection []
 
     @sceneList(new App.Views.SceneIndex collection: @scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: @keyframesCollection)
@@ -36,6 +37,7 @@ window.App =
           @storybookJSON.resetPages()
           @storybookJSON.createPage(scene)
       )
+
       @scenesCollection.on('add', (scene) =>
         @storybookJSON.createPage(scene)
       )
@@ -47,11 +49,11 @@ window.App =
         keyframes.each (keyframe) =>
           @storybookJSON.createParagraph(scene, keyframe)
       )
+
       @keyframesCollection.on('add', (keyframe) =>
         scene = @currentScene()
         @storybookJSON.createParagraph(scene, keyframe)
       )
-
 
       @storybook = storybook
     else
@@ -72,15 +74,26 @@ window.App =
   imageList: (list) ->
     if list then @imageListView = list else @imageListView
 
-  toggleFooter: ->
-
-    $("footer").animate
-      height: "toggle"
+  toggleSidebar: ->
+    $(".sidebar").animate
       opacity: "toggle"
-      , "slow", ->
-        $('.keyframe-list').find('li:first div:first').click()
+      width: "toggle"
+    , 800
 
-  # TODO: Refactor me
+  toggleHeader: ->
+    $("header").animate
+      opacity: "toggle"
+      height: "toggle"
+    , 1450, ->
+      App.toggleSidebar()
+
+  toggleFooter: ->
+    $("footer").animate
+      opacity: "toggle"
+      height: "toggle"
+    , 900, ->
+      $('.keyframe-list').find('li:first div:first').click()
+
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1
 

@@ -27,6 +27,7 @@ group :development, :test do
   gem "therubyracer"
   gem "jasminerice"
   gem "debugger"
+  gem "unicorn"
 end
 
 group :development do

@@ -2,7 +2,7 @@
   %h3.modal-title
     %i.icon-book.icon-black.icon-large
     New or Open Storybook App...    
-#storybooks.modal-body
+#storybooks.modal-body.loading-book
   %ul#storybook-list
 .modal-footer
   %span.btn.btn-success.fileinput-button.new-storybook-btn.left

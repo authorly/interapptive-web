@@ -8,11 +8,14 @@ class App.Views.SceneIndex extends Backbone.View
   initialize: ->
     @collection.on('reset', @render, this)
     @collection.on('add', @appendScene, this)
+    $(".sidebar").hide()
+    $("header").hide()
 
   render: =>
     $(this.el).html('')
     @collection.each (scene) => @appendScene(scene)
     $('.scene-list li:first span:first').click()
+    App.toggleHeader()
     this
 
   createScene: =>
