@@ -43,9 +43,15 @@ class App.Views.ImageIndex extends Backbone.View
         cc.TextureCache.sharedTextureCache().addImage(url)
         @node.removeChild @node.backgroundSprite
         @node.backgroundSprite = cc.Sprite.spriteWithFile(url)
+
+        # FIXME need to store the url someplace cleaner
+        @node.backgroundSprite.url = url
+
         @node.backgroundSprite.setAnchorPoint cc.ccp(0.5, 0.5)
         @node.backgroundSprite.setPosition cc.ccp(500, 300)
         @node.addChild @node.backgroundSprite
+
+        App.storybookJSON.addSprite(App.currentScene(), @node.backgroundSprite)
         App.modalWithView().hide()
 
 

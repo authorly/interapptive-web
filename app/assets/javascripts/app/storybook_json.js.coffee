@@ -1,18 +1,48 @@
+nextSpriteTag = 1
+
 class App.StorybookJSON
 
   constructor: ->
     @Configurations =
-      homeMenuForPages: {}
-      pageFlipSound: {}
-      pageFlipTransitionDuration: 0.5
-      paragraphTextFadeDuration: 0.5
+      pageFlipSound:
+        forward: "page-flip-sound.mp3"
+        backward: "page-flip-sound.mp3"
+
+      pageFlipTransitionDuration: 0.6
+      paragraphTextFadeDuration: 0.4
+      homeMenuForPages:
+        normalStateImage: "home-button.png"
+        tappedStateImage: "home-button-over.png"
+        position: [20, 20]
 
     @MainMenu =
-      API: {}
-      CCSprites: []
-      MenuItems: []
-      audio: {}
-      runActionsOnEnter: []
+      CCSprites: [],
+      MenuItems: [{
+          normalStateImage: "autoplay.png",
+          tappedStateImage: "autoplay-over.png",
+          storyMode: "autoPlay",
+          position: [100, 112]
+      }, {
+          normalStateImage: "read-it-myself.png",
+          tappedStateImage: "read-it-myself-over.png",
+          storyMode: "readItMyself",
+          position: [400, 112]
+      }, {
+          normalStateImage: "read-to-me.png",
+          tappedStateImage: "read-to-me-over.png",
+          storyMode: "readToMe",
+          position: [700, 112]
+      }],
+      API: {
+          CCFadeIn: [{
+              duration: 2,
+              actionTag: 22
+          }]
+      },
+      runActionsOnEnter: [{
+          spriteTag: 100,
+          actionTag: 22
+      }]
 
     @Pages = []
 
@@ -37,7 +67,16 @@ class App.StorybookJSON
     page =
       API: {}
       Page:
-        settings: {}
+        settings:
+          number: 1,
+          fontType: "PoeticaChanceryIII.ttf",
+          fontColor: [255, 255, 255],
+          fontHighlightColor: [255, 0, 0],
+          fontSize: 48,
+          backgroundMusicFile:
+            loop: true,
+            audioFilePath: "background.mp3"
+
         text:
           paragraphs: []
 
@@ -71,7 +110,7 @@ class App.StorybookJSON
 
     # FIXME Need a more generic way to add widgets to the JSON
     if widget instanceof App.Builder.Widgets.TextWidget
-      line = 
+      line =
         text: widget.label.getString()
         xOffset: Math.round(widget.getPosition().x)
         yOffset: Math.round(widget.getPosition().y)
@@ -97,3 +136,31 @@ class App.StorybookJSON
 
   getPage: (pageNumber) ->
     @document.Pages[pageNumber]
+
+  addSprite: (scene, sprite) ->
+    page = scene._page
+
+    page.API.CCSprites ||= []
+
+    debugger
+    spriteJSON =
+      image: sprite.url
+      spriteTag: nextSpriteTag++
+      position: [sprite.getPosition().x, sprite.getPosition().y]
+
+    page.API.CCSprites.push(spriteJSON)
+
+    sprite.setTag(spriteJSON.spriteTag)
+
+    return spriteJSON.spriteTag
+
+  updateSprite: (scene, sprite) ->
+    page = scene._page
+
+    for spriteJSON in page.API.CCSprites
+      if spriteJSON.spriteTag == sprite.getTag()
+        spriteJSON.position = [sprite.getPosition().x, sprite.getPosition().y]
+        break
+
+  removeSprite: (sprite) ->
+    # TODO

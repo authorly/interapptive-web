@@ -32,6 +32,9 @@ class Builder extends cc.Layer
     App.keyframeListView.setBackgroundPosition(parseInt(touchLocation.x), parseInt(touchLocation.y))
     App.keyframeListView.setThumbnail()
 
+    if @backgroundSprite
+      App.storybookJSON.updateSprite(App.currentScene(), @backgroundSprite)
+
 
 Builder.scene = ->
   scene = cc.Scene.node()
