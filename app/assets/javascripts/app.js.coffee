@@ -34,7 +34,7 @@ window.App =
 
       @scenesCollection.on('reset', (scenes) =>
         scenes.each (scene) =>
-          @storybookJSON.resetPages()
+          #@storybookJSON.resetPages()
           @storybookJSON.createPage(scene)
       )
 
