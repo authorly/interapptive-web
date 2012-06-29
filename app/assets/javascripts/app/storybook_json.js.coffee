@@ -68,7 +68,7 @@ class App.StorybookJSON
       API: {}
       Page:
         settings:
-          number: 1,
+          number: @Pages.length + 1,
           fontType: "PoeticaChanceryIII.ttf",
           fontColor: [255, 255, 255],
           fontHighlightColor: [255, 0, 0],
