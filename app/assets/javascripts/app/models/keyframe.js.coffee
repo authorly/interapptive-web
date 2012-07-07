@@ -9,17 +9,17 @@ class App.Models.Keyframe extends Backbone.Model
   addWidget: (widget) ->
     widgets = @get('widgets') || []
     widgets.push(widget.toHash())
+
     @set('widgets', widgets)
 
     @save()
 
-    console.log("Added widget to keyframe", this)
 
   updateWidget: (widget) ->
     widgets = @get('widgets') || []
 
     for w, i in widgets
-      if w.id == widget.id
+      if widget.id is w.id
         widgets[i] = widget.toHash()
         @set('widgets', widgets)
         @save()

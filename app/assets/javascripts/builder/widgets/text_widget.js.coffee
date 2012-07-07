@@ -2,6 +2,13 @@
 
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
+  @newFromHash: (hash) ->
+    widget = super
+
+    widget.setString(hash.string) if hash.string
+
+    return widget
+
   constructor: (options={}) ->
     super
 

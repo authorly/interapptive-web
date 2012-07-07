@@ -1,9 +1,29 @@
+NEXT_WIDGET_ID = 1
+
 class App.Builder.Widgets.Widget extends cc.Node
+
+  @newFromHash: (hash) ->
+    widget = new this(id: hash.id)
+
+    widget.setPosition(new cc.Point(hash.position.x, hash.position.y)) if hash.position
+
+    if hash.id >= NEXT_WIDGET_ID
+      NEXT_WIDGET_ID = hash.id + 1
+
+
+    return widget
+
   constructor: (options={}) ->
     super
     _.extend(this, Backbone.Events)
 
     @_opacity = 255
+
+    if options.id
+      @id = options.id
+    else
+      @id = NEXT_WIDGET_ID
+      NEXT_WIDGET_ID += 1
 
   setOpacity: (o) ->
     @_opacity = o
@@ -29,7 +49,8 @@ class App.Builder.Widgets.Widget extends cc.Node
     )
 
   toHash: ->
-    { type: Object.getPrototypeOf(this).constructor.name
+    { id: @id
+    , type: Object.getPrototypeOf(this).constructor.name
     , position: { x: @getPosition().x
                 , y: @getPosition().y
                 }

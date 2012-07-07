@@ -12,8 +12,11 @@ class App.Views.KeyframeIndex extends Backbone.View
   render: ->
     $(@el).html('')
     @collection.each (keyframe) => @appendKeyframe(keyframe)
-    $(@el).find('li:first div:first').click()
     @delegateEvents()
+
+    # Fire asynchronously so other 'reset' events can finish first
+    setTimeout((=> $(@el).find('li:first div:first').click()), 1)
+
     this
 
   createKeyframe: =>
@@ -44,10 +47,11 @@ class App.Views.KeyframeIndex extends Backbone.View
     @activeId = $(e.currentTarget).attr "data-id"
     @keyframe = @collection.get @activeId
     App.currentKeyframe @keyframe
-    @placeText()
     sprite = cc.Director.sharedDirector().getRunningScene().backgroundSprite
     $(e.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
     if sprite? then sprite.setPosition(new cc.Point(x_coord, y_coord))
+
+    @populateWidgets(@keyframe)
 
   setBackgroundPosition: (x, y) ->
     activeKeyframeEl = $(@el).find('.active div')
@@ -109,5 +113,20 @@ class App.Views.KeyframeIndex extends Backbone.View
             text = new App.Builder.Widgets.TextWidget(string: keyframeText.get('content'))
             text.setPosition(new cc.Point(keyframeText.get('x_coord'), keyframeText.get('y_coord')))
             App.builder.widgetLayer.addWidget(text)
+
+
+  populateWidgets: (keyframe) ->
+    return unless keyframe?
+
+    App.builder.widgetLayer.clearWidgets()
+
+    if keyframe.has('widgets')
+      for widgetHash in keyframe.get('widgets')
+        klass = App.Builder.Widgets[widgetHash.type]
+        throw new Error("Unable to find widget class #{klass}") unless klass
+
+        widget = klass.newFromHash(widgetHash)
+        App.builder.widgetLayer.addWidget(widget)
+        widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
 
 

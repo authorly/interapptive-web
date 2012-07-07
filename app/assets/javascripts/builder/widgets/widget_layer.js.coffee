@@ -32,6 +32,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       widget.trigger('dblclick', touch, event)
     )
 
+  clearWidgets: ->
+    for widget in @widgets
+      @removeChild(widget)
+
+    # Clear array
+    @widgets.splice(0)
 
   addWidget: (widget) ->
     @widgets.push(widget)
