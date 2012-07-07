@@ -7,14 +7,13 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   setOpacity: (o) ->
     @_opacity = o
-    @trigger('change', 'opacity')
 
   getOpacity: ->
     @_opacity
 
-  setPosition: ->
+  setPosition: (pos, triggerEvent=true)->
     super
-    @trigger('change', 'position')
+    @trigger('change', 'position') if triggerEvent
 
 
   rect: ->
@@ -28,3 +27,10 @@ class App.Builder.Widgets.Widget extends cc.Node
       s.width
       s.height
     )
+
+  toHash: ->
+    { type: Object.getPrototypeOf(this).constructor.name
+    , position: { x: @getPosition().x
+                , y: @getPosition().y
+                }
+    }

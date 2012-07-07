@@ -85,7 +85,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     delta = cc.ccpSub(point, @_previousPoint)
     newPos = cc.ccpAdd(delta, @_capturedWidget.getPosition())
 
-    @_capturedWidget.setPosition(newPos)
+    @_capturedWidget.setPosition(newPos, false)
     @_previousPoint = new cc.Point(point.x, point.y)
 
   highlightWidgetAtPoint: (point) ->
@@ -101,6 +101,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       widget.setOpacity(150)
 
   ccTouchesEnded: (touches) ->
+    # Causes a save
+    @_capturedWidget.trigger('change', 'position') if @_capturedWidget
+
     @_previousPoint = null
     @_capturedWidget = null
     if App.builder.canDragBackground is false then App.builder.canDragBackground = true

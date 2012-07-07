@@ -63,7 +63,12 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   setThumbnail: (el) ->
     oCanvas = document.getElementById "builder-canvas"
-    image   = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
+    try
+      image   = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
+    catch e
+      console.error("Error saving PNG", e)
+      return
+
     imageId = $(@el).find('.active div').attr "data-image-id"
     $.ajax
       url: '/images'

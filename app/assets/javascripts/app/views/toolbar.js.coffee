@@ -25,9 +25,13 @@ class App.Views.ToolbarView extends Backbone.View
     App.modalWithView(view: App.imageList()).show()
 
   addText: ->
+    # FIXME we should have some delegate that actually handles adding things
     text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
     text.setPosition(new cc.Point(100, 100))
+    keyframe = App.currentKeyframe()
     App.builder.widgetLayer.addWidget(text)
+    keyframe.addWidget(text)
+    text.on('change', -> keyframe.updateWidget(text))
 
   showImageLibrary: ->
     @loadDataFor("image")

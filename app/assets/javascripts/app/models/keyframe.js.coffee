@@ -6,6 +6,41 @@ class App.Models.Keyframe extends Backbone.Model
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + App.currentKeyframe().get('id') + '.json'
 
+  addWidget: (widget) ->
+    widgets = @get('widgets') || []
+    widgets.push(widget.toHash())
+    @set('widgets', widgets)
+
+    @save()
+
+    console.log("Added widget to keyframe", this)
+
+  updateWidget: (widget) ->
+    widgets = @get('widgets') || []
+
+    for w, i in widgets
+      if w.id == widget.id
+        widgets[i] = widget.toHash()
+        @set('widgets', widgets)
+        @save()
+        return
+
+    # Didn't update a widget, so we'll add it
+    @addWidget(widget)
+
+  removeWidget: (widget) ->
+    widgets = @get('widgets')
+    return unless widgets?
+
+    for w, i in widgets
+      if w.id == widget.id
+        widgets.splice(i, 1)
+        @set('widgets', widgets)
+        @save()
+        break
+
+
+
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
 

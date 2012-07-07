@@ -23,6 +23,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @_string = string
     @label.setString(@_string)
     @setContentSize(@label.getContentSize())
+    @trigger('change', 'string')
 
   handleDoubleClick: (touch, event) =>
     @setString(window.prompt('Enter the new string', @_string) || '<No Text>')
@@ -37,3 +38,9 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     #  top: 100 + $(cc.canvas).position().top
     #  left: r.origin.x + $(cc.canvas).position().left
     #)
+
+  toHash: ->
+    hash = super
+    hash.string = @_string
+
+    hash
