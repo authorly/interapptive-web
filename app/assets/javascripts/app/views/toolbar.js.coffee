@@ -4,6 +4,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .add-keyframe': 'addKeyframe'
     'click .add-image'   : 'addImage'
     'click .add-text'    : 'addText'
+    'click .add-touch'   : 'addTouch'
     'click .images'      : 'showImageLibrary'
     'click .videos'      : 'showVideoLibrary'
     'click .fonts'       : 'showFontLibrary'
@@ -32,6 +33,16 @@ class App.Views.ToolbarView extends Backbone.View
     App.builder.widgetLayer.addWidget(text)
     keyframe.addWidget(text)
     text.on('change', -> keyframe.updateWidget(text))
+
+  addTouch: ->
+    alert('TODO show touch point dialogue here')
+    widget = new App.Builder.Widgets.TouchWidget
+    widget.setPosition(new cc.Point(300, 300))
+    keyframe = App.currentKeyframe()
+    App.builder.widgetLayer.addWidget(widget)
+    keyframe.addWidget(widget)
+    widget.on('change', -> keyframe.updateWidget(widget))
+
 
   showImageLibrary: ->
     @loadDataFor("image")

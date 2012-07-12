@@ -10,8 +10,10 @@
       %li.edit-text.disabled
         %a.add-text{:href => '#'} Add Text
       %li.touch-zones.disabled
+        %a.add-touch{:href => '#'} Add Touch
+
         - # TODO: Make this scenes_touch_zones_path with the current scene. This will be easier when this is a backbone view.
-        = link_to "Touch Zones", touch_zones_path, {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
+        - #= link_to "Touch Zones", touch_zones_path, {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
       %li.add-image.disabled
         - # TODO: Make this images_scene_path with the current scene. This will be easier when this is a backbone view.
         = link_to "Add Image", images_path, {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
