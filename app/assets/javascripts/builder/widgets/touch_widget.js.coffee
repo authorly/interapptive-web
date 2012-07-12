@@ -16,6 +16,10 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     @setRadius(options.radius || 32)
     @setControlRadius(options.controlRadius || 12)
 
+    @setOpacity(150)
+    @on('mouseover', @setOpacity.bind(this, 255))
+    @on('mouseout',  @setOpacity.bind(this, 150))
+
   setRadius: (r) ->
     @_radius = r
     @setContentSize(new cc.Size(@_radius * 2, @_radius * 2))
