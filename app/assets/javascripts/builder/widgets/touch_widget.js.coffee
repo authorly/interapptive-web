@@ -2,6 +2,14 @@
 
 class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
+  @newFromHash: (hash) ->
+    widget = super
+
+    widget.setRadius(hash.radius) if hash.radius
+    widget.setControlRadius(hash.controlRadius) if hash.controlRadius
+
+    return widget
+
   constructor: (options={}) ->
     super
 
@@ -49,3 +57,10 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     ctx.fill()
 
     ctx.restore()
+
+  toHash: ->
+    hash = super
+    hash.radius = @_radius
+    hash.controlRadius = @_controlRadius
+
+    hash
