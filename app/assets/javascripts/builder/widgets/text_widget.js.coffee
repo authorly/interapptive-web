@@ -1,6 +1,9 @@
 #= require ./widget
 
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
+  @_selection_border = null
+  @_selection_drawn = false
+  @_selection_border = null
 
   @newFromHash: (hash) ->
     widget = super
@@ -13,7 +16,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     super
 
     @_string = options.string
-
+    
     @label = cc.LabelTTF.labelWithString(@_string, 'Arial', 24)
     @label.setColor(new cc.Color3B(255, 0, 0))
 
@@ -22,6 +25,28 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     @on('dblclick', @handleDoubleClick)
 
+  highlight: ->
+    super()
+    console.log "text widget highlight"
+    #@drawSelection()
+
+  draw: ->
+    if @isHighlighted() then @drawSelection()
+    
+  drawSelection: -> 
+    console.log @label.getContentSize()
+    lSize = @label.getContentSize()
+    console.log "selection drawn " + @_selection_drawn
+    console.log "text widget draw selection"
+    cc.renderContext.strokeStyle = "rgba(255,0,255,1)";
+    cc.renderContext.lineWidth = "2";
+    #s = @contentSize()
+    vertices = [cc.ccp(0, 0), cc.ccp(lSize.width, 0), cc.ccp(lSize.width, lSize.height), cc.ccp(0, lSize.height)]
+    @_selection_border = cc.drawingUtil.drawPoly(vertices, 4, true)  
+    #@_selection_drawn = true
+  
+  update: ->
+    console.log "update"
 
   getString: ->
     @_string
@@ -33,7 +58,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @trigger('change', 'string')
 
   handleDoubleClick: (touch, event) =>
-    @setString(window.prompt('Enter the new string', @_string) || '<No Text>')
+    @setString($('#font_settings').show())
 
     #input = $('<textarea>')
     #$(cc.canvas.parentNode).append(input)

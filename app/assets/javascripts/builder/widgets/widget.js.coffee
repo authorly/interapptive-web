@@ -18,12 +18,29 @@ class App.Builder.Widgets.Widget extends cc.Node
     _.extend(this, Backbone.Events)
 
     @_opacity = 255
+    @_highlighted = false
 
     if options.id
       @id = options.id
     else
       @id = NEXT_WIDGET_ID
       NEXT_WIDGET_ID += 1
+      
+    @on("mousemove", @mouseMove)
+    
+  mouseMove: ->
+    @highlight() unless @isHighlighted()
+    console.log "mouse move from Widget"
+
+  isHighlighted: ->
+    return @_highlighted
+
+  highlight: ->
+    console.log "Widget highlight"
+    @_highlighted = true
+
+  unHighlight: ->
+    @_highlighted = false
 
   setOpacity: (o) ->
     @_opacity = o

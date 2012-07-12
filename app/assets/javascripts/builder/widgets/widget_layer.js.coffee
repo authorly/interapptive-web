@@ -4,6 +4,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     super
     @widgets = []
     @_capturedWidget = null
+    @_selectedWidget = null
 
     @setIsTouchEnabled(true)
 
@@ -31,6 +32,13 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       widget = @widgetAtPoint(touch.locationInView())
       widget.trigger('dblclick', touch, event)
     )
+    
+    cc.renderContext.fillStyle = "rgba(255,255,255,1)";
+    cc.renderContext.strokeStyle = "rgba(255,255,255,1)";
+    cc.drawingUtil.drawLine(cc.PointMake(0, 0), cc.PointMake(100, 100));
+    #v = [cc.PointMake(0, 0), cc.PointMake(0, 50), cc.PointMake(50, 50), cc.PointMake(0, 50), cc.PointMake(50, 100) ];
+    #cc.drawingUtil.drawPoly(v,4,true)
+    #console.log cc.drawingUtil.drawPoly(v,4,true)
 
   clearWidgets: ->
     for widget in @widgets
@@ -99,8 +107,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     widget = @widgetAtPoint(point)
     return unless widget
-
-    widget.setOpacity(225)
+    widget.trigger("mousemove")
+    widget.setOpacity(25)
 
   unhighlightAllWidgets: ->
     for widget in @widgets
