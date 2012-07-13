@@ -4,6 +4,38 @@ class StorybooksController < ApplicationController
   # Backbone.js extraneous parameter hack
   param_protected [:action, :controller, :format, :storybook], :only => :update
 
+  # GET /storybooks/:id/images.json
+  def images
+    @storybook = Storybook.find params[:id]
+    @images = @storybook.images
+
+    render :json => @images.map(&:as_jquery_upload_response).to_json
+  end
+
+  # GET /storybooks/:id/sounds.json
+  def sounds
+    @storybook = Storybook.find params[:id]
+    @sounds = @storybook.sounds
+
+    render :json => @sounds.map(&:as_jquery_upload_response).to_json
+  end
+
+  # GET /storybooks/:id/videos.json
+  def videos
+    @storybook = Storybook.find params[:id]
+    @videos = @storybook.videos
+
+    render :json => @videos.map(&:as_jquery_upload_response).to_json
+  end
+
+  # GET /storybooks/:id/fonts.json
+  def fonts
+    @storybook = Storybook.find params[:id]
+    @fonts = @storybook.fonts
+
+    render :json => @fonts.map(&:as_jquery_upload_response).to_json
+  end
+
   # GET /storybooks
   # GET /storybooks.json
   def index

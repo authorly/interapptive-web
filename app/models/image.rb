@@ -1,5 +1,4 @@
 class Image < Asset
-  include Rails.application.routes.url_helpers
   mount_uploader :image, ImageUploader
 
   def as_jquery_upload_response

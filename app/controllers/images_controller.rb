@@ -3,7 +3,7 @@ class ImagesController < ApplicationController
     # TODO: Associate image with current_user and scene
     @images = Image.all
 
-    render :json => @images.collect { |p| p.as_jquery_upload_response }.to_json
+    render :json => @images.map(&:as_jquery_upload_response).to_json
   end
 
   def create
