@@ -20,6 +20,15 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     @on('mouseover', @setOpacity.bind(this, 255))
     @on('mouseout',  @setOpacity.bind(this, 150))
 
+    @on('mousedown', @onMouseDown, this)
+
+  onMouseDown: (e) ->
+    point = e.canvasPoint
+    local = @pointToLocal(point)
+    console.log("MOUSE DOWN!", local)
+
+
+
   setRadius: (r) ->
     @_radius = r
     @setContentSize(new cc.Size(@_radius * 2, @_radius * 2))
