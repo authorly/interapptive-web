@@ -21,7 +21,14 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @setContentSize(@label.getContentSize())
 
     @on('dblclick', @handleDoubleClick)
+    @on('mouseover', @onMouseOver, this)
+    @on('mouseout',  @onMouseOut,  this)
 
+  onMouseOver: (e) ->
+    document.body.style.cursor = 'move'
+
+  onMouseOut: (e) ->
+    document.body.style.cursor = 'default'
 
   getString: ->
     @_string
