@@ -2,8 +2,7 @@
 
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   @_selection_border = null
-  @_selection_drawn = false
-  @_selection_border = null
+  @_stroke = null
 
   @newFromHash: (hash) ->
     widget = super
@@ -23,7 +22,14 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @addChild(@label)
     @setContentSize(@label.getContentSize())
 
-    @on('dblclick', @handleDoubleClick)
+  mouseOver: ->
+    super()
+    App.toggleFontToolbar(this)
+    @drawSelection()
+    
+  mouseOut: ->
+    super()
+    App.toggleFontToolbar(this)
 
   highlight: ->
     super()
@@ -31,18 +37,25 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     #@drawSelection()
 
   draw: ->
-    if @isHighlighted() then @drawSelection()
+    if @_mouse_over then @drawSelection()
     
   drawSelection: -> 
-    console.log @label.getContentSize()
+    #console.log @label.getContentSize()
     lSize = @label.getContentSize()
-    console.log "selection drawn " + @_selection_drawn
     console.log "text widget draw selection"
     cc.renderContext.strokeStyle = "rgba(255,0,255,1)";
     cc.renderContext.lineWidth = "2";
     #s = @contentSize()
-    vertices = [cc.ccp(0, 0), cc.ccp(lSize.width, 0), cc.ccp(lSize.width, lSize.height), cc.ccp(0, lSize.height)]
-    @_selection_border = cc.drawingUtil.drawPoly(vertices, 4, true)  
+    # Fix update this to have padding and solve for 
+    vertices = [cc.ccp(0 - lSize.width / 2, lSize.height / 2), 
+                cc.ccp(lSize.width / 2, lSize.height / 2), 
+                cc.ccp(lSize.width / 2, 0 - lSize.height / 2), 
+                cc.ccp(0 - lSize.width / 2, 0 - lSize.height / 2)]
+    
+    @_stroke = cc.drawingUtil.drawPoly(vertices, 4, true)  
+    #cc.drawingUtil.setAnchorPoint(0,0)
+    #@_stroke.setAnchorPoint(0,0)
+    #console.log @stroke
     #@_selection_drawn = true
   
   update: ->

@@ -2,6 +2,8 @@ NEXT_WIDGET_ID = 1
 
 class App.Builder.Widgets.Widget extends cc.Node
 
+  @_mouse_over = false
+  
   @newFromHash: (hash) ->
     widget = new this(id: hash.id)
 
@@ -26,11 +28,24 @@ class App.Builder.Widgets.Widget extends cc.Node
       @id = NEXT_WIDGET_ID
       NEXT_WIDGET_ID += 1
       
-    @on("mousemove", @mouseMove)
+    @on("mouseover", @mouseOver)
+    @on("mouseout", @mouseOut)
+    @on('dblclick', @handleDoubleClick)
+    
+  mouseOver: ->
+    console.log "Widget mousover"
+    @_mouse_over = true
+    
+  mouseOut: -> 
+    console.log "Widget mouseout"
+    @_mouse_over = false
     
   mouseMove: ->
-    @highlight() unless @isHighlighted()
+    #@highlight() unless @isHighlighted()
     console.log "mouse move from Widget"
+  
+  handleDoubleClick: -> 
+    console.log "Widget double click"
 
   isHighlighted: ->
     return @_highlighted

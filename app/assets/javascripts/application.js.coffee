@@ -17,6 +17,7 @@
 #= require ./vendor/form-editors/currency
 #= require ./vendor/form-editors/buttons
 #= require ./vendor/form-editors/jquery.ui
+#= require_tree ../../../vendor/assets/javascripts/.
 
 #= require app
 

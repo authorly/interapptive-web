@@ -17,6 +17,7 @@ window.App =
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
     @contentModal = new App.Views.Modal className: "content-modal"
+    @fontToolbar = new App.Views.FontToolbar el: $('#font_toolbar')
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
@@ -92,7 +93,23 @@ window.App =
       opacity: "toggle"
       height: "toggle"
     , 900
-
+  
+  toggleFontToolbar: (textwidget) ->
+    c = $("#main canvas")
+    padding = 20 #px
+    o = c.offset()
+    w = c.width()
+    h = c.height()
+    
+    ft = $("#font_toolbar")
+    #ft.toggle()
+    ft.show()
+    # move font settings tooltip above the TextWidget
+    ft.css
+      top: o.top + (c.height() - (textwidget.getPosition().y + ft.height() + padding))
+      left: o.left + textwidget.getPosition().x
+      # show the tooltip
+      
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1
 
@@ -124,3 +141,6 @@ $ ->
   $(window).resize ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
+    
+  # font_toolbar color picker
+  # $("#font_toolbar .colorpicker").miniColors()
