@@ -1,1 +1,5 @@
-%div{"data-id" => "#{@keyframe.get('id')}"}
+- if @keyframe.has "image_id"
+  %div{"data-id" => "#{@keyframe.get 'id'}", "data-image-id" => "#{@keyframe.get 'image_id'}"}
+
+- else
+  %div{"data-id" => "#{@keyframe.get 'id'}"}

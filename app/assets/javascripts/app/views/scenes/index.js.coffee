@@ -6,44 +6,69 @@ class App.Views.SceneIndex extends Backbone.View
     'click .scene-list li span': 'clickScene'
     
   initialize: ->
-    # Ensure our collection is rendered upon loading
     @collection.on('reset', @render, this)
     @collection.on('add', @appendScene, this)
+    $(".sidebar").hide()
+    $("header").hide()
 
   render: =>
     $(this.el).html('')
     @collection.each (scene) => @appendScene(scene)
-      
-    # TODO: Figure out how to just use setActiveScene() to set the stylings
     $('.scene-list li:first span:first').click()
-
+    App.toggleHeader()
     this
 
   createScene: =>
     scene = new App.Models.Scene
     scene.save storybook_id: App.currentStorybook().get('id'),
       wait: true
-      success: (scene, response) ->
+      success: (scene, response) =>
         @collection.add scene
-        App.currentScene(scene)
-        this.setActiveScene scene
+        @setActiveScene scene
     return scene
 
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
     $('.scene-list').append(view.render().el)
+    if scene.has "preview_image_id"
+      image        = App.imageList().collection.get(scene.get('preview_image_id'))
+      thumbnailUrl = image.get("url")
+      activeKeyframeEl = $('.scene-list li').last().find('span')
+      activeKeyframeEl.css("background-image", "url(" + thumbnailUrl + ")")
 
   setActiveScene: (scene) ->
+    App.builder.widgetLayer.removeAllChildrenWithCleanup()
+    if App.currentScene()? then App.toggleFooter()
     App.currentScene scene
-    App.keyframeList().collection.scene_id = scene.get "id"
+    App.keyframeList().collection.scene_id = scene.get("id")
     App.keyframeList().collection.fetch()
-    $('#keyframe-list').html ""
-    $('#keyframe-list').html(App.keyframeList().el)
-    $('nav.toolbar ul li ul li').removeClass "disabled"
+    $('#keyframe-list').html("").html(App.keyframeList().el)
+    $('nav.toolbar ul li ul li').removeClass 'disabled'
+
+  setBackground: ->
+    images = new App.Collections.ImagesCollection []
+    scene  = App.currentScene()
+    node   = cc.Director.sharedDirector().getRunningScene()
+    node.removeChild(node.backgroundSprite)
+    images.fetch success: =>
+      if scene.has('image_id')
+        bgImageId = scene.get('image_id')
+        image     = images.get(bgImageId)
+        url       = image.get('url')
+        cc.TextureCache.sharedTextureCache().addImage(url)
+        node.backgroundSprite = cc.Sprite.spriteWithFile(url)
+        node.backgroundSprite.url = url
+        node.backgroundSprite.setPosition cc.ccp(App.currentKeyframe().get('background_x_coord'), App.currentKeyframe().get('background_y_coord'))
+        node.addChild(node.backgroundSprite, 50)
+        App.storybookJSON.addSprite(App.currentScene(), node.backgroundSprite)
+        App.toggleFooter()
 
   clickScene: (event) ->
-    sceneEl = $(event.currentTarget).parent()
-    sceneEl.siblings().removeClass "active"
-    sceneEl.removeClass "active"
-    sceneEl.addClass "active"
-    this.setActiveScene @collection.get($(event.currentTarget).data("id"))
+    target  = $(event.currentTarget)
+    sceneId = target.data("id")
+    sceneEl = target.parent()
+    sceneEl.siblings().removeClass("active")
+    sceneEl.removeClass("active")
+    sceneEl.addClass("active")
+    @setActiveScene @collection.get(sceneId)
+    @setBackground()

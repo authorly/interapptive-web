@@ -1,6 +1,16 @@
 class KeyframeTextsController < ApplicationController
   before_filter :authorize
 
+  def index
+    @keyframe = Keyframe.find params[:keyframe_id]
+    @keyframe_texts = @keyframe.texts
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @keyframe_texts }
+    end
+  end
+
   # GET /keyframes/:keyframe_id/texts/:id
   # GET /keyframes/:keyframe_id/texts/:id.json
   def show

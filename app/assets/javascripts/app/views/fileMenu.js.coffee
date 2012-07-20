@@ -11,4 +11,7 @@ class App.Views.FileMenuView extends Backbone.View
 
   showSettings: ->
     view = new App.Views.AppSettings()
-    App.modalWithView(view: view).showModal()
+    App.modalWithView(view: view).show()
+
+
+

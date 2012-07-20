@@ -2,7 +2,6 @@
 @import 'twitter/bootstrap/responsive';
 @import 'bootstrap-image-gallery.css.less';
 @import 'jquery.fileupload-ui.css.less';
-
 @import 'variables.css.less';
 @import 'filemenu.css.less';
 @import 'toolbar.css.less';
@@ -41,6 +40,7 @@ html, body{
   background-color: transparent !important;
 }
 
+// Tablet & Builder
 .span10 {
   background-image: asset-url('tablet.png');
   background-repeat: no-repeat;
@@ -48,7 +48,34 @@ html, body{
   height: @appHeight + 50px;
   margin-top: 90px;
   width: 100%;
+  text-align: center;
   overflow: visible;
+}
+
+canvas#builder-canvas {
+  width: 610px;
+  height: 455px;
+  margin: 73px 0 0 -5px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.loading {
+  background-image: asset-url('loading-words.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.loading-black {
+  background-image: asset-url('loading.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.loading-book {
+  background-image: asset-url('loading-book.gif');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .left {
@@ -57,7 +84,7 @@ html, body{
 
 // Footer
 footer {
-  height: 80px;
+  height: 105px;
   background-color: @footerColor;
   position: absolute;
   bottom: 0;
@@ -72,6 +99,7 @@ footer {
 header {
   nav.font-menu {
     .gradient(@fileMenuBgStart, @fileMenuBgEnd);
+    .drop-shadow(0, 2px, 3px, #555);
 
     padding-top: 2px;
     height: @fontMenuHeight;
@@ -92,9 +120,11 @@ header {
 .sidebar {
   .drop-shadow(1px, 0, 13px, #666);
 
+  /*
   background-image: url('scene-list-bg.png');
   background-position: center center;
   background-repeat: no-repeat;
+  */
   position: absolute;
   left: 0;
   top: 0;
@@ -104,15 +134,6 @@ header {
   height: 100%;
   width: 200px;
   z-index: 20 !important;
-}
-
-// Text layer - temporary
-#text {
-  width: 580px;
-  height: 430px;
-  margin: 75px 0 0 185px;
-  padding: 10px;
-  overflow: hidden;
 }
 
 // Forms

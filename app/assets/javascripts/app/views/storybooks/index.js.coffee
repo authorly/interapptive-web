@@ -14,6 +14,7 @@ class App.Views.StorybookIndex extends Backbone.View
   render: ->
     $(@el).html(@template())
     @collection.each (storybook) => @appendStorybook(storybook)
+    $(".modal-body").removeClass("loading-book")
     this
 
   appendStorybook: (storybook) ->
@@ -38,8 +39,6 @@ class App.Views.StorybookIndex extends Backbone.View
         
         $('.storybook-form').fadeOut(130)
         $('.new-storybook-btn').delay(130).fadeIn(130)
-        
-      # Client-side error validation callback
       error: @handleErrors
 
   handleErrors: ->

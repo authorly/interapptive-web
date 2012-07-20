@@ -10,8 +10,6 @@
     %meta{:content => "", :name => "author"}
     = stylesheet_link_tag "application", "http://jquery-ui.googlecode.com/svn/tags/1.8.20/themes/smoothness/jquery.ui.all.css", :media => "all"
     = javascript_include_tag "application"
-    :javascript
-      App.currentUser(#{current_user.to_json(:only => :id)});
     = csrf_meta_tags
     = yield(:head)
 
@@ -20,6 +18,7 @@
       %nav.file-menu
         #file-menu.container.left
           = render 'layouts/file_menu'
+          %button#export Export JSON
       %nav.toolbar
         .container.left
           = render 'layouts/toolbar'
@@ -38,8 +37,9 @@
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
                   %a.close{"data-dismiss" => "alert"}
                   = msg
-              %div#text
-              = yield
+              %div
+                %canvas{id: 'builder-canvas', class: 'loading', width: 600, height: 455}
+                  %p Your browser doesn't support the technology required to run this application.
 
     %footer.navbar.navbar-fixed-bottom
       %footer
@@ -48,3 +48,7 @@
     = render 'assets/upload_modal'
     = render 'storybooks/index_modal'
     = render 'shared/content_modal'
+
+    :javascript
+      App.currentUser(#{current_user.to_json(:only => :id)})
+      window.initBuilder()

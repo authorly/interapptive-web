@@ -1,6 +1,5 @@
 class App.Models.Storybook extends Backbone.Model
   paramRoot: 'storybook'
-  
   schema:
     title:
       type:          "Text"
@@ -42,7 +41,7 @@ class App.Models.Storybook extends Backbone.Model
       selectedIndex: 0
 
   url: ->
-    '/storybooks/' + App.currentStorybook().get('id') + '.json'
+    '/storybooks'
 
   toJSON: ->
     @attributes
@@ -55,5 +54,4 @@ class App.Collections.StorybooksCollection extends Backbone.Collection
 
   # Sorting
   comparator: (storybook) ->
-    date = new Date(storybook.get('created_at'));
-    date
+    new Date(storybook.get('created_at'))
