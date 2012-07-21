@@ -5,6 +5,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .add-image'   : 'addImage'
     'click .add-text'    : 'addText'
     'click .add-touch'   : 'addTouch'
+    'click .add-sprite'  : 'addSprite'
     'click .images'      : 'showImageLibrary'
     'click .videos'      : 'showVideoLibrary'
     'click .fonts'       : 'showFontLibrary'
@@ -15,6 +16,12 @@ class App.Views.ToolbarView extends Backbone.View
 
   render: ->
     $el = $(this.el)
+
+  _addWidget: (widget) ->
+    keyframe = App.currentKeyframe()
+    App.builder.widgetLayer.addWidget(widget)
+    keyframe.addWidget(widget)
+    widget.on('change', -> keyframe.updateWidget(widget))
 
   addScene: ->
     @scene = App.sceneList().createScene()
@@ -29,20 +36,27 @@ class App.Views.ToolbarView extends Backbone.View
     # FIXME we should have some delegate that actually handles adding things
     text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
     text.setPosition(new cc.Point(100, 100))
-    keyframe = App.currentKeyframe()
-    App.builder.widgetLayer.addWidget(text)
-    keyframe.addWidget(text)
-    text.on('change', -> keyframe.updateWidget(text))
+    @_addWidget(text)
 
   addTouch: ->
     alert('TODO show touch point dialogue here')
     widget = new App.Builder.Widgets.TouchWidget
     widget.setPosition(new cc.Point(300, 300))
-    keyframe = App.currentKeyframe()
-    App.builder.widgetLayer.addWidget(widget)
-    keyframe.addWidget(widget)
-    widget.on('change', -> keyframe.updateWidget(widget))
+    @_addWidget(widget)
 
+  addSprite: ->
+    imageSelected = (sprite) =>
+      widget = new App.Builder.Widgets.SpriteWidget(url: sprite.get('url'))
+      widget.setPosition(new cc.Point(300, 400))
+      @_addWidget(widget)
+
+      App.modalWithView().hide()
+      view.off('image_select', imageSelected)
+
+    view = App.spriteList()
+    view.on('image_select', imageSelected)
+
+    App.modalWithView(view: view).show()
 
   showImageLibrary: ->
     @loadDataFor("image")

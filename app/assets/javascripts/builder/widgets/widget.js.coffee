@@ -5,7 +5,7 @@ class App.Builder.Widgets.Widget extends cc.Node
   draggable: true
 
   @newFromHash: (hash) ->
-    widget = new this(id: hash.id)
+    widget = new this(hash)
 
     widget.setPosition(new cc.Point(hash.position.x, hash.position.y)) if hash.position
 

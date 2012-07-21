@@ -13,6 +13,7 @@ window.App =
     @sceneList(new App.Views.SceneIndex collection: @scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: @keyframesCollection)
     @imageList(new App.Views.ImageIndex(collection: @imagesCollection, tagName: "div"))
+    @spriteList(new App.Views.SpriteIndex(collection: @imagesCollection))
 
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
@@ -74,6 +75,9 @@ window.App =
   imageList: (list) ->
     if list then @imageListView = list else @imageListView
 
+  spriteList: (list) ->
+    if list then @spriteListView = list else @spriteListView
+
   toggleSidebar: ->
     $(".sidebar").animate
       opacity: "toggle"
@@ -113,7 +117,7 @@ $ ->
 
   $("ul#toolbar li ul li").click ->
     toolbar_modal.modal "hide"
-    unless $(this).is('.scene, .keyframe, .edit-text, .touch-zones, .disabled, .images, .videos, .sounds, .fonts, .add-image')
+    unless $(this).is('.scene, .keyframe, .edit-text, .touch-zones, .disabled, .images, .videos, .sounds, .fonts, .add-image, .edit-sprite')
       toolbar_modal.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"

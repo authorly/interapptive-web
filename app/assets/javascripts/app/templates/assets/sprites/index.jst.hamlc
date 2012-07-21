@@ -1,0 +1,10 @@
+#image-picker
+  .modal-header
+    %h3.modal-title
+      Choose a Sprite...
+  .modal-body
+    %ul
+  .modal-footer
+    %a.btn.btn-primary.use-image.disabled
+      %i.icon-plus.icon-white
+      Add Sprite

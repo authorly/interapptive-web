@@ -11,3 +11,9 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @addChild(@sprite)
     @setContentSize(@sprite.getContentSize())
+
+  toHash: ->
+    hash = super
+    hash.url = @_url
+
+    hash

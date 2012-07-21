@@ -17,6 +17,8 @@
       %li.add-image.disabled
         - # TODO: Make this images_scene_path with the current scene. This will be easier when this is a backbone view.
         = link_to "Add Image", images_path, {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
+      %li.edit-sprite.disabled
+        %a.add-sprite{:href => '#'} Add Sprite
   %li.toolbar-group
     %ul
       %li.actions.disabled
