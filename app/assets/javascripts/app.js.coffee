@@ -17,7 +17,7 @@ window.App =
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
     @contentModal = new App.Views.Modal className: "content-modal"
-    @fontToolbar = new App.Views.FontToolbar el: $('#font_toolbar')
+    @fontToolbar = new App.Views.FontToolbar el: $('#font_toolbar') #, collection: @keyframesTextCollection
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
@@ -64,7 +64,13 @@ window.App =
     if scene then @scene = scene else @scene
 
   currentKeyframe: (keyframe) ->
+    console.log "currentKeyframe"
+    console.log keyframe
     if keyframe then @keyframe = keyframe else @keyframe
+
+  selectedKeyframeText: (id) -> #keyframeText) ->
+    #console.log id
+    #if keyframeText then @keyframeText = keyframeText else @keyframeText
 
   sceneList: (list) ->
     if list then @sceneListView = list else @sceneListView
@@ -95,21 +101,21 @@ window.App =
     , 900
   
   toggleFontToolbar: (textwidget) ->
-    c = $("#main canvas")
-    padding = 20 #px
-    o = c.offset()
-    w = c.width()
-    h = c.height()
-    
-    ft = $("#font_toolbar")
-    #ft.toggle()
-    ft.show()
+    _canvas = $("#main canvas")
+    _padding = 20 #px
+    console.log "fonttoolbar hidden? " + @fontToolbar.hidden()
+    #@fontToolbar.show()
+    if @fontToolbar.hidden() then @fontToolbar.show() else @fontToolbar.movement() #movement will call a timeout hide()
     # move font settings tooltip above the TextWidget
-    ft.css
-      top: o.top + (c.height() - (textwidget.getPosition().y + ft.height() + padding))
-      left: o.left + textwidget.getPosition().x
-      # show the tooltip
-      
+    _toolbar = $("#font_toolbar")
+    _toolbar.css
+      top: _canvas.offset().top + (_canvas.height() - (textwidget.getPosition().y + _toolbar.height() + _padding))
+      left: _canvas.offset().left + textwidget.getPosition().x
+  
+  #hideFontToolbar: ->
+    #
+    #@fontToolbar.hide()
+    
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1
 
@@ -142,5 +148,3 @@ $ ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
     
-  # font_toolbar color picker
-  # $("#font_toolbar .colorpicker").miniColors()

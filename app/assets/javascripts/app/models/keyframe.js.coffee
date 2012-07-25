@@ -45,6 +45,8 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
 
   initialize: (models, options) ->
+    console.log "keyframe collection models"
+    console.log models
     if options
       this.scene_id = options.scene_id
 

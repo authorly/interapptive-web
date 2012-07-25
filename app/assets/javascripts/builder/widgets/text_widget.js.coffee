@@ -1,9 +1,7 @@
 #= require ./widget
 
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
-  @_selection_border = null
-  @_stroke = null
-
+  
   @newFromHash: (hash) ->
     widget = super
 
@@ -24,6 +22,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   mouseOver: ->
     super()
+    App.selectedKeyframeText(this.id)
     App.toggleFontToolbar(this)
     @drawSelection()
     
@@ -40,23 +39,17 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     if @_mouse_over then @drawSelection()
     
   drawSelection: -> 
-    #console.log @label.getContentSize()
     lSize = @label.getContentSize()
     console.log "text widget draw selection"
-    cc.renderContext.strokeStyle = "rgba(255,0,255,1)";
+    cc.renderContext.strokeStyle = "rgba(0,0,255,1)";
     cc.renderContext.lineWidth = "2";
-    #s = @contentSize()
-    # Fix update this to have padding and solve for 
+    # Fix update this to have padding and solve for font below baseline
     vertices = [cc.ccp(0 - lSize.width / 2, lSize.height / 2), 
                 cc.ccp(lSize.width / 2, lSize.height / 2), 
                 cc.ccp(lSize.width / 2, 0 - lSize.height / 2), 
                 cc.ccp(0 - lSize.width / 2, 0 - lSize.height / 2)]
     
-    @_stroke = cc.drawingUtil.drawPoly(vertices, 4, true)  
-    #cc.drawingUtil.setAnchorPoint(0,0)
-    #@_stroke.setAnchorPoint(0,0)
-    #console.log @stroke
-    #@_selection_drawn = true
+    cc.drawingUtil.drawPoly(vertices, 4, true)  
   
   update: ->
     console.log "update"

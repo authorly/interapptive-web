@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120707000438) do
+ActiveRecord::Schema.define(:version => 20120718232958) do
 
   create_table "action_definitions", :force => true do |t|
     t.string   "name"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20120707000438) do
     t.integer "attribute_definition_id"
     t.integer "keyframe_id"
     t.string  "value"
+    t.integer "action_id"
   end
 
   add_index "attributes", ["attribute_definition_id"], :name => "index_attributes_on_attribute_definition_id"
@@ -77,6 +78,9 @@ ActiveRecord::Schema.define(:version => 20120707000438) do
     t.datetime "updated_at",                             :null => false
     t.integer  "x_coord",                 :default => 0
     t.integer  "y_coord",                 :default => 0
+    t.string   "face"
+    t.integer  "size"
+    t.string   "color"
   end
 
   add_index "keyframe_texts", ["keyframe_id"], :name => "index_keyframe_texts_on_keyframe_id"
