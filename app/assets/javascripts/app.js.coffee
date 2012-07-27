@@ -13,11 +13,11 @@ window.App =
     @sceneList(new App.Views.SceneIndex collection: @scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: @keyframesCollection)
     @imageList(new App.Views.ImageIndex(collection: @imagesCollection, tagName: "div"))
+    @keyframesTextList(new App.Views.KeyframeTextsIndex(collection: @keyframesTextCollection, el: $("#keyframes_text")))
 
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
     @contentModal = new App.Views.Modal className: "content-modal"
-    @fontToolbar = new App.Views.FontToolbar el: $('#font_toolbar') #, collection: @keyframesTextCollection
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
@@ -64,8 +64,7 @@ window.App =
     if scene then @scene = scene else @scene
 
   currentKeyframe: (keyframe) ->
-    console.log "currentKeyframe"
-    console.log keyframe
+    console.log "App.currentKeyframe"
     if keyframe then @keyframe = keyframe else @keyframe
 
   selectedKeyframeText: (id) -> #keyframeText) ->
@@ -80,6 +79,9 @@ window.App =
 
   imageList: (list) ->
     if list then @imageListView = list else @imageListView
+    
+  keyframesTextList: (list) ->
+    if list then @keyframesTextListView = list else @keyframesTextListView
 
   toggleSidebar: ->
     $(".sidebar").animate
@@ -112,9 +114,8 @@ window.App =
       top: _canvas.offset().top + (_canvas.height() - (textwidget.getPosition().y + _toolbar.height() + _padding))
       left: _canvas.offset().left + textwidget.getPosition().x
   
-  #hideFontToolbar: ->
-    #
-    #@fontToolbar.hide()
+  clearKeyframeTexts: ->
+    
     
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1

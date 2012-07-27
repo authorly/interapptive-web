@@ -6,6 +6,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     'click .keyframe-list li div': 'setActiveKeyframe'
 
   initialize: ->
+    console.log "KeyframeIndex initialize"
     @collection.on('reset', @render, this)
     $('footer').hide()
 
@@ -13,6 +14,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(@el).html('')
     @collection.each (keyframe) => @appendKeyframe(keyframe)
     @delegateEvents()
+    
 
     # Fire asynchronously so other 'reset' events can finish first
     setTimeout((=> $(@el).find('li:first div:first').click()), 1)
@@ -103,33 +105,33 @@ class App.Views.KeyframeIndex extends Backbone.View
         console.log "Set the id of keyframe thumbnail"
 
   placeText: ->
+    console.log "KeyframeIndex placeText"
     if App.currentKeyframe()?
       scene = cc.Director.sharedDirector().getRunningScene()
       keyframeTexts = scene.widgetLayer.widgets
+      console.log keyframTexts
       App.builder.widgetLayer.removeAllChildrenWithCleanup()
       App.keyframesTextCollection.fetch
         success: (collection, response) =>
-          for keyframeText in collection.models
-            # Fix, change to HTML text areas or contenteditable div overlays
-            text = new App.Builder.Widgets.TextWidget(string: keyframeText.get('content'))
-            text.setPosition(new cc.Point(keyframeText.get('x_coord'), keyframeText.get('y_coord')))
-            App.builder.widgetLayer.addWidget(text)
-
+          
 
   populateWidgets: (keyframe) ->
+    console.log "KeyframeIndex populateWidgets"
     return unless keyframe?
 
     App.builder.widgetLayer.clearWidgets()
-
+    # clear text
+    App.clearKeyframeTexts()
+    
     if keyframe.has('widgets')
       for widgetHash in keyframe.get('widgets')
         if widgetHash.type == "TextWidget"
-          klass = App.Views.
-        klass = App.Builder.Widgets[widgetHash.type]
-        throw new Error("Unable to find widget class #{klass}") unless klass
-
-        widget = klass.newFromHash(widgetHash)
-        App.builder.widgetLayer.addWidget(widget)
-        widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
+          #klass = App.Views[widgetHash.type]
+        else
+          klass = App.Builder.Widgets[widgetHash.type]
+          throw new Error("Unable to find widget class #{klass}") unless klass
+          widget = klass.newFromHash(widgetHash)
+          App.builder.widgetLayer.addWidget(widget)
+          widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
 
 

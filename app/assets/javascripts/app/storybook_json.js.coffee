@@ -62,7 +62,7 @@ class App.StorybookJSON
 
   # scene === page
   createPage: (scene) ->
-    console.log('Create page', arguments)
+    #console.log('Create page', arguments)
 
     page =
       API: {}
@@ -109,11 +109,11 @@ class App.StorybookJSON
     throw new Error("Keyframe has no Paragraph") unless p?
 
     # FIXME Need a more generic way to add widgets to the JSON
-    if widget instanceof App.Builder.Widgets.TextWidget
+    if widget instanceof App.Views.TextWidget
       line =
-        text: widget.label.getString()
-        xOffset: Math.round(widget.getPosition().x)
-        yOffset: Math.round(widget.getPosition().y)
+        text: widget.getText()
+        xOffset: Math.round(widget.x())
+        yOffset: Math.round(widget.y())
 
       widget._line = line
 
@@ -126,11 +126,12 @@ class App.StorybookJSON
     throw new Error("Keyframe has no Paragraph") unless p?
 
     # FIXME Need a more generic way to add widgets to the JSON
-    if widget instanceof App.Builder.Widgets.TextWidget
+    if widget instanceof App.Views.TextWidget
       if widget._line
-        widget._line.text    = widget.label.getString()
-        widget._line.xOffset = Math.round(widget.getPosition().x)
-        widget._line.yOffset = Math.round(widget.getPosition().y)
+        # Fix solve for multiple line widget.text()
+        widget._line.text    = widget.text()
+        widget._line.xOffset = Math.round(widget.x())
+        widget._line.yOffset = Math.round(widget.y())
 
 
 

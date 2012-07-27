@@ -42,7 +42,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   addWidget: (widget) ->
     @widgets.push(widget)
-    @addChild(widget)
+    @addChild(widget) unless widget instanceof App.Views.TextWidget
 
     App.storybookJSON.addWidget(App.currentKeyframe(), widget)
 
@@ -53,6 +53,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   widgetAtPoint: (point) ->
     for widget in @widgets
+      continue if widget instanceof App.Views.TextWidget
       if widget.getIsVisible()
         local = widget.convertToNodeSpace(point)
 
