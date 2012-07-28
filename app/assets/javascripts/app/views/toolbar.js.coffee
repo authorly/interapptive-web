@@ -10,6 +10,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .videos'      : 'showVideoLibrary'
     'click .fonts'       : 'showFontLibrary'
     'click .sounds'      : 'showSoundLibrary'
+    'click .actions'     : 'showActionLibrary'
 
   initialize: ->
     @assetLibraryView = new App.Views.AssetLibrary()
@@ -28,6 +29,12 @@ class App.Views.ToolbarView extends Backbone.View
 
   addKeyframe: ->
     App.keyframeList().createKeyframe()
+
+  showActionLibrary: ->
+    definitions = new App.Collections.ActionDefinitionsCollection()
+    definitions.fetch
+      success: ->
+        App.modalWithView(view: new App.Views.ActionIndex(definitions: definitions)).showModal()
 
   addImage: ->
     App.modalWithView(view: App.imageList()).show()

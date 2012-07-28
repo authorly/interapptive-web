@@ -9,6 +9,7 @@
 #= require jquery-fileupload
 
 #= require ./vendor/backbone-forms.js
+#= require ./vendor/backbone-forms-list.min.js
 #= require ./vendor/base64.js
 #= require ./vendor/canvas2image.js
 #= require ./vendor/jquery.overscroll
@@ -17,6 +18,7 @@
 #= require ./vendor/form-editors/currency
 #= require ./vendor/form-editors/buttons
 #= require ./vendor/form-editors/jquery.ui
+#= require ./vendor/jquery.overscroll
 
 #= require app
 

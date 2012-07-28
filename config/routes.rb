@@ -24,6 +24,10 @@ Interapptive::Application.routes.draw do
 
   resources :actions do
     resources :attributes
+
+    collection do
+      get 'definitions'
+    end
   end
   
   resources :touch_zones
@@ -33,8 +37,10 @@ Interapptive::Application.routes.draw do
   end
 
   resources :scenes do
-    resources :keyframes
-
+    resources :keyframes do
+      resources :actions
+    end
+    
     member do
       get 'images'
       get 'touch_zones'

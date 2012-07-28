@@ -4,9 +4,7 @@ class ImagesController < ApplicationController
   def index
     @images = Image.all
 
-    respond_to do |format|
-      format.json { render :json => @images.map(&:as_jquery_upload_response).to_json }
-    end
+    render :json => @images.map(&:as_jquery_upload_response).to_json
   end
 
   def show
