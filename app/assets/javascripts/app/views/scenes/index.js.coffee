@@ -56,7 +56,8 @@ class App.Views.SceneIndex extends Backbone.View
         image     = images.get(bgImageId)
         url       = image.get('url')
         cc.TextureCache.sharedTextureCache().addImage(url)
-        node.backgroundSprite = cc.Sprite.spriteWithFile(url)
+        node.backgroundSprite = new cc.Sprite
+        node.backgroundSprite.initWithFile(url)
         node.backgroundSprite.url = url
         node.backgroundSprite.setPosition cc.ccp(App.currentKeyframe().get('background_x_coord'), App.currentKeyframe().get('background_y_coord'))
         node.addChild(node.backgroundSprite, 50)

@@ -17,7 +17,7 @@ cc.setupHTML = (a) ->
 
 # Monkey patch to fix bug in touch calculation in cocos2d-html5
 cc.Touch.prototype.locationInView = ->
-  p = this._m_point
+  p = this._point
 
   $c = $(cc.canvas)
 

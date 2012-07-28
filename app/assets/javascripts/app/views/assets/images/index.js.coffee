@@ -44,7 +44,8 @@ class App.Views.ImageIndex extends Backbone.View
         @node = cc.Director.sharedDirector().getRunningScene()
         cc.TextureCache.sharedTextureCache().addImage(url)
         @node.removeChild @node.backgroundSprite
-        @node.backgroundSprite = cc.Sprite.spriteWithFile(url)
+        @node.backgroundSprite = new cc.Sprite
+        @node.backgroundSprite.initWithFile(url)
 
         # FIXME need to store the url someplace cleaner
         @node.backgroundSprite.url = url

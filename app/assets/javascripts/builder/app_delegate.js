@@ -36,7 +36,8 @@ cc.AppDelegate = cc.Application.extend({
         var pScene = new cc.Scene();
 
         // add label to the screen
-        var label = cc.LabelTTF.labelWithString("Builder ready", "Arial", 24)
+        var label = new cc.LabelTTF
+        label.initWithString("Builder ready", "Arial", 24)
         label.setColor(new cc.Color3B(255, 0, 0));
         var s = pDirector.getWinSize();
         label.setPosition(new cc.Point(s.width / 2, s.height / 2));
