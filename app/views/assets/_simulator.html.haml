@@ -1,0 +1,20 @@
+%div
+  %canvas{id: 'simulator-canvas', width: 1024, height: 768, style: 'width: 480px; height: 360px'}
+    %p Your browser doesn't support the technology required to run this application.
+
+  %div
+    %button{onclick: "Sim.run(document.getElementById('json-data').value)"}
+      Run JSON
+
+    %button{id: 'sim-prev-page'}
+      &lt;- Previous
+
+    //%span{class: "page-numbers"}
+    //  Page 0 of 0
+
+    %button{id: "sim-next-page"}
+      Next -&gt;
+
+
+%textarea{style: 'width: 100%; height: 100px;', id: 'json-data'}
+  :plain
