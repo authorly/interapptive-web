@@ -32,20 +32,21 @@ window.Sim.run = (json) ->
 
   # Preload our assets
   preloader.preload([
+    {type: 'image', src: '/assets/simulator/logo.png'}
       # FIXME Fonts not supported?
       #{type: 'font',  src: '/resources/PoeticaChanceryIII.ttf'},
       #{type: 'font',  src: '/resources/PopplPontifexBE-Regular.ttf'},
-      {type: 'image', src: '/resources/autoplay-over.png'},
-      {type: 'image', src: '/resources/autoplay.png'},
-      {type: 'image', src: '/resources/home-button-over.png'},
-      {type: 'image', src: '/resources/home-button.png'},
-      {type: 'image', src: '/resources/r1.png'},
-      {type: 'image', src: '/resources/r2.png'},
-      {type: 'image', src: '/resources/read-it-myself-over.png'},
-      {type: 'image', src: '/resources/read-it-myself.png'},
-      {type: 'image', src: '/resources/read-to-me-over.png'},
-      {type: 'image', src: '/resources/read-to-me.png'},
-      {type: 'image', src: '/resources/stranger-in-the-woods-logo.png'},
-      {type: 'image', src: '/resources/touchable-node-particle-glitter.png'}
+      #{type: 'image', src: '/resources/autoplay-over.png'},
+      #{type: 'image', src: '/resources/autoplay.png'},
+      #{type: 'image', src: '/resources/home-button-over.png'},
+      #{type: 'image', src: '/resources/home-button.png'},
+      #{type: 'image', src: '/resources/r1.png'},
+      #{type: 'image', src: '/resources/r2.png'},
+      #{type: 'image', src: '/resources/read-it-myself-over.png'},
+      #{type: 'image', src: '/resources/read-it-myself.png'},
+      #{type: 'image', src: '/resources/read-to-me-over.png'},
+      #{type: 'image', src: '/resources/read-to-me.png'},
+      #{type: 'image', src: '/resources/stranger-in-the-woods-logo.png'},
+      #{type: 'image', src: '/resources/touchable-node-particle-glitter.png'}
   ])
 
