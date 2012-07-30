@@ -109,6 +109,7 @@ class App.StorybookJSON
     throw new Error("Keyframe has no Paragraph") unless p?
 
     # FIXME Need a more generic way to add widgets to the JSON
+    # FIXME TextWidget should be handled by KeyframesTextIndex
     if widget instanceof App.Views.TextWidget
       line =
         text: widget.getText()
@@ -116,7 +117,7 @@ class App.StorybookJSON
         yOffset: Math.round(widget.y())
 
       widget._line = line
-
+      #TODO this logic should change according to new html text widgets
       p.linesOfText.push(line)
 
     widget.on('change', (property) => @updateWidget(keyframe, widget, property))
@@ -126,12 +127,12 @@ class App.StorybookJSON
     throw new Error("Keyframe has no Paragraph") unless p?
 
     # FIXME Need a more generic way to add widgets to the JSON
-    if widget instanceof App.Views.TextWidget
-      if widget._line
-        # Fix solve for multiple line widget.text()
-        widget._line.text    = widget.text()
-        widget._line.xOffset = Math.round(widget.x())
-        widget._line.yOffset = Math.round(widget.y())
+    #if widget instanceof App.Views.TextWidget
+      #if widget._line
+        # FIXME solve for multiple line widget.text()
+        #widget._line.text    = widget.text()
+        #widget._line.xOffset = Math.round(widget.x())
+        #widget._line.yOffset = Math.round(widget.y())
 
 
 

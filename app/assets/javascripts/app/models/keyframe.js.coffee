@@ -14,7 +14,6 @@ class App.Models.Keyframe extends Backbone.Model
 
     @save()
 
-
   updateWidget: (widget) ->
     widgets = @get('widgets') || []
 

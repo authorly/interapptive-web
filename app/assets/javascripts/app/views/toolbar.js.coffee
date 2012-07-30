@@ -27,12 +27,13 @@ class App.Views.ToolbarView extends Backbone.View
 
   addText: ->
     # FIXME we should have some delegate that actually handles adding things
-    text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
-    text.setPosition(new cc.Point(100, 100))
-    keyframe = App.currentKeyframe()
-    App.builder.widgetLayer.addWidget(text)
-    keyframe.addWidget(text)
-    text.on('change', -> keyframe.updateWidget(text))
+    #text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
+    App.keyframeTextList().createText()
+    #keyframe = App.currentKeyframe()
+    #TODO figure out whether we want to try to use the addwidget, etc functionality for text still
+    #App.builder.widgetLayer.addWidget(text)
+    #keyframe.addWidget(text)
+    #text.on('change', -> keyframe.updateWidget(text))
 
   addTouch: ->
     alert('TODO show touch point dialogue here')

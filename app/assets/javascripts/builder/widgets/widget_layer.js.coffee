@@ -35,14 +35,15 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     
   clearWidgets: ->
     for widget in @widgets
-      @removeChild(widget)
+      #HACK unless TextWidget until I figure out whether TextWidget will still be stored in Keyframe.widgets
+      @removeChild(widget) unless widget.type == "TextWidget"
 
     # Clear array
     @widgets.splice(0)
 
   addWidget: (widget) ->
     @widgets.push(widget)
-    @addChild(widget) unless widget instanceof App.Views.TextWidget
+    @addChild(widget) 
 
     App.storybookJSON.addWidget(App.currentKeyframe(), widget)
 

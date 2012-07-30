@@ -13,11 +13,12 @@ window.App =
     @sceneList(new App.Views.SceneIndex collection: @scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: @keyframesCollection)
     @imageList(new App.Views.ImageIndex(collection: @imagesCollection, tagName: "div"))
-    @keyframesTextList(new App.Views.KeyframeTextsIndex(collection: @keyframesTextCollection, el: $("#keyframes_text")))
+    @keyframeTextList(new App.Views.KeyframeTextIndex(collection: @keyframesTextCollection, el: $("body")))
 
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
     @contentModal = new App.Views.Modal className: "content-modal"
+    @fontToolbar = new App.Views.FontToolbar el: $("#font_toolbar")
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
@@ -64,12 +65,10 @@ window.App =
     if scene then @scene = scene else @scene
 
   currentKeyframe: (keyframe) ->
-    console.log "App.currentKeyframe"
     if keyframe then @keyframe = keyframe else @keyframe
 
-  selectedKeyframeText: (id) -> #keyframeText) ->
-    #console.log id
-    #if keyframeText then @keyframeText = keyframeText else @keyframeText
+  currentKeyframeText: (keyframeText) -> 
+    if keyframeText then @keyframeText = keyframeText else @keyframeText
 
   sceneList: (list) ->
     if list then @sceneListView = list else @sceneListView
@@ -80,8 +79,8 @@ window.App =
   imageList: (list) ->
     if list then @imageListView = list else @imageListView
     
-  keyframesTextList: (list) ->
-    if list then @keyframesTextListView = list else @keyframesTextListView
+  keyframeTextList: (list) ->
+    if list then @keyframeTextListView = list else @keyframeTextListView
 
   toggleSidebar: ->
     $(".sidebar").animate
@@ -102,20 +101,20 @@ window.App =
       height: "toggle"
     , 900
   
-  toggleFontToolbar: (textwidget) ->
-    _canvas = $("#main canvas")
-    _padding = 20 #px
-    console.log "fonttoolbar hidden? " + @fontToolbar.hidden()
-    #@fontToolbar.show()
-    if @fontToolbar.hidden() then @fontToolbar.show() else @fontToolbar.movement() #movement will call a timeout hide()
-    # move font settings tooltip above the TextWidget
-    _toolbar = $("#font_toolbar")
-    _toolbar.css
-      top: _canvas.offset().top + (_canvas.height() - (textwidget.getPosition().y + _toolbar.height() + _padding))
-      left: _canvas.offset().left + textwidget.getPosition().x
-  
-  clearKeyframeTexts: ->
+  editTextWidget: (textWidget) ->
+    @selectedText(textWidget)
+    @fontToolbar.attachToTextWidget(textWidget)
+    @keyframeTextList().editText(textWidget)
     
+  fontToolbarUpdate: (fontToolbar) ->
+    console.log "App.fontToolbarUpdate"
+    @selectedText().fontToolbarUpdate(fontToolbar)
+    
+  selectedText: (textWidget) ->
+    if textWidget then @textWidget = textWidget else @textWidget
+   
+  updateKeyframeText: ->
+    @keyframeTextList().updateText()
     
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1

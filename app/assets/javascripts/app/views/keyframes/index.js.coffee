@@ -6,7 +6,6 @@ class App.Views.KeyframeIndex extends Backbone.View
     'click .keyframe-list li div': 'setActiveKeyframe'
 
   initialize: ->
-    console.log "KeyframeIndex initialize"
     @collection.on('reset', @render, this)
     $('footer').hide()
 
@@ -121,13 +120,12 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     App.builder.widgetLayer.clearWidgets()
     # clear text
-    App.clearKeyframeTexts()
+    App.updateKeyframeText()
     
     if keyframe.has('widgets')
       for widgetHash in keyframe.get('widgets')
-        if widgetHash.type == "TextWidget"
-          #klass = App.Views[widgetHash.type]
-        else
+        #HACK to ignore TextWidgets in widgets hash because this is in html now
+        if widgetHash.type != "TextWidget"
           klass = App.Builder.Widgets[widgetHash.type]
           throw new Error("Unable to find widget class #{klass}") unless klass
           widget = klass.newFromHash(widgetHash)

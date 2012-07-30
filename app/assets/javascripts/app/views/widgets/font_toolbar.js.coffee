@@ -1,67 +1,83 @@
 class App.Views.FontToolbar extends Backbone.View
-  #template: JST['widgets/font_toolbar']
+  template: JST['app/templates/widgets/font_toolbar']
+  
+  className: 'font_toolbar'
+  
+  # defaults
   _hidden: true
-  _id: null # the current TextWidget id
-  _keyframeText: null # the current KeyframeText record
+  _fontColor: "#000000"
+  _fontSize: 12
+  _fontFace: "Arial"
   #_active: false # keeps hide() from hiding if there is a rollout event etc
   #_timer: null
-  _fontColor: null # Fix set defaults color, font, size on init
-  _fontSize: null
-  _fontFace: null
   
   events: 
-    'change .font_face select' : 'changeFontFace'
-    'change .font_size select' : 'changeFontSize'
+    'change .font_face' : 'onChangeFontFace'
+    'change .font_size' : 'onChangeFontSize'
     'mouseenter': 'mouseEnter'
     'mouseleave': 'mouseLeave'
     'mousemove' : 'mouseMove'
     
   initialize: ->
+    @render()
     $(@el).find(".colorpicker").miniColors  
       change: (hex, rgb) =>
-        @changeFontColor(hex, rgb)
+        @onChangeFontColor(hex, rgb)
         
-  render: -> 
-    #$(@el).html(@template())
-    this #allows chaining on the view
+  render: (model)-> 
+    $(@el).html(@template())
+    this 
     
-  setKeyframeTextById: (id) ->
-    @_id = id
-    @keyframeText = @collection.get(@_id)
-    
-  keyframeText: ->
+  keyframeText: (keyframeText) ->
     @_keyframeText
+  
+  collection: (collection) ->
+    if collection then @collection = collection else @collection
+  
+  attachToTextWidget: (textWidget) ->
+    @_textWidget(textWidget)
+    @setDefaults()
+    @setPosition(@_textWidget().top(), @_textWidget().left())
+    @show()
     
+  _textWidget: (textWidget) ->
+    if textWidget then @textWidget = textWidget else @textWidget
+  
+  setDefaults: ->
+    @fontFace @_textWidget().model?.get('face') ? @_fontFace
+    @fontColor @_textWidget().model?.get('color') ? @_fontColor
+    @fontSize @_textWidget().model?.get('size') ? @_fontSize
+  
   update: (e) ->
-    @trigger('fontToolbarUpdate', @)
+    App.fontToolbarUpdate(this)
     
-  changeFontFace: (e) ->
-    @fontFace(e.srcElement.value)
-    #@fontFace()
+  onChangeFontFace: (e) ->
+    @_textWidget().model.set
+      face : @fontFace()
+    @_textWidget().model.save()
     @update()
     
   fontFace: (ff) ->
-    if ff then @_fontFace = ff else @_fontFace  
+    if ff then $(@el).find('.font_face').val(ff) else $(@el).find(".font_face option:selected").val()
     
-  changeFontSize: (e) ->
-    keyframeText().set
-      size : $(@el).find(".font_size select").val()
-    keyframeText().save
-    @fontSize(e.srcElement.value)
+  onChangeFontSize: (e) ->
+    @_textWidget().model.set
+      size : @fontSize()
+    @_textWidget().model.save()
     @update()
     
-  fontSize: (fs) ->
-    if fs then @_fontSize = fs else @_fontSize
+  fontSize: (fs)->
+    if fs then $(@el).find(".font_size").val(fs) else $(@el).find(".font_size option:selected").val()
     
-  changeFontColor: (hex, rgb) ->
-    keyframeText().set
+  onChangeFontColor: (hex, rgb) ->
+    @_textWidget().model.set
       color : hex
-    keyframeText().save
+    @_textWidget().model.save()
     @fontColor(hex)
     @update()
     
   fontColor: (fc) ->
-    if fc then @_fontColor = fc else @_fontColor 
+    if fc then $(@el).find('.colorpicker').val(fc) else $(@el).find('.colorpicker').val()
       
   mouseMove: -> 
     
@@ -71,13 +87,13 @@ class App.Views.FontToolbar extends Backbone.View
   mouseLeave: ->
     @_active = false
     
-  show: ->
-    #console.log "FontToolbar show"
+  show: ()->
     $(@el).show()
     @_hidden = false
     
   setPosition: (_top, _left) ->
-    # Fix calculate padding in a more clear way 
+    # TODO calculate padding in a more clear way 
+    # ENHANCEMENT may need to solve for text too high or too far to the right
     padding = 20 
     $(@el).css
       top : _top - ($(@el).height() + padding)
@@ -92,5 +108,4 @@ class App.Views.FontToolbar extends Backbone.View
     return @_hidden 
   
   leave: ->
-    #called when view is hidden to garbage collect
   
