@@ -52,28 +52,18 @@ class App.Views.FontToolbar extends Backbone.View
     App.fontToolbarUpdate(this)
     
   onChangeFontFace: (e) ->
-    @_textWidget().model.set
-      face : @fontFace()
-    @_textWidget().model.save()
     @update()
     
   fontFace: (ff) ->
     if ff then $(@el).find('.font_face').val(ff) else $(@el).find(".font_face option:selected").val()
     
   onChangeFontSize: (e) ->
-    @_textWidget().model.set
-      size : @fontSize()
-    @_textWidget().model.save()
     @update()
     
   fontSize: (fs)->
     if fs then $(@el).find(".font_size").val(fs) else $(@el).find(".font_size option:selected").val()
     
   onChangeFontColor: (hex, rgb) ->
-    @_textWidget().model.set
-      color : hex
-    @_textWidget().model.save()
-    @fontColor(hex)
     @update()
     
   fontColor: (fc) ->

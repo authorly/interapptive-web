@@ -56,7 +56,7 @@ class App.Views.TextWidget extends Backbone.View
     if _y then @_y = _y else @_y
     
   getText: ->
-    # Fix need to solve for multiple lines and html formatting
+    # FIXME need to solve for multiple lines and html formatting
     # perhaps just html encode?
     #str = "" 
     #$(@el).find('div').each(-> str = str + $(this).text())
@@ -103,20 +103,19 @@ class App.Views.TextWidget extends Backbone.View
     if size then $(@el).css('font-size', size) else @_fontSize
   
   content: (_content) ->
+    console.log "content #{_content}"
     if _content 
       $(@el).html(_content)
       @_content = _content 
     else 
-      @_content
+      $(@el).html()
+      
   # events...
   
   #drag stop
   drop: =>
     # x_coord and y_coord are translated to cocos2d x, y starting at bottom left
-    @model.set
-      x_coord: @left2cocosX @left()
-      y_coord: @top2cocosY @top()
-    @model.save()
+    @save()
     
   startDrag: =>
     App.currentKeyframeText(@model)
@@ -126,6 +125,7 @@ class App.Views.TextWidget extends Backbone.View
       "font-family" : _fontToolbar.fontFace()
       "font-size" : _fontToolbar.fontSize() + "px"
       "color" : _fontToolbar.fontColor()
+    @save()
 
   onClick: (e) ->
     # select and make editable. once editable, another click will place the cursor inside and allow typing, i.e. "double click"
@@ -152,8 +152,8 @@ class App.Views.TextWidget extends Backbone.View
     #console.log "EditText editActivity"
     if $(@el).data isnt $(@el).html()
       $(@el).data 'before', $(@el).html()
-      $(@el).trigger('change')
-    
+      @save()
+      
   cocosYtoTop: (_cocosY) ->
     _canvas = @getCanvas()
     _top = _canvas.offset().top + _canvas.height() - _cocosY
@@ -187,7 +187,22 @@ class App.Views.TextWidget extends Backbone.View
     
   getCanvas: ->
     $('#builder-canvas')
-      
+    
+  save: ->
+    console.log "text widget save()"
+    console.log @content()
+    attr = 
+      content : @content()
+      face : @fontFace()
+      size : @fontSize()
+      color : @fontColor()
+      x_coord : @cocosX()
+      y_coord : @cocosY()
+    @model.set attr
+    @model.save
+      success: ->
+        console.log "text widget save success"
+        
   rect: ->
     # probably not needed since this is no longer cocos2d
 

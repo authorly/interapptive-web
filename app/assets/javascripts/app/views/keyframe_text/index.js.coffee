@@ -38,23 +38,17 @@ class App.Views.KeyframeTextIndex extends Backbone.View
         t.enableDragging()
       
   createText: () ->
-    text = new App.Views.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
-    #TODO center it
-    _canvas = $('#builder-canvas')
-    text.setPositionFromCocosCoords(300, 350)
+    attributes = keyframe_id : App.currentKeyframe().get('id')
+    @collection.create attributes,
+      success: (keyframeText, response) =>
+        text = new App.Views.TextWidget(model: keyframeText, string: (prompt('Enter some text') or '<No Text>'))
+        App.currentKeyframeText(keyframeText)
+        #TODO center it
+        #_canvas = $('#builder-canvas')
+        text.setPositionFromCocosCoords(300, 350)
+        text.save()
+        @addText(text)
     
-    @collection.create
-      keyframe_id : App.currentKeyframe().get('id')
-      content : text.getText()
-      x_coord : text.getCocosPosition().x
-      y_coord : text.getCocosPosition().y
-      face : text.fontFace()
-      size : text.fontSize()
-      color : text.fontColor()
-      success: (collection, response) =>
-        #TODO need to add model to text
-    @addText(text)
-
   resize: =>
     # position texts
     for t in @texts
