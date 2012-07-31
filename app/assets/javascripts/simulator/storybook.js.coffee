@@ -192,21 +192,24 @@ class Sim.Storybook
         # switch statement to handle argument order instead
         switch ccActionName
           when 'CCScaleBy'
-            action = new cc.ScaleBy.actionWithDuration(params.duration, params.intensity)
+            action = new cc.ScaleBy
+            action.initWithDuration(params.duration, params.intensity)
           when 'CCMoveBy'
             if params.position
               p = new cc.Point(params.position[0], params.position[1])
             else
               p = new cc.Point(0, 0)
 
-            action = new cc.MoveBy.actionWithDuration(params.duration, p)
+            action = new cc.MoveBy
+            action.initWithDuration(params.duration, p)
           when 'CCMoveTo'
             if params.position
               p = new cc.Point(params.position[0], params.position[1])
             else
               p = new cc.Point(0, 0)
 
-            action = new cc.MoveTo.actionWithDuration(params.duration, p)
+            action = new cc.MoveTo
+            action.initWithDuration(params.duration, p)
 
         if action
           page.addAction(params.actionTag, action)

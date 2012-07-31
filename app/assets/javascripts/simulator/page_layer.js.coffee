@@ -46,7 +46,8 @@ class Sim.PageLayer extends cc.Scene
       #unless path.exists(spriteFile)
       #  throw new Error("Unable to find Sprite file: " + spriteFile)
 
-      sprite = cc.Sprite.spriteWithFile(spriteFile)
+      sprite = new cc.Sprite
+      sprite.initWithFile(spriteFile)
       sprite.setPosition(spriteInfo.position)
 
       @addChild(sprite, 10, spriteInfo.spriteTag)
