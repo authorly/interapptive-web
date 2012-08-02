@@ -22,7 +22,7 @@ class ActionsController < ApplicationController
       if @action.save
         format.json { render :json => @action.to_json(:include => :attributes), :status => :created }
       else
-        format.json { render :json @action.errors.to_json }
+        format.json { render :json => @action.errors.to_json }
       end
     end
   end
