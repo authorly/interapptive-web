@@ -105,6 +105,7 @@ window.App =
     @selectedText(textWidget)
     @fontToolbar.attachToTextWidget(textWidget)
     @keyframeTextList().editText(textWidget)
+    App.currentKeyframeText(textWidget.model)
     
   fontToolbarUpdate: (fontToolbar) ->
     console.log "App.fontToolbarUpdate"

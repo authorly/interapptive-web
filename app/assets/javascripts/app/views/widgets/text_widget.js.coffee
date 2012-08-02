@@ -65,7 +65,10 @@ class App.Views.TextWidget extends Backbone.View
     $(@el).html()
     
   setText: (text) ->
-    if text then $
+    if text then $(@el).html(text) else 
+    
+  text: (_text) ->
+    if _text then $(@el).html(_text) else $(@el).html()
     
   setPosition: (_top, _left) ->
     $(@el).css
@@ -139,7 +142,6 @@ class App.Views.TextWidget extends Backbone.View
     $(@el).data 'before', $(@el).html()
     # show the font toolbar
     App.editTextWidget(this)
-    App.currentKeyframeText(@model)
     
   mouseEnter: (e) ->
     #console.log "EditText mouseEnter"

@@ -23,7 +23,7 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     @texts.length = 0
       
   updateText: ->
-    @collection.fetch success: =>
+    @collection.fetch success: ->
       @render()
       
   addText: (text) ->
@@ -37,11 +37,14 @@ class App.Views.KeyframeTextIndex extends Backbone.View
         t.disableEditing()
         t.enableDragging()
       
-  createText: () ->
-    attributes = keyframe_id : App.currentKeyframe().get('id')
+  createText: (str) ->
+    attributes = 
+      keyframe_id : App.currentKeyframe().get('id')
+      content : str
+      
     @collection.create attributes,
       success: (keyframeText, response) =>
-        text = new App.Views.TextWidget(model: keyframeText, string: (prompt('Enter some text') or '<No Text>'))
+        text = new App.Views.TextWidget(model: keyframeText)
         App.currentKeyframeText(keyframeText)
         #TODO center it
         #_canvas = $('#builder-canvas')
@@ -56,7 +59,7 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     
   #position text based on canvas position, solving for cocos2 canvas x,y
   positionText: (text) ->
-    _canvas = $('#builder-canvas')
+    canvas = $('#builder-canvas')
     text.setPositionFromCocosCoords(text.model.get('x_coord'), text.model.get('y_coord'))
     
   leave: ->
