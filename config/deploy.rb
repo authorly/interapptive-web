@@ -2,7 +2,7 @@
 require "bundler/capistrano"
 
 set :scm,             :git
-set :repository,      "git@github.com:curiousminds/interapptive.git"
+set :repository,      "git@github.com:curiousminds/interapptive-web.git"
 set :branch,          "origin/master"
 set :migrate_target,  :current
 set :ssh_options,     { :forward_agent => true }
