@@ -8,11 +8,16 @@ set :migrate_target,  :current
 set :ssh_options,     { :forward_agent => true }
 set :rails_env,       "production"
 set :deploy_to,       "/home/deployer/apps/interapptive"
-set :normalize_asset_timestamps, false
+
+set :unicorn_binary,  "/usr/bin/unicorn"
+set :unicorn_config,  "#{current_path}/config/unicorn.rb"
+set :unicorn_pid,     "#{current_path}/tmp/pids/unicorn.pid"
 
 set :user,            "deployer"
 set :group,           "staff"
 set :use_sudo,        false
+
+set :normalize_asset_timestamps, false
 
 role :web,    "50.116.9.180"
 role :app,    "50.116.9.180"
@@ -113,7 +118,7 @@ namespace :deploy do
 
   desc "Stop unicorn"
   task :stop, :except => { :no_release => true } do
-    run "kill -s QUIT `cat /tmp/unicorn.interapptive.pid`"
+    run "kill -s QUIT `cat #{unicorn_pid}`"
   end
 
   namespace :rollback do
