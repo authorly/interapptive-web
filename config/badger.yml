@@ -1,0 +1,6 @@
+username: "root"
+password: "123k1tis"
+domain: "66.175.216.99"
+port: "22"
+redis: false #true will host redis locally
+environment: "production" # or "staging", development and testing are excluded.
