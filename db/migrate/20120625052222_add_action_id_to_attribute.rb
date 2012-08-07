@@ -5,7 +5,7 @@ class AddActionIdToAttribute < ActiveRecord::Migration
     end
 
     change_table :actions do |t|
-      t.remove :name
+      # t.remove :name
     end
   end
 end
