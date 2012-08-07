@@ -15,6 +15,7 @@ gem 'mini_magick'
 gem 'param_protected', '~> 4.0.0'
 gem 'jquery-fileupload-rails', :git => 'git://github.com/whitmanc/jquery-fileupload-rails.git'
 gem 'unicorn'
+gem 'therubyracer'
 
 group :assets do
   gem 'less-rails'
@@ -25,7 +26,6 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'therubyracer'
   gem 'jasminerice'
 end
 
