@@ -12,7 +12,7 @@ set :normalize_asset_timestamps, false
 
 set :user,            "deployer"
 set :group,           "staff"
-set :use_sudo,        true
+set :use_sudo,        false
 
 role :web,    "50.116.9.180"
 role :app,    "50.116.9.180"
@@ -103,8 +103,7 @@ namespace :deploy do
 
   desc "Zero-downtime restart of Unicorn"
   task :restart, :except => { :no_release => true } do
-    # Try to fix permissions on folder to prevent: ( kill: (15298) - Operation not permitted )
-    run "chmod -R g+w /tmp/ ; kill -s USR2 `cat /tmp/unicorn.interapptive.pid`"
+    run "kill -s USR2 `cat /tmp/unicorn.interapptive.pid`"
   end
 
   desc "Start unicorn"
