@@ -8,16 +8,11 @@ set :migrate_target,  :current
 set :ssh_options,     { :forward_agent => true }
 set :rails_env,       "production"
 set :deploy_to,       "/home/deployer/apps/interapptive"
-
-set :unicorn_binary,  "/usr/bin/unicorn"
-set :unicorn_config,  "#{current_path}/config/unicorn.rb"
-set :unicorn_pid,     "#{current_path}/tmp/pids/unicorn.pid"
+set :normalize_asset_timestamps, false
 
 set :user,            "deployer"
 set :group,           "staff"
-set :use_sudo,        false
-
-set :normalize_asset_timestamps, false
+set :use_sudo,        true
 
 role :web,    "50.116.9.180"
 role :app,    "50.116.9.180"
