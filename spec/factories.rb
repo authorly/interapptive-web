@@ -14,4 +14,6 @@ Factory.define :storybook do |f|
   f.tablet_or_phone 'tablet'
 end
 
+Factory.define :scene do |f|
 
+end
