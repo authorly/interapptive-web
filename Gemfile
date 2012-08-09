@@ -40,6 +40,7 @@ end
 group :test do
   gem 'rspec-rails'
   gem 'shoulda'
+  gem 'shoulda-matchers'
   gem 'capybara'
   gem 'poltergeist'
   gem 'miniskirt'
