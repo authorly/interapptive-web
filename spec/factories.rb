@@ -15,5 +15,7 @@ Factory.define :storybook do |f|
 end
 
 Factory.define :scene do |f|
-
+  f.storybook_id 1
+  f.image_id 1
+  f.sound_id 1
 end

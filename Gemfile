@@ -27,6 +27,7 @@ end
 
 group :development, :test do
   gem 'jasminerice'
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -38,11 +39,11 @@ group :development do
 end
 
 group :test do
-  gem 'rspec-rails'
   gem 'shoulda'
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'poltergeist'
   gem 'miniskirt'
   gem 'database_cleaner'
+  gem 'json_spec'
 end
