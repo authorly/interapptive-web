@@ -5,6 +5,4 @@ describe Scene do
 
   it {Factory(:scene).should be_valid}
   it { should have_many(:keyframes)}
-
-
 end
