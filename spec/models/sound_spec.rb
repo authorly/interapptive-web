@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Image do
+describe Sound do
   let!(:sound) { Factory(:sound) }
 
   context "#as_jquery_upload_response" do

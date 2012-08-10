@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Image do
+describe Font do
   let!(:font) { Factory(:font) }
 
   context "#as_jquery_upload_response" do
