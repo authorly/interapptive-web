@@ -45,4 +45,13 @@ describe User do
     it "be invalid without username"
   end
   
+  context "password reset" do
+    it "generates token" do 
+      user.send_password_reset.should 
+    end
+    it "saves password reset date"
+    it "sends password reset email"
+    it "fails if email doesn't exist"
+  end
+  
 end

@@ -46,4 +46,6 @@ group :test do
   gem 'miniskirt'
   gem 'database_cleaner'
   gem 'json_spec'
+  gem 'ffaker'
+  gem 'forgery'
 end

@@ -40,7 +40,7 @@ class StorybooksController < ApplicationController
   # GET /storybooks.json
   def index
     @storybooks = current_user.storybooks.all
-    
+    #@storybooks = Storybook.all
     respond_to do |format|
       format.html # index.html.haml
       format.json { render :json => @storybooks }
