@@ -6,7 +6,6 @@ describe StorybooksController do
   context "authenticated user" do
     it "is authenticated" do
       user.authenticate("supersecret").should == user
-      #this works
     end
   end
   
