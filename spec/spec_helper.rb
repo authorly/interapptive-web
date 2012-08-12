@@ -19,14 +19,14 @@ Rails.logger.level = 4
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
-  require 'helpers/active_record'
-  # ## Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
   # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
+  config.mock_with :rspec
+
+  require 'helpers/active_record'
+
+  config.include JsonApiHelpers
+  config.include UserSessionsHelper
+  config.include Auth
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -62,17 +62,8 @@ RSpec.configure do |config|
   config.after(:all) do
     DeferredGarbageCollection.reconsider
   end
-end
 
-class ActiveRecord::Base
-  mattr_accessor :shared_connection
-  @@shared_connection = nil
-
-  def self.connection
-    @@shared_connection || retrieve_connection
+  def test_sign_in(user)
+    controller.sign_in(user)
   end
 end
-
-# Forces all threads to share the same connection. This works on
-# Capybara because it starts the web server in a thread.
-ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection

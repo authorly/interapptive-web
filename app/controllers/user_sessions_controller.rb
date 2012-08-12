@@ -1,7 +1,7 @@
 class UserSessionsController < ApplicationController
   # GET /account/sign_in
   def new
-  end 
+  end
 
   # POST /account/sign_in
   def create
