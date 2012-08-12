@@ -26,7 +26,6 @@ RSpec.configure do |config|
 
   config.include JsonApiHelpers
   config.include UserSessionsHelper
-  config.include Auth
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -64,6 +63,7 @@ RSpec.configure do |config|
   end
 
   def test_sign_in(user)
+    puts "RSpecConfig::test_sign_in(user)"
     controller.sign_in(user)
   end
 end
