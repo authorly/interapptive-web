@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe VideosController do
   before(:each) do
-    @video = mock_model(Video, :video => "video.wmv")
+    @video = mock_model(Video, :video => "video.avi")
     @video.stub!(:as_jquery_upload_response).and_return({ :id => @video.id, :video => @video.video })
   end
 
