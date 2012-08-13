@@ -63,7 +63,7 @@ RSpec.configure do |config|
   end
 
   def test_sign_in(user)
-    puts "RSpecConfig::test_sign_in(user)"
-    controller.sign_in(user)
+    controller.class.any_instance.stub(:authorize).and_return(true)
+    controller.class.any_instance.stub(:current_user).and_return(user)
   end
 end

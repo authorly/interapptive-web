@@ -3,28 +3,15 @@ require 'spec_helper'
 describe StorybooksController do
   let!(:user) { Factory(:user) }
   
-  context "authenticated user" do
-    it "is authenticated" do
-      user.authenticate("supersecret").should == user
-    end
-  end
-  
-  describe 'GET #index' do
+  describe '#index' do
     it "populates an array of storybooks" do
-      user.authenticate "supersecret"
-      #user.should be signed in?
-      storybook = Factory.create(:storybook)
-      get :index, :format => :json
-      #assigns(:storybooks).should eq [storybook]
-      response.body.should have_content storybook.to_json
-      #puts "story book #{storybook}"
-      #response.body.should  have_conten storybook
-    end
-    
-    it "renders the :index view" do
-      user.authenticate "password"
-      get :index, :format => :json
-      response.should render_template :index
+      storybook = Factory.create(:storybook, :user => user)
+      test_sign_in(user)
+
+      get '/storybooks.json'
+      response.should be_success
+      p last_response.to_yaml
+      p response.body
     end
   end
   
@@ -34,6 +21,7 @@ describe StorybooksController do
       get :show, id: storybook 
       assigns(:storybook).should eq storybook
     end
+
     it "renders the :show json" do 
       storybook = Factory.create(:storybook).attributes
       get :show, id: storybook, :format => :json
