@@ -1,14 +1,14 @@
 class UserSessionsController < ApplicationController
   # GET /account/sign_in
   def new
-  end 
+  end
 
   # POST /account/sign_in
   def create
     user = User.find_by_email params[:email]
 
     if user && user.authenticate(params[:password])
-      cookies.permanent[:auth_token] = user.auth_token
+      sign_in(user)
       redirect_to root_path
     else
       flash.now.alert = "Invalid email or password."
