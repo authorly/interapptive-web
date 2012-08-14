@@ -55,3 +55,32 @@ end
 Factory.define :actions do |f|
   f.scene Factory.create(:scene)
 end
+
+Factory.define :settings do |f|
+  f.type "font.ttf"
+  f.scene_id Factory.create(:scene)
+  f.storybook_id Factory.create(:storybook)
+  font = Factory.create(:font)
+  f.font_id font
+  f.font_size font
+end
+
+Factory.define :storybook_settings do |f|
+  f.type "font.ttf"
+  f.scene_id Factory.create(:scene)
+  f.storybook_id Factory.create(:storybook)
+  font = Factory.create(:font)
+  f.font_id font
+  f.font_size font
+end
+
+Factory.define :keyframe_text do |f|
+  f.keyframe_id 1 # hack alert
+  f.content "This is some content"
+  f.content_highlight_times "Don't know what this is"
+  f.x_coord 200
+  f.y_coord 200
+  f.face "Arial"
+  f.size 14
+  f.color "FFFFFF"
+end
