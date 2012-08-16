@@ -45,7 +45,6 @@ group :test do
   gem 'poltergeist'
   gem 'miniskirt'
   gem 'database_cleaner'
-  gem 'json_spec'
   gem 'ffaker'
   gem 'forgery'
 end
