@@ -45,6 +45,11 @@ Factory.define :scene do |f|
   f.storybook Factory.create(:storybook)
 end
 
+Factory.define :keyframe do |f|
+  f.scene_id Factory.create(:scene)
+  f.image_id Factory.create(:image)
+end
+
 Factory.define :touch_zones do |f|
   f.radius 100
   f.origin_x 512
