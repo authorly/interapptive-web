@@ -27,19 +27,6 @@ Factory.define :image, class: Asset do |f|
   f.type 'Image'
   f.image 'image.jpg'
 end
-# controllers
-# Factory.define do 
-#   factory :storybook do 
-#     title { FFaker::Lorem.sentence }
-#     author { "#{FFaker::Name.first_name} #{FFaker::Name.last_name}" }
-#     description { FFaker::Lorem.paragraph }
-#     publisher { FFaker::Lorem.sentence }
-#     price { Forgery(:money) }
-#     record_enabled { [true, false].sample } 
-#     android_or_ios { ["android", "ios"].sample }
-#     tablet_or_phone { ["table", "phone"].sample }
-#   end
-# end  
 
 Factory.define :video, class: Asset do |f|
   f.type 'Video'
