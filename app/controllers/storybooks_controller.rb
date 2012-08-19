@@ -36,11 +36,12 @@ class StorybooksController < ApplicationController
     render :json => @fonts.map(&:as_jquery_upload_response).to_json
   end
 
+  # GET /storybooks.json
   def index
-    storybooks = current_user.storybooks
-
+    @storybooks = current_user.storybooks.all
+   
     respond_to do |format|
-      format.json { render :json => storybooks }
+      format.json { render :json => @storybooks }
     end
   end
   

@@ -15,12 +15,9 @@ describe StorybooksController do
       get :index, :format => :json
       response.should be_success
       response.body.should eq storybooks.to_json 
-      #p last_response.to_yaml
-      p response.body
-      #p storybooks
     end
   end
-  
+
   describe 'GET #show' do
     it "requires user sign in"
     it "shows the right storybook" do

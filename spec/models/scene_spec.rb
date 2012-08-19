@@ -15,7 +15,7 @@ describe Scene do
           'preview_image_id' => scene.preview_image_id,
           'sound_id'         => scene.sound_id,
           'storybook_id'     => scene.storybook_id,
-          'updated_at'     => scene.updated_at
+          'updated_at'       => scene.updated_at
       }.to_json
 
       scene.to_json.should eql(response)

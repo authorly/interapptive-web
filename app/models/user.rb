@@ -32,5 +32,4 @@ class User < ActiveRecord::Base
     save!
     UserMailer.password_reset(self).deliver
   end
-
 end
