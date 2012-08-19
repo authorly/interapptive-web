@@ -3,7 +3,6 @@ class ImagesController < ApplicationController
 
   def index
     @images = Image.all
-
     render :json => @images.map(&:as_jquery_upload_response).to_json
   end
 
