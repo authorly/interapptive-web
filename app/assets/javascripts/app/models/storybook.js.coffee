@@ -4,22 +4,50 @@ class App.Models.Storybook extends Backbone.Model
     title:
       type:          "Text"
       title:         "Story Title"
-      validators:    ["required"]
+      validators:    ["required",
+                       checkTitle = (value, formValues) ->
+                         err =
+                           type: "title"
+                           message: "Oops! Title must be 2-25 characters"
+
+                         err  if value.length < 3 or value.length > 25
+                      ]
     price:
       title:         "Price"
       type:          "Currency"
       template:      "currencyField"
-      validators:    ["required"]
+      validators:    ["required",
+        checkPrice = (value, formValues) ->
+          err =
+            type: "price"
+            message: "Must be non-negative and less than $100.00"
+
+          err  if value < 0 or value > 100
+        ]
     author:
       title:         "Author"
       type:           "Text"
-      validators:    ["required"]
+      validators:    ["required",
+        checkAuthor = (value, formValues) ->
+          err =
+            type: "author"
+            message: "Oops! Author field must be 2-25 characters."
+
+          err  if value.length < 3 or value.length > 50
+      ]
     description:
       title:         "Description"
       type:           "Text"
-      validators:    ["required"]
+      validators:    ["required",
+        checkDesc = (value, formValues) ->
+          err =
+            type: "description"
+            message: "App description must be 10-25 characters."
+
+          err  if value.length < 3 or value.length > 25
+      ]
     published_on:
-      title:         "Date of Publishing"
+      title:         "Published on"
       type:          "Date"
     android_or_ios:
       title:         "Mobile Platform"
@@ -41,7 +69,7 @@ class App.Models.Storybook extends Backbone.Model
       selectedIndex: 0
 
   url: ->
-    '/storybooks'
+    '/storybooks/' + App.currentStorybook().get("id") + '.json'
 
   toJSON: ->
     @attributes

@@ -10,7 +10,7 @@
     %span New Storybook App...
   %form.form-inline.left.storybook-form{:style => "display:none"}
     %a.close.left{:href => "#"} x
-    %input.input-medium.storybook-title{:name => "storybook-title", :placeholder => "Storybook Title", :type => "text"}
+    %input.input-medium.storybook-title{:name => "storybook-title", :placeholder => "Storybook Title", :type => "text", :maxlength => 25, :minlength => 2}
       %button.btn{:type => "submit"} Create App
   %a.btn{"data-method" => "post", :href => "/users/sign_out", :rel => "nofollow"}
     %i.icon-off.icon-black
