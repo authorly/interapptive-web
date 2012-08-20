@@ -1,5 +1,4 @@
 class App.Models.Storybook extends Backbone.Model
-  paramRoot: 'storybook'
   schema:
     title:
       type:          "Text"
@@ -24,6 +23,7 @@ class App.Models.Storybook extends Backbone.Model
 
           err  if value < 0 or value > 100
         ]
+
     author:
       title:         "Author"
       type:           "Text"
@@ -35,6 +35,7 @@ class App.Models.Storybook extends Backbone.Model
 
           err  if value.length < 3 or value.length > 50
       ]
+
     description:
       title:         "Description"
       type:           "Text"
@@ -46,6 +47,7 @@ class App.Models.Storybook extends Backbone.Model
 
           err  if value.length < 3 or value.length > 25
       ]
+
     published_on:
       title:         "Published on"
       type:          "Date"
@@ -55,11 +57,13 @@ class App.Models.Storybook extends Backbone.Model
       buttonType:    "radio"
       labeling:      ["iOS", "Both", "Android"]
       selectedIndex: 1
+
     # tablet_or_phone:
     #   type:          "Buttons"
     #   buttonType:    "radio"
     #   labeling:      ["Tablet", "Both", "Phone"]
     #   selectedIndex: 1
+
     record_enabled:
       title:         "Enable voice recording?"
       help:          "Allows your users to record, use, and share voice-overs"
