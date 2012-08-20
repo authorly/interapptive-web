@@ -36,6 +36,8 @@ class App.Views.ImageIndex extends Backbone.View
 
   setSceneBackground: ->
     url = @image.get('url')
+    console.log "SetSceneBackground"
+    console.log App.currentScene()
     App.currentScene().set('image_id', @imageId)
     App.currentScene().save {},
       success: (model, response) =>

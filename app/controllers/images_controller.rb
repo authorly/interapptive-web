@@ -2,7 +2,8 @@ class ImagesController < ApplicationController
   require "base64"
 
   def index
-    @images = Image.all
+    @storybook = Storybook.find(params[:storybook_id])
+    @images = @storybook.images
 
     render :json => @images.map(&:as_jquery_upload_response).to_json
   end
@@ -17,13 +18,19 @@ class ImagesController < ApplicationController
   end
 
   def create
+    @scene = Scene.find params[:scene_id]
+
     if params[:base64]
+      # TODO: Relocate random string algorithm
       filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
       file = File.open(filename, "wb")
       file.write(Base64.decode64(params[:image][:files][0]))
       @images = [Image.create(:image => file)]
     else
       @images = params[:image][:files].map { |f| Image.create(:image => f) }
+      @images.each do |i|
+        @scene.images << i
+      end
     end
 
     respond_to do |format|

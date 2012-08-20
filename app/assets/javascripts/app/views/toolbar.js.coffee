@@ -12,7 +12,6 @@ class App.Views.ToolbarView extends Backbone.View
     'click .actions'     : 'showActionLibrary'
 
   initialize: ->
-    @assetLibraryView = new App.Views.AssetLibrary()
 
   render: ->
     $el = $(this.el)
@@ -30,7 +29,14 @@ class App.Views.ToolbarView extends Backbone.View
         App.modalWithView(view: new App.Views.ActionIndex(definitions: definitions)).showModal()
 
   addImage: ->
-    App.modalWithView(view: App.imageList()).show()
+    images = new App.Collections.ImagesCollection()
+    images.fetch
+      success: (model, options) =>
+        if images.length is 0
+          @showImageLibrary()
+        else
+          App.modalWithView(view: new App.Views.ImageIndex(collection: images)).show()
+
 
   addText: ->
     # FIXME we should have some delegate that actually handles adding things
@@ -65,6 +71,8 @@ class App.Views.ToolbarView extends Backbone.View
     @loadDataFor("sound")
 
   loadDataFor: (assetType) ->
+    @assetLibraryView = new App.Views.AssetLibrary()
+
     @assetLibraryView.activeAssetType = assetType
     App.modalWithView(view: @assetLibraryView).show()
     @assetLibraryView.setAllowedFilesFor assetType + "s"

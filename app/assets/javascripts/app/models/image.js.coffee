@@ -1,11 +1,9 @@
 class App.Models.Image extends Backbone.Model
-  paramRoot: 'image'
-
   url: ->
-    '/images.json'
+    '/storybooks/#{App.currentStorybook().get("id")}/scenes/#{App.currentScene().get("id")}/images.json'
 
 class App.Collections.ImagesCollection extends Backbone.Collection
   model: App.Models.Image
 
   url: ->
-    '/images.json'
+    return "/storybooks/" + App.currentStorybook().get('id') + "/images.json"
