@@ -1,4 +1,4 @@
-class ImagesController < ApplicationController
+ class ImagesController < ApplicationController
   require "base64"
 
   def index

@@ -3,7 +3,8 @@ class App.Views.SceneIndex extends Backbone.View
   tagName: 'ul'
   className: 'scene-list'
   events:
-    'click .scene-list li span': 'clickScene'
+    'click  span a.delete'  : 'destroyScene'
+    'click .scene-list span': 'clickScene'
     
   initialize: ->
     @collection.on('reset', @render, this)
@@ -28,18 +29,22 @@ class App.Views.SceneIndex extends Backbone.View
     view = new App.Views.Scene(model: scene)
     $('.scene-list').append(view.render().el)
     if scene.has "preview_image_id"
-      image        = App.imageList().collection.get(scene.get('preview_image_id'))
-      thumbnailUrl = image.get("url")
-      activeKeyframeEl = $('.scene-list li').last().find('span')
+      previewImage     = App.imageList().collection.get(scene.get('preview_image_id'))
+      thumbnailUrl     = image.get("url")
       activeKeyframeEl.css("background-image", "url(" + thumbnailUrl + ")")
 
   setActiveScene: (scene) ->
+    console.log "SETTING ACTIVE SCENE"
+    console.log "~_~_~_~_~_~_~_~_~~__~~__~"
     App.builder.widgetLayer.removeAllChildrenWithCleanup()
     App.currentScene scene
     App.keyframeList().collection.scene_id = scene.get("id")
     App.keyframeList().collection.fetch()
     $('#keyframe-list').html("").html(App.keyframeList().el)
     $('nav.toolbar ul li ul li').removeClass 'disabled'
+
+  destroyScene: (event) ->
+    event.stopPropagation()
 
   setBackground: ->
     images         = new App.Collections.ImagesCollection []

@@ -19,6 +19,18 @@
     position: relative;
     top: 127px;
     opacity: 0.3;
+
+    span.scene-frame {
+      display: block;
+      height: @slidePreviewHeight;
+      width: @slidePreviewWidth;
+      background-color: #131312;
+      background-position: center center;
+      background-size: 110%;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: 20;
+    }
   }
 
   li.first {
@@ -29,15 +41,16 @@
     .gradient(@slidePreviewActiveBgBegin, @slidePreviewActiveBgEnd);
 
     opacity: 1.0;
+
+
+    a.delete {
+      display: block;
+      position: absolute;
+      top: 90px;
+      right: 10px;
+      padding: 5px;
+      z-index: 90 !important;
+    }
   }
 
-  li span {
-    display: block;
-    height: @slidePreviewHeight;
-    width: @slidePreviewWidth;
-    background-color: #131312;
-    background-position: center center;
-    background-size: 110%;
-    background-repeat: no-repeat;
-  }
 }
