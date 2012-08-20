@@ -18,6 +18,7 @@
 #= require ./vendor/form-editors/buttons
 #= require ./vendor/form-editors/jquery.ui
 #= require ./vendor/jquery.overscroll
+#= require_tree ../../../vendor/assets/javascripts/.
 
 #= require app
 
