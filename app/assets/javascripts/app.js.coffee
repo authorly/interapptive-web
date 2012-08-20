@@ -10,9 +10,9 @@ window.App =
     @imagesCollection = new App.Collections.ImagesCollection []
     @keyframesTextCollection = new App.Collections.KeyframeTextsCollection []
 
+
     @sceneList(new App.Views.SceneIndex collection: @scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: @keyframesCollection)
-    @imageList(new App.Views.ImageIndex(collection: @imagesCollection, tagName: "div"))
 
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')

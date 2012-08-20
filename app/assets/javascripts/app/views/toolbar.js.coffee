@@ -11,7 +11,6 @@ class App.Views.ToolbarView extends Backbone.View
     'click .actions'     : 'showActionLibrary'
 
   initialize: ->
-    @assetLibraryView = new App.Views.AssetLibrary()
 
   render: ->
     $el = $(this.el)
@@ -29,7 +28,8 @@ class App.Views.ToolbarView extends Backbone.View
         App.modalWithView(view: new App.Views.ActionIndex(definitions: definitions)).showModal()
 
   addImage: ->
-    App.modalWithView(view: App.imageList()).show()
+    images = new App.Collections.ImagesCollection()
+    App.modalWithView(view: new App.Views.ImageIndex(collection: images)).show()
 
   addText: ->
     text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
@@ -49,6 +49,8 @@ class App.Views.ToolbarView extends Backbone.View
     @loadDataFor("sound")
 
   loadDataFor: (assetType) ->
+    @assetLibraryView = new App.Views.AssetLibrary()
+
     @assetLibraryView.activeAssetType = assetType
     App.modalWithView(view: @assetLibraryView).show()
     @assetLibraryView.setAllowedFilesFor assetType + "s"

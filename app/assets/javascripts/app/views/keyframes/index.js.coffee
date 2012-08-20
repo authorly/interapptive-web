@@ -66,7 +66,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     image   = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
     imageId = $(@el).find('.active div').attr "data-image-id"
     $.ajax
-      url: '/images.json'
+      url: '/storybooks/#{App.currentStorybook().get("id")}/images.json'
       type: 'POST'
       data: '{"base64":"true","image" : {"files" : [ "' + image.src.replace('data:image/png;base64,', '') + '" ] }}'
       contentType: 'application/json; charset=utf-8'

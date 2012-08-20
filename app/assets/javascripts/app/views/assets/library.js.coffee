@@ -16,8 +16,7 @@ class App.Views.AssetLibrary extends Backbone.View
     @loadAndShowFileData()
 
   loadAndShowFileData: ->
-
-    $.getJSON "#{$('#fileupload').prop('action')}", (files) ->
+    $.getJSON "/storybooks/#{App.currentStorybook().get('id')}/" + @assetType + "s", (files) ->
       fileData = $("#fileupload").data("fileupload")
       fileData._adjustMaxNumberOfFiles -files.length
       template = fileData._renderDownload(files).prependTo($("#fileupload .files"))
