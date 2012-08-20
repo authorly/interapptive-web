@@ -58,13 +58,14 @@ class App.Views.KeyframeIndex extends Backbone.View
     activeKeyframeEl = $(@el).find('.active div')
     activeKeyframeEl.attr("data-x","#{x}")
     activeKeyframeEl.attr("data-y","#{y}")
-    App.currentKeyframe().set
-      background_x_coord: x
-      background_y_coord: y
-      id: @activeId
-    App.currentKeyframe().save {},
-      success: (model, response) ->
-        console.log "Saved background location"
+    if App.currentKeyframe()?
+      App.currentKeyframe().set
+        background_x_coord: x
+        background_y_coord: y
+        id: @activeId
+      App.currentKeyframe().save {},
+        success: (model, response) ->
+          console.log "Saved background location"
 
   setThumbnail: (el) ->
     oCanvas = document.getElementById "builder-canvas"
@@ -76,7 +77,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     imageId = $(@el).find('.active div').attr "data-image-id"
     $.ajax
-      url: '/images'
+      url: '/storybooks/#{App.currentStorybook().get("id")}/images.json'
       type: 'POST'
       data: '{"base64":"true","image" : {"files" : [ "' + image.src.replace('data:image/png;base64,', '') + '" ] }}'
       contentType: 'application/json; charset=utf-8'

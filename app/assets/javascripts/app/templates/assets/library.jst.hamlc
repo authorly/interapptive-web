@@ -2,7 +2,7 @@
   %h3.modal-title= "#{App.capitalizeWord(@assetType) } Library"
 
 .modal-body
-  %form{:action => "/#{@assetType}s", :id => "fileupload", :method => "post", :multipart => true}
+  %form{:action => "/storybooks/#{App.currentStorybook().get('id')}/scenes/#{App.currentScene().get('id')}/#{@assetType}s", :id => "fileupload", :method => "post", :multipart => true}
     .row.fileupload-buttonbar
       .span5
         %span.btn.btn-success.fileinput-button
