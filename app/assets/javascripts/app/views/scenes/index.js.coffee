@@ -46,21 +46,33 @@ class App.Views.SceneIndex extends Backbone.View
     $('nav.toolbar ul li ul li').removeClass 'disabled'
 
   setBackground: ->
-    images = new App.Collections.ImagesCollection []
-    scene  = App.currentScene()
-    node   = cc.Director.sharedDirector().getRunningScene()
-    node.removeChild(node.backgroundSprite)
-    images.fetch success: =>
-      if scene.has('image_id')
-        bgImageId = scene.get('image_id')
-        image     = images.get(bgImageId)
-        url       = image.get('url')
-        cc.TextureCache.sharedTextureCache().addImage(url)
-        node.backgroundSprite = cc.Sprite.spriteWithFile(url)
-        node.backgroundSprite.url = url
-        # Check for App.currentKeyframe()
-        node.backgroundSprite.setPosition cc.ccp(App.currentKeyframe().get('background_x_coord'), App.currentKeyframe().get('background_y_coord'))
+    images         = new App.Collections.ImagesCollection []
+    scene          = App.currentScene()
+    image_id       = scene.get('image_id')
+    background_url = ""
+
+    images.fetch
+      success: (collection, response) =>
+        background_image = collection.get(image_id)
+        background_url = background_image.attributes.url
+        node = cc.Director.sharedDirector().getRunningScene()
+        node.removeChild(node.backgroundSprite)
+
+        cc.TextureCache.sharedTextureCache().addImage(background_url)
+
+        node.backgroundSprite = cc.Sprite.spriteWithFile(background_url)
+        node.backgroundSprite.url = background_url
+
+        if App.currentKeyframe()
+          x = App.currentKeyframe().get('background_x_coord')
+          y = App.currentKeyframe().get('background_y_coord')
+        else
+          x = 0
+          y = 0
+
+        node.backgroundSprite.setPosition cc.ccp(x, y)
         node.addChild(node.backgroundSprite, 50)
+
         App.storybookJSON.addSprite(App.currentScene(), node.backgroundSprite)
         App.toggleFooter()
 

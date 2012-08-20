@@ -53,13 +53,14 @@ class App.Views.KeyframeIndex extends Backbone.View
     activeKeyframeEl = $(@el).find('.active div')
     activeKeyframeEl.attr("data-x","#{x}")
     activeKeyframeEl.attr("data-y","#{y}")
-    App.currentKeyframe().set
-      background_x_coord: x
-      background_y_coord: y
-      id: @activeId
-    App.currentKeyframe().save {},
-      success: (model, response) ->
-        console.log "Saved background location"
+    if App.currentKeyframe()?
+      App.currentKeyframe().set
+        background_x_coord: x
+        background_y_coord: y
+        id: @activeId
+      App.currentKeyframe().save {},
+        success: (model, response) ->
+          console.log "Saved background location"
 
   setThumbnail: (el) ->
     oCanvas = document.getElementById "builder-canvas"
