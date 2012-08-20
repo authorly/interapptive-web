@@ -4,6 +4,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     super
     @widgets = []
     @_capturedWidget = null
+    @_selectedWidget = null
 
     @setIsTouchEnabled(true)
 
@@ -31,11 +32,18 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       widget = @widgetAtPoint(touch.locationInView())
       widget.trigger('dblclick', touch, event)
     )
+    
+  clearWidgets: ->
+    for widget in @widgets
+      #HACK unless TextWidget until I figure out whether TextWidget will still be stored in Keyframe.widgets
+      @removeChild(widget) unless widget.type == "TextWidget"
 
+    # Clear array
+    @widgets.splice(0)
 
   addWidget: (widget) ->
     @widgets.push(widget)
-    @addChild(widget)
+    @addChild(widget) 
 
     App.storybookJSON.addWidget(App.currentKeyframe(), widget)
 
@@ -46,6 +54,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   widgetAtPoint: (point) ->
     for widget in @widgets
+      continue if widget instanceof App.Views.TextWidget
       if widget.getIsVisible()
         local = widget.convertToNodeSpace(point)
 
@@ -65,6 +74,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     widget = @widgetAtTouch(touches[0])
     return unless widget
 
+    widget.trigger('mousedown')
+
     touch = touches[0].locationInView()
 
     @_capturedWidget = widget
@@ -74,34 +85,36 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   ccTouchesMoved: (touches) ->
     point = touches[0].locationInView()
+    @mouseOverWidgetAtPoint(point)
+
     if @_capturedWidget
-      App.builder.canDragBackground = false
       @moveCapturedWidget(point)
-    else
-      @highlightWidgetAtPoint(point)
+
+      App.builder.canDragBackground = false
+
+  ccTouchesEnded: (touches) ->
+    # TODO trigger('click')
+    # Causes a save
+    @_capturedWidget.trigger('change', 'position') if @_capturedWidget
+    @_capturedWidget.trigger('mouseup') if @_capturedWidget
+
+    delete @_previousPoint
+    delete @_capturedWidget
+
+    if App.builder.canDragBackground is false then App.builder.canDragBackground = true
 
   moveCapturedWidget: (point) ->
     @_previousPoint ||= point
     delta = cc.ccpSub(point, @_previousPoint)
     newPos = cc.ccpAdd(delta, @_capturedWidget.getPosition())
 
-    @_capturedWidget.setPosition(newPos)
+    @_capturedWidget.setPosition(newPos, false)
     @_previousPoint = new cc.Point(point.x, point.y)
 
-  highlightWidgetAtPoint: (point) ->
-    @unhighlightAllWidgets()
-
+  mouseOverWidgetAtPoint: (point) ->
     widget = @widgetAtPoint(point)
-    return unless widget
 
-    widget.setOpacity(225)
-
-  unhighlightAllWidgets: ->
-    for widget in @widgets
-      widget.setOpacity(150)
-
-  ccTouchesEnded: (touches) ->
-    @_previousPoint = null
-    @_capturedWidget = null
-    if App.builder.canDragBackground is false then App.builder.canDragBackground = true
-
+    if widget isnt @_mouseOverWidget
+      @_mouseOverWidget.trigger('mouseout') if @_mouseOverWidget
+      widget.trigger('mouseover') if widget
+      @_mouseOverWidget = widget

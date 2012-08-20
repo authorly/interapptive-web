@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120629064528) do
+ActiveRecord::Schema.define(:version => 20120718232958) do
 
   create_table "action_definitions", :force => true do |t|
     t.string   "name"
@@ -77,6 +77,9 @@ ActiveRecord::Schema.define(:version => 20120629064528) do
     t.datetime "updated_at",                             :null => false
     t.integer  "x_coord",                 :default => 0
     t.integer  "y_coord",                 :default => 0
+    t.string   "face"
+    t.integer  "size"
+    t.string   "color"
   end
 
   add_index "keyframe_texts", ["keyframe_id"], :name => "index_keyframe_texts_on_keyframe_id"
@@ -88,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20120629064528) do
     t.integer  "background_x_coord", :default => 0
     t.integer  "background_y_coord", :default => 0
     t.integer  "image_id"
+    t.text     "widgets"
   end
 
   add_index "keyframes", ["scene_id"], :name => "index_keyframes_on_scene_id"

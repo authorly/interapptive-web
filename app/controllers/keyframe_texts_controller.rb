@@ -71,7 +71,7 @@ class KeyframeTextsController < ApplicationController
     @keyframe_text = @keyframe.texts.find params[:id]
 
     respond_to do |format|
-      if @keyframe_text.update_attributes params[:keyframe]
+      if @keyframe_text.update_attributes params[:keyframe_text]
         format.html { redirect_to show_keyframe_text_path(@keyframe, @keyframe_text) }
         format.json { render :json => @keyframe_text }
       else

@@ -75,10 +75,10 @@ class KeyframesController < ApplicationController
     respond_to do |format|
       if @keyframe.update_attributes params[:keyframe]
         format.html { redirect_to show_scene_keyframe_path(@scene, @keyframe) }
-        format.json { render :json => @scene }
+        format.json { render :json => @keyframe }
       else
         format.html { render :edit }
-        format.json { render :json => @scene.errors, :status => :unprocessable_entity }
+        format.json { render :json => @keyframe.errors, :status => :unprocessable_entity }
       end
     end
   end

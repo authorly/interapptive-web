@@ -11,8 +11,8 @@ class App.Views.SceneIndex extends Backbone.View
     $(".sidebar").hide()
     $("header").hide()
 
-  render: =>
-    $(this.el).html('')
+  render: ->
+    $(@el).html('')
     @collection.each (scene) => @appendScene(scene)
     $('.scene-list li:first span:first').click()
     App.toggleHeader()

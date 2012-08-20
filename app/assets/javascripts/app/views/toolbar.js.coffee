@@ -4,6 +4,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .add-keyframe': 'addKeyframe'
     'click .add-image'   : 'addImage'
     'click .add-text'    : 'addText'
+    'click .add-touch'   : 'addTouch'
     'click .images'      : 'showImageLibrary'
     'click .videos'      : 'showVideoLibrary'
     'click .fonts'       : 'showFontLibrary'
@@ -32,9 +33,24 @@ class App.Views.ToolbarView extends Backbone.View
     App.modalWithView(view: App.imageList()).show()
 
   addText: ->
-    text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
-    text.setPosition(new cc.Point(100, 100))
-    App.builder.widgetLayer.addWidget(text)
+    # FIXME we should have some delegate that actually handles adding things
+    #text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
+    App.keyframeTextList().createText()
+    #keyframe = App.currentKeyframe()
+    #TODO figure out whether we want to try to use the addwidget, etc functionality for text still
+    #App.builder.widgetLayer.addWidget(text)
+    #keyframe.addWidget(text)
+    #text.on('change', -> keyframe.updateWidget(text))
+
+  addTouch: ->
+    alert('TODO show touch point dialogue here')
+    widget = new App.Builder.Widgets.TouchWidget
+    widget.setPosition(new cc.Point(300, 300))
+    keyframe = App.currentKeyframe()
+    App.builder.widgetLayer.addWidget(widget)
+    keyframe.addWidget(widget)
+    widget.on('change', -> keyframe.updateWidget(widget))
+
 
   showImageLibrary: ->
     @loadDataFor("image")

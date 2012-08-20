@@ -13,10 +13,12 @@ window.App =
     @sceneList(new App.Views.SceneIndex collection: @scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: @keyframesCollection)
     @imageList(new App.Views.ImageIndex(collection: @imagesCollection, tagName: "div"))
+    @keyframeTextList(new App.Views.KeyframeTextIndex(collection: @keyframesTextCollection, el: $("body")))
 
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
     @contentModal = new App.Views.Modal className: "content-modal"
+    @fontToolbar = new App.Views.FontToolbar el: $("#font_toolbar")
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
@@ -65,6 +67,9 @@ window.App =
   currentKeyframe: (keyframe) ->
     if keyframe then @keyframe = keyframe else @keyframe
 
+  currentKeyframeText: (keyframeText) -> 
+    if keyframeText then @keyframeText = keyframeText else @keyframeText
+
   sceneList: (list) ->
     if list then @sceneListView = list else @sceneListView
 
@@ -73,6 +78,9 @@ window.App =
 
   imageList: (list) ->
     if list then @imageListView = list else @imageListView
+    
+  keyframeTextList: (list) ->
+    if list then @keyframeTextListView = list else @keyframeTextListView
 
   toggleSidebar: ->
     $(".sidebar").animate
@@ -92,7 +100,23 @@ window.App =
       opacity: "toggle"
       height: "toggle"
     , 900
-
+  
+  editTextWidget: (textWidget) ->
+    @selectedText(textWidget)
+    @fontToolbar.attachToTextWidget(textWidget)
+    @keyframeTextList().editText(textWidget)
+    App.currentKeyframeText(textWidget.model)
+    
+  fontToolbarUpdate: (fontToolbar) ->
+    console.log "App.fontToolbarUpdate"
+    @selectedText().fontToolbarUpdate(fontToolbar)
+    
+  selectedText: (textWidget) ->
+    if textWidget then @textWidget = textWidget else @textWidget
+   
+  updateKeyframeText: ->
+    @keyframeTextList().updateText()
+    
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1
 
@@ -113,7 +137,7 @@ $ ->
 
   $("ul#toolbar li ul li").click ->
     toolbar_modal.modal "hide"
-    unless $(this).is('.scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image')
+    unless $(this).is('.scene, .keyframe, .edit-text, .touch-zones, .disabled, .images, .videos, .sounds, .fonts, .add-image')
       toolbar_modal.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"
@@ -124,3 +148,4 @@ $ ->
   $(window).resize ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
+    

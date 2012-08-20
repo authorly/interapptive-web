@@ -12,7 +12,6 @@
 #= require ./vendor/backbone-forms-list.min.js
 #= require ./vendor/base64.js
 #= require ./vendor/canvas2image.js
-#= require ./vendor/jquery.overscroll
 #= require ./vendor/jquery.ui.custom.1.8.11
 #= require ./vendor/form-templates/bootstrap
 #= require ./vendor/form-editors/currency
