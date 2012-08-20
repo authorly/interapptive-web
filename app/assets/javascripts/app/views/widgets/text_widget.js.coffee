@@ -6,7 +6,7 @@ class App.Views.TextWidget extends Backbone.View
   _editing: false
   
   #defaults
-  _fontColor: "#000000"
+  _fontColor: "#FF0000"
   _fontSize: 12
   _fontFace: "Arial"
   _content: "" 
