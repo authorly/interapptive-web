@@ -286,6 +286,7 @@ DEPENDENCIES
   rails-backbone
   rspec-rails
   shoulda
+  shoulda-matchers
   therubyracer
   uglifier (>= 1.0.3)
   unicorn
