@@ -26,7 +26,7 @@ class App.Views.ToolbarView extends Backbone.View
     definitions = new App.Collections.ActionDefinitionsCollection()
     definitions.fetch
       success: ->
-        App.modalWithView(view: new App.Views.ActionIndex(definitions: definitions)).showModal()
+        App.modalWithView(view: new App.Views.ActionIndex(definitions: definitions)).show()
 
   addImage: ->
     images = new App.Collections.ImagesCollection()
@@ -49,7 +49,6 @@ class App.Views.ToolbarView extends Backbone.View
     #text.on('change', -> keyframe.updateWidget(text))
 
   addTouch: ->
-    alert('TODO show touch point dialogue here')
     widget = new App.Builder.Widgets.TouchWidget
     widget.setPosition(new cc.Point(300, 300))
     keyframe = App.currentKeyframe()

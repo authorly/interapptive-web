@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20120718232958) do
     t.integer "attribute_definition_id"
     t.integer "keyframe_id"
     t.string  "value"
+    t.integer "action_id"
   end
 
   add_index "attributes", ["attribute_definition_id"], :name => "index_attributes_on_attribute_definition_id"
@@ -95,6 +96,14 @@ ActiveRecord::Schema.define(:version => 20120718232958) do
   end
 
   add_index "keyframes", ["scene_id"], :name => "index_keyframes_on_scene_id"
+
+  create_table "payment_plans", :force => true do |t|
+    t.string   "name",                       :null => false
+    t.string   "description"
+    t.integer  "price",       :default => 0, :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
 
   create_table "scene_attributes", :force => true do |t|
     t.string   "value"
@@ -150,6 +159,13 @@ ActiveRecord::Schema.define(:version => 20120718232958) do
   end
 
   add_index "storybooks", ["user_id"], :name => "index_storybooks_on_user_id"
+
+  create_table "subscriptions", :force => true do |t|
+    t.integer  "user_id",         :null => false
+    t.integer  "payment_plan_id", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "touch_zones", :force => true do |t|
     t.integer  "scene_id"

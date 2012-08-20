@@ -1,18 +1,22 @@
 CCBezierBy:
   name:  "CCBezierBy"
   description: "Move objects along a curve"
+  id: 1
 
 CCBezierTo:
   name: "CCBezierTo"
   description: "Move objects along a curve"
+  id: 2
 
 CCEaseBounceIn:
   name: "CCEaseBounceIn"
   description: "Bounce an object in"
+  id: 3
 
 CCEaseBounceOut:
   name: "CCEaseBounceOut"
   description: "Bounce an object in"
+  id: 4
 
 CCEaseIn:
   name: "CCEaseIn"
