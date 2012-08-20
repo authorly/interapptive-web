@@ -29,7 +29,13 @@ class App.Views.ToolbarView extends Backbone.View
 
   addImage: ->
     images = new App.Collections.ImagesCollection()
-    App.modalWithView(view: new App.Views.ImageIndex(collection: images)).show()
+    images.fetch
+      success: (model, options) =>
+        if images.length is 0
+          @showImageLibrary()
+        else
+          App.modalWithView(view: new App.Views.ImageIndex(collection: images)).show()
+
 
   addText: ->
     text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
