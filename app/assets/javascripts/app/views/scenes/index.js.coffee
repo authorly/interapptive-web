@@ -8,14 +8,11 @@ class App.Views.SceneIndex extends Backbone.View
   initialize: ->
     @collection.on('reset', @render, this)
     @collection.on('add', @appendScene, this)
-    $(".sidebar").hide()
-    $("header").hide()
 
   render: ->
     $(@el).html('')
     @collection.each (scene) => @appendScene(scene)
     $('.scene-list li:first span:first').click()
-    App.toggleHeader()
     this
 
   createScene: =>
@@ -38,7 +35,6 @@ class App.Views.SceneIndex extends Backbone.View
 
   setActiveScene: (scene) ->
     App.builder.widgetLayer.removeAllChildrenWithCleanup()
-    if App.currentScene()? then App.toggleFooter()
     App.currentScene scene
     App.keyframeList().collection.scene_id = scene.get("id")
     App.keyframeList().collection.fetch()
@@ -74,14 +70,15 @@ class App.Views.SceneIndex extends Backbone.View
         node.addChild(node.backgroundSprite, 50)
 
         App.storybookJSON.addSprite(App.currentScene(), node.backgroundSprite)
-        App.toggleFooter()
 
   clickScene: (event) ->
     target  = $(event.currentTarget)
     sceneId = target.data("id")
     sceneEl = target.parent()
+
     sceneEl.siblings().removeClass("active")
     sceneEl.removeClass("active")
     sceneEl.addClass("active")
+
     @setActiveScene @collection.get(sceneId)
     @setBackground()

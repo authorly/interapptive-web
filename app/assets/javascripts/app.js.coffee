@@ -80,25 +80,6 @@ window.App =
     
   keyframeTextList: (list) ->
     if list then @keyframeTextListView = list else @keyframeTextListView
-
-  toggleSidebar: ->
-    $(".sidebar").animate
-      opacity: "toggle"
-      width: "toggle"
-    , 800
-
-  toggleHeader: ->
-    $("header").animate
-      opacity: "toggle"
-      height: "toggle"
-    , 1050, ->
-      App.toggleSidebar()
-
-  toggleFooter: ->
-    $("footer").animate
-      opacity: "toggle"
-      height: "toggle"
-    , 900
   
   editTextWidget: (textWidget) ->
     @selectedText(textWidget)

@@ -7,7 +7,6 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   initialize: ->
     @collection.on('reset', @render, this)
-    $('footer').hide()
 
   render: ->
     $(@el).html('')
