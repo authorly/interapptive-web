@@ -12,7 +12,6 @@
 @import 'modals.css.less';
 @import 'keyframe_text.css.less';
 @import 'font_toolbar.css.less';
-//@import 'jquery.miniColors.css'; //for the color picker on font_toolbar
 
 html, body{
   background-color: @grayDarker;
@@ -26,7 +25,7 @@ html, body{
 .content {
   background-color: #eee;
   padding: 20px;
-  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+  margin: 0 -20px;
   -webkit-border-radius: 0 0 6px 6px;
   -moz-border-radius: 0 0 6px 6px;
   border-radius: 0 0 6px 6px;
@@ -123,11 +122,6 @@ header {
 .sidebar {
   .drop-shadow(1px, 0, 13px, #666);
 
-  /*
-  background-image: url('scene-list-bg.png');
-  background-position: center center;
-  background-repeat: no-repeat;
-  */
   position: absolute;
   left: 0;
   top: 0;

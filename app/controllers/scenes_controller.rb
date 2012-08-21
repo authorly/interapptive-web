@@ -94,8 +94,7 @@ class ScenesController < ApplicationController
     @storybook.scenes.find(params[:id]).try(:destroy)
 
     respond_to do |format|
-      format.html { redirect_to storybook_path(@storybook) }
-      format.json { head :ok }
+      format.json { render :json => {:status => :ok} }
     end
   end
 
