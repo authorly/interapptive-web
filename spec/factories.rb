@@ -43,6 +43,7 @@ Factory.define :scene do |f|
   f.preview_image_id Factory.create(:image)
   f.sound_id Factory.create(:sound)
   f.storybook Factory.create(:storybook)
+  f.page_number
 end
 
 Factory.define :keyframe do |f|
