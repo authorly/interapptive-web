@@ -11,8 +11,6 @@ class App.Views.ToolbarView extends Backbone.View
     'click .sounds'      : 'showSoundLibrary'
     'click .actions'     : 'showActionLibrary'
 
-  initialize: ->
-
   render: ->
     $el = $(this.el)
 

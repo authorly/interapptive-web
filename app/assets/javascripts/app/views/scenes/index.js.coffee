@@ -23,6 +23,7 @@ class App.Views.SceneIndex extends Backbone.View
       success: (scene, response) =>
         @collection.add scene
         @setActiveScene scene
+        App.keyframeList().createKeyframe()
     return scene
 
   appendScene: (scene) ->
