@@ -34,8 +34,6 @@ class App.Views.SceneIndex extends Backbone.View
       activeKeyframeEl.css("background-image", "url(" + thumbnailUrl + ")")
 
   setActiveScene: (scene) ->
-    console.log "SETTING ACTIVE SCENE"
-    console.log "~_~_~_~_~_~_~_~_~~__~~__~"
     App.builder.widgetLayer.removeAllChildrenWithCleanup()
     App.currentScene scene
     App.keyframeList().collection.scene_id = scene.get("id")
@@ -44,6 +42,8 @@ class App.Views.SceneIndex extends Backbone.View
     $('nav.toolbar ul li ul li').removeClass 'disabled'
 
   destroyScene: (event) ->
+    alert "FACK"
+
     event.stopPropagation()
 
   setBackground: ->
