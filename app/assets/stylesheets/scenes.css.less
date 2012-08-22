@@ -49,11 +49,19 @@
       width: 20px;
       height: 20px;
       position: absolute;
-      top: 95px;
-      right: 10px;
+      top: 6px;
+      right: 6px;
       padding: 5px;
       z-index: 90 !important;
       background: asset-url('red-minus.png') no-repeat center;
+      background-size: 65%;
+    }
+  }
+
+
+  li.active:first-child {
+    a.delete {
+      display:none !important;
     }
   }
 

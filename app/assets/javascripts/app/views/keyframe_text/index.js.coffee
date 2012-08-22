@@ -7,11 +7,9 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     $(window).on('resize', @resize)
       
   render: ->
-    console.log("KeyframeTextIndex render called")
     @removeTexts()
     
     for c in @collection.models
-      console.log "KeyframeTextIndex create TextWidget"
       text = new App.Views.TextWidget(model: c)
       @addText(text)
     @resize()
@@ -45,8 +43,6 @@ class App.Views.KeyframeTextIndex extends Backbone.View
       
     @collection.create attributes,
       success: (keyframeText, response) =>
-        console.log("keyframetext create success -----")
-        console.log(keyframeText)
         text = new App.Views.TextWidget(model: keyframeText)
         App.currentKeyframeText(keyframeText)
         #TODO center it
