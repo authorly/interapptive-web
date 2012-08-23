@@ -59,6 +59,7 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     # position texts
     for t in @texts
       @positionText(t)
+      t.constrainToCanvas()
     
   #position text based on canvas position, solving for cocos2 canvas x,y
   positionText: (text) ->

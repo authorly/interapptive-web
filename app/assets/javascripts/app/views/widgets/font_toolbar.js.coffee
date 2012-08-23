@@ -8,6 +8,8 @@ class App.Views.FontToolbar extends Backbone.View
   _fontColor: "#000000"
   _fontSize: 12
   _fontFace: "Arial"
+  _fontWeight: "bold" # or normal
+  _textAlign: "left" # "center", "right"
   #_active: false # keeps hide() from hiding if there is a rollout event etc
   #_timer: null
   
@@ -17,6 +19,10 @@ class App.Views.FontToolbar extends Backbone.View
     'mouseenter': 'mouseEnter'
     'mouseleave': 'mouseLeave'
     'mousemove' : 'mouseMove'
+    'a .bold' : 'boldClick'
+    '.text_align #right' : 'rightAlignClick'
+    '.text_align #center' : 'centerAlignClick'
+    '.text_align #left' : 'leftAlignClick'
     
   initialize: ->
     @render()
@@ -24,10 +30,18 @@ class App.Views.FontToolbar extends Backbone.View
       change: (hex, rgb) =>
         @onChangeFontColor(hex, rgb)
         
+    $(@el).draggable()
+        
   render: (model)-> 
     $(@el).html(@template())
     this 
     
+  setDefaults: ->
+    @fontFace @_textWidget().model?.get('face') ? @_fontFace
+    @fontColor @_textWidget().model?.get('color') ? @_fontColor
+    @fontSize @_textWidget().model?.get('size') ? @_fontSize
+    #TODO font weight and font align defaults
+
   keyframeText: (keyframeText) ->
     @_keyframeText
   
@@ -42,11 +56,6 @@ class App.Views.FontToolbar extends Backbone.View
     
   _textWidget: (textWidget) ->
     if textWidget then @textWidget = textWidget else @textWidget
-  
-  setDefaults: ->
-    @fontFace @_textWidget().model?.get('face') ? @_fontFace
-    @fontColor @_textWidget().model?.get('color') ? @_fontColor
-    @fontSize @_textWidget().model?.get('size') ? @_fontSize
   
   update: (e) ->
     App.fontToolbarUpdate(this)
@@ -68,7 +77,21 @@ class App.Views.FontToolbar extends Backbone.View
     
   fontColor: (fc) ->
     if fc then $(@el).find('.colorpicker').val(fc) else $(@el).find('.colorpicker').val()
+  
+  fontWeight: (fw) ->
+    el = $(@el)
+    if fw
+      if fw == "bold"
+        el.find('.font_weight').addClass('selected')
+      else
+        el.find('.font_weight').removeClass('selected')
+    else
+      @_fontWeight
       
+  textAlign: (ta) ->
+    if ta then @_textAlign = fa else @_textAlign
+     
+  # events
   mouseMove: -> 
     
   mouseEnter: ->
@@ -76,6 +99,38 @@ class App.Views.FontToolbar extends Backbone.View
     
   mouseLeave: ->
     @_active = false
+    
+  boldClick: ->
+    if @fontWeight() == "bold" 
+      @fontWeight("normal")
+    else
+      @bold("bold")
+    
+    @update()
+    
+  leftAlignClick: ->
+    console.log("leftAlignClick")
+    @deselectAlignment()
+    @textAlign('left')
+    
+    @update()
+    
+  centerAlignClick: ->
+    console.log("centerAlignClick")
+    @deselectAlignment()
+    @textAlign('center')
+    
+    @update()
+    
+  rightAlignClick: ->
+    console.log("rightAlignClick")
+    @deselectedAlignment()
+    @textAlign('right')
+    
+    @update()
+    
+  deselectAlignment: ->
+    $('.align_button').removeClass('selected')
     
   show: ()->
     $(@el).show()

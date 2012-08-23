@@ -42,6 +42,7 @@ class App.Views.SceneIndex extends Backbone.View
     $('nav.toolbar ul li ul li').removeClass 'disabled'
 
   setBackground: ->
+    console.log("setBackground")
     images         = new App.Collections.ImagesCollection []
     scene          = App.currentScene()
     image_id       = scene.get('image_id')
@@ -50,6 +51,8 @@ class App.Views.SceneIndex extends Backbone.View
     images.fetch
       success: (collection, response) =>
         background_image = collection.get(image_id)
+        #TODO check for no background image in a fresh storybook 
+        # where a user hasn't added a background image yet
         background_url = background_image.attributes.url
         node = cc.Director.sharedDirector().getRunningScene()
         node.removeChild(node.backgroundSprite)

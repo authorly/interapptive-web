@@ -106,7 +106,6 @@ $ ->
   $('#export').on 'click', ->
     alert(App.storybookJSON)
 
-
   $(".content-modal").modal(backdrop: true).modal "hide"
   $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
 

@@ -9,9 +9,14 @@ class App.Views.TextWidget extends Backbone.View
   _fontColor: "#FF0000"
   _fontSize: 12
   _fontFace: "Arial"
+  _fontWeight: "normal"
+  _textAlign: "left"
   _content: "" 
   _x: 100
   _y: 100
+  _width : 100
+  _height : 20
+  #_canvas: ""
   
   events:
     'click' : 'onClick'
@@ -21,6 +26,7 @@ class App.Views.TextWidget extends Backbone.View
     'blur' : 'onBlur'
     'keyup' : 'editActivity'
     'paste' : 'editActivity'
+    'drag' : 'drag'
       
   initialize: ->
     @content @options.string if @options.string
@@ -30,12 +36,16 @@ class App.Views.TextWidget extends Backbone.View
     $(@el).draggable
       start: @startDrag
       stop: @drop
+    
+    @canvas = @getCanvas() #TODO DRY up canvas calls below
       
   setDefaults: ->
     @content @model?.get('content') ? @_content
     @fontColor @model?.get('color') ? @_fontColor
     @fontSize @model?.get('size') ? @_fontSize
     @fontFace @model?.get('face') ? @_fontFace
+    @fontWeight @model?.get('weight') ? @_fontWeight
+    @textAlign @model?.get('align') ? "left"
     
   id: (_id) ->
      if _id then @id = _id else @id
@@ -43,25 +53,12 @@ class App.Views.TextWidget extends Backbone.View
   render: ->
     this
     
-  top: (_top)->
-    if _top then $(@el).css(top: _top) else $(@el).offset().top
-    
-  left: (_left) ->
-    if _left then $(@el).css(left: _left) else $(@el).offset().left
-    
-  x: (_x) ->
-    if _x then @_x = _x else @_x
-  
-  y: (_y) ->
-    if _y then @_y = _y else @_y
-    
   getText: ->
     # FIXME need to solve for multiple lines and html formatting
     # perhaps just html encode?
     #str = "" 
     #$(@el).find('div').each(-> str = str + $(this).text())
     #str
-    console.log "getText #{$(@el).html()}"
     $(@el).html()
     
   setText: (text) ->
@@ -97,16 +94,27 @@ class App.Views.TextWidget extends Backbone.View
     @_editing
       
   fontColor: (color) ->
-    if color then $(@el).css('color' : color) else @_fontColor
+    el = $(@el)
+    if color then el.css('color', color) else el.css('color')
     
-  fontFace: (font) ->
-    if font then $(@el).css('font-family') else @_fontFace
+  fontFace: (face) ->
+    el = $(@el)
+    if face then el.css('font-family', face) else el.css('font-family')
     
   fontSize: (size) ->
-    if size then $(@el).css('font-size', size) else @_fontSize
+    el = $(@el)
+    if size then el.css('font-size', size) else el.css('font-size')
+    
+  fontWeight: (fw) ->
+    el = $(@el)
+    if fw then el.css('font-weight', fw) else el.css('font-weight')
+    
+  textAlign: (ta) ->
+    console.log("text align: #{ta}")
+    el = $(@el)
+    if ta then el.css('text-align', ta) else el.css('text-align')
   
   content: (_content) ->
-    console.log "content #{_content}"
     if _content 
       $(@el).html(_content)
       @_content = _content 
@@ -115,19 +123,31 @@ class App.Views.TextWidget extends Backbone.View
       
   # events...
   
+  drag: ->
+    console.log("drag")
+    #if calling constrainToCanvas during drag, is just overridden by next drag event
+    #@constrainToCanvas()
+  
   #drag stop
   drop: =>
     # x_coord and y_coord are translated to cocos2d x, y starting at bottom left
+    @constrainToCanvas()
+    
     @save()
     
   startDrag: =>
     App.currentKeyframeText(@model)
-
+      
   fontToolbarUpdate: (_fontToolbar) ->
     $(@el).css
       "font-family" : _fontToolbar.fontFace()
       "font-size" : _fontToolbar.fontSize() + "px"
       "color" : _fontToolbar.fontColor()
+      "font-weight" : _fontToolbar.fontWeight()
+      "text-align" : _fontToolbar.textAlign()
+    
+    @constrainToCanvas()
+      
     @save()
 
   onClick: (e) ->
@@ -136,6 +156,7 @@ class App.Views.TextWidget extends Backbone.View
     # TODO set timer and turn off content editable
 
   onBlur: (e) ->
+    console.log()
     @editActivity()
 
   onFocus: (e) ->
@@ -144,17 +165,65 @@ class App.Views.TextWidget extends Backbone.View
     App.editTextWidget(this)
     
   mouseEnter: (e) ->
-    #console.log "EditText mouseEnter"
-
+    
   mouseLeave: (e) ->
-    #console.log "EditText mouseLeave"
-
 
   editActivity: (e) ->
     #console.log "EditText editActivity"
     if $(@el).data isnt $(@el).html()
       $(@el).data 'before', $(@el).html()
       @save()
+    
+    # text may have grown outside of canvas
+    @constrainToCanvas()
+      
+  # positions
+   
+  top: (_top) ->
+    if _top then $(@el).css(top: _top) else $(@el).offset().top
+    
+  left: (_left) ->
+    if _left then $(@el).css(left: _left) else $(@el).offset().left
+    
+  x: (_x) ->
+    if _x then @_x = _x else @_x
+  
+  y: (_y) ->
+    if _y then @_y = _y else @_y
+    
+  width: (_w) ->
+    if _w then @_w = $(@el).width(_w) else $(@el).width()
+  
+  height: (_h) ->
+    if _h then @_h = $(@el).height(_h) else $(@el).height()
+  
+  
+  constrainToCanvas: ->
+    c = @canvas
+    cTop = c.offset().top
+    cLeft = c.offset().left
+    cWidth = c.width()
+    cHeight = c.height()
+    
+    #too high
+    if @top() < cTop
+      # TODO make more exact
+      @top(cTop)
+      
+    #too far left
+    if @left() < cLeft
+      @left(cLeft)
+      
+    #too low
+    if @top() > (cTop + cHeight)
+      newTop = (cTop + cHeight) - @height()
+      @top(newTop) 
+      
+    #too far right
+    if @left() > (cLeft + cWidth) - @width()
+      newLeft = (cLeft + cWidth) - @width()
+      @left(newLeft)
+    #animate to new positions
       
   cocosYtoTop: (_cocosY) ->
     _canvas = @getCanvas()
@@ -191,15 +260,17 @@ class App.Views.TextWidget extends Backbone.View
     $('#builder-canvas')
     
   save: ->
-    console.log "text widget save()"
-    console.log @content()
     attr = 
       content : @content()
       face : @fontFace()
       size : @fontSize()
       color : @fontColor()
+      weight : @fontWeight()
+      align : @textAlign()
       x_coord : @cocosX()
       y_coord : @cocosY()
+    console.log("text save attr")
+    console.log(attr)
     @model.set attr
     @model.save
       success: ->

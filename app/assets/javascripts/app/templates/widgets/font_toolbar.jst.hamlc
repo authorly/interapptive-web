@@ -7,6 +7,17 @@
     Verdana
   %option{:value => "Georgia"}
     Georgia
+    
+%button#bold
+  B
+  
+.text_align
+  %button#left
+    L
+  %button#center
+    C
+  %button#right
+    R
 
 %select.font_size
   - for i in [9..25]
