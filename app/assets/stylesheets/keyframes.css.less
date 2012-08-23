@@ -14,6 +14,7 @@
     border: 1px solid #666;
     background-color: #76767a;
     overflow: hidden;
+    position: relative;
 
     div {
       .opacity(0.3);
@@ -28,8 +29,42 @@
   li.active {
     border: 1px solid @slidePreviewActiveBgBegin;
 
-    div {
-      .opacity(1.0);
+
+    a.delete-keyframe {
+      opacity: 0;
+      display: block;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      padding: 5px;
+      z-index: 90 !important;
+      background: asset-url('red-minus.png') no-repeat center;
+      background-size: 55%;
     }
+
+    border: 1px solid @slidePreviewActiveBgBegin;
+    opacity: 1.0;
+  }
+
+  li.active:first-child {
+    a.delete-keyframe {
+      display:none !important;
+    }
+  }
+
+  li.active:hover {
+
+    cursor: default;
+
+    a.delete-keyframe {
+      opacity: 0.45;
+      cursor: pointer;
+    }
+  }
+
+  li.active a.delete-keyframe:hover {
+    opacity: 0.9;
   }
 }

@@ -3,7 +3,8 @@ class App.Views.SceneIndex extends Backbone.View
   tagName: 'ul'
   className: 'scene-list'
   events:
-    'click .scene-list li span': 'clickScene'
+    'click    span a.delete': 'destroyScene'
+    'click .scene-list span': 'clickScene'
     
   initialize: ->
     @collection.on('reset', @render, this)
@@ -22,24 +23,42 @@ class App.Views.SceneIndex extends Backbone.View
       success: (scene, response) =>
         @collection.add scene
         @setActiveScene scene
+        App.keyframeList().createKeyframe()
     return scene
 
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
-    $('.scene-list').append(view.render().el)
+
+    $(@el).append(view.render().el)
+
     if scene.has "preview_image_id"
-      image        = App.imageList().collection.get(scene.get('preview_image_id'))
+      previewImage = App.imageList().collection.get(scene.get('preview_image_id'))
       thumbnailUrl = image.get("url")
-      activeKeyframeEl = $('.scene-list li').last().find('span')
       activeKeyframeEl.css("background-image", "url(" + thumbnailUrl + ")")
 
   setActiveScene: (scene) ->
     App.builder.widgetLayer.removeAllChildrenWithCleanup()
+
     App.currentScene scene
+
     App.keyframeList().collection.scene_id = scene.get("id")
     App.keyframeList().collection.fetch()
+
     $('#keyframe-list').html("").html(App.keyframeList().el)
     $('nav.toolbar ul li ul li').removeClass 'disabled'
+
+  destroyScene: (event) =>
+    message = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
+    target  = $(event.currentTarget)
+    sceneId = target.attr('data-id')
+    sceneEl = target.parent().parent()
+    scene   = App.sceneList().collection.get(sceneId)
+
+    event.stopPropagation()
+
+    if confirm(message)
+      scene.destroy
+        success: => sceneEl.remove() and $('.scene-list li:first span:first').click()
 
   setBackground: ->
     console.log("setBackground")

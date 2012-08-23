@@ -1,5 +1,9 @@
 - if @keyframe.has "image_id"
   %div{"data-id" => "#{@keyframe.get 'id'}", "data-image-id" => "#{@keyframe.get 'image_id'}"}
+  %span
+    %a{:href=>"#","class" => "delete-keyframe", "data-id" => "#{@keyframe.get('id')}"}
 
 - else
   %div{"data-id" => "#{@keyframe.get 'id'}"}
+  %span
+    %a{:href=>"#","class" => "delete-keyframe", "data-id" => "#{@keyframe.get('id')}"}

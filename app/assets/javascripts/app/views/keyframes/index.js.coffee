@@ -3,7 +3,8 @@ class App.Views.KeyframeIndex extends Backbone.View
   tagName: 'ul'
   className: 'keyframe-list'
   events:
-    'click .keyframe-list li div': 'setActiveKeyframe'
+    'click    span a.delete-keyframe': 'destroyKeyframe'
+    'click     .keyframe-list li div': 'setActiveKeyframe'
 
   initialize: ->
     @collection.on('reset', @render, this)
@@ -12,11 +13,9 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(@el).html('')
     @collection.each (keyframe) => @appendKeyframe(keyframe)
     @delegateEvents()
-    
 
     # Fire asynchronously so other 'reset' events can finish first
     setTimeout((=> $(@el).find('li:first div:first').click()), 1)
-
     this
 
   createKeyframe: =>
@@ -28,35 +27,55 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   appendKeyframe: (keyframe) ->
     view  = new App.Views.Keyframe(model: keyframe)
-    $(@el).append(view.render().el).removeClass('active').first().addClass('active')
-    if keyframe.has "image_id"
-      image    = App.imageList().collection.get(keyframe.get('image_id'))
-      if image? and image.has("url")
-        imageUrl = image.get("url")
-        imageId  = keyframe.get("image_id")
-        x_coord  = keyframe.get("background_x_coord")
-        y_coord  = keyframe.get("background_y_coord")
-        activeKeyframeEl = $(@el).find("[data-image-id='#{imageId}']")
-        activeKeyframeEl.css("background-image", "url(" + imageUrl + ")")
-        activeKeyframeEl.attr("data-x","#{x_coord}")
-        activeKeyframeEl.attr("data-y","#{y_coord}")
 
-  setActiveKeyframe: (e) ->
-    x_coord   = $(e.currentTarget).attr "data-x"
-    y_coord   = $(e.currentTarget).attr "data-y"
-    @activeId = $(e.currentTarget).attr "data-id"
+    $(@el).append(view.render().el).removeClass('active').first().addClass('active')
+
+    if keyframe.has "image_id"
+      image = App.imageList().collection.get(keyframe.get('image_id'))
+
+      if image? and image.has("url")
+        keyfrEl  = $(@el).find("[data-image-id='#{keyframe.get("image_id")}']")
+
+        keyfrEl.css("background-image", "url(#{image.get("url")})")
+        keyfrEl.attr("data-x","#{keyframe.get("background_x_coord")}")
+        keyfrEl.attr("data-y","#{keyframe.get("background_y_coord")}")
+
+  setActiveKeyframe: (event) ->
+    @activeId = $(event.currentTarget).attr "data-id"
     @keyframe = @collection.get @activeId
+    x_coord   = $(event.currentTarget).attr "data-x"
+    y_coord   = $(event.currentTarget).attr "data-y"
+    sprite    = cc.Director.sharedDirector().getRunningScene().backgroundSprite
+
     App.currentKeyframe @keyframe
-    sprite = cc.Director.sharedDirector().getRunningScene().backgroundSprite
-    $(e.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
+
+    $(event.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
+
     if sprite? then sprite.setPosition(new cc.Point(x_coord, y_coord))
 
     @populateWidgets(@keyframe)
 
+  destroyKeyframe: (event) =>
+    App.keyframeList().collection.fetch
+      success: (collection, response) =>
+        message  = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
+        target   = $(event.currentTarget)
+        keyframe = collection.get(target.attr('data-id'))
+
+        collection.remove(keyframe)
+
+        event.stopPropagation()
+
+        if confirm(message)
+          keyframe.destroy
+            success: =>
+              $('.keyframe-list li.active').remove()
+              $('.keyframe-list li:first div').click()
+
+
   setBackgroundPosition: (x, y) ->
-    activeKeyframeEl = $(@el).find('.active div')
-    activeKeyframeEl.attr("data-x","#{x}")
-    activeKeyframeEl.attr("data-y","#{y}")
+    $(@el).find('.active div').attr("data-x","#{x}").attr("data-y","#{y}")
+
     if App.currentKeyframe()?
       App.currentKeyframe().set
         background_x_coord: x
@@ -68,13 +87,14 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   setThumbnail: (el) ->
     oCanvas = document.getElementById "builder-canvas"
+    imageId = $(@el).find('.active div').attr "data-image-id"
+
     try
-      image   = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
+      image = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
     catch e
-      console.error("Error saving PNG", e)
+      alert("Problem saving scene preview image", e)
       return
 
-    imageId = $(@el).find('.active div').attr "data-image-id"
     $.ajax
       url: '/storybooks/#{App.currentStorybook().get("id")}/images.json'
       type: 'POST'
