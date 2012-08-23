@@ -91,6 +91,10 @@ window.App =
     console.log "App.fontToolbarUpdate"
     @selectedText().fontToolbarUpdate(fontToolbar)
     
+  fontToolbarClosed: ->
+    console.log("app.fonttoolbarclosed")
+    @keyframeTextList().deselectTexts()
+    
   selectedText: (textWidget) ->
     if textWidget then @textWidget = textWidget else @textWidget
    

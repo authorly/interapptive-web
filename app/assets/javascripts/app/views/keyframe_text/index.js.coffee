@@ -20,6 +20,10 @@ class App.Views.KeyframeTextIndex extends Backbone.View
       $(t.el).remove()
       #TODO may need to clean up the text object itself with leave() or something similar 
     @texts.length = 0
+    
+  deselectTexts: ->
+    for t in @texts
+      t.deselect()
       
   updateText: ->
     @collection.fetch success: =>

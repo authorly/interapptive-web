@@ -36,7 +36,7 @@ class App.Views.TextWidget extends Backbone.View
     $(@el).draggable
       start: @startDrag
       stop: @drop
-    
+      
     @canvas = @getCanvas() #TODO DRY up canvas calls below
       
   setDefaults: ->
@@ -110,7 +110,6 @@ class App.Views.TextWidget extends Backbone.View
     if fw then el.css('font-weight', fw) else el.css('font-weight')
     
   textAlign: (ta) ->
-    console.log("text align: #{ta}")
     el = $(@el)
     if ta then el.css('text-align', ta) else el.css('text-align')
   
@@ -176,6 +175,10 @@ class App.Views.TextWidget extends Backbone.View
     
     # text may have grown outside of canvas
     @constrainToCanvas()
+    
+  deselect: ->
+    console.log("deselect text")
+    $(@el).blur()
       
   # positions
    
@@ -269,8 +272,6 @@ class App.Views.TextWidget extends Backbone.View
       align : @textAlign()
       x_coord : @cocosX()
       y_coord : @cocosY()
-    console.log("text save attr")
-    console.log(attr)
     @model.set attr
     @model.save
       success: ->

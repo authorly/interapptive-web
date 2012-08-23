@@ -23,6 +23,7 @@ class App.Views.FontToolbar extends Backbone.View
     '.text_align #right' : 'rightAlignClick'
     '.text_align #center' : 'centerAlignClick'
     '.text_align #left' : 'leftAlignClick'
+    'click .close_x' : 'onCloseClick'
     
   initialize: ->
     @render()
@@ -143,6 +144,11 @@ class App.Views.FontToolbar extends Backbone.View
     $(@el).css
       top : _top - ($(@el).height() + padding)
       left : _left
+      
+  onCloseClick: ->
+    console.log("close font toolbar")
+    @hide()
+    App.fontToolbarClosed()
   
   hide: ->
     if !@_mouseEntered

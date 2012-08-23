@@ -23,4 +23,8 @@
   - for i in [9..25]
     %option{:value => "#{i}"} 
       = i
+      
 %input{:class => "colorpicker"}
+
+%button.close_x
+  x
