@@ -36,4 +36,9 @@ Interapptive::Application.configure do
   config.assets.debug = true
   
   config.serve_static_assets = false
+
+  # Default URL host
+  config.action_mailer.default_url_options = {
+    :host => "localhost"
+  }
 end
