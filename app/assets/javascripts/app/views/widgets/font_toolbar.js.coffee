@@ -20,9 +20,9 @@ class App.Views.FontToolbar extends Backbone.View
     'mouseleave': 'mouseLeave'
     'mousemove' : 'mouseMove'
     'a .bold' : 'boldClick'
-    '.text_align #right' : 'rightAlignClick'
-    '.text_align #center' : 'centerAlignClick'
-    '.text_align #left' : 'leftAlignClick'
+    'click .text_align #right' : 'rightAlignClick'
+    'click .text_align #center' : 'centerAlignClick'
+    'click .text_align #left' : 'leftAlignClick'
     'click .close_x' : 'onCloseClick'
     
   initialize: ->
@@ -90,7 +90,7 @@ class App.Views.FontToolbar extends Backbone.View
       @_fontWeight
       
   textAlign: (ta) ->
-    if ta then @_textAlign = fa else @_textAlign
+    if ta then @_textAlign = ta else @_textAlign
      
   # events
   mouseMove: -> 
@@ -125,7 +125,7 @@ class App.Views.FontToolbar extends Backbone.View
     
   rightAlignClick: ->
     console.log("rightAlignClick")
-    @deselectedAlignment()
+    @deselectAlignment()
     @textAlign('right')
     
     @update()
