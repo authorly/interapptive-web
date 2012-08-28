@@ -7,13 +7,19 @@ describe User do
   describe "authentication" do
     it "should require a unique email" do
       Factory(:user, :email => 'taken@example.com')
-      expect { Factory(:user, :email => 'taken@example.com') }.should raise_error(ActiveRecord::RecordInvalid)
+      user = Factory.build(:user, :email => 'taken@example.com')
+      user.should_not be_valid
     end
 
     it "should require a password and password_confirmation" do
-      expect { Factory(:user, :password => '') }.should raise_error(ActiveRecord::RecordInvalid)
-      expect { Factory(:user, :password_confirmation => '') }.should raise_error(ActiveRecord::RecordInvalid)
-      expect { Factory(:user, :password => 'these', :password_confirmation => 'aredifferent') }.should raise_error(ActiveRecord::RecordInvalid)
+      user = Factory.build(:user, :password => '')
+      user.should_not be_valid
+
+      user = Factory.build(:user, :password_confirmation => '')
+      user.should_not be_valid
+
+      user = Factory.build(:user, :password => "these", :password_confirmation => 'aredifferent')
+      user.should_not be_valid
     end
 
     it "should authenticate with a good password" do
@@ -25,7 +31,11 @@ describe User do
     end
     
     it "is invalid without email" do 
-      expect { Factory(:user, :email => nil) }.should raise_error(ActiveRecord::RecordInvalid)
+      user = Factory.build(:user, :email => nil)
+      user.should_not be_valid
+
+      user = Factory.build(:user, :email => '')
+      user.should_not be_valid
     end
 
   end
@@ -38,7 +48,11 @@ describe User do
     it "is invalid without password"
     
     it { should have_many(:storybooks) }
-    it { should have_many(:actions) }
+
+    it do
+      pending
+      should have_many(:actions)
+    end
   end
   
   context "developer user should" do 
@@ -49,6 +63,7 @@ describe User do
     it "generates token" do 
       user.send_password_reset.should 
     end
+
     it "saves password reset date"
     it "sends password reset email"
     it "fails if email doesn't exist"
