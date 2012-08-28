@@ -21,10 +21,7 @@
     @scene = Scene.find params[:scene_id]
 
     if params[:base64]
-      # TODO: Relocate random string algorithm
-      filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
-      file = File.open(filename, "wb")
-      file.write(Base64.decode64(params[:image][:files][0]))
+      file = write_file
       @images = [Image.create(:image => file)]
     else
       @images = params[:image][:files].map { |f| Image.create(:image => f) }
@@ -43,15 +40,12 @@
   def update
     @image = Image.find params[:id]
     @image.remove_image!
-
-    filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
-    file = File.open(filename, "wb")
-    file.write(Base64.decode64(params[:image][:files][0]))
+    file = write_file
 
     @image.update_attribute(:image, file)
 
     respond_to do |format|
-      format.json { render :json => [@image.as_jquery_upload_response.to_json] }
+      format.json { render :json => [@image.as_jquery_upload_response] }
     end
   end
 
@@ -63,5 +57,13 @@
     respond_to do |format|
       format.json { head :ok }
     end
+  end
+
+  private
+
+  def write_file
+    filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
+    file = File.open(filename, "wb")
+    file.write(Base64.decode64(params[:image][:files][0]))
   end
 end

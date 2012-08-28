@@ -40,7 +40,7 @@ RSpec.configure do |config|
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
-  
+
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
@@ -61,6 +61,11 @@ RSpec.configure do |config|
 
   config.after(:all) do
     DeferredGarbageCollection.reconsider
+  end
+
+  def test_sign_in(user)
+    controller.class.any_instance.stub(:authorize).and_return(true)
+    controller.class.any_instance.stub(:current_user).and_return(user)
   end
 end
 
