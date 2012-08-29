@@ -30,7 +30,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       cc.TouchDispatcher.preTouchPoint.y = mouseY
 
       widget = @widgetAtPoint(touch.locationInView())
-      widget.trigger('dblclick', touch, event)
+      if widget
+        widget.trigger('dblclick', touch, event)
     )
     
   clearWidgets: ->
