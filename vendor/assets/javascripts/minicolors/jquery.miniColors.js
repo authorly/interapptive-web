@@ -208,6 +208,7 @@ if(jQuery) (function($) {
 					.bind('mouseup.miniColors touchend.miniColors', function(event) {
 					    event.preventDefault();
 						input.data('mousebutton', 0).removeData('moving');
+						hide(input)
 					})
 					.bind('mousemove.miniColors touchmove.miniColors', function(event) {
 						event.preventDefault();
