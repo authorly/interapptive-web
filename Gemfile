@@ -16,6 +16,8 @@ gem 'param_protected', '~> 4.0.0'
 gem 'jquery-fileupload-rails', :git => 'git://github.com/whitmanc/jquery-fileupload-rails.git'
 gem 'unicorn'
 gem 'therubyracer'
+gem 'jasmine'
+gem 'barista'
 
 group :assets do
   gem 'less-rails'
@@ -26,7 +28,10 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'jasminerice'
+  gem 'guard'
+  gem 'guard-coffeescript'
+  gem 'capybara'
+  gem 'guard-rspec'
 end
 
 group :development do
@@ -35,13 +40,13 @@ group :development do
   gem 'haml-rails'
   gem 'capistrano'
   gem 'debugger'
+  gem 'growl'
 end
 
 group :test do
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'shoulda-matchers'
-  gem 'capybara'
   gem 'poltergeist'
   gem 'miniskirt'
   gem 'database_cleaner'

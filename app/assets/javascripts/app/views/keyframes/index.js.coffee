@@ -132,7 +132,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       App.builder.widgetLayer.removeAllChildrenWithCleanup()
       App.keyframesTextCollection.fetch
         success: (collection, response) =>
-          
+
 
   populateWidgets: (keyframe) ->
     console.log "KeyframeIndex populateWidgets"
@@ -141,7 +141,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     App.builder.widgetLayer.clearWidgets()
     # clear text
     App.updateKeyframeText()
-    
+
     if keyframe.has('widgets')
       for widgetHash in keyframe.get('widgets')
         #HACK to ignore TextWidgets in widgets hash because this is in html now
