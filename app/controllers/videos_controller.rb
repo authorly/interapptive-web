@@ -6,9 +6,21 @@ class VideosController < ApplicationController
   end
 
   def create
-    @videos = params[:video][:files].map { |f| Video.create(:video => f) }
-
+    @scene = Scene.find params[:scene_id]
+    
+    if params[:base64]
+      file = write_file
+      @videos = [Video.create(:video => file)]
+    else
+      @videos = params[:video][:files].map { |f| Video.create(:video => f) }
+      @videos.each do |i|
+        @scene.videos << i
+      end
+    end
+    
     respond_to do |format|
+      puts "------------"
+      puts @videos.map(&:as_jquery_upload_response).to_json
       format.json { render :json => @videos.map(&:as_jquery_upload_response).to_json }
     end
   end
@@ -20,5 +32,11 @@ class VideosController < ApplicationController
     respond_to do |format|
       format.json { head :ok }
     end
+  end
+  
+  def write_file
+    filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
+    file = File.open(filename, "wb")
+    file.write(Base64.decode64(params[:video][:files][0]))
   end
 end

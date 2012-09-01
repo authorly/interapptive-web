@@ -36,6 +36,9 @@ Interapptive::Application.routes.draw do
   resources :storybooks do
     resources :scenes do
       resources :images
+      resources :videos
+      resources :fonts
+      resources :sounds
     end
     resources :images
   end
