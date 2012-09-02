@@ -10,8 +10,9 @@ require 'capybara/rspec'
 require 'factories'
 require 'database_cleaner'
 
-Capybara.javascript_driver = :poltergeist
+Capybara.javascript_driver = :selenium
 
+Rails.logger.level = 4
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -41,17 +42,37 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
   
   config.before(:suite) do
-      DatabaseCleaner.strategy = :transaction
-      DatabaseCleaner.clean_with(:truncation)
-    end
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
 
-    config.before(:each) do
-      DatabaseCleaner.start
-    end
 
-    config.after(:each) do
-      DatabaseCleaner.clean
-    end
-  
-  
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
+  config.before(:all) do
+    DeferredGarbageCollection.start
+  end
+
+  config.after(:all) do
+    DeferredGarbageCollection.reconsider
+  end
 end
+
+class ActiveRecord::Base
+  mattr_accessor :shared_connection
+  @@shared_connection = nil
+
+  def self.connection
+    @@shared_connection || retrieve_connection
+  end
+end
+
+# Forces all threads to share the same connection. This works on
+# Capybara because it starts the web server in a thread.
+ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
