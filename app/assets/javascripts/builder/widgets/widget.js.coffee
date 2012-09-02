@@ -77,3 +77,13 @@ class App.Builder.Widgets.Widget extends cc.Node
     r.origin = new cc.Point(0, 0)
 
     return cc.Rect.CCRectContainsPoint(r, local)
+
+  setStorybook: (storybook) ->
+    @removeFromStorybook(@_storybook) if @_storybook
+    @_storybook = storybook
+    @addToStorybook(storybook) if storybook
+
+  removeFromStorybook: (storybook) =>
+
+  addToStorybook: (storybook) =>
+

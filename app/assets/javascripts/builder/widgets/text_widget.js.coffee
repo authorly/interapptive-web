@@ -59,3 +59,25 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     hash.string = @_string
 
     hash
+
+  addToStorybook: (storybook) =>
+    @_line ||=
+      text: @label.getString()
+      xOffset: Math.round(@getPosition().x)
+      yOffset: Math.round(@getPosition().y)
+
+    storybook.addTextToKeyframe(@_line)
+
+    @on('change', @updateStorybook)
+
+  removeFromStorybook: (storybook) =>
+    @off('change', @updateStorybook)
+    storybook.removeTextFromKeyframe(@_line)
+
+  updateStorybook: =>
+    if @_line
+      @_line.text = @label.getString()
+      @_line.xOffset = Math.round(@getPosition().x)
+      @_line.yOffset = Math.round(@getPosition().y)
+
+

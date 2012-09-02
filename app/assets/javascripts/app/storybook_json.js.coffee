@@ -3,58 +3,61 @@ nextSpriteTag = 1
 class App.StorybookJSON
 
   constructor: ->
-    @Configurations =
-      pageFlipSound:
-        forward: "page-flip-sound.mp3"
-        backward: "page-flip-sound.mp3"
 
-      pageFlipTransitionDuration: 0.6
-      paragraphTextFadeDuration: 0.4
-      homeMenuForPages:
-        normalStateImage: "home-button.png"
-        tappedStateImage: "home-button-over.png"
-        position: [20, 20]
+    # The object athat will become the JSON string
+    @document =
+      Configurations:
+        pageFlipSound:
+          forward: "page-flip-sound.mp3"
+          backward: "page-flip-sound.mp3"
 
-    @MainMenu =
-      CCSprites: [],
-      MenuItems: [{
-          normalStateImage: "autoplay.png",
-          tappedStateImage: "autoplay-over.png",
-          storyMode: "autoPlay",
-          position: [100, 112]
-      }, {
-          normalStateImage: "read-it-myself.png",
-          tappedStateImage: "read-it-myself-over.png",
-          storyMode: "readItMyself",
-          position: [400, 112]
-      }, {
-          normalStateImage: "read-to-me.png",
-          tappedStateImage: "read-to-me-over.png",
-          storyMode: "readToMe",
-          position: [700, 112]
-      }],
-      API: {
-          CCFadeIn: [{
-              duration: 2,
-              actionTag: 22
-          }]
-      },
-      runActionsOnEnter: [{
-          spriteTag: 100,
-          actionTag: 22
-      }]
+        pageFlipTransitionDuration: 0.6
+        paragraphTextFadeDuration: 0.4
+        homeMenuForPages:
+          normalStateImage: "home-button.png"
+          tappedStateImage: "home-button-over.png"
+          position: [20, 20]
 
-    @Pages = []
+      MainMenu:
+        CCSprites: [],
+        MenuItems: [{
+            normalStateImage: "autoplay.png",
+            tappedStateImage: "autoplay-over.png",
+            storyMode: "autoPlay",
+            position: [100, 112]
+        }, {
+            normalStateImage: "read-it-myself.png",
+            tappedStateImage: "read-it-myself-over.png",
+            storyMode: "readItMyself",
+            position: [400, 112]
+        }, {
+            normalStateImage: "read-to-me.png",
+            tappedStateImage: "read-to-me-over.png",
+            storyMode: "readToMe",
+            position: [700, 112]
+        }],
+        API: {
+            CCFadeIn: [{
+                duration: 2,
+                actionTag: 22
+            }]
+        },
+        runActionsOnEnter: [{
+            spriteTag: 100,
+            actionTag: 22
+        }]
+
+      Pages: []
 
   @fromJSON: (json) ->
     # TODO
 
   toString: ->
-    JSON.stringify(this)
+    JSON.stringify(@document)
 
   resetPages: ->
     # FIXME needs to delete scene._page
-    @Pages = []
+    @document.Pages = []
 
   resetParagraphs: (scene) ->
     page = scene._page
@@ -68,7 +71,7 @@ class App.StorybookJSON
       API: {}
       Page:
         settings:
-          number: @Pages.length + 1,
+          number: @document.Pages.length + 1,
           fontType: "Arial",
           fontColor: [255, 0, 0],
           fontHighlightColor: [255, 255, 255],
@@ -81,7 +84,7 @@ class App.StorybookJSON
           paragraphs: []
 
     scene._page = page
-    @Pages.push(page)
+    @document.Pages.push(page)
 
     page
 
@@ -104,35 +107,16 @@ class App.StorybookJSON
 
     paragraph
 
-  addWidget: (keyframe, widget) ->
+  addTextToKeyframe: (line, keyframe) ->
+    keyframe ||= App.currentKeyframe()
+
     p = keyframe._paragraph
     throw new Error("Keyframe has no Paragraph") unless p?
 
-    # FIXME Need a more generic way to add widgets to the JSON
-    if widget instanceof App.Builder.Widgets.TextWidget
-      line =
-        text: widget.label.getString()
-        xOffset: Math.round(widget.getPosition().x)
-        yOffset: Math.round(widget.getPosition().y)
+    p.linesOfText.push(line)
 
-      widget._line = line
-
-      p.linesOfText.push(line)
-
-    widget.on('change', (property) => @updateWidget(keyframe, widget, property))
-
-  updateWidget: (keyframe, widget, property) ->
-    p = keyframe._paragraph
-    throw new Error("Keyframe has no Paragraph") unless p?
-
-    # FIXME Need a more generic way to add widgets to the JSON
-    if widget instanceof App.Builder.Widgets.TextWidget
-      if widget._line
-        widget._line.text    = widget.label.getString()
-        widget._line.xOffset = Math.round(widget.getPosition().x)
-        widget._line.yOffset = Math.round(widget.getPosition().y)
-
-
+  removeTextFromKeyframe: () ->
+    throw new Error("Not implemented yet")
 
   getPage: (pageNumber) ->
     @document.Pages[pageNumber]

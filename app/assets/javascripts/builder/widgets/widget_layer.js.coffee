@@ -45,7 +45,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @addChild(widget)
     widget.parent = this
 
-    App.storybookJSON.addWidget(App.currentKeyframe(), widget)
+    widget.setStorybook(App.storybookJSON)
 
     this
 
