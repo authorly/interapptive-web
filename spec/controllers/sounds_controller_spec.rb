@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe SoundsController do
   before(:each) do
+    @scene = Factory(:scene)
     @sound = mock_model(Sound, :sound => "sound.wav")
     @sound.stub!(:as_jquery_upload_response).and_return({ :id => @sound.id, :sound => @sound.sound })
   end
@@ -20,10 +21,11 @@ describe SoundsController do
   context "#create" do
     it 'should create multiple sounds' do
       fake_sound = "sound.wav"
-
+      # need unique sounds
+      @sound1 = Factory(:sound, :id => 1)
       Sound.should_receive(:create).with(:sound => fake_sound).exactly(2).times.and_return(@sound)
 
-      post :create, :sound => { :files => [fake_sound, fake_sound] }, :format => :json
+      post :create, :sound => { :files => [fake_sound, fake_sound] }, :scene_id => @scene.id, :format => :json
 
       response.should be_success
       response.body.should eql([{ :id => @sound.id, :sound => @sound.sound }, { :id => @sound.id, :sound => @sound.sound }].to_json)

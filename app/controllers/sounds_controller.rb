@@ -9,15 +9,7 @@ class SoundsController < ApplicationController
     
     @scene = Scene.find params[:scene_id]
 
-    if params[:base64]
-      file = write_file
-      @sounds = [Sound.create(:sound => file)]
-    else
-      @sounds = params[:sound][:files].map { |f| Sound.create(:sound => f) }
-      @sounds.each do |i|
-        @scene.sounds << i
-      end
-    end
+    @sounds = params[:sound][:files].map { |f| Sound.create(:sound => f) }
     
     respond_to do |format|
       format.json { render :json => @sounds.map(&:as_jquery_upload_response).to_json }

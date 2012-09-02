@@ -20,10 +20,10 @@ describe FontsController do
   context "#create" do
     it 'should create multiple fonts' do
       fake_font = "font.wav"
+      @storybook = Factory(:storybook)
+      Font.should_receive(:create).with({:font => fake_font, :storybook_id => @storybook.id }).exactly(2).times.and_return(@font)
 
-      Font.should_receive(:create).with(:font => fake_font).exactly(2).times.and_return(@font)
-
-      post :create, :font => { :files => [fake_font, fake_font] }, :format => :json
+      post :create, :font => { :files => [fake_font, fake_font] }, :storybook_id => @storybook.id, :format => :json
 
       response.should be_success
       response.body.should eql([{ :id => @font.id, :font => @font.font }, { :id => @font.id, :font => @font.font }].to_json)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120821221558) do
+ActiveRecord::Schema.define(:version => 20120901022831) do
 
   create_table "action_definitions", :force => true do |t|
     t.string   "name"
@@ -44,8 +44,9 @@ ActiveRecord::Schema.define(:version => 20120821221558) do
     t.string   "video"
     t.string   "sound"
     t.string   "font"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "storybook_id"
   end
 
   add_index "assets", ["type"], :name => "index_assets_on_type"

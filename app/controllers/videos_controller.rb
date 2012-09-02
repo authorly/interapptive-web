@@ -8,16 +8,11 @@ class VideosController < ApplicationController
   def create
     @scene = Scene.find params[:scene_id]
     
-    if params[:base64]
-      file = write_file
-      @videos = [Video.create(:video => file)]
-    else
-      @videos = params[:video][:files].map { |f| Video.create(:video => f) }
-      @videos.each do |i|
-        @scene.videos << i
-      end
+    @videos = params[:video][:files].map { |f| Video.create(:video => f) }
+    @videos.each do |i|
+      @scene.videos << i
     end
-    
+  
     respond_to do |format|
       puts "------------"
       puts @videos.map(&:as_jquery_upload_response).to_json

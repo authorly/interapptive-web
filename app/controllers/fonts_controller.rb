@@ -7,17 +7,9 @@ class FontsController < ApplicationController
 
   def create
     
-    @scene = Scene.find params[:scene_id]
+    @storybook = Storybook.find params[:storybook_id]
 
-    if params[:base64]
-      file = write_file
-      @fonts = [Font.create(:font => file)]
-    else
-      @fonts = params[:font][:files].map { |f| Font.create(:font => f) }
-      @fonts.each do |i|
-        @scene.fonts << i
-      end
-    end
+    @fonts = params[:font][:files].map { |f| Font.create(:font => f, :storybook_id => @storybook.id) }
     
     respond_to do |format|
       format.json { render :json => @fonts.map(&:as_jquery_upload_response).to_json }

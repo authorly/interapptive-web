@@ -2,15 +2,16 @@ require 'spec_helper'
 
 describe ImagesController do
   before(:each) do
+    @storybook = Factory(:storybook)
     @image = mock_model(Image, :image => "image.png")
     @image.stub!(:as_jquery_upload_response).and_return({ :id => @image.id, :image => @image.image })
   end
 
   context "#index" do
-    it 'should give all the images' do
-      Image.stub!(:all).and_return([@image])
-
-      get :index
+    it 'should give all the images of storybook' do
+      @storybook = Factory(:storybook)
+      image = Image.stub!(:all).and_return([@image])
+      get :index, :storybook_id => @storybook.id
 
       response.should be_success
       response.body.should eql([{:id => @image.id, :image => @image.image }].to_json)
@@ -35,19 +36,21 @@ describe ImagesController do
     end
 
     it 'should create one single image' do
+      @scene = Factory(:scene)
       controller.should_receive(:write_file).and_return(@image_file)
       Image.should_receive(:create).and_return(@image)
 
-      post :create, :base64 => '1', :image => { :files => [@image_file] }, :format => :json
+      post :create, :base64 => '1', :image => { :files => [@image_file] }, :scene_id => @scene.id, :format => :json
 
       response.should be_success
       response.body.should eql([{ :id => @image.id, :image => @image.image }].to_json)
     end
 
     it 'should create multiple images' do
+      @scene = Factory(:scene)
       Image.should_receive(:create).exactly(2).times.and_return(@image)
 
-      post :create, :image => { :files => [@image_file, @image_file] }, :format => :json
+      post :create, :image => { :files => [@image_file, @image_file] }, :scene_id => @scene.id, :format => :json
 
       response.should be_success
       response.body.should eql([{ :id => @image.id, :image => @image.image }, { :id => @image.id, :image => @image.image }].to_json)

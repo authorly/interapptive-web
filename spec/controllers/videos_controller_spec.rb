@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe VideosController do
   before(:each) do
+    @scene = Factory(:scene)
     @video = mock_model(Video, :video => "video.avi")
     @video.stub!(:as_jquery_upload_response).and_return({ :id => @video.id, :video => @video.video })
   end
@@ -23,7 +24,7 @@ describe VideosController do
 
       Video.should_receive(:create).with(:video => fake_video).exactly(2).times.and_return(@video)
 
-      post :create, :video => { :files => [fake_video, fake_video] }, :format => :json
+      post :create, :video => { :files => [fake_video, fake_video] }, :scene_id => @scene.id, :format => :json
 
       response.should be_success
       response.body.should eql([{ :id => @video.id, :video => @video.video }, { :id => @video.id, :video => @video.video }].to_json)

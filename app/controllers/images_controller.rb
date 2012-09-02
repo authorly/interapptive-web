@@ -3,7 +3,8 @@
 
   def index
     @storybook = Storybook.find(params[:storybook_id])
-    @images = @storybook.images
+    #HACK this should get images on storybook
+    @images = Image.all #@storybook.images
 
     render :json => @images.map(&:as_jquery_upload_response).to_json
   end
@@ -19,17 +20,13 @@
 
   def create
     @scene = Scene.find params[:scene_id]
-
+    
     if params[:base64]
-      file = write_file
-      @images = [Image.create(:image => file)]
+     	 file = write_file	
+       @images = [Image.create(:image => file, :scene_id => @scene.id)]	
     else
-      @images = params[:image][:files].map { |f| Image.create(:image => f) }
-      @images.each do |i|
-        @scene.images << i
-      end
+      @images = params[:image][:files].map { |f| Image.create(:image => f, :scene_id => @scene_id) }
     end
-
     respond_to do |format|
       format.json { render :json => @images.map(&:as_jquery_upload_response).to_json }
     end
