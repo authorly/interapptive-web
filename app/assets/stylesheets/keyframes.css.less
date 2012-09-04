@@ -64,7 +64,24 @@
     }
   }
 
+
+  li.active:hover {
+    opacity: 0.9;
+    cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
+  }
+
+  li.active:active {
+    opacity: 0.9;
+    cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
+  }
+
   li.active a.delete-keyframe:hover {
     opacity: 0.9;
+    cursor: hand;
+  }
+
+  li.active a.delete-keyframe:active {
+    opacity: 0.9;
+    cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
   }
 }

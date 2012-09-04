@@ -92,4 +92,17 @@ class KeyframesController < ApplicationController
       format.json { render :json => {:status => :ok} }
     end
   end
+
+  def sort
+    params[:keyframes].each_with_index do |keyframe, index|
+      _keyframe = Keyframe.find(keyframe['id'])
+      _keyframe.position = index+1
+      _keyframe.save!
+
+      puts "keyframe: #{_keyframe.to_yaml}"
+
+    end
+
+    render :json => {:status => :ok}
+  end
 end

@@ -1,10 +1,11 @@
 class App.Views.KeyframeIndex extends Backbone.View
-  template: JST["app/templates/keyframes/index"]
-  tagName: 'ul'
+  template:  JST["app/templates/keyframes/index"]
+  tagName:   'ul'
   className: 'keyframe-list'
+
   events:
-    'click    span a.delete-keyframe': 'destroyKeyframe'
-    'click     .keyframe-list li div': 'setActiveKeyframe'
+    'click span a.delete-keyframe': 'destroyKeyframe'
+    'click  .keyframe-list li div': 'setActiveKeyframe'
 
   initialize: ->
     @collection.on('reset', @render, this)
@@ -13,6 +14,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(@el).html('')
     @collection.each (keyframe) => @appendKeyframe(keyframe)
     @delegateEvents()
+    @initSortable() if @collection?
 
     # Fire asynchronously so other 'reset' events can finish first
     setTimeout((=> $(@el).find('li:first div:first').click()), 1)
@@ -34,8 +36,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       image = App.imageList().collection.get(keyframe.get('image_id'))
 
       if image? and image.has("url")
-        keyfrEl  = $(@el).find("[data-image-id='#{keyframe.get("image_id")}']")
-
+        keyfrEl = $(@el).find("[data-image-id='#{keyframe.get("image_id")}']")
         keyfrEl.css("background-image", "url(#{image.get("url")})")
         keyfrEl.attr("data-x","#{keyframe.get("background_x_coord")}")
         keyfrEl.attr("data-y","#{keyframe.get("background_y_coord")}")
@@ -43,19 +44,22 @@ class App.Views.KeyframeIndex extends Backbone.View
   setActiveKeyframe: (event) ->
     @activeId = $(event.currentTarget).attr "data-id"
     @keyframe = @collection.get @activeId
-    x_coord   = $(event.currentTarget).attr "data-x"
-    y_coord   = $(event.currentTarget).attr "data-y"
-    sprite    = cc.Director.sharedDirector().getRunningScene().backgroundSprite
+
+    x_coord = $(event.currentTarget).attr "data-x"
+    y_coord = $(event.currentTarget).attr "data-y"
+    sprite  = cc.Director.sharedDirector().getRunningScene().backgroundSprite
 
     App.currentKeyframe @keyframe
 
     $(event.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
 
-    if sprite? then sprite.setPosition(new cc.Point(x_coord, y_coord))
-
     @populateWidgets(@keyframe)
 
+    sprite.setPosition(new cc.Point(x_coord, y_coord)) if sprite?
+
   destroyKeyframe: (event) =>
+    event.stopPropagation()
+
     App.keyframeList().collection.fetch
       success: (collection, response) =>
         message  = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
@@ -64,11 +68,9 @@ class App.Views.KeyframeIndex extends Backbone.View
 
         collection.remove(keyframe)
 
-        event.stopPropagation()
-
         if confirm(message)
           keyframe.destroy
-            success: =>
+            success: ->
               $('.keyframe-list li.active').remove()
               $('.keyframe-list li:first div').click()
 
@@ -139,6 +141,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     return unless keyframe?
 
     App.builder.widgetLayer.clearWidgets()
+
     # clear text
     App.updateKeyframeText()
 
@@ -152,4 +155,30 @@ class App.Views.KeyframeIndex extends Backbone.View
           App.builder.widgetLayer.addWidget(widget)
           widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
 
+  initSortable: =>
+    $(@el).sortable
+      opacity: 0.6
+      containment: 'footer'
+      cancel: ''
+      update: =>
+        $.ajax
+          contentType:"application/json"
+          dataType: 'json'
+          type: 'POST'
+          data: JSON.stringify(@keyframePositionsJSONArray())
+          url: "#{@collection.ordinalUpdateUrl(App.currentScene().get('id'))}"
+          complete: =>
+            $(@el).sortable('refresh')
+            @keyframePositionsArray()
 
+  keyframePositionsJSONArray: ->
+    JSON = {}
+    JSON.keyframes = []
+
+    # Don't use cached element @el! C.W.
+    $('.keyframe-list li div').each (index, element) ->
+      JSON.keyframes.push
+        id: $(element).data 'id'
+        position: index+1
+
+    JSON

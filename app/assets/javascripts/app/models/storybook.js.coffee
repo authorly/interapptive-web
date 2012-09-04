@@ -85,6 +85,5 @@ class App.Collections.StorybooksCollection extends Backbone.Collection
   url: ->
     '/storybooks.json'
 
-  # Sorting
   comparator: (storybook) ->
     new Date(storybook.get('created_at'))

@@ -46,6 +46,8 @@ Interapptive::Application.routes.draw do
   resources :scenes do
     resources :keyframes do
       resources :actions
+
+      collection { post :sort }
     end
     
     member do

@@ -131,4 +131,9 @@ $ ->
   $(window).resize ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
+
+    $(@el).sortable
+      opacity: 0.6
+      cursor: 'move'
+      containment: 'footer'
     
