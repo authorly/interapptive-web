@@ -1,4 +1,5 @@
 describe "App.Models.Storybook", ->
+
   beforeEach ->
     @storybook = new App.Models.Storybook(
                                   title: "Storybook Title",

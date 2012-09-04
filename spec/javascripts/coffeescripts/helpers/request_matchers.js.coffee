@@ -1,4 +1,5 @@
 beforeEach ->
+
   @addMatchers
     toBeGET: ->
       actual = @actual.method

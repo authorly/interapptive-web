@@ -1,4 +1,5 @@
 describe "App.Views.StorybookIndex", ->
+
   beforeEach ->
     @storybookCollection = new App.Collections.StorybooksCollection()
     @view = new App.Views.StorybookIndex(collection: @storybookCollection)

@@ -1,4 +1,5 @@
 describe "App.Models.Keyframe", ->
+
   beforeEach ->
     @scene = new App.Models.Scene(id: 1)
 

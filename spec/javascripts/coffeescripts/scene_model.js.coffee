@@ -1,4 +1,5 @@
 describe "App.Models.Scene", ->
+
   beforeEach ->
     @storybook = new App.Models.Storybook(id: 1)
 

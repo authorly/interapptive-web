@@ -1,4 +1,5 @@
 describe "Interapptive", ->
+
   it "has a namespace for Models", ->
     expect(App.Models).toBeTruthy()
 
