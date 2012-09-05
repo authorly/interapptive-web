@@ -3,8 +3,9 @@
     - if file.error
       %td.name
         %span file.name
-      %td.size
-        %span @formatFileSize(file.size)
+      %td.created_at
+        %span file.created_at 
+        /@formatFileSize(file.size)
       %td.error{:colspan => "5"}
         %span.label.label-important= locale.fileupload.error
           = file.error

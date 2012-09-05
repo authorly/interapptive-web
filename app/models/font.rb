@@ -8,8 +8,10 @@ class Font < Asset
         'name' => read_attribute(:font),
         'size' => font.size,
         'url' => font.url,
+        'created_at' => created_at.strftime("%Y %d %_m %l%p"),
         'delete_url' => "/fonts/#{self.id}",
         'delete_type' => 'DELETE'
     }
   end
+  
 end

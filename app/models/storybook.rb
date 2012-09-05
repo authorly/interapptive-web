@@ -4,9 +4,9 @@ class Storybook < ActiveRecord::Base
   has_many :images, :through => :scenes
   has_many :sounds, :through => :scenes
   has_many :videos, :through => :scenes
+  has_many :fonts, :through => :scenes
 
   has_one  :default_font, :through => :storybook_settings, :source => :font
-  has_many :fonts
 
   validates_presence_of :title
 end
