@@ -49,6 +49,7 @@
   li.active {
     .gradient(@slidePreviewActiveBgBegin, @slidePreviewActiveBgEnd);
 
+
     opacity: 1.0;
 
     span.page-number {
@@ -70,6 +71,14 @@
     }
   }
 
+  li span:hover {
+    cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
+  }
+
+
+  li span:active {
+    cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
+  }
 
   li.active:first-child {
     a.delete {
@@ -78,8 +87,6 @@
   }
 
   li.active:hover {
-
-    cursor: default;
 
     a.delete {
       opacity: 0.45;

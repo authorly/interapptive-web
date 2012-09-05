@@ -12,7 +12,6 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
 
   has_many :storybooks
-  has_many :actions # TODO: sure about this?
   has_many :fonts, :through => :storybooks
 
   ROLES = %w( user developer admin )
