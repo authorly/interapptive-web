@@ -39,6 +39,8 @@ Interapptive::Application.routes.draw do
       resources :videos
       resources :fonts
       resources :sounds
+
+      collection { post :sort }
     end
     resources :images
   end

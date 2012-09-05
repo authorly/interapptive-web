@@ -124,16 +124,3 @@ $ ->
       toolbar_modal.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"
-
-  $(window).load ->
-    $("#scene-list").css height: ($(window).height()) + "px"
-
-  $(window).resize ->
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
-
-    $(@el).sortable
-      opacity: 0.6
-      cursor: 'move'
-      containment: 'footer'
-    

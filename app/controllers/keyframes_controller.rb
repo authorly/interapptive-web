@@ -98,9 +98,6 @@ class KeyframesController < ApplicationController
       _keyframe = Keyframe.find(keyframe['id'])
       _keyframe.position = index+1
       _keyframe.save!
-
-      puts "keyframe: #{_keyframe.to_yaml}"
-
     end
 
     render :json => {:status => :ok}

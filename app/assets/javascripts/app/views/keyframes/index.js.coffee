@@ -169,7 +169,6 @@ class App.Views.KeyframeIndex extends Backbone.View
           url: "#{@collection.ordinalUpdateUrl(App.currentScene().get('id'))}"
           complete: =>
             $(@el).sortable('refresh')
-            @keyframePositionsArray()
 
   keyframePositionsJSONArray: ->
     JSON = {}

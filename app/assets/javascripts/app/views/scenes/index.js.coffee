@@ -14,17 +14,20 @@ class App.Views.SceneIndex extends Backbone.View
     $(@el).html('')
     @collection.each (scene) => @appendScene(scene)
     $('.scene-list li:first span:first').click()
+    @initSortable() if @collection?
     this
 
   createScene: =>
     scene = new App.Models.Scene
+
     scene.save storybook_id: App.currentStorybook().get('id'),
       wait: true
       success: (scene, response) =>
         @collection.add scene
         @setActiveScene scene
         App.keyframeList().createKeyframe()
-    return scene
+
+    scene
 
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
@@ -104,3 +107,40 @@ class App.Views.SceneIndex extends Backbone.View
 
     @setActiveScene @collection.get(sceneId)
     @setBackground()
+
+
+  initSortable: =>
+    @numberScenes()
+
+    $(@el).sortable
+      opacity: 0.6
+      containment: '.sidebar'
+      axis: 'y'
+      start: =>
+      update: =>
+        @numberScenes()
+
+        $.ajax
+          contentType:"application/json"
+          dataType: 'json'
+          type: 'POST'
+          data: JSON.stringify(@scenePositionsJSONArray())
+          url: "#{@collection.ordinalUpdateUrl(App.currentScene().get('id'))}"
+          complete: =>
+            $(@el).sortable('refresh')
+
+  scenePositionsJSONArray: ->
+    JSON = {}
+    JSON.scenes = []
+
+    # Don't use cached element @el! C.W.
+    $('.scene-list li span.scene-frame').each (index, element) ->
+      JSON.scenes.push
+        id: $(element).data 'id'
+        position: index+1
+
+    JSON
+
+  numberScenes: ->
+    $('.page-number').each (index, element) ->
+      $(element).empty().html(index+1)

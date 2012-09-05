@@ -17,10 +17,8 @@
     z-index: 10 !important;
     position: relative;
     top: 127px;
-    opacity: 0.3;
 
     span.scene-frame {
-
       cursor: default;
       display: block;
       height: @slidePreviewHeight;
@@ -32,6 +30,16 @@
       position: absolute;
       z-index: 20;
     }
+
+    span.page-number {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: @grayDark;
+      font-size: 20px;
+      font-family: 'Arial Black';
+      z-index: 100;
+    }
   }
 
   li.first {
@@ -42,6 +50,10 @@
     .gradient(@slidePreviewActiveBgBegin, @slidePreviewActiveBgEnd);
 
     opacity: 1.0;
+
+    span.page-number {
+      color: @slidePreviewActiveBgEnd;
+    }
 
     a.delete {
       opacity: 0;

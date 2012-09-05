@@ -15,3 +15,9 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
   url: ->
     '/storybooks/' + this.storybook_id + '/scenes.json'
+
+  ordinalUpdateUrl: (sceneId) ->
+    '/storybooks/' + this.storybook_id + '/scenes/sort.json'
+
+  comparator: (scene) ->
+    scene.get 'position'

@@ -123,4 +123,14 @@ class ScenesController < ApplicationController
       format.json { render :json => @touch_zones }
     end
   end
+
+  def sort
+    params[:scenes].each_with_index do |scene, index|
+      _scene = Scene.find(scene['id'])
+      _scene.position = index+1
+      _scene.save!
+    end
+
+    render :json => {:status => :ok}
+  end
 end

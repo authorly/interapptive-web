@@ -61,8 +61,6 @@ class App.Views.StorybookIndex extends Backbone.View
     App.sceneList().collection.fetch() # Triggers a render.
     $('#scene-list').html App.sceneList().el
 
-    $(".scene-list").overscroll()
-    $(".scene-list").css height: ($(window).height()) + "px"
     $(".scene").removeClass "disabled"
 
   selectStorybook: (event) ->
