@@ -1,12 +1,12 @@
- class ImagesController < ApplicationController
-  require "base64"
+require "base64"
+
+class ImagesController < ApplicationController
+  before_filter :authorize
 
   def index
-    @storybook = Storybook.find(params[:storybook_id])
-    #HACK this should get images on storybook
-    @images = Image.all #@storybook.images
+    images = Image.where(:storybook_id => params[:storybook_id])
 
-    render :json => @images.map(&:as_jquery_upload_response).to_json
+    render :json => images.map(&:as_jquery_upload_response).to_json
   end
 
   def show
@@ -19,16 +19,16 @@
   end
 
   def create
-    @scene = Scene.find params[:scene_id]
-    
+    storybook = Storybook.find params[:storybook_id]
+
     if params[:base64]
-     	 file = write_file	
-       @images = [Image.create(:image => file, :scene_id => @scene.id)]	
+      file = write_file	
+      images = [Image.create(:image => file, :storybook_id => storybook.id)]	
     else
-      @images = params[:image][:files].map { |f| Image.create(:image => f, :scene_id => @scene_id) }
+      images = params[:image][:files].map { |f| Image.create(:image => f, :storybook_id => storybook.id) }
     end
     respond_to do |format|
-      format.json { render :json => @images.map(&:as_jquery_upload_response).to_json }
+      format.json { render :json => images.map(&:as_jquery_upload_response).to_json }
     end
   end
 

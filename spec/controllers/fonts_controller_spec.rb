@@ -4,13 +4,15 @@ describe FontsController do
   before(:each) do
     @font = mock_model(Font, :font => "font.ttf")
     @font.stub!(:as_jquery_upload_response).and_return({ :id => @font.id, :font => @font.font })
+    user = Factory(:user)
+    test_sign_in(user)
   end
 
   context "#index" do
     it 'should give all the fonts' do
-      Font.stub!(:all).and_return([@font])
+      Font.stub!(:where).with(:storybook_id => '1').and_return([@font])
 
-      get :index
+      get :index, :storybook_id => 1
 
       response.should be_success
       response.body.should eql([{:id => @font.id, :font => @font.font }].to_json)

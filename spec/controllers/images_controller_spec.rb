@@ -5,12 +5,14 @@ describe ImagesController do
     @storybook = Factory(:storybook)
     @image = mock_model(Image, :image => "image.png")
     @image.stub!(:as_jquery_upload_response).and_return({ :id => @image.id, :image => @image.image })
+    user = Factory(:user)
+    test_sign_in(user)
   end
 
   context "#index" do
     it 'should give all the images of storybook' do
       @storybook = Factory(:storybook)
-      image = Image.stub!(:all).and_return([@image])
+      image = Image.stub!(:where).with(:storybook_id => @storybook.id.to_s).and_return([@image])
       get :index, :storybook_id => @storybook.id
 
       response.should be_success
@@ -33,24 +35,23 @@ describe ImagesController do
   context "#create" do
     before(:each) do
       @image_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/factories/images/350x350.png'), 'image/png')
+      @storybook = Factory(:storybook)
     end
 
     it 'should create one single image' do
-      @scene = Factory(:scene)
       controller.should_receive(:write_file).and_return(@image_file)
       Image.should_receive(:create).and_return(@image)
 
-      post :create, :base64 => '1', :image => { :files => [@image_file] }, :scene_id => @scene.id, :format => :json
+      post :create, :base64 => '1', :image => { :files => [@image_file] }, :storybook_id => @storybook.id, :format => :json
 
       response.should be_success
       response.body.should eql([{ :id => @image.id, :image => @image.image }].to_json)
     end
 
     it 'should create multiple images' do
-      @scene = Factory(:scene)
       Image.should_receive(:create).exactly(2).times.and_return(@image)
 
-      post :create, :image => { :files => [@image_file, @image_file] }, :scene_id => @scene.id, :format => :json
+      post :create, :image => { :files => [@image_file, @image_file] }, :storybook_id => @storybook.id, :format => :json
 
       response.should be_success
       response.body.should eql([{ :id => @image.id, :image => @image.image }, { :id => @image.id, :image => @image.image }].to_json)

@@ -1,22 +1,20 @@
-class VideosController < ApplicationController
-  def index
-    @videos = Video.all
+require "base64"
 
-    render :json => @videos.collect { |p| p.as_jquery_upload_response }.to_json
+class VideosController < ApplicationController
+  before_filter :authorize
+
+  def index
+    videos = Video.where(:storybook_id => params[:storybook_id])
+
+    render :json => videos.map(&:as_jquery_upload_response).to_json
   end
 
   def create
-    @scene = Scene.find params[:scene_id]
-    
-    @videos = params[:video][:files].map { |f| Video.create(:video => f) }
-    @videos.each do |i|
-      @scene.videos << i
-    end
-  
+    storybook = Storybook.find params[:storybook_id]
+    videos = params[:video][:files].map { |f| Video.create(:video => f, :storybook_id => storybook.id) }
+
     respond_to do |format|
-      puts "------------"
-      puts @videos.map(&:as_jquery_upload_response).to_json
-      format.json { render :json => @videos.map(&:as_jquery_upload_response).to_json }
+      format.json { render :json => videos.map(&:as_jquery_upload_response).to_json }
     end
   end
 
