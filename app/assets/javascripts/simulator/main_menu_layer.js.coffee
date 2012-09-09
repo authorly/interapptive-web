@@ -22,6 +22,7 @@ class Sim.MainMenuLayer extends Sim.PageLayer
         menuItem.initFromNormalImage(
           "/resources/#{menuItemInfo.normalStateImage}"
           "/resources/#{menuItemInfo.tappedStateImage}"
+          false
           this
           menuItemInfo.storyMode
         )
@@ -30,6 +31,7 @@ class Sim.MainMenuLayer extends Sim.PageLayer
         menuItem.initFromNormalImage(
           "/resources/#{menuItemInfo.normalStateImage}"
           "/resources/#{menuItemInfo.tappedStateImage}"
+          false
         )
 
       menuItem.setPosition(menuItemInfo.position)
@@ -42,13 +44,13 @@ class Sim.MainMenuLayer extends Sim.PageLayer
 
     @addChild(menu, 100)
 
-  autoPlay: ->
+  autoPlay: =>
     @storyMode = Sim.kStoryModeAutoPlay
 
-  readItMyself: ->
+  readItMyself: =>
     @storyMode = Sim.kStoryModeReadItMyself
     @storybook.showPage(1)
 
-  readToMe: ->
+  readToMe: =>
     @storyMode = Sim.kStoryModeReadToMe
     @storybook.showPage(1)

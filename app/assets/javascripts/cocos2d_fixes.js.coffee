@@ -39,6 +39,7 @@ cc.Touch.prototype.locationInView = ->
   # X coord doesn't consider ratio
   realX = (p.x - scrollH) * ratioW
 
+
   # Y coord has wrong origin and doesn't consider ratio
   realY = (p.y - (cc.canvas.height - $c.height())) - scrollV
   realY *= ratioH
