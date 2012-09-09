@@ -36,7 +36,8 @@
       %thead
         %tr
           %th{:colspan => 3} Name
-          %th{:colspan => 7} Date
+          %th{:colspan => 3} Size
+          %th{:colspan => 4} Date
           %th 
     
       %tbody.files{"data-target" => "#modal-gallery", "data-toggle" => "modal-gallery"}
