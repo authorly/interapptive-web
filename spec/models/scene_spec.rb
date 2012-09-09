@@ -11,7 +11,7 @@ describe Scene do
           'created_at'       => scene.created_at,
           'id'               => scene.id,
           'image_id'         => scene.image_id,
-          'page_number'      => scene.page_number,
+          'position'         => scene.position,
           'preview_image_id' => scene.preview_image_id,
           'sound_id'         => scene.sound_id,
           'storybook_id'     => scene.storybook_id,

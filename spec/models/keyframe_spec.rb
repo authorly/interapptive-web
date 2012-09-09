@@ -13,8 +13,10 @@ describe Keyframe do
           'created_at'         => keyframe.created_at,
           'id'                 => keyframe.id,
           'image_id'           => keyframe.image_id,
+          'position'           => keyframe.position,
           'scene_id'           => keyframe.scene_id,
-          'updated_at'         => keyframe.updated_at
+          'updated_at'         => keyframe.updated_at,
+          'widgets'            => keyframe.widgets
       }.to_json
 
       keyframe.to_json.should eql(response)
