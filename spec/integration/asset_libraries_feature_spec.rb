@@ -146,24 +146,24 @@ describe "User's ability to upload and manage various assets", :js => true do
     before(:each) do
       page.click_link("Videos")
       page.has_content?("Video Library")
-      page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video.avi'))
+      page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video.flv'))
     end
 
     it "should select multiple local videos to upload" do
-      page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video_again.avi'))
+      page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video_again.flv'))
       page.find('.start').click
-      page.has_content?('null_video.avi')
-      page.has_content?('null_video_again.avi')
+      page.has_content?('null_video.flv')
+      page.has_content?('null_video_again.flv')
     end
 
     it "should delete a local video before uploading" do
-      page.has_content?('null_video.avi')
+      page.has_content?('null_video.flv')
       page.find('.cancel').click
-      page.has_no_content?('null_video.avi')
+      page.has_no_content?('null_video.flv')
     end
 
     it "should upload selected videos" do
-      page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video_again.avi'))
+      page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video_again.flv'))
       page.within('table.table-striped') do
         page.find('td.start > button').click
       end
@@ -179,7 +179,7 @@ describe "User's ability to upload and manage various assets", :js => true do
         page.find('td.delete > button').click
       end
       slow_down
-      page.has_no_content?('null_video.avi')
+      page.has_no_content?('null_video.flv')
     end
   end
 end
