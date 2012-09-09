@@ -35,6 +35,6 @@ class App.Views.AssetLibrary extends Backbone.View
   setAllowedFilesFor: (assetType) ->
     switch assetType
       when "images" then $("#fileupload").fileupload(acceptFileTypes: /\.(jpg|jpeg|gif|png|JPG|JPEG|GIF|PNG)$/)
-      when "videos" then $("#fileupload").fileupload(acceptFileTypes: /\.(mov|mpg|mpeg|mkv|mp4|m4v|MOV|MPEG|MPEG|MP4|M4V|avi)$/)
+      when "videos" then $("#fileupload").fileupload(acceptFileTypes: /\.(mov|mpg|mpeg|mkv|mp4|m4v|avi|flv|MOV|MPEG|MPEG|MP4|M4V|AVI|FLV)$/)
       when "fonts"  then $("#fileupload").fileupload(acceptFileTypes: /\.(ttf|TTF)$/)
       when "sounds" then $("#fileupload").fileupload(acceptFileTypes: /\.(mp3|wav|aac|m4a|MP3|WAV|AAC|M4A)$/)
