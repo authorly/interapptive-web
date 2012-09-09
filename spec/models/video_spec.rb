@@ -7,7 +7,7 @@ describe Video do
     it 'should be valid response' do
       # Following chokes with image returned from Factory(:sound)
       v = Video.new
-      v.video = File.open(Rails.root.join("spec/factories/videos/null_video.avi"))
+      v.video = File.open(Rails.root.join("spec/factories/videos/null_video.flv"))
       v.save!
 
       response = {

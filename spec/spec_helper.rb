@@ -67,6 +67,10 @@ RSpec.configure do |config|
     controller.class.any_instance.stub(:authorize).and_return(true)
     controller.class.any_instance.stub(:current_user).and_return(user)
   end
+
+  def slow_down(seconds = 2)
+    sleep seconds
+  end
 end
 
 class ActiveRecord::Base

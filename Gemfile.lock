@@ -137,6 +137,8 @@ GEM
       thor (~> 0.14)
     json (1.7.5)
     kgio (2.7.4)
+    launchy (2.1.2)
+      addressable (~> 2.3)
     less (2.2.1)
       commonjs (~> 0.2.6)
     less-rails (2.2.3)
@@ -299,6 +301,7 @@ DEPENDENCIES
   jasmine
   jquery-fileupload-rails!
   jquery-rails
+  launchy
   less-rails
   less-rails-bootstrap
   mini_magick
