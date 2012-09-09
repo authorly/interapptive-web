@@ -1,0 +1,2 @@
+.simulator-frame{"data-json": @json}
+  %iframe{src: '/simulator'}

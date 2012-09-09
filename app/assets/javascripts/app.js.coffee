@@ -21,6 +21,25 @@ window.App =
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
+  showSimulator: ->
+    @simulator = new App.Views.Simulator(json: App.storybookJSON.toString())
+
+    @openLargeModal(@simulator)
+
+  openLargeModal: (view, className='') ->
+    return unless view
+    @closeLargeModal(false)
+
+    @_modal = new App.Views.LargeModal(view: view)
+    $('body').append(@_modal.render().el)
+
+  closeLargeModal: (animate=true) ->
+    return unless @_modal
+
+    @_modal.remove()
+
+
+
   modalWithView: (view) ->
     if view then @view = new App.Views.Modal(view, className: "content-modal") else @view
 
@@ -117,7 +136,7 @@ $ ->
 
   $("ul#toolbar li ul li").click ->
     toolbar_modal.modal "hide"
-    unless $(this).is('.scene, .keyframe, .edit-text, .touch-zones, .disabled, .images, .videos, .sounds, .fonts, .add-image, .edit-sprite')
+    unless $(this).is('.scene, .keyframe, .edit-text, .touch-zones, .disabled, .images, .videos, .sounds, .fonts, .add-image, .edit-spritem, .preview')
       toolbar_modal.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"

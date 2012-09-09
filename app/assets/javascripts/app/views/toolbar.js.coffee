@@ -1,16 +1,17 @@
 class App.Views.ToolbarView extends Backbone.View
   events:
-    'click .add-scene'   : 'addScene'
-    'click .add-keyframe': 'addKeyframe'
-    'click .add-image'   : 'addImage'
-    'click .add-text'    : 'addText'
-    'click .add-touch'   : 'addTouch'
-    'click .add-sprite'  : 'addSprite'
-    'click .images'      : 'showImageLibrary'
-    'click .videos'      : 'showVideoLibrary'
-    'click .fonts'       : 'showFontLibrary'
-    'click .sounds'      : 'showSoundLibrary'
-    'click .actions'     : 'showActionLibrary'
+    'click .add-scene'    : 'addScene'
+    'click .add-keyframe' : 'addKeyframe'
+    'click .add-image'    : 'addImage'
+    'click .add-text'     : 'addText'
+    'click .add-touch'    : 'addTouch'
+    'click .show-preview' : 'showPreview'
+    'click .add-sprite'   : 'addSprite'
+    'click .images'       : 'showImageLibrary'
+    'click .videos'       : 'showVideoLibrary'
+    'click .fonts'        : 'showFontLibrary'
+    'click .sounds'       : 'showSoundLibrary'
+    'click .actions'      : 'showActionLibrary'
 
   initialize: ->
     @assetLibraryView = new App.Views.AssetLibrary()
@@ -64,6 +65,9 @@ class App.Views.ToolbarView extends Backbone.View
     view.on('image_select', imageSelected)
 
     App.modalWithView(view: view).show()
+
+  showPreview: ->
+    App.showSimulator()
 
   showImageLibrary: ->
     @loadDataFor("image")

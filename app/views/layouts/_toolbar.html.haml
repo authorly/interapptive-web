@@ -36,4 +36,4 @@
       %li.options.disabled
         = link_to "Options", "#"
       %li.preview.disabled
-        = link_to "Preview", assets_path(:from => "preview"), {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
+        %a.show-preview{:href => '#'} Preview
