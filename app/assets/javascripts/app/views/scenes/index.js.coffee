@@ -12,9 +12,16 @@ class App.Views.SceneIndex extends Backbone.View
 
   render: ->
     $(@el).html('')
+
     @collection.each (scene) => @appendScene(scene)
+
     $('.scene-list li:first span:first').click()
+
     @initSortable() if @collection?
+
+    $("#scene-list").css height: ($(window).height()) + "px"
+    $(".scene-list").css height: ($(window).height()) + "px"
+
     this
 
   createScene: =>

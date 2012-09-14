@@ -1,7 +1,11 @@
+.scene-list::-webkit-scrollbar {
+  display: none;
+}
 .scene-list {
   margin-left: 15px;
   height: 500px;
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-vertical;
   background-repeat: no-repeat;
   background-position: 30px center;
 

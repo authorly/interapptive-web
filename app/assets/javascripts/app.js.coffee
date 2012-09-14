@@ -118,6 +118,10 @@ $ ->
   toolbar_modal.bind "hidden", ->
     $("ul#toolbar li ul li").removeClass "active"
 
+  $(window).resize ->
+    $("#scene-list").css height: ($(window).height()) + "px"
+    $(".scene-list").css height: ($(window).height()) + "px"
+
   $("ul#toolbar li ul li").click ->
     toolbar_modal.modal "hide"
     unless $(this).is('.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image')
