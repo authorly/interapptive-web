@@ -34,8 +34,8 @@ class App.Views.SceneIndex extends Backbone.View
         @setActiveScene scene
         App.keyframeList().createKeyframe()
         $('.scene-list li:last span:first').click()
-        $('.scene-list').scrollTop($('.scene-list').height())
-        $('#scene-list').scrollTop($('#scene-list').height())
+        @scrollToTop()
+        @numberScenes()
     scene
 
   appendScene: (scene) ->
@@ -153,3 +153,7 @@ class App.Views.SceneIndex extends Backbone.View
   numberScenes: ->
     $('.page-number').each (index, element) ->
       $(element).empty().html(index+1)
+
+  scrollToTop: ->
+    el = $('.scene-list')
+    el.scrollTop(el.find('li:first').height()*el.find('li').size())
