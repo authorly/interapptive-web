@@ -56,7 +56,7 @@ class App.Views.TextWidget extends Backbone.View
   getText: ->
     # FIXME need to solve for multiple lines and html formatting
     # perhaps just html encode?
-    #str = "" 
+    #str = ""
     #$(@el).find('div').each(-> str = str + $(this).text())
     #str
     $(@el).html()
@@ -83,6 +83,7 @@ class App.Views.TextWidget extends Backbone.View
     
   disableEditing: ->
     $(@el).attr("contenteditable", "false")
+
     
   enableDragging: ->
     $(@el).draggable("option", "disabled", false)
@@ -155,10 +156,11 @@ class App.Views.TextWidget extends Backbone.View
     # TODO set timer and turn off content editable
 
   onBlur: (e) ->
-    console.log()
+    $(@el).addClass "done-editing"
     @editActivity()
 
   onFocus: (e) ->
+    $(@el).removeClass "done-editing"
     $(@el).data 'before', $(@el).html()
     # show the font toolbar
     App.editTextWidget(this)
