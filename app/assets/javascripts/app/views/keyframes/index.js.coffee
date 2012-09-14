@@ -34,6 +34,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     $('.keyframe-list li:first div').click()
 
+    @numberKeyframes()
+
     if keyframe.has "image_id"
       image = App.imageList().collection.get(keyframe.get('image_id'))
 
@@ -158,11 +160,14 @@ class App.Views.KeyframeIndex extends Backbone.View
           widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
 
   initSortable: =>
+    @numberKeyframes()
+
     $(@el).sortable
       opacity: 0.6
       containment: 'footer'
       cancel: ''
       update: =>
+        @numberKeyframes()
         $.ajax
           contentType:"application/json"
           dataType: 'json'
@@ -176,10 +181,13 @@ class App.Views.KeyframeIndex extends Backbone.View
     JSON = {}
     JSON.keyframes = []
 
-    # Don't use cached element @el! C.W.
     $('.keyframe-list li div').each (index, element) ->
       JSON.keyframes.push
         id: $(element).data 'id'
         position: index+1
 
     JSON
+
+  numberKeyframes: ->
+    $('.keyframe-list li span.keyframe-number').each (index, element) ->
+      $(element).empty().html(index+1)

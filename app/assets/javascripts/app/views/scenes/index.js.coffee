@@ -125,7 +125,6 @@ class App.Views.SceneIndex extends Backbone.View
       opacity: 0.6
       containment: '.sidebar'
       axis: 'y'
-      start: =>
       update: =>
         @numberScenes()
 

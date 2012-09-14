@@ -5,3 +5,4 @@
 %span
   %a{:href=>"#","class" => "delete-keyframe", "data-id" => "#{@keyframe.get('id')}"}
   %a{:href=>"#","class" => "drag-keyframe", "data-id" => "#{@keyframe.get('id')}"}
+  %span.keyframe-number
