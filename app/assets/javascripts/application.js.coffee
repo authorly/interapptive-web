@@ -20,6 +20,11 @@
 #= require_tree ../../../vendor/assets/javascripts/.
 #= require_tree ../../../vendor/assets/images/.
 
+#= require ./vendor/rangy-core
+#= require ./vendor/rangy-classapplier
+#= require ./vendor/rangy-selectionsaverestore
+#= require ./vendor/canpaste
+
 #= require app
 
 #= require ./app/storybook_json
