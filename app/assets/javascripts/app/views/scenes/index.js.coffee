@@ -33,7 +33,9 @@ class App.Views.SceneIndex extends Backbone.View
         @collection.add scene
         @setActiveScene scene
         App.keyframeList().createKeyframe()
-
+        $('.scene-list li:last span:first').click()
+        $('.scene-list').scrollTop($('.scene-list').height())
+        $('#scene-list').scrollTop($('#scene-list').height())
     scene
 
   appendScene: (scene) ->

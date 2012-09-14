@@ -32,6 +32,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     $(@el).append(view.render().el).removeClass('active').first().addClass('active')
 
+    $('.keyframe-list li:first div').click()
+
     if keyframe.has "image_id"
       image = App.imageList().collection.get(keyframe.get('image_id'))
 
