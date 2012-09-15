@@ -8,5 +8,13 @@ class Storybook < ActiveRecord::Base
 
   has_one  :default_font, :through => :storybook_settings, :source => :font
 
+  after_create :create_scene
+
   validates_presence_of :title
+
+  private
+
+    def create_scene
+      self.scenes.create
+    end
 end
