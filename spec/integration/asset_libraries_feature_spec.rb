@@ -16,6 +16,7 @@ describe "User's ability to upload and manage various assets", :js => true do
     page.has_content?(@storybook.title)
     page.click_link(@storybook.title)
     page.find(".open-storybook").click
+    page.click_link('Scene')
   end
 
   after :each do
