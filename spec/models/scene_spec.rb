@@ -21,4 +21,11 @@ describe Scene do
       scene.to_json.should eql(response)
     end
   end
+
+  context "creation" do
+    it 'should create corresponding scene' do
+      scene = Scene.create
+      scene.keyframes.should be_any
+    end
+  end
 end

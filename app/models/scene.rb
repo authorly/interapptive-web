@@ -17,4 +17,12 @@ class Scene < ActiveRecord::Base
   belongs_to :preview_image, :class_name => 'Image'
   belongs_to :background_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound' 
+
+  after_create :create_keyframe
+
+  private
+
+  def create_keyframe
+    keyframes.create
+  end
 end
