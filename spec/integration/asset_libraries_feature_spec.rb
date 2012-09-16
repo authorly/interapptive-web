@@ -13,7 +13,7 @@ describe "User's ability to upload and manage various assets", :js => true do
     page.fill_in "email", :with => "jack@daniles.com"
     page.fill_in "password", :with => "qwerty"
     page.click_button "Sign In"
-    page.has_content?(@storybook.title)
+    page.should have_content(@storybook.title)
     page.click_link(@storybook.title)
     page.find(".open-storybook").click
     page.click_link('Scene')
@@ -28,21 +28,21 @@ describe "User's ability to upload and manage various assets", :js => true do
   context "fonts" do
     before(:each) do
       page.click_link("Fonts")
-      page.has_content?("Font Library")
+      page.should have_content("Font Library")
       page.attach_file('font[files][]', Rails.root.join('spec/factories/fonts/font.ttf'))
     end
 
     it "should select multiple local fonts to upload" do
       page.attach_file('font[files][]', Rails.root.join('spec/factories/fonts/cinema.ttf'))
       page.find('.start').click
-      page.has_content?('font.ttf')
-      page.has_content?('cinema.ttf')
+      page.should have_content('font.ttf')
+      page.should have_content('cinema.ttf')
     end
 
     it "should delete a local font before uploading" do
-      page.has_content?('font.ttf')
+      page.should have_content('font.ttf')
       page.find('.cancel').click
-      page.has_no_content?('font.ttf')
+      page.should have_content('font.ttf')
     end
 
     it "should upload selected fonts" do
@@ -62,14 +62,14 @@ describe "User's ability to upload and manage various assets", :js => true do
         page.find('td.delete > button').click
       end
       slow_down
-      page.has_no_content?('font.ttf')
+      page.should_not have_content('font.ttf')
     end
   end
 
   context "images" do
     before(:each) do
       page.click_link("Images")
-      page.has_content?("Images Library")
+      page.should have_content("Image Library")
       page.attach_file('image[files][]', Rails.root.join('spec/factories/images/350x350.png'))
     end
 
@@ -77,7 +77,7 @@ describe "User's ability to upload and manage various assets", :js => true do
       page.find('.start').click
       page.within('table.table-striped') do
         page.find('td.delete')
-        page.has_content?('350x350.png')
+        page.should have_content('350x350.png')
       end
     end
 
@@ -98,28 +98,28 @@ describe "User's ability to upload and manage various assets", :js => true do
         page.find('td.delete > button').click
       end
       slow_down
-      page.has_no_content?('350x350.png')
+      page.should_not have_content('350x350.png')
     end
   end
 
   context "sounds" do
     before(:each) do
       page.click_link("Sounds")
-      page.has_content?("Sound Library")
+      page.should have_content("Sound Library")
       page.attach_file('sound[files][]', Rails.root.join('spec/factories/sounds/voicemail_received.wav'))
     end
 
     it "should select multiple local sounds to upload" do
       page.attach_file('sound[files][]', Rails.root.join('spec/factories/sounds/voicemail_received_again.wav'))
       page.find('.start').click
-      page.has_content?('voicemail_received.wav')
-      page.has_content?('voicemail_received_again.wav')
+      page.should have_content('voicemail_received.wav')
+      page.should have_content('voicemail_received_again.wav')
     end
 
     it "should delete a local sound before uploading" do
-      page.has_content?('voicemail_received.wav')
+      page.should have_content('voicemail_received.wav')
       page.find('.cancel').click
-      page.has_no_content?('voicemail_received.wav')
+      page.should_not have_content('voicemail_received.wav')
     end
 
     it "should upload selected sounds" do
@@ -139,28 +139,28 @@ describe "User's ability to upload and manage various assets", :js => true do
         page.find('td.delete > button').click
       end
       slow_down
-      page.has_no_content?('voicemail_received.wav')
+      page.should_not have_content('voicemail_received.wav')
     end
   end
 
   context "videos" do
     before(:each) do
       page.click_link("Videos")
-      page.has_content?("Video Library")
+      page.should have_content("Video Library")
       page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video.flv'))
     end
 
     it "should select multiple local videos to upload" do
       page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video_again.flv'))
       page.find('.start').click
-      page.has_content?('null_video.flv')
-      page.has_content?('null_video_again.flv')
+      page.should have_content('null_video.flv')
+      page.should have_content('null_video_again.flv')
     end
 
     it "should delete a local video before uploading" do
-      page.has_content?('null_video.flv')
+      page.should have_content('null_video.flv')
       page.find('.cancel').click
-      page.has_no_content?('null_video.flv')
+      page.should_not have_content('null_video.flv')
     end
 
     it "should upload selected videos" do
@@ -180,7 +180,7 @@ describe "User's ability to upload and manage various assets", :js => true do
         page.find('td.delete > button').click
       end
       slow_down
-      page.has_no_content?('null_video.flv')
+      page.should_not have_content('null_video.flv')
     end
   end
 end
