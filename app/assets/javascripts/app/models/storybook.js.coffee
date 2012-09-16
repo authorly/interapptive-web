@@ -11,6 +11,7 @@ class App.Models.Storybook extends Backbone.Model
 
                          err  if value.length < 3 or value.length > 25
                       ]
+
     price:
       title:         "Price"
       type:          "Currency"
@@ -48,9 +49,6 @@ class App.Models.Storybook extends Backbone.Model
           err  if value.length < 3 or value.length > 25
       ]
 
-    published_on:
-      title:         "Published on"
-      type:          "Date"
     android_or_ios:
       title:         "Mobile Platform"
       type:          "Buttons"
@@ -58,15 +56,9 @@ class App.Models.Storybook extends Backbone.Model
       labeling:      ["iOS", "Both", "Android"]
       selectedIndex: 1
 
-    # tablet_or_phone:
-    #   type:          "Buttons"
-    #   buttonType:    "radio"
-    #   labeling:      ["Tablet", "Both", "Phone"]
-    #   selectedIndex: 1
-
     record_enabled:
-      title:         "Enable voice recording?"
-      help:          "Allows your users to record, use, and share voice-overs"
+      title:         "Voice recording?"
+      help:          "Allows your users to record and share voiceovers"
       type:          "Buttons"
       buttonType:    "radio"
       labeling:      ["On", "Off"]

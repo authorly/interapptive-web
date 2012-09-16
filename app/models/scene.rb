@@ -1,15 +1,20 @@
 class Scene < ActiveRecord::Base
   belongs_to :storybook
-  has_many :keyframes
-  has_many :asset_maps, :as => :assetable
+  has_many :keyframes, :dependent => :destroy
+  has_many :asset_maps, :as => :assetable,
+           :dependent => :destroy
   has_many :images, :through => :asset_maps, :source => :asset,
-                    :conditions => { :type => 'Image' }
+                    :conditions => { :type => 'Image' },
+                    :dependent => :destroy
   has_many :sounds, :through => :asset_maps, :source => :asset,
-                    :conditions => { :type => 'Sound' }
-  has_many :videos, :through => :touch_zones
+                    :conditions => { :type => 'Sound' },
+                    :dependent => :destroy
+  has_many :videos, :through => :touch_zones,
+           :dependent => :destroy
 
-  has_many :actions
-  has_many :touch_zones
+
+  has_many :actions, :dependent => :destroy
+  has_many :touch_zones, :dependent => :destroy
 
   has_one :scene_settings
   has_many :fonts, :through => :scene_settings
