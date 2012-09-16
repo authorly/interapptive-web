@@ -13,4 +13,6 @@ class App.Views.AppSettings extends Backbone.View
   updateAttributes: (event) ->
     event.preventDefault()
     errors = @form.commit()
-    App.currentStorybook().save()
+    App.currentStorybook().save {},
+      success: ->
+        App.modalWithView().hide()
