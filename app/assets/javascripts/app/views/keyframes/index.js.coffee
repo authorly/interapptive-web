@@ -76,6 +76,7 @@ class App.Views.KeyframeIndex extends Backbone.View
           keyframe.destroy
             success: ->
               $('.keyframe-list li.active').remove()
+              @numberKeyframes()
               $('.keyframe-list li:first div').click()
 
 
