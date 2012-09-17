@@ -41,6 +41,7 @@ class App.Views.KeyframeTextIndex extends Backbone.View
         t.enableDragging()
       
   createText: (str) ->
+    console.log "createText"
     attributes = 
       keyframe_id : App.currentKeyframe().get('id')
       content : str
@@ -48,13 +49,15 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     @collection.create attributes,
       success: (keyframeText, response) =>
         text = new App.Views.TextWidget(model: keyframeText)
+        text.fromToolbar = true
         App.currentKeyframeText(keyframeText)
-        #TODO center it
-        #_canvas = $('#builder-canvas')
-        text.setPositionFromCocosCoords(300, 350)
+        text.setPositionFromCocosCoords(400*Math.random(), 350*Math.random())
         text.save()
         @addText(text)
-    
+        App.editTextWidget(text)
+        text.enableEditing()
+
+
   resize: =>
     # position texts
     for t in @texts

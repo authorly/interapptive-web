@@ -39,7 +39,9 @@ class App.Views.ToolbarView extends Backbone.View
   addText: ->
     # FIXME we should have some delegate that actually handles adding things
     #text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
-    App.keyframeTextList().createText("Enter some text...")
+    t = App.keyframeTextList().createText("Enter some text...")
+    #App.editTextWidget(App.keyframeTextList().createText("Enter some text...", true))
+
     #keyframe = App.currentKeyframe()
     #TODO figure out whether we want to try to use the addwidget, etc functionality for text still
     #App.builder.widgetLayer.addWidget(text)

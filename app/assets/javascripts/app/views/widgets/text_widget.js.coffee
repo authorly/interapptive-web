@@ -1,11 +1,9 @@
 class App.Views.TextWidget extends Backbone.View
-  #template: JST["app/templates/keyframes_text/keyframes_text"]
-  
   className: "text_widget"
-  
+
+  fromToolbar: null
+
   _editing: false
-  
-  #defaults
   _fontColor: "#FF0000"
   _fontSize: 12
   _fontFace: "Arial"
@@ -16,8 +14,7 @@ class App.Views.TextWidget extends Backbone.View
   _y: 100
   _width : 100
   _height : 20
-  #_canvas: ""
-  
+
   events:
     'click' : 'onClick'
     'mouseenter' : 'mouseEnter'
@@ -27,11 +24,10 @@ class App.Views.TextWidget extends Backbone.View
     'keyup' : 'editActivity'
     'paste' : 'editActivity'
     'drag' : 'drag'
-      
+
   initialize: ->
     @content @options.string if @options.string
     @setDefaults()
-    $(@el).attr('contentEditable', 'false')
     $(@el).css(position : 'absolute')
     $(@el).draggable
       start: @startDrag
@@ -79,9 +75,15 @@ class App.Views.TextWidget extends Backbone.View
       
   enableEditing: ->
     $(@el).attr("contenteditable", "true")
+    $(@el).focus()
+    console.log @fromToolbar
+    if @fromToolbar then $(@el).resizable disabled: false
+    if @fromToolbar then $(@el).selectText()
     @disableDragging()
+    @fromToolbar = null
     
   disableEditing: ->
+    $(@el).resizable disabled: true
     $(@el).attr("contenteditable", "false")
 
     
@@ -156,11 +158,11 @@ class App.Views.TextWidget extends Backbone.View
     # TODO set timer and turn off content editable
 
   onBlur: (e) ->
-    $(@el).addClass "done-editing"
+    #$(@el).addClass "done-editing"
     @editActivity()
 
   onFocus: (e) ->
-    $(@el).removeClass "done-editing"
+    #$(@el).removeClass "done-editing"
     $(@el).data 'before', $(@el).html()
     # show the font toolbar
     App.editTextWidget(this)
