@@ -1,8 +1,12 @@
 class App.Views.AssetLibrary extends Backbone.View
   template: JST["app/templates/assets/library"]
 
+  initialize: (assetType) ->
+    @activeAssetType = assetType
+    @acceptedFileTypes = @fileTypes(assetType)
+
   render: ->
-    $(@el).html(@template(assetType: @activeAssetType))
+    $(@el).html(@template(assetType: @activeAssetType, acceptedFileTypes: @acceptedFileTypes))
     this
 
   initAssetLibFor: (type) ->
@@ -31,8 +35,24 @@ class App.Views.AssetLibrary extends Backbone.View
     $('.content-modal').removeClass "asset-library-modal"
 
   setAllowedFilesFor: (assetType) ->
+    pattern = @fileTypePattern(assetType)
+    $("#fileupload").fileupload(acceptFileTypes: pattern)
+
+  fileTypePattern: (assetType) ->
+    file_types = @fileTypes(assetType)
+    up_file_types = file_types.map((type) ->
+      type.toUpperCase()
+    )
+    pattern = '\.('
+    pattern = pattern + file_types.join('|')
+    pattern = pattern + '|'
+    pattern = pattern + up_file_types.join('|')
+    pattern = pattern + ')$'
+    new RegExp(pattern)
+
+  fileTypes: (assetType) ->
     switch assetType
-      when "images" then $("#fileupload").fileupload(acceptFileTypes: /\.(jpg|jpeg|gif|png|JPG|JPEG|GIF|PNG)$/)
-      when "videos" then $("#fileupload").fileupload(acceptFileTypes: /\.(mov|mpg|mpeg|mkv|mp4|m4v|avi|flv|MOV|MPEG|MPEG|MP4|M4V|AVI|FLV)$/)
-      when "fonts"  then $("#fileupload").fileupload(acceptFileTypes: /\.(ttf|otf|TTF|OTF)$/)
-      when "sounds" then $("#fileupload").fileupload(acceptFileTypes: /\.(mp3|wav|aac|m4a|MP3|WAV|AAC|M4A)$/)
+      when 'image', 'images' then return ['jpg', 'jpeg', 'gif', 'png']
+      when 'video', 'videos' then return ['mov', 'mpg', 'mpeg', 'mkv', 'm4v', 'avi', 'flv']
+      when 'font',  'fonts'  then return ['ttf', 'otf']
+      when 'sound', 'sounds' then return ['mp3', 'wav', 'aac', 'm4a']
