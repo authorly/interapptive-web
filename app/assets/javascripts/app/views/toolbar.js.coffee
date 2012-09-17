@@ -1,10 +1,10 @@
 class App.Views.ToolbarView extends Backbone.View
   events:
-    'click .add-scene'   : 'addScene'
-    'click .add-keyframe': 'addKeyframe'
+    'click .scene'       : 'addScene'
+    'click .keyframe'    : 'addKeyframe'
     'click .add-image'   : 'addImage'
-    'click .add-text'    : 'addText'
-    'click .add-touch'   : 'addTouch'
+    'click .edit-text'   : 'addText'
+    'click .touch-zones' : 'addTouch'
     'click .images'      : 'showImageLibrary'
     'click .videos'      : 'showVideoLibrary'
     'click .fonts'       : 'showFontLibrary'
