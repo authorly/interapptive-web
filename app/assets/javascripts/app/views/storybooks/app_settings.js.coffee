@@ -14,7 +14,6 @@ class App.Views.AppSettings extends Backbone.View
 
   updateAttributes: (e) ->
     event.preventDefault()
-
     @form.commit()
 
     App.currentStorybook().save {},

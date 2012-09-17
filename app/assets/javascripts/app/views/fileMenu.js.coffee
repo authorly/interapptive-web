@@ -7,7 +7,7 @@ class App.Views.FileMenuView extends Backbone.View
     $el = $(this.el)
 
   switchStorybook: ->
-    $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
+    document.location.reload true
 
   showSettings: ->
     view = new App.Views.AppSettings()
