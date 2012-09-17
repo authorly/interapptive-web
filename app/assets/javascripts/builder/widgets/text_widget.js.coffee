@@ -1,7 +1,7 @@
 #= require ./widget
 
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
-
+  
   @newFromHash: (hash) ->
     widget = super
 
@@ -13,23 +13,46 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     super
 
     @_string = options.string
-
-    @label = new cc.LabelTTF
-    @label.initWithString(@_string, 'Arial', 24)
+    
+    @label = cc.LabelTTF.labelWithString(@_string, 'Arial', 24)
     @label.setColor(new cc.Color3B(255, 0, 0))
 
     @addChild(@label)
     @setContentSize(@label.getContentSize())
 
-    @on('dblclick', @handleDoubleClick)
-    @on('mouseover', @onMouseOver, this)
-    @on('mouseout',  @onMouseOut,  this)
+  mouseOver: ->
+    super()
+    App.selectedKeyframeText(this.id)
+    App.toggleFontToolbar(this)
+    @drawSelection()
+    
+  mouseOut: ->
+    super()
+    App.toggleFontToolbar(this)
 
-  onMouseOver: (e) ->
-    document.body.style.cursor = 'move'
+  highlight: ->
+    super()
+    console.log "text widget highlight"
+    #@drawSelection()
 
-  onMouseOut: (e) ->
-    document.body.style.cursor = 'default'
+  draw: ->
+    if @_mouse_over then @drawSelection()
+    
+  drawSelection: -> 
+    lSize = @label.getContentSize()
+    console.log "text widget draw selection"
+    cc.renderContext.strokeStyle = "rgba(0,0,255,1)";
+    cc.renderContext.lineWidth = "2";
+    # Fix update this to have padding and solve for font below baseline
+    vertices = [cc.ccp(0 - lSize.width / 2, lSize.height / 2), 
+                cc.ccp(lSize.width / 2, lSize.height / 2), 
+                cc.ccp(lSize.width / 2, 0 - lSize.height / 2), 
+                cc.ccp(0 - lSize.width / 2, 0 - lSize.height / 2)]
+    
+    cc.drawingUtil.drawPoly(vertices, 4, true)  
+  
+  update: ->
+    console.log "update"
 
   getString: ->
     @_string
@@ -41,7 +64,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @trigger('change', 'string')
 
   handleDoubleClick: (touch, event) =>
-    @setString(window.prompt('Enter the new string', @_string) || '<No Text>')
+    @setString($('#font_settings').show())
 
     #input = $('<textarea>')
     #$(cc.canvas.parentNode).append(input)
@@ -59,25 +82,3 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     hash.string = @_string
 
     hash
-
-  addToStorybook: (storybook) =>
-    @_line ||=
-      text: @label.getString()
-      xOffset: Math.round(@getPosition().x)
-      yOffset: Math.round(@getPosition().y)
-
-    storybook.addTextToKeyframe(@_line)
-
-    @on('change', @updateStorybook)
-
-  removeFromStorybook: (storybook) =>
-    @off('change', @updateStorybook)
-    storybook.removeTextFromKeyframe(@_line)
-
-  updateStorybook: =>
-    if @_line
-      @_line.text = @label.getString()
-      @_line.xOffset = Math.round(@getPosition().x)
-      @_line.yOffset = Math.round(@getPosition().y)
-
-

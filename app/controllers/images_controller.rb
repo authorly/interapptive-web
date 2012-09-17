@@ -1,10 +1,12 @@
+require "base64"
+
 class ImagesController < ApplicationController
-  require "base64"
+  before_filter :authorize
 
   def index
-    @images = Image.all
+    images = Image.where(:storybook_id => params[:storybook_id])
 
-    render :json => @images.map(&:as_jquery_upload_response).to_json
+    render :json => images.map(&:as_jquery_upload_response).to_json
   end
 
   def show
@@ -17,17 +19,16 @@ class ImagesController < ApplicationController
   end
 
   def create
-    if params[:base64]
-      filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
-      file = File.open(filename, "wb")
-      file.write(Base64.decode64(params[:image][:files][0]))
-      @images = [Image.create(:image => file)]
-    else
-      @images = params[:image][:files].map { |f| Image.create(:image => f) }
-    end
+    storybook = Storybook.find params[:storybook_id]
 
+    if params[:base64]
+      file = write_file	
+      images = [Image.create(:image => file, :storybook_id => storybook.id)]	
+    else
+      images = params[:image][:files].map { |f| Image.create(:image => f, :storybook_id => storybook.id) }
+    end
     respond_to do |format|
-      format.json { render :json => @images.map(&:as_jquery_upload_response).to_json }
+      format.json { render :json => images.map(&:as_jquery_upload_response).to_json }
     end
   end
 
@@ -36,15 +37,12 @@ class ImagesController < ApplicationController
   def update
     @image = Image.find params[:id]
     @image.remove_image!
-
-    filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
-    file = File.open(filename, "wb")
-    file.write(Base64.decode64(params[:image][:files][0]))
+    file = write_file
 
     @image.update_attribute(:image, file)
 
     respond_to do |format|
-      format.json { render :json => [@image.as_jquery_upload_response.to_json] }
+      format.json { render :json => [@image.as_jquery_upload_response] }
     end
   end
 
@@ -56,5 +54,13 @@ class ImagesController < ApplicationController
     respond_to do |format|
       format.json { head :ok }
     end
+  end
+
+  private
+
+  def write_file
+    filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
+    file = File.open(filename, "wb")
+    file.write(Base64.decode64(params[:image][:files][0]))
   end
 end

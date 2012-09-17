@@ -14,10 +14,12 @@ window.App =
     @keyframeList(new App.Views.KeyframeIndex collection: @keyframesCollection)
     @imageList(new App.Views.ImageIndex(collection: @imagesCollection, tagName: "div"))
     @spriteList(new App.Views.SpriteIndex(collection: @imagesCollection))
+    @keyframeTextList(new App.Views.KeyframeTextIndex(collection: @keyframesTextCollection, el: $("body")))
 
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
     @toolbar = new App.Views.ToolbarView el: $('#toolbar')
     @contentModal = new App.Views.Modal className: "content-modal"
+    @fontToolbar = new App.Views.FontToolbar el: $("#font_toolbar")
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
@@ -85,6 +87,9 @@ window.App =
   currentKeyframe: (keyframe) ->
     if keyframe then @keyframe = keyframe else @keyframe
 
+  currentKeyframeText: (keyframeText) -> 
+    if keyframeText then @keyframeText = keyframeText else @keyframeText
+
   sceneList: (list) ->
     if list then @sceneListView = list else @sceneListView
 
@@ -97,25 +102,29 @@ window.App =
   spriteList: (list) ->
     if list then @spriteListView = list else @spriteListView
 
-  toggleSidebar: ->
-    $(".sidebar").animate
-      opacity: "toggle"
-      width: "toggle"
-    , 800
-
-  toggleHeader: ->
-    $("header").animate
-      opacity: "toggle"
-      height: "toggle"
-    , 1050, ->
-      App.toggleSidebar()
-
-  toggleFooter: ->
-    $("footer").animate
-      opacity: "toggle"
-      height: "toggle"
-    , 900
-
+  keyframeTextList: (list) ->
+    if list then @keyframeTextListView = list else @keyframeTextListView
+  
+  editTextWidget: (textWidget) ->
+    @selectedText(textWidget)
+    @fontToolbar.attachToTextWidget(textWidget)
+    @keyframeTextList().editText(textWidget)
+    App.currentKeyframeText(textWidget.model)
+    
+  fontToolbarUpdate: (fontToolbar) ->
+    console.log "App.fontToolbarUpdate"
+    @selectedText().fontToolbarUpdate(fontToolbar)
+    
+  fontToolbarClosed: ->
+    console.log("app.fonttoolbarclosed")
+    @keyframeTextList().deselectTexts()
+    
+  selectedText: (textWidget) ->
+    if textWidget then @textWidget = textWidget else @textWidget
+   
+  updateKeyframeText: ->
+    @keyframeTextList().updateText()
+    
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1
 
@@ -125,7 +134,6 @@ $ ->
   $('#export').on 'click', ->
     alert(App.storybookJSON)
 
-
   $(".content-modal").modal(backdrop: true).modal "hide"
   $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
 
@@ -134,16 +142,13 @@ $ ->
   toolbar_modal.bind "hidden", ->
     $("ul#toolbar li ul li").removeClass "active"
 
-  $("ul#toolbar li ul li").click ->
-    toolbar_modal.modal "hide"
-    unless $(this).is('.scene, .keyframe, .edit-text, .touch-zones, .disabled, .images, .videos, .sounds, .fonts, .add-image, .edit-spritem, .preview')
-      toolbar_modal.modal "show"
-      $("ul#toolbar li ul li").not(this).removeClass "active"
-      $(this).toggleClass "active"
-
-  $(window).load ->
-    $("#scene-list").css height: ($(window).height()) + "px"
-
   $(window).resize ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
+
+  $("ul#toolbar li ul li").click ->
+    toolbar_modal.modal "hide"
+    unless $(this).is('.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .edit-sprite, .preview, .touch-zones')
+      toolbar_modal.modal "show"
+      $("ul#toolbar li ul li").not(this).removeClass "active"
+      $(this).toggleClass "active"

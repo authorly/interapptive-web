@@ -4,6 +4,8 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   draggable: true
 
+  _mouse_over: false
+
   @newFromHash: (hash) ->
     widget = new this(hash)
 
@@ -20,12 +22,42 @@ class App.Builder.Widgets.Widget extends cc.Node
     _.extend(this, Backbone.Events)
 
     @_opacity = 255
+    @_highlighted = false
 
     if options.id
       @id = options.id
     else
       @id = NEXT_WIDGET_ID
       NEXT_WIDGET_ID += 1
+      
+    @on("mouseover", @mouseOver)
+    @on("mouseout", @mouseOut)
+    @on('dblclick', @handleDoubleClick)
+    
+  mouseOver: ->
+    console.log "Widget mousover"
+    @_mouse_over = true
+    
+  mouseOut: -> 
+    console.log "Widget mouseout"
+    @_mouse_over = false
+    
+  mouseMove: ->
+    #@highlight() unless @isHighlighted()
+    console.log "mouse move from Widget"
+  
+  handleDoubleClick: -> 
+    console.log "Widget double click"
+
+  isHighlighted: ->
+    return @_highlighted
+
+  highlight: ->
+    console.log "Widget highlight"
+    @_highlighted = true
+
+  unHighlight: ->
+    @_highlighted = false
 
   setOpacity: (o) ->
     @_opacity = o

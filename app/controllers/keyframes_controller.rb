@@ -61,7 +61,6 @@ class KeyframesController < ApplicationController
     @keyframe = @scene.keyframes.find params[:id]
 
     respond_to do |format|
-      format.html # edit.html.haml
       format.json { render :json => @keyframe }
     end
   end
@@ -90,8 +89,17 @@ class KeyframesController < ApplicationController
     @scene.keyframes.find(params[:id]).try(:destroy)
 
     respond_to do |format|
-      format.html { redirect_to scene_path(@scene) }
-      format.json { head :ok }
+      format.json { render :json => {:status => :ok} }
     end
+  end
+
+  def sort
+    params[:keyframes].each_with_index do |keyframe, index|
+      _keyframe = Keyframe.find(keyframe['id'])
+      _keyframe.position = index+1
+      _keyframe.save!
+    end
+
+    render :json => {:status => :ok}
   end
 end

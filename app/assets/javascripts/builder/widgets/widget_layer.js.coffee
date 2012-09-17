@@ -4,6 +4,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     super
     @widgets = []
     @_capturedWidget = null
+    @_selectedWidget = null
 
     @setIsTouchEnabled(true)
 
@@ -29,12 +30,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       cc.TouchDispatcher.preTouchPoint.y = mouseY
 
       widget = @widgetAtPoint(touch.locationInView())
-      widget.trigger('dblclick', touch, event)
+      if widget
+        widget.trigger('dblclick', touch, event)
     )
-
+    
   clearWidgets: ->
     for widget in @widgets
-      @removeChild(widget)
+      #HACK unless TextWidget until I figure out whether TextWidget will still be stored in Keyframe.widgets
+      @removeChild(widget) unless widget.type == "TextWidget"
       delete widget.parent
 
     # Clear array
@@ -54,6 +57,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   widgetAtPoint: (point) ->
     for widget in @widgets
+      continue if widget instanceof App.Views.TextWidget
+
       if widget.getIsVisible() and widget.isPointInside(point)
         return widget
 

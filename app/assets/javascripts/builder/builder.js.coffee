@@ -29,10 +29,13 @@ class Builder extends cc.Layer
       @backgroundSprite.setPosition currentPointerPosition if touches and @isMouseDown
 
   ccTouchesEnded: (touches, event) ->
-    @isMouseDown = false
-    touchLocation = touches[0].locationInView(0)
-    App.keyframeListView.setBackgroundPosition(parseInt(touchLocation.x), parseInt(touchLocation.y))
-    App.keyframeListView.setThumbnail()
+    #HACK TODO check if an object has actually been clicked, which i think is being done with 'if event'
+    if event
+      @isMouseDown = false
+      touchLocation = touches[0].locationInView(0)
+      App.keyframeListView.setBackgroundPosition(parseInt(touchLocation.x), parseInt(touchLocation.y))
+      App.keyframeListView.setThumbnail()
+    
 
     if @backgroundSprite
       App.storybookJSON.updateSprite(App.currentScene(), @backgroundSprite)

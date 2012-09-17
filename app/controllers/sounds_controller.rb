@@ -1,15 +1,20 @@
 class SoundsController < ApplicationController
-  def index
-    @sounds = Sound.all
+  before_filter :authorize
 
-    render :json => @sounds.collect { |p| p.as_jquery_upload_response }.to_json
+  def index
+    sounds = Sound.where(:storybook_id => params[:storybook_id])
+
+    render :json => sounds.map(&:as_jquery_upload_response).to_json
   end
 
   def create
-    @sounds = params[:sound][:files].map { |f| Sound.create(:sound => f) }
+    
+    storybook = Storybook.find params[:storybook_id]
 
+    sounds = params[:sound][:files].map { |f| Sound.create(:sound => f, :storybook_id => storybook.id) }
+    
     respond_to do |format|
-      format.json { render :json => @sounds.map(&:as_jquery_upload_response).to_json }
+      format.json { render :json => sounds.map(&:as_jquery_upload_response).to_json }
     end
   end
 

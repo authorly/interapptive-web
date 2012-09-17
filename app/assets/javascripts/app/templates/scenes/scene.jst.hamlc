@@ -1,1 +1,4 @@
 %span.scene-frame{"data-id" => "#{@scene.get('id')}"}
+%span
+  %a{:href=>"#","class" => "delete", "data-id" => "#{@scene.get('id')}"}
+%span.page-number

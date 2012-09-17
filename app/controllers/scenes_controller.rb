@@ -94,8 +94,7 @@ class ScenesController < ApplicationController
     @storybook.scenes.find(params[:id]).try(:destroy)
 
     respond_to do |format|
-      format.html { redirect_to storybook_path(@storybook) }
-      format.json { head :ok }
+      format.json { render :json => {:status => :ok} }
     end
   end
 
@@ -123,5 +122,15 @@ class ScenesController < ApplicationController
       format.js
       format.json { render :json => @touch_zones }
     end
+  end
+
+  def sort
+    params[:scenes].each_with_index do |scene, index|
+      _scene = Scene.find(scene['id'])
+      _scene.position = index+1
+      _scene.save!
+    end
+
+    render :json => {:status => :ok}
   end
 end

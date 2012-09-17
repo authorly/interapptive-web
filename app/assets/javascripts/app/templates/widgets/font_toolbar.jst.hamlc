@@ -1,0 +1,30 @@
+%select.font_face
+  %option{:value => "Arial"}
+    Arial
+  %option{:value => "Times New Roman"}
+    Times New Roman
+  %option{:value => "Verdana"}
+    Verdana
+  %option{:value => "Georgia"}
+    Georgia
+    
+%button#bold
+  B
+  
+.text_align
+  %button#left
+    L
+  %button#center
+    C
+  %button#right
+    R
+
+%select.font_size
+  - for i in [9..25]
+    %option{:value => "#{i}"} 
+      = i
+      
+%input{:class => "colorpicker"}
+
+%button.close_x
+  x

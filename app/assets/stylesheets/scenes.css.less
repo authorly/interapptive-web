@@ -1,8 +1,11 @@
+.scene-list::-webkit-scrollbar {
+  display: none;
+}
 .scene-list {
   margin-left: 15px;
   height: 500px;
-  overflow: hidden;
-  /* background-image: asset-url('scene-list-bg.png'); */
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-vertical;
   background-repeat: no-repeat;
   background-position: 30px center;
 
@@ -18,7 +21,29 @@
     z-index: 10 !important;
     position: relative;
     top: 127px;
-    opacity: 0.3;
+
+    span.scene-frame {
+      cursor: default;
+      display: block;
+      height: @slidePreviewHeight;
+      width: @slidePreviewWidth;
+      background-color: #131312;
+      background-position: center center;
+      background-size: 110%;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: 20;
+    }
+
+    span.page-number {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: @grayDark;
+      font-size: 20px;
+      font-family: 'Arial Black';
+      z-index: 100;
+    }
   }
 
   li.first {
@@ -28,16 +53,52 @@
   li.active {
     .gradient(@slidePreviewActiveBgBegin, @slidePreviewActiveBgEnd);
 
+
     opacity: 1.0;
+
+    span.page-number {
+      color: @slidePreviewActiveBgEnd;
+    }
+
+    a.delete {
+      opacity: 0;
+      display: block;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      padding: 5px;
+      z-index: 90 !important;
+      background: asset-url('red-minus.png') no-repeat center;
+      background-size: 65%;
+    }
   }
 
-  li span {
-    display: block;
-    height: @slidePreviewHeight;
-    width: @slidePreviewWidth;
-    background-color: #131312;
-    background-position: center center;
-    background-size: 110%;
-    background-repeat: no-repeat;
+  li span:hover {
+    cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
+  }
+
+
+  li span:active {
+    cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
+  }
+
+  li.active:first-child {
+    a.delete {
+      display:none !important;
+    }
+  }
+
+  li.active:hover {
+
+    a.delete {
+      opacity: 0.45;
+      cursor: pointer;
+    }
+  }
+
+  li.active a.delete:hover {
+    opacity: 0.9;
   }
 }

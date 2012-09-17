@@ -14,7 +14,6 @@ class App.Models.Keyframe extends Backbone.Model
 
     @save()
 
-
   updateWidget: (widget) ->
     widgets = @get('widgets') || []
 
@@ -39,10 +38,10 @@ class App.Models.Keyframe extends Backbone.Model
         @save()
         break
 
-
-
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
+
+  paramRoot: 'keyframe'
 
   initialize: (models, options) ->
     if options
@@ -50,3 +49,12 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
   url: ->
     '/scenes/' + this.scene_id + '/keyframes.json'
+
+  ordinalUpdateUrl: (sceneId) ->
+    '/scenes/' + sceneId + '/keyframes/sort.json'
+
+  toModdedJSON: ->
+    return {"keyframes": this.toJSON()}
+
+  comparator: (keyframe) ->
+    keyframe.get 'position'

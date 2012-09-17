@@ -10,6 +10,8 @@
 @import 'scenes.css.less';
 @import 'keyframes.css.less';
 @import 'modals.css.less';
+@import 'keyframe_text.css.less';
+@import 'font_toolbar.css.less';
 
 html, body{
   background-color: @grayDarker;
@@ -23,7 +25,7 @@ html, body{
 .content {
   background-color: #eee;
   padding: 20px;
-  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+  margin: 0 -20px;
   -webkit-border-radius: 0 0 6px 6px;
   -moz-border-radius: 0 0 6px 6px;
   border-radius: 0 0 6px 6px;
@@ -40,8 +42,18 @@ html, body{
   background-color: transparent !important;
 }
 
+//
+// TODO: Tem. style, remove me when JSON export button is replaced w/ simulator!
+//
+button#export {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+
 // Tablet & Builder
-.span10 {
+.device_container {
   background-image: asset-url('tablet.png');
   background-repeat: no-repeat;
   background-position: center;
@@ -53,10 +65,9 @@ html, body{
 }
 
 canvas#builder-canvas {
-  width: 610px;
+  width: 604px;
   height: 455px;
-  margin: 73px 0 0 -5px;
-  padding: 10px;
+  margin: 83px 0 0 0;
   overflow: hidden;
 }
 
@@ -120,11 +131,6 @@ header {
 .sidebar {
   .drop-shadow(1px, 0, 13px, #666);
 
-  /*
-  background-image: url('scene-list-bg.png');
-  background-position: center center;
-  background-repeat: no-repeat;
-  */
   position: absolute;
   left: 0;
   top: 0;

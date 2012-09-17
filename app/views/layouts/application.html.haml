@@ -8,9 +8,12 @@
     %title= content_for?(:title) ? yield(:title) : "Interapptive"
     %meta{:content => "", :name => "description"}
     %meta{:content => "", :name => "author"}
+
     = stylesheet_link_tag "application", "http://jquery-ui.googlecode.com/svn/tags/1.8.20/themes/smoothness/jquery.ui.all.css", :media => "all"
     = javascript_include_tag "application"
+    %script{:src => "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"}
     = csrf_meta_tags
+
     = yield(:head)
 
   %body
@@ -32,13 +35,14 @@
           .row
             .span2.navbar.sidebar
               #scene-list
-            .span10
+            .device_container
               - flash.each do |name, msg|
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
                   %a.close{"data-dismiss" => "alert"}
                   = msg
               %div
-                %canvas{id: 'builder-canvas', class: 'loading', width: 600, height: 455}
+                %div#cleanUp{:contenteditable => "true"}
+                %canvas{id: 'builder-canvas', width: 600, height: 455}
                   %p Your browser doesn't support the technology required to run this application.
 
     %footer.navbar.navbar-fixed-bottom
@@ -48,6 +52,7 @@
     = render 'assets/upload_modal'
     = render 'storybooks/index_modal'
     = render 'shared/content_modal'
+    = render 'shared/font_toolbar'
 
     :javascript
       App.currentUser(#{current_user.to_json(:only => :id)})

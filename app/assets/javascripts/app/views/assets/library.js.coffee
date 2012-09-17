@@ -16,14 +16,15 @@ class App.Views.AssetLibrary extends Backbone.View
     @loadAndShowFileData()
 
   loadAndShowFileData: ->
-
-    $.getJSON "/storybooks/#{App.currentStorybook().get('id')}/#{$('#fileupload').prop('action')}", (files) ->
+    $.getJSON "/storybooks/#{App.currentStorybook().get('id')}/" + @assetType + "s", (files) ->
       fileData = $("#fileupload").data("fileupload")
       fileData._adjustMaxNumberOfFiles -files.length
       template = fileData._renderDownload(files).prependTo($("#fileupload .files"))
       fileData._reflow = fileData._transition and template.length and template[0].offsetWidth
       template.addClass "in"
       $("#loading").remove()
+      $("#searchtable").show()
+      $(".table-striped").advancedtable({searchField: "#search", loadElement: "#loader", searchCaseSensitive: false, ascImage: "/assets/advancedtable/up.png", descImage: "/assets/advancedtable/down.png"})
 
   closeAssetLib: ->
     $("#fileupload").fileupload "disable"
@@ -32,6 +33,6 @@ class App.Views.AssetLibrary extends Backbone.View
   setAllowedFilesFor: (assetType) ->
     switch assetType
       when "images" then $("#fileupload").fileupload(acceptFileTypes: /\.(jpg|jpeg|gif|png|JPG|JPEG|GIF|PNG)$/)
-      when "videos" then $("#fileupload").fileupload(acceptFileTypes: /\.(mov|mpg|mpeg|mp4|m4v|MOV|MPEG|MPEG|MP4|M4V)$/)
-      when "fonts"  then $("#fileupload").fileupload(acceptFileTypes: /\.(ttf|TTF)$/)
+      when "videos" then $("#fileupload").fileupload(acceptFileTypes: /\.(mov|mpg|mpeg|mkv|mp4|m4v|avi|flv|MOV|MPEG|MPEG|MP4|M4V|AVI|FLV)$/)
+      when "fonts"  then $("#fileupload").fileupload(acceptFileTypes: /\.(ttf|otf|TTF|OTF)$/)
       when "sounds" then $("#fileupload").fileupload(acceptFileTypes: /\.(mp3|wav|aac|m4a|MP3|WAV|AAC|M4A)$/)

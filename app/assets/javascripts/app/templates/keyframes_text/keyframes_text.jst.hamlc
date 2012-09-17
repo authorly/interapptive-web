@@ -1,0 +1,2 @@
+.text_widget{:contenteditable => "false"}
+  = @model.get('content')

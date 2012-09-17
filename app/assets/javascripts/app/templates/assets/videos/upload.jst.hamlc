@@ -3,9 +3,12 @@
     %td.preview
       %span.fade
         %td.name #{file.name}
+    %td.created_at
+      %span
+        file.created_at
     %td.size
       %span
-        = @formatFileSize(file.size)
+        = @formatFileSize(file.created)
     - if file.error
       %td.error{:colspan => "7"}
         %span.label.label-important

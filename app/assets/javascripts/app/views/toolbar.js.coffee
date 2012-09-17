@@ -1,20 +1,17 @@
 class App.Views.ToolbarView extends Backbone.View
   events:
-    'click .add-scene'    : 'addScene'
-    'click .add-keyframe' : 'addKeyframe'
-    'click .add-image'    : 'addImage'
-    'click .add-text'     : 'addText'
-    'click .add-touch'    : 'addTouch'
+    'click .scene'       : 'addScene'
+    'click .keyframe'    : 'addKeyframe'
+    'click .add-image'   : 'addImage'
+    'click .edit-text'   : 'addText'
+    'click .touch-zones' : 'addTouch'
     'click .show-preview' : 'showPreview'
-    'click .add-sprite'   : 'addSprite'
-    'click .images'       : 'showImageLibrary'
-    'click .videos'       : 'showVideoLibrary'
-    'click .fonts'        : 'showFontLibrary'
-    'click .sounds'       : 'showSoundLibrary'
-    'click .actions'      : 'showActionLibrary'
-
-  initialize: ->
-    @assetLibraryView = new App.Views.AssetLibrary()
+    'click .add-sprite'  : 'addSprite'
+    'click .images'      : 'showImageLibrary'
+    'click .videos'      : 'showVideoLibrary'
+    'click .fonts'       : 'showFontLibrary'
+    'click .sounds'      : 'showSoundLibrary'
+    'click .actions'     : 'showActionLibrary'
 
   render: ->
     $el = $(this.el)
@@ -35,19 +32,31 @@ class App.Views.ToolbarView extends Backbone.View
     definitions = new App.Collections.ActionDefinitionsCollection()
     definitions.fetch
       success: ->
-        App.modalWithView(view: new App.Views.ActionIndex(definitions: definitions)).showModal()
+        App.modalWithView(view: new App.Views.ActionIndex(definitions: definitions)).show()
 
   addImage: ->
-    App.modalWithView(view: App.imageList()).show()
+    images = new App.Collections.ImagesCollection()
+    images.fetch
+      success: (model, options) =>
+        if images.length is 0
+          @showImageLibrary()
+        else
+          App.modalWithView(view: new App.Views.ImageIndex(collection: images)).show()
+
 
   addText: ->
     # FIXME we should have some delegate that actually handles adding things
-    text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
-    text.setPosition(new cc.Point(100, 100))
-    @_addWidget(text)
+    #text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
+    t = App.keyframeTextList().createText("Enter some text...")
+    #App.editTextWidget(App.keyframeTextList().createText("Enter some text...", true))
+
+    #keyframe = App.currentKeyframe()
+    #TODO figure out whether we want to try to use the addwidget, etc functionality for text still
+    #App.builder.widgetLayer.addWidget(text)
+    #keyframe.addWidget(text)
+    #text.on('change', -> keyframe.updateWidget(text))
 
   addTouch: ->
-    alert('TODO show touch point dialogue here')
     widget = new App.Builder.Widgets.TouchWidget
     widget.setPosition(new cc.Point(300, 300))
     @_addWidget(widget)
@@ -82,6 +91,8 @@ class App.Views.ToolbarView extends Backbone.View
     @loadDataFor("sound")
 
   loadDataFor: (assetType) ->
+    @assetLibraryView = new App.Views.AssetLibrary()
+
     @assetLibraryView.activeAssetType = assetType
     App.modalWithView(view: @assetLibraryView).show()
     @assetLibraryView.setAllowedFilesFor assetType + "s"

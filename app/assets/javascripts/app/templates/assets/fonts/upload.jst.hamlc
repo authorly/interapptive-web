@@ -3,9 +3,13 @@
     %td.preview
       %span.fade
         %td.name #{file.name}
+    %td.created_at
+      %span
+        file.created_at
     %td.size
       %span
-        = @formatFileSize(file.size)
+        = @formatFileSize(file.created)
+
     - if file.error
       %td
       %td.error{:colspan => "5"}
@@ -22,8 +26,8 @@
           %span Start
     - else
       %td{:colspan => "3"}
-    %td.cancel{:colspan => "3"}
-      - if not index
-        %button.btn.btn-warning
-          %i.icon-ban-circle.icon-white
-          %span= locale.fileupload.cancel
+      %td.cancel{:colspan => "3"}
+        - if not index
+          %button.btn.btn-warning
+            %i.icon-ban-circle.icon-white
+            %span= locale.fileupload.cancel

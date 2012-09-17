@@ -3,16 +3,17 @@
     - if file.error
       %td.name
         %span file.name
-      %td.size
-        %span @formatFileSize(file.size)
+      %td.created_at
+        %span file.created_at 
+        /@formatFileSize(file.size)
       %td.error{:colspan => "5"}
         %span.label.label-important= locale.fileupload.error
           = file.error
     - else
-      %td.name{:colspan => "7"}
+      %td.name{:colspan => "3"}
         %a{:download => "#{file.name}", :href => "#{file.url}", :title => "#{file.name}"}
           = file.name
-      %td.size= @formatFileSize(file.size)
+      %td.created_at =file.created_at 
       %td{:colspan => "7"}
       %td.delete
         %button.btn.btn-danger{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}"}

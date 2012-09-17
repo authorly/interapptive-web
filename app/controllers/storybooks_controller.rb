@@ -6,7 +6,7 @@ class StorybooksController < ApplicationController
 
   # GET /storybooks/:id/images.json
   def images
-    @storybook = Storybook.find params[:id]
+    @storybook = Storybook.find params[:storybook_id]
     @images = @storybook.images
 
     render :json => @images.map(&:as_jquery_upload_response).to_json
@@ -14,7 +14,7 @@ class StorybooksController < ApplicationController
 
   # GET /storybooks/:id/sounds.json
   def sounds
-    @storybook = Storybook.find params[:id]
+    @storybook = Storybook.find params[:storybook_id]
     @sounds = @storybook.sounds
 
     render :json => @sounds.map(&:as_jquery_upload_response).to_json
@@ -36,13 +36,11 @@ class StorybooksController < ApplicationController
     render :json => @fonts.map(&:as_jquery_upload_response).to_json
   end
 
-  # GET /storybooks
   # GET /storybooks.json
   def index
     @storybooks = current_user.storybooks.all
-    
+   
     respond_to do |format|
-      format.html # index.html.haml
       format.json { render :json => @storybooks }
     end
   end

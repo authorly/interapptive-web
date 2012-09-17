@@ -6,29 +6,26 @@ describe Scene do
   it { Factory(:scene).should be_valid }
 
   context "#to_json" do
-    it "includes the ID" do
-      scene.to_json.should have_json_path("id")
-      scene.to_json.should have_json_type(Integer).at_path("id")
-    end
+    it 'should be valid response' do
+      response = {
+          'created_at'       => scene.created_at,
+          'id'               => scene.id,
+          'image_id'         => scene.image_id,
+          'position'         => scene.position,
+          'preview_image_id' => scene.preview_image_id,
+          'sound_id'         => scene.sound_id,
+          'storybook_id'     => scene.storybook_id,
+          'updated_at'       => scene.updated_at
+      }.to_json
 
-    it "includes the storybook ID" do
-      scene.to_json.should have_json_path("storybook_id")
-      scene.to_json.should have_json_type(Integer).at_path("storybook_id")
+      scene.to_json.should eql(response)
     end
+  end
 
-    it "includes an optional background sound ID" do
-      scene.to_json.should have_json_path("sound_id")
-      scene.to_json.should have_json_type(Integer).at_path("sound_id")
-    end
-
-    it "includes an optional background image ID" do
-      scene.to_json.should have_json_path("image_id")
-      scene.to_json.should have_json_type(Integer).at_path("image_id")
-    end
-
-    it "includes an optional thumbnail preview image ID" do
-      scene.to_json.should have_json_path("preview_image_id")
-      scene.to_json.should have_json_type(Integer).at_path("preview_image_id")
+  context "creation" do
+    it 'should create corresponding scene' do
+      scene = Scene.create
+      scene.keyframes.should be_any
     end
   end
 end

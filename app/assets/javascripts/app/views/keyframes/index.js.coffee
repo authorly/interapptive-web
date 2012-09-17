@@ -1,22 +1,23 @@
 class App.Views.KeyframeIndex extends Backbone.View
-  template: JST["app/templates/keyframes/index"]
-  tagName: 'ul'
+  template:  JST["app/templates/keyframes/index"]
+  tagName:   'ul'
   className: 'keyframe-list'
+
   events:
-    'click .keyframe-list li div': 'setActiveKeyframe'
+    'click span a.delete-keyframe': 'destroyKeyframe'
+    'click  .keyframe-list li div': 'setActiveKeyframe'
 
   initialize: ->
     @collection.on('reset', @render, this)
-    $('footer').hide()
 
   render: ->
     $(@el).html('')
     @collection.each (keyframe) => @appendKeyframe(keyframe)
     @delegateEvents()
+    @initSortable() if @collection?
 
     # Fire asynchronously so other 'reset' events can finish first
     setTimeout((=> $(@el).find('li:first div:first').click()), 1)
-
     this
 
   createKeyframe: =>
@@ -28,54 +29,81 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   appendKeyframe: (keyframe) ->
     view  = new App.Views.Keyframe(model: keyframe)
-    $(@el).append(view.render().el).removeClass('active').first().addClass('active')
-    if keyframe.has "image_id"
-      image    = App.imageList().collection.get(keyframe.get('image_id'))
-      if image? and image.has("url")
-        imageUrl = image.get("url")
-        imageId  = keyframe.get("image_id")
-        x_coord  = keyframe.get("background_x_coord")
-        y_coord  = keyframe.get("background_y_coord")
-        activeKeyframeEl = $(@el).find("[data-image-id='#{imageId}']")
-        activeKeyframeEl.css("background-image", "url(" + imageUrl + ")")
-        activeKeyframeEl.attr("data-x","#{x_coord}")
-        activeKeyframeEl.attr("data-y","#{y_coord}")
 
-  setActiveKeyframe: (e) ->
-    x_coord   = $(e.currentTarget).attr "data-x"
-    y_coord   = $(e.currentTarget).attr "data-y"
-    @activeId = $(e.currentTarget).attr "data-id"
+    $(@el).append(view.render().el).removeClass('active').first().addClass('active')
+
+    $('.keyframe-list li:first div').click()
+
+    @numberKeyframes()
+
+    if keyframe.has "image_id"
+      image = App.imageList().collection.get(keyframe.get('image_id'))
+
+      if image? and image.has("url")
+        keyfrEl = $(@el).find("[data-image-id='#{keyframe.get("image_id")}']")
+        keyfrEl.css("background-image", "url(#{image.get("url")})")
+        keyfrEl.attr("data-x","#{keyframe.get("background_x_coord")}")
+        keyfrEl.attr("data-y","#{keyframe.get("background_y_coord")}")
+
+  setActiveKeyframe: (event) ->
+    @activeId = $(event.currentTarget).attr "data-id"
     @keyframe = @collection.get @activeId
+
+    x_coord = $(event.currentTarget).attr "data-x"
+    y_coord = $(event.currentTarget).attr "data-y"
+    sprite  = cc.Director.sharedDirector().getRunningScene().backgroundSprite
+
     App.currentKeyframe @keyframe
-    sprite = cc.Director.sharedDirector().getRunningScene().backgroundSprite
-    $(e.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
-    if sprite? then sprite.setPosition(new cc.Point(x_coord, y_coord))
+
+    $(event.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
 
     @populateWidgets(@keyframe)
 
+    sprite.setPosition(new cc.Point(x_coord, y_coord)) if sprite?
+
+  destroyKeyframe: (event) =>
+    event.stopPropagation()
+
+    App.keyframeList().collection.fetch
+      success: (collection, response) =>
+        message  = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
+        target   = $(event.currentTarget)
+        keyframe = collection.get(target.attr('data-id'))
+
+        collection.remove(keyframe)
+
+        if confirm(message)
+          keyframe.destroy
+            success: ->
+              $('.keyframe-list li.active').remove()
+              @numberKeyframes()
+              $('.keyframe-list li:first div').click()
+
+
   setBackgroundPosition: (x, y) ->
-    activeKeyframeEl = $(@el).find('.active div')
-    activeKeyframeEl.attr("data-x","#{x}")
-    activeKeyframeEl.attr("data-y","#{y}")
-    App.currentKeyframe().set
-      background_x_coord: x
-      background_y_coord: y
-      id: @activeId
-    App.currentKeyframe().save {},
-      success: (model, response) ->
-        console.log "Saved background location"
+    $(@el).find('.active div').attr("data-x","#{x}").attr("data-y","#{y}")
+
+    if App.currentKeyframe()?
+      App.currentKeyframe().set
+        background_x_coord: x
+        background_y_coord: y
+        id: @activeId
+      App.currentKeyframe().save {},
+        success: (model, response) ->
+          console.log "Saved background location"
 
   setThumbnail: (el) ->
     oCanvas = document.getElementById "builder-canvas"
+    imageId = $(@el).find('.active div').attr "data-image-id"
+
     try
-      image   = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
+      image = Canvas2Image.saveAsPNG oCanvas, true, 112, 84
     catch e
-      console.error("Error saving PNG", e)
+      alert("Problem saving scene preview image", e)
       return
 
-    imageId = $(@el).find('.active div').attr "data-image-id"
     $.ajax
-      url: '/images'
+      url: '/storybooks/#{App.currentStorybook().get("id")}/images.json'
       type: 'POST'
       data: '{"base64":"true","image" : {"files" : [ "' + image.src.replace('data:image/png;base64,', '') + '" ] }}'
       contentType: 'application/json; charset=utf-8'
@@ -103,30 +131,64 @@ class App.Views.KeyframeIndex extends Backbone.View
         console.log "Set the id of keyframe thumbnail"
 
   placeText: ->
+    console.log "KeyframeIndex placeText"
     if App.currentKeyframe()?
       scene = cc.Director.sharedDirector().getRunningScene()
       keyframeTexts = scene.widgetLayer.widgets
+      console.log keyframTexts
       App.builder.widgetLayer.removeAllChildrenWithCleanup()
       App.keyframesTextCollection.fetch
         success: (collection, response) =>
-          for keyframeText in collection.models
-            text = new App.Builder.Widgets.TextWidget(string: keyframeText.get('content'))
-            text.setPosition(new cc.Point(keyframeText.get('x_coord'), keyframeText.get('y_coord')))
-            App.builder.widgetLayer.addWidget(text)
 
 
   populateWidgets: (keyframe) ->
+    console.log "KeyframeIndex populateWidgets"
     return unless keyframe?
 
     App.builder.widgetLayer.clearWidgets()
 
+    # clear text
+    App.updateKeyframeText()
+
     if keyframe.has('widgets')
       for widgetHash in keyframe.get('widgets')
-        klass = App.Builder.Widgets[widgetHash.type]
-        throw new Error("Unable to find widget class #{klass}") unless klass
+        #HACK to ignore TextWidgets in widgets hash because this is in html now
+        if widgetHash.type != "TextWidget"
+          klass = App.Builder.Widgets[widgetHash.type]
+          throw new Error("Unable to find widget class #{klass}") unless klass
+          widget = klass.newFromHash(widgetHash)
+          App.builder.widgetLayer.addWidget(widget)
+          widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
 
-        widget = klass.newFromHash(widgetHash)
-        App.builder.widgetLayer.addWidget(widget)
-        widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
+  initSortable: =>
+    @numberKeyframes()
 
+    $(@el).sortable
+      opacity: 0.6
+      containment: 'footer'
+      cancel: ''
+      update: =>
+        @numberKeyframes()
+        $.ajax
+          contentType:"application/json"
+          dataType: 'json'
+          type: 'POST'
+          data: JSON.stringify(@keyframePositionsJSONArray())
+          url: "#{@collection.ordinalUpdateUrl(App.currentScene().get('id'))}"
+          complete: =>
+            $(@el).sortable('refresh')
 
+  keyframePositionsJSONArray: ->
+    JSON = {}
+    JSON.keyframes = []
+
+    $('.keyframe-list li div').each (index, element) ->
+      JSON.keyframes.push
+        id: $(element).data 'id'
+        position: index+1
+
+    JSON
+
+  numberKeyframes: ->
+    $('.keyframe-list li span.keyframe-number').each (index, element) ->
+      $(element).empty().html(index+1)

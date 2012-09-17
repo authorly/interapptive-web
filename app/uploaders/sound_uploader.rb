@@ -11,12 +11,17 @@ class SoundUploader < CarrierWave::Uploader::Base
   # include Sprockets::Helpers::IsolatedHelper
 
   # Choose what kind of storage to use for this uploader:
-  storage :fog
+  if Rails.env.development?
+    storage :fog
+  else
+    # In test environment, we have mocked fog storage
+    storage :fog
+  end
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "sounds/#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

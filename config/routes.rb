@@ -1,3 +1,4 @@
+
 Interapptive::Application.routes.draw do
   root :to => 'home#index', :constraints => lambda { |request| request.cookies['auth_token'] }
   root :to => 'user_sessions#new'
@@ -10,7 +11,9 @@ Interapptive::Application.routes.draw do
   post 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
   get  'users/settings' => 'users#edit'
 
-  resources :users, :except => [:new, :edit, :index]
+  resources :users, :except => [:new, :edit, :index] do 
+    resources :fonts
+  end
   
   get  'password_reset'      => 'password_resets#new',   :as => :new_password_reset
   get  'password_resets/:id' => 'password_resets#edit',  :as => :edit_password_reset
@@ -35,16 +38,28 @@ Interapptive::Application.routes.draw do
   resources :touch_zones
 
   resources :storybooks do
-    resources :scenes
+    resources :scenes do
+      resources :images
+      resources :videos
+      resources :sounds
+      resources :fonts
+
+      collection { post :sort }
+    end
+    resources :fonts
+    resources :images
+    resources :videos
+    resources :sounds
   end
 
   resources :scenes do
     resources :keyframes do
       resources :actions
+
+      collection { post :sort }
     end
     
     member do
-      get 'images'
       get 'touch_zones'
     end
   end

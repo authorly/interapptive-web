@@ -1,15 +1,19 @@
 class FontsController < ApplicationController
-  def index
-    @fonts = Font.all
+  before_filter :authorize
 
-    render :json => @fonts.collect { |p| p.as_jquery_upload_response }.to_json
+  def index
+    fonts = Font.where(:storybook_id => params[:storybook_id])
+
+    render :json => fonts.map(&:as_jquery_upload_response).to_json
   end
 
   def create
-    @fonts = params[:font][:files].map { |f| Font.create(:font => f) }
+    storybook = Storybook.find params[:storybook_id]
 
+    fonts = params[:font][:files].map { |f| Font.create(:font => f, :storybook_id => storybook.id) }
+    
     respond_to do |format|
-      format.json { render :json => @fonts.map(&:as_jquery_upload_response).to_json }
+      format.json { render :json => fonts.map(&:as_jquery_upload_response).to_json }
     end
   end
 

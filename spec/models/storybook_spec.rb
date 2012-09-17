@@ -26,15 +26,7 @@ describe Storybook do
       pending
       expect { Factory(:storybook) }.to validate_uniqueness_of(:title)
     end
-    
-    it { should belong_to(:user) }
-    it { should have_many(:scenes) }
-    it { should have_many(:images).through(:scenes) }
-    it { should have_many(:sounds).through(:scenes) }
-    it { should have_many(:videos).through(:scenes) }
-    it { should have_many(:fonts).through(:scenes) }
-    it { should have_one(:default_font) }
-    
+
   end
   
   
