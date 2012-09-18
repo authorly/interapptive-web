@@ -1,6 +1,6 @@
 .modal-header
   %h3.modal-title= "#{App.capitalizeWord(@assetType) } Library"
-
+  Only #{@acceptedFileTypes.slice(0, @acceptedFileTypes.length - 1).join(', ')} and #{@acceptedFileTypes[@acceptedFileTypes.length - 1]} file types are accepted
 .modal-body
   %form{:action => "/storybooks/#{App.currentStorybook().get('id')}/scenes/#{App.currentScene().get('id')}/#{@assetType}s", :id => "fileupload", :method => "post", :multipart => true}
     .row.fileupload-buttonbar
