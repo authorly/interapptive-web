@@ -1,0 +1,292 @@
+{
+  "Configurations": {
+     // Shows when app is opened on device.
+    "DefaultPngImage": "Default.png",
+    
+    // Icon for the home screen of device
+    "IconPngImage": "Icon.png", 
+      
+    // Sound effect for turning pages
+    // This should occur during the transition
+    "pageFlipSound": { 
+      "forward": "page-flip.mp3", // Forward version, for going to the next page
+      "backward": "page-flip.mp3" // Backward version, for going to a previous page
+    },
+      
+    // Duration of CCTransitionPageTurn
+    "pageFlipTransitionDuration": 0.6, 
+    
+    // Amount of time it takes for text to fade in/out when swiping to the next/previous paragraph
+    // For example,
+    // 1. Show page
+    // 2. Show first paragraphs
+    // 3. User swipes
+    // 4. paragraph 1 fades out
+    // 5. paragraph 2 fades in.
+    
+    // Also, there should be a flag to delay the fading in until panning/zooming is done.
+    // Some users may paragraph text hidden while panning/zooming an image.
+    // However, other user may want paragraph text visible while panning or zooming is occuring
+    "paragraphTextFadeDuration": 0.4, 
+
+    // a home menu will be displayed on all of the pages in the same spot. 
+    // When tapped, user confirms yes/no to continue to Main Menu from any page
+    "homeMenuForPages": { 
+      "normalStateImage": "home-button.png", // Normal appearance of home button - This image exists in the project.
+      "tappedStateImage": "home-button-over.png",
+      "position": [
+        20,
+        20
+      ]
+    }
+  },
+
+	// All storybooks have a main menu which is shown upon opening the app.
+	// We gather information from JSON here to build the menu
+  "MainMenu": {
+    "audio": {
+	
+      // Allow user to define ongoing background music or a long audio
+      "backgroundMusic": "background.mp3", 
+      "backgroundMusicLoops": 0, // 0 = repeat continuously 
+
+      // And/or allow the user to play a sound effect when transition to the main menu
+      "soundEffect": "main-menu-title-sound.mp3",
+      "soundEffectLoops": 1
+    },
+      
+    // Sprites for the main menu
+    "CCSprites": [
+
+			// We start by adding a background image/sprite to the Main Menu
+      {
+        "image": "background0000.jpg",
+        "spriteTag": 100,
+        "visible": true,
+        "position": [
+          512,
+          384
+        ]
+      },
+      {
+        // Add a logo separate, so we can fade it in.
+        "image": "strangerinthewoods_logo.png",
+        "spriteTag": 101,
+        
+        // Added visible to JSON so the sprite is hidden at first.
+				// That way we can fade it in from invisible to visible.
+        // We can not fade the sprite in if it already visible
+        "visible": false, 
+        "position": [
+          512,
+          384
+        ]
+      }
+    ],
+
+    // Add mandatory menu items to the Main Menu with custom images and position
+    "MenuItems": [
+      
+                  {
+        "normalStateImage": "autoplay.png",
+        "tappedStateImage": "autoplay-over.png",
+        "storyMode": "autoPlay",
+        "position": [
+          112,
+          280
+        ]
+      },
+      {
+        "normalStateImage": "read-it-myself.png",
+        "tappedStateImage": "read-it-myself-over.png",
+        "storyMode": "readItMyself",
+        "position": [
+          112,
+          400
+        ]
+      },
+      {
+        "normalStateImage": "read-to-me.png",
+        "tappedStateImage": "read-to-me-over.png",
+        "storyMode": "readToMe",
+        "position": [
+          112,
+          520
+        ]
+      }
+    ],
+    "API": {
+        
+      // This fade in action is used to fade the logo in on the main menu
+      "CCFadeIn": [
+        {
+          "duration": 2,
+          "actionTag": 22
+        }
+      ]
+    },
+    
+    // These actions should be run when the transition to the Main menu is completed. 
+    // this should fade the logo in after main menu is loaded. It would also perform any other actions
+    "runActionsOnEnter": [
+      {
+        "spriteTag": 101,
+        "actionTag": 22
+      }
+    ]
+  },
+  "Pages": [
+    {
+      "Page": {
+        "settings": {
+          "number": 1,
+          "fontType": "PoeticaChanceryIII.ttf",
+          "fontColor": [
+            255,
+            0,
+            0
+          ],
+          "fontHighlightColor": [
+            255,
+            0,
+            0
+          ],
+          "fontSize": 48,
+          
+          // For any background music on the pages
+          "backgroundMusicFile": {
+            "loop": true,
+            "audioFilePath": "background.mp3"
+          }
+        },
+        "text": {
+          "paragraphs": [
+            {	
+			  			// If delayForPanning == true, the app will not fade paragraph text until panning/zooming actions are completed
+              // For example, I swipe the page and it hides the paragraph
+              // If delayForPanning is on, 
+              // the app will perform any background image zooming/panning before fading text in
+              "delayForPanning": true,
+							
+              // Every page must have the audio file which will play the voice (to match highlighting text)
+			  			// The voice file to match the highlightingTimes is defined here.
+              "voiceAudioFile": "page-1-paragraph-1.mp3",
+              "highlightingTimes": [
+                0.15,
+                1.5,
+                3.4,
+                5.5,
+                6.6,
+                7.2,
+                9.3,
+                10.2,
+                10.9,
+                11.4,
+                12.8
+              ],
+              "linesOfText": [
+                {
+                  "text": "For those who protect wild places",
+                  "yOffset": 250,
+                  "xOffset": 512
+                },
+                {
+                  "text": "and to the snowman that lives",
+                  "yOffset": 195,
+                  "xOffset": 512
+                },
+                {
+                  "text": "in every child's heart.",
+                  "yOffset": 140,
+                  "xOffset": 512
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "API": {
+        "CCMoveTo": [
+          {
+            "position": [
+              400,
+              400
+            ],
+            "duration": 3,
+            "actionTag": 20
+          }
+        ],
+        "CCScaleTo": [
+          {
+            "intensity": 1.1,
+            "duration": 3,
+            "actionTag": 22
+          }
+        ],
+        "CCSprites": [
+          {
+            "image": "background0010.jpg",
+            "spriteTag": 1,
+            "position": [
+              512,
+              384
+            ],
+            "actions": [
+              20
+            ]
+          }
+        ],
+        "CCStoryTouchableNode": {
+          "nodes": [
+            {
+              "glitterIndicator": false,
+              "touchFlag": 1,
+              "position": [
+                20,
+                20
+              ],
+              "radius": 20,
+              "videoToPlay": "filename (null if sound or action values are present)",
+              "soundToPlay": "filename (null if action or video values are present)",
+              "runAction": [
+                {
+                  "spriteTag": 1,
+                  "actionTag": 20
+                }
+              ]
+            }
+          ]
+        },
+
+				// After each swipe, the app should iterate through runActions to check if its time to run an action.
+				// For example, if i am on page 1, and viewing paragraph #1, then I swipe forward. It should run any actions
+				// with "runAfterSwipeNumber" == 1
+				// Or, if I want to run the action right away when the page loads, I would set runAfterSwipeNumber to 0.
+				// That way, we could run panning/zooming on the background as soon as the scene/page shows, instead of only waiting for swipes.
+        "CCStorySwipeEnded": {
+          "runAction": [
+            {
+              "runAfterSwipeNumber": 1,
+              "spriteTag": 1,
+              "actionTag": 20
+            }
+          ],
+          "addChild": {
+            "children": [
+              {
+                "spriteTag": 1
+              }
+            ]
+          },
+          "removeChild": {
+            "children": [
+              {
+                "spriteTag": 1
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

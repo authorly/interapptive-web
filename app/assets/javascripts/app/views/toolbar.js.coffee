@@ -1,18 +1,25 @@
 class App.Views.ToolbarView extends Backbone.View
   events:
-    'click .scene'       : 'addScene'
-    'click .keyframe'    : 'addKeyframe'
-    'click .add-image'   : 'addImage'
-    'click .edit-text'   : 'addText'
-    'click .touch-zones' : 'addTouch'
-    'click .images'      : 'showImageLibrary'
-    'click .videos'      : 'showVideoLibrary'
-    'click .fonts'       : 'showFontLibrary'
-    'click .sounds'      : 'showSoundLibrary'
-    'click .actions'     : 'showActionLibrary'
+    'click .scene'        : 'addScene'
+    'click .keyframe'     : 'addKeyframe'
+    'click .edit-text'    : 'addText'
+    'click .touch-zones'  : 'addTouch'
+    'click .show-preview' : 'showPreview'
+    'click .edit-sprite'  : 'addSprite'
+    'click .images'       : 'showImageLibrary'
+    'click .videos'       : 'showVideoLibrary'
+    'click .fonts'        : 'showFontLibrary'
+    'click .sounds'       : 'showSoundLibrary'
+    'click .actions'      : 'showActionLibrary'
 
   render: ->
     $el = $(this.el)
+
+  _addWidget: (widget) ->
+    keyframe = App.currentKeyframe()
+    App.builder.widgetLayer.addWidget(widget)
+    keyframe.addWidget(widget)
+    widget.on('change', -> keyframe.updateWidget(widget))
 
   addScene: ->
     @scene = App.sceneList().createScene()
@@ -25,16 +32,6 @@ class App.Views.ToolbarView extends Backbone.View
     definitions.fetch
       success: ->
         App.modalWithView(view: new App.Views.ActionIndex(definitions: definitions)).show()
-
-  addImage: ->
-    images = new App.Collections.ImagesCollection()
-    images.fetch
-      success: (model, options) =>
-        if images.length is 0
-          @showImageLibrary()
-        else
-          App.modalWithView(view: new App.Views.ImageIndex(collection: images)).show()
-
 
   addText: ->
     # FIXME we should have some delegate that actually handles adding things
@@ -51,11 +48,25 @@ class App.Views.ToolbarView extends Backbone.View
   addTouch: ->
     widget = new App.Builder.Widgets.TouchWidget
     widget.setPosition(new cc.Point(300, 300))
-    keyframe = App.currentKeyframe()
-    App.builder.widgetLayer.addWidget(widget)
-    keyframe.addWidget(widget)
-    widget.on('change', -> keyframe.updateWidget(widget))
+    @_addWidget(widget)
 
+  addSprite: ->
+
+    imageSelected = (sprite) =>
+      widget = new App.Builder.Widgets.SpriteWidget(url: sprite.get('url'))
+      widget.setPosition(new cc.Point(300, 400))
+      @_addWidget(widget)
+
+      App.modalWithView().hide()
+      view.off('image_select', imageSelected)
+
+    view = new App.Views.SpriteIndex(collection: App.imagesCollection)
+    view.on('image_select', imageSelected)
+
+    App.modalWithView(view: view).show()
+
+  showPreview: ->
+    App.showSimulator()
 
   showImageLibrary: ->
     @loadDataFor("image")
