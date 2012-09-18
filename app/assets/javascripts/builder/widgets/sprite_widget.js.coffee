@@ -7,7 +7,14 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @_url = options.url
 
-    @sprite = cc.Sprite.spriteWithFile(@_url)
+    @sprite = new cc.Sprite
+    @sprite.initWithFile(@_url)
 
     @addChild(@sprite)
     @setContentSize(@sprite.getContentSize())
+
+  toHash: ->
+    hash = super
+    hash.url = @_url
+
+    hash

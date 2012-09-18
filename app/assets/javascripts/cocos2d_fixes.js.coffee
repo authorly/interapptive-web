@@ -17,7 +17,7 @@ cc.setupHTML = (a) ->
 
 # Monkey patch to fix bug in touch calculation in cocos2d-html5
 cc.Touch.prototype.locationInView = ->
-  p = this._m_point
+  p = this._point
 
   $c = $(cc.canvas)
 
@@ -38,6 +38,7 @@ cc.Touch.prototype.locationInView = ->
 
   # X coord doesn't consider ratio
   realX = (p.x - scrollH) * ratioW
+
 
   # Y coord has wrong origin and doesn't consider ratio
   realY = (p.y - (cc.canvas.height - $c.height())) - scrollV

@@ -3,58 +3,61 @@ nextSpriteTag = 1
 class App.StorybookJSON
 
   constructor: ->
-    @Configurations =
-      pageFlipSound:
-        forward: "page-flip-sound.mp3"
-        backward: "page-flip-sound.mp3"
 
-      pageFlipTransitionDuration: 0.6
-      paragraphTextFadeDuration: 0.4
-      homeMenuForPages:
-        normalStateImage: "home-button.png"
-        tappedStateImage: "home-button-over.png"
-        position: [20, 20]
+    # The object athat will become the JSON string
+    @document =
+      Configurations:
+        pageFlipSound:
+          forward: "page-flip-sound.mp3"
+          backward: "page-flip-sound.mp3"
 
-    @MainMenu =
-      CCSprites: [],
-      MenuItems: [{
-          normalStateImage: "autoplay.png",
-          tappedStateImage: "autoplay-over.png",
-          storyMode: "autoPlay",
-          position: [100, 112]
-      }, {
-          normalStateImage: "read-it-myself.png",
-          tappedStateImage: "read-it-myself-over.png",
-          storyMode: "readItMyself",
-          position: [400, 112]
-      }, {
-          normalStateImage: "read-to-me.png",
-          tappedStateImage: "read-to-me-over.png",
-          storyMode: "readToMe",
-          position: [700, 112]
-      }],
-      API: {
-          CCFadeIn: [{
-              duration: 2,
-              actionTag: 22
-          }]
-      },
-      runActionsOnEnter: [{
-          spriteTag: 100,
-          actionTag: 22
-      }]
+        pageFlipTransitionDuration: 0.6
+        paragraphTextFadeDuration: 0.4
+        homeMenuForPages:
+          normalStateImage: "home-button.png"
+          tappedStateImage: "home-button-over.png"
+          position: [20, 20]
 
-    @Pages = []
+      MainMenu:
+        CCSprites: [],
+        MenuItems: [{
+            normalStateImage: "autoplay.png",
+            tappedStateImage: "autoplay-over.png",
+            storyMode: "autoPlay",
+            position: [100, 112]
+        }, {
+            normalStateImage: "read-it-myself.png",
+            tappedStateImage: "read-it-myself-over.png",
+            storyMode: "readItMyself",
+            position: [400, 112]
+        }, {
+            normalStateImage: "read-to-me.png",
+            tappedStateImage: "read-to-me-over.png",
+            storyMode: "readToMe",
+            position: [700, 112]
+        }],
+        API: {
+            CCFadeIn: [{
+                duration: 2,
+                actionTag: 22
+            }]
+        },
+        runActionsOnEnter: [{
+            spriteTag: 100,
+            actionTag: 22
+        }]
+
+      Pages: []
 
   @fromJSON: (json) ->
     # TODO
 
   toString: ->
-    JSON.stringify(this)
+    JSON.stringify(@document)
 
   resetPages: ->
     # FIXME needs to delete scene._page
-    @Pages = []
+    @document.Pages = []
 
   resetParagraphs: (scene) ->
     page = scene._page
@@ -68,7 +71,7 @@ class App.StorybookJSON
       API: {}
       Page:
         settings:
-          number: @Pages.length + 1,
+          number: @document.Pages.length + 1,
           fontType: "Arial",
           fontColor: [255, 0, 0],
           fontHighlightColor: [255, 255, 255],
@@ -81,7 +84,7 @@ class App.StorybookJSON
           paragraphs: []
 
     scene._page = page
-    @Pages.push(page)
+    @document.Pages.push(page)
 
     page
 
@@ -103,6 +106,14 @@ class App.StorybookJSON
     keyframe._paragraph = paragraph
 
     paragraph
+
+  addTextToKeyframe: (line, keyframe) ->
+    keyframe ||= App.currentKeyframe()
+
+    p = keyframe._paragraph
+    throw new Error("Keyframe has no Paragraph") unless p?
+
+    p.linesOfText.push(line)
 
   addWidget: (keyframe, widget) ->
     p = keyframe._paragraph
@@ -135,6 +146,8 @@ class App.StorybookJSON
         #widget._line.yOffset = Math.round(widget.y())
 
 
+  removeTextFromKeyframe: () ->
+    throw new Error("Not implemented yet")
 
   getPage: (pageNumber) ->
     @document.Pages[pageNumber]

@@ -7,5 +7,5 @@ class App.Routers.StorybooksRouter extends Backbone.Router
     @collection.fetch()
 
   index: ->
-	  view = new App.Views.StorybookIndex(collection: @collection)
-	  $('#storybooks').html(view.render().el)
+    view = new App.Views.StorybookIndex(collection: @collection)
+    $('#storybooks').html(view.render().el)

@@ -2,10 +2,12 @@ NEXT_WIDGET_ID = 1
 
 class App.Builder.Widgets.Widget extends cc.Node
 
-  @_mouse_over = false
-  
+  draggable: true
+
+  _mouse_over: false
+
   @newFromHash: (hash) ->
-    widget = new this(id: hash.id)
+    widget = new this(hash)
 
     widget.setPosition(new cc.Point(hash.position.x, hash.position.y)) if hash.position
 
@@ -87,3 +89,33 @@ class App.Builder.Widgets.Widget extends cc.Node
                 , y: @getPosition().y
                 }
     }
+
+  pointToLocal: (point) ->
+    local = @convertToNodeSpace(point)
+
+    r = @rect()
+    r.origin = new cc.Point(0, 0)
+
+    # Fix bug in cocos2d-html5; It doesn't convert to local space correctly
+    local.x += @parent.getAnchorPoint().x * r.size.width
+    local.y += @parent.getAnchorPoint().y * r.size.height
+
+    local
+
+  isPointInside: (point) ->
+    local = @pointToLocal(point)
+
+    r = @rect()
+    r.origin = new cc.Point(0, 0)
+
+    return cc.Rect.CCRectContainsPoint(r, local)
+
+  setStorybook: (storybook) ->
+    @removeFromStorybook(@_storybook) if @_storybook
+    @_storybook = storybook
+    @addToStorybook(storybook) if storybook
+
+  removeFromStorybook: (storybook) =>
+
+  addToStorybook: (storybook) =>
+

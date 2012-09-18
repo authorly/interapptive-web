@@ -21,6 +21,7 @@ class App.Views.TextWidget extends Backbone.View
     'mouseleave' : 'mouseLeave'
     'focus' : 'onFocus'
     'blur' : 'onBlur'
+    # do focusOut to close toolbar also! should fix it.
     'keyup' : 'editActivity'
     'paste' : 'editActivity'
     'drag' : 'drag'
@@ -32,9 +33,9 @@ class App.Views.TextWidget extends Backbone.View
     $(@el).draggable
       start: @startDrag
       stop: @drop
-      
+
     @canvas = @getCanvas() #TODO DRY up canvas calls below
-      
+
   setDefaults: ->
     @content @model?.get('content') ? @_content
     @fontColor @model?.get('color') ? @_fontColor
@@ -42,13 +43,13 @@ class App.Views.TextWidget extends Backbone.View
     @fontFace @model?.get('face') ? @_fontFace
     @fontWeight @model?.get('weight') ? @_fontWeight
     @textAlign @model?.get('align') ? "left"
-    
+
   id: (_id) ->
      if _id then @id = _id else @id
-     
+
   render: ->
     this
-    
+
   getText: ->
     # FIXME need to solve for multiple lines and html formatting
     # perhaps just html encode?
@@ -56,90 +57,89 @@ class App.Views.TextWidget extends Backbone.View
     #$(@el).find('div').each(-> str = str + $(this).text())
     #str
     $(@el).html()
-    
+
   setText: (text) ->
-    if text then $(@el).html(text) else 
-    
+    if text then $(@el).html(text) else
+
   text: (_text) ->
     if _text then $(@el).html(_text) else $(@el).html()
-    
+
   setPosition: (_top, _left) ->
     $(@el).css
       'top' : _top
       'left' : _left
-      
+
   setPositionFromCocosCoords: (_x, _y) ->
     $(@el).css
       'top' : @cocosYtoTop(_y)
       'left' : @cocosXtoLeft(_x)
-      
+
   enableEditing: ->
     $(@el).attr("contenteditable", "true")
     $(@el).focus()
-    console.log @fromToolbar
-    if @fromToolbar then $(@el).resizable disabled: false
+
     if @fromToolbar then $(@el).selectText()
-    @disableDragging()
     @fromToolbar = null
-    
+
+    @disableDragging()
+
   disableEditing: ->
-    $(@el).resizable disabled: true
+    App.fontToolbar.active = false
     $(@el).attr("contenteditable", "false")
 
-    
   enableDragging: ->
     $(@el).draggable("option", "disabled", false)
-  
+
   disableDragging: ->
     $(@el).draggable("option", "disabled", true)
-  
+
   editing: ->
     @_editing
-      
+
   fontColor: (color) ->
     el = $(@el)
     if color then el.css('color', color) else el.css('color')
-    
+
   fontFace: (face) ->
     el = $(@el)
     if face then el.css('font-family', face) else el.css('font-family')
-    
+
   fontSize: (size) ->
     el = $(@el)
     if size then el.css('font-size', size) else el.css('font-size')
-    
+
   fontWeight: (fw) ->
     el = $(@el)
     if fw then el.css('font-weight', fw) else el.css('font-weight')
-    
+
   textAlign: (ta) ->
     el = $(@el)
     if ta then el.css('text-align', ta) else el.css('text-align')
-  
+
   content: (_content) ->
-    if _content 
+    if _content
       $(@el).html(_content)
-      @_content = _content 
-    else 
+      @_content = _content
+    else
       $(@el).html()
-      
+
   # events...
-  
+
   drag: ->
     console.log("drag")
     #if calling constrainToCanvas during drag, is just overridden by next drag event
     #@constrainToCanvas()
-  
+
   #drag stop
   drop: =>
     # x_coord and y_coord are translated to cocos2d x, y starting at bottom left
     @constrainToCanvas()
-    
+
     @save()
-    
+
   startDrag: =>
     App.currentKeyframeText(@model)
-      
+
   fontToolbarUpdate: (_fontToolbar) ->
     $(@el).css
       "font-family" : _fontToolbar.fontFace()
@@ -147,9 +147,9 @@ class App.Views.TextWidget extends Backbone.View
       "color" : _fontToolbar.fontColor()
       "font-weight" : _fontToolbar.fontWeight()
       "text-align" : _fontToolbar.textAlign()
-    
+
     @constrainToCanvas()
-      
+
     @save()
 
   onClick: (e) ->
@@ -157,34 +157,31 @@ class App.Views.TextWidget extends Backbone.View
     if @editing() then @disableDragging() else @enableEditing()
     # TODO set timer and turn off content editable
 
-  onBlur: (e) ->
-    #$(@el).addClass "done-editing"
+  onBlur: ->
+    # unless App.fontToolbar.active then App.fontToolbar.hide()
+    if $(@el).text().length < 1 then $(@el).text("Enter some text...")
     @editActivity()
 
   onFocus: (e) ->
-    #$(@el).removeClass "done-editing"
     $(@el).data 'before', $(@el).html()
     # show the font toolbar
     App.editTextWidget(this)
-    
+
   mouseEnter: (e) ->
-    
+
   mouseLeave: (e) ->
 
   editActivity: (e) ->
-    #console.log "EditText editActivity"
     if $(@el).data isnt $(@el).html()
       $(@el).data 'before', $(@el).html()
       @save()
-    
+
     # text may have grown outside of canvas
     @constrainToCanvas()
-    
+
   deselect: ->
     console.log("deselect text")
     $(@el).blur()
-      
-  # positions
    
   top: (_top) ->
     if _top then $(@el).css(top: _top) else $(@el).offset().top
