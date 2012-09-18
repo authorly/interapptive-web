@@ -12,8 +12,6 @@ window.App =
 
     @sceneList(new App.Views.SceneIndex collection: @scenesCollection)
     @keyframeList(new App.Views.KeyframeIndex collection: @keyframesCollection)
-    @imageList(new App.Views.ImageIndex(collection: @imagesCollection, tagName: "div"))
-    @spriteList(new App.Views.SpriteIndex(collection: @imagesCollection))
     @keyframeTextList(new App.Views.KeyframeTextIndex(collection: @keyframesTextCollection, el: $("body")))
 
     @fileMenu = new App.Views.FileMenuView el: $('#file-menu')
@@ -39,8 +37,6 @@ window.App =
     return unless @_modal
 
     @_modal.remove()
-
-
 
   modalWithView: (view) ->
     if view then @view = new App.Views.Modal(view, className: "content-modal") else @view
@@ -87,7 +83,7 @@ window.App =
   currentKeyframe: (keyframe) ->
     if keyframe then @keyframe = keyframe else @keyframe
 
-  currentKeyframeText: (keyframeText) -> 
+  currentKeyframeText: (keyframeText) ->
     if keyframeText then @keyframeText = keyframeText else @keyframeText
 
   sceneList: (list) ->
@@ -99,32 +95,29 @@ window.App =
   imageList: (list) ->
     if list then @imageListView = list else @imageListView
 
-  spriteList: (list) ->
-    if list then @spriteListView = list else @spriteListView
-
   keyframeTextList: (list) ->
     if list then @keyframeTextListView = list else @keyframeTextListView
-  
+
   editTextWidget: (textWidget) ->
     @selectedText(textWidget)
     @fontToolbar.attachToTextWidget(textWidget)
     @keyframeTextList().editText(textWidget)
     App.currentKeyframeText(textWidget.model)
-    
+
   fontToolbarUpdate: (fontToolbar) ->
     console.log "App.fontToolbarUpdate"
     @selectedText().fontToolbarUpdate(fontToolbar)
-    
+
   fontToolbarClosed: ->
     console.log("app.fonttoolbarclosed")
-    @keyframeTextList().deselectTexts()
-    
+    $('.text-widget').focusout()
+
   selectedText: (textWidget) ->
     if textWidget then @textWidget = textWidget else @textWidget
-   
+
   updateKeyframeText: ->
     @keyframeTextList().updateText()
-    
+
   capitalizeWord: (word) ->
     word.charAt(0).toUpperCase() + word.slice 1
 
@@ -148,7 +141,7 @@ $ ->
 
   $("ul#toolbar li ul li").click ->
     toolbar_modal.modal "hide"
-    unless $(this).is('.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .edit-sprite, .preview, .touch-zones')
+    unless $(this).is('.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .edit-sprite')
       toolbar_modal.modal "show"
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"
