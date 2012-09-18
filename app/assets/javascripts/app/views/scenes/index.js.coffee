@@ -24,7 +24,7 @@ class App.Views.SceneIndex extends Backbone.View
 
     this
 
-  createScene: =>
+  createScene: (init = false) =>
     scene = new App.Models.Scene
 
     scene.save storybook_id: App.currentStorybook().get('id'),
@@ -32,7 +32,6 @@ class App.Views.SceneIndex extends Backbone.View
       success: (scene, response) =>
         @collection.add scene
         @setActiveScene scene
-        App.keyframeList().createKeyframe()
         $('.scene-list li:last span:first').click()
         @scrollToTop()
         @numberScenes()
