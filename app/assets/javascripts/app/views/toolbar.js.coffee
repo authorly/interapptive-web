@@ -81,10 +81,8 @@ class App.Views.ToolbarView extends Backbone.View
     @loadDataFor("sound")
 
   loadDataFor: (assetType) ->
-    @assetLibraryView = new App.Views.AssetLibrary()
+    @assetLibraryView = new App.Views.AssetLibrary(assetType)
 
-    @assetLibraryView.activeAssetType = assetType
     App.modalWithView(view: @assetLibraryView).show()
     @assetLibraryView.setAllowedFilesFor assetType + "s"
     @assetLibraryView.initAssetLibFor assetType + "s"
-
