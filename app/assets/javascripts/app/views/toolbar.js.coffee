@@ -5,7 +5,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .edit-text'    : 'addText'
     'click .touch-zones'  : 'addTouch'
     'click .show-preview' : 'showPreview'
-    'click .edit-sprite'  : 'addSprite'
+    'click .add-image'  : 'addSprite'
     'click .images'       : 'showImageLibrary'
     'click .videos'       : 'showVideoLibrary'
     'click .fonts'        : 'showFontLibrary'
