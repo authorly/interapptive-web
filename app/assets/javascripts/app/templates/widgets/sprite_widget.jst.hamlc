@@ -1,0 +1,10 @@
+- _widget =   @widget.toHash()
+- _filename = _widget.filename
+- _zOrder =   _widget.zOrder
+- _id =       _widget.id
+- _style =    "background-image: url(#{_widget.url})"
+
+%div.sprite-image{:style => _style, :data-zorder => _zOrder, :data-widget-id => _id}
+%span
+  = _filename
+%div.delete

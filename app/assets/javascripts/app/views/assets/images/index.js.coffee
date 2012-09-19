@@ -1,5 +1,3 @@
-# FIXME This class is too specific and only handles background images
-#       It should be a general image index or renamed to BackgroundIndex
 class App.Views.ImageIndex extends Backbone.View
   template: JST["app/templates/assets/images/index"]
   events:
@@ -57,5 +55,3 @@ class App.Views.ImageIndex extends Backbone.View
 
         App.storybookJSON.addSprite(App.currentScene(), @node.backgroundSprite)
         App.modalWithView().hide()
-
-

@@ -14,6 +14,8 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     widget.setRadius(hash.radius) if hash.radius
 
+    #HACK TODO: Remove hardcore
+    widget.setZOrder(1000) #HACK TODO: Get rid of hardcode
     return widget
 
   constructor: (options={}) ->

@@ -1,0 +1,68 @@
+#sprite-form-window {
+  top: 330px;
+  height: 150px;
+
+  #sprite-editor {
+    padding: 10px;
+    font-size: 10px;
+    width: 150px;
+
+    ul {
+      width: 150px;
+      overflow: hidden;
+
+      li {
+        overflow: hidden;
+        list-style: none;
+        float: left;
+        font-size: 10px;
+
+        label {
+          width: 30px;
+          display: inline;
+          font-size: 10px;
+          margin: 0px 5px 0 0;
+          position: relative;
+          bottom: -1px;
+        }
+
+        input.small {
+          width: 28px;
+          height: 14px;
+          font-size: 10px;
+          padding: 1px 1px 1px 2px;
+          line-height: 13px;
+        }
+      }
+
+      li#sprite-filename {
+        width: 300px;
+        font-weight: bold;
+        overflow: hidden;
+        height: 30px;
+        margin: 1px 0 0px 0;
+        padding-right: 10px;
+        font-size: 12px;
+        color: #474646;
+      }
+
+      li.half {
+        width: 40%;
+      }
+
+      li.slider {
+        padding: 10px 0 0 0;
+        width: 95%;
+        height: 45px;
+
+        div {
+          margin: 5px 0 0px 13px
+        }
+      }
+
+      .disabled {
+        color: #666;
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@
         %a{:href => '#'} Scene
       %li.keyframe.disabled
         %a.add-keyframe{:href => '#'} Keyframe
+
   %li.toolbar-group
     %ul
       %li.edit-text.disabled
@@ -16,6 +17,7 @@
       %li.add-image.disabled
         - # TODO: Make this images_scene_path with the current scene. This will be easier when this is a backbone view.
         = link_to "Add Image", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
+
   %li.toolbar-group
     %ul
       %li.actions
@@ -28,6 +30,7 @@
         = link_to "Sounds", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
       %li.fonts
         = link_to "Fonts", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
+
   %li.toolbar-group.last
     %ul
       %li.options.disabled

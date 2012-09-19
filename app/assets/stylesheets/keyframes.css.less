@@ -19,8 +19,8 @@
     font-family: 'Arial Black';
 
     div {
-      .opacity(0.3);
       .round-corners();
+      .opacity(0.3);
 
       width: 110px;
       height: 84px;
@@ -34,9 +34,18 @@
     }
   }
 
+  li:hover {
+    .grab();
+  }
+
+  li:active {
+    .grabbing();
+  }
+
   li.active {
     border: 1px solid @slidePreviewActiveBgBegin;
     color: #ffcc33;
+    opacity: 1.0;
 
     a.delete-keyframe {
       opacity: 0;
@@ -52,8 +61,14 @@
       background-size: 55%;
     }
 
-    border: 1px solid @slidePreviewActiveBgBegin;
-    opacity: 1.0;
+    a.delete-keyframe:hover {
+      opacity: 0.9;
+      cursor: hand;
+    }
+
+    a.delete-keyframe:active {
+      opacity: 0.9;
+    }
   }
 
   li.active:first-child {
@@ -63,8 +78,7 @@
   }
 
   li.active:hover {
-
-    cursor: default;
+    opacity: 0.9;
 
     a.delete-keyframe {
       opacity: 0.45;
@@ -72,24 +86,7 @@
     }
   }
 
-
-  li.active:hover {
-    opacity: 0.9;
-    cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
-  }
-
   li.active:active {
     opacity: 0.9;
-    cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
-  }
-
-  li.active a.delete-keyframe:hover {
-    opacity: 0.9;
-    cursor: hand;
-  }
-
-  li.active a.delete-keyframe:active {
-    opacity: 0.9;
-    cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
   }
 }

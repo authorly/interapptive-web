@@ -12,6 +12,9 @@
 @import 'modals.css.less';
 @import 'keyframe_text.css.less';
 @import 'font_toolbar.css.less';
+@import 'widget_windows.css.less';
+@import 'sprite_form.css.less';
+@import 'active_sprites_list.css.less';
 
 html, body{
   background-color: @grayDarker;
@@ -89,11 +92,18 @@ canvas#builder-canvas {
   background-position: center;
 }
 
+.icon-white {
+  background-image: url("/assets/twitter/bootstrap/glyphicons-halflings-white.png") !important;
+}
+
+.icon-black {
+  background-image: url("/assets/twitter/bootstrap/glyphicons-halflings.png") !important;
+}
+
 .left {
   float: left;
 }
 
-// Footer
 footer {
   height: 105px;
   background-color: @footerColor;
@@ -106,7 +116,6 @@ footer {
   background-position: center center;
 }
 
-// File menu and toolbar
 header {
   nav.font-menu {
     .gradient(@fileMenuBgStart, @fileMenuBgEnd);
@@ -127,7 +136,6 @@ header {
   }
 }
 
-// Sidebar
 .sidebar {
   .drop-shadow(1px, 0, 13px, #666);
 
@@ -140,38 +148,6 @@ header {
   height: 100%;
   width: 200px;
   z-index: 20 !important;
-}
-
-// Forms
-.bbf-date i {
-  position: relative;
-  left: -22px;
-  top: 1px;
-}
-
-.help-inline {
-  padding-top: 7px;
-  font-style: italic;
-}
-
-// Bootstrap overrides
-.icon-white {
-  background-image: url("/assets/twitter/bootstrap/glyphicons-halflings-white.png") !important;
-}
-
-.icon-black {
-  background-image: url("/assets/twitter/bootstrap/glyphicons-halflings.png") !important;
-}
-
-.progress-animated .bar {
-  background: url(../assets/progressbar.gif) !important;
-  filter: none;
-}
-
-.progress-success {
-  position: relative;
-  bottom: -8px;
-  right: -24px;
 }
 
 .large-modal {

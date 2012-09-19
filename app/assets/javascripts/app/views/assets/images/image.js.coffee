@@ -4,5 +4,4 @@ class App.Views.Image extends Backbone.View
 
   render: ->
     $(@el).html(@template(image: @model))
-    $(@el).addClass "zoomable"
     this

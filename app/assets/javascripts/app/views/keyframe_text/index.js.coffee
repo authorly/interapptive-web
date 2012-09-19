@@ -1,5 +1,5 @@
 class App.Views.KeyframeTextIndex extends Backbone.View
-  
+
   texts : []
   
   initialize: ->

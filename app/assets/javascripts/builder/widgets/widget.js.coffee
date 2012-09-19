@@ -7,7 +7,11 @@ class App.Builder.Widgets.Widget extends cc.Node
   _mouse_over: false
 
   @newFromHash: (hash) ->
+
     widget = new this(hash)
+
+    # TODO: Sprite should be created w/ this zOrder, move to SpriteWidget
+    if hash.zOrder then widget._zOrder = hash.zOrder
 
     widget.setPosition(new cc.Point(hash.position.x, hash.position.y)) if hash.position
 
@@ -65,6 +69,12 @@ class App.Builder.Widgets.Widget extends cc.Node
   getOpacity: ->
     @_opacity
 
+  setZOrder: (z, triggerEvent=true) ->
+    @_zOrder = z
+
+  getZOrder: ->
+    @_zOrder
+
   setPosition: (pos, triggerEvent=true)->
     super
     @trigger('change', 'position') if triggerEvent
@@ -74,23 +84,26 @@ class App.Builder.Widgets.Widget extends cc.Node
     p = @getPosition()
     s = @getContentSize()
     a = @getAnchorPoint()
+    scale = @getScale()
 
     cc.RectMake(
       p.x - s.width  * a.x
       p.y - s.height * a.y
-      s.width
-      s.height
+      s.width*@getScale()
+      s.height*@getScale()
     )
 
   toHash: ->
     { id: @id
     , type: Object.getPrototypeOf(this).constructor.name
-    , position: { x: @getPosition().x
-                , y: @getPosition().y
+    , position: { x: parseInt(@getPosition().x)
+                , y: parseInt(@getPosition().y)
                 }
     }
 
   pointToLocal: (point) ->
+    return unless @parent
+
     local = @convertToNodeSpace(point)
 
     r = @rect()

@@ -1,6 +1,7 @@
 .scene-list::-webkit-scrollbar {
   display: none;
 }
+
 .scene-list {
   margin-left: 15px;
   height: 500px;
@@ -76,12 +77,11 @@
   }
 
   li span:hover {
-    cursor: url(https://mail.google.com/mail/images/2/openhand.cur), default !important;
+    .grab()
   }
 
-
   li span:active {
-    cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
+    .grabbing()
   }
 
   li.active:hover {
@@ -94,5 +94,6 @@
 
   li.active a.delete:hover {
     opacity: 0.9;
+    cursor: pointer;
   }
 }

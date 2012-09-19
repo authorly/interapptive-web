@@ -52,18 +52,9 @@ class App.Views.KeyframeIndex extends Backbone.View
   setActiveKeyframe: (event) ->
     @activeId = $(event.currentTarget).attr "data-id"
     @keyframe = @collection.get @activeId
-
-    x_coord = $(event.currentTarget).attr "data-x"
-    y_coord = $(event.currentTarget).attr "data-y"
-    sprite  = cc.Director.sharedDirector().getRunningScene().backgroundSprite
-
     App.currentKeyframe @keyframe
-
     $(event.currentTarget).parent().removeClass("active").addClass("active").siblings().removeClass("active")
-
     @populateWidgets(@keyframe)
-
-    sprite.setPosition(new cc.Point(x_coord, y_coord)) if sprite?
 
   destroyKeyframe: (event) =>
     event.stopPropagation()
@@ -148,6 +139,8 @@ class App.Views.KeyframeIndex extends Backbone.View
     return unless keyframe?
 
     App.builder.widgetLayer.clearWidgets()
+
+    $("#active-sprites-window ul").empty()
 
     # clear text
     App.updateKeyframeText()

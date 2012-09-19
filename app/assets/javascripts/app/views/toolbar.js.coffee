@@ -52,7 +52,13 @@ class App.Views.ToolbarView extends Backbone.View
 
   addSprite: ->
     imageSelected = (sprite) =>
-      widget = new App.Builder.Widgets.SpriteWidget(url: sprite.get('url'))
+      widget = new App.Builder.Widgets.SpriteWidget(
+        url:      sprite.get('url'),
+        filename: sprite.get('name'),
+        zOrder:   $('#active-sprites-window ul li').size() || 1
+        scale:    1.0
+      )
+
       widget.setPosition(new cc.Point(300, 400))
       @_addWidget(widget)
 

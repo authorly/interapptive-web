@@ -24,7 +24,7 @@ class App.Views.SceneIndex extends Backbone.View
 
     this
 
-  createScene: (init = false) =>
+  createScene: =>
     scene = new App.Models.Scene
 
     scene.save storybook_id: App.currentStorybook().get('id'),
