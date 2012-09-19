@@ -12,3 +12,15 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
   selectImage: ->
     @trigger('image_select', @image)
 
+  fetchImages: ->
+    $.getJSON "/storybooks/#{App.currentStorybook().get('id')}/images", (files) ->
+      fillTable(files)
+      allowSortingSearching()
+
+  fillTable:(files) ->
+
+  allowSortingSearching: ->
+    $("#loading").remove()
+    $("#searchtable").show()
+    $(".table-striped").advancedtable({searchField: "#search", loadElement: "#loader", searchCaseSensitive: false, ascImage: "/assets/advancedtable/up.png", descImage: "/assets/advancedtable/down.png"})
+
