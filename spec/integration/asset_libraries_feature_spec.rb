@@ -3,16 +3,11 @@ require 'spec_helper'
 describe "User's ability to upload and manage various assets", :js => true do
   before :each do
     # Create a storybook for a user
-    @user = User.find_by_email('jack@daniles.com')
-    @user = Factory.create(:user, :email => 'jack@daniles.com', :password => 'qwerty', :password_confirmation => 'qwerty') unless @user
-    @storybook = @user.storybooks.first
-    @storybook = Factory.create(:storybook, :user => @user) unless @storybook
+    @user = Factory(:user)
+    @storybook = Factory.create(:storybook, :user => @user)
 
     # Sign in
-    page.visit sign_in_path
-    page.fill_in "email", :with => "jack@daniles.com"
-    page.fill_in "password", :with => "qwerty"
-    page.click_button "Sign In"
+    login @user
     page.should have_content(@storybook.title)
     page.click_link(@storybook.title)
     page.find(".open-storybook").click
@@ -21,8 +16,7 @@ describe "User's ability to upload and manage various assets", :js => true do
 
   after :each do
     # Sign out
-    page.visit root_path
-    page.find('a[@href="/users/sign_out"]').click
+    logout
   end
 
   context "fonts" do

@@ -1,9 +1,9 @@
 class UserSessionsController < ApplicationController
-  # GET /account/sign_in
+  # GET /users/sign_in
   def new
   end 
 
-  # POST /account/sign_in
+  # POST /users/sign_in
   def create
     user = User.find_by_email params[:email]
 
@@ -16,7 +16,8 @@ class UserSessionsController < ApplicationController
     end
   end
 
-  # POST /account/sign_out
+  # TODO: This should probably be DELETE...
+  # MATCH /users/sign_out
   def destroy
     cookies.delete :auth_token
     redirect_to root_path, :notice => "Signed out."

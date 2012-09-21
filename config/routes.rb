@@ -8,7 +8,7 @@ Interapptive::Application.routes.draw do
   get  'users/sign_up'  => 'users#new',             :as => 'sign_up'
   get  'users/sign_in'  => 'user_sessions#new',     :as => 'sign_in'
   post 'users/sign_in'  => 'user_sessions#create',  :as => ''
-  post 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
+  match 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
   get  'users/settings' => 'users#edit'
 
   resources :users, :except => [:new, :edit, :index] do 
