@@ -12,6 +12,7 @@
         tagName: 'div',
         className: 'btn-group',
 
+
         events: {
             'click .btn-primary': 'setActive'
         },
@@ -19,20 +20,18 @@
         initialize: function(options) {
             Base.prototype.initialize.call(this, options);
 
-            //Set default date
-            if (!this.value) {
-                this.value = "both"
-            }
+            this.options = options;
         },
 
         render: function() {
+
             var $el = this.$el,
                 schema = this.schema,
                 buttonType = schema.buttonType,
                 labeling = schema.labeling,
                 selectedIndex = schema.selectedIndex,
+                selector = 'button:contains("' + this.value + '")',
                 buttonTypeCssClass;
-
 
             switch (buttonType) {
                 case "toggle":
@@ -59,6 +58,8 @@
 
             $el.html(html);
 
+            $el.find(selector).addClass("active");
+            $el.find(selector).siblings().removeClass("active");
             //Make sure setValue of this object is called, not of any objects extending it (e.g. DateTime)
             exports.Buttons.prototype.setValue.call(this, this.value);
 
@@ -69,11 +70,11 @@
          * @return {aValue}   Active buttons value
          */
         getValue: function() {
-            $('.active', this.el).contents();
+           return this.$el.val();
         },
 
         setValue: function(value) {
-            $('.active', this.el).contents().val(value);
+            this.$el.val(value);
         },
 
         setActive: function(ev) {
