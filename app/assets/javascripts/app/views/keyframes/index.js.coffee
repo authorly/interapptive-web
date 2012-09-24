@@ -64,17 +64,21 @@ class App.Views.KeyframeIndex extends Backbone.View
   destroyKeyframe: (event) =>
     event.stopPropagation()
 
-    App.keyframeList().collection.fetch
-      success: (collection, response) =>
-        message  = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
-        target   = $(event.currentTarget)
-        keyframe = collection.get(target.attr('data-id'))
+    #App.keyframeList().collection.fetch
+    #  success: (collection, response) =>
+    message  = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
+    target   = $(event.currentTarget)
+    keyframe = @collection.get(target.attr('data-id'))
 
-        collection.remove(keyframe)
+    #@collection.remove(keyframe)
+    console.log keyframe
+    console.log @collection
 
-        if confirm(message)
+    if confirm(message)
+      @collection.fetch
+        success: =>
           keyframe.destroy
-            success: ->
+            success: =>
               $('.keyframe-list li.active').remove()
               @numberKeyframes()
               $('.keyframe-list li:first div').click()
