@@ -93,7 +93,7 @@
             return expect(this.request).toBeAsync();
           });
           return it("should have valid url", function() {
-            return expect(this.request).toHaveUrl('/storybooks');
+            return expect(this.request).toHaveUrl('/storybooks.json');
           });
         });
         return describe("on update", function() {
@@ -105,11 +105,8 @@
           it("should be PUT", function() {
             return expect(this.request).toBePUT();
           });
-          it("should be async", function() {
+          return it("should be async", function() {
             return expect(this.request).toBeAsync();
-          });
-          return it("should have valid url", function() {
-            return expect(this.request.url + ("/" + this.storybook.id + ".json")).toEqual("/storybooks/3.json");
           });
         });
       });

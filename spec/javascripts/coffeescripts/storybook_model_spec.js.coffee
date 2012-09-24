@@ -86,7 +86,7 @@ describe "App.Models.Storybook", ->
           expect(@request).toBeAsync()
 
         it "should have valid url", ->
-          expect(@request).toHaveUrl('/storybooks')
+          expect(@request).toHaveUrl('/storybooks.json')
 
       describe "on update", ->
         beforeEach ->
@@ -99,6 +99,3 @@ describe "App.Models.Storybook", ->
 
         it "should be async", ->
           expect(@request).toBeAsync()
-
-        it "should have valid url", ->
-          expect(@request.url + "/#{@storybook.id}.json").toEqual "/storybooks/3.json"
