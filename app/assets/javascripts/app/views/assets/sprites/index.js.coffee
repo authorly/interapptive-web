@@ -1,7 +1,6 @@
 #= require ../images/index
 
 class App.Views.SpriteIndex extends App.Views.ImageIndex
-
   template: JST["app/templates/assets/sprites/index"]
 
   events:
@@ -13,11 +12,15 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
     @trigger('image_select', @image)
 
   fetchImages: ->
-    $.getJSON "/storybooks/#{App.currentStorybook().get('id')}/images", (files) ->
-      fillTable(files)
-      allowSortingSearching()
+      @fillTable()
+      @allowSortingSearching()
 
-  fillTable:(files) ->
+  fillTable: (files) ->
+    @collection.each (image) => @appendImage(image)
+
+  appendImage: (image) ->
+    view = new App.Views.Sprite(model: image)
+    $('tbody.files').append(view.render().el)
 
   allowSortingSearching: ->
     $("#loading").remove()
