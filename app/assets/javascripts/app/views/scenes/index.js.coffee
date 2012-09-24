@@ -69,7 +69,9 @@ class App.Views.SceneIndex extends Backbone.View
 
     if confirm(message)
       scene.destroy
-        success: => sceneEl.remove() and $('.scene-list li:first span:first').click()
+        success: =>
+          sceneEl.remove() and $('.scene-list li:first span:first').click()
+          @numberScenes()
 
   clickScene: (event) ->
     target  = $(event.currentTarget)

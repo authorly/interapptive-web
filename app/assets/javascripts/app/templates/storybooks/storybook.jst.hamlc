@@ -1,2 +1,3 @@
 %a.storybook{"data-id" => "#{@storybook.get('id')}", :href => "#"}
   = @storybook.get('title')
+%a.delete-storybook{"data-id" => "#{@storybook.get('id')}", :href => "#"}

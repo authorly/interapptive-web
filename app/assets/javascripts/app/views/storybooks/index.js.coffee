@@ -1,11 +1,12 @@
 class App.Views.StorybookIndex extends Backbone.View
   template: JST["app/templates/storybooks/index"]
   events:
-    'click .storybook': 'selectStorybook'
-    'click .open-storybook': 'openStorybook'
-    'click .new-storybook-btn': 'showStorybookForm'
-    'click .close': 'closeStorybookForm'
-    'submit .storybook-form': 'createStorybook'
+    'click          .storybook': 'selectStorybook'
+    'click     .open-storybook': 'openStorybook'
+    'click  .new-storybook-btn': 'showStorybookForm'
+    'click              .close': 'closeStorybookForm'
+    'submit    .storybook-form': 'createStorybook'
+    'click   .delete-storybook': 'deleteStorybook'
   
   initialize: ->
     @collection.on('reset', @render, this)
@@ -50,9 +51,7 @@ class App.Views.StorybookIndex extends Backbone.View
 
   showStorybookForm: ->
     $('.new-storybook-btn').fadeOut(70)
-    $('.storybook-form').delay(70).effect "bounce",
-      times: 3
-    , 300 # Duration of effect in miliseconds
+    $('.storybook-form').delay(70).fadeIn()
 
   openStorybook: ->
     $("#storybooks-modal").modal "hide" unless $('.open-storybook').hasClass "disabled"
@@ -63,11 +62,24 @@ class App.Views.StorybookIndex extends Backbone.View
 
     $(".scene").removeClass "disabled"
 
-  selectStorybook: (event) ->
+  selectStorybook: (e) ->
     $('a.storybook').removeClass "active alert alert-info"
-    $(event.currentTarget).addClass "active alert alert-info"
+    $(e.currentTarget).addClass "active alert alert-info"
     $('.btn-primary.open-storybook').removeClass "disabled"
     
-    storybook_id = $(event.currentTarget).data("id")
+    storybook_id = $(e.currentTarget).data("id")
     storybook = @collection.get(storybook_id)
     App.currentStorybook(storybook)
+
+  deleteStorybook: (e) ->
+    e.preventDefault()
+    storybook_id = $(e.currentTarget).data("id")
+    console.log "~~"
+    console.log @collection
+    storybook = @collection.get(storybook_id)
+    message  =
+      '\nYou are about to delete this storybook and all of it\'s scenes, keyframes, images, etc.\n\n\n' +
+      'This cannot be undone.\n\n\n' +
+      'Are you sure you want to continue?\n'
+
+    if confirm(message) then storybook.destroy() and document.location.reload true
