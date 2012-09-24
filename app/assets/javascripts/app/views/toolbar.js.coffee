@@ -5,7 +5,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .edit-text'    : 'addText'
     'click .touch-zones'  : 'addTouch'
     'click .show-preview' : 'showPreview'
-    'click .add-image'  : 'addSprite'
+    'click .add-image'    : 'addSprite'
     'click .images'       : 'showImageLibrary'
     'click .videos'       : 'showVideoLibrary'
     'click .fonts'        : 'showFontLibrary'
@@ -51,7 +51,6 @@ class App.Views.ToolbarView extends Backbone.View
     @_addWidget(widget)
 
   addSprite: ->
-
     imageSelected = (sprite) =>
       widget = new App.Builder.Widgets.SpriteWidget(url: sprite.get('url'))
       widget.setPosition(new cc.Point(300, 400))
@@ -64,6 +63,7 @@ class App.Views.ToolbarView extends Backbone.View
     view.on('image_select', imageSelected)
 
     App.modalWithView(view: view).show()
+    view.fetchImages()
 
   showPreview: ->
     App.showSimulator()

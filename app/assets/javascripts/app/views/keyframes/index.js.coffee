@@ -17,7 +17,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     @initSortable() if @collection?
 
     # Fire asynchronously so other 'reset' events can finish first
-    setTimeout((=> $(@el).find('li:first div:first').click()), 1)
+    setTimeout((=> $(@el).find('li:last-child div:last').click()), 1)
     this
 
   createKeyframe: =>
@@ -26,14 +26,17 @@ class App.Views.KeyframeIndex extends Backbone.View
       wait: true
       success: (model, response) =>
         @appendKeyframe(model)
-        @collection.fetch()
+        @collection.fetch
+          success: ->
+            $('.keyframe-list li:last-child div').click()
+
 
   appendKeyframe: (keyframe) ->
     view  = new App.Views.Keyframe(model: keyframe)
 
-    $(@el).append(view.render().el).removeClass('active').first().addClass('active')
+    $(@el).append(view.render().el).removeClass('active').last().addClass('active')
 
-    $('.keyframe-list li:first div').click()
+    $('.keyframe-list li:last-child div').click()
 
     @numberKeyframes()
 
@@ -76,7 +79,7 @@ class App.Views.KeyframeIndex extends Backbone.View
           @collection.remove(keyframe)
           $('.keyframe-list li.active').remove()
           @numberKeyframes()
-          $('.keyframe-list li:first div').click()
+          $('.keyframe-list li:last div').click()
 
 
   setBackgroundPosition: (x, y) ->
