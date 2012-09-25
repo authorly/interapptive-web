@@ -7,10 +7,13 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_selectedWidget = null
 
     @setIsTouchEnabled(true)
+    @isKeyboardEnabled = true
+
+    cc.canvas.addEventListener 'keypress', (event) =>
+      console.log event.keyCode
 
     @addDblClickEventListener()
     @addClickOutsideEventListener() # Clicks outside the widget
-
 
   clearWidgets: ->
     for widget in @widgets
@@ -76,6 +79,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     canvasPoint: point
     })
 
+    widget.trigger('click')
 
     @_capturedWidget = widget
     @_previousPoint = new cc.Point(point.x, point.y)
@@ -98,6 +102,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     point = touch.locationInView()
     # TODO trigger('click')
     # Causes a save
+    # Moved this into mouse-down: when we're dragging, we want highlight.
+    # This is probably not the right behaviour, though.
     if @_capturedWidget
       @_capturedWidget.trigger('change', 'position')
       @_capturedWidget.trigger('mouseup', {
@@ -142,7 +148,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         previousWidget: @_mouseOverWidget
         })
       @_mouseOverWidget = widget
-
 
   setSelectedWidget: (widget) ->
     @_selectedWidget = widget

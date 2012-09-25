@@ -7,6 +7,9 @@ class App.Models.Action extends Backbone.Model
     else
       '/scenes/' + App.currentScene().get('id') + '/keyframes/' + App.currentKeyframe().get('id') + '/actions/' + this.get('id') + '.json'
 
+  toString: =>
+    "Action"
+
 class App.Collections.ActionsCollection
   model: App.Models.Action
   

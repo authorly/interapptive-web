@@ -224,4 +224,3 @@ $ ->
   $(window).resize ->
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
-

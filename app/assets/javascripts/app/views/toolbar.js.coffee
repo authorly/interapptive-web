@@ -46,9 +46,7 @@ class App.Views.ToolbarView extends Backbone.View
     #text.on('change', -> keyframe.updateWidget(text))
 
   addTouch: ->
-    widget = new App.Builder.Widgets.TouchWidget
-    widget.setPosition(new cc.Point(300, 300))
-    @_addWidget(widget)
+    App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:create') 
 
   addSprite: ->
     imageSelected = (sprite) =>
@@ -69,6 +67,7 @@ class App.Views.ToolbarView extends Backbone.View
     view.on('image_select', imageSelected)
 
     App.modalWithView(view: view).show()
+    # FIXME: this next line doesn't seem to do anything.
     view.fetchImages()
 
   showPreview: ->

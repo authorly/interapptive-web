@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121005055143) do
+ActiveRecord::Schema.define(:version => 20121003232112) do
 
   create_table "action_definitions", :force => true do |t|
     t.text     "description"
@@ -165,6 +165,7 @@ ActiveRecord::Schema.define(:version => 20121005055143) do
     t.integer  "sound_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "action_id"
   end
 
   add_index "touch_zones", ["scene_id"], :name => "index_touch_zones_on_scene_id"

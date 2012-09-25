@@ -164,7 +164,6 @@ GEM
     miniskirt (1.1.1)
       activesupport (>= 2.2)
     multi_json (1.3.6)
-    mysql2 (0.3.11)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -174,6 +173,7 @@ GEM
       net-ssh (>= 1.99.1)
     nokogiri (1.5.5)
     param_protected (4.0.0)
+    pg (0.14.1)
     poltergeist (0.7.0)
       capybara (~> 1.1)
       childprocess (~> 0.3)
@@ -306,8 +306,8 @@ DEPENDENCIES
   less-rails-bootstrap
   mini_magick
   miniskirt
-  mysql2
   param_protected (~> 4.0.0)
+  pg
   poltergeist
   pry
   pry-rails

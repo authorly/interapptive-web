@@ -18,7 +18,6 @@ class App.Builder.Widgets.Widget extends cc.Node
     if hash.id >= NEXT_WIDGET_ID
       NEXT_WIDGET_ID = hash.id + 1
 
-
     return widget
 
   constructor: (options={}) ->
@@ -37,17 +36,15 @@ class App.Builder.Widgets.Widget extends cc.Node
     @on("mouseover", @mouseOver)
     @on("mouseout", @mouseOut)
     @on('dblclick', @handleDoubleClick)
+    @on('click', @highlight)
     
   mouseOver: ->
-    console.log "Widget mousover"
     @_mouse_over = true
     
   mouseOut: -> 
-    console.log "Widget mouseout"
     @_mouse_over = false
     
   mouseMove: ->
-    #@highlight() unless @isHighlighted()
     console.log "mouse move from Widget"
   
   handleDoubleClick: -> 
@@ -57,11 +54,15 @@ class App.Builder.Widgets.Widget extends cc.Node
     return @_highlighted
 
   highlight: ->
-    console.log "Widget highlight"
-    @_highlighted = true
+    unless @isHighlighted()
+      console.info "Widget #{@id} highlighted."
+      @_highlighted = true
+      App.Builder.Widgets.WidgetDispatcher.trigger('widget:highlight', @id)
 
   unHighlight: ->
-    @_highlighted = false
+    if @isHighlighted()
+      @_highlighted = false
+      App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight')
 
   setOpacity: (o) ->
     @_opacity = o
@@ -78,7 +79,6 @@ class App.Builder.Widgets.Widget extends cc.Node
   setPosition: (pos, triggerEvent=true)->
     super
     @trigger('change', 'position') if triggerEvent
-
 
   rect: ->
     p = @getPosition()

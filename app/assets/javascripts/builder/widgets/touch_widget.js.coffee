@@ -6,12 +6,12 @@ LINE_WIDTH_OUTER = 2
 COLOR_INNER_STROKE = 'rgba(15, 79, 168, 1)'
 COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
 LINE_WIDTH_INNER = 2
+DEFAULT_OPACITY = 150
 
 class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   @newFromHash: (hash) ->
     widget = super
-
     widget.setRadius(hash.radius) if hash.radius
 
     #HACK TODO: Remove hardcore
@@ -24,13 +24,14 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     @setRadius(options.radius || 32)
     @setControlRadius(options.controlRadius || 8)
 
-    @setOpacity(200)
+    @setOpacity(DEFAULT_OPACITY)
     @on('mouseover', @onMouseOver, this)
     @on('mouseout',  @onMouseOut,  this)
     @on('mousedown', @onMouseDown, this)
     @on('mouseup',   @onMouseUp,   this)
     @on('mousemove', @onMouseMove, this)
 
+  # TODO: What do these two even do? Why do we need bind here?
   onMouseOver: (e) ->
     @setOpacity.bind(this, 255)
     point = e.canvasPoint
@@ -60,6 +61,9 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   onMouseUp: (e) ->
     @endResize(e)
+
+  handleDoubleClick: ->
+    App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:edit', this)
 
   startResize: (e) ->
     @resizing = true
@@ -94,7 +98,6 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     dist = Math.sqrt((xLen * xLen) + (yLen * yLen))
 
     return (dist < @getControlRadius())
-
 
   setRadius: (r) ->
     r = 16 if r < 16
@@ -165,7 +168,6 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   distanceFromCenter: (point) ->
     radius = @getRadius()
-
     local = @pointToLocal(point)
 
     xLen = local.x - radius
@@ -176,6 +178,12 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   isPointInside: (point) ->
     inRect = super
     return false unless inRect
-
-
     return (@distanceFromCenter(point) < @getRadius())
+
+  highlight: ->
+    super
+    @setOpacity(230)
+
+  unHighlight: ->
+    super
+    @setOpacity(DEFAULT_OPACITY)
