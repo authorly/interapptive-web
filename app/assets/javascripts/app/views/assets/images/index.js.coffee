@@ -26,12 +26,13 @@ class App.Views.ImageIndex extends Backbone.View
     event.preventDefault() # stop default behavior of sender element
     @submit  = $(@el).find('.use-image')
     @sender  = $(event.currentTarget)
-    @imageId = @sender.addClass('selected').data('id')
-    @image   = @collection.get(@imageId)
     @parent  = @sender.parent()
     @submit.removeClass('disabled')
     @parent.addClass('zoomed-in')
-    @parent.siblings().addClass('zoomable').removeClass('zoomed-in').children('a').removeClass('selected')
+    @parent.siblings().addClass('zoomable').removeClass('zoomed-in')
+    @parent.children().removeClass('selected')
+    @imageId = @sender.addClass('selected').data('id')
+    @image   = @collection.get(@imageId)
 
   doZoom: ->
     $('.zoomable').toggleClass('zoomed-in')

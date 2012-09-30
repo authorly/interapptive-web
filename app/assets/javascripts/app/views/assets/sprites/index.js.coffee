@@ -4,7 +4,7 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
   template: JST["app/templates/assets/sprites/index"]
 
   events:
-    "click .thumbnail":               "setActiveImage"
+    "click .image-row":               "setActiveImage"
     "touchstart, touchend .zoomable": "doZoom"
     "click .use-image":               "selectImage"
 
@@ -23,7 +23,5 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
     $('tbody.files').append(view.render().el)
 
   allowSortingSearching: ->
-    $("#loading").remove()
     $("#searchtable").show()
     $(".table-striped").advancedtable({searchField: "#search", loadElement: "#loader", searchCaseSensitive: false, ascImage: "/assets/advancedtable/up.png", descImage: "/assets/advancedtable/down.png"})
-

@@ -27,7 +27,7 @@
     %table{:width => "100%", :class => "normal", :id => "searchtable", :border => "0", :cellspacing => "4", :cellpadding => "0", :style => "display:none"}
       %tr
         %td{:width => "27%"}
-          %input{:name => "search" :type => "text", :id => "search", :style => "display:none"} 
+          %input{:name => "search", :type => "text", :id => "search", :style => "display:none"} 
         %td{:width => "73%"}
           #loader{:style => "display:none;"}
             %img{:src => "/assets/advancedtable/loader.gif", :alt => "Loader"}
