@@ -7,10 +7,6 @@ class App.Views.ImageIndex extends Backbone.View
     "touchstart, touchend .zoomable": "doZoom"
     "click .use-image": "setSceneBackground"
 
-  initialize: ->
-    @collection.bind('reset', @render, this);
-    @collection.fetch()
-
   render: ->
     $(@el).html(@template())
     @collection.each (image) => @appendImage(image)

@@ -12,11 +12,13 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
     @trigger('image_select', @image)
 
   fetchImages: ->
-      @fillTable()
-      @allowSortingSearching()
+    @fillTable()
 
-  fillTable: (files) ->
-    @collection.each (image) => @appendImage(image)
+  fillTable: ->
+    @collection.fetch
+     success: (images, response) =>
+       images.each (image) => @appendImage(image)
+       @allowSortingSearching()
 
   appendImage: (image) ->
     view = new App.Views.Sprite(model: image)

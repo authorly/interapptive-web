@@ -4,6 +4,6 @@ class App.Views.Sprite extends Backbone.View
   className: 'image-row'
 
   render: ->
-    $(@el).html(@template(sprite: @model))
-    $(@el).attr('data-id', @model.id)
+    $(@el).html(@template(sprite: @model)).
+      attr('data-id', @model.id)
     this
