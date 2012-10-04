@@ -1,0 +1,16 @@
+#password-reset-form.well
+  %h1 Enter New Password
+  = form_for(@user, :url => "/password_resets/#{@user.password_reset_token}") do |f|
+    %br/
+
+    %p
+      = f.password_field :password, :placeholder => 'password'
+    %p
+      = f.password_field :password_confirmation, :placeholder => 'confirm password'
+    
+    = f.submit 'Change', :class => 'btn'
+
+    %br/
+    %br/
+
+    = link_to 'Sign In', sign_in_path
