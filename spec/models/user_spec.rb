@@ -22,6 +22,12 @@ describe User do
       user.should_not be_valid
     end
 
+    it 'should not require password for existing user unless password is changed' do
+      user = Factory(:user, :email => 'taken@example.com')
+      user.update_attributes(:password => 'f', :password_confirmation => 'f').should_not be
+      user.reload.update_attributes(:email => 'foo@bar.com').should be
+    end
+
     it "should authenticate with a good password" do
       user.authenticate('supersecret').should == user
     end
