@@ -1,0 +1,14 @@
+#password-reset-form.well
+  %h1 Enter your email
+  = form_tag password_resets_path do |f|
+    %br/
+
+    %p
+      = text_field_tag :email, nil, :placeholder => 'email'
+    
+    = submit_tag 'Okay!', :class => 'btn'
+
+    %br/
+    %br/
+
+    = link_to 'Sign In', sign_in_path

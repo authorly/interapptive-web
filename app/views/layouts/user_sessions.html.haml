@@ -15,5 +15,12 @@
     .container-fluid
       .row-fluid
         .span3 &nbsp;
-        .span6= yield
+        .span6
+          .content
+            .row
+              - flash.each do |name, msg|
+                %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
+                  %a.close_f{"data-dismiss" => "alert"}
+                    = msg
+          = yield
         .span3 &nbsp;

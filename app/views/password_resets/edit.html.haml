@@ -1,0 +1,23 @@
+#password-reset-form.well
+  %h1 Enter New Password
+  = form_for(@user, :url => "/password_resets/#{@user.password_reset_token}") do |f|
+    %br/
+
+    - if @user.errors.any?
+      .errors
+        %h2 There were problems with your registration.
+
+        %ul
+          - @user.errors.full_messages.each do |message|
+            %li= message
+    %p
+      = f.password_field :password, :placeholder => 'password'
+    %p
+      = f.password_field :password_confirmation, :placeholder => 'confirm password'
+    
+    = f.submit 'Change', :class => 'btn'
+
+    %br/
+    %br/
+
+    = link_to 'Sign In', sign_in_path
