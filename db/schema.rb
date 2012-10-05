@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20121009194340) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "name"
+    t.boolean  "enabled"
   end
 
   create_table "actions", :force => true do |t|
@@ -57,19 +58,18 @@ ActiveRecord::Schema.define(:version => 20121009194340) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
     t.string   "name"
-    t.integer  "action_id"
   end
 
-  add_index "attribute_definitions", ["action_definition_id"], :name => "index_attributes_on_action_id"
+  add_index "attribute_definitions", ["action_definition_id"], :name => "index_attribute_definitions_on_action_definition_id"
 
   create_table "attributes", :force => true do |t|
     t.integer "attribute_definition_id"
-    t.integer "keyframe_id"
     t.string  "value"
+    t.integer "action_id"
   end
 
+  add_index "attributes", ["action_id"], :name => "index_attributes_on_action_id"
   add_index "attributes", ["attribute_definition_id"], :name => "index_attributes_on_attribute_definition_id"
-  add_index "attributes", ["keyframe_id"], :name => "index_attributes_on_keyframe_id"
 
   create_table "keyframe_texts", :force => true do |t|
     t.integer  "keyframe_id"

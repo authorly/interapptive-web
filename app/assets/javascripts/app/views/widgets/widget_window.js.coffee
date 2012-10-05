@@ -1,22 +1,21 @@
 class App.Views.WidgetWindow extends Backbone.View
 
   initialize: ->
-    @_view = @options.view
+    @_view =        @options.view
     @_isResizable = @options.resizable
+    @_alsoResize =  @options.alsoResize || false
 
     @render()
 
 
   render: ->
     $(@el).append(@_view.render().el)
+    @createHandlerEl()
 
     @initResizable() unless @_isResizable is false
-
     @initDraggable()
 
     @_view.makeSortable() if @_view instanceof App.Views.ActiveSpritesList
-
-    @createHandlerEl()
 
     this
 
@@ -44,7 +43,7 @@ class App.Views.WidgetWindow extends Backbone.View
     options = {
         minWidth:    $el.width()
         maxWidth:    $el.width() + 180
-        alsoResize:  '#active-sprites-window ul li span'
+        alsoResize:  @_alsoResize
         containment: 'body'
       }
 

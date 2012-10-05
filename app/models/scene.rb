@@ -16,6 +16,8 @@ class Scene < ActiveRecord::Base
   has_one :scene_settings
   has_many :fonts, :through => :scene_settings
 
+  # has_many :attributes, :through => :actions
+
   belongs_to :preview_image, :class_name => 'Image'
   belongs_to :background_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound' 

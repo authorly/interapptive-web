@@ -1,10 +1,5 @@
-CCBezierTo_actionTag:
-  name: "actionTag"
-  type: "string"
-  action_definition_id: 2
-
-CCBezierTo_duration:
-  name: "duration"
+CCBezierTo_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
   action_definition_id: 2
 
@@ -43,13 +38,8 @@ CCBezierTo_controlPoint2Y:
   type: "integer"
   action_definition_id: 2
 
-CCBezierBy_actionTag:
-  name: "actionTag"
-  type: "string"
-  action_definition_id: 1
-
-CCBezierBy_duration:
-  name: "duration"
+CCBezierBy_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
   action_definition_id: 1
 
@@ -86,11 +76,6 @@ CCBezierBy_controlPoint2X:
 CCBezierBy_controlPoint2Y:
   name: "controlPoint2Y"
   type: "integer"
-  action_definition_id: 1
-
-CCEaseBounceIn_actionTag:
-  name: "actionTag"
-  type: "integer"
   action_definition_id: 3
 
 CCEaseBounceIn_internalActionTag:
@@ -99,187 +84,171 @@ CCEaseBounceIn_internalActionTag:
   action_definition_id: 3
 
 CCEaseBounceOut_actionTag:
-  name: "actionTag"
   type: "integer"
-  action_definition_id: 3
+  action_definition_id: 4
 
 CCEaseBounceOut_internalActionTag:
   name: "internalActionTag"
   type: "integer"
-  action_definition_id: 3
-
-CCEaseIn_actionTag:
-  name: "actionTag"
-  type: "integer"
-  action_definition_id: 13
-
-CCEaseIn_internalActionTag:
-  name: "internalActionTag"
-  type: "integer"
-  action_definition_id: 13
-
-CCEaseIn_rate:
-  name: "rate"
-  type: "integer"
-  action_definition_id: 13
-
-CCEaseOut_actionTag:
-  name: "actionTag"
-  type: "integer"
-  action_definition_id: 18
+  action_definition_id: 4
 
 CCEaseOut_internalActionTag:
   name: "internalActionTag"
   type: "integer"
-  action_definition_id: 18
 
 CCEaseOut_rate:
   name: "rate"
   type: "integer"
-  action_definition_id: 18
 
-CCFadeIn_duration:
-  name: "duration"
+CCFadeIn_image:
+  name: "sprite_widget_id"
+  type: "text"
+  action_definition_id: 7
+
+CCFadeIn_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
-  action_definition_id: 16
+  action_definition_id: 7
 
-CCFadeIn_actionTag:
-  name: "actionTag"
+CCFadeTo_image:
+  name: "sprite_widget_id"
   type: "integer"
-  action_definition_id: 16
+  action_definition_id: 8
 
-CCFlipX_actionTag:
-  name: "actionTag"
-  type: "integer"
-  action_definition_id: 6
+
+CCFadeTo_Duration:
+  name: "Duration (seconds)"
+  type: "decimal"
+  action_definition_id: 8
+
+CCFadeTo_Opacity:
+  name: "Opacity"
+  type: "decimal"
+  action_definition_id: 8
+
+
+CCFadeOut_image:
+  name: "sprite_widget_id"
+  type: "decimal"
+  action_definition_id: 19
+
+CCFadeOut_Duration:
+  name: "Duration (seconds)"
+  type: "decimal"
+  action_definition_id: 19
 
 CCFlipX_flip:
   name: "flip"
   type: "boolean"
   action_definition_id: 6
 
-CCFlipY_actionTag:
-  name: "actionTag"
-  type: "integer"
-  action_definition_id: 17
-
 CCFlipY_flip:
   name: "flip"
   type: "integer"
   action_definition_id: 17
 
-CCFlipX3D_duration:
-  name: "duration"
+CCFlipX3D_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
   action_definition_id: 10
 
-CCFlipX3D_actionTag:
-  name: "actionTag"
-  type: "integer"
-  action_definition_id: 10
-
-CCFlipY3D_duration:
-  name: "duration"
+CCFlipY3D_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
   action_definition_id: 11
 
-CCFlipY3D_actionTag:
-  name: "actionTag"
+CCJumpTo_image:
+  name: "sprite_widget_id"
   type: "integer"
-  action_definition_id: 11
+  action_definition_id: 13
 
 CCJumpTo_positionX:
-  name: "positionX"
+  name: "X"
   type: "integer"
-  action_definition_id: 15
+  action_definition_id: 13
 
 CCJumpTo_positionY:
-  name: "positionY"
+  name: "Y"
   type: "integer"
-  action_definition_id: 15
+  action_definition_id: 13
 
-CCJumpTo_duration:
-  name: "duration"
+CCJumpTo_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
-  action_definition_id: 15
-
-CCJumpTo_actionTag:
-  name: "actionTag"
-  type: "integer"
-  action_definition_id: 15
+  action_definition_id: 13
 
 CCJumpTo_height:
-  name: "height"
+  name: "height of jumps"
   type: "integer"
-  action_definition_id: 15
+  action_definition_id: 13
 
 CCJumpTo_jumps:
-  name: "jumps"
+  name: "Number of jumps"
+  type: "integer"
+  action_definition_id: 13
+
+CCJumpBy_image:
+  name: "sprite_widget_id"
+  type: "integer"
+  action_definition_id: 14
+
+CCJumpBy_positionX:
+  name: "Distance X"
+  type: "integer"
+  action_definition_id: 14
+
+CCJumpBy_positionY:
+  name: "Distance Y"
+  type: "integer"
+  action_definition_id: 14
+
+CCJumpBy_Duration:
+  name: "Duration (seconds)"
+  type: "decimal"
+  action_definition_id: 14
+
+CCJumpBy_height:
+  name: "height of jumps"
+  type: "integer"
+  action_definition_id: 14
+
+CCJumpBy_jumps:
+  name: "Number of jumps"
+  type: "integer"
+  action_definition_id: 14
+
+CCRotateBy_image:
+  name: "sprite_widget_id"
   type: "integer"
   action_definition_id: 15
 
-CCJumpBy_positionX:
-  name: "positionX"
+CCRotateBy_Degrees:
+  name: "Degrees"
   type: "integer"
-  action_definition_id: 7
+  action_definition_id: 15
 
-CCJumpBy_positionY:
-  name: "positionY"
-  type: "integer"
-  action_definition_id: 7
-
-CCJumpBy_duration:
-  name: "duration"
+CCRotateBy_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
-  action_definition_id: 7
+  action_definition_id: 15
 
-CCJumpBy_actionTag:
-  name: "actionTag"
-  type: "integer"
-  action_definition_id: 7
-
-CCJumpBy_height:
-  name: "height"
-  type: "integer"
-  action_definition_id: 7
-
-CCJumpBy_jumps:
-  name: "jumps"
-  type: "integer"
-  action_definition_id: 7
-
-CCRotateBy_degrees:
-  name: "degrees"
-  type: "integer"
-  action_definition_id: 12
-
-CCRotateBy_duration:
-  name: "duration"
+CCRotateTo_image:
+  name: "sprite_widget_id"
   type: "decimal"
-  action_definition_id: 12
+  action_definition_id: 16
 
-CCRotateBy_actionTag:
-  name: "actionTag"
-  type: "integer"
-  action_definition_id: 12
-
-CCRotateTo_degrees:
-  name: "degrees"
-  type: "integer"
-  action_definition_id: 5
-
-CCRotateTo_duration:
-  name: "duration"
+CCRotateTo_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
-  action_definition_id: 5
+  action_definition_id: 16
 
-CCRotateTo_actionTag:
-  name: "actionTag"
-  type: "integer"
-  action_definition_id: 5
+CCRotateTo_Degrees:
+  name: "Degrees"
+  type: "decimal"
+  action_definition_id: 16
 
-CCSkewBy_duration:
-  name: "duration"
+CCSkewBy_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
   action_definition_id: 9
 
@@ -293,42 +262,57 @@ CCSkewBy_deltaSkewY:
   type: "integer"
   action_definition_id: 9
 
-CCSkewBy_actionTag:
-  name: "actionTag"
+CCMoveTo_image:
+  name: "sprite_widget_id"
   type: "integer"
-  action_definition_id: 9
+  action_definition_id: 20
 
 CCMoveTo_positionX:
-  name: "positionX"
+  name: "X"
   type: "integer"
-  action_definition_id: 19
+  action_definition_id: 20
 
 CCMoveTo_positionY:
-  name: "positionY"
+  name: "Y"
   type: "integer"
-  action_definition_id: 19
+  action_definition_id: 20
 
-CCMoveTo_duration:
-  name: "duration"
+CCMoveTo_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
-  action_definition_id: 19
+  action_definition_id: 20
 
-CCMoveTo_actionTag:
-  name: "actionTag"
+CCMoveBy_image:
+  name: "sprite_widget_id"
   type: "integer"
-  action_definition_id: 19
+  action_definition_id: 21
 
-CCScaleTo_intensity:
-  name: "intensity"
+CCMoveBy_Duration:
+  name: "Duration (seconds)"
   type: "decimal"
-  action_definition_id: 8
+  action_definition_id: 21
 
-CCScaleTo_duration:
-  name: "duration"
-  type: "decimal"
-  action_definition_id: 8
-
-CCScaleTo_actionTag:
-  name: "actionTag"
+CCMoveBy_positionX:
+  name: "Distance X"
   type: "integer"
-  action_definition_id: 8
+  action_definition_id: 21
+
+CCMoveBy_positionY:
+  name: "Distance Y"
+  type: "integer"
+  action_definition_id: 21
+
+CCScaleTo_image:
+  name: "sprite_widget_id"
+  type: "integer"
+  action_definition_id: 18
+
+CCScaleTo_Duration:
+  name: "Duration (seconds)"
+  type: "decimal"
+  action_definition_id: 18
+
+CCScaleTo_Intensity:
+  name: "Intensity"
+  type: "decimal"
+  action_definition_id: 18

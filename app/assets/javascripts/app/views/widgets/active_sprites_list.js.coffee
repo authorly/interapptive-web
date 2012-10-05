@@ -1,11 +1,9 @@
 class App.Views.ActiveSpritesList extends Backbone.View
-  tagName: 'ul'
-
+  tagName:   'ul'
   className: 'sprites'
-
   events:
-    'click .delete':    'removeSpriteWidget'
-    'click li':         'setActiveSpriteWidget'
+    'click .delete': 'removeSpriteWidget'
+    'click li':      'setActiveSpriteWidget'
 
 
   render: ->
@@ -33,8 +31,7 @@ class App.Views.ActiveSpritesList extends Backbone.View
 
   createAddImageEl: ->
     addImageEl = '<i class="icon-plus icon-black"></i>'
-    windowEl =   $('#active-sprites-window')
-    windowEl.append(addImageEl)
+    $('#active-sprites-window').append(addImageEl)
 
 
   addSpriteToList: (widget) ->
@@ -58,7 +55,6 @@ class App.Views.ActiveSpritesList extends Backbone.View
 
 
   makeSortable: ->
-    $el =     $(@el)
     options = {
         opacity: 0.6
         axis: 'y'
@@ -66,7 +62,7 @@ class App.Views.ActiveSpritesList extends Backbone.View
           @updateListWidgetsZ()
       }
 
-    $el.sortable(options)
+    $(@el).sortable(options)
 
 
   updateListWidgetsZ: ->

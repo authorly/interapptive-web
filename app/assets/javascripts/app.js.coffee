@@ -12,11 +12,11 @@ window.App =
     @keyframesCollection =     new App.Collections.KeyframesCollection     []
     @imagesCollection =        new App.Collections.ImagesCollection        []
     @keyframesTextCollection = new App.Collections.KeyframeTextsCollection []
-    @activeSpritesList =       new App.Views.ActiveSpritesList()
+    @activeActionsCollection = new App.Collections.ActionsCollection       []
 
-    @sceneList        new App.Views.SceneIndex        collection: @scenesCollection
-    @keyframeList     new App.Views.KeyframeIndex     collection: @keyframesCollection
-    @keyframeTextList new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('body')
+    @sceneList         new App.Views.SceneIndex        collection: @scenesCollection
+    @keyframeList      new App.Views.KeyframeIndex     collection: @keyframesCollection
+    @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('body')
 
     @contentModal =   new App.Views.Modal className: 'content-modal'
     @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
@@ -29,12 +29,28 @@ window.App =
     @spriteForm = new App.Views.SpriteForm el: $('#sprite-editor')
     @spriteFormWindow(@spriteForm)
 
+    @activeActionsWindow(new App.Views.ActiveActionsList collection: @activeActionsCollection)
+
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
+  activeActionsWindow: (view) ->
+    if view
+      @actionsWindow = new App.Views.WidgetWindow(
+        view: view,
+        el: $('#active-actions-window'),
+        alsoResize: '#active-actions'
+      )
+    else
+      @actionsWindow
+
   activeSpritesWindow: (view) ->
     if view
-      @spritesWindow = new App.Views.WidgetWindow(view: view, el: $('#active-sprites-window'))
+      @spritesWindow = new App.Views.WidgetWindow(
+        view:       view,
+        el:         $('#active-sprites-window'),
+        alsoResize: '#active-sprites-window ul li span'
+      )
     else
       @spritesWindow
 

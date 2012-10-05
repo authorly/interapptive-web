@@ -18,6 +18,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_scale =    options.scale
     @_border =   false
 
+    @sprite = new cc.Sprite
+    @sprite.initWithFile(dataUrl)
+    @sprite.setScale(@_scale) if @_scale
+    @addChild(@sprite)
+    @setContentSize(@sprite.getContentSize())
+
     @disableDragging()
 
     @on 'dblclick',     @setActiveSpriteFromClick
@@ -26,21 +32,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @on "mouseover",    @mouseOver
     @on "mouseout",     @mouseOut
 
-    @sprite = new cc.Sprite
-    @getImage()
-
-
-  constructorContinuation: (dataUrl) =>
-    @sprite.initWithFile(dataUrl)
-    @sprite.setScale(@_scale) if @_scale
-    @addChild(@sprite)
-    @setContentSize(@sprite.getContentSize())
-
-
   mouseMove: (e) ->
     @setCursor(if @hasBorder() then 'move' else 'default')
 
     App.spriteForm.updateXYFormVals()
+
+    @on 'dblclick',     @setActiveSpriteFromClick
+    @on 'clickOutside', @setAsInactive
 
 
   mouseOut: ->
@@ -50,10 +48,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   setCursor: (cursor) ->
     document.body.style.cursor = cursor
 
-
   setAsInactive: ->
     @hideBorder()
-
     @disableDragging()
 
     App.activeSpritesList.deselectAll()

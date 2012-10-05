@@ -28,10 +28,12 @@ class App.Views.ToolbarView extends Backbone.View
     App.keyframeList().createKeyframe()
 
   showActionLibrary: ->
-    definitions = new App.Collections.ActionDefinitionsCollection()
-    definitions.fetch
-      success: ->
-        App.modalWithView(view: new App.Views.ActionIndex(definitions: definitions)).show()
+    @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
+    @actionDefinitions.fetch
+      success: =>
+        activeDefinition = @actionDefinitions.first
+        view = new App.Views.ActionFormContainer(actionDefinitions: @actionDefinitions)
+        App.modalWithView(view: view).show()
 
   addText: ->
     # FIXME we should have some delegate that actually handles adding things

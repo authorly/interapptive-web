@@ -17,6 +17,7 @@
 #= require ./vendor/form-editors/buttons
 #= require ./vendor/form-editors/jquery.ui
 #= require ./vendor/jquery.selecttext
+#= require backbone-deepmodel
 #= require_tree ../../../vendor/assets/javascripts/.
 #= require_tree ../../../vendor/assets/images/.
 

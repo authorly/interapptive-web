@@ -22,7 +22,7 @@ class App.Views.SpriteForm extends Backbone.View
   initScaleSlider: ->
     options = {
       value: 1.0
-      min:   0.0
+      min:   0.2
       max:   2.0
       step:  0.01
       disabled: true

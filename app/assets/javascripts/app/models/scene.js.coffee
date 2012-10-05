@@ -10,6 +10,7 @@ class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
 
   initialize: (models, options) ->
+
     if options
       this.storybook_id = options.storybook_id
 

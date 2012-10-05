@@ -1,15 +1,15 @@
-
 Interapptive::Application.routes.draw do
+
   root :to => 'home#index', :constraints => lambda { |request| request.cookies['auth_token'] }
   root :to => 'user_sessions#new'
 
   get 'assets/index', :as => :assets
 
-  get  'users/sign_up'  => 'users#new',             :as => 'sign_up'
-  get  'users/sign_in'  => 'user_sessions#new',     :as => 'sign_in'
-  post 'users/sign_in'  => 'user_sessions#create',  :as => ''
+  get  'users/sign_up'   => 'users#new',             :as => 'sign_up'
+  get  'users/sign_in'   => 'user_sessions#new',     :as => 'sign_in'
+  post 'users/sign_in'   => 'user_sessions#create',  :as => ''
   match 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
-  get  'users/settings' => 'users#edit'
+  get  'users/settings'  => 'users#edit'
 
   resources :users, :except => [:new, :edit, :index] do 
     resources :fonts
@@ -33,6 +33,10 @@ Interapptive::Application.routes.draw do
     collection do
       get 'definitions'
     end
+
+    member do
+      get 'attributes'
+    end
   end
 
   resources :storybooks do
@@ -44,6 +48,7 @@ Interapptive::Application.routes.draw do
 
       collection { post :sort }
     end
+
     resources :fonts
     resources :images
     resources :videos
@@ -51,9 +56,9 @@ Interapptive::Application.routes.draw do
   end
 
   resources :scenes do
-    resources :keyframes do
-      resources :actions
+    resources :actions
 
+    resources :keyframes do
       collection { post :sort }
     end
   end
