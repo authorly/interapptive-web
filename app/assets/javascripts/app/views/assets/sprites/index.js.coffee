@@ -26,4 +26,14 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
 
   allowSortingSearching: ->
     $("#searchtable").show()
+    # TODO: WA: advancedtable is stupid plugin. It removes classes
+    # and ids from $(tbody.files > tr). We are using restoreMetaData
+    # function to restore all the information. Use something like
+    # http://www.datatables.net/
     $(".table-striped").advancedtable({searchField: "#search", loadElement: "#loader", searchCaseSensitive: false, ascImage: "/assets/advancedtable/up.png", descImage: "/assets/advancedtable/down.png"})
+    @restoreMetaData()
+
+  restoreMetaData: ->
+    $children = $('tbody.files tr').addClass('image-row')
+    $children.each (idx, tr) =>
+      $(tr).attr('data-id', @collection.models[idx].id)
