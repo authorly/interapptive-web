@@ -1,17 +1,23 @@
-class App.Views.TouchZoneIndex extends Backbone.View
+class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
+  events: ->
+    _.extend({}, super, {
+    })
+    
   template: JST["app/templates/touch_zones/index"]
 
   initialize: (options) ->
-    @widget = options.widget if options.widget
+    @model = new App.Models.TouchZone()
+    @widget = options.widget if options?.widget
+    super
 
   render: ->
-    $(@el).html(@template(widget: @widget, touchZone: @model))
-    @appendForm()
+    $(@el).html(@template(widget: @widget))
+    $(@el).find('#touch_zones.modal-body').append @form.el
     this
 
-  model: App.Models.TouchZone
+  deleteMessage: ->
+    "\nYou are about to delete this touch zone. This cannot be undone.\n\n\n" +
+    "Are you sure you wish to continue?"
 
-  appendForm: =>
-    form = new Backbone.Form({ model: new @model() })
-    form_el = form.render().el
-    $(@el).find('#touch_zones.modal-body').append form_el
+  resetValues: ->
+

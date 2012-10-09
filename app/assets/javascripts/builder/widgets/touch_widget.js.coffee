@@ -62,7 +62,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   onMouseUp: (e) ->
     @endResize(e)
 
-  handleDoubleClick: ->
+  doubleClick: ->
     App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:edit', this)
 
   startResize: (e) ->
