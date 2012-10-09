@@ -4,9 +4,6 @@
 # CRUD, dispatching where necessary.
 #
 # There's a lot of work to be done on it.
-#
-# TODO: Remove highlight clearing for all items
-# TODO: Highlight clearing during keyframe switches
 
 class WidgetDispatcher
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121003232112) do
+ActiveRecord::Schema.define(:version => 20121009194340) do
 
   create_table "action_definitions", :force => true do |t|
     t.text     "description"
@@ -155,20 +155,6 @@ ActiveRecord::Schema.define(:version => 20121003232112) do
   end
 
   add_index "storybooks", ["user_id"], :name => "index_storybooks_on_user_id"
-
-  create_table "touch_zones", :force => true do |t|
-    t.integer  "scene_id"
-    t.integer  "origin_x"
-    t.integer  "origin_y"
-    t.integer  "radius"
-    t.integer  "video_id"
-    t.integer  "sound_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "action_id"
-  end
-
-  add_index "touch_zones", ["scene_id"], :name => "index_touch_zones_on_scene_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                      :null => false

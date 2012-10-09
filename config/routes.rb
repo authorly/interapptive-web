@@ -58,10 +58,6 @@ Interapptive::Application.routes.draw do
 
       collection { post :sort }
     end
-    
-    member do
-      get 'touch_zones'
-    end
   end
 
   resources :keyframes do

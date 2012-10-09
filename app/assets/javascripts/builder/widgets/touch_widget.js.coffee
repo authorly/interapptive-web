@@ -9,10 +9,10 @@ LINE_WIDTH_INNER = 2
 DEFAULT_OPACITY = 150
 
 class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
-
   @newFromHash: (hash) ->
     widget = super
     widget.setRadius(hash.radius) if hash.radius
+    widget.action_id ?= hash.action_id
 
     #HACK TODO: Remove hardcore
     widget.setZOrder(1000) #HACK TODO: Get rid of hardcode
@@ -20,6 +20,8 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   constructor: (options={}) ->
     super
+
+    @action_id = null
 
     @setRadius(options.radius || 32)
     @setControlRadius(options.controlRadius || 8)
@@ -30,6 +32,12 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     @on('mousedown', @onMouseDown, this)
     @on('mouseup',   @onMouseUp,   this)
     @on('mousemove', @onMouseMove, this)
+
+  # Reload attributes from a set of keypairs
+  # Useful for form submission
+  loadFromHash: (hash, options) ->
+    _.extend(@, hash)
+    options?.success?()
 
   # TODO: What do these two even do? Why do we need bind here?
   onMouseOver: (e) ->
@@ -163,6 +171,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     hash = super
     hash.radius = @_radius
     hash.controlRadius = @_controlRadius
+    hash.action_id = @action_id
 
     hash
 
