@@ -11,8 +11,7 @@ class App.Views.ActionIndex extends Backbone.View
 
     $(@el).html @template(actions: @definitions.models)
 
-    if selectedDefinition
-      $(@el).find("option[value='#{selectedDefinition.id}']").attr('selected', 'selected')
+    $(@el).find("option[value='#{selectedDefinition.id}']").attr('selected', 'selected')
 
     action = new App.Models.Action(definition: selectedDefinition)
 

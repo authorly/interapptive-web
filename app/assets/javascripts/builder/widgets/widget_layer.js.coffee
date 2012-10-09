@@ -79,8 +79,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     canvasPoint: point
     })
 
-    widget.trigger('click')
-
     @_capturedWidget = widget
     @_previousPoint = new cc.Point(point.x, point.y)
 
@@ -102,8 +100,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     point = touch.locationInView()
     # TODO trigger('click')
     # Causes a save
-    # Moved this into mouse-down: when we're dragging, we want highlight.
-    # This is probably not the right behaviour, though.
     if @_capturedWidget
       @_capturedWidget.trigger('change', 'position')
       @_capturedWidget.trigger('mouseup', {

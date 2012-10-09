@@ -32,12 +32,11 @@ class App.Builder.Widgets.Widget extends cc.Node
     else
       @id = NEXT_WIDGET_ID
       NEXT_WIDGET_ID += 1
-      
+
     @on("mouseover", @mouseOver)
     @on("mouseout", @mouseOut)
-    @on('dblclick', @handleDoubleClick)
-    @on('click', @highlight)
-    
+    @on('dblclick', @doubleClick)
+
   mouseOver: ->
     @_mouse_over = true
     
@@ -47,7 +46,7 @@ class App.Builder.Widgets.Widget extends cc.Node
   mouseMove: ->
     console.log "mouse move from Widget"
   
-  handleDoubleClick: -> 
+  doubleClick: -> 
     console.log "Widget double click"
 
   isHighlighted: ->
@@ -62,7 +61,7 @@ class App.Builder.Widgets.Widget extends cc.Node
   unHighlight: ->
     if @isHighlighted()
       @_highlighted = false
-      App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight')
+      App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight', @id)
 
   setOpacity: (o) ->
     @_opacity = o
