@@ -1,0 +1,18 @@
+postgres: &postgres
+  adapter: postgresql
+  username: postgres
+  password: postgres
+  min_messages: ERROR
+  pool: 5
+  timeout: 5000
+  host: localhost
+
+development:
+  database: interapptive_development
+  <<: *postgres
+test:
+  database: interapptive_test
+  <<: *postgres
+production:
+  database: interapptive_production
+  <<: *postgres
