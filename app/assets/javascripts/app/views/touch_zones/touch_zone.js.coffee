@@ -22,14 +22,14 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
   formOptions: ->
     data: @widget
     schema:
-      # video_id:
-      #   type: 'Select'
-      #   options: new App.Collections.VideosCollection()
-      #   title: "Show video"
-      # sound_id:
-      #   type: 'Select'
-      #   options: new App.Collections.SoundsCollection()
-      #   title: "Play sound"
+      video_id:
+        type: 'Select'
+        options: new App.Collections.VideosCollection()
+        title: "Show video"
+      sound_id:
+        type: 'Select'
+        options: new App.Collections.SoundsCollection()
+        title: "Play sound"
       action_id:
         type: 'Select'
         options: new App.Collections.ActionsCollection()
