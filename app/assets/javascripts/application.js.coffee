@@ -26,11 +26,13 @@
 #= require ./vendor/canpaste
 
 #= require app
+#= require config
 
 #= require ./app/storybook_json
 #= require_tree ./app/templates
 #= require_tree ./app/models
 #= require_tree ./app/views
 #= require_tree ./app/routers
+#= require_tree ./app/lib
 
 #= require builder

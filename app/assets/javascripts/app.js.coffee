@@ -4,6 +4,9 @@ window.App =
   Views:       {}
   Collections: {}
   Routers:     {}
+  Lib:         {}
+  Config:      {}
+
 
   init: ->
     @scenesCollection =        new App.Collections.ScenesCollection        []

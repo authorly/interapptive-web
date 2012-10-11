@@ -18,12 +18,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_scale =    options.scale
     @_border =   false
 
-    @sprite = new cc.Sprite
-    @sprite.initWithFile(@_url)
-    @sprite.setScale(@_scale) if @_scale
-    @addChild(@sprite)
-    @setContentSize(@sprite.getContentSize())
-
     @disableDragging()
 
     @on 'dblclick',     @setActiveSpriteFromClick
@@ -31,6 +25,16 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @on 'mousemove',    @mouseMove
     @on "mouseover",    @mouseOver
     @on "mouseout",     @mouseOut
+
+    @sprite = new cc.Sprite
+    @getImage()
+
+
+  constructorContinuation: (dataUrl) =>
+    @sprite.initWithFile(dataUrl)
+    @sprite.setScale(@_scale) if @_scale
+    @addChild(@sprite)
+    @setContentSize(@sprite.getContentSize())
 
 
   mouseMove: (e) ->
@@ -156,3 +160,17 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     ctx.fill()
 
     ctx.restore()
+
+
+  getImage: ->
+    proxy = App.Lib.RemoteDomainProxy.instance()
+
+    proxy.bind 'message', @from_proxy
+    proxy.send
+      action: 'load'
+      path: @_url
+
+  from_proxy: (message) =>
+    if message.action == 'loaded' && message.path == @_url
+      App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
+      @constructorContinuation(message.bits)

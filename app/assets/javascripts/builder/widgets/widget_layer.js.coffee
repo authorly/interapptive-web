@@ -101,6 +101,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     # TODO trigger('click')
     # Causes a save
     if @_capturedWidget
+      # On each touch end, export the main canvas and log it in the console
+      canvas = document.getElementById "builder-canvas"
+      image = Canvas2Image.saveAsPNG canvas, true, 112, 84
+      # TODO put imageSrc as the src of an image in the proper keyframe view
+      console.log image
+
       @_capturedWidget.trigger('change', 'position')
       @_capturedWidget.trigger('mouseup', {
       touch: touch,
