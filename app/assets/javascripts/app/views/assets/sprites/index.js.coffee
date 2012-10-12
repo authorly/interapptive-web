@@ -30,8 +30,14 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
     # and ids from $(tbody.files > tr). We are using restoreMetaData
     # function to restore all the information. Use something like
     # http://www.datatables.net/
-    $(".table-striped").advancedtable({searchField: "#search", loadElement: "#loader", searchCaseSensitive: false, ascImage: "/assets/advancedtable/up.png", descImage: "/assets/advancedtable/down.png"})
-    @restoreMetaData()
+    $(".table-striped").advancedtable({
+      searchField: "#search",
+      loadElement: "#loader",
+      searchCaseSensitive: false,
+      ascImage: "/assets/advancedtable/up.png",
+      descImage: "/assets/advancedtable/down.png",
+      afterRedraw: => @restoreMetaData()
+    })
 
   restoreMetaData: ->
     $children = $('tbody.files tr').addClass('image-row')
