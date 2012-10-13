@@ -34,8 +34,6 @@ Interapptive::Application.routes.draw do
       get 'definitions'
     end
   end
-  
-  resources :touch_zones
 
   resources :storybooks do
     resources :scenes do

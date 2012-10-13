@@ -50,13 +50,6 @@ Factory.define :keyframe do |f|
   f.image_id Factory.create(:image)
 end
 
-Factory.define :touch_zones do |f|
-  f.radius 100
-  f.origin_x 512
-  f.origin_y 386
-  f.scene Factory.create(:scene)
-end
-
 Factory.define :actions do |f|
   f.scene Factory.create(:scene)
 end

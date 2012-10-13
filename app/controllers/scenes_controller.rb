@@ -111,19 +111,6 @@ class ScenesController < ApplicationController
     end
   end
 
-  # GET /scenes/:id/touch_zones
-  # GET /scenes/:id/touch_zones.json
-  def images
-    @scene = Scene.find params[:id]
-    @touch_zones = @scene.touch_zones
-
-    respond_to do |format|
-      format.html
-      format.js
-      format.json { render :json => @touch_zones }
-    end
-  end
-
   def sort
     params[:scenes].each_with_index do |scene, index|
       _scene = Scene.find(scene['id'])

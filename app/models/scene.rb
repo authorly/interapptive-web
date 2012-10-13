@@ -9,12 +9,9 @@ class Scene < ActiveRecord::Base
   has_many :sounds, :through => :asset_maps, :source => :asset,
                     :conditions => { :type => 'Sound' },
                     :dependent => :destroy
-  has_many :videos, :through => :touch_zones,
-           :dependent => :destroy
 
 
   has_many :actions, :dependent => :destroy
-  has_many :touch_zones, :dependent => :destroy
 
   has_one :scene_settings
   has_many :fonts, :through => :scene_settings
