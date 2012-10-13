@@ -7,7 +7,12 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
 
   initialize: (options) ->
     @widget = options.widget if options?.widget
+    @collections = 
+      videos: new App.Collections.VideosCollection()
+      sounds: new App.Collections.SoundsCollection()
+      actions: new App.Collections.ActionsCollection()
     super
+    
 
   render: ->
     $(@el).html(@template(widget: @widget))
@@ -24,23 +29,23 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     schema:
       video_id:
         type: 'Select'
-        options: new App.Collections.VideosCollection()
+        options: @collections.videos.toSelectOptionGroup
         title: "Show video"
       sound_id:
         type: 'Select'
-        options: new App.Collections.SoundsCollection()
+        options: @collections.sounds.toSelectOptionGroup
         title: "Play sound"
-      action_id:
-        type: 'Select'
-        options: new App.Collections.ActionsCollection()
-        title: "Perform action"
+      #action_id:
+        #type: 'Select'
+        #options: @collections.actions.toSelectOptionGroup
+        #title: "Perform action"
 
   resetValues: ->
     App.modalWithView().hide()
 
-  updateAttributes: (e) ->
+  updateAttributes: (e) =>
     e.preventDefault()
     @widget.loadFromHash @form.getValue(),
-      success: -> 
+      success: (widget) -> 
         App.modalWithView().hide()
 
