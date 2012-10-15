@@ -19,7 +19,9 @@
 			csv: '',
 			csvSeperator: ',',
 			evenColor: '',
-			oddColor: ''
+      oddColor: '',
+      afterRedraw: function () {
+      }
 		};
 		  
 		// Combine user and default configuration
@@ -195,7 +197,6 @@
 				hideLoad();	
 				
 				stripeRows();
-
 			});
 			
 			// Bind clickhandler on dropdown pagination
@@ -287,6 +288,7 @@
 			// Add Table stripes
 			stripeRows();
 						
+      settings.afterRedraw.call();
 		} 
 		// END REDRAWTABLE
 		

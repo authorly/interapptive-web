@@ -67,7 +67,6 @@ class App.Views.ToolbarView extends Backbone.View
     view.on('image_select', imageSelected)
 
     App.modalWithView(view: view).show()
-    # FIXME: this next line doesn't seem to do anything.
     view.fetchImages()
 
   showPreview: ->

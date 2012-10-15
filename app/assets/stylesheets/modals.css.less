@@ -59,6 +59,19 @@
     }
   }
 
+  tr.selected {
+    border: 2px solid;
+    border-color: lighten(@blue, 25%);
+  }
+
+  tr.image-row {
+    cursor: pointer;
+
+    td.name {
+      overflow: auto;
+    }
+  }
+
   .btn-primary, .btn-success {
     padding: 12px;
   }
@@ -78,6 +91,14 @@
 
   .btn-success {
     text-shadow: 1px 1px 1px @grayDark;
+  }
+
+  .search {
+    float: left;
+  }
+
+  .table-fixed {
+    table-layout: fixed;
   }
 
   text-align: center;
