@@ -17,7 +17,8 @@ describe Image do
         'url'           => im.image.url,
         'thumbnail_url' => im.image.thumb.url,
         'delete_url'    => "/images/#{im.id}",
-        'delete_type'   => 'DELETE'
+        'delete_type'   => 'DELETE',
+        'created_at'    => im.created_at
       }
 
       im.as_jquery_upload_response.should eql(response)
