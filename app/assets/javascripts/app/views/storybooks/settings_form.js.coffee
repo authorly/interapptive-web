@@ -1,4 +1,5 @@
-class App.Views.AppSettings extends App.Views.AbstractFormView 
+App.Views.Storybooks ?= {}
+class App.Views.Storybooks.SettingsForm extends App.Views.AbstractFormView 
   events: ->
     _.extend({}, super, {})
 

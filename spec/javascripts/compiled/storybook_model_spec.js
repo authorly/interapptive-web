@@ -46,7 +46,7 @@
         var form, storybook;
         storybook = new App.Models.Storybook();
         App.currentStorybook(storybook);
-        form = new App.Views.AppSettings().form;
+        form = new App.Views.Storybooks.SettingsForm().form;
         return this.errors = form.commit();
       });
       it("should require a title", function() {

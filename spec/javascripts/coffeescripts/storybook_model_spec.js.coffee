@@ -43,7 +43,7 @@ describe "App.Models.Storybook", ->
     beforeEach ->
       storybook = new App.Models.Storybook()
       App.currentStorybook(storybook)
-      form = new App.Views.AppSettings().form
+      form = new App.Views.Storybooks.SettingsForm().form
       @errors = form.commit()
 
     it "should require a title", ->

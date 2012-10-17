@@ -10,7 +10,7 @@ class App.Views.FileMenuView extends Backbone.View
     document.location.reload true
 
   showSettings: ->
-    view = new App.Views.AppSettings()
+    view = new App.Views.Storybooks.SettingsForm()
     App.modalWithView(view: view).show()
 
 
