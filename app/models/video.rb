@@ -8,6 +8,7 @@ class Video < Asset
         'name' => read_attribute(:video),
         'size' => video.size,
         'url' => video.url,
+        'thumbnail_url' => video.thumbnail.url,
         'delete_url' => "/videos/#{self.id}",
         'delete_type' => 'DELETE'
     }

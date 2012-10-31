@@ -29,6 +29,9 @@ class VideoUploader < CarrierWave::Uploader::Base
   version :thumbnail do
     process :video_thumbnail => [{ :seek_time => 4, :resolution => '100x100' }, { :preserve_aspect_ratio => :width }]
     def full_filename(for_file)
+      # TODO: WA: It is assumed that thumbnail of the video is present in png
+      # format. Make it dynamic by passing a parameter to VideoThumbnailer
+      # and use that value here instead.
       "thumbnail_#{File.basename(for_file, '.*')}.png"
     end
   end
