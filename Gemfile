@@ -18,6 +18,7 @@ gem 'unicorn'
 gem 'therubyracer'
 gem 'jasmine'
 gem 'barista'
+gem 'streamio-ffmpeg'
 
 group :assets do
   gem 'less-rails'

@@ -1,6 +1,8 @@
 # encoding: utf-8
+require 'authorly/carrier_wave/video_thumbnailer'
 
 class VideoUploader < CarrierWave::Uploader::Base
+  include Authorly::CarrierWave::VideoThumbnailer
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -22,6 +24,13 @@ class VideoUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     "videos/#{model.id}"
+  end
+
+  version :thumbnail do
+    process :video_thumbnail => [{ :seek_time => 4, :resolution => '100x100' }, { :preserve_aspect_ratio => :width }]
+    def full_filename(for_file)
+      "thumbnail_#{File.basename(for_file, '.*')}.png"
+    end
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
