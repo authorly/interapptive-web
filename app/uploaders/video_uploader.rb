@@ -3,6 +3,7 @@ require 'authorly/carrier_wave/video_thumbnailer'
 
 class VideoUploader < CarrierWave::Uploader::Base
   include Authorly::CarrierWave::VideoThumbnailer
+  include CarrierWave::Video
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -24,6 +25,27 @@ class VideoUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     "videos/#{model.id}"
+  end
+
+  version :mp4 do
+    process :encode_video => [:mp4, :resolution => :same, :audio_codec => 'aac', :custom => '-q:v 0 -q:a 0 -vpre slow -vpre baseline -g 30 -strict -2']
+    def full_filename(for_file)
+      "mp4_#{File.basename(for_file, '.*')}.mp4"
+    end
+  end
+
+  version :webm do
+    process :encode_video => [:webm, :resolution => :same]
+    def full_filename(for_file)
+      "webm_#{File.basename(for_file, '.*')}.webm"
+    end
+  end
+
+  version :ogv do
+    process :encode_video => [:ogv, :resolution => :same]
+    def full_filename(for_file)
+      "ogv_#{File.basename(for_file, '.*')}.ogv"
+    end
   end
 
   version :thumbnail do
