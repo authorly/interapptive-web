@@ -27,6 +27,9 @@ class VideoUploader < CarrierWave::Uploader::Base
     "videos/#{model.id}"
   end
 
+  # OPTIMIZE: WA: Currently the transcoding process is tied with video uploading.
+  # Offload this to a background process. See https://gist.github.com/1541912 and
+  # https://groups.google.com/forum/?fromgroups=#!topic/carrierwave/afnopCrcGfM
   version :mp4 do
     process :encode_video => [:mp4, :resolution => :same, :audio_codec => 'aac', :custom => '-q:v 0 -q:a 0 -vpre slow -vpre baseline -g 30 -strict -2']
     def full_filename(for_file)
