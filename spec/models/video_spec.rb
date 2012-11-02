@@ -16,7 +16,11 @@ describe Video do
         'size'        => v.video.size,
         'url'         => v.video.url,
         'delete_url'  => "/videos/#{v.id}",
-        'delete_type' => 'DELETE'
+        'delete_type' => 'DELETE',
+        "mp4url"      => v.video.mp4.url,
+        "webmurl"     => v.video.webm.url,
+        "ogvurl"      => v.video.ogv.url,
+        "thumbnail_url"      => v.video.thumbnail.url,
       }
 
       v.as_jquery_upload_response.should eql(response)
