@@ -1,4 +1,4 @@
-module Authorly
+module Interapptive
   module CarrierWave
     module VideoThumbnailer
       extend ActiveSupport::Concern

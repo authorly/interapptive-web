@@ -1,8 +1,8 @@
 # encoding: utf-8
-require 'authorly/carrier_wave/video_thumbnailer'
+require 'interapptive/carrier_wave/video_thumbnailer'
 
 class VideoUploader < CarrierWave::Uploader::Base
-  include Authorly::CarrierWave::VideoThumbnailer
+  include Interapptive::CarrierWave::VideoThumbnailer
   include CarrierWave::Video
 
   # Include RMagick or MiniMagick support:
