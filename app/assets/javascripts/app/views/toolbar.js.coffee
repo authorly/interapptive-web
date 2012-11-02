@@ -46,7 +46,7 @@ class App.Views.ToolbarView extends Backbone.View
     #text.on('change', -> keyframe.updateWidget(text))
 
   addTouch: ->
-    App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:create') 
+    App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:create')
 
   addSprite: ->
     imageSelected = (sprite) =>

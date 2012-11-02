@@ -12,7 +12,7 @@
     - else
       %td.preview
         - if file.thumbnail_url
-          %a{:download => "#{file.name}", :href => "#{file.url}", :rel => "gallery", :title => "#{file.name}"}
+          %a.video-thumbnail{:href => '#', :rel => "gallery", :title => "#{file.name}", 'data-video' => "#{JSON.stringify(file)}"}
             %img{:src => "#{file.thumbnail_url}"}
       %td.name
         %a{:download => "#{file.name}", :href => "#{file.url}", :title => "#{file.name}"}

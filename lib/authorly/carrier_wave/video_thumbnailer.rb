@@ -10,7 +10,6 @@ module Authorly
       end
 
       def video_thumbnail(options = {}, other_options = {})
-        p current_path
         directory = File.dirname(current_path)
 
         movie = FFMPEG::Movie.new(current_path)
