@@ -7,7 +7,8 @@
 3. `bundle install`
 4. `bundle exec rake db:create:all`
 5. `bundle exec rake db:migrate`
-6. `bundle exec rails server` starts the server
+6. `bundle exec rake db:seed`
+7. `bundle exec rails server` starts the server
 
 ### To run all the test cases
 
