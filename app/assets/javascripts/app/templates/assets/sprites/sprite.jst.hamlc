@@ -1,4 +1,4 @@
-%td.preview
+%td.preview{'data-id' => "#{@sprite.get('id')}"}
   - if @sprite.get('thumbnail_url')
     %a{:download => "#{@sprite.get('name')}", :href => "#{@sprite.get('url')}", :rel => "gallery", :title => "#{@sprite.get('name')}"}
       %img{:src => "#{@sprite.get('thumbnail_url')}"}
