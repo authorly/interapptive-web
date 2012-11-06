@@ -19,7 +19,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_border =   false
 
     @sprite = new cc.Sprite
-    @sprite.initWithFile(dataUrl)
+    @sprite.initWithFile(@_url)
     @sprite.setScale(@_scale) if @_scale
     @addChild(@sprite)
     @setContentSize(@sprite.getContentSize())

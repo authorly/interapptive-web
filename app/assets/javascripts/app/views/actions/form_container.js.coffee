@@ -1,6 +1,6 @@
 class App.Views.ActionFormContainer extends Backbone.View
   template:  JST["app/templates/actions/form_container"]
-  id:        '#action-form-container'
+  id:        'action-form-container'
   events:
     'submit form': 'submit'
 

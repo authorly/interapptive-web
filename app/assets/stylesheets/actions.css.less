@@ -1,13 +1,19 @@
 #action-form-container {
+  .content-modal {
+    width: 600px;
+    max-height: 475px;
+    margin-left: -300px;
+  }
+
   .modal-body {
-    padding: 0;
+    padding: 0 !important;
 
     form {
       height: inherit !important;
       margin-bottom: 0 !important;
 
-      .form-actions {
-        padding-left: 478px;
+      fieldset {
+        margin-left: 95px;
       }
 
       button[type="submit"] {
@@ -33,6 +39,12 @@
     bottom: 21px;
     left: 19px;
   }
+
+  #action-list:disabled {
+    opacity: 0.4;
+    font-weight: bolder;
+  }
+
 }
 
 #active-actions-window {
