@@ -61,4 +61,6 @@ Interapptive::Application.routes.draw do
   resources :keyframes do
     resources :texts, :controller => :keyframe_texts
   end
+
+  resource :zencoder, :controller => :zencoder, :only => :create
 end

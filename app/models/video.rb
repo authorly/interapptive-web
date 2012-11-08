@@ -8,10 +8,10 @@ class Video < Asset
         'name'          =>  read_attribute(:video),
         'size'          =>  video.size,
         'url'           =>  video.url,
-        'thumbnail_url' =>  video.thumbnail.url,
-        'mp4url'        =>  video.mp4.url,
-        'webmurl'       =>  video.webm.url,
-        'ogvurl'        =>  video.ogv.url,
+        'thumbnail_url' =>  video.thumbnail_url,
+        'mp4url'        =>  video.mp4_url,
+        'webmurl'       =>  video.webm_url,
+        'ogvurl'        =>  video.ogv_url,
         'delete_url'    =>  "/videos/#{self.id}",
         'delete_type'   =>  'DELETE'
     }

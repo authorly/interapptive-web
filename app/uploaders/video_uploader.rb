@@ -1,9 +1,9 @@
 # encoding: utf-8
-require 'interapptive/carrier_wave/video_thumbnailer'
-
 class VideoUploader < CarrierWave::Uploader::Base
-  include Interapptive::CarrierWave::VideoThumbnailer
-  include CarrierWave::Video
+  include Rails.application.routes.url_helpers
+  Rails.application.routes.default_url_options = ActionMailer::Base.default_url_options
+
+  after :store, :zencode
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -27,40 +27,6 @@ class VideoUploader < CarrierWave::Uploader::Base
     "videos/#{model.id}"
   end
 
-  # OPTIMIZE: WA: Currently the transcoding process is tied with video uploading.
-  # Offload this to a background process. See https://gist.github.com/1541912 and
-  # https://groups.google.com/forum/?fromgroups=#!topic/carrierwave/afnopCrcGfM
-  version :mp4 do
-    process :encode_video => [:mp4, :resolution => :same, :audio_codec => 'aac', :custom => '-q:v 0 -q:a 0 -vpre slow -vpre baseline -g 30 -strict -2']
-    def full_filename(for_file)
-      "mp4_#{File.basename(for_file, '.*')}.mp4"
-    end
-  end
-
-  version :webm do
-    process :encode_video => [:webm, :resolution => :same]
-    def full_filename(for_file)
-      "webm_#{File.basename(for_file, '.*')}.webm"
-    end
-  end
-
-  version :ogv do
-    process :encode_video => [:ogv, :resolution => :same]
-    def full_filename(for_file)
-      "ogv_#{File.basename(for_file, '.*')}.ogv"
-    end
-  end
-
-  version :thumbnail do
-    process :video_thumbnail => [{ :seek_time => 4, :resolution => '100x100' }, { :preserve_aspect_ratio => :width }]
-    def full_filename(for_file)
-      # TODO: WA: It is assumed that thumbnail of the video is present in png
-      # format. Make it dynamic by passing a parameter to VideoThumbnailer
-      # and use that value here instead.
-      "thumbnail_#{File.basename(for_file, '.*')}.png"
-    end
-  end
-
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
   #   # For Rails 3.1+ asset pipeline compatibility:
@@ -80,4 +46,87 @@ class VideoUploader < CarrierWave::Uploader::Base
   #   "something.jpg" if original_filename
   # end
 
+  def thumbnail_url
+    @thubnail_url ||= url_for_format('thumbnail', 'png')
+  end
+
+  def mp4_url
+    @mp4_url ||= url_for_format('mp4')
+  end
+
+  def webm_url
+    @webm_url ||= url_for_format('webm')
+  end
+
+  def ogv_url
+    @ogv_url ||= url_for_format('ogv')
+  end
+
+  private
+
+  def zencode(*args)
+    params = {
+      :input         => @model.video.url,
+      :test          => !Rails.env.production?,
+      :notifications => [zencoder_url],
+      :pass_through  => @model.id,
+      :outputs => [
+        {
+          :public      => true,
+          :base_url    => base_url,
+          :filename    => 'mp4_' + filename_without_ext + '.mp4',
+          :label       => 'webmp4',
+          :format      => 'mp4',
+          :audio_codec => 'aac',
+          :video_codec => 'h264'
+        },
+        {
+          :public      => true,
+          :base_url    => base_url,
+          :filename    => 'webm_' + filename_without_ext + '.webm',
+          :label       => 'webwebm',
+          :format      => 'webm',
+          :audio_codec => 'vorbis',
+          :video_codec => 'vp8'
+        },
+        {
+          :public      => true,
+          :base_url    => base_url,
+          :filename    => 'ogv_' + filename_without_ext + '.ogv',
+          :label       => 'webogv',
+          :format      => 'ogv',
+          :audio_codec => 'vorbis',
+          :video_codec => 'theora'
+        },
+        {
+         :thumbnails => {
+           :public      => true,
+           :base_url    => base_url,
+           :filename    => "thumbnail_" + filename_without_ext,
+           :times       => [4],
+           :aspect_mode => 'preserve',
+           :width       => '100',
+           :height      => '100'
+         }
+       }
+     ]
+    }
+
+    z_response = Zencoder::Job.create(params)
+    @model.meta_info[:request] = z_response.body
+    @model.save(:validate => false)
+  end
+
+  def filename_without_ext
+    @filename_without_ext ||= File.basename(@model.video.url, File.extname(@model.video.url))
+  end
+
+  def base_url
+    @base_url ||= File.dirname(@model.video.url)
+  end
+
+  def url_for_format(prefix, extension = nil)
+    extension ||= prefix 
+    base_url + '/' + prefix + '_' + filename_without_ext + '.' + extension
+  end
 end
