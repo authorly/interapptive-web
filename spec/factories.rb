@@ -23,7 +23,7 @@ Factory.define :sound, class: Asset do |f|
 end
 
 
-Factory.define :image, class: Asset do |f|
+Factory.define :image do |f|
   f.type 'Image'
   f.image 'image.jpg'
 end
@@ -39,7 +39,6 @@ Factory.define :font, class: Asset do |f|
 end
 
 Factory.define :scene do |f|
-  f.image_id Factory.create(:image)
   f.preview_image_id Factory.create(:image)
   f.sound_id Factory.create(:sound)
   f.storybook Factory.create(:storybook)
@@ -47,7 +46,7 @@ end
 
 Factory.define :keyframe do |f|
   f.scene_id Factory.create(:scene)
-  f.image_id Factory.create(:image)
+  f.preview_image_id Factory.create(:image)
 end
 
 Factory.define :actions do |f|

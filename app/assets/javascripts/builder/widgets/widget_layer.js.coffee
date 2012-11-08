@@ -1,3 +1,5 @@
+# Displays the widgets on the main canvas, and handles user interaction (mouse and
+# touch events).
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   constructor: ->
@@ -44,6 +46,24 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     widget.setStorybook(App.storybookJSON)
 
     this
+
+
+  populateFromKeyframe: (keyframe) ->
+    @clearWidgets()
+    App.activeSpritesList.removeAll()
+    # clear text
+    App.updateKeyframeText()
+
+    if (widgets = keyframe.get('widgets'))?
+      for widgetHash in widgets
+        #HACK to ignore TextWidgets in widgets hash because this is in html now
+        continue if widgetHash.type == "TextWidget"
+
+        klass = App.Builder.Widgets[widgetHash.type]
+        throw new Error("Unable to find widget class #{klass}") unless klass
+        widget = klass.newFromHash(widgetHash)
+        @addWidget(widget)
+        widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
 
 
   widgetAtTouch: (touch) ->
@@ -101,12 +121,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     # TODO trigger('click')
     # Causes a save
     if @_capturedWidget
-      # On each touch end, export the main canvas and log it in the console
-      canvas = document.getElementById "builder-canvas"
-      image = Canvas2Image.saveAsPNG canvas, true, 112, 84
-      # TODO put imageSrc as the src of an image in the proper keyframe view
-      console.log image
-
       @_capturedWidget.trigger('change', 'position')
       @_capturedWidget.trigger('mouseup', {
       touch: touch,

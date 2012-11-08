@@ -5,7 +5,7 @@ class App.Views.SceneIndex extends Backbone.View
   events:
     'click    span a.delete': 'destroyScene'
     'click .scene-list span': 'clickScene'
-    
+
   initialize: ->
     @collection.on('reset', @render, this)
     @collection.on('add', @appendScene, this)
@@ -42,10 +42,6 @@ class App.Views.SceneIndex extends Backbone.View
 
     $(@el).append(view.render().el)
 
-    if scene.has "preview_image_id"
-      previewImage = App.imageList().collection.get(scene.get('preview_image_id'))
-      thumbnailUrl = image.get("url")
-      activeKeyframeEl.css("background-image", "url(" + thumbnailUrl + ")")
 
   setActiveScene: (scene) ->
     App.builder.widgetLayer.removeAllChildrenWithCleanup()

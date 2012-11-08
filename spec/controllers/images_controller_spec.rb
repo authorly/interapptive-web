@@ -12,7 +12,7 @@ describe ImagesController do
   context "#index" do
     it 'should give all the images of storybook' do
       @storybook = Factory(:storybook)
-      image = Image.stub!(:where).with(:storybook_id => @storybook.id.to_s).and_return([@image])
+      image = Image.stub!(:where).with(:storybook_id => @storybook.id.to_s, :generated => false).and_return([@image])
       get :index, :storybook_id => @storybook.id
 
       response.should be_success
@@ -39,7 +39,6 @@ describe ImagesController do
     end
 
     it 'should create one single image' do
-      controller.should_receive(:write_file).and_return(@image_file)
       Image.should_receive(:create).and_return(@image)
 
       post :create, :base64 => '1', :image => { :files => [@image_file] }, :storybook_id => @storybook.id, :format => :json
@@ -66,7 +65,6 @@ describe ImagesController do
     it 'should update image' do
       Image.should_receive(:find).with(@image.id.to_s).and_return(@image)
       @image.should_receive(:remove_image!).and_return(true)
-      controller.should_receive(:write_file).and_return(@image_file)
       @image.should_receive(:update_attribute).and_return(@image)
 
       put :update, :id => @image.id, :image => { :files => [@image_file] }, :format => :json

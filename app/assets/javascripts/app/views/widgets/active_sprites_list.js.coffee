@@ -1,3 +1,4 @@
+# Used for the menu for managing the sprites of the current keyframe.
 class App.Views.ActiveSpritesList extends Backbone.View
   tagName:   'ul'
   className: 'sprites'
@@ -91,6 +92,11 @@ class App.Views.ActiveSpritesList extends Backbone.View
     widgetEl.parent().remove()
 
     App.spriteForm.resetForm()
+
+
+  removeAll: ->
+    $("#active-sprites-window ul").empty()
+
 
 
   deselectAll: ->

@@ -50,7 +50,7 @@ describe "App.Models.Keyframe", ->
       describe "on create", ->
         beforeEach ->
 
-          @keyframe.save()
+          @keyframe.save(position: 2)
           @request = @server.requests[0]
 
         it "should be POST", ->
@@ -64,8 +64,7 @@ describe "App.Models.Keyframe", ->
 
       describe "on update", ->
         beforeEach ->
-          @keyframe.set("id", 3)
-          @keyframe.save()
+          @keyframe.save(id: 3)
           @request = @server.requests[0]
 
         it "should be PUT", ->

@@ -32,6 +32,22 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @on "mouseover",    @mouseOver
     @on "mouseout",     @mouseOut
 
+    @sprite = new cc.Sprite
+    @getImage()
+
+
+  constructorContinuation: (dataUrl) =>
+    @sprite.initWithFile(dataUrl)
+    @sprite.setScale(@_scale) if @_scale
+    @addChild(@sprite)
+    @setContentSize(@sprite.getContentSize())
+    @trigger('loaded')
+
+
+  isLoaded: ->
+    @sprite._texture.complete
+
+
   mouseMove: (e) ->
     @setCursor(if @hasBorder() then 'move' else 'default')
 
@@ -165,6 +181,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     proxy.send
       action: 'load'
       path: @_url
+
 
   from_proxy: (message) =>
     if message.action == 'loaded' && message.path == @_url

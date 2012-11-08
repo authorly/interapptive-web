@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe Image do
-  let!(:image) { Factory(:image) }
 
   context "#as_jquery_upload_response" do
+    let!(:image) { Factory(:image) }
+
     it 'should be valid response' do
       # Following chokes with image returned from Factory(:image)
       im = Image.new
@@ -23,5 +24,14 @@ describe Image do
 
       im.as_jquery_upload_response.should eql(response)
     end
+  end
+
+  describe 'when created from a data url' do
+    let(:red_dot) { "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+9TXL0Y4OHwAAAABJRU5ErkJggg==" }
+    subject { Factory(:image, image: nil, data_encoded_image: red_dot ) }
+
+    its(:image) { should be }
   end
 end

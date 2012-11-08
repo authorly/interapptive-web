@@ -5,4 +5,10 @@ class Keyframe < ActiveRecord::Base
            :dependent => :destroy
 
   serialize :widgets
+
+  def as_json(options)
+    super.merge({
+      preview_image_url: preview_image.try(:image).try(:url)
+    })
+  end
 end

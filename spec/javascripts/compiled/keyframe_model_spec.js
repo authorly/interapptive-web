@@ -53,7 +53,9 @@
       return describe("request", function() {
         describe("on create", function() {
           beforeEach(function() {
-            this.keyframe.save();
+            this.keyframe.save({
+              position: 2
+            });
             return this.request = this.server.requests[0];
           });
           it("should be POST", function() {});
@@ -66,8 +68,9 @@
         });
         return describe("on update", function() {
           beforeEach(function() {
-            this.keyframe.set("id", 3);
-            this.keyframe.save();
+            this.keyframe.save({
+              id: 3
+            });
             return this.request = this.server.requests[0];
           });
           it("should be PUT", function() {

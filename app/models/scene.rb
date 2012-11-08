@@ -9,7 +9,9 @@ class Scene < ActiveRecord::Base
   has_many :sounds, :through => :asset_maps, :source => :asset,
                     :conditions => { :type => 'Sound' },
                     :dependent => :destroy
-
+  has_many :videos, :through => :asset_maps, :source => :asset,
+                    :conditions => { :type => 'Video' },
+                    :dependent => :destroy
 
   has_many :actions, :dependent => :destroy
 
@@ -20,9 +22,15 @@ class Scene < ActiveRecord::Base
 
   belongs_to :preview_image, :class_name => 'Image'
   belongs_to :background_image, :class_name => 'Image'
-  belongs_to :background_sound, :class_name => 'Sound' 
+  belongs_to :background_sound, :class_name => 'Sound'
 
   after_create :create_keyframe
+
+  def as_json(options)
+    super.merge({
+      preview_image_url: preview_image.try(:image).try(:url)
+    })
+  end
 
   private
 

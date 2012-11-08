@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121009194340) do
+ActiveRecord::Schema.define(:version => 20121112162058) do
 
   create_table "action_definitions", :force => true do |t|
     t.text     "description"
@@ -45,9 +45,10 @@ ActiveRecord::Schema.define(:version => 20121009194340) do
     t.string   "video"
     t.string   "sound"
     t.string   "font"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.integer  "storybook_id"
+    t.boolean  "generated",    :default => false
   end
 
   add_index "assets", ["type"], :name => "index_assets_on_type"
@@ -94,7 +95,7 @@ ActiveRecord::Schema.define(:version => 20121009194340) do
     t.datetime "updated_at",                        :null => false
     t.integer  "background_x_coord", :default => 0
     t.integer  "background_y_coord", :default => 0
-    t.integer  "image_id"
+    t.integer  "preview_image_id"
     t.text     "widgets"
     t.integer  "position"
   end
@@ -117,7 +118,6 @@ ActiveRecord::Schema.define(:version => 20121009194340) do
   create_table "scenes", :force => true do |t|
     t.integer  "storybook_id"
     t.integer  "sound_id"
-    t.integer  "image_id"
     t.integer  "position"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false

@@ -4,7 +4,7 @@ class ImagesController < ApplicationController
   before_filter :authorize
 
   def index
-    images = Image.where(:storybook_id => params[:storybook_id])
+    images = Image.where(:storybook_id => params[:storybook_id], :generated => false)
 
     render :json => images.map(&:as_jquery_upload_response).to_json
   end
@@ -21,14 +21,14 @@ class ImagesController < ApplicationController
   def create
     storybook = Storybook.find params[:storybook_id]
 
-    if params[:base64]
-      file = write_file	
-      images = [Image.create(:image => file, :storybook_id => storybook.id)]	
-    else
-      images = params[:image][:files].map { |f| Image.create(:image => f, :storybook_id => storybook.id) }
-    end
     respond_to do |format|
-      format.json { render :json => images.map(&:as_jquery_upload_response).to_json }
+      if params[:preview]
+        image = Image.create(:data_encoded_image => params[:data_url], :storybook_id => storybook.id, generated: true)
+        format.json { render :json => image.as_jquery_upload_response.to_json }
+      else
+        images = params[:image][:files].map { |f| Image.create(:image => f, :storybook_id => storybook.id) }
+        format.json { render :json => images.map(&:as_jquery_upload_response).to_json }
+      end
     end
   end
 
@@ -37,9 +37,9 @@ class ImagesController < ApplicationController
   def update
     @image = Image.find params[:id]
     @image.remove_image!
-    file = write_file
 
-    @image.update_attribute(:image, file)
+    data = params[:base64] ? file : params[:data_url]
+    @image.update_attribute(:data_encoded_image, data)
 
     respond_to do |format|
       format.json { render :json => [@image.as_jquery_upload_response] }
@@ -58,9 +58,7 @@ class ImagesController < ApplicationController
 
   private
 
-  def write_file
-    filename = "#{(0..35).map{ rand(36).to_s(36) }.join}.png" # Random alphanumeric
-    file = File.open(filename, "wb")
-    file.write(Base64.decode64(params[:image][:files][0]))
+  def file
+    params[:image][:files][0]
   end
 end

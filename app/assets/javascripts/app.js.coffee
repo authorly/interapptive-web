@@ -117,6 +117,9 @@ window.App =
       @keyframesCollection.on('reset', (keyframes) =>
         scene = @currentScene()
 
+        if keyframes? && keyframes.length > 0
+          scene.setPreviewFrom keyframes.at(0)
+
         @storybookJSON.resetParagraphs(scene)
         keyframes.each (keyframe) =>
           @storybookJSON.createParagraph(scene, keyframe)
@@ -150,10 +153,6 @@ window.App =
 
   keyframeList: (list) ->
     if list then @keyframeListView = list else @keyframeListView
-
-
-  imageList: (list) ->
-    if list then @imageListView = list else @imageListView
 
 
   keyframeTextList: (list) ->

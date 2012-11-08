@@ -12,11 +12,12 @@ describe Keyframe do
           'background_y_coord' => keyframe.background_y_coord,
           'created_at'         => keyframe.created_at,
           'id'                 => keyframe.id,
-          'image_id'           => keyframe.image_id,
           'position'           => keyframe.position,
+          'preview_image_id'   => keyframe.preview_image_id,
           'scene_id'           => keyframe.scene_id,
           'updated_at'         => keyframe.updated_at,
-          'widgets'            => keyframe.widgets
+          'widgets'            => keyframe.widgets,
+          'preview_image_url'  => nil,
       }.to_json
 
       keyframe.to_json.should eql(response)
