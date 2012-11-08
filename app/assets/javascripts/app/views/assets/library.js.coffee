@@ -61,4 +61,4 @@ class App.Views.AssetLibrary extends Backbone.View
 
   playVideo: (em) ->
     video = $(em.currentTarget).data('video')
-    App.modalWithView(view: new App.Views.VideoPlayer(video)).show()
+    App.lightboxWithView(view: new App.Views.VideoPlayer(video)).show()

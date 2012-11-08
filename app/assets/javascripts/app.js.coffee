@@ -77,6 +77,8 @@ window.App =
   modalWithView: (view) ->
     if view then @view = new App.Views.Modal(view, className: 'content-modal') else @view
 
+  lightboxWithView: (view) ->
+    if view then @lightboxView = new App.Views.Lightbox(view, className: 'lightbox-modal') else @lightboxView
 
   currentUser: (user) ->
     if user then @user = new App.Models.User(user) else @user
@@ -188,12 +190,16 @@ window.App =
   updateKeyframeText: ->
     @keyframeTextList().updateText()
 
+  pauseVideos: ->
+    $('.video-player')[0].pause()
+
 $ ->
   App.init()
 
   $('#export').on 'click', -> alert(App.storybookJSON)
 
   $(".content-modal").modal(backdrop: true).modal "hide"
+  $(".lightbox-modal").modal(backdrop: 'static').modal("hide").on('hide', App.pauseVideos)
   $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
 
   toolbar_modal = $("#modal")
