@@ -17,7 +17,7 @@
       %td.name
         %a{:download => "#{file.name}", :href => "#{file.url}", :title => "#{file.name}"}
           = file.name
-      %td.size= @formatFileSize(file.size)
+      %td.size= App.Lib.DateTimeHelper.secondsToDuration(file.duration)
       %td{:colspan => "7"}
       %td.delete
         %button.btn.btn-danger{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}"}

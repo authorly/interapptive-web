@@ -42,3 +42,22 @@ class App.Lib.DateTimeHelper
       "#{year}-#{month_padding}#{month}-#{date_padding}#{date} #{hour_padding}#{hour}:#{minutes_padding}#{minutes}#{meridiem}"
     else
       d.toString()
+
+  @secondsToDuration: (seconds) ->
+    hours = seconds / 3600
+    seconds %= 3600
+    minutes = seconds / 60
+    seconds %= 60
+    console.log(hours)
+    console.log(minutes)
+    console.log(seconds)
+    if hours < 1 then hours = 0
+    if hours < 10 then hours_padding = '0' else hours_padding = ''
+
+    if minutes < 1 then minutes = 0
+    if minutes < 10 then minutes_padding = '0' else minutes_padding = ''
+
+    if seconds < 1 then seconds = 0
+    if seconds < 10 then seconds_padding = '0' else seconds_padding = ''
+
+    "#{hours_padding}#{hours}:#{minutes_padding}#{minutes}:#{seconds_padding}#{seconds}"
