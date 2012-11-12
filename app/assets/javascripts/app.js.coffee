@@ -192,6 +192,7 @@ window.App =
 
   pauseVideos: ->
     $('.video-player')[0].pause()
+    $('.content-modal').show()
 
 $ ->
   App.init()
@@ -199,7 +200,7 @@ $ ->
   $('#export').on 'click', -> alert(App.storybookJSON)
 
   $(".content-modal").modal(backdrop: true).modal "hide"
-  $(".lightbox-modal").modal(backdrop: 'static').modal("hide").on('hide', App.pauseVideos)
+  $(".lightbox-modal").modal().modal("hide").on('hide', App.pauseVideos)
   $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
 
   toolbar_modal = $("#modal")

@@ -13,4 +13,3 @@ class App.Views.Lightbox extends Backbone.View
 
   hide: ->
     @modal.modal 'hide'
-    @pauseVideos()
