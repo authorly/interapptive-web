@@ -24,8 +24,10 @@ tmp/*
 *.rbc
 *.sassc
 .rspec
+.rvmrc
 .redcar/
 .sass-cache
+/config/long_audio_aligner.yml
 /config/config.yml
 /config/database.yml
 /coverage.data
