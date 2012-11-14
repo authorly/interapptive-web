@@ -67,7 +67,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   def zencode(*args)
     params = {
       :input         => @model.video.url,
-      :test          => !Rails.env.production?,
+      :test          => true, # Enable Integration mode by default for all videos for now. https://app.zencoder.com/docs/guides/getting-started/test-jobs-and-integration-mode
       :notifications => [zencoder_url],
       :pass_through  => @model.id,
       :outputs => [
