@@ -48,9 +48,6 @@ class App.Lib.DateTimeHelper
     seconds %= 3600
     minutes = seconds / 60
     seconds %= 60
-    console.log(hours)
-    console.log(minutes)
-    console.log(seconds)
     if hours < 1 then hours = 0
     if hours < 10 then hours_padding = '0' else hours_padding = ''
 

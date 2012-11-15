@@ -1,12 +1,13 @@
 .modal-header
 
 .modal-body
-  %video.video-player{:controls => ''}
-    %source{:src => "#{@video.mp4url}",  :type => 'video/mp4'}
-    %source{:src => "#{@video.webmurl}", :type => 'video/webm'}
-    %source{:src => "#{@video.ogvurl}",  :type => 'video/ogg'}
-    %p
-      Your videos are being encoded. Please come back later.
+  %center
+    %video.video-player{:controls => ''}
+      %source{:src => "#{@video.mp4url}",  :type => 'video/mp4'}
+      %source{:src => "#{@video.webmurl}", :type => 'video/webm'}
+      %source{:src => "#{@video.ogvurl}",  :type => 'video/ogg'}
+      %p
+        Your videos are being encoded. Please come back later.
 
 .modal-footer
   %a.btn{ :href => "#", :data => { :dismiss => 'modal' }} Close

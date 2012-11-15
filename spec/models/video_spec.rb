@@ -23,7 +23,9 @@ describe Video do
         "webmurl"            => @video.video.webm_url,
         "ogvurl"             => @video.video.ogv_url,
         "thumbnail_url"      => @video.video.thumbnail_url,
-        'duration'           => 0
+        'duration'           => 0,
+        'created_at'         => @video.created_at,
+        'transcode_complete' => @video.transcode_complete?
       }
 
       @video.as_jquery_upload_response.should eql(response)

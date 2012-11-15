@@ -16,7 +16,7 @@
       %td.created_at =file.created_at 
       %td{:colspan => "7"}
       %td.delete
-        %button.btn.btn-danger{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}"}
+        %button.btn.btn-danger.delete-asset{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}"}
           %i.icon-trash.icon-white
           %span= locale.fileupload.destroy
         %input{:name => "delete", :type => "checkbox", :value => "1"}

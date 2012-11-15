@@ -30,7 +30,7 @@ class App.Views.AssetLibrary extends Backbone.View
       template.addClass "in"
       $("#loading").remove()
       $("#searchtable").show()
-      $(".table-striped").advancedtable({searchField: "#search", loadElement: "#loader", searchCaseSensitive: false, ascImage: "/assets/advancedtable/up.png", descImage: "/assets/advancedtable/down.png"})
+      $(".table-striped").advancedtable({searchField: "#search", loadElement: "#loader", searchCaseSensitive: false, ascImage: "/assets/advancedtable/up.png", descImage: "/assets/advancedtable/down.png", afterRedraw: @attachDeletEvent})
 
   closeAssetLib: ->
     $("#fileupload").fileupload "disable"
@@ -63,3 +63,9 @@ class App.Views.AssetLibrary extends Backbone.View
     video = $(em.currentTarget).data('video')
     $('.content-modal').hide()
     App.lightboxWithView(view: new App.Views.VideoPlayer(video)).show()
+
+  attachDeletEvent: =>
+    $('.delete-asset').click(@hideRow)
+
+  hideRow: (e) ->
+    $(e.target).parent().hide()
