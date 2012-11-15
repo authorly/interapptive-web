@@ -65,9 +65,7 @@ class App.Views.AssetLibrary extends Backbone.View
     App.lightboxWithView(view: new App.Views.VideoPlayer(video)).show()
 
   attachDeleteEvent: =>
-    console.log('bar')
     $('.delete-asset').click(@hideRow)
 
   hideRow: (e) ->
-    console.log('foo')
     $(e.target).parent().hide()
