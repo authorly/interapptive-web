@@ -1,6 +1,9 @@
 # encoding: utf-8
-
 class VideoUploader < CarrierWave::Uploader::Base
+  include Rails.application.routes.url_helpers
+  Rails.application.routes.default_url_options = ActionMailer::Base.default_url_options
+
+  after :store, :zencode
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -43,4 +46,87 @@ class VideoUploader < CarrierWave::Uploader::Base
   #   "something.jpg" if original_filename
   # end
 
+  def thumbnail_url
+    @thubnail_url ||= url_for_format('thumbnail', 'png')
+  end
+
+  def mp4_url
+    @mp4_url ||= url_for_format('mp4')
+  end
+
+  def webm_url
+    @webm_url ||= url_for_format('webm')
+  end
+
+  def ogv_url
+    @ogv_url ||= url_for_format('ogv')
+  end
+
+  private
+
+  def zencode(*args)
+    params = {
+      :input         => @model.video.url,
+      :test          => true, # Enable Integration mode by default for all videos for now. https://app.zencoder.com/docs/guides/getting-started/test-jobs-and-integration-mode
+      :notifications => [zencoder_url],
+      :pass_through  => @model.id,
+      :outputs => [
+        {
+          :public      => true,
+          :base_url    => base_url,
+          :filename    => 'mp4_' + filename_without_ext + '.mp4',
+          :label       => 'webmp4',
+          :format      => 'mp4',
+          :audio_codec => 'aac',
+          :video_codec => 'h264'
+        },
+        {
+          :public      => true,
+          :base_url    => base_url,
+          :filename    => 'webm_' + filename_without_ext + '.webm',
+          :label       => 'webwebm',
+          :format      => 'webm',
+          :audio_codec => 'vorbis',
+          :video_codec => 'vp8'
+        },
+        {
+          :public      => true,
+          :base_url    => base_url,
+          :filename    => 'ogv_' + filename_without_ext + '.ogv',
+          :label       => 'webogv',
+          :format      => 'ogv',
+          :audio_codec => 'vorbis',
+          :video_codec => 'theora'
+        },
+        {
+         :thumbnails => {
+           :public      => true,
+           :base_url    => base_url,
+           :filename    => "thumbnail_" + filename_without_ext,
+           :times       => [4],
+           :aspect_mode => 'preserve',
+           :width       => '100',
+           :height      => '100'
+         }
+       }
+     ]
+    }
+
+    z_response = Zencoder::Job.create(params)
+    @model.meta_info[:request] = z_response.body
+    @model.save(:validate => false)
+  end
+
+  def filename_without_ext
+    @filename_without_ext ||= File.basename(@model.video.url, File.extname(@model.video.url))
+  end
+
+  def base_url
+    @base_url ||= File.dirname(@model.video.url)
+  end
+
+  def url_for_format(prefix, extension = nil)
+    extension ||= prefix 
+    base_url + '/' + prefix + '_' + filename_without_ext + '.' + extension
+  end
 end

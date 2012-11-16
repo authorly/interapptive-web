@@ -21,7 +21,8 @@
 			evenColor: '',
       oddColor: '',
       afterRedraw: function () {
-      }
+      },
+      afterRedrawThis: null
 		};
 		  
 		// Combine user and default configuration
@@ -288,7 +289,7 @@
 			// Add Table stripes
 			stripeRows();
 						
-      settings.afterRedraw.call();
+      settings.afterRedraw.call(settings.afterRedrawThis);
 		} 
 		// END REDRAWTABLE
 		

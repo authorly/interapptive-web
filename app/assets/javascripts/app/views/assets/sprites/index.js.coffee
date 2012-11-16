@@ -36,7 +36,8 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
       searchCaseSensitive: false,
       ascImage: "/assets/advancedtable/up.png",
       descImage: "/assets/advancedtable/down.png",
-      afterRedraw: => @restoreMetaData()
+      afterRedraw: @restoreMetaData,
+      afterRedrawThis: this
     })
 
   restoreMetaData: ->

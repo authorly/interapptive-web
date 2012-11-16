@@ -10,6 +10,7 @@ gem 'haml'
 gem 'rails-backbone'
 gem 'less-rails-bootstrap'
 gem 'carrierwave'
+gem 'zencoder'
 gem 'fog', '~> 1.3.1'
 gem 'mini_magick'
 gem 'param_protected', '~> 4.0.0'
@@ -41,6 +42,7 @@ group :development do
   gem 'capistrano'
   gem 'debugger'
   gem 'growl'
+  gem 'zencoder-fetcher'
 end
 
 group :test do
