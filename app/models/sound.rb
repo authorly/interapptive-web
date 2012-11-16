@@ -4,12 +4,13 @@ class Sound < Asset
 
   def as_jquery_upload_response
     {
-        'id' => id,
-        'name' => read_attribute(:sound),
-        'size' => sound.size,
-        'url' => sound.url,
-        'delete_url' => "/sounds/#{self.id}",
-        'delete_type' => 'DELETE'
+        'id'            =>   id,
+        'name'          =>   read_attribute(:sound),
+        'size'          =>   sound.size,
+        'url'           =>   sound.url,
+        'delete_url'    =>   "/sounds/#{self.id}",
+        'delete_type'   =>   'DELETE',
+        'created_at'    =>   created_at
     }
   end
 end
