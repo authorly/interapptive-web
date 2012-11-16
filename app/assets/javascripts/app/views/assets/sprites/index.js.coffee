@@ -17,8 +17,12 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
   fillTable: ->
     @collection.fetch
      success: (images, response) =>
-       images.each (image) => @appendImage(image)
-       @allowSortingSearching()
+       if images.length > 0
+         images.each (image) => @appendImage(image)
+         @allowSortingSearching()
+       else
+         $('.table').hide()
+         $('.modal-body').text("You dont have any Images. Please upload some by clicking on 'Images' icon in the toolbar.")
 
   appendImage: (image) ->
     view = new App.Views.Sprite(model: image)
