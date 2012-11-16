@@ -17,7 +17,8 @@ describe Font do
         'url'         => f.font.url,
         'created_at'  => f.created_at.strftime("%Y %d %_m %l%p"),
         'delete_url'  => "/fonts/#{f.id}",
-        'delete_type' => 'DELETE'
+        'delete_type' => 'DELETE',
+        'created_at'  => f.created_at
       }
 
       f.as_jquery_upload_response.should eql(response)
