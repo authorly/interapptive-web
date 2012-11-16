@@ -1,5 +1,7 @@
 class App.Views.AssetLibrary extends Backbone.View
   template: JST["app/templates/assets/library"]
+  events:
+    'click .video-thumbnail' : 'playVideo'
 
   initialize: (assetType) ->
     @activeAssetType = assetType
@@ -20,15 +22,24 @@ class App.Views.AssetLibrary extends Backbone.View
     @loadAndShowFileData()
 
   loadAndShowFileData: ->
+    self = this # Hack to preserve 'this' that is to be passed to advancedtable
     $.getJSON "/storybooks/#{App.currentStorybook().get('id')}/" + @assetType + "s", (files) ->
       fileData = $("#fileupload").data("fileupload")
-      fileData._adjustMaxNumberOfFiles -files.length
+      fileData._adjustMaxNumberOfFiles - files.length
       template = fileData._renderDownload(files).prependTo($("#fileupload .files"))
       fileData._reflow = fileData._transition and template.length and template[0].offsetWidth
       template.addClass "in"
       $("#loading").remove()
       $("#searchtable").show()
-      $(".table-striped").advancedtable({searchField: "#search", loadElement: "#loader", searchCaseSensitive: false, ascImage: "/assets/advancedtable/up.png", descImage: "/assets/advancedtable/down.png"})
+      $(".table-striped").advancedtable({
+        searchField: "#search",
+        loadElement: "#loader",
+        searchCaseSensitive: false,
+        ascImage: "/assets/advancedtable/up.png",
+        descImage: "/assets/advancedtable/down.png",
+        afterRedraw: self.attachDeleteEvent,
+        afterRedrawThis: self
+      })
 
   closeAssetLib: ->
     $("#fileupload").fileupload "disable"
@@ -56,3 +67,14 @@ class App.Views.AssetLibrary extends Backbone.View
       when 'video', 'videos' then return ['mov', 'mpg', 'mpeg', 'mkv', 'm4v', 'avi', 'flv']
       when 'font',  'fonts'  then return ['ttf', 'otf']
       when 'sound', 'sounds' then return ['mp3', 'wav', 'aac', 'm4a']
+
+  playVideo: (em) ->
+    video = $(em.currentTarget).data('video')
+    $('.content-modal').hide()
+    App.lightboxWithView(view: new App.Views.VideoPlayer(video)).show()
+
+  attachDeleteEvent: ->
+    $('.delete-asset').click(@hideRow)
+
+  hideRow: (e) ->
+    $(e.target).closest('tr').hide()

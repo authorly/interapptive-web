@@ -5,7 +5,6 @@
         %td.name #{file.name}
     %td.created_at
       %span
-        file.created_at
     %td.size
       %span
         = @formatFileSize(file.created)

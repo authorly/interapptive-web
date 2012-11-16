@@ -142,6 +142,10 @@ describe "User's ability to upload and manage various assets", :js => true do
       page.click_link("Videos")
       page.should have_content("Video Library")
       page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video.flv'))
+
+      zencoder_response = Object.new
+      def zencoder_response.body; { :zencoder => 'response' }; end
+      Zencoder::Job.stub(:create).and_return(zencoder_response)
     end
 
     it "should select multiple local videos to upload" do
