@@ -22,6 +22,7 @@ class App.Views.AssetLibrary extends Backbone.View
     @loadAndShowFileData()
 
   loadAndShowFileData: ->
+    self = this # Hack to preserve 'this' that is to be passed to advancedtable
     $.getJSON "/storybooks/#{App.currentStorybook().get('id')}/" + @assetType + "s", (files) ->
       fileData = $("#fileupload").data("fileupload")
       fileData._adjustMaxNumberOfFiles - files.length
@@ -30,7 +31,15 @@ class App.Views.AssetLibrary extends Backbone.View
       template.addClass "in"
       $("#loading").remove()
       $("#searchtable").show()
-      $(".table-striped").advancedtable({searchField: "#search", loadElement: "#loader", searchCaseSensitive: false, ascImage: "/assets/advancedtable/up.png", descImage: "/assets/advancedtable/down.png", afterRedraw: @attachDeleteEvent() })
+      $(".table-striped").advancedtable({
+        searchField: "#search",
+        loadElement: "#loader",
+        searchCaseSensitive: false,
+        ascImage: "/assets/advancedtable/up.png",
+        descImage: "/assets/advancedtable/down.png",
+        afterRedraw: self.attachDeleteEvent,
+        afterRedrawThis: self
+      })
 
   closeAssetLib: ->
     $("#fileupload").fileupload "disable"
@@ -64,8 +73,8 @@ class App.Views.AssetLibrary extends Backbone.View
     $('.content-modal').hide()
     App.lightboxWithView(view: new App.Views.VideoPlayer(video)).show()
 
-  attachDeleteEvent: =>
+  attachDeleteEvent: ->
     $('.delete-asset').click(@hideRow)
 
   hideRow: (e) ->
-    $(e.target).parent().hide()
+    $(e.target).closest('tr').hide()

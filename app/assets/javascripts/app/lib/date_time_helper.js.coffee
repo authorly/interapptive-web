@@ -44,10 +44,11 @@ class App.Lib.DateTimeHelper
       d.toString()
 
   @secondsToDuration: (seconds) ->
-    hours = seconds / 3600
+    hours = Math.floor(seconds / 3600)
     seconds %= 3600
-    minutes = seconds / 60
+    minutes = Math.floor(seconds / 60)
     seconds %= 60
+    seconds = Math.floor(seconds)
     if hours < 1 then hours = 0
     if hours < 10 then hours_padding = '0' else hours_padding = ''
 
