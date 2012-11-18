@@ -27,17 +27,17 @@ Interapptive::Application.routes.draw do
   resources :sounds
   resources :fonts
 
-  resources :actions do
-    resources :attributes
+  #resources :actions do
+    #resources :attributes
 
-    collection do
-      get 'definitions'
-    end
+    #collection do
+      #get 'definitions'
+    #end
 
-    member do
-      get 'attributes'
-    end
-  end
+    #member do
+      #get 'attributes'
+    #end
+  #end
 
   resources :storybooks do
     resources :scenes do
@@ -56,7 +56,7 @@ Interapptive::Application.routes.draw do
   end
 
   resources :scenes do
-    resources :actions
+    #resources :actions
 
     resources :keyframes do
       collection { post :sort }
