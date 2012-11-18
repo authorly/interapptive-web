@@ -19,7 +19,6 @@ class App.Views.AbstractFormView extends Backbone.View
     this
 
   updateAttributes: (e) ->
-    console.log "Clicked Save."
     e.preventDefault()
     @form.commit()
 
