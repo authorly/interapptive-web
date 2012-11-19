@@ -38,18 +38,18 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   draw: ->
     if @_mouse_over then @drawSelection()
     
-  drawSelection: -> 
+  drawSelection: ->
     lSize = @label.getContentSize()
     console.log "text widget draw selection"
-    cc.renderContext.strokeStyle = "rgba(0,0,255,1)";
-    cc.renderContext.lineWidth = "2";
+    cc.renderContext.strokeStyle = "rgba(0,0,255,1)"
+    cc.renderContext.lineWidth = "2"
     # Fix update this to have padding and solve for font below baseline
-    vertices = [cc.ccp(0 - lSize.width / 2, lSize.height / 2), 
-                cc.ccp(lSize.width / 2, lSize.height / 2), 
-                cc.ccp(lSize.width / 2, 0 - lSize.height / 2), 
+    vertices = [cc.ccp(0 - lSize.width / 2, lSize.height / 2),
+                cc.ccp(lSize.width / 2, lSize.height / 2),
+                cc.ccp(lSize.width / 2, 0 - lSize.height / 2),
                 cc.ccp(0 - lSize.width / 2, 0 - lSize.height / 2)]
     
-    cc.drawingUtil.drawPoly(vertices, 4, true)  
+    cc.drawingUtil.drawPoly(vertices, 4, true)
   
   update: ->
     console.log "update"
