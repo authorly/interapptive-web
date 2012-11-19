@@ -51,7 +51,7 @@ class App.Views.SceneIndex extends Backbone.View
     App.keyframeList().collection.scene_id = scene.get("id")
     App.keyframeList().collection.fetch()
 
-    App.activeActionsCollection.fetch()
+    #App.activeActionsCollection.fetch()
 
     $('#keyframe-list').html("").html(App.keyframeList().el)
     $('nav.toolbar ul li ul li').removeClass 'disabled'
