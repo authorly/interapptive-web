@@ -29,7 +29,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   removeWidget: (widget) ->
     for _widget, i in @widgets
-      if widget.id is _widget.id
+      if _widget && widget.id is _widget.id
         @removeChild(_widget)
         delete(_widget.parent)
         @widgets.splice(i, 1)

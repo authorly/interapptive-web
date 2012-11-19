@@ -11,13 +11,24 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     @collections =
       videos: new App.Collections.VideosCollection()
       sounds: new App.Collections.SoundsCollection()
-      actions: new App.Collections.ActionsCollection()
     super
     
   render: ->
     $(@el).html(@template(widget: @widget))
     $(@el).find('#touch_zones.modal-body').append @form.el
+    @attachDeleteButton()
     this
+
+  attachDeleteButton: ->
+    $button = $('<button />', {
+      'class': 'btn btn-primary btn-danger widget-delete',
+      text: "Delete",
+    })
+    $(@form.el).find('fieldset').after($button)
+
+  delete: (e) ->
+    App.currentKeyframe().removeWidget(@widget)
+    @cancel(e)
 
   deleteMessage: ->
     "\nYou are about to delete this touch zone. This cannot be undone.\n\n\n" +
