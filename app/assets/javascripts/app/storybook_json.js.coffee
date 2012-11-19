@@ -90,7 +90,6 @@ class App.StorybookJSON
 
   # keyframe === paragraph
   createParagraph: (scene, keyframe) ->
-    console.log('Create paragraph', arguments)
 
     page = scene._page
     throw new Error("Scene has no Page") unless page?
