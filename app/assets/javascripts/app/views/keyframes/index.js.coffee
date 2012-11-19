@@ -115,7 +115,6 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   populateWidgets: (keyframe) ->
-    console.log "KeyframeIndex populateWidgets"
     return unless keyframe?
 
     App.builder.widgetLayer.populateFromKeyframe(keyframe)
