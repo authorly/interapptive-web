@@ -8,20 +8,6 @@
 
   %li.toolbar-group
     %ul
-      %li.edit-text.disabled
-        %a.add-text{:href => '#'} Add Text
-      %li.touch-zones.disabled
-        %a.add-touch{:href => '#'} Add Touch
-      %li.add-image.disabled
-        = link_to "Add Image", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-
-  -#%li.toolbar-group
-    -#%ul
-      -#%li.actions
-        -#= link_to "Create Action", '#'
-
-  %li.toolbar-group
-    %ul
       %li.videos
         = link_to "Videos", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
       %li.images
@@ -30,6 +16,20 @@
         = link_to "Sounds", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
       %li.fonts
         = link_to "Fonts", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
+
+  -#%li.toolbar-group
+    -#%ul
+      -#%li.actions
+        -#= link_to "Create Action", '#'
+
+  %li.toolbar-group
+    %ul
+      %li.edit-text.disabled
+        %a.add-text{:href => '#'} Add Text
+      %li.touch-zones.disabled
+        %a.add-touch{:href => '#'} Add Touch
+      %li.add-image.disabled
+        = link_to "Add Image", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
 
   %li.toolbar-group.last
     %ul
