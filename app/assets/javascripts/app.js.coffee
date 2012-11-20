@@ -19,9 +19,9 @@ window.App =
     @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('body')
 
     @contentModal =   new App.Views.Modal className: 'content-modal'
-    @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
-    @toolbar =        new App.Views.ToolbarView  el: $('#toolbar')
-    @fontToolbar =    new App.Views.FontToolbar  el: $('#font_toolbar')
+    @fileMenu     =   new App.Views.FileMenuView  el: $('#file-menu')
+    @toolbar      =   new App.Views.ToolbarView   el: $('#toolbar')
+    @fontToolbar  =   new App.Views.FontToolbar   el: $('#font_toolbar')
 
     @activeSpritesList = new App.Views.ActiveSpritesList()
     @activeSpritesWindow(@activeSpritesList)
