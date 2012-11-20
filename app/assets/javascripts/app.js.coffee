@@ -29,7 +29,7 @@ window.App =
     @spriteForm = new App.Views.SpriteForm el: $('#sprite-editor')
     @spriteFormWindow(@spriteForm)
 
-    @activeActionsWindow(new App.Views.ActiveActionsList collection: @activeActionsCollection)
+    #@activeActionsWindow(new App.Views.ActiveActionsList collection: @activeActionsCollection)
 
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
@@ -49,7 +49,8 @@ window.App =
       @spritesWindow = new App.Views.WidgetWindow(
         view:       view,
         el:         $('#active-sprites-window'),
-        alsoResize: '#active-sprites-window ul li span'
+        alsoResize: '#active-sprites-window ul li span',
+        title:      "Scene Images"
       )
     else
       @spritesWindow
