@@ -51,7 +51,7 @@ class UsersController < ApplicationController
       if @user.save
         cookies.permanent[:auth_token] = @user.auth_token
         
-        format.html { redirect_to root_path, :notice => 'Welcome to Interapptive!'}
+        format.html { redirect_to root_path }
         format.json { render :json => @user, :status => :created }
       else
         format.html { render :action => 'new', :layout => 'user_sessions' }
