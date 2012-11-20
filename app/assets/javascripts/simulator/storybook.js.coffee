@@ -83,8 +83,6 @@ class Sim.Storybook
         action = new ActionConst(params)
         page.addAction(params.actionTag, action)
 
-
-
     # Menu Items
     if menuSrc.MenuItems
       menuSrc.MenuItems.forEach (menuItem) ->
@@ -96,6 +94,7 @@ class Sim.Storybook
         menuItemInfo.position = new cc.Point(menuItem.position[0], menuItem.position[1])
 
         page.menuItems.push menuItemInfo
+
 
   createPage: (pageSrc) ->
     page = new Sim.Page
@@ -163,6 +162,7 @@ class Sim.Storybook
 
         page.storyTouchableNodes.push touchNode
 
+
     # Sprites -- DRY with MainMenu
     if apiElement.CCSprites
       for sprite in apiElement.CCSprites
@@ -171,6 +171,7 @@ class Sim.Storybook
         spriteInfo.image = sprite.image
         spriteInfo.spriteTag = sprite.spriteTag
         spriteInfo.position = new cc.Point(sprite.position[0], sprite.position[1])
+        spriteInfo.scale = sprite.scale
 
 
         # Sprite actions
@@ -181,6 +182,7 @@ class Sim.Storybook
         page.sprites.push spriteInfo
 
 
+    # Actions
     for ccActionName of apiElement
       actionName = ccActionName.replace(/^CC/, '')
 

@@ -20,6 +20,7 @@ class Sim.SpriteInfo
     @spriteTag = null
     @position = new cc.Point(0, 0)
     @actions = []
+    @scale = 1.0
 
 
 class Sim.StorySwipeEndedActionsToRun

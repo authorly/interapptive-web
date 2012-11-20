@@ -16,7 +16,6 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     widget.video_id  ?= hash.video_id
     widget.sound_id  ?= hash.sound_id
 
-    #HACK TODO: Remove hardcore
     widget.setZOrder(1000) #HACK TODO: Get rid of hardcode
     return widget
 

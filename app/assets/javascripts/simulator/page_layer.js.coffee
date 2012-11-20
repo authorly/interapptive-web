@@ -50,7 +50,7 @@ class Sim.PageLayer extends cc.Scene
       sprite = new cc.Sprite
       sprite.initWithFile(spriteFile)
       sprite.setPosition(spriteInfo.position)
-
+      sprite.setScale((spriteInfo.scale))
       @addChild(sprite, 10, spriteInfo.spriteTag)
 
   createParagraphs: ->

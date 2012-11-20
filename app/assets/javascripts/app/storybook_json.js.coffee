@@ -49,19 +49,24 @@ class App.StorybookJSON
 
       Pages: []
 
+
   @fromJSON: (json) ->
     # TODO
 
+
   toString: ->
     JSON.stringify(@document)
+
 
   resetPages: ->
     # FIXME needs to delete scene._page
     @document.Pages = []
 
+
   resetParagraphs: (scene) ->
     page = scene._page
     page.Page.text.paragraphs = [] if page?
+
 
   # scene === page
   createPage: (scene) ->
@@ -88,6 +93,7 @@ class App.StorybookJSON
 
     page
 
+
   # keyframe === paragraph
   createParagraph: (scene, keyframe) ->
 
@@ -106,6 +112,7 @@ class App.StorybookJSON
 
     paragraph
 
+
   addTextToKeyframe: (line, keyframe) ->
     keyframe ||= App.currentKeyframe()
 
@@ -113,6 +120,7 @@ class App.StorybookJSON
     throw new Error("Keyframe has no Paragraph") unless p?
 
     p.linesOfText.push(line)
+
 
   addWidget: (keyframe, widget) ->
     p = keyframe._paragraph
@@ -132,6 +140,7 @@ class App.StorybookJSON
 
     widget.on('change', (property) => @updateWidget(keyframe, widget, property))
 
+
   updateWidget: (keyframe, widget, property) ->
     p = keyframe._paragraph
     throw new Error("Keyframe has no Paragraph") unless p?
@@ -148,8 +157,10 @@ class App.StorybookJSON
   removeTextFromKeyframe: () ->
     throw new Error("Not implemented yet")
 
+
   getPage: (pageNumber) ->
     @document.Pages[pageNumber]
+
 
   addSprite: (scene, sprite) ->
     page = scene._page
@@ -186,9 +197,11 @@ class App.StorybookJSON
     ###
 
     spriteJSON =
-      image: sprite.url
+      image:     sprite.getUrl()
       spriteTag: nextSpriteTag
-      position: [sprite.getPosition().x, sprite.getPosition().y]
+      position:  [sprite.getPosition().x, sprite.getPosition().y]
+      scale:     sprite.getScale()
+
       #actions: [32]
 
     page.API.CCSprites.push(spriteJSON)
@@ -198,13 +211,17 @@ class App.StorybookJSON
     nextSpriteTag += 1
     return spriteJSON.spriteTag
 
+
   updateSprite: (scene, sprite) ->
     page = scene._page
 
     for spriteJSON in page.API.CCSprites
       if spriteJSON.spriteTag == sprite.getTag()
         spriteJSON.position = [sprite.getPosition().x, sprite.getPosition().y]
+        spriteJSON.scale = sprite.getScale()
+
         break
+
 
   removeSprite: (sprite) ->
     # TODO

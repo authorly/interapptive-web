@@ -37,6 +37,7 @@ class App.Views.SpriteForm extends Backbone.View
         $("#scale-amount").text(ui.value)
         @getWidget().setScale ui.value
         @getWidget().trigger('change', 'scale')
+        App.storybookJSON.updateSprite(App.currentScene(), App.builder.widgetLayer.getWidgetById(@getWidget().id))
     }
 
     $(@_scaleEl).slider(options)

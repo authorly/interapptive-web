@@ -56,12 +56,15 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     if (widgets = keyframe.get('widgets'))?
       for widgetHash in widgets
-        #HACK to ignore TextWidgets in widgets hash because this is in html now
         continue if widgetHash.type == "TextWidget"
 
         klass = App.Builder.Widgets[widgetHash.type]
         throw new Error("Unable to find widget class #{klass}") unless klass
         widget = klass.newFromHash(widgetHash)
+
+        if widgetHash.type is "SpriteWidget"
+          App.storybookJSON.addSprite(App.currentScene(), widget)
+
         @addWidget(widget)
         widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
 

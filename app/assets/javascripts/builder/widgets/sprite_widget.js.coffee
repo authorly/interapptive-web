@@ -31,11 +31,15 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   constructorContinuation: (dataUrl) =>
+
     @sprite.initWithFile(dataUrl)
     @sprite.setScale(@_scale) if @_scale
     @addChild(@sprite)
     @setContentSize(@sprite.getContentSize())
     @trigger('loaded')
+
+    # MOVE ME TO KEYFRA
+    # App.storybookJSON.addSprite(App.currentScene(), @sprite)
 
 
   isLoaded: ->
@@ -137,6 +141,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   setScale: (scale) ->
     @_scale = scale
     @sprite.setScale(scale)
+
 
 
   getScale: ->
