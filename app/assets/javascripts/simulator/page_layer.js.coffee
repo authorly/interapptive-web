@@ -17,6 +17,7 @@ class Sim.PageLayer extends cc.Scene
     menuItem.initFromNormalImage(
       "/resources/#{@storybook.config.homeButtonNormalStateImage}"
       "/resources/#{@storybook.config.homeButtonTappedStateImage}"
+      "/resources/#{@storybook.config.homeButtonTappedStateImage}"
       @storybook
       'showMainMenu'
     )
