@@ -32,7 +32,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   highlight: ->
     super()
-    console.log "text widget highlight"
     #@drawSelection()
 
   draw: ->
@@ -40,7 +39,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     
   drawSelection: ->
     lSize = @label.getContentSize()
-    console.log "text widget draw selection"
     cc.renderContext.strokeStyle = "rgba(0,0,255,1)"
     cc.renderContext.lineWidth = "2"
     # Fix update this to have padding and solve for font below baseline
@@ -52,7 +50,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     cc.drawingUtil.drawPoly(vertices, 4, true)
   
   update: ->
-    console.log "update"
 
   getString: ->
     @_string

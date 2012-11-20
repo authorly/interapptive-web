@@ -41,8 +41,7 @@ class App.Views.KeyframeTextIndex extends Backbone.View
         t.enableDragging()
       
   createText: (str) ->
-    console.log "createText"
-    attributes = 
+    attributes =
       keyframe_id : App.currentKeyframe().get('id')
       content : str
       

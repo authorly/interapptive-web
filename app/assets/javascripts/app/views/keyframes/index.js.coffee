@@ -85,7 +85,6 @@ class App.Views.KeyframeIndex extends Backbone.View
         id: @activeId
       App.currentKeyframe().save {},
         success: (model, response) ->
-          console.log "Saved background location"
 
 
   updateKeyframePreview: (keyframe) ->
@@ -104,11 +103,9 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   placeText: ->
-    console.log "KeyframeIndex placeText"
     if App.currentKeyframe()?
       scene = cc.Director.sharedDirector().getRunningScene()
       keyframeTexts = scene.widgetLayer.widgets
-      console.log keyframeTexts
       App.builder.widgetLayer.removeAllChildrenWithCleanup()
       App.keyframesTextCollection.fetch
         success: (collection, response) =>

@@ -24,10 +24,8 @@ class WidgetDispatcher
   # Group actions
   clearHighlights: (id) ->
     if @widgets
-      console.info "Unhighlighting everything but #{id}"
       widget.unHighlight for widget in @allButId(id)
     else
-      console.warn "No widgets recorded."
 
   # Creators
   handleTouchWidget: (widget) ->

@@ -185,7 +185,6 @@ window.App =
   #    Move to fontToolbar view and access from global
   #
   fontToolbarUpdate: (fontToolbar) ->
-    console.log "App.fontToolbarUpdate"
     @selectedText().fontToolbarUpdate(fontToolbar)
 
 
@@ -194,7 +193,6 @@ window.App =
   #    Move to fontToolbar view and access from global
   #
   fontToolbarClosed: ->
-    console.log("app.fonttoolbarclosed")
     $('.text-widget').focusout()
 
 

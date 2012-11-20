@@ -102,7 +102,7 @@ class App.Views.FontToolbar extends Backbone.View
     @_active = false
     
   boldClick: ->
-    if @fontWeight() == "bold" 
+    if @fontWeight() == "bold"
       @fontWeight("normal")
     else
       @bold("bold")
@@ -110,21 +110,18 @@ class App.Views.FontToolbar extends Backbone.View
     @update()
     
   leftAlignClick: ->
-    console.log("leftAlignClick")
     @deselectAlignment()
     @textAlign('left')
     
     @update()
     
   centerAlignClick: ->
-    console.log("centerAlignClick")
     @deselectAlignment()
     @textAlign('center')
     
     @update()
     
   rightAlignClick: ->
-    console.log("rightAlignClick")
     @deselectAlignment()
     @textAlign('right')
     
@@ -146,7 +143,6 @@ class App.Views.FontToolbar extends Backbone.View
       left : _left
       
   onCloseClick: ->
-    console.log("close font toolbar")
     @hide()
     App.fontToolbarClosed()
   

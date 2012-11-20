@@ -126,7 +126,6 @@ class App.Views.TextWidget extends Backbone.View
   # events...
 
   drag: ->
-    console.log("drag")
     #if calling constrainToCanvas during drag, is just overridden by next drag event
     #@constrainToCanvas()
 
@@ -180,7 +179,6 @@ class App.Views.TextWidget extends Backbone.View
     @constrainToCanvas()
 
   deselect: ->
-    console.log("deselect text")
     $(@el).blur()
    
   top: (_top) ->
@@ -276,7 +274,6 @@ class App.Views.TextWidget extends Backbone.View
     @model.set attr
     @model.save
       success: ->
-        console.log "text widget save success"
         
   rect: ->
     # probably not needed since this is no longer cocos2d
