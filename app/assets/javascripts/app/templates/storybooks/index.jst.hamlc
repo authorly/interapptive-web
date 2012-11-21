@@ -1,7 +1,7 @@
 .modal-header
   %h3.modal-title
     %i.icon-book.icon-black.icon-large
-    New or Open Storybook App...    
+    Create or Open Existing Storybook
 #storybooks.modal-body.loading-book
   %ul#storybook-list
 .modal-footer
