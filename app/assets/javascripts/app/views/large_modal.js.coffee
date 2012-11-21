@@ -1,16 +1,14 @@
 class App.Views.LargeModal extends Backbone.View
-  className: 'large-modal'
-
-  initialize: (options={}) ->
-    @$el.addClass('large-modal')
-    @view = options.view
+  initialize: ->
+    @modal = $('.large-modal')
 
   render: =>
-    @$el.html(@view.render().el)
-
+    $(@el).append @options.view.render().el
     this
 
   show: ->
+    @modal.modal('show').html @el
     @render()
 
   hide: ->
+    @modal.modal 'hide'

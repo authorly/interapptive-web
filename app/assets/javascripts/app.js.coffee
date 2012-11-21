@@ -79,8 +79,9 @@ window.App =
     return unless view
     @closeLargeModal(false)
 
-    @_modal = new App.Views.LargeModal(view: view)
+    @_modal = new App.Views.LargeModal(view: view, className: 'large-modal')
     $('body').append(@_modal.render().el)
+    $('.large-modal').modal(backdrop: true)
 
   #
   # TODO:
@@ -89,7 +90,7 @@ window.App =
   closeLargeModal: (animate=true) ->
     return unless @_modal
 
-    @_modal.remove()
+    @_modal.hide()
 
   modalWithView: (view) ->
     if view then @view = new App.Views.Modal(view, className: 'content-modal') else @view
@@ -225,7 +226,7 @@ $ ->
     $("ul#toolbar li ul li").removeClass "active"
 
   $("ul#toolbar li ul li").click ->
-    excluded = '.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones'
+    excluded = '.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview'
 
     toolbar_modal.modal "hide"
 
