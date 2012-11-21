@@ -92,10 +92,10 @@ ActiveRecord::Schema.define(:version => 20121128213048) do
 
   create_table "keyframes", :force => true do |t|
     t.integer  "scene_id"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
-    t.integer  "background_x_coord",      :default => 0
-    t.integer  "background_y_coord",      :default => 0
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.integer  "background_x_coord", :default => 0
+    t.integer  "background_y_coord", :default => 0
     t.integer  "preview_image_id"
     t.text     "widgets"
     t.integer  "position"

@@ -3,6 +3,8 @@ NEXT_WIDGET_ID = 1
 class App.Builder.Widgets.Widget extends cc.Node
 
   draggable: true
+  retention: 'keyframe'
+  retentionMutability: false
 
   _mouse_over: false
 
@@ -90,12 +92,17 @@ class App.Builder.Widgets.Widget extends cc.Node
     )
 
   toHash: ->
-    { id: @id
-    , type: Object.getPrototypeOf(this).constructor.name
-    , position: { x: parseInt(@getPosition().x)
-                , y: parseInt(@getPosition().y)
-                }
-    }
+    hash                      = {}
+    hash.id                   = @id
+    hash.type                 = Object.getPrototypeOf(this).constructor.name
+    hash.position             =
+      x: @getPosition().x
+      y: @getPosition().y
+    hash.retention            = @retention
+    hash.retentionMutability  = @retentionMutability
+
+    hash
+
 
   pointToLocal: (point) ->
     return unless @parent

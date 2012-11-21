@@ -8,15 +8,45 @@ COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
 LINE_WIDTH_INNER = 2
 
 class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
+  retention: 'scene'
+  retentionMutability: true # This object is independent across keyframes.
+
+  @newFromHash: (hash) ->
+    widget = new this(hash)
+    App.keyframeList().collection.each (keyframe) ->
+      keyframe.addWidget(widget) unless keyframe.hasWidget(widget)
+
+    if hash.zOrder then widget._zOrder = hash.zOrder
+    key = "keyframe_" + App.currentKeyframe().get('id')
+    widget.setPosition(new cc.Point(hash.keyframes[key].x, hash.keyframes[key].y)) if hash.keyframes?[key]?
+
+    if hash.id >= NEXT_WIDGET_ID
+      NEXT_WIDGET_ID = hash.id + 1
+
+    return widget
+
 
   constructor: (options={}) ->
     super
 
-    @_url =      options.url
-    @_filename = options.filename
-    @_zOrder =   options.zOrder
-    @_scale =    options.scale
-    @_border =   false
+    # I'm not in love with this position -- this doesn't seem like
+    # the widget's responsibility.
+    #
+    # Create the keyframes data hash which stores position across 
+    # keyframes.
+    # Also add the keyframe to all keyframes in the scene.
+    if options.keyframes?
+      @_keyframes = options.keyframes
+    else
+      keyframes = {}
+      App.keyframeList().collection.each (keyframe) ->
+        keyframes["keyframe_" + keyframe.get('id')] = {scale: 1, x: 0, y: 0}
+      @_keyframes = keyframes
+
+    @_url       = options.url
+    @_filename  = options.filename
+    @_zOrder    = options.zOrder
+    @_border    = false
 
     @disableDragging()
 
@@ -31,16 +61,40 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   constructorContinuation: (dataUrl) =>
-
     @sprite.initWithFile(dataUrl)
-    @sprite.setScale(@_scale) if @_scale
+    @setScale(@currentKeyframe().scale) if @currentKeyframe()?.scale
     @addChild(@sprite)
     @setContentSize(@sprite.getContentSize())
     @trigger('loaded')
 
-    # MOVE ME TO KEYFRA
-    # App.storybookJSON.addSprite(App.currentScene(), @sprite)
+    # TODO: MOVE ME TO KEYFRA
+    # ^
+    # That is what Chris wrote. I'm not sure what he was trying to do with this.
+    # I would imagine he wants to move it somewhere, but he didn't finish his 
+    # thought, and without this, the spriteForm breaks.
+    # Hence, I have uncommented it.
+    #
+    # - Rob
+    App.storybookJSON.addSprite(App.currentScene(), @)
 
+  currentKeyframe: =>
+    id = App.currentKeyframe().get('id')
+    @_keyframes["keyframe_#{id}"]
+
+  hasKeyframe: (keyframe) =>
+    "keyframe_#{keyframe.get('id')}" in _.keys(@_keyframes)
+
+  addKeyframe: (keyframe, content) =>
+    @_keyframes["keyframe_#{keyframe.get('id')}"] = content
+
+  copyKeyframe: (newKeyframe, oldKeyframe) =>
+    @_keyframes["keyframe_#{newKeyframe.get('id')}"] = @_keyframes["keyframe_#{oldKeyframe.get('id')}"]
+
+  reloadKeyframeInfo: =>
+    @setPosition(new cc.Point(@currentKeyframe().x, @currentKeyframe().y))
+    @setScale(@currentKeyframe().scale)
+    @setContentSize(@sprite.getContentSize())
+    @trigger('loaded')
 
   isLoaded: ->
     @sprite._texture.complete
@@ -51,8 +105,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     App.spriteForm.updateXYFormVals()
 
-    @on 'dblclick',     @setActiveSpriteFromClick
-    @on 'clickOutside', @setAsInactive
+    # @on 'dblclick',     @setActiveSpriteFromClick
+    # @on 'clickOutside', @setAsInactive
 
 
   mouseOut: ->
@@ -112,23 +166,28 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   toHash: ->
-    hash = super
+    hash = {}
+    hash.id = @id
+    hash.type = Object.getPrototypeOf(this).constructor.name
+    hash.retention = @retention
+    hash.retentionMutability = @retentionMutability
 
     hash.filename = @_filename
     hash.url =      @_url
-    hash.scale =    @_scale
+
+    # This is now part of the keyframes hash.
+    # hash.scale =    @_scale
+
     hash.zOrder =   @_zOrder
+    hash.keyframes = @_keyframes
 
     hash
-
 
   setZOrder: (z) ->
     @_zOrder = z
 
-
   getZOrder: ->
     @_zOrder
-
 
   getUrl: ->
     @_url
@@ -139,14 +198,33 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   setScale: (scale) ->
-    @_scale = scale
+    @currentKeyframe().scale = parseFloat(scale)
     @sprite.setScale(scale)
 
-
-
   getScale: ->
-    @_scale
+    @currentKeyframe().scale
 
+  getPosition: =>
+    new cc.Point(@currentKeyframe().x, @currentKeyframe().y)
+
+  getPositionX: =>
+    @currentKeyframe().x
+
+  getPositionY: =>
+    @currentKeyframe().y
+
+  setPosition: (newPosOrxValue, triggerEvent = true) =>
+    @currentKeyframe().x = parseInt(newPosOrxValue.x)
+    @currentKeyframe().y = parseInt(newPosOrxValue.y)
+    super
+
+  setPositionX: (x) =>
+    @currentKeyframe().x = parseInt(x)
+    super
+
+  setPositionY: (y) =>
+    @currentKeyframe().y = parseInt(y)
+    super
 
   draw: (ctx) ->
     return unless @hasBorder()

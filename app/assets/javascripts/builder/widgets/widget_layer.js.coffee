@@ -16,15 +16,13 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @addDblClickEventListener()
     @addClickOutsideEventListener() # Clicks outside the widget
 
-  clearWidgets: ->
-    for widget in @widgets
-      #HACK unless TextWidget until I figure out whether TextWidget will still be stored in Keyframe.widgets
-      @removeChild(widget) unless widget.type == "TextWidget"
+  clearWidgets: (conditionallyRemove = ((w) -> true)) ->
+    widgetsToRemove = _.filter(@widgets, conditionallyRemove)
+    @widgets = _.difference(@widgets, widgetsToRemove)
+    _.map(widgetsToRemove, (widget) =>
+      @removeChild(widget) if widget.type != "TextWidget"
       delete widget.parent
-
-    # Clear array
-    @widgets.splice(0)
-
+    )
 
   removeWidget: (widget) ->
     for _widget, i in @widgets
@@ -33,40 +31,18 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         delete(_widget.parent)
         @widgets.splice(i, 1)
 
+  hasWidget: (widget) ->
+    _.any(@widgets, (w) -> widget.id is w.id)
 
+  # TODO: Refactor this to move sprites list additions and storybook updates
+  #       the responsibility of a different class.
   addWidget: (widget, forSortable = false) ->
     App.activeSpritesList.addSpriteToList(widget) unless forSortable
-
     @widgets.push(widget)
     @addChild(widget)
-
     widget.parent = this
-
     widget.setStorybook(App.storybookJSON)
-
     this
-
-
-  populateFromKeyframe: (keyframe) ->
-    @clearWidgets()
-    App.activeSpritesList.removeAll()
-    # clear text
-    App.updateKeyframeText()
-
-    if (widgets = keyframe.get('widgets'))?
-      for widgetHash in widgets
-        continue if widgetHash.type == "TextWidget"
-
-        klass = App.Builder.Widgets[widgetHash.type]
-        throw new Error("Unable to find widget class #{klass}") unless klass
-        widget = klass.newFromHash(widgetHash)
-
-        if widgetHash.type is "SpriteWidget"
-          App.storybookJSON.addSprite(App.currentScene(), widget)
-
-        @addWidget(widget)
-        widget.on('change', keyframe.updateWidget.bind(keyframe, widget))
-
 
   widgetAtTouch: (touch) ->
     @widgetAtPoint(touch.locationInView())

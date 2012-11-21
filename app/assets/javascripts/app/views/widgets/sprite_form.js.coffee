@@ -82,7 +82,6 @@ class App.Views.SpriteForm extends Backbone.View
     xCoord =   parseInt(@_widget.getPositionX())
     yCoord =   parseInt(@_widget.getPositionY())
     scale =    @_widget.getScale()
-
     $('#sprite-form-window').find('.disabled').removeClass('disabled')
 
     $(@_xEl).val(xCoord)

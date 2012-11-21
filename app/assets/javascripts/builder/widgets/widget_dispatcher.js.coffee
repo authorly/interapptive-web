@@ -12,7 +12,7 @@ class WidgetDispatcher
 
     @widgets = []
 
-    @on('widget:touch:create widget:touch:edit', @handleTouchWidget)
+    @on('widget:touch:create widget:touch:edit', @instantiateTouchWidget)
     @on('widget:touch:update', @updateTouchWidget)
     @on('widget:highlight', @clearHighlights)
     @on('widget:unhighlight', @clearHighlights)
@@ -28,15 +28,17 @@ class WidgetDispatcher
     else
 
   # Creators
-  handleTouchWidget: (widget) ->
+  instantiateTouchWidget: (widget) ->
     unless widget?.id
       widget = {}
+
     @openTouchModal(widget)
 
   createWidget: (widget) ->
     widget = new App.Builder.Widgets.TouchWidget
     widget.setPosition(new cc.Point(300, 300))
     @_addWidget(widget)
+    App.d1 = widget
     widget
 
   # Modals

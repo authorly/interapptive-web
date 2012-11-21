@@ -22,6 +22,8 @@ class App.Models.Keyframe extends Backbone.Model
       @set preview_image_id: @preview.id
       @save()
 
+  hasWidget: (widget) ->
+    _.any((@get('widgets') || []), (w) -> widget.id is w.id)
 
   addWidget: (widget) ->
     widgets = @get('widgets') || []
@@ -32,21 +34,37 @@ class App.Models.Keyframe extends Backbone.Model
     else
       widget.on 'loaded', => setTimeout @widgetsChanged, 0
 
-
+  # TODO: This is not the most performant thing, but not much else will suffice
+  # because we don't use a centralized store for our widgets.
+  # Basically, what happens is this: when we duplicate widget 1 in a keyframe 
+  # because it has scene-wide retention, we create a new entry belonging to 
+  # the new keyframe. These two widgets, while they share a common id, are not 
+  # identical because they have different parents. When we update a widget, it 
+  # will notify its keyframe of the update through this method, and change 
+  # its serialized version of the hash to match our changes. But if we switch 
+  # keyframes, the same widget ID will hold its original position because it 
+  # is not actually affected by the change (being stored under its parent).
+  # Thus, we have to propagate our changes across the active keyframes.
+  # Because we can have a ton of widgets and a ton of keyframes, this can 
+  # slow right down. 
   updateWidget: (widget) ->
-    widgets = @get('widgets') || []
+    App.keyframeList().collection.each (keyframe) ->
+      widgetChanged = false
+      widgets = keyframe.get('widgets') || []
 
-    for w, i in widgets
-      if widget.id is w.id
-        widgets[i] = widget.toHash()
-        @widgetsChanged()
-        return
+      for w, i in widgets
+        if widget.id is w.id
+          widgets[i] = widget.toHash()
+          keyframe.widgetsChanged()
+          widgetChanged = true
+          break
 
-    # Didn't update a widget, so we'll add it
-    @addWidget(widget)
+      unless widgetChanged
+        # Didn't update a widget, so we'll add it
+        keyframe.addWidget(widget)
 
 
-  removeWidget: (widget) ->
+  removeWidget: (widget, skipWidgetLayerRemoval) ->
     widgets = @get('widgets')
     return unless widgets?
 
@@ -56,7 +74,8 @@ class App.Models.Keyframe extends Backbone.Model
         @widgetsChanged()
         break
 
-    App.builder.widgetLayer.removeWidget(widget)
+    App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
+    @widgetsChanged()
 
 
   widgetsChanged: =>

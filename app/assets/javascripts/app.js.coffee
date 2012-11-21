@@ -6,6 +6,8 @@ window.App =
   Routers:     {}
   Lib:         {}
   Config:      {}
+  Services:    {}
+  Dispatchers: {}
 
   init: ->
     # A global vent object that allows decoupled communication between
@@ -238,6 +240,7 @@ $ ->
   toolbar_modal.bind "hidden", ->
     $("ul#toolbar li ul li").removeClass "active"
 
+  # TODO: Move to Toolbar manager or something similar
   $("ul#toolbar li ul li").click ->
     excluded = '.actions, .scene, .keyframe, .animation-keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview, .scene-options'
 

@@ -4,16 +4,16 @@ class App.Views.SceneIndex extends Backbone.View
   className: 'scene-list'
   events:
     'click    span a.delete': 'destroyScene'
-    'click .scene-list span': 'clickScene'
+    'click .scene-list span': 'onSceneClick'
 
   initialize: ->
     @collection.on('reset', @render, this)
-    @collection.on('add', @appendScene, this)
+    @collection.on('add', @appendSceneElement, this)
 
   render: ->
     $(@el).html('')
 
-    @collection.each (scene) => @appendScene(scene)
+    @collection.each (scene) => @appendSceneElement(scene)
 
     $('.scene-list li:first span:first').click()
 
@@ -28,38 +28,26 @@ class App.Views.SceneIndex extends Backbone.View
   createScene: =>
     scene = new App.Models.Scene
 
-    scene.save storybook_id: App.currentStorybook().get('id'),
+    scene.save(storybook_id: App.currentStorybook().get('id'),
       wait: true
       success: (scene, response) =>
-        @collection.add scene
-        @setActiveScene scene
-        $('.scene-list li:last span:first').click()
+        @collection.add scene 
+
+        service = new App.Services.SwitchSceneService(App.currentScene(), scene)
+        service.execute()
+
         @scrollToTop()
-        @numberScenes()
+        @renumberScenes()
+    )
+
     scene
 
-
-  appendScene: (scene) ->
+  appendSceneElement: (scene) ->
     view = new App.Views.Scene(model: scene)
-
     $(@el).append(view.render().el)
 
-
-  setActiveScene: (scene) ->
-    App.builder.widgetLayer.removeAllChildrenWithCleanup()
-
-    App.currentScene scene
-
-    App.keyframeList().collection.scene_id = scene.get("id")
-    App.keyframeList().collection.fetch()
-
-    #App.activeActionsCollection.fetch()
-
-    $('#keyframe-list').html("").html(App.keyframeList().el)
-    $('nav.toolbar ul li ul li').removeClass 'disabled'
-
-
   destroyScene: (event) =>
+    # TODO: Prevent this from working in the event there is only one scene?
     message = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
     target  = $(event.currentTarget)
     sceneId = target.attr('data-id')
@@ -72,30 +60,33 @@ class App.Views.SceneIndex extends Backbone.View
       scene.destroy
         success: =>
           sceneEl.remove() and $('.scene-list li:first span:first').click()
-          @numberScenes()
+          @renumberScenes()
 
+  onSceneClick: (event) =>
+    sceneId = $(event.currentTarget).data 'id'
+    scene = @collection.get sceneId
+    @toggleSceneChange scene
 
-  clickScene: (event) ->
-    target  = $(event.currentTarget)
-    sceneId = target.data("id")
-    sceneEl = target.parent()
+  toggleSceneChange: (scene) =>
+    return if scene is App.currentScene()
+    service = new App.Services.SwitchSceneService(App.currentScene(), scene)
+    service.execute()
 
-    sceneEl.siblings().removeClass("active")
-    sceneEl.removeClass("active")
-    sceneEl.addClass("active")
-
-    @setActiveScene @collection.get(sceneId)
-
+  switchActiveElement: (scene) =>
+    $('li', @el)
+      .removeClass('active')
+      .find("span.scene-frame[data-id=#{scene.get('id')}]")
+      .parent().addClass('active')
 
   initSortable: =>
-    @numberScenes()
+    @renumberScenes()
 
     $(@el).sortable
       opacity: 0.6
       containment: '.sidebar'
       axis: 'y'
       update: =>
-        @numberScenes()
+        @renumberScenes()
 
         $.ajax
           contentType:"application/json"
@@ -118,10 +109,10 @@ class App.Views.SceneIndex extends Backbone.View
 
     JSON
 
-  numberScenes: ->
+  renumberScenes: ->
     $('.page-number').each (index, element) ->
       $(element).empty().html(index+1)
 
   scrollToTop: ->
     el = $('.scene-list')
-    el.scrollTop(el.find('li:first').height()*el.find('li').size())
+    el.scrollTop(el.find('li:first').height() * el.find('li').size())

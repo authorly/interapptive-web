@@ -25,7 +25,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     if @collection.length > 0
       @collection.each (keyframe) => @renderKeyframe(keyframe)
-      @setActiveKeyframe()
+      @switchKeyframe()
       @_updateDeleteButtons()
 
     @delegateEvents() # needed, even though it should work without it
@@ -36,10 +36,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   appendKeyframe: (keyframe, _collection, options) =>
     @renderKeyframe(keyframe, options.index)
-    @setActiveKeyframe(keyframe)
-
+    @switchKeyframe(keyframe)
     @_updateDeleteButtons()
-
 
   renderKeyframe: (keyframe, index) =>
     view  = new App.Views.Keyframe(model: keyframe)
@@ -55,16 +53,16 @@ class App.Views.KeyframeIndex extends Backbone.View
   keyframeClicked: (event) ->
     id = $(event.currentTarget).attr "data-id"
     keyframe = @collection.get id
-    @setActiveKeyframe(keyframe)
+    @switchKeyframe(keyframe)
 
 
-  setActiveKeyframe: (keyframe) ->
+  switchKeyframe: (keyframe) =>
     keyframe = @collection.at(@collection.length - 1) unless keyframe?
+    switcher = new App.Services.SwitchKeyframeService(App.currentKeyframe(), keyframe)
+    switcher.execute()
 
-    App.currentKeyframe keyframe
+  switchActiveKeyframe: (keyframe) =>
     @$('li').removeClass('active').filter("[data-id=#{keyframe.id}]").addClass('active')
-    @populateWidgets(keyframe)
-
 
   destroyKeyframeClicked: (event) =>
     event.stopPropagation()
@@ -79,7 +77,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   removeKeyframe: (keyframe) =>
     $(".keyframe-list li[data-id=#{keyframe.id}]").remove()
-    @setActiveKeyframe()
+    @switchKeyframe()
     @_updateDeleteButtons()
 
 
@@ -105,13 +103,6 @@ class App.Views.KeyframeIndex extends Backbone.View
       App.builder.widgetLayer.removeAllChildrenWithCleanup()
       App.keyframesTextCollection.fetch
         success: (collection, response) =>
-
-
-  populateWidgets: (keyframe) ->
-    return unless keyframe?
-
-    App.builder.widgetLayer.populateFromKeyframe(keyframe)
-
 
   initSortable: =>
     $(@el).sortable
