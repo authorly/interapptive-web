@@ -6,7 +6,6 @@ class App.Models.Keyframe extends Backbone.Model
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
 
-
   initialize: ->
     @on 'change:widgets', => @save()
     @initializePreview()
@@ -19,7 +18,6 @@ class App.Models.Keyframe extends Backbone.Model
     @preview.on 'change:id', =>
       @set preview_image_id: @preview.id
       @save()
-
 
   addWidget: (widget) ->
     widgets = @get('widgets') || []

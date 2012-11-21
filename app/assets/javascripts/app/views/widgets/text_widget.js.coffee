@@ -9,22 +9,22 @@ class App.Views.TextWidget extends Backbone.View
   _fontFace: "Arial"
   _fontWeight: "normal"
   _textAlign: "left"
-  _content: "" 
+  _content: ""
   _x: 100
   _y: 100
   _width : 100
   _height : 20
 
   events:
-    'click' : 'onClick'
+    'click'      : 'onClick'
     'mouseenter' : 'mouseEnter'
     'mouseleave' : 'mouseLeave'
-    'focus' : 'onFocus'
-    'blur' : 'onBlur'
+    'focus'      : 'onFocus'
+    'blur'       : 'onBlur'
     # do focusOut to close toolbar also! should fix it.
-    'keyup' : 'editActivity'
-    'paste' : 'editActivity'
-    'drag' : 'drag'
+    'keyup'      : 'editActivity'
+    'paste'      : 'editActivity'
+    'drag'       : 'drag'
 
   initialize: ->
     @content @options.string if @options.string
@@ -232,7 +232,7 @@ class App.Views.TextWidget extends Backbone.View
     _top = _canvas.offset().top + _canvas.height() - _cocosY
     _top
     
-  cocosXtoLeft: (_cocosX) -> 
+  cocosXtoLeft: (_cocosX) ->
     _canvas = @getCanvas()
     _left = _canvas.offset().left + _cocosX
     
@@ -243,7 +243,7 @@ class App.Views.TextWidget extends Backbone.View
     
   left2cocosX: (_left) ->
     _canvas = @getCanvas()
-    _x = @left() - _canvas.offset().left 
+    _x = @left() - _canvas.offset().left
     _x
     
   cocosX: ->
@@ -262,7 +262,7 @@ class App.Views.TextWidget extends Backbone.View
     $('#builder-canvas')
     
   save: ->
-    attr = 
+    attr =
       content : @content()
       face : @fontFace()
       size : @fontSize()

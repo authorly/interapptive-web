@@ -65,7 +65,7 @@ class App.Views.AssetLibrary extends Backbone.View
     switch assetType
       when 'image', 'images' then return ['jpg', 'jpeg', 'gif', 'png']
       when 'video', 'videos' then return ['mov', 'mpg', 'mpeg', 'mkv', 'm4v', 'avi', 'flv']
-      when 'font',  'fonts'  then return ['ttf', 'otf']
+      when 'font',  'fonts'  then return ['ttf']
       when 'sound', 'sounds' then return ['mp3', 'wav', 'aac', 'm4a']
 
   playVideo: (em) ->

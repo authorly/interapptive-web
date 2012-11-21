@@ -7,6 +7,9 @@
     Verdana
   %option{:value => "Georgia"}
     Georgia
+  - for font in @fonts
+    %option{:value => font.get('name')}
+      = font.get('name')
     
 %button#bold
   B

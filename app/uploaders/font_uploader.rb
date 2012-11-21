@@ -1,6 +1,8 @@
 # encoding: utf-8
+require 'interapptive/carrier_wave/font_reader'
 
 class FontUploader < CarrierWave::Uploader::Base
+  include Interapptive::CarrierWave::FontReader
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -26,6 +28,8 @@ class FontUploader < CarrierWave::Uploader::Base
     "fonts/#{model.id}"
   end
 
+  process :extract_meta_info
+
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
   #   # For Rails 3.1+ asset pipeline compatibility:
@@ -48,7 +52,7 @@ class FontUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   def extension_white_list
-    %w( ttf otf)
+    %w(ttf)
   end
 
   # Override the filename of the uploaded files:
@@ -56,5 +60,4 @@ class FontUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
-
 end
