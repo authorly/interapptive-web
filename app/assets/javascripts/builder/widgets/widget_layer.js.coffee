@@ -12,7 +12,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @isKeyboardEnabled = true
 
     cc.canvas.addEventListener 'keypress', (event) =>
-      console.log event.keyCode
 
     @addDblClickEventListener()
     @addClickOutsideEventListener() # Clicks outside the widget

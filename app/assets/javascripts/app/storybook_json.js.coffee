@@ -70,7 +70,6 @@ class App.StorybookJSON
 
   # scene === page
   createPage: (scene) ->
-    #console.log('Create page', arguments)
 
     page =
       API: {}

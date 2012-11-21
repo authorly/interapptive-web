@@ -60,7 +60,6 @@ class App.Views.ActiveActionsList extends Backbone.View
 
 
   appendActionToList: (action) =>
-    console.log "Appending"
     actionView = new App.Views.Action(model: action)
     actionEl =   actionView.render().el
 

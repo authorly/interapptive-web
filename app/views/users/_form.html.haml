@@ -16,7 +16,7 @@
     = f.password_field :password, :placeholder => 'password'
   %p
     = f.password_field :password_confirmation, :placeholder => 'confirm password'
-  %p
+  -#%p
     %label.checkbox
       = check_box_tag 'user[role]', 'developer'
       Are you a developer?
@@ -24,3 +24,7 @@
   %br/
 
   = f.submit 'Sign Up', :class => 'btn'
+  %br/
+  %br/
+
+  = link_to 'Already have an account?', sign_in_path

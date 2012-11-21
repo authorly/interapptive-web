@@ -10,7 +10,6 @@ window.initBuilder = ->
   )
 
   cc.Loader.shareLoader().onloading = ->
-    console.log "LOADING...."
 
   cc.Loader.shareLoader().onload = ->
     cc.AppController.shareAppController().didFinishLaunchingWithOptions()

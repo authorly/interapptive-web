@@ -31,7 +31,7 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     @cancel(e)
 
   deleteMessage: ->
-    "\nYou are about to delete this touch zone. This cannot be undone.\n\n\n" +
+    "\nYou are about to delete this hotspot. This cannot be undone.\n\n\n" +
     "Are you sure you wish to continue?"
 
   formOptions: ->

@@ -19,9 +19,9 @@ window.App =
     @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('body')
 
     @contentModal =   new App.Views.Modal className: 'content-modal'
-    @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
-    @toolbar =        new App.Views.ToolbarView  el: $('#toolbar')
-    @fontToolbar =    new App.Views.FontToolbar  el: $('#font_toolbar')
+    @fileMenu     =   new App.Views.FileMenuView  el: $('#file-menu')
+    @toolbar      =   new App.Views.ToolbarView   el: $('#toolbar')
+    @fontToolbar  =   new App.Views.FontToolbar   el: $('#font_toolbar')
 
     @activeSpritesList = new App.Views.ActiveSpritesList()
     @activeSpritesWindow(@activeSpritesList)
@@ -29,7 +29,7 @@ window.App =
     @spriteForm = new App.Views.SpriteForm el: $('#sprite-editor')
     @spriteFormWindow(@spriteForm)
 
-    @activeActionsWindow(new App.Views.ActiveActionsList collection: @activeActionsCollection)
+    #@activeActionsWindow(new App.Views.ActiveActionsList collection: @activeActionsCollection)
 
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
@@ -49,7 +49,8 @@ window.App =
       @spritesWindow = new App.Views.WidgetWindow(
         view:       view,
         el:         $('#active-sprites-window'),
-        alsoResize: '#active-sprites-window ul li span'
+        alsoResize: '#active-sprites-window ul li span',
+        title:      "Scene Images"
       )
     else
       @spritesWindow
@@ -78,8 +79,9 @@ window.App =
     return unless view
     @closeLargeModal(false)
 
-    @_modal = new App.Views.LargeModal(view: view)
+    @_modal = new App.Views.LargeModal(view: view, className: 'large-modal')
     $('body').append(@_modal.render().el)
+    $('.large-modal').modal(backdrop: true)
 
   #
   # TODO:
@@ -88,7 +90,7 @@ window.App =
   closeLargeModal: (animate=true) ->
     return unless @_modal
 
-    @_modal.remove()
+    @_modal.hide()
 
   modalWithView: (view) ->
     if view then @view = new App.Views.Modal(view, className: 'content-modal') else @view
@@ -185,7 +187,6 @@ window.App =
   #    Move to fontToolbar view and access from global
   #
   fontToolbarUpdate: (fontToolbar) ->
-    console.log "App.fontToolbarUpdate"
     @selectedText().fontToolbarUpdate(fontToolbar)
 
 
@@ -194,7 +195,6 @@ window.App =
   #    Move to fontToolbar view and access from global
   #
   fontToolbarClosed: ->
-    console.log("app.fonttoolbarclosed")
     $('.text-widget').focusout()
 
 
@@ -226,7 +226,7 @@ $ ->
     $("ul#toolbar li ul li").removeClass "active"
 
   $("ul#toolbar li ul li").click ->
-    excluded = '.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones'
+    excluded = '.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview'
 
     toolbar_modal.modal "hide"
 

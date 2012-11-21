@@ -40,21 +40,18 @@ class App.Builder.Widgets.Widget extends cc.Node
   mouseOver: ->
     @_mouse_over = true
     
-  mouseOut: -> 
+  mouseOut: ->
     @_mouse_over = false
     
   mouseMove: ->
-    console.log "mouse move from Widget"
   
-  doubleClick: -> 
-    console.log "Widget double click"
+  doubleClick: ->
 
   isHighlighted: ->
     return @_highlighted
 
   highlight: ->
     unless @isHighlighted()
-      console.info "Widget #{@id} highlighted."
       @_highlighted = true
       App.Builder.Widgets.WidgetDispatcher.trigger('widget:highlight', @id)
 

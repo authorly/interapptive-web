@@ -1,7 +1,8 @@
 class App.Views.FileMenuView extends Backbone.View
   events:
-    'click .switch-storybook': 'switchStorybook'
-    'click .show-storybook-settings': 'showSettings'
+    'click .switch-storybook':          'switchStorybook'
+    'click .show-storybook-settings':   'showSettings'
+    'click .about-authorly':            'showAbout'
 
   render: ->
     $el = $(this.el)
@@ -13,5 +14,6 @@ class App.Views.FileMenuView extends Backbone.View
     view = new App.Views.Storybooks.SettingsForm()
     App.modalWithView(view: view).show()
 
-
-
+  showAbout: ->
+    view = new App.Views.AboutView()
+    App.modalWithView(view: view).show()

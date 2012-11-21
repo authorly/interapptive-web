@@ -2,5 +2,5 @@
   .modal-header
     %h3.modal-title
       %i.icon-book.icon-black.icon-large
-      Create a Touch Zone
+      Create a Hotspot
 #touch_zones.modal-body
