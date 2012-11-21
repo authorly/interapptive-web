@@ -112,13 +112,15 @@ class App.StorybookJSON
     paragraph
 
 
-  addTextToKeyframe: (line, keyframe) ->
+  addText: (text, keyframe) ->
     keyframe ||= App.currentKeyframe()
 
     p = keyframe._paragraph
     throw new Error("Keyframe has no Paragraph") unless p?
 
-    p.linesOfText.push(line)
+    console.log "storybookJSON.addText() text: ", text
+
+    p.linesOfText.push(text)
 
 
   addWidget: (keyframe, widget) ->

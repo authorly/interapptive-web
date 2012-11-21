@@ -12,13 +12,13 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     for c in @collection.models
       text = new App.Views.TextWidget(model: c)
       @addText(text)
+      App.storybookJSON.addText(text._content)
     @resize()
     
   removeTexts: ->
-    #remove text widgets, clean up
+    # remove text widgets
     for t in @texts
       $(t.el).remove()
-      #TODO may need to clean up the text object itself with leave() or something similar 
     @texts.length = 0
     
   deselectTexts: ->

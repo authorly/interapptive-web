@@ -76,18 +76,6 @@ class App.Views.KeyframeIndex extends Backbone.View
           $('.keyframe-list li:last div').click()
 
 
-  setBackgroundPosition: (x, y) ->
-    $(@el).find('.active div').attr("data-x","#{x}").attr("data-y","#{y}")
-
-    if App.currentKeyframe()?
-      App.currentKeyframe().set
-        background_x_coord: x
-        background_y_coord: y
-        id: @activeId
-      App.currentKeyframe().save {},
-        success: (model, response) ->
-
-
   updateKeyframePreview: (keyframe) ->
     return unless keyframe == App.currentKeyframe()
 

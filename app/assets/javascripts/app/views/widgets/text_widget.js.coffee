@@ -154,10 +154,8 @@ class App.Views.TextWidget extends Backbone.View
   onClick: (e) ->
     # select and make editable. once editable, another click will place the cursor inside and allow typing, i.e. "double click"
     if @editing() then @disableDragging() else @enableEditing()
-    # TODO set timer and turn off content editable
 
   onBlur: ->
-    # unless App.fontToolbar.active then App.fontToolbar.hide()
     if $(@el).text().length < 1 then $(@el).text("Enter some text...")
     @editActivity()
 
