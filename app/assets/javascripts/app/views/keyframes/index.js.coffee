@@ -5,10 +5,10 @@ class App.Views.KeyframeIndex extends Backbone.View
   template:  JST["app/templates/keyframes/index"]
   tagName:   'ul'
   className: 'keyframe-list'
-
   events:
     'click span a.delete-keyframe': 'destroyKeyframe'
     'click  .keyframe-list li div': 'keyframeClicked'
+
 
   initialize: ->
     @collection.on('reset', @render, @)
@@ -26,6 +26,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     # Fire asynchronously so other 'reset' events can finish first
     # setTimeout((=> $(@el).find('li:last-child div:last').click()), 1)
     this
+
 
   createKeyframe: =>
     keyframe = new App.Models.Keyframe
@@ -137,6 +138,7 @@ class App.Views.KeyframeIndex extends Backbone.View
           complete: =>
             $(@el).sortable('refresh')
 
+
   keyframePositionsJSONArray: ->
     JSON = {}
     JSON.keyframes = []
@@ -147,6 +149,7 @@ class App.Views.KeyframeIndex extends Backbone.View
         position: index+1
 
     JSON
+
 
   numberKeyframes: ->
     $('.keyframe-list li div').each (index, element) =>
