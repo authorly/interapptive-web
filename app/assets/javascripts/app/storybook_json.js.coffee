@@ -95,12 +95,12 @@ class App.StorybookJSON
 
   # keyframe === paragraph
   createParagraph: (scene, keyframe) ->
-
     page = scene._page
     throw new Error("Scene has no Page") unless page?
 
     paragraph =
       delayForPanning: true
+      id: keyframe.id # FIXMMBe sure I get used and remove if not
       highlightingTimes: []
       linesOfText: []
       voiceAudioFile: ""
@@ -112,15 +112,18 @@ class App.StorybookJSON
     paragraph
 
 
-  addText: (text, keyframe) ->
+  addText: (_text, keyframe) ->
     keyframe ||= App.currentKeyframe()
 
     p = keyframe._paragraph
     throw new Error("Keyframe has no Paragraph") unless p?
 
-    console.log "storybookJSON.addText() text: ", text
+    lineOfTextJSON =
+      text:    _text._content
+      xOffset: _text.getCocosPosition().x
+      yOffset: _text.getCocosPosition().y
 
-    p.linesOfText.push(text)
+    p.linesOfText.push(lineOfTextJSON)
 
 
   addWidget: (keyframe, widget) ->
@@ -201,7 +204,6 @@ class App.StorybookJSON
       image:     sprite.getUrl()
       spriteTag: nextSpriteTag
       position:  [sprite.getPosition().x, sprite.getPosition().y]
-      scale:     sprite.getScale()
 
       #actions: [32]
 

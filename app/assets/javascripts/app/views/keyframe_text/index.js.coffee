@@ -9,10 +9,13 @@ class App.Views.KeyframeTextIndex extends Backbone.View
   render: ->
     @removeTexts()
     
-    for c in @collection.models
-      text = new App.Views.TextWidget(model: c)
-      @addText(text)
-      App.storybookJSON.addText(text._content)
+    for keyframeText in @collection.models
+      parentKeyframe = App.keyframesCollection.get keyframeText.get('keyframe_id')
+
+      keyframeText = new App.Views.TextWidget(model: keyframeText)
+      @addText(keyframeText)
+      App.storybookJSON.addText(keyframeText, parentKeyframe)
+
     @resize()
     
   removeTexts: ->

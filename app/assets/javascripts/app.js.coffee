@@ -110,11 +110,12 @@ window.App =
 
       @scenesCollection.on('reset', (scenes) =>
         scenes.each (scene) =>
-          #@storybookJSON.resetPages()
+          @storybookJSON.resetPages()
           @storybookJSON.createPage(scene)
       )
 
       @scenesCollection.on('add', (scene) =>
+        console.log "add scene"
         @storybookJSON.createPage(scene)
       )
 
@@ -130,6 +131,7 @@ window.App =
       )
 
       @keyframesCollection.on('add', (keyframe) =>
+        console.log "keyframe added, keyframe: ", keyframe
         scene = @currentScene()
         @storybookJSON.createParagraph(scene, keyframe)
       )

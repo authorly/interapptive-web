@@ -38,9 +38,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @setContentSize(@sprite.getContentSize())
     @trigger('loaded')
 
-    # MOVE ME TO KEYFRA
-    # App.storybookJSON.addSprite(App.currentScene(), @sprite)
-
 
   isLoaded: ->
     @sprite._texture.complete

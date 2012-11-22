@@ -16,6 +16,7 @@ class Sim.Paragraph extends cc.Node
     @fontName = 'Arial' # FIXME Forced to arial for now
 
     @info.linesOfText.forEach (line) =>
+      console.log "HIT"
       xOffset = line.xOffset
       yOffset = line.yOffset
 
