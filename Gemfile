@@ -19,6 +19,7 @@ gem 'unicorn'
 gem 'therubyracer'
 gem 'jasmine'
 gem 'barista'
+gem 'ttfunk'
 
 group :assets do
   gem 'less-rails'

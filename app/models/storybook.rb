@@ -1,10 +1,11 @@
 class Storybook < ActiveRecord::Base
   belongs_to :user
   has_many :scenes, :dependent => :destroy
-  has_many :images, :through => :scenes,:dependent => :destroy
-  has_many :sounds, :through => :scenes, :dependent => :destroy
-  has_many :videos, :through => :scenes, :dependent => :destroy
-  has_many :fonts, :through => :scenes, :dependent => :destroy
+
+  has_many :images, :dependent => :destroy
+  has_many :sounds, :dependent => :destroy
+  has_many :videos, :dependent => :destroy
+  has_many :fonts,  :dependent => :destroy
 
   has_one  :default_font, :through => :storybook_settings, :source => :font
 
@@ -14,7 +15,7 @@ class Storybook < ActiveRecord::Base
 
   private
 
-    def create_scene
-      self.scenes.create
-    end
+  def create_scene
+    self.scenes.create
+  end
 end

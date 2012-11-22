@@ -5,7 +5,7 @@ class Font < Asset
   def as_jquery_upload_response
     {
         'id'               =>   id,
-        'name'             =>   read_attribute(:font),
+        'name'             =>   meta_info[:font_name],
         'size'             =>   font.size,
         'url'              =>   font.url,
         'delete_url'       =>   "/fonts/#{self.id}",
