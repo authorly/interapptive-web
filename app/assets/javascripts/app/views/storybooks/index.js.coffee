@@ -30,7 +30,7 @@ class App.Views.StorybookIndex extends Backbone.View
     # Created a collection with attributes
     @collection.create attributes,
       wait: true
-      success: (storybook, response)-> 
+      success: (storybook, response)->
         $('.storybook-form')[0].reset()
         $('a.storybook').removeClass "active alert alert-info"
         $('a.storybook').first().addClass "active alert alert-info"
@@ -58,6 +58,7 @@ class App.Views.StorybookIndex extends Backbone.View
     
     App.sceneList().collection.storybook_id = App.currentStorybook().get('id')
     App.sceneList().collection.fetch() # Triggers a render.
+    App.fontToolbar = new App.Views.FontToolbar(el: $('#font_toolbar'))
     $('#scene-list').html App.sceneList().el
 
     $(".scene").removeClass "disabled"

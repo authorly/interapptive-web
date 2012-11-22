@@ -8,11 +8,12 @@ window.App =
   Config:      {}
 
   init: ->
-    @scenesCollection =        new App.Collections.ScenesCollection        []
-    @keyframesCollection =     new App.Collections.KeyframesCollection     []
-    @imagesCollection =        new App.Collections.ImagesCollection        []
-    @keyframesTextCollection = new App.Collections.KeyframeTextsCollection []
-    @activeActionsCollection = new App.Collections.ActionsCollection       []
+    @scenesCollection        =   new App.Collections.ScenesCollection        []
+    @keyframesCollection     =   new App.Collections.KeyframesCollection     []
+    @imagesCollection        =   new App.Collections.ImagesCollection        []
+    @fontsCollection         =   new App.Collections.FontsCollection         []
+    @keyframesTextCollection =   new App.Collections.KeyframeTextsCollection []
+    @activeActionsCollection =   new App.Collections.ActionsCollection       []
 
     @sceneList         new App.Views.SceneIndex        collection: @scenesCollection
     @keyframeList      new App.Views.KeyframeIndex     collection: @keyframesCollection
@@ -21,7 +22,6 @@ window.App =
     @contentModal =   new App.Views.Modal className: 'content-modal'
     @fileMenu     =   new App.Views.FileMenuView  el: $('#file-menu')
     @toolbar      =   new App.Views.ToolbarView   el: $('#toolbar')
-    @fontToolbar  =   new App.Views.FontToolbar   el: $('#font_toolbar')
 
     @activeSpritesList = new App.Views.ActiveSpritesList()
     @activeSpritesWindow(@activeSpritesList)
@@ -188,7 +188,6 @@ window.App =
   #
   fontToolbarUpdate: (fontToolbar) ->
     @selectedText().fontToolbarUpdate(fontToolbar)
-
 
   #
   # TODO:
