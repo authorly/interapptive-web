@@ -14,16 +14,17 @@ class App.Views.FontToolbar extends Backbone.View
   #_timer: null
   
   events:
-    'change .font_face' : 'onChangeFontFace'
-    'change .font_size' : 'onChangeFontSize'
-    'mouseenter': 'mouseEnter'
-    'mouseleave': 'mouseLeave'
-    'mousemove' : 'mouseMove'
-    'a .bold' : 'boldClick'
-    'click .text_align #right' : 'rightAlignClick'
-    'click .text_align #center' : 'centerAlignClick'
-    'click .text_align #left' : 'leftAlignClick'
-    'click .close_x' : 'onCloseClick'
+    'change .font_face'          :   'onChangeFontFace'
+    'change .font_size'          :   'onChangeFontSize'
+    'mouseenter'                 :   'mouseEnter'
+    'mouseleave'                 :   'mouseLeave'
+    'mousemove'                  :   'mouseMove'
+    'a .bold'                    :   'boldClick'
+    'click .text_align #right'   :   'rightAlignClick'
+    'click .text_align #center'  :   'centerAlignClick'
+    'click .text_align #left'    :   'leftAlignClick'
+    'click .close_x'             :   'onCloseClick'
+    'click .delete'              :   'destroyKeyframeText'
     
   initialize: ->
     @render()
@@ -52,7 +53,7 @@ class App.Views.FontToolbar extends Backbone.View
     #TODO font weight and font align defaults
 
   keyframeText: (keyframeText) ->
-    @_keyframeText
+    @_keyframeText()
   
   collection: (collection) ->
     if collection then @collection = collection else @collection
@@ -65,6 +66,9 @@ class App.Views.FontToolbar extends Backbone.View
     
   _textWidget: (textWidget) ->
     if textWidget then @textWidget = textWidget else @textWidget
+
+  _keyframeText: ->
+    @_textWidget().model
   
   update: (e) ->
     App.fontToolbarUpdate(this)
@@ -132,7 +136,6 @@ class App.Views.FontToolbar extends Backbone.View
   rightAlignClick: ->
     @deselectAlignment()
     @textAlign('right')
-    
     @update()
     
   deselectAlignment: ->
@@ -145,7 +148,7 @@ class App.Views.FontToolbar extends Backbone.View
   setPosition: (_top, _left) ->
     # TODO calculate padding in a more clear way 
     # ENHANCEMENT may need to solve for text too high or too far to the right
-    padding = 20 
+    padding = 20
     $(@el).css
       top : _top - ($(@el).height() + padding)
       left : _left
@@ -160,7 +163,14 @@ class App.Views.FontToolbar extends Backbone.View
       @_hidden = true
     
   hidden: ->
-    return @_hidden 
+    return @_hidden
   
   leave: ->
   
+  destroyKeyframeText: (e) ->
+    $target = $(e.target)
+    self = this
+    @keyframeText().destroy
+      success: (model, response) ->
+        $('#keyframe_text_' + model.id).remove()
+        self.onCloseClick()

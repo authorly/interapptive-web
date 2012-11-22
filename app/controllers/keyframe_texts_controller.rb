@@ -89,7 +89,7 @@ class KeyframeTextsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to keyframe_path(@keyframe) }
-      format.json { head :ok }
+      format.json { head :no_content }
     end
   end
 end

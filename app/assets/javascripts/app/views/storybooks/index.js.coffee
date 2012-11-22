@@ -58,7 +58,7 @@ class App.Views.StorybookIndex extends Backbone.View
     
     App.sceneList().collection.storybook_id = App.currentStorybook().get('id')
     App.sceneList().collection.fetch() # Triggers a render.
-    App.fontToolbar = new App.Views.FontToolbar(el: $('#font_toolbar'))
+    App.initializeFontToolbar()
     $('#scene-list').html App.sceneList().el
 
     $(".scene").removeClass "disabled"

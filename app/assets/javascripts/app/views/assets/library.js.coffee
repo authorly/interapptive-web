@@ -20,9 +20,9 @@ class App.Views.AssetLibrary extends Backbone.View
       downloadTemplate: JST["app/templates/assets/" + @assetType + "s/download"]
       uploadTemplate: JST["app/templates/assets/" + @assetType + "s/upload"]
     .bind 'fileuploaddestroyed', ->
-        App.fontToolbar = new App.Views.FontToolbar(el: $('#font_toolbar'))
+        App.initializeFontToolbar()
     .bind 'fileuploadcompleted', ->
-        App.fontToolbar = new App.Views.FontToolbar(el: $('#font_toolbar'))
+        App.initializeFontToolbar()
 
     @loadAndShowFileData()
 

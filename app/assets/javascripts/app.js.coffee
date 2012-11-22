@@ -189,6 +189,9 @@ window.App =
   fontToolbarUpdate: (fontToolbar) ->
     @selectedText().fontToolbarUpdate(fontToolbar)
 
+  initializeFontToolbar: ->
+    App.fontToolbar = new App.Views.FontToolbar(el: $('#font_toolbar'))
+
   #
   # TODO:
   #    Move to fontToolbar view and access from global

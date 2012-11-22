@@ -29,5 +29,8 @@
       
 %input{:class => "colorpicker"}
 
+%button.delete
+  Delete
+
 %button.close_x
   x

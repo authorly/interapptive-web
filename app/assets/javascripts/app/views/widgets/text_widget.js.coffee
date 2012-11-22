@@ -30,6 +30,7 @@ class App.Views.TextWidget extends Backbone.View
     @content @options.string if @options.string
     @setDefaults()
     $(@el).css(position : 'absolute')
+    $(@el).attr('id', 'keyframe_text_' + @model.id)
     $(@el).draggable
       start: @startDrag
       stop: @drop
