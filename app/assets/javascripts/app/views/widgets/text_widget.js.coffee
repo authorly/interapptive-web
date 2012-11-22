@@ -133,7 +133,6 @@ class App.Views.TextWidget extends Backbone.View
   drop: =>
     # x_coord and y_coord are translated to cocos2d x, y starting at bottom left
     @constrainToCanvas()
-
     @save()
 
   startDrag: =>
