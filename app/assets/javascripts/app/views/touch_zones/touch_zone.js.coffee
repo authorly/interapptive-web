@@ -16,7 +16,7 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
   render: ->
     $(@el).html(@template(widget: @widget))
     $(@el).find('#touch_zones.modal-body').append @form.el
-    @attachDeleteButton()
+    @attachDeleteButton() if @widget?.id
     this
 
   attachDeleteButton: ->
@@ -51,6 +51,8 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
 
   updateAttributes: (e) =>
     e.preventDefault()
+
+    @widget = App.Builder.Widgets.WidgetDispatcher.createWidget() unless @widget?.id
     @widget.loadFromHash @prepareHashForWidget(@form.getValue()),
       success: (widget) ->
         App.modalWithView().hide()
