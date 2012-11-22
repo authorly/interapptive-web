@@ -13,7 +13,7 @@ class App.Views.FontToolbar extends Backbone.View
   #_active: false # keeps hide() from hiding if there is a rollout event etc
   #_timer: null
   
-  events: 
+  events:
     'change .font_face' : 'onChangeFontFace'
     'change .font_size' : 'onChangeFontSize'
     'mouseenter': 'mouseEnter'
@@ -27,16 +27,24 @@ class App.Views.FontToolbar extends Backbone.View
     
   initialize: ->
     @render()
-    $(@el).find(".colorpicker").miniColors  
+    $(@el).find(".colorpicker").miniColors
       change: (hex, rgb) =>
         @onChangeFontColor(hex, rgb)
-        
     $(@el).draggable()
         
-  render: (model)-> 
-    $(@el).html(@template())
-    this 
+  render: (model)->
+    App.fontsCollection.fetch
+      success: =>
+        @writeFontFaces(App.fontsCollection.models)
+        $(@el).html(@template(fonts: App.fontsCollection.models))
+    this
     
+  writeFontFaces: (fonts) ->
+    $storybook_font_faces = $('#storybook-font-faces').html('')
+    _.each fonts, (f) ->
+      font_face = "@font-face { font-family: '#{f.get('name')}'; src: url('#{f.get('url')}'); }"
+      $storybook_font_faces.append(font_face)
+
   setDefaults: ->
     @fontFace @_textWidget().model?.get('face') ? @_fontFace
     @fontColor @_textWidget().model?.get('color') ? @_fontColor
