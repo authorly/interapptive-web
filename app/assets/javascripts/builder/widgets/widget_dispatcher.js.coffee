@@ -34,10 +34,10 @@ class WidgetDispatcher
     @openTouchModal(widget)
 
   createWidget: (widget) ->
-      widget = new App.Builder.Widgets.TouchWidget
-      widget.setPosition(new cc.Point(300, 300))
-      @_addWidget(widget)
-      widget
+    widget = new App.Builder.Widgets.TouchWidget
+    widget.setPosition(new cc.Point(300, 300))
+    @_addWidget(widget)
+    widget
 
   # Modals
   openTouchModal: (widget) =>
