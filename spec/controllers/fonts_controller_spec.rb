@@ -3,14 +3,18 @@ require 'spec_helper'
 describe FontsController do
   before(:each) do
     @font = mock_model(Font, :font => "font.ttf")
+    @storybook = mock_model(Storybook)
     @font.stub!(:as_jquery_upload_response).and_return({ :id => @font.id, :font => @font.font })
-    user = Factory(:user)
-    test_sign_in(user)
+    @user = Factory(:user)
+    test_sign_in(@user)
+    controller.stub(:current_user).and_return(@user)
   end
 
   context "#index" do
     it 'should give all the fonts' do
-      Font.stub!(:where).with(:storybook_id => '1').and_return([@font])
+      @user.stub(:storybooks).and_return(Storybook)
+      Storybook.stub(:find).with('1').and_return(@storybook)
+      @storybook.stub(:fonts).and_return([@font])
 
       get :index, :storybook_id => 1
 
