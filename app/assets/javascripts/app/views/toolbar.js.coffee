@@ -12,9 +12,6 @@ class App.Views.ToolbarView extends Backbone.View
     'click .sounds'       : 'showSoundLibrary'
     'click .actions'      : 'showActionLibrary'
 
-  render: ->
-    $el = $(this.el)
-
   _addWidget: (widget) ->
     keyframe = App.currentKeyframe()
     App.builder.widgetLayer.addWidget(widget)
