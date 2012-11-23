@@ -31,8 +31,14 @@ class Scene < ActiveRecord::Base
   def as_json(options)
     super.merge({
       :preview_image_url => preview_image.try(:image).try(:url),
-      :sound_url         => sound.sound.url
+      :sound_url         => sound_url
     })
+  end
+
+  def sound_url
+    if sound.present?
+      sound.sound.url
+    end
   end
 
   private
