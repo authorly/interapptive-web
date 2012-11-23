@@ -143,7 +143,7 @@ class App.Views.KeyframeIndex extends Backbone.View
         e = $('span.keyframe-number', element)
         e.empty().html(index+1)
 
-        e = $('span.delete-keyframe', element)
+        e = $('.delete-keyframe', element)
         if show_delete then e.show() else e.hide()
 
 
