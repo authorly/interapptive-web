@@ -96,7 +96,7 @@ class KeyframesController < ApplicationController
   def sort
     params[:keyframes].each_with_index do |keyframe, index|
       _keyframe = Keyframe.find(keyframe['id'])
-      _keyframe.position = index+1
+      _keyframe.position = keyframe['position']
       _keyframe.save!
     end
 

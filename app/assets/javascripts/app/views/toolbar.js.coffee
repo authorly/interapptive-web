@@ -19,11 +19,17 @@ class App.Views.ToolbarView extends Backbone.View
     keyframe.addWidget(widget)
     widget.on('change', -> keyframe.updateWidget(widget))
 
+
   addScene: ->
     @scene = App.sceneList().createScene()
 
+
   addKeyframe: ->
-    App.keyframeList().createKeyframe()
+    keyframe = new App.Models.Keyframe
+      scene_id:   App.currentScene().get('id')
+    keyframe.save {}
+      success: -> keyframe.collection.add keyframe
+
 
   showActionLibrary: ->
     @actionDefinitions = new App.Collections.ActionDefinitionsCollection()

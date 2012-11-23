@@ -19,29 +19,26 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   render: ->
     $(@el).html('')
-    @collection.each (keyframe) => @appendKeyframe(keyframe)
-    @delegateEvents()
+
+    @collection.each (keyframe) => @renderKeyframe(keyframe)
+    @numberKeyframes()
+
     @initSortable() if @collection?
 
-    # Fire asynchronously so other 'reset' events can finish first
-    # setTimeout((=> $(@el).find('li:last-child div:last').click()), 1)
-    this
-
-  createKeyframe: =>
-    keyframe = new App.Models.Keyframe
-      scene_id: App.currentScene().get('id')
-    keyframe.save {},
-      wait: true
-      success: (model, response) =>
-        @collection.add keyframe
+    @
 
 
   appendKeyframe: (keyframe) =>
-    view  = new App.Views.Keyframe(model: keyframe)
-    $(@el).append(view.render().el)
+    @renderKeyframe(keyframe)
 
     @numberKeyframes()
+
     @setActiveKeyframe(keyframe)
+
+
+  renderKeyframe: (keyframe) =>
+    view  = new App.Views.Keyframe(model: keyframe)
+    $(@el).append(view.render().el)
 
     @keyframePreviewChanged(keyframe)
 
@@ -73,16 +70,16 @@ class App.Views.KeyframeIndex extends Backbone.View
           $('.keyframe-list li:last div').click()
 
 
-  setBackgroundPosition: (x, y) ->
-    $(@el).find('.active div').attr("data-x","#{x}").attr("data-y","#{y}")
+  # setBackgroundPosition: (x, y) ->
+    # $(@el).find('.active div').attr("data-x","#{x}").attr("data-y","#{y}")
 
-    if App.currentKeyframe()?
-      App.currentKeyframe().set
-        background_x_coord: x
-        background_y_coord: y
-        id: @activeId
-      App.currentKeyframe().save {},
-        success: (model, response) ->
+    # if App.currentKeyframe()?
+      # App.currentKeyframe().set
+        # background_x_coord: x
+        # background_y_coord: y
+        # id: @activeId
+      # App.currentKeyframe().save {},
+        # success: (model, response) ->
 
 
   updateKeyframePreview: (keyframe) ->
@@ -122,36 +119,21 @@ class App.Views.KeyframeIndex extends Backbone.View
       opacity: 0.6
       containment: 'footer'
       cancel: ''
-      update: =>
-        @numberKeyframes()
-        $.ajax
-          contentType:"application/json"
-          dataType: 'json'
-          type: 'POST'
-          data: JSON.stringify(@keyframePositionsJSONArray())
-          url: "#{@collection.ordinalUpdateUrl(App.currentScene().get('id'))}"
-          success: =>
-            @collection.sort()
-          complete: =>
-            $(@el).sortable('refresh')
+      update: @numberKeyframes
 
-  keyframePositionsJSONArray: ->
-    JSON = {}
-    JSON.keyframes = []
 
-    $('.keyframe-list li div').each (index, element) ->
-      JSON.keyframes.push
-        id: $(element).data 'id'
-        position: index+1
-
-    JSON
-
-  numberKeyframes: ->
+  numberKeyframes: =>
     @$('li').each (index, element) =>
       element = $(element)
 
-      e = $('span.keyframe-number', element)
-      e.empty().html(index+1)
+      if (id = element.data('id'))? && (keyframe = @collection.get(id))?
+        # model
+        keyframe.set position: index
 
-      if (id = element.data('id'))?
-        @collection.get(id).set position: index
+        # and view. Would be better to listen on model changes and rerender
+        e = $('span.keyframe-number', element)
+        e.empty().html(index+1)
+
+
+    @collection.sort silent: true
+    @collection.savePositions()

@@ -86,6 +86,9 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   initialize: (models, options) ->
+    # TODO move cache to a separate class
+    @on 'reset', => @savePositionsCache(@positionsJSON())
+
     if options
       this.scene_id = options.scene_id
 
@@ -94,8 +97,8 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     '/scenes/' + this.scene_id + '/keyframes.json'
 
 
-  ordinalUpdateUrl: (sceneId) ->
-    '/scenes/' + sceneId + '/keyframes/sort.json'
+  ordinalUpdateUrl: ->
+    '/scenes/' + @scene_id + '/keyframes/sort.json'
 
 
   toModdedJSON: ->
@@ -104,3 +107,35 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
   comparator: (keyframe) ->
     keyframe.get 'position'
+
+
+  savePositions: ->
+    positions = @positionsJSON()
+    return unless @positionsJSONIsDifferent(positions)
+
+    @savePositionsCache(positions)
+    $.ajax
+      contentType:"application/json"
+      dataType: 'json'
+      type: 'POST'
+      data: JSON.stringify positions
+      url: @ordinalUpdateUrl()
+
+
+  savePositionsCache: (positions) ->
+    @positionsJSONCache = positions
+
+
+  positionsJSONIsDifferent: (positions) ->
+    JSON.stringify(@positionsJSONCache) != JSON.stringify(positions)
+
+
+  positionsJSON: ->
+    JSON = { keyframes: [] }
+
+    @each (element) ->
+      JSON.keyframes.push
+        id: element.get 'id'
+        position: element.get 'position'
+
+    JSON
