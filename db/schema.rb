@@ -11,13 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121123021814) do
+ActiveRecord::Schema.define(:version => 20121123172536) do
 
   create_table "action_definitions", :force => true do |t|
-    t.string   "name"
     t.text     "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "name"
     t.boolean  "enabled"
   end
 
@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(:version => 20121123021814) do
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
     t.integer  "storybook_id"
-    t.text     "meta_info"
     t.boolean  "generated",    :default => false
+    t.text     "meta_info"
   end
 
   add_index "assets", ["type"], :name => "index_assets_on_type"
@@ -86,21 +86,20 @@ ActiveRecord::Schema.define(:version => 20121123021814) do
     t.string   "color"
     t.string   "weight"
     t.string   "align"
-    t.integer  "sync_order",              :default => 1
   end
 
   add_index "keyframe_texts", ["keyframe_id"], :name => "index_keyframe_texts_on_keyframe_id"
 
   create_table "keyframes", :force => true do |t|
     t.integer  "scene_id"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.integer  "background_x_coord", :default => 0
     t.integer  "background_y_coord", :default => 0
     t.integer  "preview_image_id"
     t.text     "widgets"
     t.integer  "position"
-    t.string   "audio"
+    t.boolean  "is_animation",       :default => false
   end
 
   add_index "keyframes", ["scene_id"], :name => "index_keyframes_on_scene_id"

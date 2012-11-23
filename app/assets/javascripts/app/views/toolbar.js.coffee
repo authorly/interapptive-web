@@ -1,17 +1,19 @@
 class App.Views.ToolbarView extends Backbone.View
   events:
-    'click .scene'          :   'addScene'
-    'click .keyframe'       :   'addKeyframe'
-    'click .edit-text'      :   'addText'
-    'click .touch-zones'    :   'addTouch'
-    'click .preview'        :   'showPreview'
-    'click .add-image'      :   'addSprite'
-    'click .images'         :   'showImageLibrary'
-    'click .videos'         :   'showVideoLibrary'
-    'click .fonts'          :   'showFontLibrary'
-    'click .sounds'         :   'showSoundLibrary'
-    'click .actions'        :   'showActionLibrary'
-    'click .scene-options'  :   'showSceneOptions'
+    'click .scene'              : 'addScene'
+    'click .keyframe'           : 'addKeyframe'
+    'click .animation-keyframe' : 'addAnimationKeyframe'
+    'click .edit-text'          : 'addText'
+    'click .touch-zones'        : 'addTouch'
+    'click .preview'            : 'showPreview'
+    'click .add-image'          : 'addSprite'
+    'click .images'             : 'showImageLibrary'
+    'click .videos'             : 'showVideoLibrary'
+    'click .fonts'              : 'showFontLibrary'
+    'click .sounds'             : 'showSoundLibrary'
+    'click .actions'            : 'showActionLibrary'
+    'click .scene-options'      : 'showSceneOptions'
+
 
   _addWidget: (widget) ->
     keyframe = App.currentKeyframe()
@@ -28,7 +30,16 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addKeyframe: ->
-    keyframe = new App.Models.Keyframe
+    @_addKeyframe (new App.Models.Keyframe)
+
+
+  addAnimationKeyframe: ->
+    @_addKeyframe (new App.Models.Keyframe(is_animation: true, position: 0))
+
+
+  _addKeyframe: (keyframe) ->
+    collection = App.keyframesCollection
+    keyframe.set
       scene_id:   App.currentScene().get('id')
     keyframe.save {},
       success: ->
@@ -36,8 +47,8 @@ class App.Views.ToolbarView extends Backbone.View
         # `success`, another scene was selected
         # This is a temporary fix; having the collection change contents is a bad
         # idea.
-        if keyframe.get('scene_id') == App.currentScene().get('id')
-          App.keyframesCollection.add keyframe
+        if keyframe.get('scene_id') == collection.scene_id
+          collection.add keyframe
 
 
   showActionLibrary: ->
@@ -47,6 +58,7 @@ class App.Views.ToolbarView extends Backbone.View
         activeDefinition = @actionDefinitions.first
         view = new App.Views.ActionFormContainer(actionDefinitions: @actionDefinitions)
         App.modalWithView(view: view).show()
+
 
   addText: ->
     # FIXME we should have some delegate that actually handles adding things
@@ -60,8 +72,10 @@ class App.Views.ToolbarView extends Backbone.View
     #keyframe.addWidget(text)
     #text.on('change', -> keyframe.updateWidget(text))
 
+
   addTouch: ->
     App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:create')
+
 
   addSprite: ->
     imageSelected = (sprite) =>
@@ -84,24 +98,31 @@ class App.Views.ToolbarView extends Backbone.View
     App.modalWithView(view: view).show()
     view.fetchImages()
 
+
   showPreview: ->
     App.showSimulator()
+
 
   showSceneOptions: ->
     view = new App.Views.SceneForm()
     App.modalWithView(view: view).show()
 
+
   showImageLibrary: ->
     @loadDataFor("image")
+
 
   showVideoLibrary: ->
     @loadDataFor("video")
 
+
   showFontLibrary: ->
     @loadDataFor("font")
 
+
   showSoundLibrary: ->
     @loadDataFor("sound")
+
 
   loadDataFor: (assetType) ->
     @assetLibraryView = new App.Views.AssetLibrary(assetType)

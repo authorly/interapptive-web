@@ -49,6 +49,13 @@ Factory.define :keyframe do |f|
   f.preview_image_id Factory.create(:image)
 end
 
+Factory.define :animation_keyframe, class: Keyframe do |f|
+  f.scene_id Factory.create(:scene)
+  f.preview_image_id Factory.create(:image)
+  f.is_animation true
+  f.position 0
+end
+
 Factory.define :actions do |f|
   f.scene Factory.create(:scene)
 end

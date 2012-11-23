@@ -17,9 +17,9 @@ class App.Views.StorybookIndex extends Backbone.View
     @collection.each (storybook) => @appendStorybook(storybook)
     $(".modal-body").removeClass("loading-book")
 
-    # if App.Config.environment == 'development' && @collection.length > 0
-      # @selectStorybook(@collection.at(0))
-      # @openStorybook()
+    if App.Config.environment == 'development' && @collection.length > 0
+      @selectStorybook(@collection.at(0))
+      @openStorybook()
 
     this
 

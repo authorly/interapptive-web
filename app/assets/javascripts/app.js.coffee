@@ -8,6 +8,13 @@ window.App =
   Config:      {}
 
   init: ->
+    # A global vent object that allows decoupled communication between
+    # different parts of the application. For example, the content of the
+    # main view and the buttons in the toolbar.
+    # It would be great to use it to decouple more.
+    @vent = _.extend {}, Backbone.Events
+    # @vent.on 'all', -> console.log arguments # debug everything going through the vent
+
     @scenesCollection        =   new App.Collections.ScenesCollection        []
     @keyframesCollection     =   new App.Collections.KeyframesCollection     []
     @imagesCollection        =   new App.Collections.ImagesCollection        []

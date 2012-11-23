@@ -21,25 +21,30 @@ class App.Views.KeyframeIndex extends Backbone.View
   render: ->
     $(@el).html('')
 
-    @collection.each (keyframe) => @renderKeyframe(keyframe)
-    @numberKeyframes()
+    if @collection.length > 0
+      @collection.each (keyframe) => @renderKeyframe(keyframe)
+      @numberKeyframes()
+      @setActiveKeyframe()
 
     @initSortable() if @collection?
 
     @
 
 
-  appendKeyframe: (keyframe) =>
-    @renderKeyframe(keyframe)
+  appendKeyframe: (keyframe, _collection, options) =>
+    @renderKeyframe(keyframe, options.index)
 
     @numberKeyframes()
-
     @setActiveKeyframe(keyframe)
 
 
-  renderKeyframe: (keyframe) =>
+  renderKeyframe: (keyframe, index) =>
     view  = new App.Views.Keyframe(model: keyframe)
-    $(@el).append(view.render().el)
+    viewElement = view.render().el
+    if index == 0
+      @$el.prepend viewElement
+    else
+      @$el.append  viewElement
 
     @keyframePreviewChanged(keyframe)
 
@@ -51,6 +56,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   setActiveKeyframe: (keyframe) ->
+    keyframe = @collection.at(@collection.length - 1) unless keyframe?
+
     App.currentKeyframe keyframe
     @$('li').removeClass('active').filter("[data-id=#{keyframe.id}]").addClass('active')
     @populateWidgets(keyframe)
@@ -68,7 +75,7 @@ class App.Views.KeyframeIndex extends Backbone.View
           @collection.remove(keyframe)
           $('.keyframe-list li.active').remove()
           @numberKeyframes()
-          $('.keyframe-list li:last div').click()
+          @setActiveKeyframe()
 
 
   # setBackgroundPosition: (x, y) ->
@@ -114,13 +121,12 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   initSortable: =>
-    @numberKeyframes()
-
     $(@el).sortable
       opacity: 0.6
       containment: 'footer'
       cancel: ''
       update: @numberKeyframes
+      items: 'li[data-is_animation!="1"]'
 
 
   numberKeyframes: =>

@@ -19,6 +19,7 @@ class App.Models.Keyframe extends Backbone.Model
       @set preview_image_id: @preview.id
       @save()
 
+
   addWidget: (widget) ->
     widgets = @get('widgets') || []
     widgets.push(widget.toHash())
@@ -79,6 +80,10 @@ class App.Models.Keyframe extends Backbone.Model
     Backbone.Model.prototype.save.apply @, arguments
 
 
+  isAnimation: ->
+    @get('is_animation')
+
+
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
 
@@ -106,7 +111,10 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   comparator: (keyframe) ->
-    keyframe.get 'position'
+    if keyframe.isAnimation()
+      -1
+    else
+      keyframe.get 'position'
 
 
   savePositions: ->
