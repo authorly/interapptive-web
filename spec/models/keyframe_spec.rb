@@ -8,7 +8,6 @@ describe Keyframe do
   context "#to_json" do
     it 'should be valid response' do
       response = {
-          'audio'              => nil,
           'background_x_coord' => keyframe.background_x_coord,
           'background_y_coord' => keyframe.background_y_coord,
           'created_at'         => keyframe.created_at,
@@ -18,7 +17,8 @@ describe Keyframe do
           'scene_id'           => keyframe.scene_id,
           'updated_at'         => keyframe.updated_at,
           'widgets'            => keyframe.widgets,
-          'preview_image_url'  => nil
+          'preview_image_url'  => nil,
+          'audio'              => nil
       }.to_json
 
       keyframe.to_json.should eql(response)
