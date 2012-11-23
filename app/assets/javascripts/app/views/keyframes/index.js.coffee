@@ -54,9 +54,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   setActiveKeyframe: (keyframe) ->
     App.currentKeyframe keyframe
-    # TODO data-id should be on the top-most element (`li`), not on the
-    # inner element (`div`) to work easier with selectors
-    @$('li').removeClass('active').find("[data-id=#{keyframe.id}]").parent().addClass('active')
+    @$('li').removeClass('active').filter("[data-id=#{keyframe.id}]").addClass('active')
     @populateWidgets(keyframe)
 
 
@@ -99,7 +97,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   keyframePreviewChanged: (keyframe) ->
     src = keyframe.preview.src()
     if src?
-      @$("[data-id=#{keyframe.id}]").html("<img src='#{src}'/>")
+      @$("div[data-id=#{keyframe.id}]").html("<img src='#{src}'/>")
 
 
   placeText: ->
@@ -149,7 +147,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     JSON
 
   numberKeyframes: ->
-    $('.keyframe-list li div').each (index, element) =>
+    @$('li').each (index, element) =>
       element = $(element)
 
       e = $('span.keyframe-number', element)
