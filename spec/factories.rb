@@ -40,7 +40,7 @@ end
 
 Factory.define :scene do |f|
   f.preview_image_id Factory.create(:image)
-  f.sound_id Factory.create(:sound)
+  f.sound_id Factory.create(:sound).id
   f.storybook Factory.create(:storybook)
 end
 
