@@ -21,14 +21,23 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addScene: ->
-    @scene = App.sceneList().createScene()
+    # XXX in the `App.scenesCollection.models collection`, the addded scene
+    # sometimes has the same id as the first scene, even though the
+    # server's response is correct
+    App.sceneList().createScene()
 
 
   addKeyframe: ->
     keyframe = new App.Models.Keyframe
       scene_id:   App.currentScene().get('id')
-    keyframe.save {}
-      success: -> keyframe.collection.add keyframe
+    keyframe.save {},
+      success: ->
+        # XXX necessary because this would blow if, in between `save` and
+        # `success`, another scene was selected
+        # This is a temporary fix; having the collection change contents is a bad
+        # idea.
+        if keyframe.get('scene_id') == App.currentScene().get('id')
+          App.keyframesCollection.add keyframe
 
 
   showActionLibrary: ->

@@ -15,6 +15,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on('add', @appendKeyframe)
     @collection.on('change:widgets', @updateKeyframePreview, @)
     @collection.on('change:preview', @keyframePreviewChanged, @)
+    @collection.on('change:positions', @render, @)
 
 
   render: ->
@@ -135,5 +136,8 @@ class App.Views.KeyframeIndex extends Backbone.View
         e.empty().html(index+1)
 
 
-    @collection.sort silent: true
-    @collection.savePositions()
+    # Backbone bug - without timeout the model is added twice
+    window.setTimeout ( =>
+      @collection.sort silent: true
+      @collection.savePositions()
+    ), 0

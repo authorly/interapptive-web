@@ -24,6 +24,7 @@ class App.Views.SceneIndex extends Backbone.View
 
     this
 
+
   createScene: =>
     scene = new App.Models.Scene
 
@@ -36,6 +37,7 @@ class App.Views.SceneIndex extends Backbone.View
         @scrollToTop()
         @numberScenes()
     scene
+
 
   appendScene: (scene) ->
     view = new App.Views.Scene(model: scene)
@@ -56,6 +58,7 @@ class App.Views.SceneIndex extends Backbone.View
     $('#keyframe-list').html("").html(App.keyframeList().el)
     $('nav.toolbar ul li ul li').removeClass 'disabled'
 
+
   destroyScene: (event) =>
     message = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
     target  = $(event.currentTarget)
@@ -70,6 +73,7 @@ class App.Views.SceneIndex extends Backbone.View
         success: =>
           sceneEl.remove() and $('.scene-list li:first span:first').click()
           @numberScenes()
+
 
   clickScene: (event) ->
     target  = $(event.currentTarget)

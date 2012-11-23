@@ -120,6 +120,8 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
       type: 'POST'
       data: JSON.stringify positions
       url: @ordinalUpdateUrl()
+      success: =>
+        @trigger 'change:positions'
 
 
   savePositionsCache: (positions) ->
