@@ -239,7 +239,7 @@ $ ->
     $("ul#toolbar li ul li").removeClass "active"
 
   $("ul#toolbar li ul li").click ->
-    excluded = '.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview, .scene-options'
+    excluded = '.actions, .scene, .keyframe, .animation-keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview, .scene-options'
 
     toolbar_modal.modal "hide"
 
