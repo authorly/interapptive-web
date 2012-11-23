@@ -130,6 +130,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   numberKeyframes: =>
+    show_delete = @collection.length > 1
+
     @$('li').each (index, element) =>
       element = $(element)
 
@@ -140,6 +142,9 @@ class App.Views.KeyframeIndex extends Backbone.View
         # and view. Would be better to listen on model changes and rerender
         e = $('span.keyframe-number', element)
         e.empty().html(index+1)
+
+        e = $('span.delete-keyframe', element)
+        if show_delete then e.show() else e.hide()
 
 
     # Backbone bug - without timeout the model is added twice

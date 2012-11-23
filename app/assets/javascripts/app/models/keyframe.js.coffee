@@ -92,7 +92,12 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
   initialize: (models, options) ->
     # TODO move cache to a separate class
-    @on 'reset', => @savePositionsCache(@positionsJSON())
+    @on 'reset', =>
+      @announceAnimation()
+      @savePositionsCache(@positionsJSON())
+
+    @on 'add', =>
+      @announceAnimation()
 
     if options
       this.scene_id = options.scene_id
@@ -115,6 +120,14 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
       -1
     else
       keyframe.get 'position'
+
+
+  animationPresent: ->
+    @any (keyframe) -> keyframe.isAnimation()
+
+
+  announceAnimation: ->
+      App.vent.trigger 'scene:can_add_animation', !@animationPresent()
 
 
   savePositions: ->

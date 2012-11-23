@@ -15,6 +15,20 @@ class App.Views.ToolbarView extends Backbone.View
     'click .scene-options'      : 'showSceneOptions'
 
 
+  initialize: ->
+    @_enableOnEvent 'scene:can_add_animation', '.animation-keyframe'
+    @_enableOnEvent 'keyframe:can_add_text', '.edit-text'
+
+
+  _enableOnEvent: (event, selector) ->
+    App.vent.on event, (enable) =>
+      element = @$(selector)
+      if enable
+        element.removeClass 'disabled'
+      else
+        element.addClass 'disabled'
+
+
   _addWidget: (widget) ->
     keyframe = App.currentKeyframe()
     App.builder.widgetLayer.addWidget(widget)
@@ -34,6 +48,8 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addAnimationKeyframe: ->
+    return if @$('.animation-keyframe.disabled').length > 0
+
     @_addKeyframe (new App.Models.Keyframe(is_animation: true, position: 0))
 
 

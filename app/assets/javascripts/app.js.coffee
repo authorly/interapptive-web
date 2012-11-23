@@ -152,7 +152,11 @@ window.App =
 
 
   currentKeyframe: (keyframe) ->
-    if keyframe then @keyframe = keyframe else @keyframe
+    if keyframe
+      @keyframe = keyframe
+      App.vent.trigger 'keyframe:can_add_text', !keyframe.isAnimation()
+    else
+      @keyframe
 
 
   currentKeyframeText: (keyframeText) ->
