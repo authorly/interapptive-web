@@ -12,6 +12,7 @@ window.App =
     @keyframesCollection     =   new App.Collections.KeyframesCollection     []
     @imagesCollection        =   new App.Collections.ImagesCollection        []
     @fontsCollection         =   new App.Collections.FontsCollection         []
+    @soundsCollection        =   new App.Collections.SoundsCollection        []
     @keyframesTextCollection =   new App.Collections.KeyframeTextsCollection []
     @activeActionsCollection =   new App.Collections.ActionsCollection       []
 
@@ -199,7 +200,6 @@ window.App =
   fontToolbarClosed: ->
     $('.text-widget').focusout()
 
-
   #
   # TODO:
   #    Move to keyframeText view and access from global
@@ -228,7 +228,7 @@ $ ->
     $("ul#toolbar li ul li").removeClass "active"
 
   $("ul#toolbar li ul li").click ->
-    excluded = '.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview'
+    excluded = '.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview, .scene-options'
 
     toolbar_modal.modal "hide"
 

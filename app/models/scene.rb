@@ -1,5 +1,7 @@
 class Scene < ActiveRecord::Base
   belongs_to :storybook
+  belongs_to :sound
+
   has_many :keyframes, :dependent => :destroy
   has_many :asset_maps, :as => :assetable,
            :dependent => :destroy
@@ -28,7 +30,8 @@ class Scene < ActiveRecord::Base
 
   def as_json(options)
     super.merge({
-      preview_image_url: preview_image.try(:image).try(:url)
+      :preview_image_url => preview_image.try(:image).try(:url),
+      :sound_url         => sound.sound.url
     })
   end
 

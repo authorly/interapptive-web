@@ -1,16 +1,17 @@
 class App.Views.ToolbarView extends Backbone.View
   events:
-    'click .scene'        : 'addScene'
-    'click .keyframe'     : 'addKeyframe'
-    'click .edit-text'    : 'addText'
-    'click .touch-zones'  : 'addTouch'
-    'click .preview'      : 'showPreview'
-    'click .add-image'    : 'addSprite'
-    'click .images'       : 'showImageLibrary'
-    'click .videos'       : 'showVideoLibrary'
-    'click .fonts'        : 'showFontLibrary'
-    'click .sounds'       : 'showSoundLibrary'
-    'click .actions'      : 'showActionLibrary'
+    'click .scene'          :   'addScene'
+    'click .keyframe'       :   'addKeyframe'
+    'click .edit-text'      :   'addText'
+    'click .touch-zones'    :   'addTouch'
+    'click .show-preview'   :   'showPreview'
+    'click .add-image'      :   'addSprite'
+    'click .images'         :   'showImageLibrary'
+    'click .videos'         :   'showVideoLibrary'
+    'click .fonts'          :   'showFontLibrary'
+    'click .sounds'         :   'showSoundLibrary'
+    'click .actions'        :   'showActionLibrary'
+    'click .scene-options'  :   'showSceneOptions'
 
   _addWidget: (widget) ->
     keyframe = App.currentKeyframe()
@@ -70,6 +71,10 @@ class App.Views.ToolbarView extends Backbone.View
 
   showPreview: ->
     App.showSimulator()
+
+  showSceneOptions: ->
+    view = new App.Views.SceneForm()
+    App.modalWithView(view: view).show()
 
   showImageLibrary: ->
     @loadDataFor("image")
