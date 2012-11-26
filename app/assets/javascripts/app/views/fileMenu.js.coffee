@@ -3,6 +3,7 @@ class App.Views.FileMenuView extends Backbone.View
     'click .switch-storybook':          'switchStorybook'
     'click .show-storybook-settings':   'showSettings'
     'click .about-authorly':            'showAbout'
+    'click .compile-storybook':         'compileStorybook'
 
   render: ->
     $el = $(this.el)
@@ -17,3 +18,11 @@ class App.Views.FileMenuView extends Backbone.View
   showAbout: ->
     view = new App.Views.AboutView()
     App.modalWithView(view: view).show()
+
+  compileStorybook: ->
+    $.post('/compiler',
+      storybook_json: App.storybookJSON.toString()
+      storybook_id: App.currentStorybook().id
+      ->
+        console.log('enqueued for compilation')
+    'json')

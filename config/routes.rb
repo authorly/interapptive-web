@@ -21,6 +21,7 @@ Interapptive::Application.routes.draw do
   post 'password_resets'     => 'password_resets#create'
 
   get 'simulator' => 'simulator#index', :as => 'simulator'
+  resource :compiler
 
   resources :images
   resources :videos

@@ -9,3 +9,6 @@ production:
 
 staging:
   api_key: '3ed66d2207ce4a319b5125b380642c49'
+
+compilation:
+  api_key: '3ed66d2207ce4a319b5125b380642c49'
