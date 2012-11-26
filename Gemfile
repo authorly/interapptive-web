@@ -20,6 +20,12 @@ gem 'therubyracer'
 gem 'jasmine'
 gem 'barista'
 gem 'ttfunk'
+gem 'resque'
+gem 'god'
+
+group :osx do
+  gem 'betabuilder', :git => 'git://github.com/waseem/betabuilder.git', :branch => 'no_deploy'
+end
 
 group :assets do
   gem 'less-rails'

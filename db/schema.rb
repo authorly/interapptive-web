@@ -11,13 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121130191615) do
+ActiveRecord::Schema.define(:version => 20121204010318) do
 
   create_table "action_definitions", :force => true do |t|
-    t.string   "name"
     t.text     "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "name"
     t.boolean  "enabled"
   end
 
@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(:version => 20121130191615) do
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
     t.integer  "storybook_id"
-    t.text     "meta_info"
     t.boolean  "generated",    :default => false
+    t.text     "meta_info"
   end
 
   add_index "assets", ["type"], :name => "index_assets_on_type"
@@ -148,17 +148,18 @@ ActiveRecord::Schema.define(:version => 20121130191615) do
   create_table "storybooks", :force => true do |t|
     t.integer  "user_id"
     t.string   "title"
-    t.datetime "created_at",                                                        :null => false
-    t.datetime "updated_at",                                                        :null => false
+    t.datetime "created_at",                                                             :null => false
+    t.datetime "updated_at",                                                             :null => false
     t.string   "author"
     t.text     "description"
     t.string   "publisher"
     t.date     "published_on"
-    t.decimal  "price",           :precision => 8, :scale => 2
+    t.decimal  "price",                :precision => 8, :scale => 2
     t.string   "record_enabled"
-    t.string   "android_or_ios",                                :default => "both"
-    t.string   "tablet_or_phone",                               :default => "both"
     t.string   "icon"
+    t.string   "android_or_ios",                                     :default => "both"
+    t.string   "tablet_or_phone",                                    :default => "both"
+    t.string   "compiled_application"
   end
 
   add_index "storybooks", ["user_id"], :name => "index_storybooks_on_user_id"

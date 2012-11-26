@@ -4,6 +4,7 @@ class App.Views.FileMenuView extends Backbone.View
     'click .show-storybook-settings':   'showSettings'
     'click .about-authorly':            'showAbout'
     'click .show-storybook-icons':      'showAppIcons'
+    'click .compile-storybook':         'compileStorybook'
 
   render: ->
     $el = $(this.el)
@@ -23,3 +24,11 @@ class App.Views.FileMenuView extends Backbone.View
     view = new App.Views.Storybooks.AppIcons(collection: App.imagesCollection)
     App.modalWithView(view: view).show()
     view.fetchImages()
+
+  compileStorybook: ->
+    $.post('/compiler',
+      storybook_json: App.storybookJSON.toString()
+      storybook_id: App.currentStorybook().id
+      ->
+        console.log('enqueued for compilation')
+    'json')
