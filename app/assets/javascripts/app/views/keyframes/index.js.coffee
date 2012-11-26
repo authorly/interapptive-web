@@ -25,6 +25,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     if @collection.length > 0
       @collection.each (keyframe) => @renderKeyframe(keyframe)
       @setActiveKeyframe()
+      @_updateDeleteButtons()
 
     @initSortable()
 
@@ -33,8 +34,9 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   appendKeyframe: (keyframe, _collection, options) =>
     @renderKeyframe(keyframe, options.index)
-
     @setActiveKeyframe(keyframe)
+
+    @_updateDeleteButtons()
 
 
   renderKeyframe: (keyframe, index) =>
@@ -76,7 +78,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   removeKeyframe: (keyframe) =>
     $(".keyframe-list li[data-id=#{keyframe.id}]").remove()
     @setActiveKeyframe()
-
+    @_updateDeleteButtons()
 
 
   updateKeyframePreview: (keyframe) ->
@@ -114,11 +116,11 @@ class App.Views.KeyframeIndex extends Backbone.View
       opacity: 0.6
       containment: 'footer'
       cancel: ''
-      update: @numberKeyframes
+      update: @_numberKeyframes
       items: 'li[data-is_animation!="1"]'
 
 
-  numberKeyframes: =>
+  _numberKeyframes: =>
     @$('li[data-is_animation!="1"]').each (index, element) =>
       element = $(element)
 
@@ -131,6 +133,8 @@ class App.Views.KeyframeIndex extends Backbone.View
       @collection.savePositions()
     ), 0
 
-    # show_delete = @collection.length > 1
-        # e = $('.delete-keyframe', element)
-        # if show_delete then e.show() else e.hide()
+  _updateDeleteButtons: =>
+    show_delete = @collection.length > 1
+
+    buttons = @$('li .delete-keyframe')
+    if @collection.length > 1 then buttons.show() else buttons.hide()
