@@ -50,13 +50,15 @@ class App.Views.ToolbarView extends Backbone.View
   addAnimationKeyframe: ->
     return if @$('.animation-keyframe.disabled').length > 0
 
-    @_addKeyframe (new App.Models.Keyframe(is_animation: true, position: 0))
+    @_addKeyframe (new App.Models.Keyframe(is_animation: true))
 
 
   _addKeyframe: (keyframe) ->
     collection = App.keyframesCollection
     keyframe.set
-      scene_id:   App.currentScene().get('id')
+      scene_id: App.currentScene().get('id')
+      position: collection.nextPosition(keyframe)
+
     keyframe.save {},
       success: ->
         # XXX necessary because this would blow if, in between `save` and

@@ -7,12 +7,13 @@ class App.Views.KeyframeIndex extends Backbone.View
   className: 'keyframe-list'
 
   events:
-    'click span a.delete-keyframe': 'destroyKeyframe'
+    'click span a.delete-keyframe': 'destroyKeyframeClicked'
     'click  .keyframe-list li div': 'keyframeClicked'
 
   initialize: ->
     @collection.on('reset', @render, @)
     @collection.on('add', @appendKeyframe)
+    @collection.on('remove', @removeKeyframe)
     @collection.on('change:widgets', @updateKeyframePreview, @)
     @collection.on('change:preview', @keyframePreviewChanged, @)
     @collection.on('change:positions', @render, @)
@@ -23,10 +24,9 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     if @collection.length > 0
       @collection.each (keyframe) => @renderKeyframe(keyframe)
-      @numberKeyframes()
       @setActiveKeyframe()
 
-    @initSortable() if @collection?
+    @initSortable()
 
     @
 
@@ -34,7 +34,6 @@ class App.Views.KeyframeIndex extends Backbone.View
   appendKeyframe: (keyframe, _collection, options) =>
     @renderKeyframe(keyframe, options.index)
 
-    @numberKeyframes()
     @setActiveKeyframe(keyframe)
 
 
@@ -63,7 +62,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     @populateWidgets(keyframe)
 
 
-  destroyKeyframe: (event) =>
+  destroyKeyframeClicked: (event) =>
     event.stopPropagation()
     message  = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
     target   = $(event.currentTarget)
@@ -71,23 +70,13 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     if confirm(message)
       keyframe.destroy
-        success: =>
-          @collection.remove(keyframe)
-          $('.keyframe-list li.active').remove()
-          @numberKeyframes()
-          @setActiveKeyframe()
+        success: => @collection.remove(keyframe)
 
 
-  # setBackgroundPosition: (x, y) ->
-    # $(@el).find('.active div').attr("data-x","#{x}").attr("data-y","#{y}")
+  removeKeyframe: (keyframe) =>
+    $(".keyframe-list li[data-id=#{keyframe.id}]").remove()
+    @setActiveKeyframe()
 
-    # if App.currentKeyframe()?
-      # App.currentKeyframe().set
-        # background_x_coord: x
-        # background_y_coord: y
-        # id: @activeId
-      # App.currentKeyframe().save {},
-        # success: (model, response) ->
 
 
   updateKeyframePreview: (keyframe) ->
@@ -130,25 +119,18 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   numberKeyframes: =>
-    show_delete = @collection.length > 1
-
-    @$('li').each (index, element) =>
+    @$('li[data-is_animation!="1"]').each (index, element) =>
       element = $(element)
 
       if (id = element.data('id'))? && (keyframe = @collection.get(id))?
-        # model
         keyframe.set position: index
-
-        # and view. Would be better to listen on model changes and rerender
-        e = $('span.keyframe-number', element)
-        e.empty().html(index+1)
-
-        e = $('.delete-keyframe', element)
-        if show_delete then e.show() else e.hide()
-
 
     # Backbone bug - without timeout the model is added twice
     window.setTimeout ( =>
       @collection.sort silent: true
       @collection.savePositions()
     ), 0
+
+    # show_delete = @collection.length > 1
+        # e = $('.delete-keyframe', element)
+        # if show_delete then e.show() else e.hide()

@@ -94,13 +94,15 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     # TODO move cache to a separate class
     @on 'reset', =>
       @announceAnimation()
-      @savePositionsCache(@positionsJSON())
+      @_savePositionsCache(@_positionsJSON())
 
-    @on 'add', =>
+    @on 'add', (model, _collection, options) =>
       @announceAnimation()
 
     if options
       this.scene_id = options.scene_id
+
+    @on 'remove', (model, collection) -> collection._recalculatePositionsAfterDelete(model)
 
 
   url: ->
@@ -130,11 +132,16 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
       App.vent.trigger 'scene:can_add_animation', !@animationPresent()
 
 
-  savePositions: ->
-    positions = @positionsJSON()
-    return unless @positionsJSONIsDifferent(positions)
+  nextPosition: (keyframe) ->
+    return null if keyframe.isAnimation()
+    @filter((keyframe) -> !keyframe.isAnimation()).length
 
-    @savePositionsCache(positions)
+
+  savePositions: ->
+    positions = @_positionsJSON()
+    return unless @_positionsJSONIsDifferent(positions)
+
+    @_savePositionsCache(positions)
     $.ajax
       contentType:"application/json"
       dataType: 'json'
@@ -145,15 +152,15 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
         @trigger 'change:positions'
 
 
-  savePositionsCache: (positions) ->
+  _savePositionsCache: (positions) ->
     @positionsJSONCache = positions
 
 
-  positionsJSONIsDifferent: (positions) ->
+  _positionsJSONIsDifferent: (positions) ->
     JSON.stringify(@positionsJSONCache) != JSON.stringify(positions)
 
 
-  positionsJSON: ->
+  _positionsJSON: ->
     JSON = { keyframes: [] }
 
     @each (element) ->
@@ -162,3 +169,16 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
         position: element.get 'position'
 
     JSON
+
+  _recalculatePositionsAfterDelete: (model) ->
+    return if model.isAnimation()
+
+    position = model.get('position')
+    followingKeyframes = @filter (keyframe) -> keyframe.get('position') > position
+
+    if followingKeyframes.length > 0
+      _.each followingKeyframes, (keyframe) ->
+        keyframe.set { position: keyframe.get('position') - 1 }, silent: true
+
+    @sort silent: true
+    @savePositions()

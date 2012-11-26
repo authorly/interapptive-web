@@ -25,24 +25,21 @@ describe Keyframe do
     end
   end
 
-  describe 'validation' do
-
-    it 'should allow on animation keyframe, on the first position in a scene' do
-      animation = Factory(:animation_keyframe)
-
-      Factory.build(:keyframe, scene_id: animation.scene_id, position: 1).should be_valid
+  describe 'animation keyframe validation' do
+    it 'should allow an animation keyframe' do
+      keyframe = Factory.create(:keyframe)
+      Factory.build(:animation_keyframe, scene_id: keyframe.scene_id).should be_valid
     end
 
-    it 'should not allow two animation keyframes in the same scene' do
-      animation = Factory(:animation_keyframe)
-
-      Factory.build(:animation_keyframe, scene_id: animation.scene_id).should_not be_valid
-    end
-
-    it "should not allow an animation keyframe unless it's on position 0" do
+    it "should not allow an animation keyframe unless its position is null" do
+      Factory.build(:animation_keyframe, position: 0).should_not be_valid
       Factory.build(:animation_keyframe, position: 1).should_not be_valid
     end
 
+    it 'should not allow two animation keyframes in the same scene' do
+      animation = Factory.create(:animation_keyframe)
+      Factory.build(:animation_keyframe, scene_id: animation.scene_id).should_not be_valid
+    end
   end
 
 end

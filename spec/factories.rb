@@ -53,7 +53,7 @@ Factory.define :animation_keyframe, class: Keyframe do |f|
   f.scene_id Factory.create(:scene)
   f.preview_image_id Factory.create(:image)
   f.is_animation true
-  f.position 0
+  f.position nil
 end
 
 Factory.define :actions do |f|
