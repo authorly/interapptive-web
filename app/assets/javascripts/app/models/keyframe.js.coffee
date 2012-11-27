@@ -2,7 +2,10 @@ class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
   url: ->
-    base = '/scenes/' + App.currentScene().get('id') + '/'
+    # must go through the scenesCollection, because the relationship
+    # between the scene model and its keyframes is not stored anywhere
+    scene = App.scenesCollection.get @get('scene_id')
+    base = '/scenes/' + scene.id + '/'
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
 
