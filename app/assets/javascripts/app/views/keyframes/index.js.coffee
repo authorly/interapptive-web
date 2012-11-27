@@ -11,12 +11,13 @@ class App.Views.KeyframeIndex extends Backbone.View
     'click  .keyframe-list li div': 'keyframeClicked'
 
   initialize: ->
-    @collection.on('reset', @render, @)
-    @collection.on('add', @appendKeyframe)
+    @collection.on('reset',  @render, @)
+    @collection.on('add',    @appendKeyframe)
     @collection.on('remove', @removeKeyframe)
     @collection.on('change:widgets', @updateKeyframePreview, @)
     @collection.on('change:preview', @keyframePreviewChanged, @)
     @collection.on('change:positions', @render, @)
+    @collection.on('reset add remove change:positions', @updateScenePreview, @)
 
 
   render: ->
@@ -130,11 +131,20 @@ class App.Views.KeyframeIndex extends Backbone.View
     # Backbone bug - without timeout the model is added twice
     window.setTimeout ( =>
       @collection.sort silent: true
+
       @collection.savePositions()
     ), 0
+
 
   _updateDeleteButtons: =>
     show_delete = @collection.length > 1
 
     buttons = @$('li .delete-keyframe')
     if @collection.length > 1 then buttons.show() else buttons.hide()
+
+
+  updateScenePreview: ->
+    # must go through the scenesCollection, because the relationship
+    # between the scene model and its keyframes is not stored anywhere
+    scene = App.scenesCollection.get(@collection.scene_id)
+    scene.setPreviewFrom @collection.at(0)

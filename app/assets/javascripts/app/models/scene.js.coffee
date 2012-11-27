@@ -11,22 +11,30 @@ class App.Models.Scene extends Backbone.Model
 
   setPreviewFrom: (keyframe) ->
     preview = keyframe.preview
+    return if preview? && @preview? && preview.cid == @preview.cid
+
     if @preview?
       @preview.off 'change:id',       @previewIdChanged,  @
       @preview.off 'change:data_url', @previewUrlChanged, @
+
     @preview = preview
-    @preview.on 'change:id',       @previewIdChanged,  @
-    @preview.on 'change:data_url', @previewUrlChanged, @
+
+    @preview.on    'change:id',       @previewIdChanged,  @
+    @preview.on    'change:data_url', @previewUrlChanged, @
+
     @previewIdChanged()
     @previewUrlChanged()
+
 
   previewIdChanged: ->
     @set
       preview_image_id:  @preview.id
       preview_image_url: @preview.src()
 
+
   previewUrlChanged: ->
     @trigger 'change:preview', @
+
 
 class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
