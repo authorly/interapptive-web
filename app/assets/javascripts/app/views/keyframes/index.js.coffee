@@ -28,6 +28,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       @setActiveKeyframe()
       @_updateDeleteButtons()
 
+    @delegateEvents() # needed, even though it should work without it
     @initSortable()
 
     @
@@ -131,7 +132,6 @@ class App.Views.KeyframeIndex extends Backbone.View
     # Backbone bug - without timeout the model is added twice
     window.setTimeout ( =>
       @collection.sort silent: true
-
       @collection.savePositions()
     ), 0
 
