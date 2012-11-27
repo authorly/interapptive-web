@@ -147,4 +147,4 @@ class App.Views.KeyframeIndex extends Backbone.View
     # must go through the scenesCollection, because the relationship
     # between the scene model and its keyframes is not stored anywhere
     scene = App.scenesCollection.get(@collection.scene_id)
-    scene.setPreviewFrom @collection.at(0)
+    scene?.setPreviewFrom @collection.at(0)

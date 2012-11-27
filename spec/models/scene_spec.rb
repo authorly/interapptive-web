@@ -30,7 +30,8 @@ describe Scene do
   context "creation" do
     it 'should create corresponding scene' do
       scene = Scene.create
-      scene.keyframes.should be_any
+      scene.keyframes.count.should == 1
+      scene.keyframes.first.position.should == 0
     end
   end
 end

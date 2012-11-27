@@ -44,6 +44,6 @@ class Scene < ActiveRecord::Base
   private
 
   def create_keyframe
-    keyframes.create
+    keyframes.create position: 0
   end
 end
