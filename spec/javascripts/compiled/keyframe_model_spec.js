@@ -5,11 +5,13 @@
       this.scene = new App.Models.Scene({
         id: 1
       });
+      App.scenesCollection = new App.Collections.ScenesCollection(this.scene);
       this.keyframe = new App.Models.Keyframe({
         id: 1,
         background_x_coord: 512,
         background_y_coord: 386,
-        image_id: 3
+        image_id: 3,
+        scene_id: 1
       });
       App.currentScene(this.scene);
       return App.currentKeyframe(this.keyframe);

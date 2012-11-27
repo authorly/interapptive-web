@@ -33,14 +33,19 @@ describe "App.Collections.KeyframesCollection", ->
   describe 'recalculate positions', ->
     describe 'on destroy', ->
       beforeEach ->
+        @server = sinon.fakeServer.create()
+
         @collection = new App.Collections.KeyframesCollection
         @collection.add { title: '0', position: 0 }
         @collection.add { title: '1', position: 1 }
         @collection.add { title: '2', position: 2 }
         @collection.add { title: 'animation', is_animation: true }
 
+      afterEach ->
+        @server.restore()
 
       it 'should recalculate positions correctly', ->
+
         @collection.remove(@collection.at(2))
         expect(@collection.at(0).get('position')).toEqual null
         expect(@collection.at(1).get('position')).toEqual 0

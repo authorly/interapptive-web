@@ -50,6 +50,7 @@
     return describe('recalculate positions', function() {
       return describe('on destroy', function() {
         beforeEach(function() {
+          this.server = sinon.fakeServer.create();
           this.collection = new App.Collections.KeyframesCollection;
           this.collection.add({
             title: '0',
@@ -67,6 +68,9 @@
             title: 'animation',
             is_animation: true
           });
+        });
+        afterEach(function() {
+          return this.server.restore();
         });
         return it('should recalculate positions correctly', function() {
           this.collection.remove(this.collection.at(2));
