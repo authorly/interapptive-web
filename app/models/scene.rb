@@ -26,6 +26,9 @@ class Scene < ActiveRecord::Base
   belongs_to :background_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound'
 
+  validates :position, inclusion: { in: [nil] }, if: :is_main_menu
+  validates :is_main_menu, uniqueness: { scope: :storybook_id }, if: :is_main_menu
+
   after_create :create_keyframe
 
   def as_json(options)
@@ -41,9 +44,14 @@ class Scene < ActiveRecord::Base
     end
   end
 
+  def can_be_destroyed?
+    !is_main_menu
+  end
+
   private
 
   def create_keyframe
     keyframes.create position: 0
   end
+
 end

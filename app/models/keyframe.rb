@@ -6,7 +6,7 @@ class Keyframe < ActiveRecord::Base
 
   serialize :widgets
 
-  validates :position, inclusion: { in: [nil] }, if: :is_animation, allow_nil: true
+  validates :position, inclusion: { in: [nil] }, if: :is_animation
   validates :is_animation, uniqueness: { scope: :scene_id }, if: :is_animation
 
   def as_json(options)

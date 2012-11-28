@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121123172536) do
+ActiveRecord::Schema.define(:version => 20121128155612) do
 
   create_table "action_definitions", :force => true do |t|
     t.text     "description"
@@ -121,10 +121,11 @@ ActiveRecord::Schema.define(:version => 20121123172536) do
     t.integer  "storybook_id"
     t.integer  "sound_id"
     t.integer  "position"
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
     t.integer  "preview_image_id"
     t.integer  "sound_repeat_count", :limit => 2, :default => 0
+    t.boolean  "is_main_menu",                    :default => false
   end
 
   add_index "scenes", ["storybook_id"], :name => "index_scenes_on_storybook_id"

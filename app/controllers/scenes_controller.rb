@@ -1,18 +1,18 @@
 class ScenesController < ApplicationController
   before_filter :authorize
-  
+
   # GET /storybooks/:id/scenes
   # GET /storybooks/:id/scenes.json
   def index
     @storybook = Storybook.find params[:storybook_id]
     @scenes = @storybook.scenes
-    
+
     respond_to do |format|
       format.html
       format.json { render :json => @scenes }
     end
   end
-  
+
 
   # GET /storybooks/:storybook_id/scenes/:id
   # GET /storybooks/:storybook_id/scenes/:id.json
@@ -43,7 +43,7 @@ class ScenesController < ApplicationController
   def create
     @storybook = Storybook.find params[:storybook_id]
     #next_page = (@storybook.scenes.map(&:page_number).max + 1) || 1
-    
+
     @scene = @storybook.scenes.new params[:scene]
     #@scene.page_number = next_page
 
@@ -91,10 +91,17 @@ class ScenesController < ApplicationController
   # DELETE /storybooks/:storybook_id/scenes/:id.json
   def destroy
     @storybook = Storybook.find params[:storybook_id]
-    @storybook.scenes.find(params[:id]).try(:destroy)
+    @scene = @storybook.scenes.find(params[:id])
+    @scene.destroy if @scene.can_be_destroyed?
 
     respond_to do |format|
-      format.json { render :json => {:status => :ok} }
+      format.json {
+        if @scene.destroyed?
+          render :json => {:status => :unprocessable_entity}
+        else
+          render :json => {:status => :ok}
+        end
+      }
     end
   end
 
@@ -114,7 +121,7 @@ class ScenesController < ApplicationController
   def sort
     params[:scenes].each_with_index do |scene, index|
       _scene = Scene.find(scene['id'])
-      _scene.position = index+1
+      _scene.position = scene['position']
       _scene.save!
     end
 
