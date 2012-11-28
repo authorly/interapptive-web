@@ -143,12 +143,21 @@ window.App =
       )
 
       @storybook = storybook
-    else
-      @storybook
+
+    @storybook
 
 
   currentScene: (scene) ->
-    if scene then @scene = scene else @scene
+    if scene
+      @scene = scene
+
+      if $('#keyframe-list ul').length == 0
+        $('#keyframe-list').html("").html(App.keyframeList().el)
+
+      App.keyframeList().collection.scene_id = scene.get("id")
+      App.keyframeList().collection.fetch()
+
+    @scene
 
 
   currentKeyframe: (keyframe) ->

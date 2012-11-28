@@ -12,11 +12,11 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   initialize: ->
     @collection.on('reset',  @render, @)
+    @collection.on('change:positions', @render, @)
     @collection.on('add',    @appendKeyframe)
     @collection.on('remove', @removeKeyframe)
     @collection.on('change:widgets', @updateKeyframePreview, @)
     @collection.on('change:preview', @keyframePreviewChanged, @)
-    @collection.on('change:positions', @render, @)
     @collection.on('reset add remove change:positions', @updateScenePreview, @)
 
 
@@ -69,10 +69,10 @@ class App.Views.KeyframeIndex extends Backbone.View
   destroyKeyframeClicked: (event) =>
     event.stopPropagation()
     message  = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
-    target   = $(event.currentTarget)
-    keyframe = @collection.get(target.attr('data-id'))
 
     if confirm(message)
+      target   = $(event.currentTarget)
+      keyframe = @collection.get(target.attr('data-id'))
       keyframe.destroy
         success: => @collection.remove(keyframe)
 

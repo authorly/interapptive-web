@@ -1,127 +1,106 @@
 class App.Views.SceneIndex extends Backbone.View
   template: JST["app/templates/scenes/index"]
+
   tagName: 'ul'
+
   className: 'scene-list'
+
   events:
-    'click    span a.delete': 'destroyScene'
-    'click .scene-list span': 'clickScene'
+    'click  span a.delete':   'deleteScene'
+    'click .scene-list span': 'selectScene'
+
 
   initialize: ->
-    @collection.on('reset', @render, this)
-    @collection.on('add', @appendScene, this)
+    @collection.on('reset',  @render, @)
+    @collection.on('change:positions', @render, @)
+    @collection.on('add',    @appendScene, @)
+    @collection.on('remove', @removeScene, @)
+
 
   render: ->
     $(@el).html('')
 
-    @collection.each (scene) => @appendScene(scene)
-
-    $('.scene-list li:first span:first').click()
+    if @collection.length > 0
+      @collection.each (scene) => @renderScene(scene)
+      @setActiveScene()
 
     @initSortable() if @collection?
 
     $("#scene-list").css height: ($(window).height()) + "px"
     $(".scene-list").css height: ($(window).height()) + "px"
 
-    this
-
-
-  createScene: =>
-    scene = new App.Models.Scene
-
-    scene.save storybook_id: App.currentStorybook().get('id'),
-      wait: true
-      success: (scene, response) =>
-        @collection.add scene
-        @setActiveScene scene
-        $('.scene-list li:last span:first').click()
-        @scrollToTop()
-        @numberScenes()
-    scene
+    @
 
 
   appendScene: (scene) ->
-    view = new App.Views.Scene(model: scene)
+    @renderScene(scene)
+    @setActiveScene scene
 
-    $(@el).append(view.render().el)
+
+  renderScene: (scene, index) =>
+    view = new App.Views.Scene(model: scene)
+    viewElement = view.render().el
+    if index == 0
+      @$el.prepend viewElement
+    else
+      @$el.append  viewElement
 
 
   setActiveScene: (scene) ->
-    App.builder.widgetLayer.removeAllChildrenWithCleanup()
+    scene = @collection.at(@collection.length - 1) unless scene?
 
+    App.builder.widgetLayer.removeAllChildrenWithCleanup()
     App.currentScene scene
 
-    App.keyframeList().collection.scene_id = scene.get("id")
-    App.keyframeList().collection.fetch()
+    @$('li').removeClass('active').filter("[data-id=#{scene.id}]").addClass('active')
+
+    App.vent.trigger 'scene:active', scene
 
     #App.activeActionsCollection.fetch()
 
-    $('#keyframe-list').html("").html(App.keyframeList().el)
-    $('nav.toolbar ul li ul li').removeClass 'disabled'
 
-
-  destroyScene: (event) =>
-    message = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
-    target  = $(event.currentTarget)
-    sceneId = target.attr('data-id')
-    sceneEl = target.parent().parent()
-    scene   = App.sceneList().collection.get(sceneId)
-
+  deleteScene: (event) =>
     event.stopPropagation()
+    message = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
 
     if confirm(message)
+      target = $(event.currentTarget)
+      scene = @collection.get(target.attr('data-id'))
       scene.destroy
-        success: =>
-          sceneEl.remove() and $('.scene-list li:first span:first').click()
-          @numberScenes()
+        success: => @collection.remove(scene)
 
 
-  clickScene: (event) ->
+  removeScene: (scene) =>
+    $("li[data-id=#{scene.id}]").remove()
+    @setActiveScene()
+
+
+  selectScene: (event) ->
     target  = $(event.currentTarget)
     sceneId = target.data("id")
-    sceneEl = target.parent()
-
-    sceneEl.siblings().removeClass("active")
-    sceneEl.removeClass("active")
-    sceneEl.addClass("active")
-
     @setActiveScene @collection.get(sceneId)
 
 
   initSortable: =>
-    @numberScenes()
-
     $(@el).sortable
       opacity: 0.6
       containment: '.sidebar'
       axis: 'y'
-      update: =>
-        @numberScenes()
+      update: @_numberScenes
+      items: 'li[data-is_main_menu!="1"]'
 
-        $.ajax
-          contentType:"application/json"
-          dataType: 'json'
-          type: 'POST'
-          data: JSON.stringify(@scenePositionsJSONArray())
-          url: "#{@collection.ordinalUpdateUrl(App.currentScene().get('id'))}"
-          complete: =>
-            $(@el).sortable('refresh')
 
-  scenePositionsJSONArray: ->
-    JSON = {}
-    JSON.scenes = []
+  _numberScenes: =>
+    console.log 'number'
+    @$('li[data-is_main_menu!="1"]').each (index, element) =>
+      console.log index, element
+      element = $(element)
 
-    # Don't use cached element @el! C.W.
-    $('.scene-list li span.scene-frame').each (index, element) ->
-      JSON.scenes.push
-        id: $(element).data 'id'
-        position: index+1
+      if (id = element.data('id'))? && (scene = @collection.get(id))?
+        scene.set position: index
 
-    JSON
-
-  numberScenes: ->
-    $('.page-number').each (index, element) ->
-      $(element).empty().html(index+1)
-
-  scrollToTop: ->
-    el = $('.scene-list')
-    el.scrollTop(el.find('li:first').height()*el.find('li').size())
+    # Backbone bug - without timeout the model is added twice
+    window.setTimeout ( =>
+      @collection.sort silent: true
+      @collection.savePositions()
+    ), 0

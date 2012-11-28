@@ -105,7 +105,8 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     if options
       this.scene_id = options.scene_id
 
-    @on 'remove', (model, collection) -> collection._recalculatePositionsAfterDelete(model)
+    @on 'remove', (model, collection) ->
+      collection._recalculatePositionsAfterDelete(model)
 
 
   url: ->
@@ -153,6 +154,18 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
       url: @ordinalUpdateUrl()
       success: =>
         @trigger 'change:positions'
+
+
+  addKeyframe: (keyframe) ->
+    keyframe.save { position: @nextPosition(keyframe) },
+      success: =>
+        # XXX necessary because this would blow if, in between `save` and
+        # `success`, another scene was selected in the VIEW (!!), and therefore
+        # @scene_id was changed
+        # This is a temporary fix; having the collection change contents is a bad
+        # idea.
+        if keyframe.get('scene_id') == @scene_id
+          @add keyframe
 
 
   _savePositionsCache: (positions) ->

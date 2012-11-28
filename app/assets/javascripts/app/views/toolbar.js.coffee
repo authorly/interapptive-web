@@ -17,6 +17,7 @@ class App.Views.ToolbarView extends Backbone.View
 
   initialize: ->
     @_enableOnEvent 'scene:can_add_animation', '.animation-keyframe'
+    @_enableOnEvent 'scene:active', 'ul li ul li'
     @_enableOnEvent 'keyframe:can_add_text', '.edit-text'
 
 
@@ -40,33 +41,24 @@ class App.Views.ToolbarView extends Backbone.View
     # XXX in the `App.scenesCollection.models collection`, the addded scene
     # sometimes has the same id as the first scene, even though the
     # server's response is correct
-    App.sceneList().createScene()
+    scene = new App.Models.Scene
+      storybook_id: App.currentStorybook().get('id')
+    App.scenesCollection.addScene(scene)
 
 
   addKeyframe: ->
-    @_addKeyframe (new App.Models.Keyframe)
+    keyframe = new App.Models.Keyframe
+      scene_id: App.currentScene().get('id')
+    App.keyframesCollection.addKeyframe(keyframe)
 
 
   addAnimationKeyframe: ->
     return if @$('.animation-keyframe.disabled').length > 0
 
-    @_addKeyframe (new App.Models.Keyframe(is_animation: true))
-
-
-  _addKeyframe: (keyframe) ->
-    collection = App.keyframesCollection
-    keyframe.set
-      scene_id: App.currentScene().get('id')
-      position: collection.nextPosition(keyframe)
-
-    keyframe.save {},
-      success: ->
-        # XXX necessary because this would blow if, in between `save` and
-        # `success`, another scene was selected
-        # This is a temporary fix; having the collection change contents is a bad
-        # idea.
-        if keyframe.get('scene_id') == collection.scene_id
-          collection.add keyframe
+    keyframe = new App.Models.Keyframe
+      scene_id:     App.currentScene().get('id')
+      is_animation: true
+    App.keyframesCollection.addKeyframe(keyframe)
 
 
   showActionLibrary: ->
