@@ -15,6 +15,7 @@ class App.Views.SceneIndex extends Backbone.View
     @collection.on('change:positions', @render, @)
     @collection.on('add',    @appendScene, @)
     @collection.on('remove', @removeScene, @)
+    App.vent.on('window:resize', @adjustSize, @)
 
 
   render: ->
@@ -24,10 +25,8 @@ class App.Views.SceneIndex extends Backbone.View
       @collection.each (scene) => @renderScene(scene)
       @setActiveScene()
 
+    @adjustSize()
     @initSortable() if @collection?
-
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
 
     @
 
@@ -88,6 +87,11 @@ class App.Views.SceneIndex extends Backbone.View
       axis: 'y'
       update: @_numberScenes
       items: 'li[data-is_main_menu!="1"]'
+
+
+  adjustSize: ->
+    $("#scene-list").css height: ($(window).height()) + "px"
+    $(".scene-list").css height: ($(window).height()) + "px"
 
 
   _numberScenes: =>

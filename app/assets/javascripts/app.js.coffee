@@ -257,10 +257,4 @@ $ ->
       $(this).toggleClass "active"
       toolbar_modal.modal "show"
 
-  #
-  # TODO:
-  #    Move to App.Views.SceneIndex
-  #
-  $(window).resize ->
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
+  $(window).resize -> App.vent.trigger('window:resize')
