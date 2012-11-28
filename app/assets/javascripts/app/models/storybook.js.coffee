@@ -65,8 +65,10 @@ class App.Models.Storybook extends Backbone.Model
       selectedIndex: 0
 
   url: ->
-    if @isNew() then return '/storybooks.json'
-    '/storybooks/' + App.currentStorybook().get("id") + '.json'
+    if @isNew()
+      '/storybooks.json'
+    else
+      "/storybooks/#{@id}.json"
 
   toJSON: ->
     @attributes
