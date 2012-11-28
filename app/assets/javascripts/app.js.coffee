@@ -23,13 +23,13 @@ window.App =
     @keyframesTextCollection =   new App.Collections.KeyframeTextsCollection []
     @activeActionsCollection =   new App.Collections.ActionsCollection       []
 
+    @toolbar      =   new App.Views.ToolbarView   el: $('#toolbar')
+    @contentModal =   new App.Views.Modal className: 'content-modal'
+    @fileMenu     =   new App.Views.FileMenuView  el: $('#file-menu')
+
     @sceneList         new App.Views.SceneIndex        collection: @scenesCollection
     @keyframeList      new App.Views.KeyframeIndex     collection: @keyframesCollection
     @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('body')
-
-    @contentModal =   new App.Views.Modal className: 'content-modal'
-    @fileMenu     =   new App.Views.FileMenuView  el: $('#file-menu')
-    @toolbar      =   new App.Views.ToolbarView   el: $('#toolbar')
 
     @activeSpritesList = new App.Views.ActiveSpritesList()
     @activeSpritesWindow(@activeSpritesList)
@@ -163,7 +163,7 @@ window.App =
   currentKeyframe: (keyframe) ->
     if keyframe
       @keyframe = keyframe
-      App.vent.trigger 'keyframe:can_add_text', !keyframe.isAnimation()
+      App.vent.trigger 'keyframe:can_add_text', keyframe.canAddText()
     else
       @keyframe
 

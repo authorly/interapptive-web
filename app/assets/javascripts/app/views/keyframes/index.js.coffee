@@ -18,6 +18,8 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on('change:widgets', @updateKeyframePreview, @)
     @collection.on('change:preview', @keyframePreviewChanged, @)
     @collection.on('reset add remove change:positions', @updateScenePreview, @)
+    App.vent.on 'scene:active', (scene) =>
+      if scene.canAddKeyframes() then @$el.show() else @$el.hide()
 
 
   render: ->

@@ -2,14 +2,15 @@ class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
   url: ->
-    # must go through the scenesCollection, because the relationship
-    # between the scene model and its keyframes is not stored anywhere
-    scene = App.scenesCollection.get @get('scene_id')
-    base = '/scenes/' + scene.id + '/'
+    base = '/scenes/' + @scene.id + '/'
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
 
+
   initialize: ->
+    # must go through the scenesCollection, because the relationship
+    # between the scene model and its keyframes is not stored anywhere
+    @scene = App.scenesCollection.get @get('scene_id')
     @on 'change:widgets', => @save()
     @initializePreview()
 
@@ -75,6 +76,10 @@ class App.Models.Keyframe extends Backbone.Model
       @_debouncedSave().apply @
 
 
+  canAddText: ->
+    !@isAnimation() && @scene.canAddText()
+
+
   _debouncedSave: ->
     @_deboucedSaveMemoized ||= _.debounce @_actualSave, 500
 
@@ -102,15 +107,15 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     @on 'add', (model, _collection, options) =>
       @announceAnimation()
 
-    if options
-      this.scene_id = options.scene_id
+    if options?
+      @scene_id = options.scene_id
 
     @on 'remove', (model, collection) ->
       collection._recalculatePositionsAfterDelete(model)
 
 
   url: ->
-    '/scenes/' + this.scene_id + '/keyframes.json'
+    '/scenes/' + @scene_id + '/keyframes.json'
 
 
   ordinalUpdateUrl: ->
@@ -132,8 +137,10 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     @any (keyframe) -> keyframe.isAnimation()
 
 
-  announceAnimation: ->
-      App.vent.trigger 'scene:can_add_animation', !@animationPresent()
+  announceAnimation: =>
+    scene = App.scenesCollection.get(@scene_id)
+    App.vent.trigger 'scene:can_add_animation',
+      !@animationPresent() && scene.canAddKeyframes()
 
 
   nextPosition: (keyframe) ->

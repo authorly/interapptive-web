@@ -43,6 +43,14 @@ class App.Models.Scene extends Backbone.Model
     @get('is_main_menu')
 
 
+  canAddText: ->
+    !@isMainMenu()
+
+
+  canAddKeyframes: ->
+    !@isMainMenu()
+
+
 class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
 
