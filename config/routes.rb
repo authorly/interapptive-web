@@ -53,6 +53,8 @@ Interapptive::Application.routes.draw do
     resources :images
     resources :videos
     resources :sounds
+
+    resource  :icon, :controller => :storybook_icons
   end
 
   resources :scenes do
