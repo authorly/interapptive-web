@@ -2,7 +2,10 @@ class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
   url: ->
-    base = '/scenes/' + App.currentScene().get('id') + '/'
+    # must go through the scenesCollection, because the relationship
+    # between the scene model and its keyframes is not stored anywhere
+    scene = App.scenesCollection.get @get('scene_id')
+    base = '/scenes/' + scene.id + '/'
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
 
@@ -19,6 +22,9 @@ class App.Models.Keyframe extends Backbone.Model
       @set preview_image_id: @preview.id
       @save()
 
+  hasWidget: (widget) ->
+    _.any((@get('widgets') || []), (w) -> widget.id is w.id)
+
   addWidget: (widget) ->
     widgets = @get('widgets') || []
     widgets.push(widget.toHash())
@@ -28,21 +34,37 @@ class App.Models.Keyframe extends Backbone.Model
     else
       widget.on 'loaded', => setTimeout @widgetsChanged, 0
 
-
+  # TODO: This is not the most performant thing, but not much else will suffice
+  # because we don't use a centralized store for our widgets.
+  # Basically, what happens is this: when we duplicate widget 1 in a keyframe 
+  # because it has scene-wide retention, we create a new entry belonging to 
+  # the new keyframe. These two widgets, while they share a common id, are not 
+  # identical because they have different parents. When we update a widget, it 
+  # will notify its keyframe of the update through this method, and change 
+  # its serialized version of the hash to match our changes. But if we switch 
+  # keyframes, the same widget ID will hold its original position because it 
+  # is not actually affected by the change (being stored under its parent).
+  # Thus, we have to propagate our changes across the active keyframes.
+  # Because we can have a ton of widgets and a ton of keyframes, this can 
+  # slow right down. 
   updateWidget: (widget) ->
-    widgets = @get('widgets') || []
+    App.keyframeList().collection.each (keyframe) ->
+      widgetChanged = false
+      widgets = keyframe.get('widgets') || []
 
-    for w, i in widgets
-      if widget.id is w.id
-        widgets[i] = widget.toHash()
-        @widgetsChanged()
-        return
+      for w, i in widgets
+        if widget.id is w.id
+          widgets[i] = widget.toHash()
+          keyframe.widgetsChanged()
+          widgetChanged = true
+          break
 
-    # Didn't update a widget, so we'll add it
-    @addWidget(widget)
+      unless widgetChanged
+        # Didn't update a widget, so we'll add it
+        keyframe.addWidget(widget)
 
 
-  removeWidget: (widget) ->
+  removeWidget: (widget, skipWidgetLayerRemoval) ->
     widgets = @get('widgets')
     return unless widgets?
 
@@ -52,7 +74,8 @@ class App.Models.Keyframe extends Backbone.Model
         @widgetsChanged()
         break
 
-    App.builder.widgetLayer.removeWidget(widget)
+    App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
+    @widgetsChanged()
 
 
   widgetsChanged: =>
@@ -79,6 +102,10 @@ class App.Models.Keyframe extends Backbone.Model
     Backbone.Model.prototype.save.apply @, arguments
 
 
+  isAnimation: ->
+    @get('is_animation')
+
+
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
 
@@ -86,16 +113,26 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   initialize: (models, options) ->
+    # TODO move cache to a separate class
+    @on 'reset', =>
+      @announceAnimation()
+      @_savePositionsCache(@_positionsJSON())
+
+    @on 'add', (model, _collection, options) =>
+      @announceAnimation()
+
     if options
       this.scene_id = options.scene_id
+
+    @on 'remove', (model, collection) -> collection._recalculatePositionsAfterDelete(model)
 
 
   url: ->
     '/scenes/' + this.scene_id + '/keyframes.json'
 
 
-  ordinalUpdateUrl: (sceneId) ->
-    '/scenes/' + sceneId + '/keyframes/sort.json'
+  ordinalUpdateUrl: ->
+    '/scenes/' + @scene_id + '/keyframes/sort.json'
 
 
   toModdedJSON: ->
@@ -103,4 +140,67 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   comparator: (keyframe) ->
-    keyframe.get 'position'
+    if keyframe.isAnimation()
+      -1
+    else
+      keyframe.get 'position'
+
+
+  animationPresent: ->
+    @any (keyframe) -> keyframe.isAnimation()
+
+
+  announceAnimation: ->
+      App.vent.trigger 'scene:can_add_animation', !@animationPresent()
+
+
+  nextPosition: (keyframe) ->
+    return null if keyframe.isAnimation()
+    @filter((keyframe) -> !keyframe.isAnimation()).length
+
+
+  savePositions: ->
+    positions = @_positionsJSON()
+    return unless @_positionsJSONIsDifferent(positions)
+
+    @_savePositionsCache(positions)
+    $.ajax
+      contentType:"application/json"
+      dataType: 'json'
+      type: 'POST'
+      data: JSON.stringify positions
+      url: @ordinalUpdateUrl()
+      success: =>
+        @trigger 'change:positions'
+
+
+  _savePositionsCache: (positions) ->
+    @positionsJSONCache = positions
+
+
+  _positionsJSONIsDifferent: (positions) ->
+    JSON.stringify(@positionsJSONCache) != JSON.stringify(positions)
+
+
+  _positionsJSON: ->
+    JSON = { keyframes: [] }
+
+    @each (element) ->
+      JSON.keyframes.push
+        id: element.get 'id'
+        position: element.get 'position'
+
+    JSON
+
+  _recalculatePositionsAfterDelete: (model) ->
+    return if model.isAnimation()
+
+    position = model.get('position')
+    followingKeyframes = @filter (keyframe) -> keyframe.get('position') > position
+
+    if followingKeyframes.length > 0
+      _.each followingKeyframes, (keyframe) ->
+        keyframe.set { position: keyframe.get('position') - 1 }, silent: true
+
+    @sort silent: true
+    @savePositions()

@@ -3,7 +3,7 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     _.extend({}, super, {
       'change select#on_touch': "populateAssets"
     })
-    
+
   template: JST["app/templates/touch_zones/index"]
 
   initialize: (options) ->
@@ -12,7 +12,7 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
       videos: new App.Collections.VideosCollection()
       sounds: new App.Collections.SoundsCollection()
     super
-    
+
   render: ->
     $(@el).html(@template(widget: @widget))
     $(@el).find('#touch_zones.modal-body').append @form.el
@@ -26,8 +26,11 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     })
     $(@form.el).find('fieldset').after($button)
 
-  delete: (e) ->
-    App.currentKeyframe().removeWidget(@widget)
+  delete: (e) =>
+    App.keyframeList().collection.each (keyframe) =>
+      keyframe.removeWidget(@widget)
+      keyframe.widgetsChanged()
+
     @cancel(e)
 
   deleteMessage: ->

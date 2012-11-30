@@ -6,12 +6,22 @@ window.App =
   Routers:     {}
   Lib:         {}
   Config:      {}
+  Services:    {}
+  Dispatchers: {}
 
   init: ->
+    # A global vent object that allows decoupled communication between
+    # different parts of the application. For example, the content of the
+    # main view and the buttons in the toolbar.
+    # It would be great to use it to decouple more.
+    @vent = _.extend {}, Backbone.Events
+    # @vent.on 'all', -> console.log arguments # debug everything going through the vent
+
     @scenesCollection        =   new App.Collections.ScenesCollection        []
     @keyframesCollection     =   new App.Collections.KeyframesCollection     []
     @imagesCollection        =   new App.Collections.ImagesCollection        []
     @fontsCollection         =   new App.Collections.FontsCollection         []
+    @soundsCollection        =   new App.Collections.SoundsCollection        []
     @keyframesTextCollection =   new App.Collections.KeyframeTextsCollection []
     @activeActionsCollection =   new App.Collections.ActionsCollection       []
 
@@ -146,7 +156,11 @@ window.App =
 
 
   currentKeyframe: (keyframe) ->
-    if keyframe then @keyframe = keyframe else @keyframe
+    if keyframe
+      @keyframe = keyframe
+      App.vent.trigger 'keyframe:can_add_text', !keyframe.isAnimation()
+    else
+      @keyframe
 
 
   currentKeyframeText: (keyframeText) ->
@@ -201,7 +215,6 @@ window.App =
   fontToolbarClosed: ->
     $('.text-widget').focusout()
 
-
   #
   # TODO:
   #    Move to keyframeText view and access from global
@@ -229,8 +242,9 @@ $ ->
   toolbar_modal.bind "hidden", ->
     $("ul#toolbar li ul li").removeClass "active"
 
+  # TODO: Move to Toolbar manager or something similar
   $("ul#toolbar li ul li").click ->
-    excluded = '.actions, .scene, .keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview'
+    excluded = '.actions, .scene, .keyframe, .animation-keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview, .scene-options'
 
     toolbar_modal.modal "hide"
 

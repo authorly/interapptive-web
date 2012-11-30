@@ -1,4 +1,6 @@
 class Storybook < ActiveRecord::Base
+  mount_uploader :icon, AppIconUploader
+
   belongs_to :user
   has_many :scenes, :dependent => :destroy
 

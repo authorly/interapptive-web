@@ -3,5 +3,8 @@ class App.Views.Keyframe extends Backbone.View
   tagName: 'li'
 
   render: ->
-    $(@el).html(@template(keyframe: @model))
+    @$el.html(@template(keyframe: @model)).attr('data-id', @model.id)
+    if @model.isAnimation()
+      @$el.attr('data-is_animation', '1').addClass('animation')
+
     this

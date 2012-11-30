@@ -12,7 +12,7 @@ describe Font do
 
       response = {
         'id'          => f.id,
-        'name'        => f.read_attribute(:font),
+        'name'        => f.meta_info[:font_name],
         'size'        => f.font.size,
         'url'         => f.font.url,
         'created_at'  => f.created_at.strftime("%Y %d %_m %l%p"),

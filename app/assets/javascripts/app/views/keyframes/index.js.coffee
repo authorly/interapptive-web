@@ -5,44 +5,47 @@ class App.Views.KeyframeIndex extends Backbone.View
   template:  JST["app/templates/keyframes/index"]
   tagName:   'ul'
   className: 'keyframe-list'
+
   events:
-    'click span a.delete-keyframe': 'destroyKeyframe'
+    'click span a.delete-keyframe': 'destroyKeyframeClicked'
     'click  .keyframe-list li div': 'keyframeClicked'
 
-
   initialize: ->
-    @collection.on('reset', @render, @)
-    @collection.on('add', @appendKeyframe)
+    @collection.on('reset',  @render, @)
+    @collection.on('add',    @appendKeyframe)
+    @collection.on('remove', @removeKeyframe)
     @collection.on('change:widgets', @updateKeyframePreview, @)
     @collection.on('change:preview', @keyframePreviewChanged, @)
+    @collection.on('change:positions', @render, @)
+    @collection.on('reset add remove change:positions', @updateScenePreview, @)
 
 
   render: ->
     $(@el).html('')
-    @collection.each (keyframe) => @appendKeyframe(keyframe)
-    @delegateEvents()
-    @initSortable() if @collection?
 
-    # Fire asynchronously so other 'reset' events can finish first
-    # setTimeout((=> $(@el).find('li:last-child div:last').click()), 1)
-    this
+    if @collection.length > 0
+      @collection.each (keyframe) => @renderKeyframe(keyframe)
+      @switchKeyframe()
+      @_updateDeleteButtons()
 
+    @delegateEvents() # needed, even though it should work without it
+    @initSortable()
 
-  createKeyframe: =>
-    keyframe = new App.Models.Keyframe
-      scene_id: App.currentScene().get('id')
-    keyframe.save {},
-      wait: true
-      success: (model, response) =>
-        @collection.add keyframe
+    @
 
 
-  appendKeyframe: (keyframe) =>
+  appendKeyframe: (keyframe, _collection, options) =>
+    @renderKeyframe(keyframe, options.index)
+    @switchKeyframe(keyframe)
+    @_updateDeleteButtons()
+
+  renderKeyframe: (keyframe, index) =>
     view  = new App.Views.Keyframe(model: keyframe)
-    $(@el).append(view.render().el)
-
-    @numberKeyframes()
-    @setActiveKeyframe(keyframe)
+    viewElement = view.render().el
+    if index == 0
+      @$el.prepend viewElement
+    else
+      @$el.append  viewElement
 
     @keyframePreviewChanged(keyframe)
 
@@ -50,18 +53,18 @@ class App.Views.KeyframeIndex extends Backbone.View
   keyframeClicked: (event) ->
     id = $(event.currentTarget).attr "data-id"
     keyframe = @collection.get id
-    @setActiveKeyframe(keyframe)
+    @switchKeyframe(keyframe)
 
 
-  setActiveKeyframe: (keyframe) ->
-    App.currentKeyframe keyframe
-    # TODO data-id should be on the top-most element (`li`), not on the
-    # inner element (`div`) to work easier with selectors
-    @$('li').removeClass('active').find("[data-id=#{keyframe.id}]").parent().addClass('active')
-    @populateWidgets(keyframe)
+  switchKeyframe: (keyframe) =>
+    keyframe = @collection.at(@collection.length - 1) unless keyframe?
+    switcher = new App.Services.SwitchKeyframeService(App.currentKeyframe(), keyframe)
+    switcher.execute()
 
+  switchActiveKeyframe: (keyframe) =>
+    @$('li').removeClass('active').filter("[data-id=#{keyframe.id}]").addClass('active')
 
-  destroyKeyframe: (event) =>
+  destroyKeyframeClicked: (event) =>
     event.stopPropagation()
     message  = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
     target   = $(event.currentTarget)
@@ -69,11 +72,13 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     if confirm(message)
       keyframe.destroy
-        success: =>
-          @collection.remove(keyframe)
-          $('.keyframe-list li.active').remove()
-          @numberKeyframes()
-          $('.keyframe-list li:last div').click()
+        success: => @collection.remove(keyframe)
+
+
+  removeKeyframe: (keyframe) =>
+    $(".keyframe-list li[data-id=#{keyframe.id}]").remove()
+    @switchKeyframe()
+    @_updateDeleteButtons()
 
 
   updateKeyframePreview: (keyframe) ->
@@ -88,7 +93,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   keyframePreviewChanged: (keyframe) ->
     src = keyframe.preview.src()
     if src?
-      @$("[data-id=#{keyframe.id}]").html("<img src='#{src}'/>")
+      @$("div[data-id=#{keyframe.id}]").html("<img src='#{src}'/>")
 
 
   placeText: ->
@@ -99,52 +104,38 @@ class App.Views.KeyframeIndex extends Backbone.View
       App.keyframesTextCollection.fetch
         success: (collection, response) =>
 
-
-  populateWidgets: (keyframe) ->
-    return unless keyframe?
-
-    App.builder.widgetLayer.populateFromKeyframe(keyframe)
-
-
   initSortable: =>
-    @numberKeyframes()
-
     $(@el).sortable
       opacity: 0.6
       containment: 'footer'
       cancel: ''
-      update: =>
-        @numberKeyframes()
-        $.ajax
-          contentType:"application/json"
-          dataType: 'json'
-          type: 'POST'
-          data: JSON.stringify(@keyframePositionsJSONArray())
-          url: "#{@collection.ordinalUpdateUrl(App.currentScene().get('id'))}"
-          success: =>
-            @collection.sort()
-          complete: =>
-            $(@el).sortable('refresh')
+      update: @_numberKeyframes
+      items: 'li[data-is_animation!="1"]'
 
 
-  keyframePositionsJSONArray: ->
-    JSON = {}
-    JSON.keyframes = []
-
-    $('.keyframe-list li div').each (index, element) ->
-      JSON.keyframes.push
-        id: $(element).data 'id'
-        position: index+1
-
-    JSON
-
-
-  numberKeyframes: ->
-    $('.keyframe-list li div').each (index, element) =>
+  _numberKeyframes: =>
+    @$('li[data-is_animation!="1"]').each (index, element) =>
       element = $(element)
 
-      e = $('span.keyframe-number', element)
-      e.empty().html(index+1)
+      if (id = element.data('id'))? && (keyframe = @collection.get(id))?
+        keyframe.set position: index
 
-      if (id = element.data('id'))?
-        @collection.get(id).set position: index
+    # Backbone bug - without timeout the model is added twice
+    window.setTimeout ( =>
+      @collection.sort silent: true
+      @collection.savePositions()
+    ), 0
+
+
+  _updateDeleteButtons: =>
+    show_delete = @collection.length > 1
+
+    buttons = @$('li .delete-keyframe')
+    if @collection.length > 1 then buttons.show() else buttons.hide()
+
+
+  updateScenePreview: ->
+    # must go through the scenesCollection, because the relationship
+    # between the scene model and its keyframes is not stored anywhere
+    scene = App.scenesCollection.get(@collection.scene_id)
+    scene?.setPreviewFrom @collection.at(0)

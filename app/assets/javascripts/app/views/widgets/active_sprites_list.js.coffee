@@ -81,23 +81,30 @@ class App.Views.ActiveSpritesList extends Backbone.View
 
       App.builder.widgetLayer.addWidget(widget, true)
 
+  hasWidget: (widget) =>
+    $(@el).find("div[data-widget-id=#{widget.id}]").length
 
-  removeSpriteWidget: (e) ->
+  removeSpriteWidget: (e) =>
     widgetEl = $(e.currentTarget)
     widgetId = widgetEl.siblings('.sprite-image').data('widget-id')
 
     widget = App.builder.widgetLayer.getWidgetById(widgetId)
-    App.currentKeyframe().removeWidget(widget)
+    App.keyframeList().collection.each (keyframe) =>
+      keyframe.removeWidget(widget)
+      @removeWidget(widget, true)
 
-    widgetEl.parent().remove()
-
+  removeWidget: (widget, skipKeyframeRemoval) =>
+    # TODO: This could be very problematic. Remove this line somehow...
+    # TODO: Why is this even here?!
+    App.currentKeyframe().removeWidget(widget) unless skipKeyframeRemoval
+    @removeListEntry(widget)
     App.spriteForm.resetForm()
 
+  removeListEntry: (widget) =>
+    $(@el).find("div[data-widget-id=#{widget.id}]").parent().remove()
 
   removeAll: ->
     $("#active-sprites-window ul").empty()
-
-
 
   deselectAll: ->
     $(@el).find('.active').removeClass('active')

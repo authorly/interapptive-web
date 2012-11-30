@@ -200,6 +200,7 @@ class App.StorybookJSON
     }
     ###
 
+    App.d1 = sprite
     spriteJSON =
       image:     sprite.getUrl()
       spriteTag: nextSpriteTag

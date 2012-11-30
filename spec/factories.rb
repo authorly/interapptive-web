@@ -40,13 +40,20 @@ end
 
 Factory.define :scene do |f|
   f.preview_image_id Factory.create(:image)
-  f.sound_id Factory.create(:sound)
+  f.sound_id Factory.create(:sound).id
   f.storybook Factory.create(:storybook)
 end
 
 Factory.define :keyframe do |f|
   f.scene_id Factory.create(:scene)
   f.preview_image_id Factory.create(:image)
+end
+
+Factory.define :animation_keyframe, class: Keyframe do |f|
+  f.scene_id Factory.create(:scene)
+  f.preview_image_id Factory.create(:image)
+  f.is_animation true
+  f.position nil
 end
 
 Factory.define :actions do |f|

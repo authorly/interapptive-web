@@ -37,3 +37,6 @@
 #= require_tree ./app/lib
 
 #= require builder
+
+#= require_tree ./app/dispatchers
+#= require_tree ./app/services

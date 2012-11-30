@@ -19,9 +19,10 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     @resize()
     
   removeTexts: ->
-    # remove text widgets
+    #remove text widgets, clean up
     for t in @texts
       $(t.el).remove()
+      #TODO may need to clean up the text object itself with leave() or something similar 
     @texts.length = 0
     
   deselectTexts: ->

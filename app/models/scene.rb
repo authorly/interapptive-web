@@ -1,5 +1,7 @@
 class Scene < ActiveRecord::Base
   belongs_to :storybook
+  belongs_to :sound
+
   has_many :keyframes, :dependent => :destroy
   has_many :asset_maps, :as => :assetable,
            :dependent => :destroy
@@ -28,13 +30,20 @@ class Scene < ActiveRecord::Base
 
   def as_json(options)
     super.merge({
-      preview_image_url: preview_image.try(:image).try(:url)
+      :preview_image_url => preview_image.try(:image).try(:url),
+      :sound_url         => sound_url
     })
+  end
+
+  def sound_url
+    if sound.present?
+      sound.sound.url
+    end
   end
 
   private
 
   def create_keyframe
-    keyframes.create
+    keyframes.create position: 0
   end
 end

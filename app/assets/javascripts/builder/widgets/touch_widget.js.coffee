@@ -9,6 +9,8 @@ LINE_WIDTH_INNER = 2
 DEFAULT_OPACITY = 150
 
 class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
+  retention: 'scene'
+
   @newFromHash: (hash) ->
     widget = super
     widget.setRadius(hash.radius) if hash.radius
@@ -17,6 +19,11 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     widget.sound_id  ?= hash.sound_id
 
     widget.setZOrder(1000) #HACK TODO: Get rid of hardcode
+
+    App.keyframeList().collection.each (keyframe) ->
+      unless keyframe.hasWidget(widget)
+        keyframe.addWidget(widget)
+
     return widget
 
   constructor: (options={}) ->
@@ -40,14 +47,12 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     _.extend(@, hash)
     options?.success?(@)
 
-  # TODO: What do these two even do? Why do we need bind here?
-  onMouseOver: (e) ->
-    @setOpacity.bind(this, 255)
-    point = e.canvasPoint
+  onMouseOver: (e) =>
+    @setOpacity(255)
 
-  onMouseOut: (e) ->
-    @setOpacity.bind(this, 200)
-
+  onMouseOut: (e) =>
+    @setOpacity(200)
+    App.d2 = @
     unless @resizing
       document.body.style.cursor = 'default'
 
