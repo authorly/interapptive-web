@@ -32,11 +32,19 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @sprite.initWithFile(dataUrl)
     @sprite.setScale(@_scale) if @_scale
     @addChild(@sprite)
-    @setContentSize(@sprite.getContentSize())
     @trigger('loaded')
+    window.setTimeout @triggerLoaded, 0
 
-    # MOVE ME TO KEYFRA
+    # TODO MOVE ME TO KEYFRA
     # App.storybookJSON.addSprite(App.currentScene(), @sprite)
+
+
+
+  triggerLoaded: =>
+    if @isLoaded()
+      @setContentSize(@sprite.getContentSize())
+    else
+      window.setTimeout @triggerLoaded, 200
 
 
   isLoaded: ->

@@ -108,8 +108,8 @@ class App.Builder.Widgets.Widget extends cc.Node
     cc.RectMake(
       p.x - s.width  * a.x
       p.y - s.height * a.y
-      s.width*@getScale()
-      s.height*@getScale()
+      s.width  * scale
+      s.height * scale
     )
 
 
