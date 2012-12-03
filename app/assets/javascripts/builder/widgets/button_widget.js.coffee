@@ -16,6 +16,10 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
     @_name = name
     @_selected_url = options.selected_url
 
+    view = new App.Views.ButtonWidgetImagesSelector(widget: @)
+    @selector = new App.Views.Modal(view: view)
+    @selector.render()
 
-  doubleClick: ->
-    console.log 'double click'
+
+  doubleClick: =>
+    @selector.show()
