@@ -33,6 +33,22 @@ describe Scene do
       scene = Scene.create
       scene.keyframes.count.should == 1
       scene.keyframes.first.position.should == 0
+      scene.keyframes.first.widgets.should_not be
+    end
+
+    it 'should create a keyframe with 3 static widgets, in a main menu scene' do
+      scene = Scene.create(is_main_menu: true)
+      scene.keyframes.count.should == 1
+
+      keyframe = scene.keyframes.first
+      keyframe.position.should == 0
+      keyframe.widgets.should be
+
+      keyframe.widgets.count.should == 3
+      keyframe.widgets.all?{|w| w[:type] == 'ButtonWidget'}.should be
+      keyframe.widgets.detect{|w| w[:name] == 'read_it_myself' }.should be
+      keyframe.widgets.detect{|w| w[:name] == 'auto_play' }.should be
+      keyframe.widgets.detect{|w| w[:name] == 'read_to_me'}.should be
     end
   end
 

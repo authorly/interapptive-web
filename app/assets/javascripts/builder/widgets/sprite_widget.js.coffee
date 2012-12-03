@@ -163,12 +163,15 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   _getImage: ->
-    proxy = App.Lib.RemoteDomainProxy.instance()
+    if @_url.indexOf('/') == 0
+      @constructorContinuation(@_url)
+    else
+      proxy = App.Lib.RemoteDomainProxy.instance()
 
-    proxy.bind 'message', @_from_proxy
-    proxy.send
-      action: 'load'
-      path: @_url
+      proxy.bind 'message', @_from_proxy
+      proxy.send
+        action: 'load'
+        path: @_url
 
 
   _from_proxy: (message) =>

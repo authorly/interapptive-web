@@ -51,7 +51,16 @@ class Scene < ActiveRecord::Base
   private
 
   def create_keyframe
-    keyframes.create position: 0
+    attributes = { position: 0 }
+    if is_main_menu
+      attributes[:widgets] = [
+        {type: 'ButtonWidget', id: 1, name: 'read_it_myself', position: { y: 100, x: 200 }, scale: 1, zOrder: 1 },
+        {type: 'ButtonWidget', id: 2, name: 'read_to_me',     position: { y: 200, x: 200 }, scale: 1, zOrder: 1 },
+        {type: 'ButtonWidget', id: 3, name: 'auto_play',      position: { y: 300, x: 200 }, scale: 1, zOrder: 1 },
+      ]
+    end
+
+    keyframes.create attributes
   end
 
 end
