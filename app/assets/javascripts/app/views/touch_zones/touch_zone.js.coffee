@@ -27,9 +27,9 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     $(@form.el).find('fieldset').after($button)
 
   delete: (e) =>
-    App.keyframeList().collection.each (keyframe) =>
-      keyframe.removeWidget(@widget)
-      keyframe.widgetsChanged()
+    App.currentScene().removeWidget(@widget)
+    App.builder.widgetLayer.removeWidget(@widget)
+    App.currentKeyframe().widgetsChanged()
 
     @cancel(e)
 

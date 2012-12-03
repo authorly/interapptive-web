@@ -44,6 +44,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     widget.setStorybook(App.storybookJSON)
     this
 
+  widgetAtId: (id) =>
+    for widget, i in @widgets
+      if id is widget.id
+        return widget
+
   widgetAtTouch: (touch) ->
     @widgetAtPoint(touch.locationInView())
 

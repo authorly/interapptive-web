@@ -36,9 +36,8 @@ class WidgetDispatcher
 
   createWidget: (widget) ->
     widget = new App.Builder.Widgets.TouchWidget
-    widget.setPosition(new cc.Point(300, 300))
-    @_addWidget(widget)
-    App.d1 = widget
+    widget.setPosition(new cc.Point(300, 400))
+    @_addSceneWidget(widget)
     widget
 
   # Modals
@@ -56,15 +55,15 @@ class WidgetDispatcher
     App.modalWithView().hide()
     view.off('touch_select', @updateTouchWidget)
 
-  # TODO: Do we even need this?
-  _addWidget: (widget) ->
+
+  _addSceneWidget: (widget) =>
     @widgets.push(widget)
 
     App.builder.widgetLayer.addWidget(widget)
 
-    keyframe = App.currentKeyframe()
-    keyframe.addWidget(widget)
-    widget.on('change', -> keyframe.updateWidget(widget))
+    scene = App.currentScene()
+    scene.addWidget(widget)
+    widget.on('change', -> scene.updateWidget(widget))
 
 
 App.Builder.Widgets.WidgetDispatcher = new WidgetDispatcher()

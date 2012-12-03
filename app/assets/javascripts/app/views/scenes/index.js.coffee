@@ -28,14 +28,18 @@ class App.Views.SceneIndex extends Backbone.View
   createScene: =>
     scene = new App.Models.Scene
 
-    scene.save(storybook_id: App.currentStorybook().get('id'),
+    scene.save({storybook_id: App.currentStorybook().get('id')},
       wait: true
-      success: (scene, response) =>
-        @collection.add scene 
+      success: (model, response) =>
+        # Sometimes, this gives us the initial scene back. Why?!
+        console.group "Scene creation"
+        console.dir model
+        console.dir response
+        console.groupEnd()
 
-        service = new App.Services.SwitchSceneService(App.currentScene(), scene)
+        @collection.add model 
+        service = new App.Services.SwitchSceneService(App.currentScene(), model)
         service.execute()
-
         @scrollToTop()
         @renumberScenes()
     )
@@ -64,7 +68,7 @@ class App.Views.SceneIndex extends Backbone.View
 
   onSceneClick: (event) =>
     sceneId = $(event.currentTarget).data 'id'
-    scene = @collection.get sceneId
+    scene = @collection.get(sceneId)
     @toggleSceneChange scene
 
   toggleSceneChange: (scene) =>

@@ -9,13 +9,6 @@ class PaletteDispatcher
     @on('keyframe:change', @switchKeyframe)
 
   switchKeyframe: (widgetsToAdd) =>
-    App.activeSpritesList.removeAll()
-    @addNewWidgets(widgetsToAdd) if widgetsToAdd?
-
     App.spriteForm.resetForm()
-
-  addNewWidgets: (widgetsToAdd) =>
-    for widget in widgetsToAdd
-      App.activeSpritesList.addSpriteToList widget unless App.activeSpritesList.hasWidget(widget)
 
 App.Dispatchers.PaletteDispatcher = new PaletteDispatcher()

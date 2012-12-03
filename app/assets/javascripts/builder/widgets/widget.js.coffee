@@ -31,9 +31,15 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     if options.id
       @id = options.id
+      if options.id >= NEXT_WIDGET_ID
+        NEXT_WIDGET_ID = options.id + 1
     else
       @id = NEXT_WIDGET_ID
       NEXT_WIDGET_ID += 1
+
+    console.log "NEXT_WIDGET_ID", NEXT_WIDGET_ID
+
+
 
     @on("mouseover", @mouseOver)
     @on("mouseout", @mouseOut)

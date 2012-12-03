@@ -13,12 +13,11 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   @newFromHash: (hash) ->
     widget = new this(hash)
-    App.keyframeList().collection.each (keyframe) ->
-      keyframe.addWidget(widget) unless keyframe.hasWidget(widget)
 
+    # Why this next line, given that the constructor does this already?
     if hash.zOrder then widget._zOrder = hash.zOrder
     key = "keyframe_" + App.currentKeyframe().get('id')
-    widget.setPosition(new cc.Point(hash.keyframes[key].x, hash.keyframes[key].y)) if hash.keyframes?[key]?
+    widget.setPosition(widget.getPosition()) if widget.hasKeyframeDatum(App.currentKeyframe())
 
     if hash.id >= NEXT_WIDGET_ID
       NEXT_WIDGET_ID = hash.id + 1
@@ -29,20 +28,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   constructor: (options={}) ->
     super
 
-    # I'm not in love with this position -- this doesn't seem like
-    # the widget's responsibility.
-    #
-    # Create the keyframes data hash which stores position across 
-    # keyframes.
-    # Also add the keyframe to all keyframes in the scene.
-    if options.keyframes?
-      @_keyframes = options.keyframes
-    else
-      keyframes = {}
-      App.keyframeList().collection.each (keyframe) ->
-        keyframes["keyframe_" + keyframe.get('id')] = {scale: 1, x: 0, y: 0}
-      @_keyframes = keyframes
-
+    @_keyframeData = options.keyframeData ? App.keyframeList().collection.reduce(((hsh, keyframe) => hsh["keyframe_" + keyframe.get('id')] = {scale: 1.0, x: 300, y: 400}; hsh), {})
     @_url       = options.url
     @_filename  = options.filename
     @_zOrder    = options.zOrder
@@ -79,16 +65,20 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   currentKeyframe: =>
     id = App.currentKeyframe().get('id')
-    @_keyframes["keyframe_#{id}"]
+    @_keyframeData["keyframe_#{id}"]
 
-  hasKeyframe: (keyframe) =>
-    "keyframe_#{keyframe.get('id')}" in _.keys(@_keyframes)
+  hasKeyframeDatum: (keyframe) =>
+    "keyframe_#{keyframe.get('id')}" in _.keys(@_keyframeData)
 
-  addKeyframe: (keyframe, content) =>
-    @_keyframes["keyframe_#{keyframe.get('id')}"] = content
+  addKeyframeDatum: (keyframe, content) =>
+    @_keyframeData["keyframe_#{keyframe.get('id')}"] = content
 
-  copyKeyframe: (newKeyframe, oldKeyframe) =>
-    @_keyframes["keyframe_#{newKeyframe.get('id')}"] = @_keyframes["keyframe_#{oldKeyframe.get('id')}"]
+  removeKeyframeDatum: (keyframe) =>
+    delete @_keyframeData["keyframe_#{keyframe.get('id')}"]
+
+  copyKeyframeDatum: (newKeyframe, oldKeyframe) =>
+    @_keyframeData["keyframe_#{newKeyframe.get('id')}"] = _.clone(@_keyframeData["keyframe_#{oldKeyframe.get('id')}"])
+
 
   reloadKeyframeInfo: =>
     @setPosition(new cc.Point(@currentKeyframe().x, @currentKeyframe().y))
@@ -179,7 +169,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     # hash.scale =    @_scale
 
     hash.zOrder =   @_zOrder
-    hash.keyframes = @_keyframes
+    hash.keyframeData = @_keyframeData
 
     hash
 

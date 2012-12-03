@@ -20,10 +20,6 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     widget.setZOrder(1000) #HACK TODO: Get rid of hardcode
 
-    App.keyframeList().collection.each (keyframe) ->
-      unless keyframe.hasWidget(widget)
-        keyframe.addWidget(widget)
-
     return widget
 
   constructor: (options={}) ->
@@ -52,7 +48,6 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   onMouseOut: (e) =>
     @setOpacity(200)
-    App.d2 = @
     unless @resizing
       document.body.style.cursor = 'default'
 
@@ -94,6 +89,8 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
       document.body.style.cursor = 'se-resize'
     else
       document.body.style.cursor = 'default'
+
+    App.currentScene().widgetsChanged()
 
 
   isPointInsideControl: (point) ->

@@ -94,8 +94,8 @@ class App.Views.ActiveSpritesList extends Backbone.View
       @removeWidget(widget, true)
 
   removeWidget: (widget, skipKeyframeRemoval) =>
-    # TODO: This could be very problematic. Remove this line somehow...
-    # TODO: Why is this even here?!
+    # TODO: This method is used to actually remove a widget, so don't use it to
+    # remove a widget from the listing only.
     App.currentKeyframe().removeWidget(widget) unless skipKeyframeRemoval
     @removeListEntry(widget)
     App.spriteForm.resetForm()

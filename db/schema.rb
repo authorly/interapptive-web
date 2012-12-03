@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121128213048) do
+ActiveRecord::Schema.define(:version => 20121130191615) do
 
   create_table "action_definitions", :force => true do |t|
     t.string   "name"
@@ -92,10 +92,10 @@ ActiveRecord::Schema.define(:version => 20121128213048) do
 
   create_table "keyframes", :force => true do |t|
     t.integer  "scene_id"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
-    t.integer  "background_x_coord", :default => 0
-    t.integer  "background_y_coord", :default => 0
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.integer  "background_x_coord",      :default => 0
+    t.integer  "background_y_coord",      :default => 0
     t.integer  "preview_image_id"
     t.text     "widgets"
     t.integer  "position"
@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(:version => 20121128213048) do
     t.datetime "updated_at",                                     :null => false
     t.integer  "preview_image_id"
     t.integer  "sound_repeat_count", :limit => 2, :default => 0
+    t.text     "widgets"
   end
 
   add_index "scenes", ["storybook_id"], :name => "index_scenes_on_storybook_id"
