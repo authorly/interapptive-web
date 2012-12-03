@@ -59,7 +59,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
         klass = App.Builder.Widgets[widgetHash.type]
         throw new Error("Unable to find widget class #{klass}") unless klass
-        widget = klass.newFromHash(widgetHash)
+        widget = new klass(widgetHash)
 
         if widgetHash.type is "SpriteWidget"
           App.storybookJSON.addSprite(App.currentScene(), widget)

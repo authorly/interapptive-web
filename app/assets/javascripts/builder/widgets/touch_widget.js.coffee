@@ -9,15 +9,6 @@ LINE_WIDTH_INNER = 2
 DEFAULT_OPACITY = 150
 
 class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
-  @newFromHash: (hash) ->
-    widget = super
-    widget.setRadius(hash.radius) if hash.radius
-    widget.action_id ?= hash.action_id
-    widget.video_id  ?= hash.video_id
-    widget.sound_id  ?= hash.sound_id
-
-    widget.setZOrder(1000) #HACK TODO: Get rid of hardcode
-    return widget
 
   constructor: (options={}) ->
     super
@@ -26,6 +17,11 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     @setRadius(options.radius || 32)
     @setControlRadius(options.controlRadius || 8)
+
+    @action_id ?= options.action_id
+    @video_id  ?= options.video_id
+    @sound_id  ?= options.sound_id
+    @setZOrder(1000) #HACK TODO: Get rid of hardcode
 
     @setOpacity(DEFAULT_OPACITY)
     @on('mouseover', @onMouseOver, this)

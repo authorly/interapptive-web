@@ -1,24 +1,20 @@
-NEXT_WIDGET_ID = 1
-
+##
+# A `Widget` is an entity that has a graphical representation and that
+# responds to user interactions.
+#
+# Graphical properties:
+# _opacity
+# _highlighted
+#
 class App.Builder.Widgets.Widget extends cc.Node
 
   draggable: true
 
+
   _mouse_over: false
 
-  @newFromHash: (hash) ->
+  @idGenerator = new App.Lib.Counter
 
-    widget = new this(hash)
-
-    # TODO: Sprite should be created w/ this zOrder, move to SpriteWidget
-    if hash.zOrder then widget._zOrder = hash.zOrder
-
-    widget.setPosition(new cc.Point(hash.position.x, hash.position.y)) if hash.position
-
-    if hash.id >= NEXT_WIDGET_ID
-      NEXT_WIDGET_ID = hash.id + 1
-
-    return widget
 
   constructor: (options={}) ->
     super
@@ -28,23 +24,27 @@ class App.Builder.Widgets.Widget extends cc.Node
     @_highlighted = false
 
     if options.id
-      @id = options.id
+      @id = App.Builder.Widgets.Widget.idGenerator.check(options.id)
     else
-      @id = NEXT_WIDGET_ID
-      NEXT_WIDGET_ID += 1
+      @id = App.Builder.Widgets.Widget.idGenerator.next()
+
+    if options.position
+      @setPosition(new cc.Point(options.position.x, options.position.y))
 
     @on("mouseover", @mouseOver)
     @on("mouseout", @mouseOut)
     @on('dblclick', @doubleClick)
 
+
+
   mouseOver: ->
     @_mouse_over = true
-    
+
   mouseOut: ->
     @_mouse_over = false
-    
+
   mouseMove: ->
-  
+
   doubleClick: ->
 
   isHighlighted: ->

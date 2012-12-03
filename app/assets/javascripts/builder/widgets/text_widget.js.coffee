@@ -1,19 +1,12 @@
 #= require ./widget
 
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
-  
-  @newFromHash: (hash) ->
-    widget = super
-
-    widget.setString(hash.string) if hash.string
-
-    return widget
 
   constructor: (options={}) ->
     super
 
-    @_string = options.string
-    
+    @setString(options.string)
+
     @label = cc.LabelTTF.labelWithString(@_string, 'Arial', 24)
     @label.setColor(new cc.Color3B(255, 0, 0))
 
@@ -25,7 +18,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     App.selectedKeyframeText(this.id)
     App.toggleFontToolbar(this)
     @drawSelection()
-    
+
   mouseOut: ->
     super()
     App.toggleFontToolbar(this)
@@ -36,7 +29,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   draw: ->
     if @_mouse_over then @drawSelection()
-    
+
   drawSelection: ->
     lSize = @label.getContentSize()
     cc.renderContext.strokeStyle = "rgba(0,0,255,1)"
@@ -46,9 +39,9 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
                 cc.ccp(lSize.width / 2, lSize.height / 2),
                 cc.ccp(lSize.width / 2, 0 - lSize.height / 2),
                 cc.ccp(0 - lSize.width / 2, 0 - lSize.height / 2)]
-    
+
     cc.drawingUtil.drawPoly(vertices, 4, true)
-  
+
   update: ->
 
   getString: ->
