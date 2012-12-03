@@ -7,7 +7,22 @@ COLOR_INNER_STROKE = 'rgba(15, 79, 168, 1)'
 COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
 LINE_WIDTH_INNER = 2
 DEFAULT_OPACITY = 150
+HIGHLIGHT_OPACITY = 230
+MOUSEOVER_OPACITY = 255
+DEFAULT_RADIUS = 32
+DEFAULT_CONTROL_RADIUS = 8
 
+##
+# A 'hotspot' widget, previously named touch zone. It has an associated
+# video or sound (which will play when the hotspot is triggered).
+#
+# It is reprezented as a circle, that can be moved. It can be resized using
+# a dedicated UI control (a small circle).
+#
+# TODO does this work actually? on Chrome it doesn't.
+# dira, 2012-12-03
+# It reacts to mouseOver and mouseOut.
+#
 class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   constructor: (options={}) ->
@@ -15,8 +30,8 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     @action_id = null
 
-    @setRadius(options.radius || 32)
-    @setControlRadius(options.controlRadius || 8)
+    @setRadius(options.radius || DEFAULT_RADIUS)
+    @setControlRadius(options.controlRadius || DEFAULT_CONTROL_RADIUS)
 
     @action_id ?= options.action_id
     @video_id  ?= options.video_id
@@ -24,85 +39,56 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     @setZOrder(1000) #HACK TODO: Get rid of hardcode
 
     @setOpacity(DEFAULT_OPACITY)
-    @on('mouseover', @onMouseOver, this)
-    @on('mouseout',  @onMouseOut,  this)
+
     @on('mousedown', @onMouseDown, this)
     @on('mouseup',   @onMouseUp,   this)
     @on('mousemove', @onMouseMove, this)
 
+  #
   # Reload attributes from a set of keypairs
   # Useful for form submission
   loadFromHash: (hash, options) =>
     _.extend(@, hash)
     options?.success?(@)
 
-  # TODO: What do these two even do? Why do we need bind here?
-  onMouseOver: (e) ->
-    @setOpacity.bind(this, 255)
-    point = e.canvasPoint
 
-  onMouseOut: (e) ->
-    @setOpacity.bind(this, 200)
+  onMouseOver: (e) =>
+    @setOpacity(MOUSEOVER_OPACITY)
+
+
+  onMouseOut: (e) =>
+    @setOpacity(DEFAULT_OPACITY)
 
     unless @resizing
       document.body.style.cursor = 'default'
 
+
   onMouseDown: (e) ->
     point = e.canvasPoint
-    inControl = @isPointInsideControl(point)
+    inControl = @_isPointInsideControl(point)
 
     @draggable = not inControl
 
-    @startResize(e) if inControl
+    @_startResize(e) if inControl
+
 
   onMouseMove: (e) ->
     point = e.canvasPoint
 
-    inControl = @resizing or @isPointInsideControl(point)
+    inControl = @resizing or @_isPointInsideControl(point)
     document.body.style.cursor = if inControl then 'se-resize' else 'move'
 
     if @resizing
-      @setRadius(@distanceFromCenter(point) + @_resizeOffset)
+      @setRadius(@_distanceFromCenter(point) + @_resizeOffset)
+
 
   onMouseUp: (e) ->
-    @endResize(e)
+    @_endResize(e)
+
 
   doubleClick: ->
     App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:edit', this)
 
-  startResize: (e) ->
-    @resizing = true
-    @_resizeOffset = @getRadius() - @distanceFromCenter(e.canvasPoint)
-    document.body.style.cursor = 'se-resize'
-
-  endResize: (e) ->
-    @resizing = false
-
-    point = e.canvasPoint
-    if @isPointInside(point)
-      document.body.style.cursor = 'move'
-    else if @isPointInsideControl(point)
-      document.body.style.cursor = 'se-resize'
-    else
-      document.body.style.cursor = 'default'
-
-
-  isPointInsideControl: (point) ->
-    local = @pointToLocal(point)
-
-    # Adjust origin to centre of circle
-    local.x -= @getRadius()
-    local.y -= @getRadius()
-
-    # Centre of control circle relative to parent circle's centre
-    center = @getControlCenter()
-
-    # Distance to centre of control
-    xLen = center.x - local.x
-    yLen = center.y + local.y # Y axis is inverted
-    dist = Math.sqrt((xLen * xLen) + (yLen * yLen))
-
-    return (dist < @getControlRadius())
 
   setRadius: (r) ->
     r = 16 if r < 16
@@ -111,16 +97,20 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     this
 
+
+  getRadius: ->
+    @_radius
+
+
   setControlRadius: (r) ->
     @_controlRadius = r
 
     this
 
-  getRadius: ->
-    @_radius
 
   getControlRadius: ->
     @_controlRadius
+
 
   getControlCenter: ->
     radius = @getRadius()
@@ -130,6 +120,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
       (radius - controlRadius) * Math.sin(cc.DEGREES_TO_RADIANS(135))
       (radius - controlRadius) * -Math.cos(cc.DEGREES_TO_RADIANS(135))
     )
+
 
   draw: (ctx) ->
     r = @getRadius()
@@ -164,6 +155,24 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     ctx.restore()
 
+
+  # Overridden to make hit area circular
+  isPointInside: (point) ->
+    inRect = super
+    return false unless inRect
+    return (@_distanceFromCenter(point) < @getRadius())
+
+
+  highlight: ->
+    super
+    @setOpacity(HIGHLIGHT_OPACITY)
+
+
+  unHighlight: ->
+    super
+    @setOpacity(DEFAULT_OPACITY)
+
+
   toHash: ->
     hash               = super
     hash.radius        = @_radius
@@ -174,7 +183,8 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     hash
 
-  distanceFromCenter: (point) ->
+
+  _distanceFromCenter: (point) ->
     radius = @getRadius()
     local = @pointToLocal(point)
 
@@ -182,16 +192,38 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     yLen = local.y - radius
     return Math.sqrt((xLen * xLen) + (yLen * yLen))
 
-  # Overridden to make hit area circular
-  isPointInside: (point) ->
-    inRect = super
-    return false unless inRect
-    return (@distanceFromCenter(point) < @getRadius())
 
-  highlight: ->
-    super
-    @setOpacity(230)
+  _startResize: (e) ->
+    @resizing = true
+    @_resizeOffset = @getRadius() - @_distanceFromCenter(e.canvasPoint)
+    document.body.style.cursor = 'se-resize'
 
-  unHighlight: ->
-    super
-    @setOpacity(DEFAULT_OPACITY)
+
+  _endResize: (e) ->
+    @resizing = false
+
+    point = e.canvasPoint
+    if @isPointInside(point)
+      document.body.style.cursor = 'move'
+    else if @_isPointInsideControl(point)
+      document.body.style.cursor = 'se-resize'
+    else
+      document.body.style.cursor = 'default'
+
+
+  _isPointInsideControl: (point) ->
+    local = @pointToLocal(point)
+
+    # Adjust origin to centre of circle
+    local.x -= @getRadius()
+    local.y -= @getRadius()
+
+    # Centre of control circle relative to parent circle's centre
+    center = @getControlCenter()
+
+    # Distance to centre of control
+    xLen = center.x - local.x
+    yLen = center.y + local.y # Y axis is inverted
+    dist = Math.sqrt((xLen * xLen) + (yLen * yLen))
+
+    return (dist < @getControlRadius())

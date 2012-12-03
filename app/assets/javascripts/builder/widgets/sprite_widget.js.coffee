@@ -7,6 +7,8 @@ COLOR_INNER_STROKE = 'rgba(15, 79, 168, 1)'
 COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
 LINE_WIDTH_INNER = 2
 
+##
+# A widget that has an associated image.
 class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   constructor: (options={}) ->
@@ -20,18 +22,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @disableDragging()
 
-    @on 'dblclick',     @setActiveSpriteFromClick
     @on 'clickOutside', @setAsInactive
-    @on 'mousemove',    @mouseMove
-    @on "mouseover",    @mouseOver
-    @on "mouseout",     @mouseOut
 
     @sprite = new cc.Sprite
-    @getImage()
+    @_getImage()
 
 
   constructorContinuation: (dataUrl) =>
-
     @sprite.initWithFile(dataUrl)
     @sprite.setScale(@_scale) if @_scale
     @addChild(@sprite)
@@ -47,44 +44,19 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   mouseMove: (e) ->
-    @setCursor(if @hasBorder() then 'move' else 'default')
+    super
+    @_setCursor(if @hasBorder() then 'move' else 'default')
 
     App.spriteForm.updateXYFormVals()
 
-    @on 'dblclick',     @setActiveSpriteFromClick
-    @on 'clickOutside', @setAsInactive
-
 
   mouseOut: ->
-    @setCursor('default')
+    super
+    @_setCursor('default')
 
 
-  setCursor: (cursor) ->
-    document.body.style.cursor = cursor
-
-  setAsInactive: ->
-    @hideBorder()
-    @disableDragging()
-
-    App.activeSpritesList.deselectAll()
-    App.builder.widgetLayer.clearSelectedWidget()
-    App.spriteForm.resetForm()
-
-
-  disableDragging: ->
-    @draggable = false
-
-
-  enableDragging: ->
-    @draggable = true
-
-
-  setActiveSpriteFromClick: (e) ->
-    activeSpriteWidget = App.builder.widgetLayer.widgetAtPoint(e._point)
-    return unless activeSpriteWidget
-
-    App.builder.widgetLayer.setSelectedWidget(activeSpriteWidget)
-    @setAsActive(activeSpriteWidget)
+  doubleClick: ->
+    @_setActiveSpriteFromClick()
 
 
   setAsActive: (widget = null) ->
@@ -97,6 +69,23 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @showBorder()
 
     App.spriteForm.setActiveSprite(_widget)
+
+
+  setAsInactive: ->
+    @hideBorder()
+    @disableDragging()
+
+    App.activeSpritesList.deselectAll()
+    App.builder.widgetLayer.clearSelectedWidget()
+    App.spriteForm.resetForm()
+
+
+  enableDragging: ->
+    @draggable = true
+
+
+  disableDragging: ->
+    @draggable = false
 
 
   showBorder: ->
@@ -173,16 +162,28 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     ctx.restore()
 
 
-  getImage: ->
+  _getImage: ->
     proxy = App.Lib.RemoteDomainProxy.instance()
 
-    proxy.bind 'message', @from_proxy
+    proxy.bind 'message', @_from_proxy
     proxy.send
       action: 'load'
       path: @_url
 
 
-  from_proxy: (message) =>
+  _from_proxy: (message) =>
     if message.action == 'loaded' && message.path == @_url
-      App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
+      App.Lib.RemoteDomainProxy.instance().unbind 'message', @_from_proxy
       @constructorContinuation(message.bits)
+
+
+  _setCursor: (cursor) ->
+    document.body.style.cursor = cursor
+
+
+  _setActiveSpriteFromClick: (e) ->
+    activeSpriteWidget = App.builder.widgetLayer.widgetAtPoint(e._point)
+    return unless activeSpriteWidget
+
+    App.builder.widgetLayer.setSelectedWidget(activeSpriteWidget)
+    @setAsActive(activeSpriteWidget)
