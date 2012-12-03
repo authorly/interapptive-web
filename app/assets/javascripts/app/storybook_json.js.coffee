@@ -79,7 +79,7 @@ class App.StorybookJSON
           fontType: "Arial",
           fontColor: [255, 0, 0],
           fontHighlightColor: [255, 255, 255],
-          fontSize: 28,
+          fontSize: 24,
           backgroundMusicFile:
             loop: true,
             audioFilePath: "background.mp3"
@@ -95,12 +95,13 @@ class App.StorybookJSON
 
   # keyframe === paragraph
   createParagraph: (scene, keyframe) ->
-
+    console.log "adding text (createParagraph()) to JSON"
     page = scene._page
     throw new Error("Scene has no Page") unless page?
 
     paragraph =
       delayForPanning: true
+      id: keyframe.id # FIXMMBe sure I get used and remove if not
       highlightingTimes: []
       linesOfText: []
       voiceAudioFile: ""
@@ -112,13 +113,20 @@ class App.StorybookJSON
     paragraph
 
 
-  addTextToKeyframe: (line, keyframe) ->
+  addText: (_text, keyframe) ->
+    console.log "_text.model.get('x_coord')*1.89: ", Math.round(_text.model.get('x_coord')*1.89)
+    _x = Math.round(_text.model.get('x_coord')*1.89)
     keyframe ||= App.currentKeyframe()
 
     p = keyframe._paragraph
     throw new Error("Keyframe has no Paragraph") unless p?
 
-    p.linesOfText.push(line)
+    lineOfTextJSON =
+      text:    _text._content
+      xOffset: _x
+      yOffset: _text.model.get('y_coord')
+
+    p.linesOfText.push(lineOfTextJSON)
 
 
   addWidget: (keyframe, widget) ->
@@ -162,6 +170,7 @@ class App.StorybookJSON
 
 
   addSprite: (scene, sprite) ->
+    console.log "adding sprite to JSON"
     page = scene._page
 
     page.API.CCSprites ||= []
@@ -195,11 +204,11 @@ class App.StorybookJSON
     }
     ###
 
+    App.d1 = sprite
     spriteJSON =
       image:     sprite.getUrl()
       spriteTag: nextSpriteTag
       position:  [sprite.getPosition().x, sprite.getPosition().y]
-      scale:     sprite.getScale()
 
       #actions: [32]
 

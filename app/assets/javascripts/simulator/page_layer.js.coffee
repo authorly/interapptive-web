@@ -33,6 +33,7 @@ class Sim.PageLayer extends cc.Scene
 
 
   createSprites: ->
+    console.log "About to create sprites"
     @page.sprites.forEach (spriteInfo) =>
       return unless spriteInfo
 

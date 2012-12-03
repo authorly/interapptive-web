@@ -3,36 +3,39 @@ class App.Views.KeyframeTextIndex extends Backbone.View
   texts : []
   
   initialize: ->
-    @collection.on('reset', @render, this)
     $(window).on('resize', @resize)
       
   render: ->
     @removeTexts()
-    
-    for c in @collection.models
-      text = new App.Views.TextWidget(model: c)
-      @addText(text)
+
+    for keyframeText in @collection.models
+      parentKeyframe = App.keyframesCollection.get keyframeText.get('keyframe_id')
+
+      keyframeText = new App.Views.TextWidget(model: keyframeText)
+      @addText(keyframeText)
+      App.storybookJSON.addText(keyframeText, parentKeyframe)
+
     @resize()
     
   removeTexts: ->
     #remove text widgets, clean up
     for t in @texts
       $(t.el).remove()
-      #TODO may need to clean up the text object itself with leave() or something similar 
+      #TODO may need to clean up the text object itself with leave() or something similar
     @texts.length = 0
-    
+
   deselectTexts: ->
     for t in @texts
       t.deselect()
-      
+
   updateText: ->
     @collection.fetch success: =>
       @render()
-      
+
   addText: (text) ->
     $(@el).append(text.render().el)
     @texts.push(text)
-  
+
   editText: (text) ->
     # turn off previously edited text and re-enable dragging
     for t in @texts
