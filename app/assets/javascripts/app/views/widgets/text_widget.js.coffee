@@ -65,15 +65,10 @@ class App.Views.TextWidget extends Backbone.View
   text: (_text) ->
     if _text then $(@el).html(_text) else $(@el).html()
 
-  setPosition: (_top, _left) ->
+  setPosition: (_bottom, _left) ->
     $(@el).css
-      'top' : _top
+      'bottom' : _bottom
       'left' : _left
-
-  setPositionFromCocosCoords: (_x, _y) ->
-    $(@el).css
-      'top' : @cocosYtoTop(_y)
-      'left' : @cocosXtoLeft(_x)
 
   enableEditing: ->
     $(@el).attr("contenteditable", "true")
@@ -132,8 +127,6 @@ class App.Views.TextWidget extends Backbone.View
 
   #drag stop
   drop: =>
-    # x_coord and y_coord are translated to cocos2d x, y starting at bottom left
-    @constrainToCanvas()
     @save()
 
   startDrag: =>
@@ -146,9 +139,6 @@ class App.Views.TextWidget extends Backbone.View
       "color" : _fontToolbar.fontColor()
       "font-weight" : _fontToolbar.fontWeight()
       "text-align" : _fontToolbar.textAlign()
-
-    @constrainToCanvas()
-
     @save()
 
   onClick: (e) ->
@@ -181,83 +171,7 @@ class App.Views.TextWidget extends Backbone.View
   deselect: ->
     $(@el).blur()
    
-  top: (_top) ->
-    if _top then $(@el).css(top: _top) else $(@el).offset().top
-    
-  left: (_left) ->
-    if _left then $(@el).css(left: _left) else $(@el).offset().left
-    
-  x: (_x) ->
-    if _x then @_x = _x else @_x
-  
-  y: (_y) ->
-    if _y then @_y = _y else @_y
-    
-  width: (_w) ->
-    if _w then @_w = $(@el).width(_w) else $(@el).width()
-  
-  height: (_h) ->
-    if _h then @_h = $(@el).height(_h) else $(@el).height()
-  
-  
-  constrainToCanvas: ->
-    c = @canvas
-    cTop = c.offset().top
-    cLeft = c.offset().left
-    cWidth = c.width()
-    cHeight = c.height()
-    
-    #too high
-    if @top() < cTop
-      # TODO make more exact
-      @top(cTop)
-      
-    #too far left
-    if @left() < cLeft
-      @left(cLeft)
-      
-    #too low
-    if @top() > (cTop + cHeight)
-      newTop = (cTop + cHeight) - @height()
-      @top(newTop) 
-      
-    #too far right
-    if @left() > (cLeft + cWidth) - @width()
-      newLeft = (cLeft + cWidth) - @width()
-      @left(newLeft)
-    #animate to new positions
-      
-  cocosYtoTop: (_cocosY) ->
-    _canvas = @getCanvas()
-    _top = _canvas.offset().top + _canvas.height() - _cocosY
-    _top
-    
-  cocosXtoLeft: (_cocosX) ->
-    _canvas = @getCanvas()
-    _left = _canvas.offset().left + _cocosX
-    
-  top2cocosY: (_top) ->
-    _canvas = @getCanvas()
-    _y = _canvas.height() - (@top() - _canvas.offset().top)
-    _y
-    
-  left2cocosX: (_left) ->
-    _canvas = @getCanvas()
-    _x = @left() - _canvas.offset().left
-    _x
-    
-  cocosX: ->
-    @left2cocosX @left()
-    
-  cocosY: ->
-    @top2cocosY @top()
-    
-  getCocosPosition: ->
-    {
-      x: @cocosX()
-      y: @cocosY()
-    }
-    
+
   getCanvas: ->
     $('#builder-canvas')
     

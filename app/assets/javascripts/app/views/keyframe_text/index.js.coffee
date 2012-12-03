@@ -53,7 +53,7 @@ class App.Views.KeyframeTextIndex extends Backbone.View
         text = new App.Views.TextWidget(model: keyframeText)
         text.fromToolbar = true
         App.currentKeyframeText(keyframeText)
-        text.setPositionFromCocosCoords(400*Math.random(), 350*Math.random())
+        text.setPosition(400*Math.random(), 350*Math.random())
         text.save()
         @addText(text)
         App.editTextWidget(text)
@@ -64,12 +64,11 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     # position texts
     for t in @texts
       @positionText(t)
-      t.constrainToCanvas()
     
   #position text based on canvas position, solving for cocos2 canvas x,y
   positionText: (text) ->
     canvas = $('#builder-canvas')
-    text.setPositionFromCocosCoords(text.model.get('x_coord'), text.model.get('y_coord'))
+    text.setPosition(text.model.get('x_coord'), text.model.get('y_coord'))
     
   leave: ->
     #TODO remove events

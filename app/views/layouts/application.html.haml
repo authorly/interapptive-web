@@ -33,13 +33,12 @@
           .row
             .span2.navbar.sidebar
               #scene-list
-            .device_container
+            .canvas-column
               - flash.each do |name, msg|
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
                   %a.close{"data-dismiss" => "alert"}
                   = msg
-              %div
-                %div#cleanUp{:contenteditable => "true"}
+              %div#canvas-wrapper
                 %canvas{id: 'builder-canvas', width: 1024, height: 768}
                   %p Your browser doesn't support the technology required to run this application.
             #active-sprites-window.widget-window.span2
@@ -50,6 +49,8 @@
     %footer.navbar.navbar-fixed-bottom
       %footer
         #keyframe-list
+    / Aids w/ clipboard clean-up on paste
+    %div#cleanUp{:contenteditable => "true"}
 
     = render 'assets/upload_modal'
     = render 'storybooks/index_modal'

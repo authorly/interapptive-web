@@ -67,7 +67,7 @@ button#export {
 
 
 // Tablet & Builder
-.device_container {
+.canvas-column {
   background-image: asset-url('tablet.png');
   background-repeat: no-repeat;
   background-position: center;
@@ -78,10 +78,17 @@ button#export {
   overflow: visible;
 }
 
-canvas#builder-canvas {
+#canvas-wrapper {
   .scale(0.59);
 
+  position: relative;
   margin: -94px 0 0 0;
+  border: 1px solid blue;
+  width: 1024px;
+  height: 768px;
+}
+
+canvas#builder-canvas {
   overflow: hidden;
 }
 
