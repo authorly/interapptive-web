@@ -14,6 +14,7 @@
     describe('next available position', function() {
       beforeEach(function() {
         this.collection = new App.Collections.KeyframesCollection;
+        sinon.stub(this.collection, 'announceAnimation');
         return this.keyframe = new App.Models.Keyframe;
       });
       it('should be null for an animationkeyframe', function() {
@@ -52,6 +53,7 @@
         beforeEach(function() {
           this.server = sinon.fakeServer.create();
           this.collection = new App.Collections.KeyframesCollection;
+          sinon.stub(this.collection, 'announceAnimation');
           this.collection.add({
             title: '0',
             position: 0
