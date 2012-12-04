@@ -41,6 +41,8 @@ class App.Views.ActiveSpritesList extends Backbone.View
     view = new App.Views.SpriteWidget(widget: widget)
     $(@el).prepend(view.render().el)
 
+    widget.on 'change', (what) ->
+      view.render() if what == 'url'
     @sortListByZOrder()
 
 

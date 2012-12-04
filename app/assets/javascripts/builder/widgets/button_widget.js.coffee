@@ -28,11 +28,11 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
   imagesSelected: (values) =>
     if @_url != values.baseUrl
       @_url = values.baseUrl
-      @trigger('change', '_url')
+      @trigger('change', 'url')
 
     if @_selectedUrl != values.tappedUrl
       @_selectedUrl = values.tappedUrl
-      @trigger('change', '_selectedUrl')
+      @trigger('change', 'selectedUrl')
 
     @_getImage()
 
