@@ -8,13 +8,11 @@
 class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
 
   constructor: (options={}) ->
-    unless options.url?
-      options.url = "/assets/sprites/#{options.name}.png"
+    @_name = options.name
+    @_selectedUrl = options.selected_url
+    options.url = "/assets/sprites/#{@_name}.png" unless options.url?
 
     super
-
-    @_name = name
-    @_selectedUrl = options.selected_url
 
     view = new App.Views.ButtonWidgetImagesSelector
       collection: App.imagesCollection
@@ -44,5 +42,6 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
   toHash: ->
     hash = super
     hash.selected_url = @_selectedUrl
+    hash.name = @_name
     hash
 
