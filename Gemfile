@@ -16,8 +16,6 @@ gem 'mini_magick'
 gem 'param_protected', '~> 4.0.0'
 gem 'jquery-fileupload-rails', :git => 'git://github.com/whitmanc/jquery-fileupload-rails.git'
 gem 'unicorn'
-gem 'therubyracer'
-gem 'jasmine'
 gem 'barista'
 gem 'ttfunk'
 gem 'resque'
@@ -33,6 +31,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'haml_coffee_assets'
   gem 'execjs'
+  gem 'therubyracer'
 end
 
 group :development, :test do
@@ -62,4 +61,5 @@ group :test do
   gem 'ffaker'
   gem 'forgery'
   gem 'launchy'
+  gem 'jasmine'
 end
