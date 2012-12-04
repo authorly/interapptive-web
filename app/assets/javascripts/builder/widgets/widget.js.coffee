@@ -37,9 +37,6 @@ class App.Builder.Widgets.Widget extends cc.Node
       @id = NEXT_WIDGET_ID
       NEXT_WIDGET_ID += 1
 
-    console.log "NEXT_WIDGET_ID", NEXT_WIDGET_ID
-
-
 
     @on("mouseover", @mouseOver)
     @on("mouseout", @mouseOut)

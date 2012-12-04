@@ -32,10 +32,6 @@ class App.Views.SceneIndex extends Backbone.View
       wait: true
       success: (model, response) =>
         # Sometimes, this gives us the initial scene back. Why?!
-        console.group "Scene creation"
-        console.dir model
-        console.dir response
-        console.groupEnd()
 
         @collection.add model 
         service = new App.Services.SwitchSceneService(App.currentScene(), model)

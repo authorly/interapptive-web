@@ -89,14 +89,11 @@ class App.Views.ActiveSpritesList extends Backbone.View
     widgetId = widgetEl.siblings('.sprite-image').data('widget-id')
 
     widget = App.builder.widgetLayer.getWidgetById(widgetId)
-    App.keyframeList().collection.each (keyframe) =>
-      keyframe.removeWidget(widget)
-      @removeWidget(widget, true)
+    App.builder.widgetLayer.removeWidget(widget)
+    App.currentScene().removeWidget(widget)
+    @removeWidget(widget)
 
-  removeWidget: (widget, skipKeyframeRemoval) =>
-    # TODO: This method is used to actually remove a widget, so don't use it to
-    # remove a widget from the listing only.
-    App.currentKeyframe().removeWidget(widget) unless skipKeyframeRemoval
+  removeWidget: (widget) =>
     @removeListEntry(widget)
     App.spriteForm.resetForm()
 

@@ -40,7 +40,6 @@ class App.Views.ToolbarView extends Backbone.View
     App.builder.widgetLayer.addWidget(widget)
     scene.addWidget(widget)
     widget.on('change', -> scene.updateWidget(widget))
-    console.log widget
 
 
   addScene: ->
@@ -110,7 +109,6 @@ class App.Views.ToolbarView extends Backbone.View
         zOrder:   $('#active-sprites-window ul li').size() || 1
       )
 
-      console.log "Adding widget", widget.id
       widget.setPosition(new cc.Point(300, 400))
       @_addSceneWidget(widget)
 
