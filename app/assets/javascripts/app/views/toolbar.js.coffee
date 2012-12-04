@@ -103,13 +103,12 @@ class App.Views.ToolbarView extends Backbone.View
       @_addWidget(widget)
 
       App.modalWithView().hide()
-      view.off('image_select', imageSelected)
+      view.off('select', imageSelected)
 
     view = new App.Views.SpriteIndex(collection: App.imagesCollection)
-    view.on('image_select', imageSelected)
+    view.on('select', imageSelected)
 
     App.modalWithView(view: view).show()
-    view.fetchImages()
 
 
   showPreview: ->
