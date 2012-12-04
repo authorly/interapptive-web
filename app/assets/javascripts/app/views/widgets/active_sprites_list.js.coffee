@@ -17,7 +17,7 @@ class App.Views.ActiveSpritesList extends Backbone.View
 
   declareAddSpriteListener: ->
     $('#active-sprites-window .icon-plus').on 'click', ->
-      $('#toolbar li ul li.add-image').click()
+      App.vent.trigger 'add:sprite'
 
 
   setActiveSpriteWidget: (e) ->
@@ -96,7 +96,6 @@ class App.Views.ActiveSpritesList extends Backbone.View
 
   removeAll: ->
     $("#active-sprites-window ul").empty()
-
 
 
   deselectAll: ->
