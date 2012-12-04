@@ -65,19 +65,25 @@ class App.Views.TextWidget extends Backbone.View
   text: (_text) ->
     if _text then $(@el).html(_text) else $(@el).html()
 
+
   setPosition: (_bottom, _left) ->
+    _bottomOffsetScaled = (_bottom * 0.59) + 'px'
+    _leftOffsetScaled =   (_left * 0.59) + 'px'
     $(@el).css
-      'bottom' : _bottom
-      'left' : _left
+      'bottom': _bottomOffsetScaled
+      'left':   _leftOffsetScaled
+
 
   enableEditing: ->
-    $(@el).attr("contenteditable", "true")
-    $(@el).focus()
+    $(@el).
+      attr("contenteditable", "true").
+      focus()
 
     if @fromToolbar then $(@el).selectText()
     @fromToolbar = null
 
     @disableDragging()
+
 
   disableEditing: ->
     App.fontToolbar.active = false
@@ -165,8 +171,6 @@ class App.Views.TextWidget extends Backbone.View
       $(@el).data 'before', $(@el).html()
       @save()
 
-    # text may have grown outside of canvas
-    @constrainToCanvas()
 
   deselect: ->
     $(@el).blur()
@@ -174,21 +178,32 @@ class App.Views.TextWidget extends Backbone.View
 
   getCanvas: ->
     $('#builder-canvas')
+
+  bottom: (_bottom) ->
+    _offsetBottom =
+      $(@el).getOffsets
+        directions:     ['bottom']
+        offsetOfParent: true
+
+    if _bottom then $(@el).css(bottom: _bottom) else _offsetBottom
+
+  left: (_left) ->
+    _offsetLeft =
+      $(@el).getOffsets
+        directions:     ['left']
+        offsetOfParent: true
+
+    if _left then $(@el).css(left: _left) else _offsetLeft
     
   save: ->
     attr =
-      content : @content()
-      face : @fontFace()
-      size : @fontSize()
-      color : @fontColor()
-      weight : @fontWeight()
-      align : @textAlign()
-      x_coord : @cocosX()
-      y_coord : @cocosY()
+      content: @content()
+      face:    @fontFace()
+      size:    @fontSize()
+      color:   @fontColor()
+      weight:  @fontWeight()
+      align:   @textAlign()
+      x_coord: Math.round @left()
+      y_coord: Math.round @bottom()
     @model.set attr
-    @model.save
-      success: ->
-        
-  rect: ->
-    # probably not needed since this is no longer cocos2d
-
+    @model.save()

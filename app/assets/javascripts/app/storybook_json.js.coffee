@@ -114,7 +114,6 @@ class App.StorybookJSON
 
 
   addText: (_text, keyframe) ->
-    console.log "_text.model.get('x_coord')*1.89: ", Math.round(_text.model.get('x_coord')*1.89)
     _x = Math.round(_text.model.get('x_coord')*1.89)
     keyframe ||= App.currentKeyframe()
 
