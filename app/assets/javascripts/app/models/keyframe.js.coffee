@@ -49,7 +49,8 @@ class App.Models.Keyframe extends Backbone.Model
 
   removeWidget: (widget) ->
     widgets = @get('widgets')
-    return unless widgets?
+    return false unless widgets?
+    return false if widget instanceof App.Builder.Widgets.ButtonWidget
 
     for w, i in widgets
       if w.id == widget.id
@@ -58,6 +59,7 @@ class App.Models.Keyframe extends Backbone.Model
         break
 
     App.builder.widgetLayer.removeWidget(widget)
+    true
 
 
   widgetsChanged: =>

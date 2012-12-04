@@ -89,11 +89,9 @@ class App.Views.ActiveSpritesList extends Backbone.View
     widgetId = widgetEl.siblings('.sprite-image').data('widget-id')
 
     widget = App.builder.widgetLayer.getWidgetById(widgetId)
-    App.currentKeyframe().removeWidget(widget)
-
-    widgetEl.parent().remove()
-
-    App.spriteForm.resetForm()
+    if App.currentKeyframe().removeWidget(widget)
+      widgetEl.parent().remove()
+      App.spriteForm.resetForm()
 
 
   removeAll: ->
