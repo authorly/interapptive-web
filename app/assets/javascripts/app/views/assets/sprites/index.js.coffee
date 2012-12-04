@@ -54,9 +54,9 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
     })
 
 
-  restoreMetaData: ->
+  restoreMetaData: =>
     @$el.find('.use-image').addClass('disabled')
-    $children = $('tbody.files tr').addClass('image-row').removeClass('selected')
-    $children.each (idx, tr) =>
+    children = @$('tbody.files tr').addClass('image-row').removeClass('selected')
+    children.each (idx, tr) =>
       $tr = $(tr)
       $tr.attr('data-id', $tr.find('td').first().data('id'))

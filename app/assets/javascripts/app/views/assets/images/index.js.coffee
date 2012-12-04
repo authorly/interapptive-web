@@ -19,7 +19,7 @@ class App.Views.ImageIndex extends Backbone.View
 
 
   render: ->
-    @$el.html @template()
+    @$el.html @template(options: @options)
     @collection.each @appendImage
 
     @delegateEvents() # patch for re-delegating events when the view is lost

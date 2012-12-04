@@ -14,12 +14,35 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
     super
 
     @_name = name
-    @_selected_url = options.selected_url
+    @_selectedUrl = options.selected_url
 
-    view = new App.Views.ButtonWidgetImagesSelector(widget: @)
+    view = new App.Views.ButtonWidgetImagesSelector
+      collection: App.imagesCollection
+      widget: @
+    view.on 'selected', @imagesSelected
     @selector = new App.Views.Modal(view: view)
-    @selector.render()
 
 
   doubleClick: =>
     @selector.show()
+
+
+  imagesSelected: (values) =>
+    if @_url != values.baseUrl
+      @_url = values.baseUrl
+      @trigger('change', '_url')
+
+    if @_selectedUrl != values.tappedUrl
+      @_selectedUrl = values.tappedUrl
+      @trigger('change', '_selectedUrl')
+
+    @_getImage()
+
+    @selector.hide()
+
+
+  toHash: ->
+    hash = super
+    hash.selected_url = @_selectedUrl
+    hash
+
