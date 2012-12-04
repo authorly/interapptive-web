@@ -48,7 +48,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   isLoaded: ->
-    @sprite._texture.complete
+    size = @sprite.getContentSize()
+    @sprite._texture.complete && (size.width + size.height > 0)
 
 
   mouseMove: (e) ->
