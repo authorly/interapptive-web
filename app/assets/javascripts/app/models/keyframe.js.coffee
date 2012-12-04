@@ -10,7 +10,7 @@ class App.Models.Keyframe extends Backbone.Model
     base + 'keyframes/' + @get('id') + '.json'
 
   initialize: ->
-    @on 'change:widgets', => @save()
+    @on 'change:widgets', @save
     @initializePreview()
 
 
@@ -29,10 +29,7 @@ class App.Models.Keyframe extends Backbone.Model
     widgets = @get('widgets') || []
     widgets.push(widget.toHash())
     @set('widgets', widgets)
-    if !(widget instanceof App.Builder.Widgets.SpriteWidget) or widget.isLoaded()
-      @widgetsChanged()
-    else
-      widget.on 'loaded', => setTimeout @widgetsChanged, 0
+    @widgetsChanged()
 
   updateWidget: (widget) =>
     widgets = @get('widgets') || []

@@ -7,7 +7,7 @@ class App.Models.Scene extends Backbone.Model
     base + 'scenes/' + App.currentScene().get('id') + '.json'
 
   initialize: ->
-    @on 'change:widgets', => @save()
+    @on 'change:widgets', @save
     @on 'change:preview_image_id', @save
 
   setPreviewFrom: (keyframe) ->

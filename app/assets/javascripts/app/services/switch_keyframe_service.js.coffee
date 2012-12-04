@@ -72,7 +72,7 @@ class App.Services.SwitchKeyframeService
 
   updateWidget: (widget) =>
     widget.setScale(widget.getScale())
-    widget.setPosition(widget.getPosition())
+    widget.setPosition(widget.getPosition(), false)
     App.currentScene().updateWidget(widget)
 
   # Constructs a new widget from a hash of options.
