@@ -35,18 +35,23 @@ class App.Services.SwitchKeyframeService
 
   updateSceneWidgets: =>
     return unless (widgets = @currentScene.get('widgets'))?
+    widgetsChanged = false
 
     for widgetOpts in widgets
       if @widgetLayer.hasWidget(widgetOpts) and widgetOpts.retentionMutability
         widget = @loadWidgetFromOpts(widgetOpts)
         @updateWidgetKeyframeDatum(widget, @newKeyframe) unless widget.hasKeyframeDatum(@newKeyframe)
-        @updateWidget(widget)
+        res = @updateWidget(widget)
+        widgetsChanged = widgetsChanged || res
 
       else if @widgetLayer.hasWidget(widgetOpts)
 
       else
         widget = @newWidgetFromOpts(widgetOpts)
         @addWidget(widget, @currentScene)
+
+    if widgetsChanged
+      @currentScene.widgetsChanged()
 
 
   removeWidget: (widgetOpts) =>
@@ -73,7 +78,7 @@ class App.Services.SwitchKeyframeService
   updateWidget: (widget) =>
     widget.setScale(widget.getScale())
     widget.setPosition(widget.getPosition(), false)
-    App.currentScene().updateWidget(widget)
+    return App.currentScene().updateWidget(widget, true)
 
   # Constructs a new widget from a hash of options.
   newWidgetFromOpts: (opts) =>

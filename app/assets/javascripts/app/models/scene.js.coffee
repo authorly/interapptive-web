@@ -48,17 +48,20 @@ class App.Models.Scene extends Backbone.Model
     else
       widget.on 'loaded', => setTimeout @widgetsChanged, 0
 
-  updateWidget: (widget) =>
+  updateWidget: (widget, skipTrigger = false) =>
     widgets = @get('widgets') || []
 
     for w, i in widgets
       if widget.id is w.id
         widgets[i] = widget.toHash()
-        @widgetsChanged()
-        return
+        @widgetsChanged() unless skipTrigger
+        # Yes, we updated the widget.
+        return true
 
     # If we make it this far, the widget doesn't exist, so let's add it
     @addWidget(widget)
+    # No, we didn't update a widget. Addwidget calls its own widgetsChanged.
+    false
 
   removeWidget: (widget, skipWidgetLayerRemoval) =>
     return unless (widgets = @get('widgets'))?
@@ -73,7 +76,7 @@ class App.Models.Scene extends Backbone.Model
     @widgetsChanged()
 
   widgetsChanged: =>
-    @trigger 'change:widgets', @
+    @trigger 'change:widgets'
 
 
 class App.Collections.ScenesCollection extends Backbone.Collection
