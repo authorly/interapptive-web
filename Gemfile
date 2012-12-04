@@ -26,7 +26,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'haml_coffee_assets'
   gem 'execjs'
-  gem 'therubyracer'
+  gem 'therubyracer', '~> 0.10.2'
   gem 'jquery-rails'
   gem 'haml'
   gem 'rails-backbone'

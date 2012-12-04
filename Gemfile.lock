@@ -361,7 +361,7 @@ DEPENDENCIES
   rspec-rails
   shoulda
   shoulda-matchers
-  therubyracer
+  therubyracer (~> 0.10.2)
   ttfunk
   uglifier (>= 1.0.3)
   unicorn
