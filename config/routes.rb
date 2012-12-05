@@ -5,16 +5,16 @@ Interapptive::Application.routes.draw do
 
   get 'assets/index', :as => :assets
 
-  get  'users/sign_up'   => 'users#new',             :as => 'sign_up'
-  get  'users/sign_in'   => 'user_sessions#new',     :as => 'sign_in'
-  post 'users/sign_in'   => 'user_sessions#create',  :as => ''
+  get  'users/sign_up'  => 'users#new',             :as => 'sign_up'
+  get  'users/sign_in'  => 'user_sessions#new',     :as => 'sign_in'
+  post 'users/sign_in'  => 'user_sessions#create',  :as => ''
   match 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
   get  'users/settings'  => 'users#edit'
 
-  resources :users, :except => [:new, :edit, :index] do 
+  resources :users, :except => [:new, :edit, :index] do
     resources :fonts
   end
-  
+
   get  'password_reset'      => 'password_resets#new',   :as => :new_password_reset
   get  'password_resets/:id' => 'password_resets#edit',  :as => :edit_password_reset
   put  'password_resets/:id' => 'password_resets#update'
@@ -68,6 +68,11 @@ Interapptive::Application.routes.draw do
 
   resources :keyframes do
     resources :texts, :controller => :keyframe_texts
+    resource  :audio, :controller => :keyframe_audios
+  end
+
+  resources :texts, :controller => :keyframe_texts do
+    collection { post :reorder }
   end
 
   resource :zencoder, :controller => :zencoder, :only => :create

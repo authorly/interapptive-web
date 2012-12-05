@@ -1,0 +1,9 @@
+# Notice trailing /
+development:
+  aligner_path: '/full/path/to/Aligner/'
+
+test:
+  aligner_path: '/full/path/to/Aligner/'
+
+production:
+  aligner_path: '/full/path/to/Aligner/'

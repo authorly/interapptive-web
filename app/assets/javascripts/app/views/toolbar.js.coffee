@@ -13,6 +13,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .sounds'             : 'showSoundLibrary'
     'click .actions'            : 'showActionLibrary'
     'click .scene-options'      : 'showSceneOptions'
+    'click .sync-audio'   : 'showAlignAudioModal'
 
 
   initialize: ->
@@ -120,6 +121,11 @@ class App.Views.ToolbarView extends Backbone.View
 
     App.modalWithView(view: view).show()
     view.fetchImages()
+
+  showAlignAudioModal: ->
+    view = new App.Views.AudioIndex(App.currentKeyframe())
+    App.modalWithView(view: view).show()
+    view.initAlignAudioModalInteractions()
 
 
   showPreview: ->

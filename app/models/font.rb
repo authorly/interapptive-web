@@ -13,5 +13,5 @@ class Font < Asset
         'created_at'       =>   created_at
     }
   end
-  
+
 end

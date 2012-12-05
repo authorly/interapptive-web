@@ -30,9 +30,9 @@ window.App =
     @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('body')
 
     @contentModal =   new App.Views.Modal className: 'content-modal'
-    @fileMenu     =   new App.Views.FileMenuView  el: $('#file-menu')
-    @toolbar      =   new App.Views.ToolbarView   el: $('#toolbar')
-
+    @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
+    @toolbar =        new App.Views.ToolbarView  el: $('#toolbar')
+   
     @activeSpritesList = new App.Views.ActiveSpritesList()
     @activeSpritesWindow(@activeSpritesList)
 
@@ -125,7 +125,6 @@ window.App =
       )
 
       @scenesCollection.on('add', (scene) =>
-        console.log "add scene"
         @storybookJSON.createPage(scene)
       )
 
@@ -141,7 +140,6 @@ window.App =
       )
 
       @keyframesCollection.on('add', (keyframe) =>
-        console.log "keyframe added, keyframe: ", keyframe
         scene = @currentScene()
         @storybookJSON.createParagraph(scene, keyframe)
       )
@@ -173,6 +171,11 @@ window.App =
 
   keyframeList: (list) ->
     if list then @keyframeListView = list else @keyframeListView
+
+
+  # Intentionally removed?
+  # imageList: (list) ->
+  #   if list then @imageListView = list else @imageListView
 
 
   keyframeTextList: (list) ->
@@ -244,7 +247,7 @@ $ ->
 
   # TODO: Move to Toolbar manager or something similar
   $("ul#toolbar li ul li").click ->
-    excluded = '.actions, .scene, .keyframe, .animation-keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .touch-zones, .preview, .scene-options'
+    excluded = '.actions, .scene, .keyframe, .animation-keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .sync-audio, .touch-zones, .preview, .scene-options'
 
     toolbar_modal.modal "hide"
 

@@ -2,16 +2,20 @@
 #= require hamlcoffee
 #= require jquery
 #= require jquery_ujs
+#= require ./vendor/jquery-ui-1.8.23.js
 #= require twitter/bootstrap
 #= require bootstrap
 #= require underscore
 #= require backbone
 #= require jquery-fileupload
 
+#= require ./vendor/popcorn-complete.min.js
+#= require ./vendor/jquery.countdown.js
 #= require ./vendor/backbone-forms.js
 #= require ./vendor/backbone-forms-list.min.js
 #= require ./vendor/base64.js
 #= require ./vendor/canvas2image.js
+#= require ./vendor/jquery.audioupload.js
 #= require ./vendor/form-templates/bootstrap
 #= require ./vendor/form-editors/currency
 #= require ./vendor/form-editors/buttons

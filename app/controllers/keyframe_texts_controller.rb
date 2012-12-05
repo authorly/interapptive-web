@@ -3,7 +3,7 @@ class KeyframeTextsController < ApplicationController
 
   def index
     @keyframe = Keyframe.find params[:keyframe_id]
-    @keyframe_texts = @keyframe.texts
+    @keyframe_texts = @keyframe.texts.order(:sync_order)
 
     respond_to do |format|
       format.html
@@ -90,6 +90,14 @@ class KeyframeTextsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to keyframe_path(@keyframe) }
       format.json { head :no_content }
+    end
+  end
+
+  def reorder
+    keyframe_texts = KeyframeText.reorder(params[:keyframetext])
+
+    respond_to do |format|
+      format.json { head :not_content }
     end
   end
 end

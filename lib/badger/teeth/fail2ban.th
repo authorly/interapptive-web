@@ -1,0 +1,5 @@
+#add_fail2ban() {
+#  fail2ban-client status && return 0
+#  yum -y install fail2ban
+#  fail2ban-client start
+#}

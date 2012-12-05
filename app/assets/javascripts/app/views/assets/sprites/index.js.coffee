@@ -11,6 +11,8 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
   selectImage: ->
     @trigger('image_select', @image)
 
+  # REFACTOR: WA: Following works as a proxy to fillTable().
+  # Remove the delegation.
   fetchImages: ->
     @fillTable()
 

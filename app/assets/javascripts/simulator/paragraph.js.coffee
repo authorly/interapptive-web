@@ -12,6 +12,7 @@ class Sim.Paragraph extends cc.Node
     @labels = []
 
   createLabels: ->
+    console.log "hit paragraph::createLabels()"
     # FIXME -- loading new fonts?
     @fontName = 'Arial' # FIXME Forced to arial for now
 
@@ -55,6 +56,7 @@ class Sim.Paragraph extends cc.Node
 
   onEnter: ->
     super
+    console.log "paragraph::onEnter"
     @createLabels() if @labels.length == 0
 
   highlightWord: (index) ->

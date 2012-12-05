@@ -1,6 +1,20 @@
 class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
+  initialize: ->
+    @texts = new App.Collections.KeyframeTextsCollection []
+    @_getTexts()
+    @on 'change:widgets', @save
+    @initializePreview()
+
+
+  _getTexts: ->
+    unless @isNew()
+      @texts.url = "/keyframes/#{@get('id')}/texts.json"
+      @texts.fetch()
+    @texts
+
+
   url: ->
     # must go through the scenesCollection, because the relationship
     # between the scene model and its keyframes is not stored anywhere
@@ -9,11 +23,7 @@ class App.Models.Keyframe extends Backbone.Model
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
 
-  initialize: ->
-    @on 'change:widgets', @save
-    @initializePreview()
-
-
+    
   initializePreview: ->
     attributes = App.Lib.AttributesHelper.filterByPrefix @attributes, 'preview_image_'
     @preview = new App.Models.Preview(attributes)
@@ -22,15 +32,18 @@ class App.Models.Keyframe extends Backbone.Model
       @set preview_image_id: @preview.id
       @save()
 
+      
   hasWidget: (widget) ->
     _.any((@get('widgets') || []), (w) -> widget.id is w.id)
 
+    
   addWidget: (widget) ->
     widgets = @get('widgets') || []
     widgets.push(widget.toHash())
     @set('widgets', widgets)
     @widgetsChanged()
 
+    
   updateWidget: (widget) =>
     widgets = @get('widgets') || []
 
@@ -56,7 +69,7 @@ class App.Models.Keyframe extends Backbone.Model
 
     App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
     @widgetsChanged()
-
+    
 
   widgetsChanged: =>
     @trigger 'change:widgets', @

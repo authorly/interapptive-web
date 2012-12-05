@@ -1,0 +1,3 @@
+- for word in @keyframe_text.get('content').split(" ")
+  %span
+    = word

@@ -23,8 +23,8 @@
 @import 'widget_windows.css.less';
 @import 'sprite_form.css.less';
 @import 'active_sprites_list.css.less';
-@import 'actions.css.less';
 @import 'touch_zones.css.less';
+@import 'audio_alignment.css.less';
 
 
 html, body{
@@ -55,6 +55,15 @@ html, body{
 .container {
   background-color: transparent !important;
 }
+
+.grab {
+  cursor: url(https://mail.google.com/mail/images/2/openhand.cur) 8 8, move;
+}
+
+.grabbing {
+  cursor: url(https://mail.google.com/mail/images/2/closedhand.cur) 8 8, move;
+}
+
 
 //
 // TODO: Tem. style, remove me when JSON export button is replaced w/ simulator!
@@ -95,6 +104,9 @@ canvas#builder-canvas {
   background-image: asset-url('loading.gif');
   background-repeat: no-repeat;
   background-position: center;
+  height: 16px;
+  width: 16px;
+  diplay: inline-block;
 }
 
 .loading-book {

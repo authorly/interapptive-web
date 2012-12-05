@@ -156,9 +156,9 @@ ActiveRecord::Schema.define(:version => 20121204010318) do
     t.date     "published_on"
     t.decimal  "price",                :precision => 8, :scale => 2
     t.string   "record_enabled"
-    t.string   "icon"
     t.string   "android_or_ios",                                     :default => "both"
     t.string   "tablet_or_phone",                                    :default => "both"
+    t.string   "icon"
     t.string   "compiled_application"
   end
 
