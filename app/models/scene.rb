@@ -26,6 +26,8 @@ class Scene < ActiveRecord::Base
   belongs_to :background_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound'
 
+  serialize :widgets
+
   after_create :create_keyframe
 
   def as_json(options)

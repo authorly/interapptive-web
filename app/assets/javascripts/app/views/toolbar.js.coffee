@@ -35,6 +35,12 @@ class App.Views.ToolbarView extends Backbone.View
     keyframe.addWidget(widget)
     widget.on('change', -> keyframe.updateWidget(widget))
 
+  _addSceneWidget: (widget) ->
+    scene = App.currentScene()
+    App.builder.widgetLayer.addWidget(widget)
+    scene.addWidget(widget)
+    widget.on('change', -> scene.updateWidget(widget))
+
 
   addScene: ->
     # XXX in the `App.scenesCollection.models collection`, the addded scene
@@ -101,11 +107,10 @@ class App.Views.ToolbarView extends Backbone.View
         url:      sprite.get('url'),
         filename: sprite.get('name'),
         zOrder:   $('#active-sprites-window ul li').size() || 1
-        scale:    1.0
       )
 
       widget.setPosition(new cc.Point(300, 400))
-      @_addWidget(widget)
+      @_addSceneWidget(widget)
 
       App.modalWithView().hide()
       view.off('image_select', imageSelected)

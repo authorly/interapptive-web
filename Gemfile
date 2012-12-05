@@ -16,10 +16,16 @@ gem 'mini_magick'
 gem 'param_protected', '~> 4.0.0'
 gem 'jquery-fileupload-rails', :git => 'git://github.com/whitmanc/jquery-fileupload-rails.git'
 gem 'unicorn'
-gem 'therubyracer'
+gem 'therubyracer', '~> 0.10.2'
 gem 'jasmine'
 gem 'barista'
 gem 'ttfunk'
+gem 'resque'
+gem 'god'
+
+group :osx do
+  gem 'betabuilder', :git => 'git://github.com/waseem/betabuilder.git', :branch => 'no_deploy'
+end
 
 group :assets do
   gem 'less-rails'

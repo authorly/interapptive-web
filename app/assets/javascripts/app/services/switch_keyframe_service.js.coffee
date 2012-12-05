@@ -1,65 +1,85 @@
 class App.Services.SwitchKeyframeService
-  widgetsToAdd:       []
-  widgetsToRemove:    []
-  widgetsToKeep:      []
 
   constructor: (@oldKeyframe, @newKeyframe) ->
     @widgetLayer = App.builder.widgetLayer
     @paletteDispatcher = App.Dispatchers.PaletteDispatcher
+    @currentScene = App.currentScene()
 
   # Dispatches the service.
   execute: =>
-    # Don't do nothin' if we're clicking on the same keyframe.
     return if @oldKeyframe is @newKeyframe
 
-    # Update the tracked currently active keyframe.
-    # This needs to happen early because positioning in touch widgets requires 
-    # the current keyframe.
     App.currentKeyframe @newKeyframe
+    App.fontToolbar.onCloseClick.call(App.fontToolbar)
+    @switchActiveKeyframeElement(@newKeyframe)
 
-    @widgetLayer.clearWidgets()
-    @copyWidgets()
-    @doAddition()
+    #@paletteDispatcher.trigger('keyframe:change')
+    @updateKeyframeWidgets()
+    @updateSceneWidgets()
+    @updateTextWidgets()
 
-    @paletteDispatcher.trigger('keyframe:change', @widgetsToAdd)
 
-    # Because keyframe texts are a bit peculiar
-    App.updateKeyframeText()
 
-    # Switch keyframes
+  switchActiveKeyframeElement: (keyframe) =>
     App.keyframeList().switchActiveKeyframe(@newKeyframe)
 
-  # Performs all operations needed to add the widgets that belong to this 
-  # keyframe.
-  doAddition: =>
-    # TODO: Kill rejection? Why is this here?
-    @widgetsToAdd = _.reject(@newKeyframe.get('widgets'), (w) -> w.type is "TextWidget")
-    @widgetsToAdd = _.map(@widgetsToAdd, (widgetOpts) => @newWidgetFromOpts(widgetOpts))
 
-    for widget in @widgetsToAdd
-      # Add widget to layer if it doesn't exist there. For new widgets.
-      unless @widgetLayer.hasWidget(widget)
-        @widgetLayer.addWidget(widget, true)
-        widget.on('change', @newKeyframe.updateWidget.bind(@newKeyframe, widget))
+  updateKeyframeWidgets: =>
+    if (removals = @oldKeyframe?.get('widgets'))?
+      # TODO: Kill rejection? This is legacy and a bit strange
+      removals = _.reject(removals, (w) -> w.type is "TextWidget")
+      @removeWidget(widget) for widget in removals
 
-  # This copies widgets from the last keyframe to the new keyframe if necessary.
-  copyWidgets: =>
+    if (additions = @newKeyframe.get('widgets'))?
+      @addWidget(@newWidgetFromOpts(widgetOpts), @newKeyframe) for widgetOpts in additions
+
+
+  updateSceneWidgets: =>
+    return unless (widgets = @currentScene.get('widgets'))?
+    widgetsChanged = false
+
+    for widgetOpts in widgets
+      if @widgetLayer.hasWidget(widgetOpts) and widgetOpts.retentionMutability
+        widget = @loadWidgetFromOpts(widgetOpts)
+        @updateWidgetKeyframeDatum(widget, @newKeyframe) unless widget.hasKeyframeDatum(@newKeyframe)
+        res = @updateWidget(widget)
+        widgetsChanged = widgetsChanged || res
+
+      else if @widgetLayer.hasWidget(widgetOpts)
+
+      else
+        widget = @newWidgetFromOpts(widgetOpts)
+        @addWidget(widget, @currentScene)
+
+    if widgetsChanged
+      @currentScene.widgetsChanged()
+
+
+  removeWidget: (widgetOpts) =>
+    widget = @newWidgetFromOpts(widgetOpts)
+    @widgetLayer.removeWidget(widget)
+    App.activeSpritesList.removeListEntry(widget)
+    App.spriteForm.resetForm()
+
+
+  addWidget: (widget, owner) =>
+    @widgetLayer.addWidget(widget)
+    widget.on('change', owner.updateWidget.bind(owner, widget))
+
+
+  updateTextWidgets: =>
+    App.updateKeyframeText()
+
+
+  updateWidgetKeyframeDatum: (widget, keyframe) =>
     keyframeCollection = App.keyframeList().collection
+    widget.copyKeyframeDatum(keyframe, keyframeCollection.at(keyframeCollection.length - 2))
 
-    # If there's more than one keyframe (i.e. we're creating one manually)
-    if keyframeCollection?.length > 1
-      copySource = keyframeCollection.at(keyframeCollection.length - 2)
 
-      # If there are widgets in the copysource and not the new keyframe
-      if (widgets = copySource.get('widgets'))? and !@newKeyframe.get('widgets')
-        for widgetOpts in widgets
-          # Instantiate widget so it gets added to new keyframes if it has a
-          # scene-based retention hookup
-          widget = @newWidgetFromOpts(widgetOpts)
-
-          # If it's keyframe-independent, copy an independence hash to it
-          if widgetOpts.retentionMutability
-            widget.copyKeyframe(@newKeyframe, copySource) 
+  updateWidget: (widget) =>
+    widget.setScale(widget.getScale())
+    widget.setPosition(widget.getPosition(), false)
+    return App.currentScene().updateWidget(widget, true)
 
   # Constructs a new widget from a hash of options.
   newWidgetFromOpts: (opts) =>
@@ -67,14 +87,13 @@ class App.Services.SwitchKeyframeService
     throw new Error("Unable to find widget class #{klass}") unless klass
     klass.newFromHash(opts)
 
+  loadWidgetFromOpts: (opts) =>
+    @widgetLayer.widgetAtId(opts.id)
+
   # For debugging changes in keyframe. Shows a snapshot of the following info:
-  # - How many widgets are added (including ones kept from the old keyframe)
-  # - Those kept from the old keyframe
-  # - Those removed in the transition
   # - The number of widgets in the old keyframe
   # - The number of widgets in the new keyframe
   showStats: (msg) =>
     console.group msg
-    console.log "Add", @widgetsToAdd.length, "Keep", @widgetsToKeep.length, "Remove", @widgetsToRemove.length
     console.log "OKF", @oldKeyframe?.get('widgets')?.length, "NKF", @newKeyframe?.get('widgets')?.length
     console.groupEnd()

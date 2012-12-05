@@ -10,7 +10,7 @@ class App.Models.Keyframe extends Backbone.Model
     base + 'keyframes/' + @get('id') + '.json'
 
   initialize: ->
-    @on 'change:widgets', => @save()
+    @on 'change:widgets', @save
     @initializePreview()
 
 
@@ -29,39 +29,19 @@ class App.Models.Keyframe extends Backbone.Model
     widgets = @get('widgets') || []
     widgets.push(widget.toHash())
     @set('widgets', widgets)
-    if !(widget instanceof App.Builder.Widgets.SpriteWidget) or widget.isLoaded()
-      @widgetsChanged()
-    else
-      widget.on 'loaded', => setTimeout @widgetsChanged, 0
+    @widgetsChanged()
 
-  # TODO: This is not the most performant thing, but not much else will suffice
-  # because we don't use a centralized store for our widgets.
-  # Basically, what happens is this: when we duplicate widget 1 in a keyframe 
-  # because it has scene-wide retention, we create a new entry belonging to 
-  # the new keyframe. These two widgets, while they share a common id, are not 
-  # identical because they have different parents. When we update a widget, it 
-  # will notify its keyframe of the update through this method, and change 
-  # its serialized version of the hash to match our changes. But if we switch 
-  # keyframes, the same widget ID will hold its original position because it 
-  # is not actually affected by the change (being stored under its parent).
-  # Thus, we have to propagate our changes across the active keyframes.
-  # Because we can have a ton of widgets and a ton of keyframes, this can 
-  # slow right down. 
-  updateWidget: (widget) ->
-    App.keyframeList().collection.each (keyframe) ->
-      widgetChanged = false
-      widgets = keyframe.get('widgets') || []
+  updateWidget: (widget) =>
+    widgets = @get('widgets') || []
 
-      for w, i in widgets
-        if widget.id is w.id
-          widgets[i] = widget.toHash()
-          keyframe.widgetsChanged()
-          widgetChanged = true
-          break
+    for w, i in widgets
+      if widget.id is w.id
+        widgets[i] = widget.toHash()
+        @widgetsChanged()
+        return
 
-      unless widgetChanged
-        # Didn't update a widget, so we'll add it
-        keyframe.addWidget(widget)
+    # Didn't update a widget, so we'll add it
+    @addWidget(widget)
 
 
   removeWidget: (widget, skipWidgetLayerRemoval) ->

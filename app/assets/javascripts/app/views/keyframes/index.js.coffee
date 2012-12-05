@@ -61,6 +61,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     switcher = new App.Services.SwitchKeyframeService(App.currentKeyframe(), keyframe)
     switcher.execute()
 
+  # TODO: Rename this to switchActiveKeyframeElement
   switchActiveKeyframe: (keyframe) =>
     @$('li').removeClass('active').filter("[data-id=#{keyframe.id}]").addClass('active')
 
@@ -72,7 +73,10 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     if confirm(message)
       keyframe.destroy
-        success: => @collection.remove(keyframe)
+        success: => 
+          @collection.remove(keyframe)
+          # Load widget up and remove its hash
+          # App.currentScene().get('widgets').each
 
 
   removeKeyframe: (keyframe) =>

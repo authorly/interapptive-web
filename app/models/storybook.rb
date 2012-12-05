@@ -1,5 +1,6 @@
 class Storybook < ActiveRecord::Base
   mount_uploader :icon, AppIconUploader
+  mount_uploader :compiled_application, CompiledApplicationUploader
 
   belongs_to :user
   has_many :scenes, :dependent => :destroy
@@ -14,6 +15,10 @@ class Storybook < ActiveRecord::Base
   after_create :create_scene
 
   validates_presence_of :title
+
+  def enqueue_for_compilation(json)
+    Resque.enqueue(CompilationQueue, self.id, json)
+  end
 
   private
 
