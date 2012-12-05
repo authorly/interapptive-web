@@ -61,7 +61,7 @@ class App.Views.FontToolbar extends Backbone.View
   attachToTextWidget: (textWidget) ->
     @_textWidget(textWidget)
     @setDefaults()
-    @setPosition(@_textWidget().top(), @_textWidget().left())
+    @setPosition(@_textWidget().bottom(), @_textWidget().left())
     @show()
 
   _textWidget: (textWidget) ->

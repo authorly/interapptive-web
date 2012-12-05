@@ -34,6 +34,12 @@
 @assetUploaderModalWidth:  830px;
 @assetUploaderModalHeight: 500px;
 
+.scale (@amount: 1.0) {
+  -webkit-transform:scale(@amount);
+  -moz-transform:scale(@amount);
+  -o-transform:scale(@amount);
+}
+
 .gradient (@start: #333, @end: #222) {
   background-image: -webkit-linear-gradient(top, @start, @end);
   background-image: -o-linear-gradient(top, @start, @end);

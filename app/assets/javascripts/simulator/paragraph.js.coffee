@@ -4,20 +4,18 @@ class Sim.Paragraph extends cc.Node
 
   fontColor: '#000'
   fontHighlightColor: '#f00'
-  fontSize: 20
-  fontName: 'Helvetica'
+  fontSize: 25
+  fontName: 'Arial'
 
   constructor: (info) ->
     @info = info
     @labels = []
 
   createLabels: ->
-    console.log "hit paragraph::createLabels()"
     # FIXME -- loading new fonts?
     @fontName = 'Arial' # FIXME Forced to arial for now
 
     @info.linesOfText.forEach (line) =>
-      console.log "HIT"
       xOffset = line.xOffset
       yOffset = line.yOffset
 

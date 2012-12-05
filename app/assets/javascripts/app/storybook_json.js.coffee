@@ -79,7 +79,7 @@ class App.StorybookJSON
           fontType: "Arial",
           fontColor: [255, 0, 0],
           fontHighlightColor: [255, 255, 255],
-          fontSize: 28,
+          fontSize: 24,
           backgroundMusicFile:
             loop: true,
             audioFilePath: "background.mp3"
@@ -95,12 +95,12 @@ class App.StorybookJSON
 
   # keyframe === paragraph
   createParagraph: (scene, keyframe) ->
+
     page = scene._page
     throw new Error("Scene has no Page") unless page?
 
     paragraph =
       delayForPanning: true
-      id: keyframe.id # FIXMMBe sure I get used and remove if not
       highlightingTimes: []
       linesOfText: []
       voiceAudioFile: ""
@@ -118,12 +118,12 @@ class App.StorybookJSON
     p = keyframe._paragraph
     throw new Error("Keyframe has no Paragraph") unless p?
 
-    lineOfTextJSON =
+    _model = _text.model
+    _lineOfTextJSON =
       text:    _text._content
-      xOffset: _text.getCocosPosition().x
-      yOffset: _text.getCocosPosition().y
-
-    p.linesOfText.push(lineOfTextJSON)
+      xOffset: _model.get('x_coord')
+      yOffset: _model.get('y_coord')
+    p.linesOfText.push(_lineOfTextJSON)
 
 
   addWidget: (keyframe, widget) ->
@@ -148,15 +148,6 @@ class App.StorybookJSON
   updateWidget: (keyframe, widget, property) ->
     p = keyframe._paragraph
     throw new Error("Keyframe has no Paragraph") unless p?
-
-    # FIXME Need a more generic way to add widgets to the JSON
-    #if widget instanceof App.Views.TextWidget
-      #if widget._line
-        # FIXME solve for multiple line widget.text()
-        #widget._line.text    = widget.text()
-        #widget._line.xOffset = Math.round(widget.x())
-        #widget._line.yOffset = Math.round(widget.y())
-
 
   removeTextFromKeyframe: () ->
     throw new Error("Not implemented yet")

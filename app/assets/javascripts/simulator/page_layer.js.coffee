@@ -34,7 +34,6 @@ class Sim.PageLayer extends cc.Scene
 
   createSprites: ->
     @page.sprites.forEach (spriteInfo) =>
-      console.log "sprite hit"
       return unless spriteInfo
 
       if /^https?:\/\//.test(spriteInfo.image)
