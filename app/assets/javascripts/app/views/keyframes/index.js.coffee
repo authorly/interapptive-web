@@ -21,7 +21,6 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   render: ->
-    console.log "----- about to render a keyframe -----"
     $(@el).html('')
 
     if @collection.length > 0

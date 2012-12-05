@@ -1,10 +1,11 @@
 class App.Views.KeyframeTextIndex extends Backbone.View
+  texts: []
 
-  texts : []
-  
+
   initialize: ->
     $(window).on('resize', @resize)
-      
+
+
   render: ->
     @removeTexts()
 
@@ -16,7 +17,8 @@ class App.Views.KeyframeTextIndex extends Backbone.View
       App.storybookJSON.addText(keyframeText, parentKeyframe)
 
     @resize()
-    
+
+
   removeTexts: ->
     #remove text widgets, clean up
     for t in @texts
@@ -24,17 +26,21 @@ class App.Views.KeyframeTextIndex extends Backbone.View
       #TODO may need to clean up the text object itself with leave() or something similar
     @texts.length = 0
 
+
   deselectTexts: ->
     for t in @texts
       t.deselect()
+
 
   updateText: ->
     @collection.fetch success: =>
       @render()
 
+
   addText: (text) ->
     $(@el).append(text.render().el)
     @texts.push(text)
+
 
   editText: (text) ->
     # turn off previously edited text and re-enable dragging
@@ -42,7 +48,8 @@ class App.Views.KeyframeTextIndex extends Backbone.View
       if t isnt text
         t.disableEditing()
         t.enableDragging()
-      
+
+
   createText: (str) ->
     attributes =
       keyframe_id : App.currentKeyframe().get('id')
@@ -64,12 +71,9 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     # position texts
     for t in @texts
       @positionText(t)
-    
+
+
   #position text based on canvas position, solving for cocos2 canvas x,y
   positionText: (text) ->
     canvas = $('#builder-canvas')
     text.setPosition(text.model.get('x_coord'), text.model.get('y_coord'))
-    
-  leave: ->
-    #TODO remove events
-    

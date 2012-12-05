@@ -25,7 +25,7 @@ window.App =
 
     @sceneList         new App.Views.SceneIndex        collection: @scenesCollection
     @keyframeList      new App.Views.KeyframeIndex     collection: @keyframesCollection
-    @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('')
+    @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('#canvas-wrapper')
 
     @contentModal =   new App.Views.Modal className: 'content-modal'
     @fileMenu     =   new App.Views.FileMenuView  el: $('#file-menu')

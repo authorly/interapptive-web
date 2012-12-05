@@ -114,18 +114,17 @@ class App.StorybookJSON
 
 
   addText: (_text, keyframe) ->
-    _x = Math.round(_text.model.get('x_coord')*1.89)
     keyframe ||= App.currentKeyframe()
 
     p = keyframe._paragraph
     throw new Error("Keyframe has no Paragraph") unless p?
 
-    lineOfTextJSON =
+    _model = _text.model
+    _lineOfTextJSON =
       text:    _text._content
-      xOffset: _x
-      yOffset: _text.model.get('y_coord')
-
-    p.linesOfText.push(lineOfTextJSON)
+      xOffset: _model.get('x_coord')
+      yOffset: _model.get('y_coord')
+    p.linesOfText.push(_lineOfTextJSON)
 
 
   addWidget: (keyframe, widget) ->
@@ -150,15 +149,6 @@ class App.StorybookJSON
   updateWidget: (keyframe, widget, property) ->
     p = keyframe._paragraph
     throw new Error("Keyframe has no Paragraph") unless p?
-
-    # FIXME Need a more generic way to add widgets to the JSON
-    #if widget instanceof App.Views.TextWidget
-      #if widget._line
-        # FIXME solve for multiple line widget.text()
-        #widget._line.text    = widget.text()
-        #widget._line.xOffset = Math.round(widget.x())
-        #widget._line.yOffset = Math.round(widget.y())
-
 
   removeTextFromKeyframe: () ->
     throw new Error("Not implemented yet")
