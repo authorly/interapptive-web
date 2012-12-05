@@ -114,10 +114,12 @@ class ScenesController < ApplicationController
   def sort
     params[:scenes].each_with_index do |scene, index|
       _scene = Scene.find(scene['id'])
-      _scene.position = index+1
-      _scene.save!
+      _scene.position = index + 1
+      _scene.save(:validate => false)
     end
 
-    render :json => {:status => :ok}
+    respond_to do |format|
+      format.json { head :no_content }
+    end
   end
 end

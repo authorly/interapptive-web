@@ -83,7 +83,6 @@ class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
 
   initialize: (models, options) ->
-
     if options
       this.storybook_id = options.storybook_id
 
@@ -95,3 +94,16 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
   comparator: (scene) ->
     scene.get 'position'
+
+  reposition: (new_positions, el) ->
+    $.ajax
+      contentType:"application/json"
+      dataType: 'json'
+      type: 'POST'
+      data: new_positions
+      url: "#{@ordinalUpdateUrl(App.currentScene().get('id'))}"
+      success: =>
+        $(el).sortable('refresh')
+        @fetch
+         success: =>
+           @trigger('reset', this)
