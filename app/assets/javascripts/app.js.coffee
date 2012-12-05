@@ -128,6 +128,10 @@ window.App =
         @storybookJSON.createPage(scene)
       )
 
+      @scenesCollection.on('remove', (scene) =>
+        @storybookJSON.destroyPage(scene)
+      )
+
       @keyframesCollection.on('reset', (keyframes) =>
         scene = @currentScene()
 
@@ -142,6 +146,11 @@ window.App =
       @keyframesCollection.on('add', (keyframe) =>
         scene = @currentScene()
         @storybookJSON.createParagraph(scene, keyframe)
+      )
+
+      @keyframesCollection.on('remove', (keyframe) =>
+        scene = @currentScene()
+        @storybookJSON.removeParagraph(scene, keyframe)
       )
 
       @storybook = storybook
