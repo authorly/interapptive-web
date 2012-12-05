@@ -16,8 +16,8 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on('remove', @removeKeyframe)
     @collection.on('change:widgets', @updateKeyframePreview, @)
     @collection.on('change:preview', @keyframePreviewChanged, @)
-    @collection.on('  :positions', @render, @)
-    @collection.on('reset add remove    ', @updateScenePreview, @)
+    @collection.on('change:positions', @render, @)
+    @collection.on('reset add remove change:positions', @updateScenePreview, @)
 
 
   render: ->
