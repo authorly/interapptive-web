@@ -11,7 +11,6 @@ class App.Models.Keyframe extends Backbone.Model
     # must go through the scenesCollection, because the relationship
     # between the scene model and its keyframes is not stored anywhere
     @scene = App.scenesCollection.get @get('scene_id')
-    @on 'change:widgets', => @save()
     @initializePreview()
 
 
@@ -20,8 +19,7 @@ class App.Models.Keyframe extends Backbone.Model
     @preview = new App.Models.Preview(attributes)
     @preview.on 'change:data_url', => @trigger 'change:preview', @
     @preview.on 'change:id', =>
-      @set preview_image_id: @preview.id
-      @save()
+      @save preview_image_id: @preview.id
 
 
   addWidget: (widget) ->
@@ -64,30 +62,32 @@ class App.Models.Keyframe extends Backbone.Model
 
   widgetsChanged: =>
     @trigger 'change:widgets', @
+    @save()
 
 
-  save: ->
-    if arguments.length > 0
-      @_actualSave.apply @, arguments
-    else
-      # Use `debounce` to actually save only once if save is called
-      # rapid sequence (as it happens when multiple change events are fired
-      # asynchronously, from different sources, but close to one another in time)
-      # To take advantage of this, use `set` to change the attributes, followed by
-      # `save` # without parameters
-      @_debouncedSave().apply @
+  # save: =>
+    # console.log 'save', @get('preview_image_id')
+    # if arguments.length > 0
+      # @_actualSave.apply @, arguments
+    # else
+      # # Use `debounce` to actually save only once if save is called
+      # # rapid sequence (as it happens when multiple change events are fired
+      # # asynchronously, from different sources, but close to one another in time)
+      # # To take advantage of this, use `set` to change the attributes, followed by
+      # # `save` # without parameters
+      # @_debouncedSave().apply @
 
 
   canAddText: ->
     !@isAnimation() && @scene.canAddText()
 
 
-  _debouncedSave: ->
-    @_deboucedSaveMemoized ||= _.debounce @_actualSave, 500
+  # _debouncedSave: ->
+    # @_deboucedSaveMemoized ||= _.debounce @_actualSave, 500
 
 
-  _actualSave: =>
-    Backbone.Model.prototype.save.apply @, arguments
+  # _actualSave: =>
+    # Backbone.Model.prototype.save.apply @, arguments
 
 
   isAnimation: ->
