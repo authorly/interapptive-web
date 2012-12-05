@@ -13,4 +13,8 @@ class App.Collections.KeyframeTextsCollection extends Backbone.Collection
     "/keyframes/#{App.currentKeyframe().get('id')}/texts.json"
 
   pluckContent: ->
-    _.map(@models, (text) -> text.get('content'))
+    _.map(@models, (text) ->
+      text:       text.get('content')
+      xOffset:    text.get('x_coord')
+      yOffset:    text.get('y_coord')
+    )
