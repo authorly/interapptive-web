@@ -36,6 +36,7 @@ class App.Views.AudioIndex extends Backbone.View
     App.currentKeyframe().save {},
       success: =>
        App.modalWithView().hide()
+       App.currentKeyframe().trigger('audiosync')
 
 
 
@@ -81,7 +82,9 @@ class App.Views.AudioIndex extends Backbone.View
 
   uploadDidFinish: (file) =>
     App.currentKeyframe().set('content_highlight_times', null)
-    App.currentKeyframe().save()
+    App.currentKeyframe().save {},
+      success: =>
+       App.currentKeyframe().trigger('audiosync')
 
     audioFile = JSON.parse(file)
     @setAudioPlayerSrc(audioFile.url)

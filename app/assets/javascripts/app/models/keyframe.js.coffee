@@ -5,8 +5,11 @@ class App.Models.Keyframe extends Backbone.Model
     @texts = new App.Collections.KeyframeTextsCollection []
     @_getTexts()
     @on 'change:widgets', @save
+    @on 'audiosync', @updateStorybookParagraph, @
     @initializePreview()
 
+  updateStorybookParagraph: ->
+    App.storybookJSON.updateParagraph(@)
 
   _getTexts: ->
     unless @isNew()

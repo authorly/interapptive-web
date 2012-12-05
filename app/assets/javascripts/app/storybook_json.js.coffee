@@ -110,9 +110,9 @@ class App.StorybookJSON
 
     paragraph =
       delayForPanning: true
-      highlightingTimes: []
-      linesOfText: []
-      voiceAudioFile: ""
+      highlightingTimes: _.map(keyframe.get('content_highlight_times'), (num) -> Number(num))
+      linesOfText: keyframe.texts.pluckContent()
+      voiceAudioFile: keyframe.get('url')
 
     page.Page.text.paragraphs.push(paragraph)
 
@@ -124,6 +124,11 @@ class App.StorybookJSON
     page = scene._page
     throw new Error("Scene has no Page") unless page?
     page.Page.text.paragraphs.splice(page.Page.text.paragraphs.indexOf(keyframe._paragraph), 1)
+
+  updateParagraph: (keyframe) ->
+    keyframe._paragraph.highlightingTimes = _.map(keyframe.get('content_highlight_times'), (num) -> Number(num))
+    keyframe._paragraph.linesOfText       = keyframe.texts.pluckContent()
+    keyframe._paragraph.voiceAudioFile    = keyframe.get('url')
 
   addText: (_text, keyframe) ->
     keyframe ||= App.currentKeyframe()

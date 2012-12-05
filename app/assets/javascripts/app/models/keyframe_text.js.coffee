@@ -11,3 +11,6 @@ class App.Collections.KeyframeTextsCollection extends Backbone.Collection
 
   url: ->
     "/keyframes/#{App.currentKeyframe().get('id')}/texts.json"
+
+  pluckContent: ->
+    _.map(@models, (text) -> text.get('content'))

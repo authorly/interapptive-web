@@ -80,7 +80,9 @@ class Keyframe < ActiveRecord::Base
   
   def as_json(options)
     super.merge({
-      preview_image_url: preview_image.try(:image).try(:url)
+      :preview_image_url       => preview_image.try(:image).try(:url),
+      :content_highlight_times => content_highlight_times.to_s.split(','), # TODO: Serialize it
+      :url                     => audio_url
     })
   end
 
