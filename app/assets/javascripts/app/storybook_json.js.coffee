@@ -59,7 +59,6 @@ class App.StorybookJSON
 
 
   resetPages: ->
-    # FIXME needs to delete scene._page
     @document.Pages = []
 
 

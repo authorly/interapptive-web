@@ -33,7 +33,7 @@ class App.Views.SceneIndex extends Backbone.View
       success: (model, response) =>
         # Sometimes, this gives us the initial scene back. Why?!
 
-        @collection.add model 
+        @collection.add model
         service = new App.Services.SwitchSceneService(App.currentScene(), model)
         service.execute()
         @scrollToTop()
@@ -87,15 +87,7 @@ class App.Views.SceneIndex extends Backbone.View
       axis: 'y'
       update: =>
         @renumberScenes()
-
-        $.ajax
-          contentType:"application/json"
-          dataType: 'json'
-          type: 'POST'
-          data: JSON.stringify(@scenePositionsJSONArray())
-          url: "#{@collection.ordinalUpdateUrl(App.currentScene().get('id'))}"
-          complete: =>
-            $(@el).sortable('refresh')
+        @collection.reposition(JSON.stringify(@scenePositionsJSONArray()), @el)
 
   scenePositionsJSONArray: ->
     JSON = {}
