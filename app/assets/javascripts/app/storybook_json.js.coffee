@@ -4,7 +4,7 @@ class App.StorybookJSON
 
   constructor: ->
 
-    # The object athat will become the JSON string
+    # The object that will become the JSON string
     @document =
       Configurations:
         pageFlipSound:
@@ -92,10 +92,20 @@ class App.StorybookJSON
 
     page
 
+  destroyPage: (scene) ->
+    page = scene._page
+    throw new Error("Scene has no Page") unless page?
+    @document.Pages.splice(@document.Pages.indexOf(page), 1)
+    _updatePageNumbers(page.settings.number)
+
+  _updatePageNumbers: (from_number) ->
+    _.each(@document.Pages, (page) ->
+      if page.Page.settings.number > from_number
+        page.Page.settings.number = page.Page.settings.number - from_number
+    )
 
   # keyframe === paragraph
   createParagraph: (scene, keyframe) ->
-
     page = scene._page
     throw new Error("Scene has no Page") unless page?
 
@@ -111,6 +121,10 @@ class App.StorybookJSON
 
     paragraph
 
+  removeParagraph: (scene, keyframe) ->
+    page = scene._page
+    throw new Error("Scene has no Page") unless page?
+    page.Page.text.paragraphs.splice(page.Page.text.paragraphs.indexOf(keyframe._paragraph), 1)
 
   addText: (_text, keyframe) ->
     keyframe ||= App.currentKeyframe()
