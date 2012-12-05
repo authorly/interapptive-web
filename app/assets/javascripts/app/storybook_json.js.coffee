@@ -82,7 +82,7 @@ class App.StorybookJSON
           fontSize: 24,
           backgroundMusicFile:
             loop: true,
-            audioFilePath: "background.mp3"
+            audioFilePath: scene.get('sound_url')
 
         text:
           paragraphs: []
@@ -230,7 +230,6 @@ class App.StorybookJSON
         spriteJSON.scale = sprite.getScale()
 
         break
-
 
   removeSprite: (sprite) ->
     # TODO
