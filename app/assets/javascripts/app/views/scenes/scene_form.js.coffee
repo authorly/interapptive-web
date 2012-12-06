@@ -24,7 +24,6 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
             err  if value < 0
           ]
 
-
   getModel: ->
     @model = App.currentScene()
     

@@ -48,5 +48,5 @@ class App.Views.ImageIndex extends Backbone.View
         @node.backgroundSprite.setPosition cc.ccp(500, 300)
         @node.addChild @node.backgroundSprite
 
-        App.storybookJSON.addSprite(App.currentScene(), @node.backgroundSprite)
+        App.storybookJSON.addSpriteWidget(App.currentScene(), @node.backgroundSprite)
         App.modalWithView().hide()

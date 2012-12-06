@@ -111,6 +111,7 @@ class App.Views.ToolbarView extends Backbone.View
       )
 
       widget.setPosition(new cc.Point(300, 400))
+      App.storybookJSON.addSpriteWidget(App.currentScene(), widget)
       @_addSceneWidget(widget)
 
       App.modalWithView().hide()

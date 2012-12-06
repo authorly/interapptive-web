@@ -7,8 +7,16 @@ class App.Models.Scene extends Backbone.Model
     base + 'scenes/' + App.currentScene().get('id') + '.json'
 
   initialize: ->
+    @keyframes = new App.Collections.KeyframesCollection []
+    @_getKeyframes()
     @on 'change:widgets', @save
     @on 'change:preview_image_id', @save
+
+  _getKeyframes: ->
+    unless @isNew()
+      @keyframes.url = "/scenes/#{@get('id')}/keyframes.json"
+      @keyframes.fetch()
+    @keyframes
 
   setPreviewFrom: (keyframe) ->
     preview = keyframe.preview

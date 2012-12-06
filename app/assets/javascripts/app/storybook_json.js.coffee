@@ -82,13 +82,13 @@ class App.StorybookJSON
           backgroundMusicFile:
             loop: true,
             audioFilePath: scene.get('sound_url')
-
         text:
           paragraphs: []
 
     scene._page = page
+    @createWidgetsFor(scene)
+    @createParagraphsFor(scene)
     @document.Pages.push(page)
-
     page
 
   destroyPage: (scene) ->
@@ -102,6 +102,20 @@ class App.StorybookJSON
       if page.Page.settings.number > from_number
         page.Page.settings.number = page.Page.settings.number - from_number
     )
+
+  createParagraphsFor: (scene) ->
+    scene.keyframes.fetch
+      success: =>
+        scene.keyframes.each (keyframe) =>
+          @createParagraph(scene, keyframe)
+
+  createWidgetsFor: (scene) ->
+    _.each(scene.get('widgets'), (widget) =>
+      @createWidgetFor(scene, widget)
+    )
+
+  createWidgetFor: (scene, widget) ->
+    this['add' + widget.type].call(this, scene, new App.Builder.Widgets[widget.type](widget))
 
   # keyframe === paragraph
   createParagraph: (scene, keyframe) ->
@@ -175,7 +189,7 @@ class App.StorybookJSON
     @document.Pages[pageNumber]
 
 
-  addSprite: (scene, sprite) ->
+  addSpriteWidget: (scene, sprite) ->
     page = scene._page
 
     page.API.CCSprites ||= []

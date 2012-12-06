@@ -29,10 +29,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     super
 
     @_keyframeData = options.keyframeData ? App.keyframeList().collection.reduce(((hsh, keyframe) => hsh["keyframe_" + keyframe.get('id')] = {scale: 1.0, x: 300, y: 400}; hsh), {})
-    @_url       = options.url
-    @_filename  = options.filename
-    @_zOrder    = options.zOrder
-    @_border    = false
+    @_url        = options.url
+    @_filename   = options.filename
+    @_zOrder     = options.zOrder
+    @_border     = false
 
     @disableDragging()
 
@@ -53,19 +53,21 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @setContentSize(@sprite.getContentSize())
     @trigger('loaded')
 
-    # TODO: MOVE ME TO KEYFRA
-    # ^
-    # That is what Chris wrote. I'm not sure what he was trying to do with this.
-    # I would imagine he wants to move it somewhere, but he didn't finish his 
-    # thought, and without this, the spriteForm breaks.
-    # Hence, I have uncommented it.
-    #
-    # - Rob
-    App.storybookJSON.addSprite(App.currentScene(), @)
-
   currentKeyframe: =>
-    id = App.currentKeyframe().get('id')
-    @_keyframeData["keyframe_#{id}"]
+    rex = /^keyframe_(\d+)$/ # Super Hack. Ideally it SpriteWidget should save canonical keyframe id instead of a string like 'keyframe_12'
+    keyframe_id = null
+
+    if _.any(_.keys(@_keyframeData), (key) ->
+      md = key.match(rex)
+      if md
+        keyframe_id = md[0]
+        return true
+      return false
+    )
+      @_keyframeData[keyframe_id]
+    else
+      id = App.currentKeyframe().get('id')
+      @_keyframeData["keyframe_#{id}"]
 
   hasKeyframeDatum: (keyframe) =>
     "keyframe_#{keyframe.get('id')}" in _.keys(@_keyframeData)
