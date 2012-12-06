@@ -47,11 +47,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   constructorContinuation: (dataUrl) =>
-    @sprite.initWithFile(dataUrl)
-    @setScale(@currentKeyframe().scale) if @currentKeyframe()?.scale
-    @addChild(@sprite)
-    @setContentSize(@sprite.getContentSize())
-    @trigger('loaded')
+    cc.TextureCache.sharedTextureCache().addImageAsync @_url, this, =>
+      @sprite.initWithFile(@_url)
+      @setScale(@currentKeyframe().scale) if @currentKeyframe()?.scale
+      @addChild(@sprite)
+      @setContentSize(@sprite.getContentSize())
+      @trigger('loaded')
 
     # TODO: MOVE ME TO KEYFRA
     # ^
