@@ -1,4 +1,4 @@
-class MoveTextStylesFromKeyframeTextToKeyframe < ActiveRecord::Migration
+class MoveTextStylesFromKeyframeTextToScene < ActiveRecord::Migration
   def up
     remove_column :keyframe_texts, :face
     remove_column :keyframe_texts, :size
