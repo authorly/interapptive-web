@@ -1,4 +1,10 @@
 NEXT_WIDGET_ID = 1
+COLOR_OUTER_STROKE = 'rgba(15, 79, 168, 0.8)'
+COLOR_OUTER_FILL = 'rgba(174, 204, 246, 0.66)'
+LINE_WIDTH_OUTER = 12
+COLOR_INNER_STROKE = 'rgba(15, 79, 168, 1)'
+COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
+LINE_WIDTH_INNER = 2
 
 class App.Builder.Widgets.Widget extends cc.Node
 
@@ -11,10 +17,7 @@ class App.Builder.Widgets.Widget extends cc.Node
   @newFromHash: (hash) ->
 
     widget = new this(hash)
-
-    # TODO: Sprite should be created w/ this zOrder, move to SpriteWidget
     if hash.zOrder then widget._zOrder = hash.zOrder
-
     widget.setPosition(new cc.Point(hash.position.x, hash.position.y)) if hash.position
 
     if hash.id >= NEXT_WIDGET_ID
@@ -44,12 +47,12 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   mouseOver: ->
     @_mouse_over = true
-    
+
   mouseOut: ->
     @_mouse_over = false
-    
+
   mouseMove: ->
-  
+
   doubleClick: ->
 
   isHighlighted: ->
@@ -112,12 +115,15 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     local = @convertToNodeSpace(point)
 
-    r = @rect()
-    r.origin = new cc.Point(0, 0)
+    @r = @rect()
+    @r.origin = new cc.Point(0, 0)
+
+    local.x = local.x
+    local.y = local.y
 
     # Fix bug in cocos2d-html5; It doesn't convert to local space correctly
-    local.x += @parent.getAnchorPoint().x * r.size.width
-    local.y += @parent.getAnchorPoint().y * r.size.height
+    local.x += @parent.getAnchorPoint().x * @r.size.width
+    local.y += @parent.getAnchorPoint().y * @r.size.height
 
     local
 
@@ -126,6 +132,9 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     r = @rect()
     r.origin = new cc.Point(0, 0)
+
+    r.size.width =r.size.width*0.59
+    r.size.width =r.size.height*0.59
 
     return cc.Rect.CCRectContainsPoint(r, local)
 
@@ -137,4 +146,3 @@ class App.Builder.Widgets.Widget extends cc.Node
   removeFromStorybook: (storybook) =>
 
   addToStorybook: (storybook) =>
-

@@ -5,6 +5,7 @@ class App.Services.SwitchKeyframeService
     @paletteDispatcher = App.Dispatchers.PaletteDispatcher
     @currentScene = App.currentScene()
 
+
   # Dispatches the service.
   execute: =>
     return if @oldKeyframe is @newKeyframe
@@ -17,7 +18,6 @@ class App.Services.SwitchKeyframeService
     @updateKeyframeWidgets()
     @updateSceneWidgets()
     @updateTextWidgets()
-
 
 
   switchActiveKeyframeElement: (keyframe) =>
@@ -81,14 +81,17 @@ class App.Services.SwitchKeyframeService
     widget.setPosition(widget.getPosition(), false)
     return App.currentScene().updateWidget(widget, true)
 
+
   # Constructs a new widget from a hash of options.
   newWidgetFromOpts: (opts) =>
     klass = App.Builder.Widgets[opts.type]
     throw new Error("Unable to find widget class #{klass}") unless klass
     klass.newFromHash(opts)
 
+
   loadWidgetFromOpts: (opts) =>
     @widgetLayer.widgetAtId(opts.id)
+
 
   # For debugging changes in keyframe. Shows a snapshot of the following info:
   # - The number of widgets in the old keyframe

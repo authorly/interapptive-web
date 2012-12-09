@@ -26,16 +26,19 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     })
     $(@form.el).find('fieldset').after($button)
 
+
   delete: (e) =>
     App.currentScene().removeWidget(@widget)
     App.builder.widgetLayer.removeWidget(@widget)
     App.currentKeyframe().widgetsChanged()
-
+    App.modalWithView().hide()
     @cancel(e)
+
 
   deleteMessage: ->
     "\nYou are about to delete this hotspot. This cannot be undone.\n\n\n" +
     "Are you sure you wish to continue?"
+
 
   formOptions: ->
     data: @widget
@@ -49,25 +52,36 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
         options: []
         title: ""
 
+
   resetValues: ->
     App.modalWithView().hide()
+
 
   updateAttributes: (e) =>
     e.preventDefault()
 
-    @widget = App.Builder.Widgets.WidgetDispatcher.createWidget() unless @widget?.id
-    @widget.loadFromHash @prepareHashForWidget(@form.getValue()),
+    # Creates either sound_id or video_id key/value pair for passing to new touch widget
+    touch_options = {}
+    touch_options[@keysForSelect[@form.getValue().on_touch]] = @form.getValue().asset_id
+
+    @widget = App.Builder.Widgets.WidgetDispatcher.createWidget(touch_options) unless @widget?.id
+
+    hashForWidget = @prepareHashForWidget(@form.getValue())
+    @widget.loadFromHash hashForWidget,
       success: (widget) ->
         App.modalWithView().hide()
+
 
   prepareHashForWidget: (form_value) ->
     hash = new Object()
     hash[@keysForSelect[form_value.on_touch]] = form_value.asset_id
     hash
 
+
   keysForSelect:
     'Show video': 'video_id',
     'Play sound': 'sound_id',
+
 
   populateAssetsFor: (asset_type) ->
     $asset_ids = $('#asset_id').html('')
@@ -75,6 +89,7 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
       success: =>
         _.each @collections[asset_type].models, (m) ->
           $asset_ids.append($('<option />').val(m.get('id')).text(m.get('name')))
+
 
   populateAssets: (e) ->
     $asset_type = $(e.target)

@@ -18,17 +18,15 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     widget.video_id  ?= hash.video_id
     widget.sound_id  ?= hash.sound_id
 
-    widget.setZOrder(1000) #HACK TODO: Get rid of hardcode
+    widget._zOrder = 9999 #HACK TODO: Get rid of hardcode
 
     return widget
 
   constructor: (options={}) ->
     super
 
-    @action_id = null
-
-    @setRadius(options.radius || 32)
-    @setControlRadius(options.controlRadius || 8)
+    @setRadius(options.radius || 64)
+    @setControlRadius(options.controlRadius || 20)
 
     @setOpacity(DEFAULT_OPACITY)
     @on('mouseover', @onMouseOver, this)

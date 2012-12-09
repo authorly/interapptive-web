@@ -13,9 +13,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   @newFromHash: (hash) ->
     widget = new this(hash)
-
-    # Why this next line, given that the constructor does this already?
-    if hash.zOrder then widget._zOrder = hash.zOrder
     key = "keyframe_" + App.currentKeyframe().get('id')
     widget.setPosition(widget.getPosition()) if widget.hasKeyframeDatum(App.currentKeyframe())
 

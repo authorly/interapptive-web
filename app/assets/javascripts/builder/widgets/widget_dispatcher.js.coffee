@@ -25,7 +25,6 @@ class WidgetDispatcher
   clearHighlights: (id) ->
     if @widgets
       widget.unHighlight for widget in @allButId(id)
-    else
 
   # Creators
   instantiateTouchWidget: (widget) ->
@@ -34,10 +33,17 @@ class WidgetDispatcher
 
     @openTouchModal(widget)
 
-  createWidget: (widget) ->
-    widget = new App.Builder.Widgets.TouchWidget
+  createWidget: (options={}) ->
+    widget = new App.Builder.Widgets.TouchWidget()
     widget.setPosition(new cc.Point(300, 400))
+
+    if options.sound_id?
+      widget.sound_id = options.sound_id
+    else if options.video_id?
+      widget.video_id = options.video_id
+
     @_addSceneWidget(widget)
+
     widget
 
   # Modals
