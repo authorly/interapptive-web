@@ -26,6 +26,11 @@ class App.Views.KeyframeIndex extends Backbone.View
     if @collection.length > 0
       @collection.each (keyframe) => @renderKeyframe(keyframe)
       @switchKeyframe()
+
+      # this must be decoupled; this view should trigger an event on the global
+      # vent; and the toolbar part of the app should react to that and initialize
+      App.initializeFontToolbar()
+
       @_updateDeleteButtons()
 
     @delegateEvents() # needed, even though it should work without it

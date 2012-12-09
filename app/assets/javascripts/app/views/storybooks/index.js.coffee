@@ -68,12 +68,7 @@ class App.Views.StorybookIndex extends Backbone.View
     # XXX this should not be done here; this belongs to the model layer
     # it should be done on initialization
     scenesIndex.collection.storybook_id = App.currentStorybook().get('id')
-
     scenesIndex.collection.fetch() # Triggers a render.
-
-    # this must be decoupled; this view should trigger an event on the global
-    # vent; and the toolbar part of the app should react to that and initialize
-    App.initializeFontToolbar()
 
     $('#scene-list').html scenesIndex.el
 

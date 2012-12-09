@@ -1,77 +1,60 @@
-# 1 / 0.59 [scale of builder-canvas]
+# 1 / 0.59 = 1.69 [scale of builder-canvas reciprocal]
 SCALE_FACTOR = 1.69
 ENTER_KEY =    13
 
 class App.Views.TextWidget extends Backbone.View
-  className:   "text_widget"
+  className:   'text_widget'
   fromToolbar: null
   _editing:    false
-  _fontColor:  "#FF0000"
-  _fontFace:   "Arial"
-  _fontWeight: "normal"
-  _textAlign:  "left"
-  _content:    ""
-  _fontSize:   12
-  _x:          100
-  _y:          100
-  _width:      100
-  _height:     20
-
-
+  _content:    ''
   events:
-    'click'      : 'onClick'
-    'mouseenter' : 'mouseEnter'
-    'mouseleave' : 'mouseLeave'
-    'focus'      : 'onFocus'
-    'blur'       : 'onBlur'
-    'keyup'      : 'editActivity'
-    'paste'      : 'editActivity'
-    'drag'       : 'drag'
-    'keypress'   : 'keyPress'
+    'click'    : 'onClick'
+    'focus'    : 'onFocus'
+    'blur'     : 'onBlur'
+    'paste'    : 'editActivity'
+    'keyup'    : 'editActivity'
+    'keypress' : 'keyPress'
 
 
   initialize: ->
-    @content @options.string if @options.string
-
+    @content(@options.string) if @options.string
     @setDefaults()
 
-    $(@el).
-      css(position : 'absolute').
+    $(@el).css(position : 'absolute').
       attr('id', 'keyframe_text_' + @model.id).
       draggable
-        start: @startDrag
-        stop: @drop
-
-    @canvas = @getCanvas()
-
-
-  render: ->
-    this
+        start: => App.currentKeyframeText(@model)
+        stop:  => @save()
 
 
   setDefaults: ->
-    @content    @model?.get('content') ? @_content
-    @fontColor  @model?.get('color')   ? @_fontColor
-    @fontSize   @model?.get('size')    ? @_fontSize
-    @fontFace   @model?.get('face')    ? @_fontFace
-    @fontWeight @model?.get('weight')  ? @_fontWeight
-    @textAlign  @model?.get('align')   ? "left"
+    @content      @model?.get('content')
+    @setFontFace  App.currentScene().get('font_face')
+    @setFontColor App.currentScene().get('font_color')
+    @setFontSize  App.currentScene().get('font_size')
+
+
+  setFontFace: (color) ->
+    $el = @el
+    $($el).css 'font-family', "#{color}"
+
+
+  setFontColor: (color) ->
+    $el = @el
+    $($el).css 'color', "#{color}"
+
+
+  setFontSize: (size) ->
+    $el = @el
+    $($el).css 'font-size', "#{size}px"
 
 
   keyPress: (e) ->
-    e.which isnt ENTER_KEY
+    e.which isnt ENTER_KEY  # PREVENT LINEBREAK
 
 
   id: (_id) ->
      if _id then @id = _id else @id
-
-
-  getText: ->
-    $(@el).html()
-
-
-  setText: (text) ->
-    if text then $(@el).html(text) else
 
 
   text: (_text) ->
@@ -79,55 +62,42 @@ class App.Views.TextWidget extends Backbone.View
 
 
   setPosition: (_left, _bottom) ->
-    _bottomOffsetScaled = _bottom
-    _leftOffsetScaled = _left
     $(@el).css
-      'bottom': _bottomOffsetScaled + 'px'
-      'left':   _leftOffsetScaled + 'px'
+      'bottom': _bottom + 'px'
+      'left':   _left + 'px'
 
 
   enableEditing: ->
-    $(@el).
-      attr("contenteditable", "true").
-      focus()
-
-    if @fromToolbar then $(@el).selectText()
-    @fromToolbar = null
+    $el = @el
+    if @fromToolbar
+      $($el).selectText()
+      @fromToolbar = null
+    $($el).attr("contenteditable", "true").focus()
 
     @disableDragging()
+
 
   disableEditing: ->
     App.fontToolbar.active = false
     $(@el).attr("contenteditable", "false")
 
+
   enableDragging: ->
     $(@el).draggable("option", "disabled", false)
+
 
   disableDragging: ->
     $(@el).draggable("option", "disabled", true)
 
+
   editing: ->
     @_editing
 
-  fontColor: (color) ->
-    el = $(@el)
-    if color then el.css('color', color) else el.css('color')
-
-  fontFace: (face) ->
-    el = $(@el)
-    if face then el.css('font-family', face) else el.css('font-family')
-
-  fontSize: (size) ->
-    el = $(@el)
-    if size then el.css('font-size', size) else el.css('font-size')
-
-  fontWeight: (fw) ->
-    el = $(@el)
-    if fw then el.css('font-weight', fw) else el.css('font-weight')
 
   textAlign: (ta) ->
     el = $(@el)
     if ta then el.css('text-align', ta) else el.css('text-align')
+
 
   content: (_content) ->
     if _content
@@ -136,16 +106,6 @@ class App.Views.TextWidget extends Backbone.View
     else
       $(@el).html()
 
-
-  drag: (e) ->
-
-
-  drop: =>
-    @save()
-
-
-  startDrag: (e) =>
-    App.currentKeyframeText(@model)
 
   fontToolbarUpdate: (_fontToolbar) ->
     $(@el).css
@@ -156,6 +116,7 @@ class App.Views.TextWidget extends Backbone.View
       "text-align":  _fontToolbar.textAlign()
     @save()
 
+
   onClick: (e) ->
     # select and make editable. once editable, another click will place the cursor inside and allow typing, i.e. "double click"
     if @editing() then @disableDragging() else @enableEditing()
@@ -165,14 +126,12 @@ class App.Views.TextWidget extends Backbone.View
     if $(@el).text().length < 1 then $(@el).text("Enter some text...")
     @editActivity()
 
+
   onFocus: (e) ->
     $(@el).data 'before', $(@el).html()
     # show the font toolbar
     App.editTextWidget(this)
 
-  mouseEnter: (e) ->
-
-  mouseLeave: (e) ->
 
   editActivity: (e) ->
     if $(@el).data isnt $(@el).html()
@@ -182,10 +141,6 @@ class App.Views.TextWidget extends Backbone.View
 
   deselect: ->
     $(@el).blur()
-
-
-  getCanvas: ->
-    $('#builder-canvas')
 
 
   bottom: (_bottom) ->
@@ -206,13 +161,7 @@ class App.Views.TextWidget extends Backbone.View
   save: ->
     attr =
       content: @content()
-      face:    @fontFace()
-      size:    @fontSize()
-      color:   @fontColor()
-      weight:  @fontWeight()
-      align:   @textAlign()
       x_coord: @left()
       y_coord: @bottom()
-
     @model.set attr
     @model.save()
