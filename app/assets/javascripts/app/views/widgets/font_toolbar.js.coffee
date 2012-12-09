@@ -61,13 +61,13 @@ class App.Views.FontToolbar extends Backbone.View
       font_color: @fontColor()
     App.currentScene().save attributes
 
+
   fontFace: (ff) ->
     if ff then $(@el).find('.font_face').val(ff) else $(@el).find(".font_face option:selected").val()
 
 
   fontSize: (fs)->
     if fs then $(@el).find(".font_size").val(fs) else $(@el).find(".font_size option:selected").val()
-
 
 
   fontColor: (fc) ->
