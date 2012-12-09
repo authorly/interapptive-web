@@ -12,7 +12,7 @@
       = font.get('name')
 
 %select.font_size
-  - for i in [9..25]
+  - for i in [24..46]
     %option{:value => "#{i}"} 
       = i
       
