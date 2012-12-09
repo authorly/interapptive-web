@@ -1,17 +1,17 @@
 # 1 / 0.59 [scale of builder-canvas]
 SCALE_FACTOR = 1.69
+ENTER_KEY =    13
 
 class App.Views.TextWidget extends Backbone.View
-  className: "text_widget"
-
+  className:   "text_widget"
   fromToolbar: null
   _editing:    false
   _fontColor:  "#FF0000"
-  _fontSize:   12
   _fontFace:   "Arial"
   _fontWeight: "normal"
   _textAlign:  "left"
   _content:    ""
+  _fontSize:   12
   _x:          100
   _y:          100
   _width:      100
@@ -27,6 +27,7 @@ class App.Views.TextWidget extends Backbone.View
     'keyup'      : 'editActivity'
     'paste'      : 'editActivity'
     'drag'       : 'drag'
+    'keypress'   : 'keyPress'
 
 
   initialize: ->
@@ -55,6 +56,10 @@ class App.Views.TextWidget extends Backbone.View
     @fontFace   @model?.get('face')    ? @_fontFace
     @fontWeight @model?.get('weight')  ? @_fontWeight
     @textAlign  @model?.get('align')   ? "left"
+
+
+  keyPress: (e) ->
+    e.which isnt ENTER_KEY
 
 
   id: (_id) ->
@@ -195,7 +200,7 @@ class App.Views.TextWidget extends Backbone.View
     $el =         @el
     _offsetLeft = $($el).position().left * SCALE_FACTOR
 
-    if _left then $(@el).css(left: _left) else _offsetLeft
+    if _left then $($el).css(left: _left) else _offsetLeft
 
 
   save: ->
