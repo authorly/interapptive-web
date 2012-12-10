@@ -106,6 +106,8 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     hash
 
+  toSceneHash: ->
+    @toHash()
 
   pointToLocal: (point) ->
     return unless @parent
@@ -138,3 +140,5 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   addToStorybook: (storybook) =>
 
+  save: ->
+    throw new Error("Must be implemented in the subclass")

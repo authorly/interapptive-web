@@ -8,14 +8,14 @@ class App.Models.Scene extends Backbone.Model
 
   initialize: ->
     @keyframes = new App.Collections.KeyframesCollection []
-    @_getKeyframes()
+    @_getKeyframes(async: false)
     @on 'change:widgets', @save
     @on 'change:preview_image_id', @save
 
-  _getKeyframes: ->
+  _getKeyframes: (options) ->
     unless @isNew()
       @keyframes.url = "/scenes/#{@get('id')}/keyframes.json"
-      @keyframes.fetch()
+      @keyframes.fetch(options)
     @keyframes
 
   setPreviewFrom: (keyframe) ->
@@ -49,20 +49,21 @@ class App.Models.Scene extends Backbone.Model
 
   addWidget: (widget) =>
     widgets = @get('widgets') || []
-    widgets.push(widget.toHash())
+    widgets.push(widget.toSceneHash())
     @set('widgets', widgets)
-    unless (widget instanceof App.Builder.Widgets.SpriteWidget) and not widget.isLoaded()
-      @widgetsChanged()
+    console.log('called from here')
+    if (widget instanceof App.Builder.Widgets.SpriteWidget) && !widget.isLoaded()
+      widget.on 'loaded', => setTimeout @widgetsChanged, 0, widget
     else
-      widget.on 'loaded', => setTimeout @widgetsChanged, 0
+      @widgetsChanged(widget)
 
   updateWidget: (widget, skipTrigger = false) =>
     widgets = @get('widgets') || []
 
     for w, i in widgets
       if widget.id is w.id
-        widgets[i] = widget.toHash()
-        @widgetsChanged() unless skipTrigger
+        widgets[i] = widget.toSceneHash()
+        @widgetsChanged(widget) unless skipTrigger
         # Yes, we updated the widget.
         return true
 
@@ -77,15 +78,22 @@ class App.Models.Scene extends Backbone.Model
     for w, i in widgets
       if w.id == widget.id
         widgets.splice(i, 1)
-        @widgetsChanged()
+        @widgetsChanged(widget)
         break
 
     App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
     @widgetsChanged()
 
-  widgetsChanged: =>
-    @trigger 'change:widgets'
+  widgetsChanged: (widget) =>
+    console.log('called from there')
+    @trigger 'change:widgets', widget
 
+  widgets: ->
+    widgets_array = @get('widgets')
+    _.map(widgets_array, (widget_hash) =>
+      console.log('Creating a ' + widget_hash.type)
+      new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { scene: this }))
+    )
 
 class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene

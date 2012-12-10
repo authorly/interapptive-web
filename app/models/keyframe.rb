@@ -86,7 +86,6 @@ class Keyframe < ActiveRecord::Base
     })
   end
 
-
   private
 
   def one_animation_keyframe_per_scene

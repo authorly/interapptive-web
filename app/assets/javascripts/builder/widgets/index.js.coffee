@@ -1,4 +1,5 @@
 #= require_self
 #= require_tree ./
 
-App.Builder.Widgets = {}
+App.Builder.Widgets =
+  Lib: {}

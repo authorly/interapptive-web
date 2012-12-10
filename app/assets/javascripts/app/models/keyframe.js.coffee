@@ -3,7 +3,7 @@ class App.Models.Keyframe extends Backbone.Model
 
   initialize: ->
     @texts = new App.Collections.KeyframeTextsCollection []
-    @_getTexts()
+    @_getTexts(async: false)
     @on 'change:widgets', @save
     @on 'audiosync', @updateStorybookParagraph, @
     @initializePreview()
@@ -11,10 +11,10 @@ class App.Models.Keyframe extends Backbone.Model
   updateStorybookParagraph: ->
     App.storybookJSON.updateParagraph(@)
 
-  _getTexts: ->
+  _getTexts: (options) ->
     unless @isNew()
       @texts.url = "/keyframes/#{@get('id')}/texts.json"
-      @texts.fetch()
+      @texts.fetch(options)
     @texts
 
 

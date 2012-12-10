@@ -36,13 +36,6 @@ class App.Views.ToolbarView extends Backbone.View
     keyframe.addWidget(widget)
     widget.on('change', -> keyframe.updateWidget(widget))
 
-  _addSceneWidget: (widget) ->
-    scene = App.currentScene()
-    App.builder.widgetLayer.addWidget(widget)
-    scene.addWidget(widget)
-    widget.on('change', -> scene.updateWidget(widget))
-
-
   addScene: ->
     # XXX in the `App.scenesCollection.models collection`, the addded scene
     # sometimes has the same id as the first scene, even though the
@@ -103,17 +96,16 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addSprite: ->
-    imageSelected = (sprite) =>
+    imageSelected = (image) =>
       widget = new App.Builder.Widgets.SpriteWidget(
-        url:      sprite.get('url'),
-        filename: sprite.get('name'),
+        url:      image.get('url'),
+        filename: image.get('name'),
         zOrder:   $('#active-sprites-window ul li').size() || 1
+        scene:    App.currentScene()
       )
-
-      widget.setPosition(new cc.Point(300, 400))
-      App.storybookJSON.addSpriteWidget(App.currentScene(), widget)
-      @_addSceneWidget(widget)
-
+      widget.save()
+      App.builder.widgetLayer.addWidget(widget)
+      widget.on('change', -> widget.scene().updateWidget(widget))
       App.modalWithView().hide()
       view.off('image_select', imageSelected)
 

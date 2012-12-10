@@ -1,4 +1,5 @@
 nextSpriteTag = 1
+nextActionTag = 1
 
 class App.StorybookJSON
 
@@ -104,23 +105,22 @@ class App.StorybookJSON
     )
 
   createParagraphsFor: (scene) ->
-    scene.keyframes.fetch
-      success: =>
-        scene.keyframes.each (keyframe) =>
-          @createParagraph(scene, keyframe)
+    scene.keyframes.each (keyframe) =>
+      @createParagraph(scene, keyframe)
 
   createWidgetsFor: (scene) ->
-    _.each(scene.get('widgets'), (widget) =>
+    _.each(scene.widgets(), (widget) =>
       @createWidgetFor(scene, widget)
     )
 
   createWidgetFor: (scene, widget) ->
-    this['add' + widget.type].call(this, scene, new App.Builder.Widgets[widget.type](widget))
+    this['add' + widget.constructor.name].call(this, widget)
 
   # keyframe === paragraph
   createParagraph: (scene, keyframe) ->
     page = scene._page
     throw new Error("Scene has no Page") unless page?
+    return false if keyframe.texts.length == 0
 
     paragraph =
       delayForPanning: true
@@ -189,55 +189,56 @@ class App.StorybookJSON
     @document.Pages[pageNumber]
 
 
-  addSpriteWidget: (scene, sprite) ->
-    page = scene._page
-
+  addSprite: (sprite_widget) ->
+    page = sprite_widget.scene()._page
+    throw new Error("Scene has no Page") unless page?
     page.API.CCSprites ||= []
 
-    # Hardcoded actions
-    ###
-    page.API.CCMoveBy = [{
-      position: [-810, 100],
-      duration: 3,
-      actionTag: 30
-    }]
-    page.API.CCScaleBy = [{
-      intensity: 1.4,
-      duration: 3,
-      actionTag: 31
-    }, {
-      intensity: 1.0,
-      duration: 0,
-      actionTag: 32
-    }, {
-      intensity: 1.4,
-      duration: 3,
-      actionTag: 34
-    }]
-    page.API.CCStorySwipeEnded = {
-      runAction: [{
-        runAfterSwipeNumber: 1,
-        spriteTag: nextSpriteTag,
-        actionTags: [30, 34]
-      }]
-    }
-    ###
-
-    App.d1 = sprite
     spriteJSON =
-      image:     sprite.getUrl()
+      image: sprite_widget.getUrl()
       spriteTag: nextSpriteTag
-      position:  [sprite.getPosition().x, sprite.getPosition().y]
-
-      #actions: [32]
+      position: []
 
     page.API.CCSprites.push(spriteJSON)
-
-    sprite.setTag(spriteJSON.spriteTag)
-
+    sprite_widget._CCSprite = spriteJSON
+    sprite_widget.setTag(spriteJSON.spriteTag)
     nextSpriteTag += 1
-    return spriteJSON.spriteTag
+    spriteJSON.spriteTag
 
+  addSpritePositionWidget: (sprite_position_widget) ->
+    ccsprite = sprite_position_widget.sprite_widget._CCSprite
+    throw new Error("SpriteWidget has no CCSprite") unless ccsprite?
+
+    if ccsprite.position.length == 0
+      ccsprite.position.push(sprite_position_widget.point.x)
+      ccsprite.position.push(sprite_position_widget.point.y)
+    else
+      page = sprite_position_widget.sprite_widget.scene()._page
+      throw new Error("Scene has no Page") unless page?
+      page.API.CCMoveTo ||= []
+      spriteMoveToJSON =
+        position:  [sprite_position_widget.point.x, sprite_position_widget.point.y]
+        duration:  3
+        actionTag: nextActionTag
+      page.API.CCMoveTo.push(spriteMoveToJSON)
+      sprite_position_widget._CCMoveTo = spriteMoveToJSON
+
+      # Following code is probably buggy.
+      # It does not account fro multiple actionTags.
+      page.API.runAction ||= []
+      runActionJSON =
+        runAfterSwipeNumber: 1
+        spriteTag:           ccsprite.spriteTag
+        actionTags:          [spriteMoveToJSON.actionTag]
+      page.API.runAction.push(runActionJSON)
+      nextActionTag += 1
+
+  addSpriteWidget: (sprite_widget) ->
+    sprite_tag = @addSprite(sprite_widget)
+    _.each(sprite_widget.positions(), (sprite_position_widget) =>
+      @addSpritePositionWidget(sprite_position_widget)
+    )
+    sprite_tag
 
   updateSprite: (scene, sprite) ->
     page = scene._page

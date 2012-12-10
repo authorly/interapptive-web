@@ -24,15 +24,18 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     return widget
 
-
   constructor: (options={}) ->
     super
 
-    @_keyframeData = options.keyframeData ? App.keyframeList().collection.reduce(((hsh, keyframe) => hsh["keyframe_" + keyframe.get('id')] = {scale: 1.0, x: 300, y: 400}; hsh), {})
-    @_url        = options.url
-    @_filename   = options.filename
-    @_zOrder     = options.zOrder
-    @_border     = false
+    @sprite       =    new App.Builder.Widgets.Lib.Sprite(options)
+    @scene(options.scene)
+    throw new Error("Can not add SpriteWidget to a Scene that does not have a Keyframe") unless @scene().keyframes.length > 0
+    @positions(_.map(@scene().keyframes.models, (keyframe) =>
+      new App.Builder.Widgets.Lib.SpritePositionWidget(
+        keyframe:       keyframe
+        sprite_widget:  this
+      )
+    ))
 
     @disableDragging()
 
@@ -42,32 +45,35 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @on "mouseover",    @mouseOver
     @on "mouseout",     @mouseOut
 
-    @sprite = new cc.Sprite
     @getImage()
 
+  scene: ->
+    if arguments.length > 0
+      throw new Error("Scene of a SpriteWidget must be a App.Models.Scene") unless (arguments[0] instanceof App.Models.Scene)
+      @_scene = arguments[0]
+
+    else
+      @_scene
+
+  positions: ->
+    if arguments.length > 0
+      @_positions = []
+      _.each(arguments[0], (position) =>
+        throw new Error("Positions of a SpriteWidget must be a App.Builder.Widgets.Lib.SpritePositionWidget") unless (position instanceof App.Builder.Widgets.Lib.SpritePositionWidget)
+        @_positions.push(position)
+      )
+    else
+      @_positions
+
+  positionsToHash: ->
+    _.map(@positions, (position) -> position.toHash())
 
   constructorContinuation: (dataUrl) =>
     @sprite.initWithFile(dataUrl)
-    @setScale(@currentKeyframe().scale) if @currentKeyframe()?.scale
+    @setScaleFor()
     @addChild(@sprite)
     @setContentSize(@sprite.getContentSize())
     @trigger('loaded')
-
-  currentKeyframe: =>
-    rex = /^keyframe_(\d+)$/ # Super Hack. Ideally it SpriteWidget should save canonical keyframe id instead of a string like 'keyframe_12'
-    keyframe_id = null
-
-    if _.any(_.keys(@_keyframeData), (key) ->
-      md = key.match(rex)
-      if md
-        keyframe_id = md[0]
-        return true
-      return false
-    )
-      @_keyframeData[keyframe_id]
-    else
-      id = App.currentKeyframe().get('id')
-      @_keyframeData["keyframe_#{id}"]
 
   hasKeyframeDatum: (keyframe) =>
     "keyframe_#{keyframe.get('id')}" in _.keys(@_keyframeData)
@@ -156,42 +162,39 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   hasBorder: ->
     @_border
 
-
   toHash: ->
-    hash = {}
-    hash.id = @id
-    hash.type = Object.getPrototypeOf(this).constructor.name
-    hash.retention = @retention
-    hash.retentionMutability = @retentionMutability
-
-    hash.filename = @_filename
-    hash.url =      @_url
-
-    # This is now part of the keyframes hash.
-    # hash.scale =    @_scale
-
-    hash.zOrder =   @_zOrder
-    hash.keyframeData = @_keyframeData
-
+    hash                      =    {}
+    hash.id                   =    @id
+    hash.type                 =    Object.getPrototypeOf(this).constructor.name
+    hash.retention            =    @retention
+    hash.retentionMutability  =    @retentionMutability
+    hash.filename             =    @sprite.filename
+    hash.url                  =    @sprite.url
+    hash.zOrder               =    @sprite.zOrder
+    hash.positions            =    @positionsToHash()
     hash
 
+  toSceneHash: ->
+    _.reject(@toHash(), 'positions')
+
   setZOrder: (z) ->
-    @_zOrder = z
+    @sprite.zOrder = z
 
   getZOrder: ->
-    @_zOrder
+    @sprite.zOrder
 
   getUrl: ->
-    @_url
-
+    @sprite.url
 
   getFilename: ->
-    @_filename
+    @sprite.filename
 
-
-  setScale: (scale) ->
-    @currentKeyframe().scale = parseFloat(scale)
-    @sprite.setScale(scale)
+  setScaleFor: (keyframe) ->
+    if arguments.length > 0
+      position = _.find(@positions(), (p) -> p.keyframe.id == keyframe.id)
+    else
+      position = @positions()[0]
+    @sprite.setScale(position.scale)
 
   getScale: ->
     @currentKeyframe().scale
@@ -242,6 +245,37 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     ctx.restore()
 
+  # save() should probably be named create() because
+  # it always creates a new SpriteWidget. There should
+  # also be update() and destroy() as well.
+  save: ->
+    if @isLoaded()
+      widgets = @scene().get('widgets') || []
+      widgets.push(@toSceneHash())
+      @scene().set('widgets', widgets)
+      @scene().save().
+        success(@updateStorybookJSON).
+        error(@couldNotSave)
+    else
+      @on 'loaded', => setTimeout @, @save, 0
+
+  update: ->
+    throw new Error("Not implemented")
+
+  destroy: ->
+    throw new Error("Not implemented")
+
+  updateStorybookJSON: ->
+    App.storybookJSON.addSprite(this)
+
+    # OPTIMIZE: Following will make Ajasx requests equal
+    # to the number of position to save.
+    # Perhaps write a way to save multiple positions in
+    # one request.
+    _.each(@positions(), (position) -> position.save())
+
+  couldNotSave: ->
+    console.log('SpriteWidget did not save')
 
   getImage: ->
     proxy = App.Lib.RemoteDomainProxy.instance()
@@ -249,10 +283,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     proxy.bind 'message', @from_proxy
     proxy.send
       action: 'load'
-      path: @_url
+      path: @sprite.url
 
 
   from_proxy: (message) =>
-    if message.action == 'loaded' && message.path == @_url
+    if message.action == 'loaded' && message.path == @sprite.url
       App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
       @constructorContinuation(message.bits)

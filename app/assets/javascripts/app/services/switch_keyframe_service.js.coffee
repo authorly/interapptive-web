@@ -18,11 +18,8 @@ class App.Services.SwitchKeyframeService
     @updateSceneWidgets()
     @updateTextWidgets()
 
-
-
   switchActiveKeyframeElement: (keyframe) =>
     App.keyframeList().switchActiveKeyframe(@newKeyframe)
-
 
   updateKeyframeWidgets: =>
     if (removals = @oldKeyframe?.get('widgets'))?
@@ -53,7 +50,6 @@ class App.Services.SwitchKeyframeService
 
     if widgetsChanged
       @currentScene.widgetsChanged()
-
 
   removeWidget: (widgetOpts) =>
     widget = @newWidgetFromOpts(widgetOpts)
