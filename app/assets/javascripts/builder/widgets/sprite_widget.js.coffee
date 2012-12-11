@@ -90,7 +90,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   isLoaded: ->
     @sprite._texture.complete
 
-
   mouseMove: (e) ->
     @setCursor(if @hasBorder() then 'move' else 'default')
 
@@ -168,7 +167,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     hash
 
   toSceneHash: ->
-    _.reject(@toHash(), 'orientations')
+    _.pick(@toHash(), 'id', 'type', 'retention', 'retentionMutability', 'filename', 'url', 'zOrder')
 
   setZOrder: (z) ->
     @sprite.zOrder = z
@@ -277,7 +276,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     proxy.send
       action: 'load'
       path: @sprite.url
-
 
   from_proxy: (message) =>
     if message.action == 'loaded' && message.path == @sprite.url
