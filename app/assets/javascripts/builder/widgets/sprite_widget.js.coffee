@@ -66,11 +66,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     _.map(@orientations(), (orientation) -> orientation.toHash())
 
   constructorContinuation: (dataUrl) =>
-    @sprite.initWithFile(dataUrl)
-    @setScale()
-    @addChild(@sprite)
-    @setContentSize(@sprite.getContentSize())
-    @trigger('loaded')
+    cc.TextureCache.sharedTextureCache().addImageAsync @sprite.url, this, =>
+      @sprite.initWithFile(@sprite.url)
+      @setScale()
+      @addChild(@sprite)
+      @setContentSize(@sprite.getContentSize())
+      @trigger('loaded')
 
   hasOrientationForKeyframe: (keyframe) =>
     _.any(@orientations(), (orientation) -> orientation.keyframe is keyframe)
@@ -87,8 +88,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @setContentSize(@sprite.getContentSize())
     @trigger('loaded')
 
-  isLoaded: ->
-    @sprite._texture.complete
 
   mouseMove: (e) ->
     @setCursor(if @hasBorder() then 'move' else 'default')
@@ -240,15 +239,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   # it always creates a new SpriteWidget. There should
   # also be update() and destroy() as well.
   save: ->
-    if @isLoaded()
-      widgets = @scene().get('widgets') || []
-      widgets.push(@toSceneHash())
-      @scene().set('widgets', widgets)
-      @scene().save().
-        success(@updateStorybookJSON).
-        error(@couldNotSave)
-    else
-      @on 'loaded', => setTimeout @, @save, 0
+    widgets = @scene().get('widgets') || []
+    widgets.push(@toSceneHash())
+    @scene().set('widgets', widgets)
+    @scene().save().
+      success(@updateStorybookJSON).
+      error(@couldNotSave)
 
   update: ->
     throw new Error("Not implemented")
