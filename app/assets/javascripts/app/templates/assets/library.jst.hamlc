@@ -20,10 +20,10 @@
           %i.icon-ban-circle.icon-white
           %span Cancel upload
 
-        %button.btn.btn-danger.delete{:type => "button"}
-          %i.icon-trash.icon-white
-          %span Delete
-        %input.toggle{:type => "checkbox"}
+        / %button.btn.btn-danger.delete{:type => "button"}
+        /   %i.icon-trash.icon-white
+        /   %span Delete
+        / %input.toggle{:type => "checkbox"}
 
       .span3
         .progress.progress-success.progress-striped.active.fade
