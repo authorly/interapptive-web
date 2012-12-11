@@ -96,7 +96,7 @@ class App.StorybookJSON
     page = scene._page
     throw new Error("Scene has no Page") unless page?
     @document.Pages.splice(@document.Pages.indexOf(page), 1)
-    _updatePageNumbers(page.settings.number)
+    @_updatePageNumbers(page.Page.settings.number)
 
   _updatePageNumbers: (from_number) ->
     _.each(@document.Pages, (page) ->
