@@ -14,18 +14,20 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
   toHash: ->
     hash = {}
     hash.sprite_widget_id    =    @sprite_widget_id
+    hash.type                =    Object.getPrototypeOf(this).constructor.name
     hash.x                   =    @point.x
     hash.y                   =    @point.y
     hash.scale               =    @scale
     hash
 
   save: ->
-    widgets = @keyframe().get('widgets') || []
+    widgets = @keyframe.get('widgets') || []
     widgets.push(@toHash())
-    @keyframe().set('widgets', widgets)
-    @keyframe().save().
-      success(@updateStorybookJSON).
-      error(@couldNotSave)
+    @keyframe.set('widgets', widgets)
+    @keyframe.save({},
+      success: => @updateStorybookJSON
+      error: => @couldNotSave
+    )
 
   updateStorybookJSON: ->
     App.storybookJSON.addSpritePositionWidget(this)

@@ -31,7 +31,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     throw new Error("Can not add SpriteWidget to a Scene that does not have a Keyframe") unless @scene().keyframes.length > 0
     @orientations(_.map(@scene().keyframes.models, (keyframe) =>
       keyframe.spriteOrientationWidgetBySpriteWidget(this) ||
-        new App.Builder.Widgets.SpriteOrientationWidget(keyframe: keyframe, sprite_widget: this)
+        new App.Builder.Widgets.SpriteOrientationWidget(keyframe: keyframe, sprite_widget: this, sprite_widget_id: this.id)
     ))
 
     @disableDragging()
@@ -183,15 +183,22 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   setScale: (scale) ->
     @sprite.setScale(parseFloat(scale))
 
-  getScale: (keyframe) ->
-    @getOrientationForKeyframe(keyframe).scale
-
-  getPosition: (keyframe) ->
-    @getOrientationForKeyframe(keyframe).point
-
-  getOrientationForKeyframe: (keyframe) ->
+  getScale: ->
     if arguments.length > 0
-      orientation = _.find(@orientations(), (p) -> p.keyframe.id == keyframe.id)
+      console.log(arguments[0])
+      @getOrientationForKeyframe(arguments[0]).scale
+    else
+      @getOrientationForKeyframe().scale
+
+  getPosition: ->
+    if arguments.length > 0
+      @getOrientationForKeyframe(arguments[0]).point
+    else
+      @getOrientationForKeyframe().point
+
+  getOrientationForKeyframe: ->
+    if arguments.length > 0
+      orientation = _.find(@orientations(), (p) -> p.keyframe.id == arguments[0].id)
     else
       orientation = @orientations()[0]
     orientation
@@ -242,9 +249,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     widgets = @scene().get('widgets') || []
     widgets.push(@toSceneHash())
     @scene().set('widgets', widgets)
-    @scene().save().
-      success(@updateStorybookJSON).
-      error(@couldNotSave)
+    @scene().save({},
+      success: => @updateStorybookJSON()
+      error:   => @couldNotSave()
+    )
 
   update: ->
     throw new Error("Not implemented")
