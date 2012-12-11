@@ -101,6 +101,22 @@ class App.Models.Keyframe extends Backbone.Model
   isAnimation: ->
     @get('is_animation')
 
+  spriteOrientationWidgetBySpriteWidget: (sprite_widget) ->
+    orientation = _.find(@widgets(), (widget) -> widget.sprite_widget_id == sprite_widget.id && widget.type == sprite_widget.constructor.name)
+    return undefined unless orientation?
+    orientation.sprite_widget = sprite_widget
+    orientation
+
+  widgets: ->
+    widgets_array = @get('widgets')
+    _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
+
+  _findOrCreateWidgetByWidgetHash: (widget_hash) ->
+    widget = App.builder.widgetStore.find(widget_hash.id)
+    return widget if widget
+    widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { keyframe: this }))
+    App.builder.widgetStore.addWidget(widget)
+    widget
 
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe

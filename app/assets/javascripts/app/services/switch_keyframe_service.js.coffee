@@ -1,7 +1,6 @@
 class App.Services.SwitchKeyframeService
 
   constructor: (@oldKeyframe, @newKeyframe) ->
-    @widgetLayer = App.builder.widgetLayer
     @paletteDispatcher = App.Dispatchers.PaletteDispatcher
     @currentScene = App.currentScene()
 
@@ -22,69 +21,56 @@ class App.Services.SwitchKeyframeService
     App.keyframeList().switchActiveKeyframe(@newKeyframe)
 
   updateKeyframeWidgets: =>
-    if (removals = @oldKeyframe?.get('widgets'))?
+    if (removals = @oldKeyframe?.widgets())?
       # TODO: Kill rejection? This is legacy and a bit strange
       removals = _.reject(removals, (w) -> w.type is "TextWidget")
       @removeWidget(widget) for widget in removals
 
-    if (additions = @newKeyframe.get('widgets'))?
-      @addWidget(@newWidgetFromOpts(widgetOpts), @newKeyframe) for widgetOpts in additions
+    if (additions = @newKeyframe.widgets())?
+      @addWidget(widget, @newKeyframe) for widget in additions
 
 
   updateSceneWidgets: =>
-    return unless (widgets = @currentScene.get('widgets'))?
+    return unless (widgets = @currentScene.widgets())?
     widgetsChanged = false
 
-    for widgetOpts in widgets
-      if @widgetLayer.hasWidget(widgetOpts) and widgetOpts.retentionMutability
-        widget = @loadWidgetFromOpts(widgetOpts)
-        @updateWidgetKeyframeDatum(widget, @newKeyframe) unless widget.hasKeyframeDatum(@newKeyframe)
+    for widget in widgets
+      if App.builder.widgetLayer.hasWidget(widget) and widget.retentionMutability
         res = @updateWidget(widget)
         widgetsChanged = widgetsChanged || res
 
-      else if @widgetLayer.hasWidget(widgetOpts)
+      else if App.builder.widgetLayer.hasWidget(widget)
 
       else
-        widget = @newWidgetFromOpts(widgetOpts)
         @addWidget(widget, @currentScene)
 
     if widgetsChanged
       @currentScene.widgetsChanged()
 
-  removeWidget: (widgetOpts) =>
-    widget = @newWidgetFromOpts(widgetOpts)
-    @widgetLayer.removeWidget(widget)
+  removeWidget: (widget) =>
+    App.builder.widgetLayer.removeWidget(widget)
     App.activeSpritesList.removeListEntry(widget)
     App.spriteForm.resetForm()
 
 
   addWidget: (widget, owner) =>
-    @widgetLayer.addWidget(widget)
+    App.builder.widgetLayer.addWidget(widget)
     widget.on('change', owner.updateWidget.bind(owner, widget))
 
 
   updateTextWidgets: =>
     App.updateKeyframeText()
 
-
-  updateWidgetKeyframeDatum: (widget, keyframe) =>
-    keyframeCollection = App.keyframeList().collection
-    widget.copyKeyframeDatum(keyframe, keyframeCollection.at(keyframeCollection.length - 2))
-
-
   updateWidget: (widget) =>
-    widget.setScale(widget.getScale())
-    widget.setPosition(widget.getPosition(), false)
+    widget.setScale(widget.getScale(@newKeyframe))
+    widget.setPosition(widget.getPosition(@newKeyframe), false)
+    # QUESTION: WA:
+    # Why do we update a scene's widget when we are only switching
+    # between them? App.Views.KeyframeIndex.appendKeyframe might
+    # be the cause we do it here. Even in that case, we should
+    # move it to App.Views.ToolbarView._addKeyframe(). OR much
+    # better; as a before callback to Keyframe.save()
     return App.currentScene().updateWidget(widget, true)
-
-  # Constructs a new widget from a hash of options.
-  newWidgetFromOpts: (opts) =>
-    klass = App.Builder.Widgets[opts.type]
-    throw new Error("Unable to find widget class #{klass}") unless klass
-    klass.newFromHash(opts)
-
-  loadWidgetFromOpts: (opts) =>
-    @widgetLayer.widgetAtId(opts.id)
 
   # For debugging changes in keyframe. Shows a snapshot of the following info:
   # - The number of widgets in the old keyframe

@@ -235,7 +235,7 @@ class App.StorybookJSON
 
   addSpriteWidget: (sprite_widget) ->
     sprite_tag = @addSprite(sprite_widget)
-    _.each(sprite_widget.positions(), (sprite_position_widget) =>
+    _.each(sprite_widget.orientations(), (sprite_position_widget) =>
       @addSpritePositionWidget(sprite_position_widget)
     )
     sprite_tag

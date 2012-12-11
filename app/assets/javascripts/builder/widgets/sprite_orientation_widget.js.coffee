@@ -1,16 +1,19 @@
-class App.Builder.Widgets.Lib.SpritePositionWidget
+#= require ./widget
+
+class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Widget
   constructor: (options = {}) ->
-    throw new Error("Can not create a App.Builder.Widgets.Lib.SpritePosition without a App.Models.Keyframe") unless (options.keyframe instanceof App.Models.Keyframe)
-    throw new Error("Can not create a App.Builder.Widgets.Lib.SpritePosition without a SpriteWidget") unless (options.sprite_widget instanceof App.Builder.Widgets.SpriteWidget)
+    throw new Error("Can not create a App.Builder.Widgets.SpriteOrientationWidget without a App.Models.Keyframe") unless (options.keyframe instanceof App.Models.Keyframe)
+    super
 
     @keyframe            =    options.keyframe
     @point               =    options.point ? new cc.Point(300, 400)
     @scale               =    options.scale ? 1.0
-    @sprite_widget       =    options.sprite_widget
+    @sprite_widget_id    =    options.sprite_widget_id
+    @sprite_widget       =    options.sprite_widget ? undefined
 
   toHash: ->
     hash = {}
-    hash.sprite_widget_id    =    @sprite_widget.id
+    hash.sprite_widget_id    =    @sprite_widget_id
     hash.x                   =    @point.x
     hash.y                   =    @point.y
     hash.scale               =    @scale
@@ -26,6 +29,7 @@ class App.Builder.Widgets.Lib.SpritePositionWidget
 
   updateStorybookJSON: ->
     App.storybookJSON.addSpritePositionWidget(this)
+    App.builder.widgetStore.addWidget(this)
 
   couldNotSave: ->
-    console.log('SpritePositionWidget did not save')
+    console.log('SpriteOrientationWidget did not save')

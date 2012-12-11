@@ -90,10 +90,15 @@ class App.Models.Scene extends Backbone.Model
 
   widgets: ->
     widgets_array = @get('widgets')
-    _.map(widgets_array, (widget_hash) =>
-      console.log('Creating a ' + widget_hash.type)
-      new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { scene: this }))
-    )
+    _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
+
+  _findOrCreateWidgetByWidgetHash: (widget_hash) ->
+    widget = App.builder.widgetStore.find(widget_hash.id)
+    return widget if widget
+    widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { scene: this }))
+    App.builder.widgetStore.addWidget(widget)
+    widget
+
 
 class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene

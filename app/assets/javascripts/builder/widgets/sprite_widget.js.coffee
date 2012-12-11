@@ -16,8 +16,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     # Why this next line, given that the constructor does this already?
     if hash.zOrder then widget._zOrder = hash.zOrder
-    key = "keyframe_" + App.currentKeyframe().get('id')
-    widget.setPosition(widget.getPosition()) if widget.hasKeyframeDatum(App.currentKeyframe())
+    widget.setPosition(widget.getPosition()) if widget.hasOrientationForKeyframe(App.currentKeyframe())
 
     if hash.id >= NEXT_WIDGET_ID
       NEXT_WIDGET_ID = hash.id + 1
@@ -30,11 +29,9 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @sprite       =    new App.Builder.Widgets.Lib.Sprite(options)
     @scene(options.scene)
     throw new Error("Can not add SpriteWidget to a Scene that does not have a Keyframe") unless @scene().keyframes.length > 0
-    @positions(_.map(@scene().keyframes.models, (keyframe) =>
-      new App.Builder.Widgets.Lib.SpritePositionWidget(
-        keyframe:       keyframe
-        sprite_widget:  this
-      )
+    @orientations(_.map(@scene().keyframes.models, (keyframe) =>
+      keyframe.spriteOrientationWidgetBySpriteWidget(this) ||
+        new App.Builder.Widgets.SpriteOrientationWidget(keyframe: keyframe, sprite_widget: this)
     ))
 
     @disableDragging()
@@ -55,38 +52,34 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     else
       @_scene
 
-  positions: ->
+  orientations: ->
     if arguments.length > 0
-      @_positions = []
+      @_orientations = []
       _.each(arguments[0], (position) =>
-        throw new Error("Positions of a SpriteWidget must be a App.Builder.Widgets.Lib.SpritePositionWidget") unless (position instanceof App.Builder.Widgets.Lib.SpritePositionWidget)
-        @_positions.push(position)
+        throw new Error("orientations of a SpriteWidget must be a App.Builder.Widgets.SpriteOrientationWidget") unless (position instanceof App.Builder.Widgets.SpriteOrientationWidget)
+        @_orientations.push(position)
       )
     else
-      @_positions
+      @_orientations
 
-  positionsToHash: ->
-    _.map(@positions, (position) -> position.toHash())
+  orientationsToHash: ->
+    _.map(@orientations(), (orientation) -> orientation.toHash())
 
   constructorContinuation: (dataUrl) =>
     @sprite.initWithFile(dataUrl)
-    @setScaleFor()
+    @setScale()
     @addChild(@sprite)
     @setContentSize(@sprite.getContentSize())
     @trigger('loaded')
 
-  hasKeyframeDatum: (keyframe) =>
-    "keyframe_#{keyframe.get('id')}" in _.keys(@_keyframeData)
+  hasOrientationForKeyframe: (keyframe) =>
+    _.any(@orientations(), (orientation) -> orientation.keyframe is keyframe)
 
   addKeyframeDatum: (keyframe, content) =>
     @_keyframeData["keyframe_#{keyframe.get('id')}"] = content
 
   removeKeyframeDatum: (keyframe) =>
     delete @_keyframeData["keyframe_#{keyframe.get('id')}"]
-
-  copyKeyframeDatum: (newKeyframe, oldKeyframe) =>
-    @_keyframeData["keyframe_#{newKeyframe.get('id')}"] = _.clone(@_keyframeData["keyframe_#{oldKeyframe.get('id')}"])
-
 
   reloadKeyframeInfo: =>
     @setPosition(new cc.Point(@currentKeyframe().x, @currentKeyframe().y))
@@ -171,11 +164,11 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     hash.filename             =    @sprite.filename
     hash.url                  =    @sprite.url
     hash.zOrder               =    @sprite.zOrder
-    hash.positions            =    @positionsToHash()
+    hash.orientations         =    @orientationsToHash()
     hash
 
   toSceneHash: ->
-    _.reject(@toHash(), 'positions')
+    _.reject(@toHash(), 'orientations')
 
   setZOrder: (z) ->
     @sprite.zOrder = z
@@ -189,18 +182,21 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   getFilename: ->
     @sprite.filename
 
-  setScaleFor: (keyframe) ->
+  setScale: (scale) ->
+    @sprite.setScale(parseFloat(scale))
+
+  getScale: (keyframe) ->
+    @getOrientationForKeyframe(keyframe).scale
+
+  getPosition: (keyframe) ->
+    @getOrientationForKeyframe(keyframe).point
+
+  getOrientationForKeyframe: (keyframe) ->
     if arguments.length > 0
-      position = _.find(@positions(), (p) -> p.keyframe.id == keyframe.id)
+      orientation = _.find(@orientations(), (p) -> p.keyframe.id == keyframe.id)
     else
-      position = @positions()[0]
-    @sprite.setScale(position.scale)
-
-  getScale: ->
-    @currentKeyframe().scale
-
-  getPosition: =>
-    new cc.Point(@currentKeyframe().x, @currentKeyframe().y)
+      orientation = @orientations()[0]
+    orientation
 
   getPositionX: =>
     @currentKeyframe().x
@@ -208,10 +204,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   getPositionY: =>
     @currentKeyframe().y
 
-  setPosition: (newPosOrxValue, triggerEvent = true) =>
-    @currentKeyframe().x = parseInt(newPosOrxValue.x)
-    @currentKeyframe().y = parseInt(newPosOrxValue.y)
-    super
 
   setPositionX: (x) =>
     @currentKeyframe().x = parseInt(x)
@@ -267,12 +259,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   updateStorybookJSON: ->
     App.storybookJSON.addSprite(this)
+    App.builder.widgetStore.addWidget(this)
 
     # OPTIMIZE: Following will make Ajasx requests equal
     # to the number of position to save.
-    # Perhaps write a way to save multiple positions in
+    # Perhaps write a way to save multiple orientations in
     # one request.
-    _.each(@positions(), (position) -> position.save())
+    _.each(@orientations(), (position) -> position.save())
 
   couldNotSave: ->
     console.log('SpriteWidget did not save')
