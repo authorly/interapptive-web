@@ -120,6 +120,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     newPos = cc.ccpAdd(delta, @_capturedWidget.getPosition())
 
     @_capturedWidget.setPosition(newPos, false)
+    console.log " @_capturedWidget.getPosition(): ",  @_capturedWidget.getPosition()
     @_previousPoint = new cc.Point(parseInt(point.x), parseInt(point.y))
 
 

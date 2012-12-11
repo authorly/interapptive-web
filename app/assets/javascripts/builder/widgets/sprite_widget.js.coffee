@@ -16,7 +16,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     # Why this next line, given that the constructor does this already?
     if hash.zOrder then widget._zOrder = hash.zOrder
-    widget.setPosition(widget.getPosition()) if widget.hasOrientationForKeyframe(App.currentKeyframe())
+    widget.setPosition widget.getPositionForKeyframe() if widget.hasOrientationForKeyframe App.currentKeyframe()
 
     if hash.id >= NEXT_WIDGET_ID
       NEXT_WIDGET_ID = hash.id + 1
@@ -71,6 +71,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @setScale()
       @addChild(@sprite)
       @setContentSize(@sprite.getContentSize())
+      @setPosition(@getPositionForKeyframe())
       @trigger('loaded')
 
   hasOrientationForKeyframe: (keyframe) =>
@@ -83,8 +84,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     delete @_keyframeData["keyframe_#{keyframe.get('id')}"]
 
   reloadKeyframeInfo: =>
-    @setPosition(new cc.Point(@currentKeyframe().x, @currentKeyframe().y))
-    @setScale(@currentKeyframe().scale)
+    #@setPosition(new cc.Point(@currentKeyframe().x, @currentKeyframe().y))
+    #@setScale(@currentKeyframe().scale)
     @setContentSize(@sprite.getContentSize())
     @trigger('loaded')
 
@@ -92,7 +93,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   mouseMove: (e) ->
     @setCursor(if @hasBorder() then 'move' else 'default')
 
-    App.spriteForm.updateXYFormVals()
+    #App.spriteForm.updateXYFormVals()
 
     # @on 'dblclick',     @setActiveSpriteFromClick
     # @on 'clickOutside', @setAsInactive
@@ -190,7 +191,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     else
       @getOrientationForKeyframe().scale
 
-  getPosition: ->
+  getPositionForKeyframe: ->
     if arguments.length > 0
       @getOrientationForKeyframe(arguments[0]).point
     else
@@ -203,20 +204,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       orientation = @orientations()[0]
     orientation
 
-  getPositionX: =>
-    @currentKeyframe().x
-
-  getPositionY: =>
-    @currentKeyframe().y
-
-
   setPositionX: (x) =>
-    @currentKeyframe().x = parseInt(x)
-    super
+    #@currentKeyframe().x = parseInt(x)
+    #super
 
   setPositionY: (y) =>
-    @currentKeyframe().y = parseInt(y)
-    super
+    #@currentKeyframe().y = parseInt(y)
+    #super
 
   draw: (ctx) ->
     return unless @hasBorder()
