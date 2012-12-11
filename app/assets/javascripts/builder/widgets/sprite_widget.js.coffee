@@ -144,15 +144,15 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   showBorder: ->
-    @_border = true
+    @scene.border = true
 
 
   hideBorder: ->
-    @_border = false
+    @scene.border = false
 
 
   hasBorder: ->
-    @_border
+    @scene.border
 
   toHash: ->
     hash                      =    {}
@@ -186,7 +186,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   getScale: ->
     if arguments.length > 0
-      console.log(arguments[0])
       @getOrientationForKeyframe(arguments[0]).scale
     else
       @getOrientationForKeyframe().scale
@@ -198,11 +197,9 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @getOrientationForKeyframe().point
 
   getOrientationForKeyframe: ->
-    if arguments.length > 0
-      orientation = _.find(@orientations(), (p) -> p.keyframe.id == arguments[0].id)
-    else
-      orientation = @orientations()[0]
-    orientation
+    keyframe = arguments[0] || App.currentKeyframe()
+    orientation = _.find(@orientations(), (p) -> p.keyframe.id == arguments[0].id)
+    orientation || @orientations()[0]
 
   setPositionX: (x) =>
     #@currentKeyframe().x = parseInt(x)

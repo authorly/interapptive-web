@@ -51,7 +51,6 @@ class App.Models.Scene extends Backbone.Model
     widgets = @get('widgets') || []
     widgets.push(widget.toSceneHash())
     @set('widgets', widgets)
-    console.log('called from here')
     if (widget instanceof App.Builder.Widgets.SpriteWidget) && !widget.isLoaded()
       widget.on 'loaded', => setTimeout @widgetsChanged, 0, widget
     else
@@ -85,8 +84,10 @@ class App.Models.Scene extends Backbone.Model
     @widgetsChanged()
 
   widgetsChanged: (widget) =>
-    console.log('called from there')
     @trigger 'change:widgets', widget
+
+  spriteWidgets: ->
+    _.select(@widgets(), (w) -> w instanceof App.Builder.Widgets.SpriteWidget)
 
   widgets: ->
     widgets_array = @get('widgets')
