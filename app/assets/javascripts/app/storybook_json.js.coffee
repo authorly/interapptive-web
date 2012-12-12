@@ -175,7 +175,7 @@ class App.StorybookJSON
     )
 
   createWidgetFor: (owner, widget) ->
-    this['add' + widget.constructor.name].call(this, widget)
+    this['add' + Object.getPrototypeOf(widget).constructor.name].call(this, widget)
 
   updateWidget: (keyframe, widget, property) ->
     p = keyframe._paragraph
