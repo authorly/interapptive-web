@@ -1,14 +1,22 @@
-class App.Views.SceneIndex extends Backbone.View
+ App.Views.SceneIndex extends Backbone.View
   template: JST["app/templates/scenes/index"]
+
   tagName: 'ul'
+
   className: 'scene-list'
+
+
   events:
-    'click    span a.delete': 'destroyScene'
+    'click    span a.delete': 'deleteScene'
     'click .scene-list span': 'onSceneClick'
 
   initialize: ->
-    @collection.on('reset', @render, this)
-    @collection.on('add', @appendSceneElement, this)
+    @collection.on('reset',  @render, @)
+    @collection.on('change:positions', @render, @)
+    @collection.on('add',    @appendScene, @)
+    @collection.on('remove', @removeScene, @)
+    App.vent.on('window:resize', @adjustSize, @)
+
 
   render: ->
     $(@el).html('')
@@ -25,52 +33,39 @@ class App.Views.SceneIndex extends Backbone.View
     this
 
 
-  createScene: =>
-    scene = new App.Models.Scene
-
-    scene.save({storybook_id: App.currentStorybook().get('id')},
-      wait: true
-      success: (model, response) =>
-        # Sometimes, this gives us the initial scene back. Why?!
-
-        @collection.add model
-        service = new App.Services.SwitchSceneService(App.currentScene(), model)
-        service.execute()
-        @scrollToTop()
-        @renumberScenes()
-    )
-
-    scene
-
   appendSceneElement: (scene) ->
     view = new App.Views.Scene(model: scene)
-    $(@el).append(view.render().el)
+    @$el.append view.render().el
 
-  destroyScene: (event) =>
+
+  deleteScene: (event) =>
+    event.stopPropagation()
     # TODO: Prevent this from working in the event there is only one scene?
     message = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
-    target  = $(event.currentTarget)
-    sceneId = target.attr('data-id')
-    sceneEl = target.parent().parent()
-    scene   = App.sceneList().collection.get(sceneId)
-
-    event.stopPropagation()
 
     if confirm(message)
+      target  = $(event.currentTarget)
+      scene = @collection.get(target.attr('data-id'))
       scene.destroy
-        success: =>
-          sceneEl.remove() and $('.scene-list li:first span:first').click()
-          @renumberScenes()
+        success: => @collection.remove(scene)
+
+
+  removeScene: (scene) =>
+    $("li[data-id=#{scene.id}]").remove()
+    @toggleSceneChange scene
+
 
   onSceneClick: (event) =>
     sceneId = $(event.currentTarget).data 'id'
     scene = @collection.get(sceneId)
     @toggleSceneChange scene
 
+
   toggleSceneChange: (scene) =>
     return if scene is App.currentScene()
     service = new App.Services.SwitchSceneService(App.currentScene(), scene)
     service.execute()
+
 
   switchActiveElement: (scene) =>
     $('li', @el)
@@ -78,33 +73,32 @@ class App.Views.SceneIndex extends Backbone.View
       .find("span.scene-frame[data-id=#{scene.get('id')}]")
       .parent().addClass('active')
 
+
   initSortable: =>
-    @renumberScenes()
 
     $(@el).sortable
       opacity: 0.6
       containment: '.sidebar'
       axis: 'y'
-      update: =>
-        @renumberScenes()
-        @collection.reposition(JSON.stringify(@scenePositionsJSONArray()), @el)
+      update: @_numberScenes
+      items: 'li[data-is_main_menu!="1"]'
 
-  scenePositionsJSONArray: ->
-    JSON = {}
-    JSON.scenes = []
 
-    # Don't use cached element @el! C.W.
-    $('.scene-list li span.scene-frame').each (index, element) ->
-      JSON.scenes.push
-        id: $(element).data 'id'
-        position: index+1
+  adjustSize: ->
+    $("#scene-list").css height: ($(window).height()) + "px"
+    $(".scene-list").css height: ($(window).height()) + "px"
 
-    JSON
 
-  renumberScenes: ->
-    $('.page-number').each (index, element) ->
-      $(element).empty().html(index+1)
+  _numberScenes: =>
+    @$('li[data-is_main_menu!="1"]').each (index, element) =>
+      console.log index, element
+      element = $(element)
 
-  scrollToTop: ->
-    el = $('.scene-list')
-    el.scrollTop(el.find('li:first').height() * el.find('li').size())
+      if (id = element.data('id'))? && (scene = @collection.get(id))?
+        scene.set position: index
+
+    # Backbone bug - without timeout the model is added twice
+    window.setTimeout ( =>
+      @collection.sort silent: true
+      @collection.savePositions()
+    ), 0

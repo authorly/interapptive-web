@@ -7,7 +7,7 @@
     %table.table.table-striped.table-fixed
       %thead
         %tr
-          %th 
+          %th
           %th Name
           %th Size
           %th Date
@@ -15,10 +15,13 @@
 
   .modal-footer
     .search
-      %input{:name => "search", :type => "text", :id => "search", :placeholder => "Search for an image"} 
+      %input{:name => "search", :type => "text", :id => "search", :placeholder => "Search for an image"}
       %span#loader{:style => "display: none"}
         %img{:src => "/assets/advancedtable/loader.gif", :alt => "Loader"}
 
     %a.btn.btn-primary.use-image.disabled
-      %i.icon-plus.icon-white
-      Add
+      - if @options.select?
+        = @options.select
+      - else
+        %i.icon-plus.icon-white
+        Add

@@ -17,8 +17,14 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   initialize: ->
+    App.vent.on 'add:sprite', @addSprite
     @_enableOnEvent 'scene:can_add_animation', '.animation-keyframe'
     @_enableOnEvent 'keyframe:can_add_text', '.edit-text'
+
+    App.vent.on 'scene:active', (scene) =>
+      @$('li').removeClass 'disabled'
+      if scene.isMainMenu()
+        @$('.edit-text,.touch-zones,.animation-keyframe,.keyframe').addClass 'disabled'
 
 
   _enableOnEvent: (event, selector) ->
@@ -36,51 +42,30 @@ class App.Views.ToolbarView extends Backbone.View
     keyframe.addWidget(widget)
     widget.on('change', -> keyframe.updateWidget(widget))
 
+
   addScene: ->
     # XXX in the `App.scenesCollection.models collection`, the addded scene
     # sometimes has the same id as the first scene, even though the
     # server's response is correct
-    App.sceneList().createScene()
+    scene = new App.Models.Scene
+      storybook_id: App.currentStorybook().get('id')
+    App.scenesCollection.addScene(scene)
 
 
   addKeyframe: ->
-    @_addKeyframe (new App.Models.Keyframe)
+    keyframe = new App.Models.Keyframe
+      scene_id: App.currentScene().get('id')
+    App.keyframesCollection.addKeyframe(keyframe)
 
 
   addAnimationKeyframe: ->
     return if @$('.animation-keyframe.disabled').length > 0
 
-    @_addKeyframe (new App.Models.Keyframe(is_animation: true))
+    keyframe = new App.Models.Keyframe
+      scene_id:     App.currentScene().get('id')
+      is_animation: true
+    App.keyframesCollection.addKeyframe(keyframe)
 
-
-  _addKeyframe: (keyframe) ->
-    collection = App.keyframesCollection
-    # REFACTOR: Code related to widgets system probably does not belong here
-    # it should be moved to somewhere else.
-    sprite_orientation_widgets = _.map(App.currentScene().spriteWidgets(), (sprite_widget) ->
-      new App.Builder.Widgets.SpriteOrientationWidget(
-        keyframe: keyframe
-        sprite_widget: sprite_widget
-        sprite_widget_id: sprite_widget.id
-      )
-    )
-    keyframe.set
-      scene_id: App.currentScene().get('id')
-      position: collection.nextPosition(keyframe)
-      widgets: _.map(sprite_orientation_widgets, (w) -> w.toHash() )
-
-    keyframe.save {},
-      success: ->
-        # XXX necessary because this would blow if, in between `save` and
-        # `success`, another scene was selected
-        # This is a temporary fix; having the collection change contents is a bad
-        # idea.
-        if keyframe.get('scene_id') == collection.scene_id
-          collection.add keyframe
-          _.each(sprite_orientation_widgets, (w) ->
-            App.storybookJSON.addSpriteOrientationWidget(w)
-            App.builder.widgetStore.addWidget(w)
-          )
 
   showActionLibrary: ->
     @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
@@ -121,13 +106,13 @@ class App.Views.ToolbarView extends Backbone.View
       # XXX this blows
       widget.on('change', -> widget.scene().updateWidget(widget))
       App.modalWithView().hide()
-      view.off('image_select', imageSelected)
+      view.off('select', imageSelected)
 
     view = new App.Views.SpriteIndex(collection: App.imagesCollection)
-    view.on('image_select', imageSelected)
+    view.on('select', imageSelected)
 
     App.modalWithView(view: view).show()
-    view.fetchImages()
+
 
   showAlignAudioModal: ->
     view = new App.Views.AudioIndex(App.currentKeyframe())

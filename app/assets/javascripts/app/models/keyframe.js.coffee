@@ -4,8 +4,11 @@ class App.Models.Keyframe extends Backbone.Model
   initialize: ->
     @texts = new App.Collections.KeyframeTextsCollection []
     @_getTexts(async: false)
-    @on 'change:widgets', @save
     @on 'audiosync', @updateStorybookParagraph, @
+
+    # must go through the scenesCollection, because the relationship
+    # between the scene model and its keyframes is not stored anywhere
+    @scene = App.scenesCollection.get @get('scene_id')
     @initializePreview()
 
   updateStorybookParagraph: ->
@@ -19,10 +22,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   url: ->
-    # must go through the scenesCollection, because the relationship
-    # between the scene model and its keyframes is not stored anywhere
-    scene = App.scenesCollection.get @get('scene_id')
-    base = '/scenes/' + scene.id + '/'
+    base = '/scenes/' + @scene.id + '/'
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
 
@@ -32,8 +32,7 @@ class App.Models.Keyframe extends Backbone.Model
     @preview = new App.Models.Preview(attributes)
     @preview.on 'change:data_url', => @trigger 'change:preview', @
     @preview.on 'change:id', =>
-      @set preview_image_id: @preview.id
-      @save()
+      @save preview_image_id: @preview.id
 
 
   hasWidget: (widget) ->
@@ -62,7 +61,8 @@ class App.Models.Keyframe extends Backbone.Model
 
   removeWidget: (widget, skipWidgetLayerRemoval) ->
     widgets = @get('widgets')
-    return unless widgets?
+    return false unless widgets?
+    return false if widget instanceof App.Builder.Widgets.ButtonWidget
 
     for w, i in widgets
       if w.id == widget.id
@@ -72,30 +72,35 @@ class App.Models.Keyframe extends Backbone.Model
 
     App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
     @widgetsChanged()
+    true
 
 
   widgetsChanged: =>
     @trigger 'change:widgets', @
+    @save()
+
+  # save: ->
+    # if arguments.length > 0
+      # @_actualSave.apply @, arguments
+    # else
+      # # Use `debounce` to actually save only once if save is called
+      # # rapid sequence (as it happens when multiple change events are fired
+      # # asynchronously, from different sources, but close to one another in time)
+      # # To take advantage of this, use `set` to change the attributes, followed by
+      # # `save` # without parameters
+      # @_debouncedSave().apply @
 
 
-  save: ->
-    if arguments.length > 0
-      @_actualSave.apply @, arguments
-    else
-      # Use `debounce` to actually save only once if save is called
-      # rapid sequence (as it happens when multiple change events are fired
-      # asynchronously, from different sources, but close to one another in time)
-      # To take advantage of this, use `set` to change the attributes, followed by
-      # `save` # without parameters
-      @_debouncedSave().apply @
+  # _debouncedSave: ->
+    # @_deboucedSaveMemoized ||= _.debounce @_actualSave, 500
 
 
-  _debouncedSave: ->
-    @_deboucedSaveMemoized ||= _.debounce @_actualSave, 500
+  # _actualSave: =>
+    # Backbone.Model.prototype.save.apply @, arguments
 
 
-  _actualSave: =>
-    Backbone.Model.prototype.save.apply @, arguments
+  canAddText: ->
+    !@isAnimation() && @scene.canAddText()
 
 
   isAnimation: ->
@@ -133,14 +138,15 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     @on 'add', (model, _collection, options) =>
       @announceAnimation()
 
-    if options
-      this.scene_id = options.scene_id
+    if options?
+      @scene_id = options.scene_id
 
-    @on 'remove', (model, collection) -> collection._recalculatePositionsAfterDelete(model)
+    @on 'remove', (model, collection) ->
+      collection._recalculatePositionsAfterDelete(model)
 
 
   url: ->
-    '/scenes/' + this.scene_id + '/keyframes.json'
+    '/scenes/' + @scene_id + '/keyframes.json'
 
 
   ordinalUpdateUrl: ->
@@ -163,7 +169,21 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   announceAnimation: ->
-      App.vent.trigger 'scene:can_add_animation', !@animationPresent()
+   scene = App.scenesCollection.get(@scene_id)
+   App.vent.trigger 'scene:can_add_animation',
+     !@animationPresent() && scene.canAddKeyframes()
+
+
+  addKeyframe: (keyframe) ->
+    keyframe.save { position: @nextPosition(keyframe) },
+      success: =>
+        # XXX necessary because this would blow if, in between `save` and
+        # `success`, another scene was selected in the VIEW (!!), and therefore
+        # @scene_id was changed
+        # This is a temporary fix; having the collection change contents is a bad
+        # idea.
+        if keyframe.get('scene_id') == @scene_id
+          @add keyframe
 
 
   nextPosition: (keyframe) ->

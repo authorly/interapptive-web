@@ -7,6 +7,8 @@ COLOR_INNER_STROKE = 'rgba(15, 79, 168, 1)'
 COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
 LINE_WIDTH_INNER = 2
 
+##
+# A widget that has an associated image.
 class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   retention: 'scene'
   retentionMutability: true # This object is independent across keyframes.
@@ -36,14 +38,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @disableDragging()
 
-    @on 'dblclick',           @setActiveSpriteFromClick
     @on 'clickOutside',       @setAsInactive
-    @on 'mousemove',          @mouseMove
-    @on 'mouseover',          @mouseOver
-    @on 'mouseout',           @mouseOut
     @on 'change:orientation', @updateOrientation
 
-    @getImage()
+    @_getImage()
 
 
   updateOrientation: =>
@@ -75,14 +73,26 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   orientationsToHash: ->
     _.map(@orientations(), (orientation) -> orientation.toHash())
 
+
   constructorContinuation: (dataUrl) =>
     cc.TextureCache.sharedTextureCache().addImageAsync @sprite.url, this, =>
       @sprite.initWithFile(@sprite.url)
       @setScale()
       @addChild(@sprite)
-      @setContentSize(@sprite.getContentSize())
       @setPosition(@getPositionForKeyframe())
-      @trigger('loaded')
+      window.setTimeout @triggerLoaded, 0
+
+
+  triggerLoaded: =>
+    if @isLoaded()
+      @setContentSize(@sprite.getContentSize())
+    else
+      window.setTimeout @triggerLoaded, 200
+
+ isLoaded: ->
+   size = @sprite.getContentSize()
+   @sprite._texture.complete && (size.width + size.height > 0)
+
 
   hasOrientationForKeyframe: (keyframe) =>
     _.any(@orientations(), (orientation) -> orientation.keyframe is keyframe)
@@ -101,44 +111,17 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   mouseMove: (e) ->
-    @setCursor(if @hasBorder() then 'move' else 'default')
-
-    #App.spriteForm.updateXYFormVals()
-
-    # @on 'dblclick',     @setActiveSpriteFromClick
-    # @on 'clickOutside', @setAsInactive
+    super
+    @_setCursor(if @hasBorder() then 'move' else 'default')
 
 
   mouseOut: ->
+    super
     @setCursor('default')
 
 
-  setCursor: (cursor) ->
-    document.body.style.cursor = cursor
-
-  setAsInactive: ->
-    @hideBorder()
-    @disableDragging()
-
-    App.activeSpritesList.deselectAll()
-    App.builder.widgetLayer.clearSelectedWidget()
-    App.spriteForm.resetForm()
-
-
-  disableDragging: ->
-    @draggable = false
-
-
-  enableDragging: ->
-    @draggable = true
-
-
-  setActiveSpriteFromClick: (e) ->
-    activeSpriteWidget = App.builder.widgetLayer.widgetAtPoint(e._point)
-    return unless activeSpriteWidget
-
-    App.builder.widgetLayer.setSelectedWidget(activeSpriteWidget)
-    @setAsActive(activeSpriteWidget)
+  doubleClick: ->
+    @_setActiveSpriteFromClick()
 
 
   setAsActive: (widget = null) ->
@@ -151,6 +134,23 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @showBorder()
 
     App.spriteForm.setActiveSprite(_widget)
+
+
+  setAsInactive: ->
+    @hideBorder()
+    @disableDragging()
+
+    App.activeSpritesList.deselectAll()
+    App.builder.widgetLayer.clearSelectedWidget()
+    App.spriteForm.resetForm()
+
+
+  enableDragging: ->
+    @draggable = true
+
+
+  disableDragging: ->
+    @draggable = false
 
 
   showBorder: ->
@@ -274,15 +274,31 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   couldNotSave: ->
     console.log('SpriteWidget did not save')
 
-  getImage: ->
-    proxy = App.Lib.RemoteDomainProxy.instance()
+  _getImage: ->
+   if @_url.indexOf('/') == 0
+      @constructorContinuation(@_url)
+    else
+      proxy = App.Lib.RemoteDomainProxy.instance()
 
-    proxy.bind 'message', @from_proxy
-    proxy.send
-      action: 'load'
-      path: @sprite.url
+      proxy.bind 'message', @from_proxy
+      proxy.send
+        action: 'load'
+        path: @sprite.url
+
 
   from_proxy: (message) =>
     if message.action == 'loaded' && message.path == @sprite.url
       App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
       @constructorContinuation(message.bits)
+
+
+  _setCursor: (cursor) ->
+    document.body.style.cursor = cursor
+
+
+  _setActiveSpriteFromClick: (e) ->
+    activeSpriteWidget = App.builder.widgetLayer.widgetAtPoint(e._point)
+    return unless activeSpriteWidget
+
+    App.builder.widgetLayer.setSelectedWidget(activeSpriteWidget)
+    @setAsActive(activeSpriteWidget)

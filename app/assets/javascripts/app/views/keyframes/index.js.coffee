@@ -12,12 +12,14 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   initialize: ->
     @collection.on('reset',  @render, @)
+    @collection.on('change:positions', @render, @)
     @collection.on('add',    @appendKeyframe)
     @collection.on('remove', @removeKeyframe)
     @collection.on('change:widgets', @updateKeyframePreview, @)
     @collection.on('change:preview', @keyframePreviewChanged, @)
-    @collection.on('change:positions', @render, @)
     @collection.on('reset add remove change:positions', @updateScenePreview, @)
+    App.vent.on 'scene:active', (scene) =>
+      if scene.canAddKeyframes() then @$el.show() else @$el.hide()
 
 
   render: ->
@@ -78,7 +80,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     if confirm(message)
       keyframe.destroy
-        success: => 
+        success: =>
           @collection.remove(keyframe)
           # Load widget up and remove its hash
           # App.currentScene().get('widgets').each

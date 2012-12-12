@@ -3,7 +3,7 @@ class App.Views.Modal extends Backbone.View
     @modal = $('.content-modal')
 
   render: =>
-    $(@el).append @options.view.render().el
+    @$el.append @options.view.render().el
     this
 
   show: ->

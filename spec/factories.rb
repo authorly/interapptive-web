@@ -44,6 +44,14 @@ Factory.define :scene do |f|
   f.storybook Factory.create(:storybook)
 end
 
+Factory.define :main_menu_scene, class: Scene do |f|
+  f.preview_image_id Factory.create(:image)
+  f.sound_id Factory.create(:sound).id
+  f.storybook Factory.create(:storybook)
+  f.is_main_menu true
+  f.position nil
+end
+
 Factory.define :keyframe do |f|
   f.scene_id Factory.create(:scene)
   f.preview_image_id Factory.create(:image)

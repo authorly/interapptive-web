@@ -6,7 +6,9 @@ class App.Views.Scene extends Backbone.View
     @model.on 'change:preview', @updatePreview
 
   render: ->
-    $(@el).html(@template(scene: @model))
+    @$el.html(@template(scene: @model)).attr('data-id', @model.id)
+    if @model.isMainMenu()
+      @$el.attr('data-is_main_menu', '1').addClass('main_menu')
     this
 
   updatePreview:  =>

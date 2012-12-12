@@ -12,7 +12,7 @@ class Storybook < ActiveRecord::Base
 
   has_one  :default_font, :through => :storybook_settings, :source => :font
 
-  after_create :create_scene
+  after_create :create_default_scene
 
   validates_presence_of :title
 
@@ -22,7 +22,9 @@ class Storybook < ActiveRecord::Base
 
   private
 
-  def create_scene
-    self.scenes.create
+  def create_default_scene
+    scenes.create(is_main_menu: true)
+    scenes.create(position: 0)
   end
+
 end

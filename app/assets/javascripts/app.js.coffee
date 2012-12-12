@@ -25,14 +25,14 @@ window.App =
     @keyframesTextCollection =   new App.Collections.KeyframeTextsCollection []
     @activeActionsCollection =   new App.Collections.ActionsCollection       []
 
+    @contentModal =   new App.Views.Modal className: 'content-modal'
+    @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
+    @toolbar =        new App.Views.ToolbarView  el: $('#toolbar')
+
     @sceneList         new App.Views.SceneIndex        collection: @scenesCollection
     @keyframeList      new App.Views.KeyframeIndex     collection: @keyframesCollection
     @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('#canvas-wrapper')
 
-    @contentModal =   new App.Views.Modal className: 'content-modal'
-    @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
-    @toolbar =        new App.Views.ToolbarView  el: $('#toolbar')
-   
     @activeSpritesList = new App.Views.ActiveSpritesList()
     @activeSpritesWindow(@activeSpritesList)
 
@@ -154,18 +154,27 @@ window.App =
       )
 
       @storybook = storybook
-    else
-      @storybook
+
+    @storybook
 
 
   currentScene: (scene) ->
-    if scene then @scene = scene else @scene
+    if scene
+      @scene = scene
+
+      if $('#keyframe-list ul').length == 0
+         $('#keyframe-list').html("").html(App.keyframeList().el)
+
+      App.keyframeList().collection.scene_id = scene.get("id")
+      App.keyframeList().collection.fetch()
+
+    @scene
 
 
   currentKeyframe: (keyframe) ->
     if keyframe
       @keyframe = keyframe
-      App.vent.trigger 'keyframe:can_add_text', !keyframe.isAnimation()
+      App.vent.trigger 'keyframe:can_add_text', keyframe.canAddText()
     else
       @keyframe
 
@@ -265,10 +274,4 @@ $ ->
       $(this).toggleClass "active"
       toolbar_modal.modal "show"
 
-  #
-  # TODO:
-  #    Move to App.Views.SceneIndex
-  #
-  $(window).resize ->
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
+  $(window).resize -> App.vent.trigger('window:resize')

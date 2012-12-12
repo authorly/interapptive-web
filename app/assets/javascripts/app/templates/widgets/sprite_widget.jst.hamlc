@@ -7,4 +7,5 @@
 %div.sprite-image{:style => _style, :data-zorder => _zOrder, :data-widget-id => _id}
 %span
   = _filename
-%div.delete
+- unless _widget.type == 'ButtonWidget'
+  %div.delete

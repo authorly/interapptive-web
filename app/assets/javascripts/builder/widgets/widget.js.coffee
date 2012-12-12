@@ -1,26 +1,30 @@
-NEXT_WIDGET_ID = 1
-
+##
+# A `Widget` is an entity that has a graphical representation and that
+# responds to user interactions.
+#
+# # dira, 2012-12-03 it would be better if widgets were independent of
+# the concept of storybook.
+# It also belongs to a storybook.
+#
+#
+# Graphical properties:
+# _opacity
+# _highlighted
+# _mouse_over
+# draggable
+#
 class App.Builder.Widgets.Widget extends cc.Node
 
   draggable: true
-  retention: 'keyframe'
-  retentionMutability: false
 
   _mouse_over: false
 
-  @newFromHash: (hash) ->
+  retention: 'keyframe'
 
-    widget = new this(hash)
+  retentionMutability: false
 
-    # TODO: Sprite should be created w/ this zOrder, move to SpriteWidget
-    if hash.zOrder then widget._zOrder = hash.zOrder
+  @idGenerator = new App.Lib.Counter
 
-    widget.setPosition(new cc.Point(hash.position.x, hash.position.y)) if hash.position
-
-    if hash.id >= NEXT_WIDGET_ID
-      NEXT_WIDGET_ID = hash.id + 1
-
-    return widget
 
   constructor: (options={}) ->
     super
@@ -29,20 +33,19 @@ class App.Builder.Widgets.Widget extends cc.Node
     @_opacity = 255
     @_highlighted = false
 
-    @setPosition(new cc.Point(options.position.x, options.position.y)) if options.position?
-
     if options.id
-      @id = options.id
-      if options.id >= NEXT_WIDGET_ID
-        NEXT_WIDGET_ID = options.id + 1
+      @id = App.Builder.Widgets.Widget.idGenerator.check(options.id)
     else
-      @id = NEXT_WIDGET_ID
-      NEXT_WIDGET_ID += 1
+      @id = App.Builder.Widgets.Widget.idGenerator.next()
 
+    if options.position
+      @setPosition(new cc.Point(options.position.x, options.position.y))
 
-    @on("mouseover", @mouseOver)
-    @on("mouseout", @mouseOut)
-    @on('dblclick', @doubleClick)
+    @on 'mouseover', @mouseOver
+    @on 'mouseout',  @mouseOut
+    @on 'mousemove', @mouseMove
+    @on 'dblclick',  @doubleClick
+
 
   mouseOver: ->
     @_mouse_over = true
@@ -58,17 +61,17 @@ class App.Builder.Widgets.Widget extends cc.Node
     return @_highlighted
 
   highlight: ->
-    unless @isHighlighted()
-      @_highlighted = true
-      App.Builder.Widgets.WidgetDispatcher.trigger('widget:highlight', @id)
+    return if @isHighlighted()
+    @_highlighted = true
+    App.Builder.Widgets.WidgetDispatcher.trigger('widget:highlight', @id)
 
   unHighlight: ->
-    if @isHighlighted()
-      @_highlighted = false
-      App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight', @id)
+    return unless @isHighlighted()
+    @_highlighted = false
+    App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight', @id)
 
-  setOpacity: (o) ->
-    @_opacity = o
+  setOpacity: (opacity) ->
+    @_opacity = opacity
 
   getOpacity: ->
     @_opacity
@@ -92,8 +95,8 @@ class App.Builder.Widgets.Widget extends cc.Node
     cc.RectMake(
       p.x - s.width  * a.x
       p.y - s.height * a.y
-      s.width*@getScale()
-      s.height*@getScale()
+      s.width  * scale
+      s.height * scale
     )
 
   toHash: ->
@@ -112,7 +115,7 @@ class App.Builder.Widgets.Widget extends cc.Node
     @toHash()
 
   pointToLocal: (point) ->
-    return unless @parent
+    return unless @parent?
 
     local = @convertToNodeSpace(point)
 
@@ -134,13 +137,13 @@ class App.Builder.Widgets.Widget extends cc.Node
     return cc.Rect.CCRectContainsPoint(r, local)
 
   setStorybook: (storybook) ->
-    @removeFromStorybook(@_storybook) if @_storybook
+    # @removeFromStorybook(@_storybook) if @_storybook
     @_storybook = storybook
-    @addToStorybook(storybook) if storybook
+    # @addToStorybook(storybook) if storybook
 
-  removeFromStorybook: (storybook) =>
+  # removeFromStorybook: (storybook) =>
 
-  addToStorybook: (storybook) =>
+  # addToStorybook: (storybook) =>
 
   isSpriteWidget: ->
     @ instanceof App.Builder.Widgets.SpriteWidget

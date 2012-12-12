@@ -17,7 +17,7 @@ class App.Views.ActiveSpritesList extends Backbone.View
 
   declareAddSpriteListener: ->
     $('#active-sprites-window .icon-plus').on 'click', ->
-      $('#toolbar li ul li.add-image').click()
+      App.vent.trigger 'add:sprite'
 
 
   setActiveSpriteWidget: (e) ->
@@ -41,6 +41,8 @@ class App.Views.ActiveSpritesList extends Backbone.View
     view = new App.Views.SpriteWidget(widget: widget)
     $(@el).prepend(view.render().el)
 
+    widget.on 'change', (what) ->
+      view.render() if what == 'url'
     @sortListByZOrder()
 
 
@@ -89,13 +91,14 @@ class App.Views.ActiveSpritesList extends Backbone.View
     widgetId = widgetEl.siblings('.sprite-image').data('widget-id')
 
     widget = App.builder.widgetLayer.getWidgetById(widgetId)
-    App.builder.widgetLayer.removeWidget(widget)
-    App.currentScene().removeWidget(widget)
-    @removeWidget(widget)
+    if App.builder.widgetLayer.removeWidget(widget) || App.currentScene().removeWidget(widget)
+      @removeWidget(widget)
+
 
   removeWidget: (widget) =>
     @removeListEntry(widget)
     App.spriteForm.resetForm()
+
 
   removeListEntry: (widget) =>
     $(@el).find("div[data-widget-id=#{widget.id}]").parent().remove()

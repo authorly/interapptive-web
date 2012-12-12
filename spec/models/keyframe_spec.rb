@@ -31,9 +31,10 @@ describe Keyframe do
       Factory.build(:animation_keyframe, scene_id: keyframe.scene_id).should be_valid
     end
 
-    it "should not allow an animation keyframe unless its position is null" do
+    it "should not allow an animation keyframe unless its position is nil" do
       Factory.build(:animation_keyframe, position: 0).should_not be_valid
       Factory.build(:animation_keyframe, position: 1).should_not be_valid
+      Factory.build(:animation_keyframe, position: nil).should be_valid
     end
 
     it 'should not allow two animation keyframes in the same scene' do

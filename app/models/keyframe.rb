@@ -9,7 +9,7 @@ class Keyframe < ActiveRecord::Base
 
   serialize :widgets
 
-  validates :position, inclusion: { in: [nil] }, if: :is_animation, allow_nil: true
+  validates :position, inclusion: { in: [nil] }, if: :is_animation
   validates :is_animation, uniqueness: { scope: :scene_id }, if: :is_animation
 
   def audio_text
@@ -77,7 +77,7 @@ class Keyframe < ActiveRecord::Base
     return '' unless audio
     audio.url
   end
-  
+
   def as_json(options)
     super.merge({
       :preview_image_url       => preview_image.try(:image).try(:url),

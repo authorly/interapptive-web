@@ -1,0 +1,12 @@
+%div
+  %h3 The image to show on the button:
+  .baseImage
+  .baseImageChooser
+
+%div
+  %h3 The image to show when the button is pressed:
+  .tappedImage
+  .tappedImageChooser
+
+%a.btn.btn-primary.use-images
+  Ok
