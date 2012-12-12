@@ -35,7 +35,7 @@ class WidgetDispatcher
     @openTouchModal(widget)
 
   createWidget: (widget) ->
-    widget = new App.Builder.Widgets.TouchWidget
+    widget = new App.Builder.Widgets.TouchWidget(scene: App.currentScene())
     widget.setPosition(new cc.Point(300, 400))
     @_addSceneWidget(widget)
     widget
@@ -57,13 +57,18 @@ class WidgetDispatcher
 
 
   _addSceneWidget: (widget) =>
+    # We are adding widget to widget layer and in dispatcher
+    # even before we have saved that to a scene. This makes
+    # sense assuming the saving to the scene will be successful.
+    # But what if server returns 500? We have some data that
+    # represents wrong state.
     @widgets.push(widget)
-
     App.builder.widgetLayer.addWidget(widget)
-
     scene = App.currentScene()
     scene.addWidget(widget)
     widget.on('change', -> scene.updateWidget(widget))
+    App.storybookJSON.addTouchWidget(widget)
+    App.builder.widgetStore.addWidget(widget)
 
 
 App.Builder.Widgets.WidgetDispatcher = new WidgetDispatcher()

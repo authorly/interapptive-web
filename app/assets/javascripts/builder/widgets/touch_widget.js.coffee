@@ -25,6 +25,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   constructor: (options={}) ->
     super
 
+    @scene(options.scene)
     @action_id = null
 
     @setRadius(options.radius || 32)
@@ -42,6 +43,12 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   loadFromHash: (hash, options) =>
     _.extend(@, hash)
     options?.success?(@)
+
+  scene: ->
+    if arguments.length > 0
+      @_scene = arguments[0]
+    else
+      @_scene
 
   onMouseOver: (e) =>
     @setOpacity(255)
