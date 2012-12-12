@@ -48,6 +48,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   updateOrientation: =>
     orientationWidget = App.currentKeyframe().spriteOrientationWidgetBySpriteWidget(this)
+    # XXX This blows, now some widgets are on the scene, not on the current keyframe
     orientationWidget.point = @getPosition()
     orientationWidget.update()
 
@@ -207,7 +208,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   getOrientationForKeyframe: ->
     keyframe = arguments[0] || App.currentKeyframe()
-    orientation = _.find(@orientations(), (p) -> p.keyframe.id == arguments[0].id)
+    orientation = _.find(@orientations(), (p) -> p.keyframe.id == keyframe.id)
     orientation || @orientations()[0]
 
   setPositionX: (x) =>

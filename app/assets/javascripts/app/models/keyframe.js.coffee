@@ -26,7 +26,7 @@ class App.Models.Keyframe extends Backbone.Model
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
 
-    
+
   initializePreview: ->
     attributes = App.Lib.AttributesHelper.filterByPrefix @attributes, 'preview_image_'
     @preview = new App.Models.Preview(attributes)
@@ -35,18 +35,18 @@ class App.Models.Keyframe extends Backbone.Model
       @set preview_image_id: @preview.id
       @save()
 
-      
+
   hasWidget: (widget) ->
     _.any((@get('widgets') || []), (w) -> widget.id is w.id)
 
-    
+
   addWidget: (widget) ->
     widgets = @get('widgets') || []
     widgets.push(widget.toHash())
     @set('widgets', widgets)
     @widgetsChanged()
 
-    
+
   updateWidget: (widget) =>
     widgets = @get('widgets') || []
 
@@ -72,7 +72,7 @@ class App.Models.Keyframe extends Backbone.Model
 
     App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
     @widgetsChanged()
-    
+
 
   widgetsChanged: =>
     @trigger 'change:widgets', @
