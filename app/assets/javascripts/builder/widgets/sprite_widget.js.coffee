@@ -48,6 +48,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   updateOrientation: =>
     orientationWidget = App.currentKeyframe().spriteOrientationWidgetBySpriteWidget(this)
+    orientationWidget.point = @getPosition()
     orientationWidget.update()
 
 
@@ -60,15 +61,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @_scene
 
 
-
-
-
   orientations: ->
     if arguments.length > 0
       @_orientations = []
-      _.each(arguments[0], (position) =>
-        throw new Error("orientations of a SpriteWidget must be a App.Builder.Widgets.SpriteOrientationWidget") unless (position instanceof App.Builder.Widgets.SpriteOrientationWidget)
-        @_orientations.push(position)
+      _.each(arguments[0], (orientation) =>
+        throw new Error("orientations of a SpriteWidget must be a App.Builder.Widgets.SpriteOrientationWidget") unless (orientation instanceof App.Builder.Widgets.SpriteOrientationWidget)
+        @_orientations.push(orientation)
       )
     else
       @_orientations

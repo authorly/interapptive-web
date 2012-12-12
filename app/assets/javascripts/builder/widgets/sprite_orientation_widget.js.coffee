@@ -6,7 +6,11 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     super
 
     @keyframe            =    options.keyframe
-    @point               =    options.point ? new cc.Point(300, 400)
+    if options.x and options.y
+      @point = new cc.Point(options.x, options.y)
+    else
+      @point = new cc.Point(300, 400)
+
     @scale               =    options.scale ? 1.0
     @sprite_widget_id    =    options.sprite_widget_id
     @sprite_widget       =    options.sprite_widget ? undefined
