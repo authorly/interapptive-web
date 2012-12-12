@@ -189,7 +189,7 @@ class App.StorybookJSON
     @document.Pages[pageNumber]
 
 
-  _addSprite: (sprite_widget) ->
+  addSprite: (sprite_widget) ->
     page = sprite_widget.scene()._page
     throw new Error("Scene has no Page") unless page?
     page.API.CCSprites ||= []
@@ -234,7 +234,7 @@ class App.StorybookJSON
       nextActionTag += 1
 
   addSpriteWidget: (sprite_widget) ->
-    sprite_tag = @_addSprite(sprite_widget)
+    sprite_tag = @addSprite(sprite_widget)
     _.each(sprite_widget.orientations(), (sprite_orientation_widget) =>
       @addSpriteOrientationWidget(sprite_orientation_widget)
     )
