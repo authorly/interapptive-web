@@ -9,7 +9,7 @@ class App.Services.SwitchKeyframeService
     return if @oldKeyframe is @newKeyframe
 
     App.currentKeyframe @newKeyframe
-    if App.fontToolbar? then fontToolbar.onCloseClick.call(App.fontToolbar)
+    if App.fontToolbar? then App.fontToolbar.onCloseClick()
     @switchActiveKeyframeElement(@newKeyframe)
 
     #@paletteDispatcher.trigger('keyframe:change')
