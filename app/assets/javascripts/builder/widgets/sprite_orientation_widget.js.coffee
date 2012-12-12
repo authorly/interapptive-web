@@ -30,7 +30,7 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     )
 
   updateStorybookJSON: ->
-    App.storybookJSON.addSpritePositionWidget(this)
+    App.storybookJSON.addSpriteOrientationWidget(this)
     App.builder.widgetStore.addWidget(this)
 
   couldNotSave: ->

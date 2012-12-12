@@ -108,12 +108,12 @@ class App.StorybookJSON
     scene.keyframes.each (keyframe) =>
       @createParagraph(scene, keyframe)
 
-  createWidgetsFor: (scene) ->
-    _.each(scene.widgets(), (widget) =>
-      @createWidgetFor(scene, widget)
+  createWidgetsFor: (owner) ->
+    _.each(owner.widgets(), (widget) =>
+      @createWidgetFor(owner, widget)
     )
 
-  createWidgetFor: (scene, widget) ->
+  createWidgetFor: (owner, widget) ->
     this['add' + widget.constructor.name].call(this, widget)
 
   # keyframe === paragraph
@@ -129,9 +129,8 @@ class App.StorybookJSON
       voiceAudioFile: keyframe.get('url')
 
     page.Page.text.paragraphs.push(paragraph)
-
     keyframe._paragraph = paragraph
-
+    @createWidgetsFor(keyframe)
     paragraph
 
   removeParagraph: (scene, keyframe) ->
@@ -205,23 +204,23 @@ class App.StorybookJSON
     nextSpriteTag += 1
     spriteJSON.spriteTag
 
-  addSpritePositionWidget: (sprite_position_widget) ->
-    ccsprite = sprite_position_widget.sprite_widget._CCSprite
+  addSpriteOrientationWidget: (sprite_orientation_widget) ->
+    ccsprite = sprite_orientation_widget.sprite_widget._CCSprite
     throw new Error("SpriteWidget has no CCSprite") unless ccsprite?
 
     if ccsprite.position.length == 0
-      ccsprite.position.push(sprite_position_widget.point.x)
-      ccsprite.position.push(sprite_position_widget.point.y)
+      ccsprite.position.push(sprite_orientation_widget.point.x)
+      ccsprite.position.push(sprite_orientation_widget.point.y)
     else
-      page = sprite_position_widget.sprite_widget.scene()._page
+      page = sprite_orientation_widget.sprite_widget.scene()._page
       throw new Error("Scene has no Page") unless page?
       page.API.CCMoveTo ||= []
       spriteMoveToJSON =
-        position:  [sprite_position_widget.point.x, sprite_position_widget.point.y]
+        position:  [sprite_orientation_widget.point.x, sprite_orientation_widget.point.y]
         duration:  3
         actionTag: nextActionTag
       page.API.CCMoveTo.push(spriteMoveToJSON)
-      sprite_position_widget._CCMoveTo = spriteMoveToJSON
+      sprite_orientation_widget._CCMoveTo = spriteMoveToJSON
 
       # Following code is probably buggy.
       # It does not account fro multiple actionTags.
@@ -235,8 +234,8 @@ class App.StorybookJSON
 
   addSpriteWidget: (sprite_widget) ->
     sprite_tag = @addSprite(sprite_widget)
-    _.each(sprite_widget.orientations(), (sprite_position_widget) =>
-      @addSpritePositionWidget(sprite_position_widget)
+    _.each(sprite_widget.orientations(), (sprite_orientation_widget) =>
+      @addSpriteOrientationWidget(sprite_orientation_widget)
     )
     sprite_tag
 

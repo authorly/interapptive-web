@@ -75,8 +75,6 @@ class App.Views.ToolbarView extends Backbone.View
         # idea.
         if keyframe.get('scene_id') == collection.scene_id
           collection.add keyframe
-          keyframe.widgets() # To reload widgets of the keyframe and put them into App.Widgets.WidgetStore
-
 
   showActionLibrary: ->
     @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
