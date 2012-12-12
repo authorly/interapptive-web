@@ -55,7 +55,7 @@ class App.Services.SwitchKeyframeService
 
   addWidget: (widget, owner) =>
     App.builder.widgetLayer.addWidget(widget)
-    widget.on('change', owner.updateWidget.bind(owner, widget))
+    #widget.on('change', owner.updateWidget.bind(owner, widget))
 
 
   updateTextWidgets: =>

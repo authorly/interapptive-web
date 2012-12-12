@@ -140,5 +140,8 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   addToStorybook: (storybook) =>
 
+  isSpriteWidget: ->
+    @ instanceof App.Builder.Widgets.SpriteWidget
+
   save: ->
     throw new Error("Must be implemented in the subclass")

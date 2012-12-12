@@ -11,6 +11,10 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     @sprite_widget_id    =    options.sprite_widget_id
     @sprite_widget       =    options.sprite_widget ? undefined
 
+
+    @on 'change:orientation', @update
+
+
   toHash: ->
     hash = {}
     hash.sprite_widget_id    =    @sprite_widget_id
@@ -20,6 +24,7 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     hash.scale               =    @scale
     hash
 
+
   save: ->
     widgets = @keyframe.get('widgets') || []
     widgets.push(@toHash())
@@ -28,6 +33,21 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
       success: => @updateStorybookJSON
       error: => @couldNotSave
     )
+
+
+  update: ->
+    console.log "update spriteOrientationWidget"
+    orientationWidgets = @keyframe.get('widgets') || []
+    widgetFromKeyframe = _.find(orientationWidgets, (w) -> w.id == @id)
+    orientationWidgets.splice(orientationWidgets.indexOf(widgetFromKeyframe), 1, @toHash())
+    @keyframe.set('widgets', orientationWidgets)
+    @keyframe.save {},
+      success: =>
+        console.log('Update widget in widget store')
+        console.log('Update widget JSON')
+      error: =>
+        console.log("FFFFFFFFFuuuuuuuuu")
+
 
   updateStorybookJSON: ->
     App.storybookJSON.addSpriteOrientationWidget(this)

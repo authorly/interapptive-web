@@ -36,13 +36,20 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @disableDragging()
 
-    @on 'dblclick',     @setActiveSpriteFromClick
-    @on 'clickOutside', @setAsInactive
-    @on 'mousemove',    @mouseMove
-    @on "mouseover",    @mouseOver
-    @on "mouseout",     @mouseOut
+    @on 'dblclick',           @setActiveSpriteFromClick
+    @on 'clickOutside',       @setAsInactive
+    @on 'mousemove',          @mouseMove
+    @on 'mouseover',          @mouseOver
+    @on 'mouseout',           @mouseOut
+    @on 'change:orientation', @updateOrientation
 
     @getImage()
+
+
+  updateOrientation: =>
+    orientationWidget = App.currentKeyframe().spriteOrientationWidgetBySpriteWidget(this)
+    orientationWidget.update()
+
 
   scene: ->
     if arguments.length > 0
@@ -51,6 +58,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     else
       @_scene
+
+
+
+
 
   orientations: ->
     if arguments.length > 0

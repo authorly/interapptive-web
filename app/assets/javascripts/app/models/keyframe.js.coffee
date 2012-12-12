@@ -102,7 +102,7 @@ class App.Models.Keyframe extends Backbone.Model
     @get('is_animation')
 
   spriteOrientationWidgetBySpriteWidget: (sprite_widget) ->
-    orientation = _.find(@widgets(), (widget) -> widget.sprite_widget_id == sprite_widget.id && widget.type == sprite_widget.constructor.name)
+    orientation = _.find(@widgets(), (widget) -> widget.sprite_widget_id == sprite_widget.id)
     return undefined unless orientation?
     orientation.sprite_widget = sprite_widget
     orientation

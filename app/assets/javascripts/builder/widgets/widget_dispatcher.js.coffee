@@ -4,6 +4,13 @@
 # CRUD, dispatching where necessary.
 #
 # There's a lot of work to be done on it.
+#
+#
+# UPDATE:
+#      Functionality of this class is being moved onto widgets themselves
+#      i.e., updating, deleting, etc.
+#      See save() and update() methods on widgets, which deal with updating/storing the hash
+#
 
 class WidgetDispatcher
 
@@ -17,15 +24,18 @@ class WidgetDispatcher
     @on('widget:highlight', @clearHighlights)
     @on('widget:unhighlight', @clearHighlights)
 
+
   # Iterators
   allButId: (id) ->
     _.reject(@widgets, (w) -> w.id == id)
+
 
   # Group actions
   clearHighlights: (id) ->
     if @widgets
       widget.unHighlight for widget in @allButId(id)
     else
+
 
   # Creators
   instantiateTouchWidget: (widget) ->
@@ -34,11 +44,13 @@ class WidgetDispatcher
 
     @openTouchModal(widget)
 
+
   createWidget: (widget) ->
     widget = new App.Builder.Widgets.TouchWidget
     widget.setPosition(new cc.Point(300, 400))
     @_addSceneWidget(widget)
     widget
+
 
   # Modals
   openTouchModal: (widget) =>
@@ -46,6 +58,7 @@ class WidgetDispatcher
     view.on('touch_select', @updateTouchWidget)
     App.modalWithView(view: view).show()
     # view.fetchImages()
+
 
   # Updaters
   updateTouchWidget: (result) =>
@@ -63,7 +76,7 @@ class WidgetDispatcher
 
     scene = App.currentScene()
     scene.addWidget(widget)
-    widget.on('change', -> scene.updateWidget(widget))
+
 
 
 App.Builder.Widgets.WidgetDispatcher = new WidgetDispatcher()

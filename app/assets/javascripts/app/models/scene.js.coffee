@@ -12,6 +12,7 @@ class App.Models.Scene extends Backbone.Model
     @on 'change:widgets', @save
     @on 'change:preview_image_id', @save
 
+
   _getKeyframes: (options) ->
     unless @isNew()
       @keyframes.url = "/scenes/#{@get('id')}/keyframes.json"
@@ -51,25 +52,11 @@ class App.Models.Scene extends Backbone.Model
     widgets = @get('widgets') || []
     widgets.push(widget.toSceneHash())
     @set('widgets', widgets)
-    if (widget instanceof App.Builder.Widgets.SpriteWidget) && !widget.isLoaded()
+    if (widget.isSprite() ) && !widget.isLoaded()
       widget.on 'loaded', => setTimeout @widgetsChanged, 0, widget
     else
       @widgetsChanged(widget)
 
-  updateWidget: (widget, skipTrigger = false) =>
-    widgets = @get('widgets') || []
-
-    for w, i in widgets
-      if widget.id is w.id
-        widgets[i] = widget.toSceneHash()
-        @widgetsChanged(widget) unless skipTrigger
-        # Yes, we updated the widget.
-        return true
-
-    # If we make it this far, the widget doesn't exist, so let's add it
-    @addWidget(widget)
-    # No, we didn't update a widget. Addwidget calls its own widgetsChanged.
-    false
 
   removeWidget: (widget, skipWidgetLayerRemoval) =>
     return unless (widgets = @get('widgets'))?
@@ -87,7 +74,7 @@ class App.Models.Scene extends Backbone.Model
     @trigger 'change:widgets', widget
 
   spriteWidgets: ->
-    _.select(@widgets(), (w) -> w instanceof App.Builder.Widgets.SpriteWidget)
+    _.select(@widgets(), (w) -> w.isSpriteWidget())
 
   widgets: ->
     widgets_array = @get('widgets')

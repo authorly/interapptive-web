@@ -101,14 +101,18 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   ccTouchesEnded: (touches) ->
     touch = touches[0]
     point = touch.locationInView()
+
     # TODO trigger('click')
     # Causes a save
     if @_capturedWidget
-      @_capturedWidget.trigger('change', 'position')
       @_capturedWidget.trigger('mouseup', {
-      touch: touch,
-      canvasPoint: point
+        touch: touch,
+        canvasPoint: point
       })
+
+      if @_capturedWidget.isSpriteWidget()
+        @_capturedWidget.trigger('change:orientation')
+
 
     delete @_previousPoint
     delete @_capturedWidget
@@ -116,11 +120,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   moveCapturedWidget: (point) ->
     @_previousPoint ||= point
+
     delta = cc.ccpSub(point, @_previousPoint)
     newPos = cc.ccpAdd(delta, @_capturedWidget.getPosition())
 
     @_capturedWidget.setPosition(newPos, false)
-    console.log " @_capturedWidget.getPosition(): ",  @_capturedWidget.getPosition()
     @_previousPoint = new cc.Point(parseInt(point.x), parseInt(point.y))
 
 
