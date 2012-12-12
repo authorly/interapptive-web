@@ -31,6 +31,7 @@ class Scene < ActiveRecord::Base
 
   serialize :widgets
 
+  before_create :create_main_menu_widgets, if: :is_main_menu
   after_create :create_keyframe
 
   def as_json(options)
@@ -53,16 +54,17 @@ class Scene < ActiveRecord::Base
   private
 
   def create_keyframe
-    attributes = { position: 0 }
-    if is_main_menu
-      attributes[:widgets] = [
-        {type: 'ButtonWidget', id: 1, name: 'read_it_myself', position: { y: 100, x: 200 }, scale: 1, zOrder: 1 },
-        {type: 'ButtonWidget', id: 2, name: 'read_to_me',     position: { y: 200, x: 200 }, scale: 1, zOrder: 1 },
-        {type: 'ButtonWidget', id: 3, name: 'auto_play',      position: { y: 300, x: 200 }, scale: 1, zOrder: 1 },
-      ]
-    end
-
-    keyframes.create attributes
+    keyframes.create(position: 0)
   end
+
+  def create_main_menu_widgets
+    self.widgets = [
+      {type: 'ButtonWidget', id: 1, name: 'read_it_myself', position: { y: 100, x: 200 }, scale: 1, zOrder: 1 },
+      {type: 'ButtonWidget', id: 2, name: 'read_to_me',     position: { y: 200, x: 200 }, scale: 1, zOrder: 1 },
+      {type: 'ButtonWidget', id: 3, name: 'auto_play',      position: { y: 300, x: 200 }, scale: 1, zOrder: 1 },
+    ]
+  end
+
+
 
 end

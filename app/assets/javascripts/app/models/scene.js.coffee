@@ -10,7 +10,7 @@ class App.Models.Scene extends Backbone.Model
 
 
   initialize: ->
-    @keyframes = new App.Collections.KeyframesCollection []
+    @keyframes = new App.Collections.KeyframesCollection [], scene_id: @id
     @_getKeyframes(async: false)
     @on 'change:preview_image_id', @save
 

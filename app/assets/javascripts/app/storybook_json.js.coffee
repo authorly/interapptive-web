@@ -253,6 +253,12 @@ class App.StorybookJSON
     )
     sprite_tag
 
+
+  addButtonWidget: (widget) ->
+    # TODO implement this
+    @addSpriteWidget(widget)
+
+
   addTouchWidget: (touch_widget) ->
     page = touch_widget.scene()._page
     throw new Error("Scene has no Page") unless page?

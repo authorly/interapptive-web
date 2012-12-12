@@ -3,6 +3,7 @@
 #
 class App.Views.ImageIndex extends Backbone.View
   template: JST["app/templates/assets/images/index"]
+
   events:
     'click a':                        'setActiveImage'
     'touchstart, touchend .zoomable': 'doZoom'
@@ -17,7 +18,7 @@ class App.Views.ImageIndex extends Backbone.View
 
 
   render: ->
-    $(@el).html @template(options: @options)
+    @$el.html @template(options: @options)
     @collection.each @appendImage
     @delegateEvents() # patch for re-delegating events when the view is lost
     @

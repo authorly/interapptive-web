@@ -10,7 +10,8 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
   constructor: (options={}) ->
     @_name = options.name
     @_selectedUrl = options.selected_url
-    options.url = "/assets/sprites/#{@_name}.png" unless options.url?
+    options.url      = "/assets/sprites/#{@_name}.png" unless options.url?
+    options.filename =                 "#{@_name}.png" unless options.filename?
 
     super
 
@@ -29,12 +30,14 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
     if @_url != values.baseUrl
       @_url = values.baseUrl
       @trigger('change', 'url')
+      # TODO integrate better with the new sprites
+      @sprite.url = @_url
+      @_getImage()
 
     if @_selectedUrl != values.tappedUrl
       @_selectedUrl = values.tappedUrl
       @trigger('change', 'selectedUrl')
 
-    @_getImage()
 
     @selector.hide()
 

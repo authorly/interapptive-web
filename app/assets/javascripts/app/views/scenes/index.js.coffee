@@ -1,4 +1,4 @@
- App.Views.SceneIndex extends Backbone.View
+class App.Views.SceneIndex extends Backbone.View
   template: JST["app/templates/scenes/index"]
 
   tagName: 'ul'

@@ -13,18 +13,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   retention: 'scene'
   retentionMutability: true # This object is independent across keyframes.
 
-  @newFromHash: (hash) ->
-    widget = new this(hash)
-
-    # Why this next line, given that the constructor does this already?
-    if hash.zOrder then widget._zOrder = hash.zOrder
-    widget.setPosition widget.getPositionForKeyframe() if widget.hasOrientationForKeyframe App.currentKeyframe()
-
-    if hash.id >= NEXT_WIDGET_ID
-      NEXT_WIDGET_ID = hash.id + 1
-
-    return widget
-
   constructor: (options={}) ->
     super
 
@@ -70,11 +58,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     else
       @_orientations
 
+
   orientationsToHash: ->
     _.map(@orientations(), (orientation) -> orientation.toHash())
 
 
   constructorContinuation: (dataUrl) =>
+    @sprite.url = dataUrl
     cc.TextureCache.sharedTextureCache().addImageAsync @sprite.url, this, =>
       @sprite.initWithFile(@sprite.url)
       @setScale()
@@ -89,9 +79,9 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     else
       window.setTimeout @triggerLoaded, 200
 
- isLoaded: ->
-   size = @sprite.getContentSize()
-   @sprite._texture.complete && (size.width + size.height > 0)
+  isLoaded: ->
+    size = @sprite.getContentSize()
+    @sprite._texture.complete && (size.width + size.height > 0)
 
 
   hasOrientationForKeyframe: (keyframe) =>
@@ -117,7 +107,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   mouseOut: ->
     super
-    @setCursor('default')
+    @_setCursor('default')
 
 
   doubleClick: ->
@@ -275,15 +265,16 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     console.log('SpriteWidget did not save')
 
   _getImage: ->
-   if @_url.indexOf('/') == 0
-      @constructorContinuation(@_url)
+    url = @sprite.url
+    if url.indexOf('/') == 0
+      @constructorContinuation(url)
     else
       proxy = App.Lib.RemoteDomainProxy.instance()
 
       proxy.bind 'message', @from_proxy
       proxy.send
         action: 'load'
-        path: @sprite.url
+        path:   url
 
 
   from_proxy: (message) =>

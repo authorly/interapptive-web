@@ -8,6 +8,7 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
   template: JST["app/templates/assets/sprites/index"]
 
   events:
+    'click .image-row':               'setActiveImage'
     'touchstart, touchend .zoomable': 'doZoom'
     'click .use-image':               'selectImage'
 
