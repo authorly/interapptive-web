@@ -10,20 +10,9 @@
   - for font in @fonts
     %option{:value => font.get('name')}
       = font.get('name')
-    
-%button#bold
-  B
-  
-.text_align
-  %button#left
-    L
-  %button#center
-    C
-  %button#right
-    R
 
 %select.font_size
-  - for i in [9..25]
+  - for i in [24..46]
     %option{:value => "#{i}"} 
       = i
       

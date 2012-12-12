@@ -1,37 +1,21 @@
 class App.Views.FontToolbar extends Backbone.View
   template: JST['app/templates/widgets/font_toolbar']
-
-  className: 'font_toolbar'
-
-  # defaults
-  _hidden: true
-  _fontColor: "#000000"
-  _fontSize: 12
-  _fontFace: "Arial"
-  _fontWeight: "bold" # or normal
-  _textAlign: "left" # "center", "right"
-  #_active: false # keeps hide() from hiding if there is a rollout event etc
-  #_timer: null
-
+  className:    'font_toolbar'
+  _hidden:      true
   events:
-    'change .font_face'          :   'onChangeFontFace'
-    'change .font_size'          :   'onChangeFontSize'
-    'mouseenter'                 :   'mouseEnter'
-    'mouseleave'                 :   'mouseLeave'
-    'mousemove'                  :   'mouseMove'
-    'a .bold'                    :   'boldClick'
-    'click .text_align #right'   :   'rightAlignClick'
-    'click .text_align #center'  :   'centerAlignClick'
-    'click .text_align #left'    :   'leftAlignClick'
-    'click .close_x'             :   'onCloseClick'
-    'click .delete'              :   'destroyKeyframeText'
+    'change .font_face' : 'update'
+    'change .font_size' : 'update'
+    'click .close_x'    : 'onCloseClick'
+    'click .delete'     : 'destroyKeyframeText'
+
 
   initialize: ->
     @render()
+    @setDefaults()
     $(@el).find(".colorpicker").miniColors
-      change: (hex, rgb) =>
-        @onChangeFontColor(hex, rgb)
+      change: (hex, rgb) => @update()
     $(@el).draggable()
+
 
   render: (model)->
     App.fontsCollection.fetch
@@ -40,132 +24,82 @@ class App.Views.FontToolbar extends Backbone.View
         $(@el).html(@template(fonts: App.fontsCollection.models))
     this
 
+
   writeFontFaces: (fonts) ->
-    $storybook_font_faces = $('#storybook-font-faces').html('')
+    $storybookFontFaces = $('#storybook-font-faces').html('')
     _.each fonts, (f) ->
-      font_face = "@font-face { font-family: '#{f.get('name')}'; src: url('#{f.get('url')}'); }"
-      $storybook_font_faces.append(font_face)
+      fontFace = "@font-face { font-family: '#{f.get('name')}'; src: url('#{f.get('url')}'); }"
+      $storybookFontFaces.append(fontFace)
+
 
   setDefaults: ->
-    @fontFace @_textWidget().model?.get('face') ? @_fontFace
-    @fontColor @_textWidget().model?.get('color') ? @_fontColor
-    @fontSize @_textWidget().model?.get('size') ? @_fontSize
-    #TODO font weight and font align defaults
+    @fontFace App.currentScene().get('font_face')
+    @fontColor App.currentScene().get('font_color')
+    @fontSize App.currentScene().get('font_size')
 
-  keyframeText: (keyframeText) ->
-    @_keyframeText()
 
   collection: (collection) ->
     if collection then @collection = collection else @collection
 
+
   attachToTextWidget: (textWidget) ->
-    @_textWidget(textWidget)
     @setDefaults()
-    @setPosition(@_textWidget().bottom(), @_textWidget().left())
+    @update()
+    @setPosition(textWidget.bottom(), textWidget.left())
     @show()
 
-  _textWidget: (textWidget) ->
-    if textWidget then @textWidget = textWidget else @textWidget
 
-  _keyframeText: ->
-    @_textWidget().model
+  update: ->
+    $('.text_widget').css
+      "font-family": @fontFace()
+      "font-size":   @fontSize() + "px"
+      "color":       @fontColor()
 
-  update: (e) ->
-    App.fontToolbarUpdate(this)
+    attributes =
+      font_face:  @fontFace()
+      font_size:  @fontSize()
+      font_color: @fontColor()
+    App.currentScene().save attributes
 
-  onChangeFontFace: (e) ->
-    @update()
 
   fontFace: (ff) ->
     if ff then $(@el).find('.font_face').val(ff) else $(@el).find(".font_face option:selected").val()
 
-  onChangeFontSize: (e) ->
-    @update()
 
   fontSize: (fs)->
     if fs then $(@el).find(".font_size").val(fs) else $(@el).find(".font_size option:selected").val()
 
-  onChangeFontColor: (hex, rgb) ->
-    @update()
 
   fontColor: (fc) ->
     if fc then $(@el).find('.colorpicker').val(fc) else $(@el).find('.colorpicker').val()
 
-  fontWeight: (fw) ->
-    el = $(@el)
-    if fw
-      if fw == "bold"
-        el.find('.font_weight').addClass('selected')
-      else
-        el.find('.font_weight').removeClass('selected')
-    else
-      @_fontWeight
-
-  textAlign: (ta) ->
-    if ta then @_textAlign = ta else @_textAlign
-
-  # events
-  mouseMove: -> 
-
-  mouseEnter: ->
-    @_active = true
-
-  mouseLeave: ->
-    @_active = false
-
-  boldClick: ->
-    if @fontWeight() == "bold"
-      @fontWeight("normal")
-    else
-      @bold("bold")
-
-    @update()
-
-  leftAlignClick: ->
-    @deselectAlignment()
-    @textAlign('left')
-
-    @update()
-
-  centerAlignClick: ->
-    @deselectAlignment()
-    @textAlign('center')
-
-    @update()
-
-  rightAlignClick: ->
-    @deselectAlignment()
-    @textAlign('right')
-    @update()
 
   deselectAlignment: ->
     $('.align_button').removeClass('selected')
+
 
   show: ()->
     $(@el).show()
     @_hidden = false
 
+
   setPosition: (_top, _left) ->
-    # TODO calculate padding in a more clear way 
-    # ENHANCEMENT may need to solve for text too high or too far to the right
     padding = 20
     $(@el).css
       top : _top - ($(@el).height() + padding)
       left : _left
 
+
   onCloseClick: ->
     @hide()
     App.fontToolbarClosed()
+
 
   hide: ->
     if !@_mouseEntered
       $(@el).hide()
       @_hidden = true
 
-  hidden: ->
-    return @_hidden
-
-  leave: ->
 
   destroyKeyframeText: (e) ->
     $target = $(e.target)

@@ -6,7 +6,9 @@ class App.Services.SwitchSceneService
   execute: =>
     @sceneList.switchActiveElement @newScene
 
+    App.builder.widgetLayer.clearWidgets()
     App.builder.widgetLayer.removeAllChildrenWithCleanup()
+
     App.currentScene @newScene
     App.keyframeList().collection.scene_id = @newScene.get('id')
     App.keyframeList().collection.fetch()

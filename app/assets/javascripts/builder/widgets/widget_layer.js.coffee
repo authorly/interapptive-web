@@ -16,6 +16,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @addDblClickEventListener()
     @addClickOutsideEventListener() # Clicks outside the widget
 
+
   clearWidgets: (conditionallyRemove = ((w) -> true)) ->
     widgetsToRemove = _.filter(@widgets, conditionallyRemove)
     @widgets = _.difference(@widgets, widgetsToRemove)
@@ -24,6 +25,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       delete widget.parent
     )
 
+
   removeWidget: (widget) ->
     for _widget, i in @widgets
       if _widget && widget.id is _widget.id
@@ -31,8 +33,10 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         delete(_widget.parent)
         @widgets.splice(i, 1)
 
+
   hasWidget: (widget) ->
     _.any(@widgets, (w) -> widget.id is w.id)
+
 
   # TODO: Refactor this to move sprites list additions and storybook updates
   #       the responsibility of a different class.
@@ -44,10 +48,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     widget.setStorybook(App.storybookJSON)
     this
 
+
   widgetAtId: (id) =>
     for widget, i in @widgets
       if id is widget.id
         return widget
+
 
   widgetAtTouch: (touch) ->
     @widgetAtPoint(touch.locationInView())
@@ -152,6 +158,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         previousWidget: @_mouseOverWidget
         })
       @_mouseOverWidget = widget
+
 
   setSelectedWidget: (widget) ->
     @_selectedWidget = widget
