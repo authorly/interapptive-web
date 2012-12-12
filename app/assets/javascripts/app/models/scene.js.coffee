@@ -52,7 +52,7 @@ class App.Models.Scene extends Backbone.Model
     widgets = @get('widgets') || []
     widgets.push(widget.toSceneHash())
     @set('widgets', widgets)
-    if (widget.isSprite() ) && !widget.isLoaded()
+    if (widget.isSpriteWidget() ) && !widget.isLoaded()
       widget.on 'loaded', => setTimeout @widgetsChanged, 0, widget
     else
       @widgetsChanged(widget)
