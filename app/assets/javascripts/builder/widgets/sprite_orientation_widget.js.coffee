@@ -14,6 +14,7 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     @scale               =    options.scale ? 1.0
     @sprite_widget_id    =    options.sprite_widget_id
     @sprite_widget       =    options.sprite_widget ? undefined
+    @type                =    'SpriteOrientationWidget'
 
 
     @on 'change:orientation', @update
@@ -23,7 +24,7 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     hash = {}
     hash.id                  =    @id
     hash.sprite_widget_id    =    @sprite_widget_id
-    hash.type                =    'SpriteOrientationWidget'
+    hash.type                =    @type
     hash.x                   =    @point.x
     hash.y                   =    @point.y
     hash.scale               =    @scale
