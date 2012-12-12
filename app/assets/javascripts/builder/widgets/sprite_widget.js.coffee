@@ -193,7 +193,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   setScale: (scale) ->
     @sprite.setScale(parseFloat(scale))
 
-  getScale: ->
+  getScaleForKeyframe: ->
     if arguments.length > 0
       @getOrientationForKeyframe(arguments[0]).scale
     else

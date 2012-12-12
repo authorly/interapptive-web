@@ -109,13 +109,6 @@ class App.StorybookJSON
     scene.keyframes.each (keyframe) =>
       @createParagraph(scene, keyframe)
 
-  createWidgetsFor: (owner) ->
-    _.each(owner.widgets(), (widget) =>
-      @createWidgetFor(owner, widget)
-    )
-
-  createWidgetFor: (owner, widget) ->
-    this['add' + widget.constructor.name].call(this, widget)
 
   # keyframe === paragraph
   createParagraph: (scene, keyframe) ->
@@ -176,6 +169,13 @@ class App.StorybookJSON
 
     widget.on('change', (property) => @updateWidget(keyframe, widget, property))
 
+  createWidgetsFor: (owner) ->
+    _.each(owner.widgets(), (widget) =>
+      @createWidgetFor(owner, widget)
+    )
+
+  createWidgetFor: (owner, widget) ->
+    this['add' + widget.constructor.name].call(this, widget)
 
   updateWidget: (keyframe, widget, property) ->
     p = keyframe._paragraph
@@ -224,7 +224,7 @@ class App.StorybookJSON
       sprite_orientation_widget._CCMoveTo = spriteMoveToJSON
 
       # Following code is probably buggy.
-      # It does not account fro multiple actionTags.
+      # It does not account for multiple actionTags.
       page.API.runAction ||= []
       runActionJSON =
         runAfterSwipeNumber: 1
@@ -232,6 +232,19 @@ class App.StorybookJSON
         actionTags:          [spriteMoveToJSON.actionTag]
       page.API.runAction.push(runActionJSON)
       nextActionTag += 1
+
+
+  updateSpriteOrientationWidget: (sprite_orientation_widget) ->
+    if sprite_orientation_widget._CCMoveTo
+      sprite_orientation_widget._CCMoveTo.position = [sprite_orientation_widget.point.x, sprite_orientation_widget.point.y]
+      sprite_orientation_widget._CCMoveTo.duration = 3
+
+    else
+      ccsprite = sprite_orientation_widget.sprite_widget._CCSprite
+      throw new Error("Scene has no Page") unless ccsprite?
+      ccsprite.position[0] = sprite_orientation_widget.point.x
+      ccsprite.position[1] = sprite_orientation_widget.point.y
+
 
   addSpriteWidget: (sprite_widget) ->
     sprite_tag = @addSprite(sprite_widget)

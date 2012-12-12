@@ -32,20 +32,11 @@ class App.Services.SwitchKeyframeService
 
   updateSceneWidgets: =>
     return unless (widgets = @currentScene.widgets())?
-    widgetsChanged = false
-
     for widget in widgets
       if App.builder.widgetLayer.hasWidget(widget) and widget.retentionMutability
-        res = @updateWidget(widget)
-        widgetsChanged = widgetsChanged || res
-
-      else if App.builder.widgetLayer.hasWidget(widget)
-
+        @updateWidget(widget)
       else
         @addWidget(widget, @currentScene)
-
-    if widgetsChanged
-      @currentScene.widgetsChanged()
 
   removeWidget: (widget) =>
     App.builder.widgetLayer.removeWidget(widget)
@@ -62,15 +53,8 @@ class App.Services.SwitchKeyframeService
     App.updateKeyframeText()
 
   updateWidget: (widget) =>
-    widget.setScale(widget.getScale(@newKeyframe))
-    widget.setPosition(widget.getPosition(@newKeyframe), false)
-    # QUESTION: WA:
-    # Why do we update a scene's widget when we are only switching
-    # between them? App.Views.KeyframeIndex.appendKeyframe might
-    # be the cause we do it here. Even in that case, we should
-    # move it to App.Views.ToolbarView._addKeyframe(). OR much
-    # better; as a before callback to Keyframe.save()
-    return App.currentScene().updateWidget(widget, true)
+    widget.setScale(widget.getScaleForKeyframe(@newKeyframe))
+    widget.setPosition(widget.getPositionForKeyframe(@newKeyframe))
 
   # For debugging changes in keyframe. Shows a snapshot of the following info:
   # - The number of widgets in the old keyframe

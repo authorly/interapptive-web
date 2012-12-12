@@ -21,6 +21,7 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
 
   toHash: ->
     hash = {}
+    hash.id                  =    @id
     hash.sprite_widget_id    =    @sprite_widget_id
     hash.type                =    Object.getPrototypeOf(this).constructor.name
     hash.x                   =    @point.x
@@ -40,17 +41,15 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
 
 
   update: ->
-    console.log "update spriteOrientationWidget"
     orientationWidgets = @keyframe.get('widgets') || []
     widgetFromKeyframe = _.find(orientationWidgets, (w) -> w.id == @id)
     orientationWidgets.splice(orientationWidgets.indexOf(widgetFromKeyframe), 1, @toHash())
     @keyframe.set('widgets', orientationWidgets)
     @keyframe.save {},
       success: =>
-        console.log('Update widget in widget store')
-        console.log('Update widget JSON')
+        App.storybookJSON.updateSpriteOrientationWidget(this)
       error: =>
-        console.log("FFFFFFFFFuuuuuuuuu")
+        console.log("SpriteOrientationWidget did not update")
 
 
   updateStorybookJSON: ->
