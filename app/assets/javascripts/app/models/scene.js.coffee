@@ -9,8 +9,17 @@ class App.Models.Scene extends Backbone.Model
   initialize: ->
     @keyframes = new App.Collections.KeyframesCollection []
     @_getKeyframes(async: false)
-    @on 'change:widgets', @save
     @on 'change:preview_image_id', @save
+
+  toJSON: ->
+    json = super
+    # XXX PATCH - a reference to the scene ends up in each widget
+    # hash and creates a circular structure that cannot be transformed to JSON
+    # (therefore, cannot be saved)
+    if json.widgets?
+      _.each json.widgets, (widget) ->
+        delete widget.scene
+    json
 
 
   _getKeyframes: (options) ->
@@ -53,7 +62,7 @@ class App.Models.Scene extends Backbone.Model
     widgets.push(widget.toSceneHash())
     @set('widgets', widgets)
     if (widget.isSpriteWidget() ) && !widget.isLoaded()
-      widget.on 'loaded', => setTimeout @widgetsChanged, 0, widget
+      widget.on 'loaded', => setTimeout @widgetsChanged, 0
     else
       @widgetsChanged(widget)
 
@@ -70,8 +79,8 @@ class App.Models.Scene extends Backbone.Model
     App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
     @widgetsChanged()
 
-  widgetsChanged: (widget) =>
-    @trigger 'change:widgets', widget
+  widgetsChanged: =>
+    @save()
 
   spriteWidgets: ->
     _.select(@widgets(), (w) -> w.isSpriteWidget())

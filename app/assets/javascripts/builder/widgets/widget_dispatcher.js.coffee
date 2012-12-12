@@ -69,6 +69,7 @@ class WidgetDispatcher
 
     scene = App.currentScene()
     scene.addWidget(widget)
+    widget.scene(scene)
     widget.on('change', -> scene.updateWidget(widget))
     App.storybookJSON.addTouchWidget(widget)
     App.builder.widgetStore.addWidget(widget)
