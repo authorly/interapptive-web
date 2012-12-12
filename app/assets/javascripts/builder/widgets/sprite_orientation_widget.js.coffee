@@ -5,7 +5,7 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     throw new Error("Can not create a App.Builder.Widgets.SpriteOrientationWidget without a App.Models.Keyframe") unless (options.keyframe instanceof App.Models.Keyframe)
     super
 
-    @keyframe            =    options.keyframe
+    @keyframe = options.keyframe
     if options.x and options.y
       @point = new cc.Point(options.x, options.y)
     else

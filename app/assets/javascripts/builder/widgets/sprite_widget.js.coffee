@@ -20,10 +20,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @sprite       =    new App.Builder.Widgets.Lib.Sprite(options)
     @scene(options.scene)
     throw new Error("Can not add SpriteWidget to a Scene that does not have a Keyframe") unless @scene().keyframes.length > 0
-    @orientations(_.map(@scene().keyframes.models, (keyframe) =>
+    @orientations @scene().keyframes.map (keyframe) =>
       keyframe.spriteOrientationWidgetBySpriteWidget(this) ||
-        new App.Builder.Widgets.SpriteOrientationWidget(keyframe: keyframe, sprite_widget: this, sprite_widget_id: this.id)
-    ))
+        new App.Builder.Widgets.SpriteOrientationWidget
+          keyframe: keyframe
+          sprite_widget: this
+          sprite_widget_id: this.id
 
     @disableDragging()
 
@@ -34,8 +36,9 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   updateOrientation: =>
-    orientationWidget = App.currentKeyframe().spriteOrientationWidgetBySpriteWidget(this)
-    # XXX This blows, now some widgets are on the scene, not on the current keyframe
+    keyframe = App.currentKeyframe()
+    orientationWidget = _.detect @orientations(), (orientation) ->
+      orientation.keyframe.id == keyframe.id
     orientationWidget.point = @getPosition()
     orientationWidget.update()
 
