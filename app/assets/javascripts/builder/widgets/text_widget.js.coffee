@@ -77,5 +77,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   toHash: ->
     hash = super
     hash.string = @_string
+    hash.type   = 'TextWidget'
 
     hash

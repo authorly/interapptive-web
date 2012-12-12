@@ -166,7 +166,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   toHash: ->
     hash                      =    {}
     hash.id                   =    @id
-    hash.type                 =    Object.getPrototypeOf(this).constructor.name
+    hash.type                 =    'SpriteWidget'
     hash.retention            =    @retention
     hash.retentionMutability  =    @retentionMutability
     hash.filename             =    @sprite.filename

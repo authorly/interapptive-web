@@ -179,6 +179,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   toHash: ->
     hash               = super
+    hash.type          = 'TouchWidget'
     hash.radius        = @_radius
     hash.controlRadius = @_controlRadius
     hash.action_id     = @action_id

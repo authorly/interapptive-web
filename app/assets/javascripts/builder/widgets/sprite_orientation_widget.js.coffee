@@ -23,7 +23,7 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     hash = {}
     hash.id                  =    @id
     hash.sprite_widget_id    =    @sprite_widget_id
-    hash.type                =    Object.getPrototypeOf(this).constructor.name
+    hash.type                =    'SpriteOrientationWidget'
     hash.x                   =    @point.x
     hash.y                   =    @point.y
     hash.scale               =    @scale
