@@ -55,17 +55,19 @@ class App.Views.ToolbarView extends Backbone.View
 
   _addKeyframe: (keyframe) ->
     collection = App.keyframesCollection
+    # REFACTOR: Code related to widgets system probably does not belong here
+    # it should be moved to somewhere else.
     sprite_orientation_widgets = _.map(App.currentScene().spriteWidgets(), (sprite_widget) ->
       new App.Builder.Widgets.SpriteOrientationWidget(
         keyframe: keyframe
         sprite_widget: sprite_widget
         sprite_widget_id: sprite_widget.id
-      ).toHash()
+      )
     )
     keyframe.set
       scene_id: App.currentScene().get('id')
       position: collection.nextPosition(keyframe)
-      widgets: sprite_orientation_widgets
+      widgets: _.map(sprite_orientation_widgets, (w) -> w.toHash() )
 
     keyframe.save {},
       success: ->
@@ -75,6 +77,10 @@ class App.Views.ToolbarView extends Backbone.View
         # idea.
         if keyframe.get('scene_id') == collection.scene_id
           collection.add keyframe
+          _.each(sprite_orientation_widgets, (w) ->
+            App.storybookJSON.addSpriteOrientationWidget(w)
+            App.builder.widgetStore.addWidget(w)
+          )
 
   showActionLibrary: ->
     @actionDefinitions = new App.Collections.ActionDefinitionsCollection()

@@ -1,5 +1,6 @@
 nextSpriteTag = 1
 nextActionTag = 1
+nextTouchTag  = 1
 
 class App.StorybookJSON
 
@@ -188,7 +189,7 @@ class App.StorybookJSON
     @document.Pages[pageNumber]
 
 
-  addSprite: (sprite_widget) ->
+  _addSprite: (sprite_widget) ->
     page = sprite_widget.scene()._page
     throw new Error("Scene has no Page") unless page?
     page.API.CCSprites ||= []
@@ -233,11 +234,40 @@ class App.StorybookJSON
       nextActionTag += 1
 
   addSpriteWidget: (sprite_widget) ->
-    sprite_tag = @addSprite(sprite_widget)
+    sprite_tag = @_addSprite(sprite_widget)
     _.each(sprite_widget.orientations(), (sprite_orientation_widget) =>
       @addSpriteOrientationWidget(sprite_orientation_widget)
     )
     sprite_tag
+
+  addTouchWidget: (touch_widget) ->
+    page = touch_widget.scene()._page
+    throw new Error("Scene has no Page") unless page?
+
+    page.API.CCStoryTouchableNode ||= {}
+    page.API.CCStoryTouchableNode.nodes ||= []
+
+    touchJSON =
+      glitterIndicator: true
+      stopEffectIndicator: false
+      touchFlag: nextTouchTag
+      position: [touch_widget.getControlCenter().x, touch_widget.getControlCenter().y]
+      radius: touch_widget.getRadius()
+
+    if touch_widget.video_id?
+      touchJSON['videoToPlay'] = touch_widget.video_id
+    else if touch_widget.audio_id?
+      touchJSON['soundToPlay'] = touch_widget.audio_id
+
+    if touch_widget.action_id?
+      touchJSON['runAction'] = [{}]
+
+    page.API.CCStoryTouchableNode.nodes.push(touchJSON)
+
+    touch_widget._CCStoryTouchableNode = touchJSON
+    touch_widget.setTag(touchJSON.touchFlag)
+    nextTouchTag += 1
+    touchJSON.touchFlag
 
   updateSprite: (scene, sprite) ->
     page = scene._page
