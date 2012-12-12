@@ -40,7 +40,8 @@ class App.Views.ToolbarView extends Backbone.View
     # XXX in the `App.scenesCollection.models collection`, the addded scene
     # sometimes has the same id as the first scene, even though the
     # server's response is correct
-    App.sceneList().createScene()
+    scene = App.sceneList().createScene()
+    scene._getKeyframes()
 
 
   addKeyframe: ->
