@@ -29,6 +29,8 @@ class App.Builder.Widgets.Widget extends cc.Node
     @_opacity = 255
     @_highlighted = false
 
+    @setPosition(new cc.Point(options.position.x, options.position.y)) if options.position?
+
     if options.id
       @id = options.id
       if options.id >= NEXT_WIDGET_ID
@@ -44,12 +46,12 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   mouseOver: ->
     @_mouse_over = true
-    
+
   mouseOut: ->
     @_mouse_over = false
-    
+
   mouseMove: ->
-  
+
   doubleClick: ->
 
   isHighlighted: ->
@@ -142,6 +144,7 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   isSpriteWidget: ->
     @ instanceof App.Builder.Widgets.SpriteWidget
+
 
   save: ->
     throw new Error("Must be implemented in the subclass")
