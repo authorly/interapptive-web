@@ -118,7 +118,6 @@ class App.Views.ToolbarView extends Backbone.View
       )
       widget.save()
       App.builder.widgetLayer.addWidget(widget)
-      widget.on('change', -> widget.scene().updateWidget(widget))
       App.modalWithView().hide()
       view.off('image_select', imageSelected)
 
