@@ -50,6 +50,8 @@ class App.Views.ToolbarView extends Backbone.View
     scene = new App.Models.Scene
       storybook_id: App.currentStorybook().get('id')
     App.scenesCollection.addScene(scene)
+    scene = App.sceneList().createScene()
+    scene._getKeyframes()
 
 
   addKeyframe: ->
@@ -103,8 +105,6 @@ class App.Views.ToolbarView extends Backbone.View
       )
       widget.save()
       App.builder.widgetLayer.addWidget(widget)
-      # XXX this blows
-      widget.on('change', -> widget.scene().updateWidget(widget))
       App.modalWithView().hide()
       view.off('select', imageSelected)
 

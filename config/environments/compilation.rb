@@ -1,6 +1,6 @@
 Interapptive::Application.configure do
   config.action_mailer.default_url_options = {
-    :host => "172.16.10.180"
+    :host => "172.16.10.173"
   }
   # Settings specified here will take precedence over those in config/application.rb
 

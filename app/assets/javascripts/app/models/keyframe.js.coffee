@@ -118,7 +118,7 @@ class App.Models.Keyframe extends Backbone.Model
 
   _findOrCreateWidgetByWidgetHash: (widget_hash) ->
     widget = App.builder.widgetStore.find(widget_hash.id)
-    return widget if widget
+    return widget if widget?
     widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { keyframe: this }))
     App.builder.widgetStore.addWidget(widget)
     widget

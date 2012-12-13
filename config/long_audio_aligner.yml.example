@@ -7,3 +7,6 @@ test:
 
 production:
   aligner_path: '/full/path/to/Aligner/'
+
+compilation:
+  aligner_path: '/full/path/to/Aligner/'
