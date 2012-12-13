@@ -13,7 +13,7 @@ class App.Views.SceneIndex extends Backbone.View
   initialize: ->
     @collection.on('reset',  @render, @)
     @collection.on('change:positions', @render, @)
-    @collection.on('add',    @appendScene, @)
+    @collection.on('add',    @appendSceneElement, @)
     @collection.on('remove', @removeScene, @)
     App.vent.on('window:resize', @adjustSize, @)
 

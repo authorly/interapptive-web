@@ -50,7 +50,6 @@ class App.Views.ToolbarView extends Backbone.View
     scene = new App.Models.Scene
       storybook_id: App.currentStorybook().get('id')
     App.scenesCollection.addScene(scene)
-    scene = App.sceneList().createScene()
     scene._getKeyframes()
 
 
