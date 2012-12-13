@@ -122,8 +122,8 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
 
   getControlCenter: ->
-    radius = @getRadius()
-    controlRadius = @getControlRadius()
+    radius = @getRadius()   * 0.59
+    controlRadius = @getControlRadius()   * 0.59
 
     return new cc.Point(
       (radius - controlRadius) * Math.sin(cc.DEGREES_TO_RADIANS(135))
@@ -168,7 +168,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   isPointInside: (point) ->
     inRect = super
     return false unless inRect
-    return (@_distanceFromCenter(point) < @getRadius())
+    return (@_distanceFromCenter(point) < @getRadius()*0.59)
 
 
   highlight: ->
@@ -216,7 +216,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     xLen = local.x - radius
     yLen = local.y - radius
-    return Math.sqrt((xLen * xLen) + (yLen * yLen))
+    return Math.sqrt((xLen * xLen) + (yLen * yLen)) * 0.59
 
 
 

@@ -138,8 +138,8 @@ class App.Builder.Widgets.Widget extends cc.Node
     r.origin = new cc.Point(0, 0)
 
     # Fix bug in cocos2d-html5; It doesn't convert to local space correctly
-    local.x += @parent.getAnchorPoint().x * r.size.width
-    local.y += @parent.getAnchorPoint().y * r.size.height
+    local.x += @parent.getAnchorPoint().x * r.size.width* 0.59
+    local.y += @parent.getAnchorPoint().y * r.size.height* 0.59
 
     local
 
