@@ -9,7 +9,7 @@ class App.Services.SwitchKeyframeService
   execute: =>
     return if @oldKeyframe is @newKeyframe
 
-    App.currentKeyframe @newKeyframe
+    App.currentKeyframe(@newKeyframe)
     if App.fontToolbar? then App.fontToolbar.onCloseClick()
     @switchActiveKeyframeElement(@newKeyframe)
 

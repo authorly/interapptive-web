@@ -147,6 +147,7 @@ class App.Collections.ScenesCollection extends Backbone.Collection
     scene.save { position: @nextPosition(scene) },
       success: =>
         @add scene
+        scene._getKeyframes(async: false)
 
 
   nextPosition: (scene) ->

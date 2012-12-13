@@ -10,8 +10,6 @@ class App.Services.SwitchSceneService
     App.builder.widgetLayer.removeAllChildrenWithCleanup()
 
     App.currentScene @newScene
-    App.keyframeList().collection.scene_id = @newScene.get('id')
-    App.keyframeList().collection.fetch()
 
     # App.activeActionsCollection.fetch()
     $('#keyframe-list').html("").html(App.keyframeList().el)
