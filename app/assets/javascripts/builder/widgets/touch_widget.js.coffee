@@ -1,16 +1,19 @@
 #= require ./widget
 
 COLOR_OUTER_STROKE = 'rgba(15, 79, 168, 0.8)'
-COLOR_OUTER_FILL = 'rgba(174, 204, 246, 0.66)'
-LINE_WIDTH_OUTER = 2
+COLOR_OUTER_FILL =   'rgba(174, 204, 246, 0.66)'
 COLOR_INNER_STROKE = 'rgba(15, 79, 168, 1)'
-COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
-LINE_WIDTH_INNER = 2
-DEFAULT_OPACITY = 150
-HIGHLIGHT_OPACITY = 230
-MOUSEOVER_OPACITY = 255
-DEFAULT_RADIUS = 32
-DEFAULT_CONTROL_RADIUS = 8
+COLOR_INNER_FILL =   'rgba(255, 255, 255, 1)'
+CURSOR_DEFAULT =     'default'
+CURSOR_MOVE =        'move'
+CURSOR_RESIZE =      'se-resize'
+LINE_WIDTH_OUTER =       2
+LINE_WIDTH_INNER =       2
+DEFAULT_OPACITY =        150
+HIGHLIGHT_OPACITY =      230
+MOUSEOVER_OPACITY =      255
+DEFAULT_RADIUS =         38
+DEFAULT_CONTROL_RADIUS = 28
 
 ##
 # A 'hotspot' widget, previously named touch zone. It has an associated
@@ -46,6 +49,8 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     @on('mouseup',   @onMouseUp,   this)
     @on('mousemove', @onMouseMove, this)
     @on('change',    @update,      this)
+    @on('mouseover', @onMouseOver, this)
+    @on('mouseout', @onMouseOut,   this)
 
 
   # Reload attributes from a set of keypairs
@@ -68,7 +73,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   onMouseOut: (e) =>
     @setOpacity(DEFAULT_OPACITY)
     unless @resizing
-      document.body.style.cursor = 'default'
+      document.body.style.cursor = CURSOR_DEFAULT
 
 
   onMouseDown: (e) ->
@@ -84,7 +89,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     point = e.canvasPoint
 
     inControl = @resizing or @_isPointInsideControl(point)
-    document.body.style.cursor = if inControl then 'se-resize' else 'move'
+    document.body.style.cursor = if inControl then CURSOR_RESIZE else CURSOR_MOVE
 
     if @resizing
       @setRadius(@_distanceFromCenter(point) + @_resizeOffset)
@@ -122,8 +127,8 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
 
   getControlCenter: ->
-    radius = @getRadius()   * 0.59
-    controlRadius = @getControlRadius()   * 0.59
+    radius = @getRadius()
+    controlRadius = @getControlRadius()
 
     return new cc.Point(
       (radius - controlRadius) * Math.sin(cc.DEGREES_TO_RADIANS(135))

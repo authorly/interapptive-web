@@ -91,7 +91,7 @@ class App.Views.SceneIndex extends Backbone.View
 
   _numberScenes: =>
     @$('li[data-is_main_menu!="1"]').each (index, element) =>
-      console.log index, element
+      # console.log index, element
       element = $(element)
 
       if (id = element.data('id'))? && (scene = @collection.get(id))?
