@@ -25,7 +25,6 @@ DEFAULT_CONTROL_RADIUS = 8
 #
 class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   retention: 'scene'
-  retentionMutability: true
 
   constructor: (options={}) ->
     super
@@ -196,10 +195,10 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   update: ->
     widgets = App.currentScene().get('widgets') || []
-    _.each widgets, (widget, idx) =>
+    _.each widgets, (widget) =>
       if @id is widget.id
-        widgets[idx].position = @_position
-        widgets[idx].radius =   @_radius
+        widget.position = @_position
+        widget.radius =   @_radius
 
     App.currentScene().set('widgets', widgets)
     App.currentScene().save {},
