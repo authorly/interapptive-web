@@ -83,8 +83,10 @@ class App.Views.ActiveSpritesList extends Backbone.View
 
       App.builder.widgetLayer.addWidget(widget, true)
 
+
   hasWidget: (widget) =>
     $(@el).find("div[data-widget-id=#{widget.id}]").length
+
 
   removeSpriteWidget: (e) =>
     widgetEl = $(e.currentTarget)
@@ -103,8 +105,10 @@ class App.Views.ActiveSpritesList extends Backbone.View
   removeListEntry: (widget) =>
     $(@el).find("div[data-widget-id=#{widget.id}]").parent().remove()
 
+
   removeAll: ->
     $("#active-sprites-window ul").empty()
+
 
   deselectAll: ->
     $(@el).find('.active').removeClass('active')
