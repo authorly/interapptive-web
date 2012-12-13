@@ -4,16 +4,22 @@ COLOR_OUTER_STROKE = 'rgba(15, 79, 168, 0.8)'
 COLOR_OUTER_FILL =   'rgba(174, 204, 246, 0.66)'
 COLOR_INNER_STROKE = 'rgba(15, 79, 168, 1)'
 COLOR_INNER_FILL =   'rgba(255, 255, 255, 1)'
-CURSOR_DEFAULT =     'default'
-CURSOR_MOVE =        'move'
-CURSOR_RESIZE =      'se-resize'
-LINE_WIDTH_OUTER =       2
-LINE_WIDTH_INNER =       2
-DEFAULT_OPACITY =        150
-HIGHLIGHT_OPACITY =      230
-MOUSEOVER_OPACITY =      255
+
+CURSOR_DEFAULT = 'default'
+CURSOR_MOVE =    'move'
+CURSOR_RESIZE =  'se-resize'
+
+DEFAULT_OPACITY =   150
+HIGHLIGHT_OPACITY = 230
+MOUSEOVER_OPACITY = 255
+
 DEFAULT_RADIUS =         38
 DEFAULT_CONTROL_RADIUS = 28
+
+LINE_WIDTH_OUTER = 2
+LINE_WIDTH_INNER = 2
+
+CSS_SCALE_FACTOR = 0.59
 
 ##
 # A 'hotspot' widget, previously named touch zone. It has an associated
@@ -173,7 +179,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   isPointInside: (point) ->
     inRect = super
     return false unless inRect
-    return (@_distanceFromCenter(point) < @getRadius()*0.59)
+    return (@_distanceFromCenter(point) < @getRadius() * CSS_SCALE_FACTOR)
 
 
   highlight: ->
@@ -221,7 +227,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     xLen = local.x - radius
     yLen = local.y - radius
-    return Math.sqrt((xLen * xLen) + (yLen * yLen)) * 0.59
+    return Math.sqrt((xLen * xLen) + (yLen * yLen)) * CSS_SCALE_FACTOR
 
 
 
