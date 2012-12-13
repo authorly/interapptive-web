@@ -199,7 +199,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     _.each widgets, (widget) =>
       if @id is widget.id
         widget.position = @_position
-        widget.radius =   @_radius
+        widget.radius   = parseInt(@_radius)
 
     App.currentScene().set('widgets', widgets)
     App.currentScene().save {},
