@@ -34,7 +34,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   updateOrientation: =>
-    console.log "Hit updateOrientation"
     orientationWidget = App.currentKeyframe().spriteOrientationWidgetBySpriteWidget(this)
     # XXX This blows, now some widgets are on the scene, not on the current keyframe
     orientationWidget.point = @getPosition()

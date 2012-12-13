@@ -91,6 +91,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
 
   onMouseUp: (e) ->
+    @onMouseOut()
     @_endResize(e)
 
 
