@@ -26,5 +26,5 @@ compilation:
   pool: 5
   username: root
   password:
-  host: 172.16.10.180
+  host: 172.16.10.173
   port: 3306

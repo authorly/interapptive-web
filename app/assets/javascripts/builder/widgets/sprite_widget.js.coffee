@@ -16,6 +16,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   constructor: (options={}) ->
     super
 
+    @type         = 'SpriteWidget'
     @sprite       =    new App.Builder.Widgets.Lib.Sprite(options)
     @scene(options.scene)
     throw new Error("Can not add SpriteWidget to a Scene that does not have a Keyframe") unless @scene().keyframes.length > 0
@@ -157,7 +158,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   toHash: ->
     hash                      =    {}
     hash.id                   =    @id
-    hash.type                 =    Object.getPrototypeOf(this).constructor.name
+    hash.type                 =    @type
     hash.retention            =    @retention
     hash.retentionMutability  =    @retentionMutability
     hash.filename             =    @sprite.filename
@@ -198,7 +199,11 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   getOrientationForKeyframe: ->
     keyframe = arguments[0] || App.currentKeyframe()
-    orientation = _.find(@orientations(), (p) -> p.keyframe.id == keyframe.id)
+    orientation = null
+    # TODO This is a dirty fix. This method should be in the Widget model, and
+    # not depend on App.currentKeyframe()
+    if keyframe?
+      orientation = _.find(@orientations(), (p) -> p.keyframe.id == keyframe.id)
     orientation || @orientations()[0]
 
   setPositionX: (x) =>

@@ -30,6 +30,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     super
 
     @scene(options.scene)
+    @type      = 'TouchWidget'
     @action_id = null
 
     @setRadius(options.radius || DEFAULT_RADIUS)
@@ -180,6 +181,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   toHash: ->
     hash               = super
+    hash.type          = @type
     hash.radius        = @_radius
     hash.controlRadius = @_controlRadius
     hash.action_id     = @action_id

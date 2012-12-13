@@ -9,6 +9,9 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   constructor: (options={}) ->
     super
 
+    @_string = options.string
+    @type    = 'TextWidget'
+    
     @label = cc.LabelTTF.labelWithString(@_string, 'Arial', 24)
     @label.setColor(new cc.Color3B(255, 0, 0))
     @addChild(@label)
@@ -78,5 +81,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   toHash: ->
     hash = super
     hash.string = @getString()
+    hash.type   = @type
 
     hash
