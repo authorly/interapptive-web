@@ -22,7 +22,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   url: ->
-    base = '/scenes/' + @scene.id + '/'
+    base = '/scenes/' + App.currentScene().get('id') + '/'
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
 
