@@ -120,6 +120,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         @_capturedWidget.trigger('change:orientation')
 
 
+
     delete @_previousPoint
     delete @_capturedWidget
 

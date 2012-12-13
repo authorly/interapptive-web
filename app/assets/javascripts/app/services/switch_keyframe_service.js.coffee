@@ -34,8 +34,10 @@ class App.Services.SwitchKeyframeService
     return unless (widgets = @currentScene.widgets())?
     for widget in widgets
       if App.builder.widgetLayer.hasWidget(widget) and widget.retentionMutability
+        console.log "updating a widget (updateSceneWidgets)"
         @updateWidget(widget)
       else
+        console.log "adding widget (updateSceneWidgets)"
         @addWidget(widget, @currentScene)
 
   removeWidget: (widget) =>

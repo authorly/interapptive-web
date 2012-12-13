@@ -86,7 +86,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     document.body.style.cursor = if inControl then 'se-resize' else 'move'
 
     if @resizing
-      @setRadius(@distanceFromCenter(point) + @_resizeOffset)
+      @setRadius(@_distanceFromCenter(point) + @_resizeOffset)
 
 
   onMouseUp: (e) ->
@@ -202,7 +202,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
   _startResize: (e) ->
     @resizing = true
-    @_resizeOffset = @getRadius() - @distanceFromCenter(e.canvasPoint)
+    @_resizeOffset = @getRadius() - @_distanceFromCenter(e.canvasPoint)
     document.body.style.cursor = 'se-resize'
 
 
