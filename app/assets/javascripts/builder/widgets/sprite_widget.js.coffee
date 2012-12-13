@@ -111,8 +111,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_setCursor('default')
 
 
-  doubleClick: ->
-    @_setActiveSpriteFromClick()
+  doubleClick: (e) ->
+    @_setActiveSpriteFromClick(e)
 
 
   setAsActive: (widget = null) ->
