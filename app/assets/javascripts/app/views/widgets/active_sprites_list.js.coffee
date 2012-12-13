@@ -104,7 +104,6 @@ class App.Views.ActiveSpritesList extends Backbone.View
     $(@el).find("div[data-widget-id=#{widget.id}]").parent().remove()
 
   removeAll: ->
-    console.log "Hit remove Alls"
     $("#active-sprites-window ul").empty()
 
   deselectAll: ->
