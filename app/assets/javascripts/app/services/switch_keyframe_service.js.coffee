@@ -34,10 +34,11 @@ class App.Services.SwitchKeyframeService
     return unless (widgets = @currentScene.widgets())?
     for widget in widgets
       if App.builder.widgetLayer.hasWidget(widget) and widget.retentionMutability
-        console.log "updating a widget (updateSceneWidgets)"
+        if widget.isTouchWidget()
+          # Now handled in widgetLayer & touchWidget
+          return
         @updateWidget(widget)
       else
-        console.log "adding widget (updateSceneWidgets)"
         @addWidget(widget, @currentScene)
 
   removeWidget: (widget) =>
@@ -55,8 +56,11 @@ class App.Services.SwitchKeyframeService
     App.updateKeyframeText()
 
   updateWidget: (widget) =>
-    widget.setScale(widget.getScaleForKeyframe(@newKeyframe))
-    widget.setPosition(widget.getPositionForKeyframe(@newKeyframe))
+    # CW
+    #  Legacy - should be removed but be sure not in use.
+    #
+    #widget.setScale(widget.getScaleForKeyframe(@newKeyframe))
+    #widget.setPosition(widget.getPositionForKeyframe(@newKeyframe))
 
   # For debugging changes in keyframe. Shows a snapshot of the following info:
   # - The number of widgets in the old keyframe

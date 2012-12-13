@@ -1,10 +1,3 @@
-# This widget factory works as a marshal for all widgets in all keyframes
-# It should also function as a dispatcher to keyframe and to widgetlayer
-# and as an interface to the toolbar. In short: it completely handles widget
-# CRUD, dispatching where necessary.
-#
-# There's a lot of work to be done on it.
-
 class WidgetDispatcher
 
   constructor: ->
@@ -55,12 +48,8 @@ class WidgetDispatcher
 
   # Updaters
   updateTouchWidget: (result) =>
-    #widget = result.widget
-    #widget.setData()
-
     App.modalWithView().hide()
     view.off('touch_select', @updateTouchWidget)
-
 
   _addSceneWidget: (widget) =>
     @widgets.push(widget)

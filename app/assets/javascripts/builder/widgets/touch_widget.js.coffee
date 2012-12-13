@@ -25,6 +25,7 @@ DEFAULT_CONTROL_RADIUS = 8
 #
 class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   retention: 'scene'
+  retentionMutability: true
 
   constructor: (options={}) ->
     super
@@ -45,6 +46,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     @on('mousedown', @onMouseDown, this)
     @on('mouseup',   @onMouseUp,   this)
     @on('mousemove', @onMouseMove, this)
+    @on('change',    @update,      this)
 
 
   # Reload attributes from a set of keypairs
@@ -182,13 +184,31 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   toHash: ->
     hash               = super
     hash.type          = @type
-    hash.radius        = @_radius
+    hash.id            = @id
+    hash.radius        = parseInt(@_radius)
     hash.controlRadius = @_controlRadius
     hash.action_id     = @action_id
     hash.video_id      = @video_id
     hash.sound_id      = @sound_id
 
     hash
+
+
+  update: ->
+    widgets = App.currentScene().get('widgets') || []
+    _.each widgets, (widget, idx) =>
+      if @id is widget.id
+        widgets[idx].position = @_position
+        widgets[idx].radius =   @_radius
+
+    App.currentScene().set('widgets', widgets)
+    App.currentScene().save {},
+      success: =>
+        # console.log "Update JSON for touch widget"
+        # App.storybookJSON.updateSpriteOrientationWidget(this)
+      error: =>
+        console.log("TouchWidget did not update")
+
 
   _distanceFromCenter: (point) ->
     radius = @getRadius()

@@ -118,8 +118,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       if @_capturedWidget.isSpriteWidget()
         @_capturedWidget.trigger('change:orientation')
-
-
+      else if @_capturedWidget.isTouchWidget()
+        @_capturedWidget.trigger('change')
 
     delete @_previousPoint
     delete @_capturedWidget

@@ -50,41 +50,53 @@ class App.Builder.Widgets.Widget extends cc.Node
   mouseOver: ->
     @_mouse_over = true
 
+
   mouseOut: ->
     @_mouse_over = false
 
+
   mouseMove: ->
+
 
   doubleClick: ->
 
+
   isHighlighted: ->
     return @_highlighted
+
 
   highlight: ->
     return if @isHighlighted()
     @_highlighted = true
     App.Builder.Widgets.WidgetDispatcher.trigger('widget:highlight', @id)
 
+
   unHighlight: ->
     return unless @isHighlighted()
     @_highlighted = false
     App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight', @id)
 
+
   setOpacity: (opacity) ->
     @_opacity = opacity
+
 
   getOpacity: ->
     @_opacity
 
+
   setZOrder: (z, triggerEvent=true) ->
     @_zOrder = z
+
 
   getZOrder: ->
     @_zOrder
 
+
   setPosition: (pos, triggerEvent=true)->
     super
     @trigger('change', 'position') if triggerEvent
+
 
   rect: ->
     p = @getPosition()
@@ -99,6 +111,7 @@ class App.Builder.Widgets.Widget extends cc.Node
       s.height * scale
     )
 
+
   toHash: ->
     hash                      = {}
     hash.id                   = @id
@@ -111,8 +124,10 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     hash
 
+
   toSceneHash: ->
     @toHash()
+
 
   pointToLocal: (point) ->
     return unless @parent?
@@ -128,6 +143,7 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     local
 
+
   isPointInside: (point) ->
     local = @pointToLocal(point)
 
@@ -136,17 +152,25 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     return cc.Rect.CCRectContainsPoint(r, local)
 
+
   setStorybook: (storybook) ->
     # @removeFromStorybook(@_storybook) if @_storybook
     @_storybook = storybook
     # @addToStorybook(storybook) if storybook
 
-  # removeFromStorybook: (storybook) =>
 
-  # addToStorybook: (storybook) =>
+  # removeFromStorybookJSON: (storybook) =>
+
+
+  # addToStorybookJSON: (storybook) =>
+
 
   isSpriteWidget: ->
     @ instanceof App.Builder.Widgets.SpriteWidget
+
+
+  isTouchWidget: ->
+    @ instanceof App.Builder.Widgets.TouchWidget
 
 
   save: ->
