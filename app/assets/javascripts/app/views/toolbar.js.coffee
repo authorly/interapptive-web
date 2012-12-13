@@ -58,7 +58,6 @@ class App.Views.ToolbarView extends Backbone.View
       scene_id: App.currentScene().get('id')
     App.keyframesCollection.addKeyframe(keyframe)
 
-
   addAnimationKeyframe: ->
     return if @$('.animation-keyframe.disabled').length > 0
 
