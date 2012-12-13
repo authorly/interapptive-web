@@ -176,7 +176,18 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   addKeyframe: (keyframe) ->
-    keyframe.save { position: @nextPosition(keyframe) },
+    # We add orientation widget to all the keyframes
+    # even to the animation keyframes. That might not 
+    # be desired.
+    sows = _.map(App.currentScene().spriteWidgets(), (sprite_widget) ->
+      new App.Builder.Widgets.SpriteOrientationWidget(
+        keyframe: keyframe
+        sprite_widget: sprite_widget
+        sprite_widget_id: sprite_widget.id
+      )
+    )
+    keyframe.save { position: @nextPosition(keyframe), widgets: _.map(sows, (sow) -> sow.toHash()) },
+      wait: true
       success: =>
         # XXX necessary because this would blow if, in between `save` and
         # `success`, another scene was selected in the VIEW (!!), and therefore
@@ -185,6 +196,7 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
         # idea.
         if keyframe.get('scene_id') == @scene_id
           @add keyframe
+          _.each(sows, (sow) -> sow.updateStorybookJSON())
 
 
   nextPosition: (keyframe) ->
