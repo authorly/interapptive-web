@@ -8,7 +8,7 @@ class Keyframe < ActiveRecord::Base
   has_many :texts, :class_name => 'KeyframeText', :dependent => :destroy
 
   serialize :widgets
-  serialize :content_highlight_times
+  serialize :content_highlight_times, Array
 
   validates :position, inclusion: { in: [nil] }, if: :is_animation
   validates :is_animation, uniqueness: { scope: :scene_id }, if: :is_animation
@@ -82,7 +82,7 @@ class Keyframe < ActiveRecord::Base
   def as_json(options)
     super.merge({
       :preview_image_url       => preview_image.try(:image).try(:url),
-      :content_highlight_times => content_highlight_times.to_s.split(','), # TODO: Serialize it
+      :content_highlight_times => content_highlight_times,
       :url                     => audio_url
     })
   end

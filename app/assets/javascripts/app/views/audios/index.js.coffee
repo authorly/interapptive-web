@@ -31,7 +31,7 @@ class App.Views.AudioIndex extends Backbone.View
 
   acceptAlignment: (e) ->
     wordTimeIntervals = @collectTimeIntervals()
-    App.currentKeyframe().set('content_highlight_times', wordTimeIntervals.toString())
+    App.currentKeyframe().set('content_highlight_times', wordTimeIntervals)
     App.currentKeyframe().save {},
       success: =>
        App.modalWithView().hide()
