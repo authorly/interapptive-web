@@ -33,9 +33,9 @@ class App.Views.FontToolbar extends Backbone.View
 
 
   setDefaults: ->
-    @fontFace App.currentScene().get('font_face')
+    @fontFace  App.currentScene().get('font_face')
     @fontColor App.currentScene().get('font_color')
-    @fontSize App.currentScene().get('font_size')
+    @fontSize  App.currentScene().get('font_size')
 
 
   collection: (collection) ->
