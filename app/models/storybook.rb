@@ -12,7 +12,8 @@ class Storybook < ActiveRecord::Base
 
   has_one  :default_font, :through => :storybook_settings, :source => :font
 
-  after_create :create_default_scene
+  # Remove temporarily for demo
+  # after_create :create_default_scene
 
   validates_presence_of :title
 
