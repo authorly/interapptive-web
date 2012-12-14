@@ -57,6 +57,7 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   onSceneClick: (event) =>
+    $('.keyframe-list').empty()
     sceneId = $(event.currentTarget).data 'id'
     scene = @collection.get(sceneId)
     @toggleSceneChange scene
