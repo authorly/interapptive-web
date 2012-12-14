@@ -23,7 +23,30 @@ class App.StorybookJSON
           position: [20, 20]
 
       MainMenu:
-        CCSprites: [],
+        audio:
+          backgroundMusic: 'main-menu-title-sound.mp3'
+          backgroundMusicLoops: 1
+          soundEffect: 'main-menu-title-sound.mp3'
+          soundEffectLoops: 1
+        CCSprites: [
+          {
+            image: 'background000.jpg'
+            spriteTag: 100
+            visible: true
+            position: [512, 384]
+          }
+        ],
+        fallingPhysicsSettings:
+          draggable: false
+          maxNumber: 0
+          speedX: 145
+          speedY: 10
+          spinSpeed: 10
+          slowDownSpeed: 0.6
+          hasFloor: false
+          hasWalls: true
+          dropBetweenPoints: [0, 600]
+          plistfilename: 'snowflake-main-menu.plist'
         MenuItems: [{
             normalStateImage: "autoplay.png",
             tappedStateImage: "autoplay-over.png",
@@ -83,9 +106,9 @@ class App.StorybookJSON
           fontColor: [255, 0, 0],
           fontHighlightColor: [255, 255, 255],
           fontSize: 24,
-          backgroundMusicFile:
-            loop: true,
-            audioFilePath: scene.get('sound_url')
+          #backgroundMusicFile:
+            #loop: true,
+            #audioFilePath: scene.get('sound_url')
         text:
           paragraphs: []
 
@@ -217,33 +240,34 @@ class App.StorybookJSON
     else
       page = sprite_orientation_widget.sprite_widget.scene()._page
       throw new Error("Scene has no Page") unless page?
-      page.API.CCMoveTo ||= []
-      spriteMoveToJSON =
-        position:  [sprite_orientation_widget.point.x, sprite_orientation_widget.point.y]
+      page.API.CCMoveBy ||= []
+      spriteMoveByJSON =
+        position:  [sprite_orientation_widget.point.x - ccsprite.position[0], sprite_orientation_widget.point.y - ccsprite.position[1]]
         duration:  3
         actionTag: nextActionTag
-      page.API.CCMoveTo.push(spriteMoveToJSON)
-      sprite_orientation_widget._CCMoveTo = spriteMoveToJSON
+      page.API.CCMoveBy.push(spriteMoveByJSON)
+      sprite_orientation_widget._CCMoveBy = spriteMoveByJSON
+      page.API.CCStorySwipeEnded ||= {}
 
       # Following code is probably buggy.
       # It does not account for multiple actionTags.
-      page.API.runAction ||= []
+      page.API.CCStorySwipeEnded.runAction ||= []
       runActionJSON =
         runAfterSwipeNumber: 1
         spriteTag:           ccsprite.spriteTag
-        actionTags:          [spriteMoveToJSON.actionTag]
-      page.API.runAction.push(runActionJSON)
+        actionTags:          [spriteMoveByJSON.actionTag]
+      page.API.CCStorySwipeEnded.runAction.push(runActionJSON)
       nextActionTag += 1
 
 
   updateSpriteOrientationWidget: (sprite_orientation_widget) ->
-    if sprite_orientation_widget._CCMoveTo
-      sprite_orientation_widget._CCMoveTo.position = [sprite_orientation_widget.point.x, sprite_orientation_widget.point.y]
-      sprite_orientation_widget._CCMoveTo.duration = 3
+    ccsprite = sprite_orientation_widget.sprite_widget._CCSprite
+    throw new Error("Scene has no Page") unless ccsprite?
+    if sprite_orientation_widget._CCMoveBy
+      sprite_orientation_widget._CCMoveBy.position = [sprite_orientation_widget.point.x - ccsprite.position[0], sprite_orientation_widget.point.y - ccsprite.position[1]]
+      sprite_orientation_widget._CCMoveBy.duration = 3
 
     else
-      ccsprite = sprite_orientation_widget.sprite_widget._CCSprite
-      throw new Error("Scene has no Page") unless ccsprite?
       ccsprite.position[0] = sprite_orientation_widget.point.x
       ccsprite.position[1] = sprite_orientation_widget.point.y
 
