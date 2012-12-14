@@ -272,7 +272,7 @@ class App.StorybookJSON
     ccsprite = sprite_orientation_widget.sprite_widget._CCSprite
     throw new Error("Scene has no Page") unless ccsprite?
     if sprite_orientation_widget._CCMoveBy?
-      sprite_orientation_widget._CCMoveBy.position = [prseInt(sprite_orientation_widget.point.x - ccsprite.position[0]), parseInt(sprite_orientation_widget.point.y - ccsprite.position[1])]
+      sprite_orientation_widget._CCMoveBy.position = [parseInt(sprite_orientation_widget.point.x - ccsprite.position[0]), parseInt(sprite_orientation_widget.point.y - ccsprite.position[1])]
       sprite_orientation_widget._CCMoveBy.duration = 3
 
     else
