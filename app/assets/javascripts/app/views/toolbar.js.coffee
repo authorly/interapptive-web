@@ -13,7 +13,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .sounds'             : 'showSoundLibrary'
     'click .actions'            : 'showActionLibrary'
     'click .scene-options'      : 'showSceneOptions'
-    'click .sync-audio'   : 'showAlignAudioModal'
+    'click .sync-audio'         : 'showAlignAudioModal'
 
 
   initialize: ->

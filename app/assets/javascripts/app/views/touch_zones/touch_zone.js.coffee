@@ -88,7 +88,7 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     @collections[asset_type].fetch
       success: =>
         _.each @collections[asset_type].models, (m) ->
-          $asset_ids.append($('<option />').val(m.get('id')).text(m.get('name')))
+          $asset_ids.append($('<option />').val(m.get('url')).text(m.get('name')))
 
 
   populateAssets: (e) ->

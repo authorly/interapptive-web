@@ -14,7 +14,9 @@ class App.StorybookJSON
           backward: "page-flip-sound.mp3"
 
         pageFlipTransitionDuration: 0.6
-        paragraphTextFadeDuration: 0.4
+        paragraphTextFadeDuration:  0.4
+        autoplayPageTurnDelay:      0.2
+        autoplayParagraphDelay:     0.1
         homeMenuForPages:
           normalStateImage: "home-button.png"
           tappedStateImage: "home-button-over.png"
@@ -275,8 +277,8 @@ class App.StorybookJSON
 
     if touch_widget.video_id?
       touchJSON['videoToPlay'] = touch_widget.video_id
-    else if touch_widget.audio_id?
-      touchJSON['soundToPlay'] = touch_widget.audio_id
+    else if touch_widget.sound_id?
+      touchJSON['soundToPlay'] = touch_widget.sound_id
 
     if touch_widget.action_id?
       touchJSON['runAction'] = [{}]
