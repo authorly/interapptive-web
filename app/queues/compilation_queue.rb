@@ -12,7 +12,7 @@ class CompilationQueue
 
     storybook_application.compile
     storybook_application.upload_compiled_application
-    storybook_application.cleanup
+    #storybook_application.cleanup
     storybook_application
   end
 end
