@@ -8,6 +8,7 @@ class Keyframe < ActiveRecord::Base
   has_many :texts, :class_name => 'KeyframeText', :dependent => :destroy
 
   serialize :widgets
+  serialize :content_highlight_times
 
   validates :position, inclusion: { in: [nil] }, if: :is_animation
   validates :is_animation, uniqueness: { scope: :scene_id }, if: :is_animation
