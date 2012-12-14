@@ -30,7 +30,7 @@ class App.StorybookJSON
           soundEffectLoops: 1
         CCSprites: [
           {
-            image: 'background000.jpg'
+            image: 'background0000.jpg'
             spriteTag: nextSpriteTag
             visible: true
             position: [512, 384]
