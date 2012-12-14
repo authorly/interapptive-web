@@ -52,6 +52,7 @@ class App.Views.SceneIndex extends Backbone.View
 
   removeScene: (scene) =>
     $("li[data-id=#{scene.id}]").remove()
+    $('.keyframe-list').empty()
     @toggleSceneChange scene
 
 
