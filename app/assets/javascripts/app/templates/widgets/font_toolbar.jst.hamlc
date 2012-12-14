@@ -15,8 +15,6 @@
   - for i in [24..46]
     %option{:value => "#{i}"} 
       = i
-      
-%input{:class => "colorpicker"}
 
 %button.delete
   Delete

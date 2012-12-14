@@ -12,6 +12,7 @@ class App.Views.FontToolbar extends Backbone.View
   initialize: ->
     @render()
     @setDefaults()
+    console.log '$(@el).find(".colorpicker"):', $(@el).find(".colorpicker")
     $(@el).find(".colorpicker").miniColors
       change: (hex, rgb) => @update()
     $(@el).draggable()
