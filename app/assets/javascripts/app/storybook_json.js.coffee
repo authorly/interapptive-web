@@ -245,7 +245,8 @@ class App.StorybookJSON
     else
       page = sprite_orientation_widget.sprite_widget.scene()._page
       throw new Error("Scene has no Page") unless page?
-      page.API.CCMoveBy ||= []
+      # Following should probably be ||= instead of =
+      page.API.CCMoveBy = []
       spriteMoveByJSON =
         position:  [parseInt(sprite_orientation_widget.point.x - ccsprite.position[0]), parseInt(sprite_orientation_widget.point.y - ccsprite.position[1])]
         duration:  3

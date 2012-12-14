@@ -13,6 +13,7 @@ class App.Models.Scene extends Backbone.Model
     @keyframes = new App.Collections.KeyframesCollection [], scene_id: @id
     @_getKeyframes(async: false)
     @on 'change:preview_image_id', @save
+    @on 'keyframeadded', @addKeyframeToCollection
 
   toJSON: ->
     json = super
@@ -30,6 +31,9 @@ class App.Models.Scene extends Backbone.Model
       @keyframes.url = "/scenes/#{@get('id')}/keyframes.json"
       @keyframes.fetch(options)
     @keyframes
+
+  addKeyframeToCollection: (keyframe) ->
+    @keyframes.push(keyframe)
 
   setPreviewFrom: (keyframe) ->
     preview = keyframe.preview
