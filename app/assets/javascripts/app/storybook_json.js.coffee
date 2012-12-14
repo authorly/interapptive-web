@@ -303,7 +303,7 @@ class App.StorybookJSON
       glitterIndicator: true
       stopEffectIndicator: false
       touchFlag: nextTouchTag
-      position: [parseInt(touch_widget.getControlCenter().x), parseInt(touch_widget.getControlCenter().y)]
+      position: [parseInt(touch_widget.getPosition().x), parseInt(touch_widget.getPosition().y)]
       radius: touch_widget.getRadius()
 
     if touch_widget.video_id?
