@@ -104,7 +104,7 @@ class App.Views.TextWidget extends Backbone.View
       $(@el).html(_content)
       @_content = _content
     else
-      $(@el).html()
+      $(@el).text()
 
 
   fontToolbarUpdate: (_fontToolbar) ->
