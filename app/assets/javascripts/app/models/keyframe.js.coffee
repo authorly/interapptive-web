@@ -199,6 +199,7 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
         if keyframe.get('scene_id') == @scene_id
           @add keyframe
           _.each(sows, (sow) -> sow.updateStorybookJSON())
+          App.currentScene().trigger('keyframeadded', keyframe)
 
 
   nextPosition: (keyframe) ->
