@@ -31,7 +31,7 @@ class App.StorybookJSON
         CCSprites: [
           {
             image: 'background000.jpg'
-            spriteTag: 100
+            spriteTag: nextSpriteTag
             visible: true
             position: [512, 384]
           }
@@ -70,11 +70,14 @@ class App.StorybookJSON
             }]
         },
         runActionsOnEnter: [{
-            spriteTag: 100,
+            spriteTag: nextSpriteTag,
             actionTag: 22
         }]
 
       Pages: []
+
+    nextSpriteTag += 1
+    @document
 
 
   @fromJSON: (json) ->
@@ -103,14 +106,16 @@ class App.StorybookJSON
         settings:
           number: @document.Pages.length + 1,
           fontType: "Arial",
-          fontColor: [255, 0, 0],
-          fontHighlightColor: [255, 255, 255],
+          fontColor: [0, 0, 0],
+          fontHighlightColor: [255, 0, 0],
           fontSize: 24,
-          #backgroundMusicFile:
-            #loop: true,
-            #audioFilePath: scene.get('sound_url')
         text:
           paragraphs: []
+
+    if scene.get('sound_url')?
+      page.Page.settings.backgroundMusicFile =
+        loop: true
+        audioFilePath: scene.get('sound_url')
 
     scene._page = page
     @createWidgetsFor(scene)
@@ -235,14 +240,14 @@ class App.StorybookJSON
     throw new Error("SpriteWidget has no CCSprite") unless ccsprite?
 
     if ccsprite.position.length == 0
-      ccsprite.position.push(sprite_orientation_widget.point.x)
-      ccsprite.position.push(sprite_orientation_widget.point.y)
+      ccsprite.position.push(parseInt(sprite_orientation_widget.point.x))
+      ccsprite.position.push(parseInt(sprite_orientation_widget.point.y))
     else
       page = sprite_orientation_widget.sprite_widget.scene()._page
       throw new Error("Scene has no Page") unless page?
       page.API.CCMoveBy ||= []
       spriteMoveByJSON =
-        position:  [sprite_orientation_widget.point.x - ccsprite.position[0], sprite_orientation_widget.point.y - ccsprite.position[1]]
+        position:  [parseInt(sprite_orientation_widget.point.x - ccsprite.position[0]), parseInt(sprite_orientation_widget.point.y - ccsprite.position[1])]
         duration:  3
         actionTag: nextActionTag
       page.API.CCMoveBy.push(spriteMoveByJSON)
@@ -251,7 +256,9 @@ class App.StorybookJSON
 
       # Following code is probably buggy.
       # It does not account for multiple actionTags.
-      page.API.CCStorySwipeEnded.runAction ||= []
+      # page.API.CCStorySwipeEnded.runAction ||= []
+      # Following is a hack to for compilation. Above line should be used
+      page.API.CCStorySwipeEnded.runAction = []
       runActionJSON =
         runAfterSwipeNumber: 1
         spriteTag:           ccsprite.spriteTag
@@ -263,13 +270,13 @@ class App.StorybookJSON
   updateSpriteOrientationWidget: (sprite_orientation_widget) ->
     ccsprite = sprite_orientation_widget.sprite_widget._CCSprite
     throw new Error("Scene has no Page") unless ccsprite?
-    if sprite_orientation_widget._CCMoveBy
-      sprite_orientation_widget._CCMoveBy.position = [sprite_orientation_widget.point.x - ccsprite.position[0], sprite_orientation_widget.point.y - ccsprite.position[1]]
+    if sprite_orientation_widget._CCMoveBy?
+      sprite_orientation_widget._CCMoveBy.position = [prseInt(sprite_orientation_widget.point.x - ccsprite.position[0]), parseInt(sprite_orientation_widget.point.y - ccsprite.position[1])]
       sprite_orientation_widget._CCMoveBy.duration = 3
 
     else
-      ccsprite.position[0] = sprite_orientation_widget.point.x
-      ccsprite.position[1] = sprite_orientation_widget.point.y
+      ccsprite.position[0] = parseInt(sprite_orientation_widget.point.x)
+      ccsprite.position[1] = parseInt(sprite_orientation_widget.point.y)
 
 
   addSpriteWidget: (sprite_widget) ->
@@ -296,7 +303,7 @@ class App.StorybookJSON
       glitterIndicator: true
       stopEffectIndicator: false
       touchFlag: nextTouchTag
-      position: [touch_widget.getControlCenter().x, touch_widget.getControlCenter().y]
+      position: [parseInt(touch_widget.getControlCenter().x), parseInt(touch_widget.getControlCenter().y)]
       radius: touch_widget.getRadius()
 
     if touch_widget.video_id?
@@ -319,7 +326,7 @@ class App.StorybookJSON
 
     for spriteJSON in page.API.CCSprites
       if spriteJSON.spriteTag == sprite.getTag()
-        spriteJSON.position = [sprite.getPosition().x, sprite.getPosition().y]
+        spriteJSON.position = [parseInt(sprite.getPosition().x), parseInt(sprite.getPosition().y)]
         spriteJSON.scale = sprite.getScale()
 
         break

@@ -5,11 +5,8 @@ class App.Models.Keyframe extends Backbone.Model
     @texts = new App.Collections.KeyframeTextsCollection []
     @_getTexts(async: false)
     @on 'audiosync', @updateStorybookParagraph, @
-
-    # must go through the scenesCollection, because the relationship
-    # between the scene model and its keyframes is not stored anywhere
-    @scene = App.scenesCollection.get @get('scene_id')
     @initializePreview()
+
 
   updateStorybookParagraph: ->
     App.storybookJSON.updateParagraph(@)
@@ -22,9 +19,13 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   url: ->
-    base = '/scenes/' + App.currentScene().get('id') + '/'
+    base = '/scenes/' + @get('scene_id') + '/'
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
+
+
+  getScene: =>
+    @_scene ||= App.scenesCollection.get @get('scene_id')
 
 
   initializePreview: ->
@@ -100,7 +101,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   canAddText: ->
-    !@isAnimation() && @scene.canAddText()
+    !@isAnimation() && @getScene().canAddText()
 
 
   isAnimation: ->
@@ -178,7 +179,7 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
   addKeyframe: (keyframe) ->
     # We add orientation widget to all the keyframes
-    # even to the animation keyframes. That might not 
+    # even to the animation keyframes. That might not
     # be desired.
     sows = _.map(App.currentScene().spriteWidgets(), (sprite_widget) ->
       new App.Builder.Widgets.SpriteOrientationWidget(
