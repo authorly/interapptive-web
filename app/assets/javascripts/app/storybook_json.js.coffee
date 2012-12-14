@@ -112,7 +112,7 @@ class App.StorybookJSON
         text:
           paragraphs: []
 
-    if sound.get('sound_url')?
+    if scene.get('sound_url')?
       page.Page.settings.backgroundMusicFile =
         loop: true
         audioFilePath: scene.get('sound_url')
