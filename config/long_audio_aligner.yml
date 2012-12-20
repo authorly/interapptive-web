@@ -9,3 +9,6 @@ production:
 
 compilation:
   aligner_path: '/home/waseem/Repositories/Projects/Interapptive/Documents/Aligner/'
+
+staging:
+  aligner_path: '/home/waseem/Repositories/Projects/Interapptive/Documents/Aligner/'
