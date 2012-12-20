@@ -28,10 +28,8 @@ db/schema.rb
 .rvmrc
 .redcar/
 .sass-cache
-/config/long_audio_aligner.yml
 /config/config.yml
 /config/database.yml
-/config/long_audio_aligner.yml
 /coverage.data
 /coverage/
 /db/*.javadb/

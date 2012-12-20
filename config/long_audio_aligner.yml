@@ -1,0 +1,11 @@
+development:
+  aligner_path: '/home/waseem/Repositories/Projects/Interapptive/Documents/Aligner/'
+
+test:
+  aligner_path: '/home/waseem/Repositories/Projects/Interapptive/Documents/Aligner/'
+
+production:
+  aligner_path: '/home/waseem/Repositories/Projects/Interapptive/Documents/Aligner/'
+
+compilation:
+  aligner_path: '/home/waseem/Repositories/Projects/Interapptive/Documents/Aligner/'
