@@ -8,8 +8,13 @@ describe Keyframe do
   context "#to_json" do
     it 'should be valid response' do
       response = {
+          'audio'              => {
+            'url'              => nil,
+            'sphinx_audio'     => { 'url' => nil },
+          },
           'background_x_coord' => keyframe.background_x_coord,
           'background_y_coord' => keyframe.background_y_coord,
+          'content_highlight_times' => [],
           'created_at'         => keyframe.created_at,
           'id'                 => keyframe.id,
           'is_animation'       => keyframe.is_animation,
@@ -18,7 +23,8 @@ describe Keyframe do
           'scene_id'           => keyframe.scene_id,
           'updated_at'         => keyframe.updated_at,
           'widgets'            => keyframe.widgets,
-          'preview_image_url'  => nil
+          'preview_image_url'  => nil,
+          'url'                => nil
       }.to_json
 
       keyframe.to_json.should eql(response)

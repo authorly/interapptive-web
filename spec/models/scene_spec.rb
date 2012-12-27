@@ -12,6 +12,9 @@ describe Scene do
 
       response = {
           'created_at'          => scene.created_at,
+          'font_color'          => 'rgb(0, 0, 0)',
+          'font_face'           => 'Arial',
+          'font_size'           => '25',
           'id'                  => scene.id,
           'is_main_menu'        => scene.is_main_menu,
           'position'            => scene.position,
@@ -20,6 +23,7 @@ describe Scene do
           'sound_repeat_count'  => 0,
           'storybook_id'        => scene.storybook_id,
           'updated_at'          => scene.updated_at,
+          'widgets'             => nil,
           'preview_image_url'   => nil,
           'sound_url'           => scene.sound.sound.url
       }.to_json
@@ -42,13 +46,13 @@ describe Scene do
 
       keyframe = scene.keyframes.first
       keyframe.position.should == 0
-      keyframe.widgets.should be
 
-      keyframe.widgets.count.should == 3
-      keyframe.widgets.all?{|w| w[:type] == 'ButtonWidget'}.should be
-      keyframe.widgets.detect{|w| w[:name] == 'read_it_myself' }.should be
-      keyframe.widgets.detect{|w| w[:name] == 'auto_play' }.should be
-      keyframe.widgets.detect{|w| w[:name] == 'read_to_me'}.should be
+      scene.widgets.should be
+      scene.widgets.count.should == 3
+      scene.widgets.all?{|w| w[:type] == 'ButtonWidget'}.should be
+      scene.widgets.detect{|w| w[:name] == 'read_it_myself' }.should be
+      scene.widgets.detect{|w| w[:name] == 'auto_play' }.should be
+      scene.widgets.detect{|w| w[:name] == 'read_to_me'}.should be
     end
 
   end
