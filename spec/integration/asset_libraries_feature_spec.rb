@@ -29,6 +29,7 @@ describe "User's ability to upload and manage various assets", :js => true do
     it "should select multiple local fonts to upload" do
       page.attach_file('font[files][]', Rails.root.join('spec/factories/fonts/cinema.ttf'))
       page.find('.start').click
+      slow_down
       page.should have_content('font.ttf')
       page.should have_content('cinema.ttf')
     end
@@ -41,6 +42,7 @@ describe "User's ability to upload and manage various assets", :js => true do
 
     it "should upload selected fonts" do
       page.attach_file('font[files][]', Rails.root.join('spec/factories/fonts/cinema.ttf'))
+      slow_down
       page.within('table.table-striped') do
         page.find('td.start > button').click
       end
@@ -52,6 +54,7 @@ describe "User's ability to upload and manage various assets", :js => true do
 
     it "should delete an uploaded font" do
       page.find('.start').click
+      slow_down
       page.within('table.table-striped') do
         page.find('td.delete > button').click
       end
@@ -69,6 +72,7 @@ describe "User's ability to upload and manage various assets", :js => true do
 
     it "should select a single local image to upload" do
       page.find('.start').click
+      slow_down
       page.within('table.table-striped') do
         page.find('td.delete')
         page.should have_content('350x350.png')
@@ -88,6 +92,7 @@ describe "User's ability to upload and manage various assets", :js => true do
 
     it "should delete the uploaded image" do
       page.find('.start').click
+      slow_down
       page.within('table.table-striped') do
         page.find('td.delete > button').click
       end
@@ -106,6 +111,7 @@ describe "User's ability to upload and manage various assets", :js => true do
     it "should select multiple local sounds to upload" do
       page.attach_file('sound[files][]', Rails.root.join('spec/factories/sounds/voicemail_received_again.wav'))
       page.find('.start').click
+      slow_down
       page.should have_content('voicemail_received.wav')
       page.should have_content('voicemail_received_again.wav')
     end
@@ -129,6 +135,7 @@ describe "User's ability to upload and manage various assets", :js => true do
 
     it "should delete an uploaded sound" do
       page.find('.start').click
+      slow_down
       page.within('table.table-striped') do
         page.find('td.delete > button').click
       end
@@ -151,6 +158,7 @@ describe "User's ability to upload and manage various assets", :js => true do
     it "should select multiple local videos to upload" do
       page.attach_file('video[files][]', Rails.root.join('spec/factories/videos/null_video_again.flv'))
       page.find('.start').click
+      slow_down
       page.should have_content('null_video.flv')
       page.should have_content('null_video_again.flv')
     end
@@ -167,18 +175,17 @@ describe "User's ability to upload and manage various assets", :js => true do
         page.find('td.start > button').click
       end
       slow_down
-      page.within('table.table-striped') do
-        page.find('td.delete')
-      end
+      page.should have_content('Your video is being transcoded. Please check later.')
     end
 
     it "should delete an uploaded video" do
+      pending
       page.find('.start').click
       page.within('table.table-striped') do
         page.find('td.delete > button').click
       end
       slow_down
-      page.should_not have_content('null_video.flv')
+      page.should have_content('Your video is being transcoded. Please check later.')
     end
   end
 end
