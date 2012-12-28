@@ -88,7 +88,9 @@ class App.Views.ToolbarView extends Backbone.View
     #text.on('change', -> keyframe.updateWidget(text))
 
 
-  addTouch: ->
+  addTouch: (e) ->
+    return if $(e.currentTarget).hasClass('disabled')
+
     App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:create')
 
 

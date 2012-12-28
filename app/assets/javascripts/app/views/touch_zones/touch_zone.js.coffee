@@ -45,12 +45,12 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     schema:
       on_touch:
         type: 'Select'
-        options: ['', 'Show video', 'Play sound']
+        options: ['Select video or sound...', 'Show video', 'Play sound']
         title: "On touch"
       asset_id:
         type: 'Select'
         options: []
-        title: ""
+        title: "Media to play"
 
 
   resetValues: ->
