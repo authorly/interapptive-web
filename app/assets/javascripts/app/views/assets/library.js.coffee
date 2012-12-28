@@ -8,7 +8,7 @@ class App.Views.AssetLibrary extends Backbone.View
     @acceptedFileTypes = @fileTypes(assetType)
 
   render: ->
-    $(@el).html(@template(assetType: @activeAssetType, acceptedFileTypes: @acceptedFileTypes))
+    @$el.html(@template(assetType: @activeAssetType, acceptedFileTypes: @acceptedFileTypes))
     this
 
   initAssetLibFor: (type) ->
