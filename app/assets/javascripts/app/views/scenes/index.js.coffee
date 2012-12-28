@@ -41,8 +41,8 @@ class App.Views.SceneIndex extends Backbone.View
   deleteScene: (event) =>
     event.stopPropagation()
 
-    if confirm(DELETE_SCENE_MSG)
-      id  =   $(event.currentTarget).attr('data-id')
+    if confirm DELETE_SCENE_MSG
+      id = $(event.currentTarget).attr('data-id')
       scene = @collection.get(id)
       scene.destroy
         success: => @collection.remove(scene)
@@ -66,10 +66,9 @@ class App.Views.SceneIndex extends Backbone.View
     $('.keyframe-list').empty()
     $('.text_widget').remove()
 
+    # Needs ventilation
     sceneId = $(event.currentTarget).data('id')
     scene =   @collection.get(sceneId)
-
-    # Needs ventilation
     @toggleSceneChange(scene)
 
 

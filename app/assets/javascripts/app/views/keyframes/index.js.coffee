@@ -1,23 +1,29 @@
 # Manages the list of keyframes (from the current scene).
 # Also manages the current keyframe selection and populates the WidgetLayer
 # accordingly.
+
+DELETE_KEYFRAME_MSG = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
+
 class App.Views.KeyframeIndex extends Backbone.View
   template:  JST["app/templates/keyframes/index"]
+
   tagName:   'ul'
+
   className: 'keyframe-list'
+
   events:
-    'click  .delete-keyframe'      : 'destroyKeyframeClicked'
+    'click  .delete-keyframe     ' : 'destroyKeyframeClicked'
     'click  .keyframe-list li div' : 'keyframeClicked'
 
+
   initialize: ->
-    @collection.on('reset',  @render, @)
-    @collection.on('change:positions', @render, @)
-    @collection.on('add',    @appendKeyframe)
-    @collection.on('remove', @removeKeyframe)
-    @collection.on('change:widgets', @updateKeyframePreview, @)
-    @collection.on('change:preview', @keyframePreviewChanged, @)
-    @collection.on('reset add remove change:positions', @updateScenePreview, @)
-    App.vent.on 'scene:active', (scene) =>
+    @collection.on 'reset add remove change:positions' , @updateScenePreview     , @
+    @collection.on 'reset change:positions           ' , @render                 , @
+    @collection.on 'change:widgets                   ' , @updateKeyframePreview  , @
+    @collection.on 'change:preview                   ' , @keyframePreviewChanged , @
+    @collection.on 'add                              ' , @appendKeyframe
+    @collection.on 'remove                           ' , @removeKeyframe
+    App.vent.on    'scene:active', (scene) =>
       if scene.canAddKeyframes() then @$el.show() else @$el.hide()
 
 
@@ -35,6 +41,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       @_updateDeleteButtons()
 
     @delegateEvents() # needed, even though it should work without it
+
     @initSortable()
 
     @
@@ -68,17 +75,18 @@ class App.Views.KeyframeIndex extends Backbone.View
     switcher = new App.Services.SwitchKeyframeService(App.currentKeyframe(), keyframe)
     switcher.execute()
 
+
   # TODO: Rename this to switchActiveKeyframeElement
   switchActiveKeyframe: (keyframe) =>
     @$('li').removeClass('active').filter("[data-id=#{keyframe.id}]").addClass('active')
 
+
   destroyKeyframeClicked: (event) =>
     event.stopPropagation()
-    message  = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
     target   = $(event.currentTarget)
     keyframe = @collection.get(target.attr('data-id'))
 
-    if confirm(message)
+    if confirm DELETE_KEYFRAME_MSG
       keyframe.destroy
         success: =>
           @collection.remove(keyframe)
@@ -117,11 +125,11 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   initSortable: =>
     $(@el).sortable
-      opacity: 0.6
-      containment: 'footer'
-      cancel: ''
-      update: @_numberKeyframes
-      items: 'li[data-is_animation!="1"]'
+      cancel      : ''
+      containment : 'footer'
+      items       : 'li[data-is_animation!="1"]'
+      opacity     : 0.6
+      update      : @_numberKeyframes
 
 
   _numberKeyframes: =>

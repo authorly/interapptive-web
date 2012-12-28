@@ -99,4 +99,3 @@ class App.Views.StorybookIndex extends Backbone.View
 
     if confirm(message) then storybook.destroy() and document.location.reload true
 
-
