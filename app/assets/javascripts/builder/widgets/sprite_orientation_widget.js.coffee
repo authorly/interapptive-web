@@ -45,7 +45,6 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     orientationWidgets = @keyframe.get('widgets') || []
     widgetFromKeyframe = _.find(orientationWidgets, (w) -> w.id == @id)
     orientationWidgets.splice(orientationWidgets.indexOf(widgetFromKeyframe), 1, @toHash())
-    console.log "@keyframe before save (will have intervals)"
     @keyframe.set('widgets', orientationWidgets)
     @keyframe.save {},
       success: => App.storybookJSON.updateSpriteOrientationWidget(this)

@@ -1,4 +1,4 @@
-%select.font_face
+%select.font_face#font_face
   %option{:value => "Arial"}
     Arial
   %option{:value => "Times New Roman"}

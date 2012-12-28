@@ -56,7 +56,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     @on('mousemove', @onMouseMove, this)
     @on('change',    @update,      this)
     @on('mouseover', @onMouseOver, this)
-    @on('mouseout', @onMouseOut,   this)
+    @on('mouseout',  @onMouseOut,  this)
 
 
   # Reload attributes from a set of keypairs

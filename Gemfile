@@ -62,4 +62,5 @@ group :test do
   gem 'ffaker'
   gem 'forgery'
   gem 'launchy'
+  gem 'connection_pool'
 end

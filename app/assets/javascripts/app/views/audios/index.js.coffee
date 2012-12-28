@@ -75,7 +75,6 @@ class App.Views.AudioIndex extends Backbone.View
 
 
   uploadDidError: ->
-    console.log "ERROR"
     alert AUDIO_UPLOAD_ERROR
 
 

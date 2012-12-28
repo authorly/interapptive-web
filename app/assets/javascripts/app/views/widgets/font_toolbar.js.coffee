@@ -12,7 +12,6 @@ class App.Views.FontToolbar extends Backbone.View
   initialize: ->
     @render()
     @setDefaults()
-    console.log '$(@el).find(".colorpicker"):', $(@el).find(".colorpicker")
     $(@el).find(".colorpicker").miniColors
       change: (hex, rgb) => @update()
     $(@el).draggable()
@@ -105,7 +104,7 @@ class App.Views.FontToolbar extends Backbone.View
   destroyKeyframeText: (e) ->
     $target = $(e.target)
     self = this
-    @keyframeText().destroy
+    App.currentKeyframeText().destroy
       success: (model, response) ->
         $('#keyframe_text_' + model.id).remove()
         self.onCloseClick()
