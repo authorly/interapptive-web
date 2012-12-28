@@ -1,33 +1,35 @@
-DELETE_SCENE_MSG = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
+
+DELETE_SCENE_MSG =
+  '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
+
 
 class App.Views.SceneIndex extends Backbone.View
   template:  JST['app/templates/scenes/index']
 
-  tagName:   'ul'
-
   className: 'scene-list'
 
+  tagName:   'ul'
+
   events:
-    'click span'    : 'onSceneClick'
+    'click  span'   : 'onSceneClick'
     'click .delete' : 'deleteScene'
 
 
   initialize: ->
-    @collection.on 'add             ' , @appendSceneElement , @
-    @collection.on 'reset           ' , @render             , @
-    @collection.on 'remove          ' , @removeScene        , @
-    @collection.on 'change:positions' , @render             , @
-    App.vent.on    'window:resize   ' , @adjustSize         , @
+    @collection.on 'add'             , @appendSceneElement, @
+    @collection.on 'reset'           , @render            , @
+    @collection.on 'remove'          , @removeScene       , @
+    @collection.on 'change:positions', @render            , @
+    App.vent.on    'window:resize'   , @adjustSize        , @
 
 
   render: ->
     @$el.empty()
-
     @collection.each (scene) => @appendSceneElement(scene)
-
     @initSortable() if @collection?
     @adjustSize()
 
+    # Needs ventilation
     @$('li:first span:first').click()
 
     @
@@ -42,40 +44,39 @@ class App.Views.SceneIndex extends Backbone.View
     event.stopPropagation()
 
     if confirm DELETE_SCENE_MSG
-      id = $(event.currentTarget).attr('data-id')
+      id = $(event.currentTarget).attr 'data-id'
       scene = @collection.get(id)
-      scene.destroy
-        success: => @collection.remove(scene)
+      scene.destroy success: => @collection.remove(scene)
 
 
   removeScene: (scene) =>
-    $("li[data-id=#{scene.id}]").remove()
-
-    # This method (removeScene)
-    #  Should breathe into vent; keyframe index should react
-    #   and empty itself accordingly
-    $('.keyframe-list').empty()
-
-    # This toggle should be triggered by vent, not called
-    @toggleSceneChange scene
+    App.vent.trigger 'scene:remove'
+    @$("li[data-id=#{scene.id}]").remove()
 
 
   onSceneClick: (event) =>
-    # Should blow into vent
-    # Be sure to *dispose* of below views properly when vent's triggered
-    $('.keyframe-list').empty()
+    #
+    # RFCTR:
+    #     Needs ventilation,
+    #     App.vent.on 'scene:active'
+    #     inside Text Widget view
+    #
     $('.text_widget').remove()
 
-    # Needs ventilation
-    sceneId = $(event.currentTarget).data('id')
-    scene =   @collection.get(sceneId)
+    id = $(event.currentTarget).data 'id'
+    scene =   @collection.get(id)
     @toggleSceneChange(scene)
 
 
-  # Needs ventilation
   toggleSceneChange: (scene) =>
     return if scene is App.currentScene()
-    service = new App.Services.SwitchSceneService(App.currentScene(), scene)
+
+    #
+    # RFCTR:
+    #     Needs ventilation
+    #     Services class is going to have to be initalized on app load
+    #
+    service = new App.Services.SwitchSceneService App.currentScene(), scene
     service.execute()
 
 
@@ -83,7 +84,7 @@ class App.Views.SceneIndex extends Backbone.View
     $('li', @el).
       removeClass('active').
       find("span.scene-frame[data-id=#{scene.get('id')}]").
-      parent().addClass('active')
+      parent().addClass 'active'
 
 
   initSortable: =>
@@ -96,7 +97,7 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   adjustSize: ->
-    $('#scene-list, .scene-list').css  height: "#{$(window).height()}px"
+    $('#scene-list, .scene-list').css height: "#{$(window).height()}px"
 
 
   _numberScenes: =>

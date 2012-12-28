@@ -2,28 +2,33 @@
 # Also manages the current keyframe selection and populates the WidgetLayer
 # accordingly.
 
-DELETE_KEYFRAME_MSG = '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
+DELETE_KEYFRAME_MSG =
+  '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
 
 class App.Views.KeyframeIndex extends Backbone.View
-  template:  JST["app/templates/keyframes/index"]
+  template:  JST['app/templates/keyframes/index']
 
   tagName:   'ul'
 
   className: 'keyframe-list'
 
   events:
-    'click  .delete-keyframe     ' : 'destroyKeyframeClicked'
     'click  .keyframe-list li div' : 'keyframeClicked'
+    'click  .delete-keyframe'      : 'destroyKeyframeClicked'
 
 
   initialize: ->
-    @collection.on 'reset add remove change:positions' , @updateScenePreview     , @
-    @collection.on 'reset change:positions           ' , @render                 , @
-    @collection.on 'change:widgets                   ' , @updateKeyframePreview  , @
-    @collection.on 'change:preview                   ' , @keyframePreviewChanged , @
-    @collection.on 'add                              ' , @appendKeyframe
-    @collection.on 'remove                           ' , @removeKeyframe
-    App.vent.on    'scene:active', (scene) =>
+    @collection.on 'change:positions reset add remove', @updateScenePreview    , @
+    @collection.on 'change:positions reset'           , @render                , @
+    @collection.on 'change:widgets'                   , @updateKeyframePreview , @
+    @collection.on 'change:preview'                   , @keyframePreviewChanged, @
+    @collection.on 'add'   , @appendKeyframe
+    @collection.on 'remove', @removeKeyframe
+
+    App.vent.on 'scene:remove', (scene) =>
+      if scene.canAddKeyframes() then @$el.empty()
+
+    App.vent.on 'scene:active', (scene) =>
       if scene.canAddKeyframes() then @$el.show() else @$el.hide()
 
 
@@ -33,16 +38,13 @@ class App.Views.KeyframeIndex extends Backbone.View
     if @collection.length > 0
       @collection.each (keyframe) => @renderKeyframe(keyframe)
       @switchKeyframe()
-
-      # this must be decoupled; this view should trigger an event on the global
-      # vent; and the toolbar part of the app should react to that and initialize
-      App.initializeFontToolbar()
-
       @_updateDeleteButtons()
 
     @delegateEvents() # needed, even though it should work without it
 
     @initSortable()
+
+    App.vent.trigger 'keyframes:rendered'
 
     @
 
@@ -54,7 +56,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   renderKeyframe: (keyframe, index) =>
-    view  = new App.Views.Keyframe(model: keyframe)
+    view = new App.Views.Keyframe(model: keyframe)
     viewElement = view.render().el
     if index == 0
       @$el.prepend viewElement
@@ -71,6 +73,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   switchKeyframe: (keyframe) =>
+    # Needs ventilationx
     keyframe = @collection.at(@collection.length - 1) unless keyframe?
     switcher = new App.Services.SwitchKeyframeService(App.currentKeyframe(), keyframe)
     switcher.execute()
