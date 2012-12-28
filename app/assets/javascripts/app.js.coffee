@@ -26,24 +26,28 @@ window.App =
     @activeActionsCollection =   new App.Collections.ActionsCollection       []
 
     @contentModal =   new App.Views.Modal className: 'content-modal'
-    @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
-    @toolbar =        new App.Views.ToolbarView  el: $('#toolbar')
+    @fileMenu     =   new App.Views.FileMenuView el: $('#file-menu')
+    @toolbar      =   new App.Views.ToolbarView  el: $('#toolbar')
 
     @sceneList         new App.Views.SceneIndex        collection: @scenesCollection
     @keyframeList      new App.Views.KeyframeIndex     collection: @keyframesCollection
     @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('#canvas-wrapper')
 
     @activeSpritesList = new App.Views.ActiveSpritesList()
-    @activeSpritesWindow(@activeSpritesList)
+    # Rename to palette   V
+    @activeSpritesWindow @activeSpritesList
 
     @spriteForm = new App.Views.SpriteForm el: $('#sprite-editor')
-    @spriteFormWindow(@spriteForm)
+    # Rename to palette   V
+    @spriteFormWindow @spriteForm
 
-    #@activeActionsWindow(new App.Views.ActiveActionsList collection: @activeActionsCollection)
+    # @activeActionsWindow(new App.Views.ActiveActionsList collection: @activeActionsCollection)
 
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
 
+
+  # RFCTR: Comment out
   activeActionsWindow: (view) ->
     if view
       @actionsWindow = new App.Views.WidgetWindow(
@@ -54,6 +58,8 @@ window.App =
     else
       @actionsWindow
 
+
+  # RFCTR: Rename to palette
   activeSpritesWindow: (view) ->
     if view
       @spritesWindow = new App.Views.WidgetWindow(
@@ -65,6 +71,8 @@ window.App =
     else
       @spritesWindow
 
+
+  # RFCTR: Rename to palette
   spriteFormWindow: (view) ->
     if view
       @selectedSpriteWin = new App.Views.WidgetWindow(
@@ -81,10 +89,8 @@ window.App =
 
     @openLargeModal(@simulator)
 
-  #
-  # TODO:
-  #    Refactor with  App.Views.Modal when it gets options like width/height added to it
-  #
+
+  # RFCTR: Use generic modal & add sizing options to it
   openLargeModal: (view, className='') ->
     return unless view
     @closeLargeModal(false)
@@ -93,20 +99,21 @@ window.App =
     $('body').append(@_modal.render().el)
     $('.large-modal').modal(backdrop: true)
 
-  #
-  # TODO:
-  #    Refactor with App.Views.Modal when it gets options like width/height added to it
-  #
+
+  # RFCTR
   closeLargeModal: (animate=true) ->
     return unless @_modal
 
     @_modal.hide()
 
+
   modalWithView: (view) ->
     if view then @view = new App.Views.Modal(view, className: 'content-modal') else @view
 
+
   lightboxWithView: (view) ->
     if view then @lightboxView = new App.Views.Lightbox(view, className: 'lightbox-modal') else @lightboxView
+
 
   currentUser: (user) ->
     if user then @user = new App.Models.User(user) else @user
@@ -234,25 +241,22 @@ window.App =
 $ ->
   App.init()
 
-  $('#export').on 'click', -> alert(App.storybookJSON)
+  $('.content-modal').modal(backdrop: true).modal 'hide'
+  $('.lightbox-modal').modal().modal("hide").on('hide', App.pauseVideos)
+  $('#storybooks-modal').modal(backdrop: 'static', show: true, keyboard: false)
 
-  $(".content-modal").modal(backdrop: true).modal "hide"
-  $(".lightbox-modal").modal().modal("hide").on('hide', App.pauseVideos)
-  $("#storybooks-modal").modal(backdrop: "static", show: true, keyboard: false)
+  toolbar_modal = $('#modal')
+  toolbar_modal.modal(backdrop: true).modal 'hide'
+  toolbar_modal.bind 'hidden', ->
+    $("ul#toolbar li ul li").removeClass 'active'
 
-  toolbar_modal = $("#modal")
-
-  toolbar_modal.modal(backdrop: true).modal "hide"
-
-  toolbar_modal.bind "hidden", ->
-    $("ul#toolbar li ul li").removeClass "active"
-
-  # TODO: Move to Toolbar manager or something similar
-  $("ul#toolbar li ul li").click ->
-    excluded = '.actions, .scene, .keyframe, .animation-keyframe, .edit-text, .disabled, .images, .videos, .sounds, .fonts, .add-image, .sync-audio, .touch-zones, .preview, .scene-options'
-
+  # Needs ventilation
+  $('ul#toolbar li ul li').click ->
     toolbar_modal.modal "hide"
 
+    excluded =
+      '.actions, .scene, .keyframe, .animation-keyframe, .edit-text, .disabled, .images,' +
+      '.videos, .sounds, .fonts, .add-image, .sync-audio, .touch-zones, .preview, .scene-options'
     unless $(this).is excluded
       $("ul#toolbar li ul li").not(this).removeClass "active"
       $(this).toggleClass "active"

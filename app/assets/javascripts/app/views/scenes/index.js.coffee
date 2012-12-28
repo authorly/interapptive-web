@@ -25,11 +25,10 @@ class App.Views.SceneIndex extends Backbone.View
 
     @collection.each (scene) => @appendSceneElement(scene)
 
-    # Use memoized here, see notes
-    $('.scene-list li:first span:first').cli  ck()
-
     @initSortable() if @collection?
     @adjustSize()
+
+    @$('li:first span:first').click()
 
     @
 
@@ -63,17 +62,18 @@ class App.Views.SceneIndex extends Backbone.View
 
   onSceneClick: (event) =>
     # Should blow into vent
-    # Be sure to dispose of below views properly during refactor
+    # Be sure to *dispose* of below views properly when vent's triggered
     $('.keyframe-list').empty()
     $('.text_widget').remove()
 
     sceneId = $(event.currentTarget).data('id')
     scene =   @collection.get(sceneId)
 
-    # Should be done through vent
+    # Needs ventilation
     @toggleSceneChange(scene)
 
 
+  # Needs ventilation
   toggleSceneChange: (scene) =>
     return if scene is App.currentScene()
     service = new App.Services.SwitchSceneService(App.currentScene(), scene)
