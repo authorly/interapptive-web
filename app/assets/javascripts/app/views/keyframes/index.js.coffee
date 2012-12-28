@@ -5,10 +5,9 @@ class App.Views.KeyframeIndex extends Backbone.View
   template:  JST["app/templates/keyframes/index"]
   tagName:   'ul'
   className: 'keyframe-list'
-
   events:
-    'click span a.delete-keyframe': 'destroyKeyframeClicked'
-    'click  .keyframe-list li div': 'keyframeClicked'
+    'click  .delete-keyframe'      : 'destroyKeyframeClicked'
+    'click  .keyframe-list li div' : 'keyframeClicked'
 
   initialize: ->
     @collection.on('reset',  @render, @)
@@ -23,7 +22,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   render: ->
-    $(@el).html('')
+    @$el.empty()
 
     if @collection.length > 0
       @collection.each (keyframe) => @renderKeyframe(keyframe)
@@ -45,6 +44,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     @renderKeyframe(keyframe, options.index)
     @switchKeyframe(keyframe)
     @_updateDeleteButtons()
+
 
   renderKeyframe: (keyframe, index) =>
     view  = new App.Views.Keyframe(model: keyframe)

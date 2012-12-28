@@ -191,27 +191,15 @@ window.App =
     if list then @keyframeListView = list else @keyframeListView
 
 
-  # Intentionally removed?
-  # imageList: (list) ->
-  #   if list then @imageListView = list else @imageListView
-
-
   keyframeTextList: (list) ->
     if list then @keyframeTextListView = list else @keyframeTextListView
 
 
-  #
-  # TODO:
-  #    Follow naming conventions i.e., currentTextWidget
-  #
   selectedText: (textWidget) ->
     if textWidget then @textWidget = textWidget else @textWidget
 
 
-  #
-  # TODO:
-  #    Move to textWidget view and access from global
-  #
+  # RFCTR
   editTextWidget: (textWidget) ->
     @selectedText(textWidget)
     @fontToolbar.attachToTextWidget(textWidget)
@@ -219,29 +207,25 @@ window.App =
     App.currentKeyframeText(textWidget.model)
 
 
-  #
-  # TODO:
-  #    Move to fontToolbar view and access from global
-  #
+  # RFCTR
   fontToolbarUpdate: (fontToolbar) ->
     @selectedText().fontToolbarUpdate(fontToolbar)
 
+
+  # RFCTR
   initializeFontToolbar: ->
     App.fontToolbar = new App.Views.FontToolbar(el: $('#font_toolbar'))
 
-  #
-  # TODO:
-  #    Move to fontToolbar view and access from global
-  #
+
+  # RFCTR
   fontToolbarClosed: ->
     $('.text-widget').focusout()
 
-  #
-  # TODO:
-  #    Move to keyframeText view and access from global
-  #
+
+  # RFCTR
   updateKeyframeText: ->
     @keyframeTextList().updateText()
+
 
   pauseVideos: ->
     $('.video-player')[0].pause()

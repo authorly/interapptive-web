@@ -5,10 +5,9 @@ class App.Views.ImageIndex extends Backbone.View
   template: JST["app/templates/assets/images/index"]
 
   events:
-    'click a':                        'setActiveImage'
+    'click a'                       : 'setActiveImage'
     'touchstart, touchend .zoomable': 'doZoom'
-    # 'click .use-image': 'setSceneBackground'
-    'click .use-image':               'selectImage'
+    'click .use-image'              : 'selectImage'
 
 
   initialize: ->

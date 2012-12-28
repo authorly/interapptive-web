@@ -14,6 +14,7 @@ class App.Views.WidgetWindow extends Backbone.View
     @_view.makeSortable() if @_view instanceof App.Views.ActiveSpritesList
     this
 
+  # Into template
   createHandlerEl: ->
     $('<div></div>',
       text: @options.title

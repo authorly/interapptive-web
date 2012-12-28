@@ -1,36 +1,37 @@
-class App.Views.SceneIndex extends Backbone.View
-  template: JST["app/templates/scenes/index"]
+DELETE_SCENE_MSG = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
 
-  tagName: 'ul'
+class App.Views.SceneIndex extends Backbone.View
+  template:  JST['app/templates/scenes/index']
+
+  tagName:   'ul'
 
   className: 'scene-list'
 
-
   events:
-    'click    span a.delete': 'deleteScene'
-    'click .scene-list span': 'onSceneClick'
+    'click span'    : 'onSceneClick'
+    'click .delete' : 'deleteScene'
+
 
   initialize: ->
-    @collection.on('reset',  @render, @)
-    @collection.on('change:positions', @render, @)
-    @collection.on('add',    @appendSceneElement, @)
-    @collection.on('remove', @removeScene, @)
-    App.vent.on('window:resize', @adjustSize, @)
+    @collection.on 'add             ' , @appendSceneElement , @
+    @collection.on 'reset           ' , @render             , @
+    @collection.on 'remove          ' , @removeScene        , @
+    @collection.on 'change:positions' , @render             , @
+    App.vent.on    'window:resize   ' , @adjustSize         , @
 
 
   render: ->
-    $(@el).html('')
+    @$el.empty()
 
     @collection.each (scene) => @appendSceneElement(scene)
 
-    $('.scene-list li:first span:first').click()
+    # Use memoized here, see notes
+    $('.scene-list li:first span:first').cli  ck()
 
     @initSortable() if @collection?
+    @adjustSize()
 
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
-
-    this
+    @
 
 
   appendSceneElement: (scene) ->
@@ -40,28 +41,37 @@ class App.Views.SceneIndex extends Backbone.View
 
   deleteScene: (event) =>
     event.stopPropagation()
-    # TODO: Prevent this from working in the event there is only one scene?
-    message = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
 
-    if confirm(message)
-      target  = $(event.currentTarget)
-      scene = @collection.get(target.attr('data-id'))
+    if confirm(DELETE_SCENE_MSG)
+      id  =   $(event.currentTarget).attr('data-id')
+      scene = @collection.get(id)
       scene.destroy
         success: => @collection.remove(scene)
 
 
   removeScene: (scene) =>
     $("li[data-id=#{scene.id}]").remove()
+
+    # This method (removeScene)
+    #  Should breathe into vent; keyframe index should react
+    #   and empty itself accordingly
     $('.keyframe-list').empty()
+
+    # This toggle should be triggered by vent, not called
     @toggleSceneChange scene
 
 
   onSceneClick: (event) =>
+    # Should blow into vent
+    # Be sure to dispose of below views properly during refactor
     $('.keyframe-list').empty()
     $('.text_widget').remove()
-    sceneId = $(event.currentTarget).data 'id'
-    scene = @collection.get(sceneId)
-    @toggleSceneChange scene
+
+    sceneId = $(event.currentTarget).data('id')
+    scene =   @collection.get(sceneId)
+
+    # Should be done through vent
+    @toggleSceneChange(scene)
 
 
   toggleSceneChange: (scene) =>
@@ -71,30 +81,27 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   switchActiveElement: (scene) =>
-    $('li', @el)
-      .removeClass('active')
-      .find("span.scene-frame[data-id=#{scene.get('id')}]")
-      .parent().addClass('active')
+    $('li', @el).
+      removeClass('active').
+      find("span.scene-frame[data-id=#{scene.get('id')}]").
+      parent().addClass('active')
 
 
   initSortable: =>
-
-    $(@el).sortable
-      opacity: 0.6
-      containment: '.sidebar'
-      axis: 'y'
-      update: @_numberScenes
-      items: 'li[data-is_main_menu!="1"]'
+    @$el.sortable
+      axis        : 'y'
+      containment : '.sidebar'
+      items       : 'li[data-is_main_menu!="1"]'
+      opacity     : 0.6
+      update      : @_numberScenes
 
 
   adjustSize: ->
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
+    $('#scene-list, .scene-list').css  height: "#{$(window).height()}px"
 
 
   _numberScenes: =>
     @$('li[data-is_main_menu!="1"]').each (index, element) =>
-      # console.log index, element
       element = $(element)
 
       if (id = element.data('id'))? && (scene = @collection.get(id))?
