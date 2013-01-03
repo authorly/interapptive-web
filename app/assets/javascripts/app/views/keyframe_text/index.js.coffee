@@ -48,6 +48,7 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     @texts.push(text)
 
 
+  # RFCTR this is not used?
   editText: (text) ->
     # RFCTR: Should be on text widget
     for _text in @texts
@@ -58,6 +59,7 @@ class App.Views.KeyframeTextIndex extends Backbone.View
     @position(text) for text in @texts
 
 
+  # RFCTR move this to each text view
   position: (text) ->
     text.setPosition text.model.get('x_coord'), text.model.get('y_coord')
 
@@ -74,6 +76,10 @@ class App.Views.KeyframeTextIndex extends Backbone.View
         #     Entire callback needs ventilation;
         #     should blow App.vent.trigger 'text_widget:element_created'
         #
+        # @dira 2013-01-03: do other parts of the app need to know about this?
+        # If not, this view should simply listen to `add` on `@collection` to do
+        # the rendering of the new element.
+        #
         textWidget = new App.Views.TextWidget(model: keyframeText)
 
         #
@@ -82,6 +88,8 @@ class App.Views.KeyframeTextIndex extends Backbone.View
         #
         textWidget.fromToolbar = true
         App.currentKeyframeText(textWidget)
+        # the random position should be set on the server, so we don't need
+        # an additional save
         textWidget.setPosition 400*Math.random(), 350*Math.random()
         textWidget.save()
         @addText(textWidget)
