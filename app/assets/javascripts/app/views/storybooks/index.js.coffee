@@ -18,15 +18,15 @@ class App.Views.StorybookIndex extends Backbone.View
 
 
   initialize: ->
-    @collection.on 'add'  , @appendStorybook, @
-    @collection.on 'reset', @render         , @
+    @collection.on 'add'  ,  @appendStorybook, @
+    @collection.on 'remove', @removeStorybook, @
+    @collection.on 'reset',  @render         , @
+    @selectedStorybook = null
 
 
   render: ->
     @$el.html @template()
-
     @collection.each (storybook) => @appendStorybook(storybook)
-
     $('.modal-body').removeClass 'loading-book'
 
     if App.Config.environment == 'development' && @collection.length > 0
@@ -38,67 +38,69 @@ class App.Views.StorybookIndex extends Backbone.View
 
   appendStorybook: (storybook) ->
     view = new App.Views.Storybook(model: storybook)
-    $('#storybook-list').prepend view.render().el
+    @$('#storybook-list').prepend view.render().el
+
+    @selectStorybook storybook
 
 
   createStorybook: (event) ->
     event.preventDefault()
 
-    @collection.create
-      title   : $('.storybook-title').val(),
-      wait    : true
-      error   : -> alert 'Please properly fill in fields!'
-      success : (storybook, response) ->
-        $('.storybook-form')[0].reset().fadeOut(130)
-        $('.new-storybook-btn').delay(130).fadeIn(130)
-        $('.btn-primary.open-storybook').removeClass 'disabled'
-        $('a.storybook').removeClass('active alert alert-info').first().addClass 'active alert alert-info'
-
-        App.currentStorybook(storybook)
+    @collection.create { title   : @$('.storybook-title').val() },
+      wait:    true
+      error:    -> alert 'Please properly fill in fields!'
+      success: @closeStorybookForm
 
 
-  closeStorybookForm: ->
-    $('.storybook-form').fadeOut(130)
-    $('.new-storybook-btn').delay(130).fadeIn(130)
+  closeStorybookForm: =>
+    @$('.storybook-form input').val('')
+    @$('.storybook-form').fadeOut(130)
+    @$('.new-storybook-btn').delay(130).fadeIn(130)
 
 
   showStorybookForm: ->
-    $('.new-storybook-btn').fadeOut(70)
-    $('.storybook-form').delay(70).fadeIn()
+    @$('.new-storybook-btn').fadeOut(70)
+    @$('.storybook-form').delay(70).fadeIn()
+    window.setTimeout (=> @$('.storybook-form .storybook-title').focus()), 71
 
 
   openStorybook: ->
-    return unless App.currentStorybook().get 'id'
+    return unless @selectedStorybook?
+
+    $('#storybooks-modal').modal 'hide'
 
     # XXX this should not be done here; this belongs to the model layer
     # it should be done on initialization
     scenesIndex = App.sceneList()
-    scenesIndex.collection.storybook_id = App.currentStorybook().get 'id'
+    scenesIndex.collection.storybook_id = @selectedStorybook.get 'id'
     scenesIndex.collection.fetch() # Triggers a render.
 
+    # these initialization statements belong to the view that renders the scenes
     $('#scene-list').html(scenesIndex.el)
-    $('#storybooks-modal').modal 'hide'
     $('.scene').removeClass 'disabled'
 
 
   storybookSelected: (event) ->
-    $(event.currentTarget).addClass 'active alert alert-info'
-    $('a.storybook').removeClass 'active alert alert-info'
-    $('.btn-primary.open-storybook').removeClass 'disabled'
-
     id = $(event.currentTarget).data 'id'
     @selectStorybook @collection.get(id)
 
 
   selectStorybook: (storybook) ->
-    App.currentStorybook(storybook)
+    @selectedStorybook = storybook
+
+    @$('.storybook').removeClass('active alert alert-info').
+      filter("[data-id=#{storybook.id}]").addClass('active alert alert-info')
+    @$('.btn-primary.open-storybook').removeClass 'disabled'
+
 
 
   deleteStorybook: (event) ->
     event.preventDefault()
 
-    if confirm DELETE_STORYBOOK_MSG
+    if confirm(DELETE_STORYBOOK_MSG)
       storybook = @collection.get $(event.currentTarget).data('id')
       storybook.destroy()
-      document.location.reload(true)
 
+
+  removeStorybook: (storybook) ->
+    @$(".storybook[data-id=#{storybook.id}]").parent().remove()
