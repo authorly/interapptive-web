@@ -68,8 +68,7 @@ class App.Views.StorybookIndex extends Backbone.View
 
 
   openStorybook: ->
-    storybookId = App.currentStorybook().get 'id'
-    return unless storybookId
+    return unless App.currentStorybook().get 'id'
 
     # XXX this should not be done here; this belongs to the model layer
     # it should be done on initialization
@@ -98,11 +97,8 @@ class App.Views.StorybookIndex extends Backbone.View
   deleteStorybook: (event) ->
     event.preventDefault()
 
-    return unless confirm(DELETE_STORYBOOK_MSG)
-
-    id = $(event.currentTarget).data 'id'
-    storybook = @collection.get(id)
-    storybook.destroy()
-
-    document.location.reload(true)
+    if confirm DELETE_STORYBOOK_MSG
+      storybook = @collection.get $(event.currentTarget).data('id')
+      storybook.destroy()
+      document.location.reload(true)
 

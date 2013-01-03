@@ -41,8 +41,9 @@
                 %canvas{id: 'builder-canvas', width: 1024, height: 768}
                   %p Your browser doesn't support the technology required to run this application.
 
-            #active-sprites-window.widget-window.span2
-            #sprite-form-window.widget-window.span2
+            #sprite-list-palette.palette.span2
+            #sprite-editor-palette.palette.span2
+            #text-editor-palette.palette.span2
             -##active-actions-window.widget-window.span2
             #action-form-container
 
@@ -55,7 +56,6 @@
     = render 'storybooks/index_modal'
     = render 'shared/content_modal'
     = render 'shared/lightbox_modal'
-    = render 'shared/font_toolbar'
 
     :javascript
       App.currentUser(#{current_user.to_json(:only => :id)})

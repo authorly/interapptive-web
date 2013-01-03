@@ -1,68 +1,79 @@
+
+DELETE_ACTION_MSG =
+  'Are you sure you want to delete this action?\n'
+
+
 class App.Views.ActiveActionsList extends Backbone.View
   tagName: 'ul'
-  id:      'active-actions'
+
+  el:      '#active-actions'
+
   events:
-    'click .delete': 'delete'
-    'click .edit':   'edit'
+    'click .delete' : 'delete'
+    'click .edit'   : 'edit'
+
 
   initialize: =>
-    @collection.on('reset', @render, this)
-    @collection.on('add', @appendActionToList, this)
+    @collection.on 'reset', @render           , @
+    @collection.on 'add', @appendActionToList , @
+
 
   declareAddActionListener: ->
     $('#active-actions-window .icon-plus').on 'click', ->
       $('#toolbar li ul li.actions').click()
 
+
   render: =>
-    $(@el).empty()
+    @$el.empty()
     @collection.each (action) => @appendActionToList(action)
     @createAddActionEl()
     @initTooltips()
     @declareAddActionListener()
-    this
+    @
 
-  edit: (e) =>
-    actionId = $(e.currentTarget).data('action-id')
-    action =   @collection.get(actionId)
 
-    @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
-    @actionDefinitions.fetch
-      success: =>
-        activeDefinition = @actionDefinitions.get(action.get('action_definition_id'))
-        view = new App.Views.ActionFormContainer(
-          action: action
-          activeDefinition: activeDefinition
-          actionDefinitions: @actionDefinitions
-        )
+  edit: (event) =>
+    action = @collection.get $(event.currentTarget).data('action-id')
 
-        App.modalWithView(view: view).show()
+    #
+    # RFCTR
+    #     Needs ventilation
+    #
+    #
+    #     @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
+    #     @actionDefinitions.fetch
+    #      success: =>
+    #        activeDefinition = @actionDefinitions.get(action.get('action_definition_id'))
+    #        view = new App.Views.ActionFormContainer(
+    #          action: action
+    #          activeDefinition: activeDefinition
+    #          actionDefinitions: @actionDefinitions
+    #        )
+    #
+    #        App.modalWithView(view: view).show()
 
-  delete: (e) ->
-    actionRowEl = $(e.currentTarget).closest('li')
-    actionId =    $(e.currentTarget).data('action-id')
-    action =      App.activeActionsCollection.get(actionId)
-    deleteMsg =   'Are you sure you want to delete this action?\n'
 
-    if confirm(deleteMsg)
+  delete: (event) ->
+    if confirm DELETE_ACTION_MSG
+      action = App.activeActionsCollection.get $(e.currentTarget).data('action-id')
       action.destroy
-        success: => $(actionRowEl).remove()
+        success: =>
+          $(event.currentTarget).closest('li').remove()
 
 
-  initTooltips: =>
-    $el = $(@el)
-    $el.find('div.action-image').tooltip(placement: 'bottom')
-    $el.find('span.action-name').tooltip(placement: 'left')
+  initTooltips: ->
+    @$('div.action-image').tooltip(placement: 'bottom')
+    @$('span.action-name').tooltip(placement: 'left')
 
 
   createAddActionEl: ->
-    el = '<i class="icon-plus icon-black"></i>'
-    $('#active-actions-window').append(el)
+    $('#active-actions-window').append('<i class="icon-plus icon-black"></i>')
 
 
   appendActionToList: (action) =>
     actionView = new App.Views.Action(model: action)
     actionEl =   actionView.render().el
 
-    $(@el).append(actionEl)
+    @$el.append(actionEl)
 
 

@@ -3,6 +3,7 @@ class App.Services.SwitchSceneService
   constructor: (@oldScene, @newScene) ->
     @sceneList = App.sceneList()
 
+
   execute: =>
     @sceneList.switchActiveElement @newScene
 
@@ -16,8 +17,6 @@ class App.Services.SwitchSceneService
     $('nav.toolbar ul li ul li').removeClass 'disabled'
 
     App.vent.trigger 'scene:active', @newScene
-    
-    App.activeSpritesList.removeAll()
     
 
   showStats: =>

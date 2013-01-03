@@ -81,9 +81,9 @@ class App.Views.KeyframeTextIndex extends Backbone.View
         #     Text Widget should inhale and do the following
         #
         textWidget.fromToolbar = true
+        App.currentKeyframeText(textWidget)
         textWidget.setPosition 400*Math.random(), 350*Math.random()
         textWidget.save()
         @addText(textWidget)
         textWidget.editTextWidget()
         textWidget.enableEditing()
-        App.currentKeyframeText(textWidget)

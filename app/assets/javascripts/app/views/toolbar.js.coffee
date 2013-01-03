@@ -22,9 +22,6 @@ class App.Views.ToolbarView extends Backbone.View
 
     App.vent.on 'add:sprite', @addSprite
 
-    App.vent.on 'keyframes:rendered',  =>
-      new App.Views.FontToolbar()
-
     App.vent.on 'scene:active', (scene) =>
       @$('li').removeClass 'disabled'
       if scene.isMainMenu()

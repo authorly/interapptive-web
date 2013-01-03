@@ -4,7 +4,7 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
       'change select#on_touch': "populateAssets"
     })
 
-  template: JST["app/templates/touch_zones/index"]
+  template: JST['app/templates/touch_zones/index']
 
   initialize: (options) ->
     @widget = options.widget if options?.widget
@@ -13,11 +13,13 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
       sounds: new App.Collections.SoundsCollection()
     super
 
+
   render: ->
     $(@el).html(@template(widget: @widget))
     $(@el).find('#touch_zones.modal-body').append @form.el
     @attachDeleteButton() if @widget?.id
     this
+
 
   attachDeleteButton: ->
     $button = $('<button />', {
@@ -41,6 +43,10 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
 
 
   formOptions: ->
+    #
+    # RFCTR:
+    #      Belongs in model afore widget model implementation
+    #
     data: @widget
     schema:
       on_touch:
@@ -57,8 +63,8 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
     App.modalWithView().hide()
 
 
-  updateAttributes: (e) =>
-    e.preventDefault()
+  updateAttributes: (event) =>
+    event.preventDefault()
 
     # Creates either sound_id or video_id key/value pair for passing to new touch widget
     touch_options = {}
@@ -84,17 +90,20 @@ class App.Views.TouchZoneIndex extends App.Views.AbstractFormView
 
 
   populateAssetsFor: (asset_type) ->
-    $asset_ids = $('#asset_id').html('')
+    #
+    # RFCTR:
+    #      Needs ventilation
+    #
     @collections[asset_type].fetch
       success: =>
+        $asset_ids = $('#asset_id').empty()
+
         _.each @collections[asset_type].models, (m) ->
-          $asset_ids.append($('<option />').val(m.get('url')).text(m.get('name')))
+          $asset_ids.append($('<option />').val(m.get 'url').text(m.get 'name'))
 
 
-  populateAssets: (e) ->
-    $asset_type = $(e.target)
-
-    switch $asset_type.val()
+  populateAssets: (event) ->
+    switch $(event.target).val()
       when 'Show video'
         @populateAssetsFor('videos')
       when 'Play sound'

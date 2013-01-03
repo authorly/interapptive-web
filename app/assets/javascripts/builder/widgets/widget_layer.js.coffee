@@ -11,10 +11,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @setIsTouchEnabled(true)
     @isKeyboardEnabled = true
 
-    cc.canvas.addEventListener 'keypress', (event) =>
+    # Uh.. ? Anyone? Not mine  :T
+    #                       C.W.
+    # cc.canvas.addEventListener 'keypress', (event) =>
 
     @addDblClickEventListener()
-    @addClickOutsideEventListener() # Clicks outside the widget
+    @addClickOutsideEventListener()
+
+    App.vent.on 'widget:remove', @removeWidget, @
 
 
   clearWidgets: (conditionallyRemove = ((w) -> true)) ->
@@ -41,11 +45,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   # TODO: Refactor this to move sprites list additions and storybook updates
   #       the responsibility of a different class.
   addWidget: (widget, forSortable = false) ->
-    App.activeSpritesList.addSpriteToList(widget) unless forSortable
     @widgets.push(widget)
     @addChild(widget)
     widget.parent = this
     widget.setStorybook(App.storybookJSON)
+
+    unless forSortable
+      App.vent.trigger 'sprite_widget:added', widget
+
     this
 
 

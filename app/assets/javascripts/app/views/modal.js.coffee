@@ -1,16 +1,20 @@
 class App.Views.Modal extends Backbone.View
+
   initialize: ->
     @modal = $('.content-modal')
 
+    App.vent.on 'model:cancel', @hide
+
+
   render: =>
-    console.log "rendering modal"
-    @$el.append @options.view.render().el
-    this
+    @$el.append(@options.view.render().el)
+    @
+
 
   show: ->
-    console.log "showing modal"
     @modal.modal('show').html @el
     @render()
+
 
   hide: ->
     @modal.modal 'hide'

@@ -26,12 +26,9 @@ class App.Views.SceneIndex extends Backbone.View
   render: ->
     @$el.empty()
     @collection.each (scene) => @appendSceneElement(scene)
-    @initSortable() if @collection?
+    @initSortable()
     @adjustSize()
-
-    # Needs ventilation
     @$('li:first span:first').click()
-
     @
 
 
@@ -44,13 +41,13 @@ class App.Views.SceneIndex extends Backbone.View
     event.stopPropagation()
 
     if confirm DELETE_SCENE_MSG
-      id = $(event.currentTarget).attr 'data-id'
-      scene = @collection.get(id)
+      scene = @collection.get($(event.currentTarget).attr 'data-id')
       scene.destroy success: => @collection.remove(scene)
 
 
   removeScene: (scene) =>
     App.vent.trigger 'scene:remove'
+
     @$("li[data-id=#{scene.id}]").remove()
 
 
@@ -63,8 +60,7 @@ class App.Views.SceneIndex extends Backbone.View
     #
     $('.text_widget').remove()
 
-    id = $(event.currentTarget).data 'id'
-    scene =   @collection.get(id)
+    scene =   @collection.get $(event.currentTarget).data('id')
     @toggleSceneChange(scene)
 
 
@@ -74,7 +70,7 @@ class App.Views.SceneIndex extends Backbone.View
     #
     # RFCTR:
     #     Needs ventilation
-    #     Services class is going to have to be initalized on app load
+    #     Services class is going to have to be initalized on app load, afore canned
     #
     service = new App.Services.SwitchSceneService App.currentScene(), scene
     service.execute()
@@ -89,9 +85,9 @@ class App.Views.SceneIndex extends Backbone.View
 
   initSortable: =>
     @$el.sortable
-      axis        : 'y'
       containment : '.sidebar'
       items       : 'li[data-is_main_menu!="1"]'
+      axis        : 'y'
       opacity     : 0.6
       update      : @_numberScenes
 

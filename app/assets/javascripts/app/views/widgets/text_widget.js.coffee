@@ -94,13 +94,6 @@ class App.Views.TextWidget extends Backbone.View
     @_editing
 
 
-  content: (_content) ->
-    @$el.text() unless _content
-
-    @_content = _content
-    @$el.html(_content)
-
-
   fontToolbarUpdate: (fontToolbar) ->
     @$el.css
       'font-family': fontToolbar.fontFace()
@@ -159,11 +152,18 @@ class App.Views.TextWidget extends Backbone.View
     if _left then @$el.css(left: _left) else _offsetLeft
 
 
+  content: (_content) ->
+    @$el.text() unless _content
+
+    @_content = _content
+    @$el.html(_content)
+
   save: ->
     attributes =
-      content: @content()
+      content: "Some content"
       x_coord: @left()
       y_coord: @bottom()
 
     @model.set(attributes)
-    #@model.save()
+
+    @model.save()

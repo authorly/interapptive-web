@@ -25,25 +25,31 @@ window.App =
     @keyframesTextCollection = new App.Collections.KeyframeTextsCollection []
     @activeActionsCollection = new App.Collections.ActionsCollection       []
 
-    @contentModal =   new App.Views.Modal className: 'content-modal'
-    @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
-    @toolbar =        new App.Views.ToolbarView  el: $('#toolbar')
-
     @sceneList         new App.Views.SceneIndex        collection: @scenesCollection
     @keyframeList      new App.Views.KeyframeIndex     collection: @keyframesCollection
     @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('#canvas-wrapper')
 
-    # RFCTR: Rename to palette
-    @activeSpritesList = new App.Views.ActiveSpritesList()
-    @activeSpritesWindow @activeSpritesList
+    @contentModal =   new App.Views.Modal className: 'content-modal'
+    @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
+    @toolbar =        new App.Views.ToolbarView  el: $('#toolbar')
 
-    # RFCTR: Rename to palette
-    @spriteForm = new App.Views.SpriteForm el: $('#sprite-editor')
-    @spriteFormWindow @spriteForm
+    @spriteListPalette = new App.Views.PaletteContainer
+      view       : new App.Views.SpriteListPalette
+      el         : $('#sprite-list-palette')
+      title      : 'Scene Images'
+      alsoResize : '#sprite-list-palette ul li span'
+
+    @spriteEditorPalette = new App.Views.PaletteContainer
+      view      : new App.Views.SpriteEditorPalette
+      el        : $('#sprite-editor-palette')
+      resizable : false
+
+    @textEditorPalette = new App.Views.PaletteContainer
+      view : new App.Views.TextEditorPalette
+      el   : $('#text-editor-palette')
 
     @storybooksRouter = new App.Routers.StorybooksRouter
     Backbone.history.start()
-
 
   #
   #  Temporarily Out of Service.
@@ -60,28 +66,6 @@ window.App =
   #      else
   #        @actionsWindow
   #
-
-
-  # RFCTR: Rename to palette
-  activeSpritesWindow: (view) ->
-    @spritesWindow unless view
-
-    @spritesWindow = new App.Views.WidgetWindow
-      el         :  $('#active-sprites-window')
-      view       :  view
-      title      :  'Scene Images'
-      alsoResize : '#active-sprites-window ul li span'
-
-
-  # RFCTR: Rename to palette
-  spriteFormWindow: (view) ->
-    @selectedSpriteWin unless view
-
-    @selectedSpriteWin = new App.Views.WidgetWindow
-      el        : $('#sprite-form-window')
-      view      : view
-      resizable : false
-
 
   showSimulator: ->
     @simulator = new App.Views.Simulator(json: App.storybookJSON.toString())
@@ -194,20 +178,6 @@ window.App =
   selectedText: (textWidget) ->
     if textWidget then @textWidget = textWidget else @textWidget
 
-
-  # RFCTR: cont.
-  fontToolbarUpdate: (fontToolbar) ->
-    @selectedText().fontToolbarUpdate fontToolbar
-
-
-  # RFCTR: cont.
-  fontToolbarClosed: ->
-    $('.text-widget').focusout()
-
-
-  # RFCTR cont.
-  updateKeyframeText: ->
-    @keyframeTextList().updateText()
 
   # RFCTR: Move to asset library view, use vent where needed
   pauseVideos: ->
