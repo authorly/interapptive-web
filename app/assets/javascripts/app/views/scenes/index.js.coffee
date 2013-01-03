@@ -1,8 +1,3 @@
-
-DELETE_SCENE_MSG =
-  '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
-
-
 class App.Views.SceneIndex extends Backbone.View
   template:  JST['app/templates/scenes/index']
 
@@ -15,6 +10,8 @@ class App.Views.SceneIndex extends Backbone.View
     'click .delete' : 'deleteScene'
 
 
+  @DELETE_SCENE_MSG: '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
+
   initialize: ->
     @collection.on 'add'             , @appendSceneElement, @
     @collection.on 'reset'           , @render            , @
@@ -26,9 +23,12 @@ class App.Views.SceneIndex extends Backbone.View
   render: ->
     @$el.empty()
     @collection.each (scene) => @appendSceneElement(scene)
+    @changeSceneTo @collection.at(0)
+
     @initSortable()
+
     @adjustSize()
-    @$('li:first span:first').click()
+
     @
 
 
@@ -40,7 +40,7 @@ class App.Views.SceneIndex extends Backbone.View
   deleteScene: (event) =>
     event.stopPropagation()
 
-    if confirm DELETE_SCENE_MSG
+    if confirm @DELETE_SCENE_MSG
       scene = @collection.get($(event.currentTarget).attr 'data-id')
       scene.destroy success: => @collection.remove(scene)
 
@@ -52,20 +52,19 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   onSceneClick: (event) =>
-    #
+    scene = @collection.get $(event.currentTarget).data('id')
+    @changeSceneTo scene
+
+
+  changeSceneTo: (scene) =>
+    return if scene is App.currentScene()
+
     # RFCTR:
     #     Needs ventilation,
     #     App.vent.on 'scene:active'
     #     inside Text Widget view
     #
     $('.text_widget').remove()
-
-    scene =   @collection.get $(event.currentTarget).data('id')
-    @toggleSceneChange(scene)
-
-
-  toggleSceneChange: (scene) =>
-    return if scene is App.currentScene()
 
     #
     # RFCTR:
