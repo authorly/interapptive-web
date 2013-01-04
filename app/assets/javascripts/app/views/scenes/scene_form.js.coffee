@@ -2,6 +2,7 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
   events: ->
     _.extend({}, super, {})
 
+
   formOptions: ->
     model: @getModel()
 
@@ -24,11 +25,14 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
             err  if value < 0
           ]
 
+
   getModel: ->
     @model = App.currentScene()
-    
+
+
   initialize: ->
     super
+
 
   deleteMessage: ->
     '\nYou are about to delete this scene\n\n\n' +

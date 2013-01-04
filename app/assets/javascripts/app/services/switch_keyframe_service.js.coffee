@@ -10,7 +10,7 @@ class App.Services.SwitchKeyframeService
     return if @oldKeyframe is @newKeyframe
 
     App.currentKeyframe(@newKeyframe)
-    if App.fontToolbar? then App.fontToolbar.onCloseClick()
+
     @switchActiveKeyframeElement(@newKeyframe)
 
     #@paletteDispatcher.trigger('keyframe:change')
@@ -46,9 +46,7 @@ class App.Services.SwitchKeyframeService
 
 
   removeWidget: (widget) =>
-    App.builder.widgetLayer.removeWidget(widget)
-    App.activeSpritesList.removeListEntry(widget)
-    App.spriteForm.resetForm()
+    App.vent.trigger 'widget:remove', widget
 
 
   addWidget: (widget, owner) =>
@@ -56,7 +54,8 @@ class App.Services.SwitchKeyframeService
 
 
   updateTextWidgets: =>
-    App.updateKeyframeText()
+    console.log "Should try to update texts. commented"
+    # App.updateKeyframeText()
 
 
   updateWidget: (widget) =>

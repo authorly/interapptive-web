@@ -1,34 +1,33 @@
-DELETE_SCENE_MSG = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
-
 class App.Views.SceneIndex extends Backbone.View
   template:  JST['app/templates/scenes/index']
 
-  tagName:   'ul'
-
   className: 'scene-list'
 
+  tagName:   'ul'
+
   events:
-    'click span'    : 'onSceneClick'
+    'click  span'   : 'onSceneClick'
     'click .delete' : 'deleteScene'
 
 
+  @DELETE_SCENE_MSG: '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
+
   initialize: ->
-    @collection.on 'add             ' , @appendSceneElement , @
-    @collection.on 'reset           ' , @render             , @
-    @collection.on 'remove          ' , @removeScene        , @
-    @collection.on 'change:positions' , @render             , @
-    App.vent.on    'window:resize   ' , @adjustSize         , @
+    @collection.on 'add'             , @appendSceneElement, @
+    @collection.on 'reset'           , @render            , @
+    @collection.on 'remove'          , @removeScene       , @
+    @collection.on 'change:positions', @render            , @
+    App.vent.on    'window:resize'   , @adjustSize        , @
 
 
   render: ->
     @$el.empty()
-
     @collection.each (scene) => @appendSceneElement(scene)
+    @changeSceneTo @collection.at(0)
 
-    @initSortable() if @collection?
+    @initSortable()
+
     @adjustSize()
-
-    @$('li:first span:first').click()
 
     @
 
@@ -41,42 +40,38 @@ class App.Views.SceneIndex extends Backbone.View
   deleteScene: (event) =>
     event.stopPropagation()
 
-    if confirm(DELETE_SCENE_MSG)
-      id  =   $(event.currentTarget).attr('data-id')
-      scene = @collection.get(id)
-      scene.destroy
-        success: => @collection.remove(scene)
+    if confirm @DELETE_SCENE_MSG
+      scene = @collection.get($(event.currentTarget).attr 'data-id')
+      scene.destroy success: => @collection.remove(scene)
 
 
   removeScene: (scene) =>
-    $("li[data-id=#{scene.id}]").remove()
+    App.vent.trigger 'scene:remove'
 
-    # This method (removeScene)
-    #  Should breathe into vent; keyframe index should react
-    #   and empty itself accordingly
-    $('.keyframe-list').empty()
-
-    # This toggle should be triggered by vent, not called
-    @toggleSceneChange scene
+    @$("li[data-id=#{scene.id}]").remove()
 
 
   onSceneClick: (event) =>
-    # Should blow into vent
-    # Be sure to *dispose* of below views properly when vent's triggered
-    $('.keyframe-list').empty()
+    scene = @collection.get $(event.currentTarget).data('id')
+    @changeSceneTo scene
+
+
+  changeSceneTo: (scene) =>
+    return if scene is App.currentScene()
+
+    # RFCTR:
+    #     Needs ventilation,
+    #     App.vent.on 'scene:active'
+    #     inside Text Widget view
+    #
     $('.text_widget').remove()
 
-    sceneId = $(event.currentTarget).data('id')
-    scene =   @collection.get(sceneId)
-
-    # Needs ventilation
-    @toggleSceneChange(scene)
-
-
-  # Needs ventilation
-  toggleSceneChange: (scene) =>
-    return if scene is App.currentScene()
-    service = new App.Services.SwitchSceneService(App.currentScene(), scene)
+    #
+    # RFCTR:
+    #     Needs ventilation
+    #     Services class is going to have to be initalized on app load, afore canned
+    #
+    service = new App.Services.SwitchSceneService App.currentScene(), scene
     service.execute()
 
 
@@ -84,20 +79,20 @@ class App.Views.SceneIndex extends Backbone.View
     $('li', @el).
       removeClass('active').
       find("span.scene-frame[data-id=#{scene.get('id')}]").
-      parent().addClass('active')
+      parent().addClass 'active'
 
 
   initSortable: =>
     @$el.sortable
-      axis        : 'y'
       containment : '.sidebar'
       items       : 'li[data-is_main_menu!="1"]'
+      axis        : 'y'
       opacity     : 0.6
       update      : @_numberScenes
 
 
   adjustSize: ->
-    $('#scene-list, .scene-list').css  height: "#{$(window).height()}px"
+    $('#scene-list, .scene-list').css height: "#{$(window).height()}px"
 
 
   _numberScenes: =>

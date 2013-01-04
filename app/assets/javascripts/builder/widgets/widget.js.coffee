@@ -46,6 +46,14 @@ class App.Builder.Widgets.Widget extends cc.Node
     @on 'mousemove', @mouseMove
     @on 'dblclick',  @doubleClick
 
+    App.vent.on 'widget:change_zorder', @changeZOrder
+
+
+  changeZOrder: (z) ->
+    @setZOrder(z)
+    @trigger 'change', 'zOrder'
+    @addWidget widget, true
+
 
   mouseOver: ->
     @_mouse_over = true
