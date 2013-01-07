@@ -11,14 +11,16 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @setIsTouchEnabled(true)
     @isKeyboardEnabled = true
 
-    # Uh.. ? Anyone? Not mine  :T
-    #                       C.W.
-    # cc.canvas.addEventListener 'keypress', (event) =>
-
     @addDblClickEventListener()
     @addClickOutsideEventListener()
 
     App.vent.on 'widget:remove', @removeWidget, @
+    App.vent.on 'scene:active' , @clearScene
+
+
+  clearScene: ->
+    App.builder.widgetLayer.clearWidgets()
+    App.builder.widgetLayer.removeAllChildrenWithCleanup()
 
 
   clearWidgets: (conditionallyRemove = ((w) -> true)) ->

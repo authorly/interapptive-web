@@ -47,7 +47,7 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     orientationWidgets.splice(orientationWidgets.indexOf(widgetFromKeyframe), 1, @toHash())
     @keyframe.set('widgets', orientationWidgets)
     @keyframe.save {},
-      success: => App.storybookJSON.updateSpriteOrientationWidget(this)
+      success: => console.log "App.storybookJSON.updateSpriteOrientationWidget(this)"
       error:   => console.log('SpriteOrientationWidget did not save')
 
 

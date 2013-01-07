@@ -121,22 +121,35 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   setAsActive: (widget = null) ->
     _widget = widget || this
 
+    #
+    # RFCTR: Needs ventilation
+    #     App.vent.trigger 'sprite_widget:selected'
+    #     App.vent.on 'sprite_widget:selected', @deselectSpriteWidgets
+    #
     App.builder.widgetLayer.deselectSpriteWidgets()
 
     @enableDragging()
 
     @showBorder()
 
-    App.spriteForm.setActiveSprite(_widget)
+
+    # RFCTR:
+    #     Needs ventilation to Sprite Form Palette (_widget  as param)
+    #     so that it may be set as the active one
+    #
+    # @setActiveSprite(_widget)
 
 
   setAsInactive: ->
     @hideBorder()
     @disableDragging()
 
-    App.activeSpritesList.deselectAll()
+
+    # RFCTR:
+    #     Needs ventilation
     App.builder.widgetLayer.clearSelectedWidget()
-    App.spriteForm.resetForm()
+    # Trigger the below w vent, makes it work
+    # App.spriteForm.resetForm()
 
 
   enableDragging: ->
