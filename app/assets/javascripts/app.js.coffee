@@ -6,8 +6,6 @@ window.App =
   Routers:     {}
   Lib:         {}
   Config:      {}
-  Services:    {}
-  Dispatchers: {}
 
   init: ->
     # A global vent object that allows decoupled communication between
