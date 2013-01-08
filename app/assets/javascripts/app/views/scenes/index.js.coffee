@@ -60,11 +60,11 @@ class App.Views.SceneIndex extends Backbone.View
   changeSceneTo: (scene) =>
     return if scene is App.currentScene()
 
-    @switchActiveElement(newScene)
+    @switchActiveElement(scene)
 
-    App.currentScene(newScene)
+    App.currentScene(scene)
 
-    App.vent.trigger 'scene:active', newScene
+    App.vent.trigger 'scene:active', scene
 
 
   switchActiveElement: (scene) =>
