@@ -16,7 +16,7 @@ class App.Views.SpriteListPalette extends Backbone.View
       App.vent.trigger 'add:sprite'
 
     App.vent.on 'scene:active'       , @removeAll
-    App.vent.on 'sprite_widget:added', @addSpriteToList
+    App.vent.on 'sprite_widget:add'  , @addSpriteToList
     App.vent.on 'widget:remove'
 
     @

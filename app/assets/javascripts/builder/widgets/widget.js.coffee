@@ -52,7 +52,6 @@ class App.Builder.Widgets.Widget extends cc.Node
   changeZOrder: (z) ->
     @setZOrder(z)
     @trigger 'change', 'zOrder'
-    @addWidget widget, true
 
 
   mouseOver: ->

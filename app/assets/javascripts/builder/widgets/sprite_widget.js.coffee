@@ -83,6 +83,11 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     else
       window.setTimeout @triggerLoaded, 200
 
+  #
+  # NOTE:
+  #    There addImageSync() from Cocos2d, used in the constructor,
+  #    may be worth using instead of this?
+  #
   isLoaded: ->
     size = @sprite.getContentSize()
     @sprite._texture.complete && (size.width + size.height > 0)
@@ -90,18 +95,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   hasOrientationForKeyframe: (keyframe) =>
     _.any(@orientations(), (orientation) -> orientation.keyframe is keyframe)
-
-  addKeyframeDatum: (keyframe, content) =>
-    @_keyframeData["keyframe_#{keyframe.get('id')}"] = content
-
-  removeKeyframeDatum: (keyframe) =>
-    delete @_keyframeData["keyframe_#{keyframe.get('id')}"]
-
-  reloadKeyframeInfo: =>
-    #@setPosition(new cc.Point(@currentKeyframe().x, @currentKeyframe().y))
-    #@setScale(@currentKeyframe().scale)
-    @setContentSize(@sprite.getContentSize())
-    @trigger('loaded')
 
 
   mouseMove: (e) ->
@@ -121,6 +114,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   setAsActive: (widget = null) ->
     _widget = widget || this
 
+    App.vent.trigger 'sprite_widget:select', _widget
+
     #
     # RFCTR: Needs ventilation
     #     App.vent.trigger 'sprite_widget:selected'
@@ -129,18 +124,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     App.builder.widgetLayer.deselectSpriteWidgets()
 
     @enableDragging()
-
     @showBorder()
 
 
-    # RFCTR:
-    #     Needs ventilation to Sprite Form Palette (_widget  as param)
-    #     so that it may be set as the active one
-    #
-    # @setActiveSprite(_widget)
-
-
   setAsInactive: ->
+    App.vent.trigger 'sprite_widget:deselect'
+
     @hideBorder()
     @disableDragging()
 

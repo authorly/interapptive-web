@@ -54,7 +54,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     widget.setStorybook(App.storybookJSON)
 
     unless forSortable
-      App.vent.trigger 'sprite_widget:added', widget
+      App.vent.trigger 'sprite_widget:add', widget
 
     this
 
