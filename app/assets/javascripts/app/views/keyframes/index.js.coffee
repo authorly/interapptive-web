@@ -71,45 +71,39 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   switchKeyframe: (newKeyframe) =>
     newKeyframe = @collection.at(@collection.length - 1) unless newKeyframe?
+
     return if App.currentKeyframe() is newKeyframe
 
     App.currentKeyframe(newKeyframe)
 
-    @switchActiveKeyframeElement(newKeyframe) # Switcher
-    @updateKeyframeWidgets(newKeyframe)    # Swicher
-    @updateSceneWidgets(newKeyframe)       # Swicher
+    @switchActiveKeyframeElement(newKeyframe)
+    @updateKeyframeWidgets(newKeyframe)
+    @updateSceneWidgets(newKeyframe)
 
 
   updateKeyframeWidgets: (newKeyframe) =>
     if (removals = App.currentKeyframe()?.widgets())?
       # TODO: Kill rejection? This is legacy and a bit strange
       removals = _.reject(removals, (w) -> w.type is "TextWidget")
-      @removeWidget(widget) for widget in removals
+      for widget in removals
+        App.vent.trigger 'widget:remove', widget
 
     if (additions = newKeyframe.widgets())?
-      @addWidget(widget, newKeyframe) for widget in additions
+      for widget in additions
+        App.vent.trigger 'widget:add', widget
 
 
-  updateSceneWidgets: =>
+  updateSceneWidgets: (newKeyframe) =>
     return unless (widgets = App.currentScene().widgets())?
+
     for widget in widgets
       if App.builder.widgetLayer.hasWidget(widget) and widget.retentionMutability
-        @updateWidget(widget) unless widget.isTouchWidget() # since handled in widgetLayer
+        return if widget.isTouchWidget()
+
+        widget.setScale widget.getScaleForKeyframe(newKeyframe)
+        widget.setPosition widget.getPositionForKeyframe(newKeyframe)
       else
-        @addWidget(widget, App.currentScene())
-
-
-  removeWidget: (widget) =>
-    App.vent.trigger 'widget:remove', widget
-
-
-  addWidget: (widget, owner) =>
-    App.builder.widgetLayer.addWidget(widget)
-
-
-  updateWidget: (widget) =>
-    widget.setScale(widget.getScaleForKeyframe(@newKeyframe))
-    widget.setPosition(widget.getPositionForKeyframe(@newKeyframe))
+        App.vent.trigger 'widget:add', widget
 
 
   switchActiveKeyframeElement: (keyframe) =>

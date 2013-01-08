@@ -15,12 +15,13 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @addClickOutsideEventListener()
 
     App.vent.on 'widget:remove', @removeWidget, @
+    App.vent.on 'widget:add'   , @addWidget   , @
     App.vent.on 'scene:active' , @clearScene
 
 
-  clearScene: ->
-    App.builder.widgetLayer.clearWidgets()
-    App.builder.widgetLayer.removeAllChildrenWithCleanup()
+  clearScene: =>
+    @clearWidgets()
+    @removeAllChildrenWithCleanup()
 
 
   clearWidgets: (conditionallyRemove = ((w) -> true)) ->
