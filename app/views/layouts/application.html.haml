@@ -56,7 +56,3 @@
     = render 'storybooks/index_modal'
     = render 'shared/content_modal'
     = render 'shared/lightbox_modal'
-
-    :javascript
-      App.currentUser(#{current_user.to_json(:only => :id)})
-      window.initBuilder()

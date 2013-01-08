@@ -32,6 +32,8 @@ class App.Views.KeyframeIndex extends Backbone.View
     App.vent.on 'scene:active', (scene) =>
       if scene.canAddKeyframes() then @$el.show() else @$el.hide()
 
+    App.currentSelection.on 'change:keyframe', (__, keyframe) =>
+      @keyframeChanged(keyframe)
 
   render: ->
     @$el.empty()
@@ -70,19 +72,20 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   switchKeyframe: (newKeyframe) =>
-    newKeyframe = @collection.at(@collection.length - 1) unless newKeyframe?
+    App.currentSelection.set keyframe: newKeyframe || @lastKeyframe()
 
-    return if App.currentKeyframe() is newKeyframe
 
-    App.currentKeyframe(newKeyframe)
+  keyframeChanged: (keyframe) ->
+    @switchActiveKeyframeElement(keyframe)
+    @updateKeyframeWidgets(keyframe)
+    @updateSceneWidgets(keyframe)
 
-    @switchActiveKeyframeElement(newKeyframe)
-    @updateKeyframeWidgets(newKeyframe)
-    @updateSceneWidgets(newKeyframe)
 
+  lastKeyframe: ->
+    @collection.at(@collection.length - 1)
 
   updateKeyframeWidgets: (newKeyframe) =>
-    if (removals = App.currentKeyframe()?.widgets())?
+    if (removals = App.currentSelection.get('keyframe')?.widgets())?
       # TODO: Kill rejection? This is legacy and a bit strange
       removals = _.reject(removals, (w) -> w.type is "TextWidget")
       for widget in removals
@@ -94,7 +97,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   updateSceneWidgets: (newKeyframe) =>
-    return unless (widgets = App.currentScene().widgets())?
+    return unless (widgets = App.currentSelection.get('scene').widgets())?
 
     for widget in widgets
       if App.builder.widgetLayer.hasWidget(widget) and widget.retentionMutability
@@ -182,7 +185,4 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   updateScenePreview: ->
-    # must go through the scenesCollection, because the relationship
-    # between the scene model and its keyframes is not stored anywhere
-    scene = App.scenesCollection.get(@collection.scene_id)
-    scene?.setPreviewFrom @collection.at(0)
+    @collection.scene.setPreviewFrom @collection.at(0)

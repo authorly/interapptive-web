@@ -19,17 +19,14 @@ class App.Views.SceneIndex extends Backbone.View
 
   render: ->
     @$el.empty()
-
     @collection.each (scene) => @appendSceneElement(scene)
+    @toggleSceneChange(@collection.at(0)) if @collection.length > 0
 
-    $('.scene-list li:first span:first').click()
+    @initSortable()
 
-    @initSortable() if @collection?
+    @adjustSize()
 
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
-
-    this
+    @
 
 
   appendSceneElement: (scene) ->
@@ -64,13 +61,9 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   toggleSceneChange: (newScene) =>
-    return if newScene is App.currentScene()
-
     @switchActiveElement(newScene)
 
-    App.currentScene(newScene)
-
-    App.vent.trigger 'scene:active', newScene
+    App.currentSelection.set scene: newScene
 
 
   switchActiveElement: (scene) =>
@@ -90,8 +83,7 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   adjustSize: ->
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
+    $("#scene-list, .scene-list").css height: ($(window).height()) + "px"
 
 
   _numberScenes: =>

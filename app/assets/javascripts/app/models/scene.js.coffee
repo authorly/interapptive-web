@@ -10,10 +10,17 @@ class App.Models.Scene extends Backbone.Model
 
 
   initialize: ->
-    @keyframes = new App.Collections.KeyframesCollection [], scene_id: @id
-    @_getKeyframes(async: false)
+    @_keyframesFetched = false
+    @keyframes = new App.Collections.KeyframesCollection [], scene: @
+
     @on 'change:preview_image_id', @save
     @on 'keyframeadded', @addKeyframeToCollection
+
+
+  fetchKeyframes: ->
+    return if @_keyframesFetched || @isNew()
+    @keyframes.fetch()
+
 
   toJSON: ->
     json = super
@@ -26,14 +33,9 @@ class App.Models.Scene extends Backbone.Model
     json
 
 
-  _getKeyframes: (options) ->
-    unless @isNew()
-      @keyframes.url = "/scenes/#{@get('id')}/keyframes.json"
-      @keyframes.fetch(options)
-    @keyframes
-
   addKeyframeToCollection: (keyframe) ->
     @keyframes.push(keyframe)
+
 
   setPreviewFrom: (keyframe) ->
     preview = keyframe.preview
@@ -119,8 +121,8 @@ class App.Models.Scene extends Backbone.Model
 class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
 
-  initialize: (models, options) ->
-    if options
+  initialize: (models, options={}) ->
+    if options?
       this.storybook_id = options.storybook_id
 
     # TODO move cache to a separate class

@@ -141,18 +141,18 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
       @announceAnimation()
 
     if options?
-      @scene_id = options.scene_id
+      @scene = options.scene
 
     @on 'remove', (model, collection) ->
       collection._recalculatePositionsAfterDelete(model)
 
 
   url: ->
-    '/scenes/' + @scene_id + '/keyframes.json'
+    '/scenes/' + @scene.id + '/keyframes.json'
 
 
   ordinalUpdateUrl: ->
-    '/scenes/' + @scene_id + '/keyframes/sort.json'
+    '/scenes/' + @scene.id + '/keyframes/sort.json'
 
 
   toModdedJSON: ->
@@ -171,10 +171,8 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   announceAnimation: ->
-    scene = App.scenesCollection.get(@scene_id)
-    if scene?
-      App.vent.trigger 'scene:can_add_animation',
-        !@animationPresent() && scene.canAddKeyframes()
+    App.vent.trigger 'scene:can_add_animation',
+      !@animationPresent() && @scene.canAddKeyframes()
 
 
   addKeyframe: (keyframe) ->
@@ -196,7 +194,7 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
         # @scene_id was changed
         # This is a temporary fix; having the collection change contents is a bad
         # idea.
-        if keyframe.get('scene_id') == @scene_id
+        if keyframe.get('scene_id') == @scene.id
           @add keyframe
           _.each(sows, (sow) -> sow.updateStorybookJSON())
           App.currentScene().trigger('keyframeadded', keyframe)
