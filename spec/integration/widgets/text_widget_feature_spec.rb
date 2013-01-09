@@ -40,7 +40,7 @@ describe "Text Widget", :js => true do
       page.has_select?('#font_face', 'Grunge Regular')
     end
 
-    it "should select an uploaded fonts to apply" do
+    it "should select an uploaded fonts to use" do
       page.visit('/')
       page.click_link(@storybook.title)
       page.find(".open-storybook").click
