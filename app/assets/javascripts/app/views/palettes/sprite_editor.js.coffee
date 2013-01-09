@@ -1,5 +1,9 @@
 class App.Views.SpriteEditorPalette extends Backbone.View
-  template: JST['app/templates/palettes/sprite_editor']
+  template:  JST['app/templates/palettes/sprite_editor']
+
+  tagName:   'form'
+
+  className: 'sprite-editor'
 
   initialize: ->
     App.vent.on 'sprite_widget:deselect widget:remove', @resetForm
