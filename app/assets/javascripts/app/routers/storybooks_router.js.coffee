@@ -5,6 +5,6 @@ class App.Routers.StorybooksRouter extends Backbone.Router
   index: ->
     view = new App.Views.StorybookIndex
       collection: new App.Collections.StorybooksCollection()
-      el: 'storybooks'
+      el: '#storybooks'
 
     view.collection.fetch()

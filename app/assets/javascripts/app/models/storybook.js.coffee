@@ -64,6 +64,11 @@ class App.Models.Storybook extends Backbone.Model
       labeling:      ["On", "Off"]
       selectedIndex: 0
 
+
+  initialize: ->
+    @scenes = new App.Collections.ScenesCollection([], storybook: @)
+
+
   url: ->
     if @isNew()
       '/storybooks.json'
@@ -73,6 +78,15 @@ class App.Models.Storybook extends Backbone.Model
 
   toJSON: ->
     @attributes
+
+
+  fetchScenes: ->
+    @scenes.fetch()
+
+
+  addNewScene: ->
+    @scenes.addNewScene()
+
 
 class App.Collections.StorybooksCollection extends Backbone.Collection
   model: App.Models.Storybook

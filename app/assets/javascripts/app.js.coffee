@@ -21,7 +21,6 @@ window.App =
       scene: null
       keyframe: null
 
-
     @currentSelection.on 'change:storybook', (__, storybook) =>
       @_openStorybook(storybook)
 
@@ -64,11 +63,10 @@ window.App =
 
 
   _openStorybook: (storybook) ->
-    scenes = new App.Collections.ScenesCollection([], storybook_id: storybook.id)
-    scenesIndex = new App.Views.SceneIndex(collection: scenes)
-    $('#scene-list').html(scenesIndex.el)
+    scenesIndex = new App.Views.SceneIndex(collection: storybook.scenes)
+    $('#scene-list').html(scenesIndex.render().el)
 
-    scenesIndex.collection.fetch()
+    storybook.fetchScenes()
 
 
 

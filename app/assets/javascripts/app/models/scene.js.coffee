@@ -13,13 +13,16 @@ class App.Models.Scene extends Backbone.Model
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
 
     @on 'change:preview_image_id', @save
-    @on 'keyframeadded', @addKeyframeToCollection
 
 
   fetchKeyframes: ->
     return if @isNew()
 
     @keyframes.fetch()
+
+
+  addNewKeyframe: (attributes) ->
+    @keyframes.addNewKeyframe(attributes)
 
 
   toJSON: ->
@@ -31,10 +34,6 @@ class App.Models.Scene extends Backbone.Model
       _.each json.widgets, (widget) ->
         delete widget.scene
     json
-
-
-  addKeyframeToCollection: (keyframe) ->
-    @keyframes.push(keyframe)
 
 
   setPreviewFrom: (keyframe) ->
@@ -122,8 +121,7 @@ class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
 
   initialize: (models, options={}) ->
-    if options?
-      this.storybook_id = options.storybook_id
+    @storybook = options.storybook
 
     # TODO move cache to a separate class
     @on 'reset', =>
@@ -133,12 +131,15 @@ class App.Collections.ScenesCollection extends Backbone.Collection
       collection._recalculatePositionsAfterDelete(model)
 
 
+  baseUrl: ->
+    "/storybooks/#{@storybook.id}/scenes"
+
   url: ->
-    '/storybooks/' + this.storybook_id + '/scenes.json'
+    @baseUrl() + '.json'
 
 
-  ordinalUpdateUrl: (sceneId) ->
-    '/storybooks/' + this.storybook_id + '/scenes/sort.json'
+  ordinalUpdateUrl: ->
+    @baseUrl() + '/sort.json'
 
 
   comparator: (scene) ->
@@ -149,16 +150,22 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
 
 
-  addScene: (scene) ->
-    scene.save { position: @nextPosition(scene) },
-      success: =>
-        @add scene
-        scene._getKeyframes(async: false)
+  addNewScene: ->
+    @create {
+      storybook_id: @storybook.id
+      position: @nextPosition()
+    }, {
+      # so we don't add a scene without an `id` to the collection
+      # which would cause it to be rendered without an id
+      # which would cause subsequent interaction with the UI to fail
+      wait: true
+    }
 
 
-  nextPosition: (scene) ->
-    return null if scene.isMainMenu()
-    @filter((scene) -> !scene.isMainMenu()).length
+  nextPosition: (scene=null) ->
+    return null if scene?.isMainMenu()
+
+    @filter((s) -> !s.isMainMenu()).length
 
 
   savePositions: ->
