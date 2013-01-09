@@ -10,7 +10,6 @@ class App.Models.Scene extends Backbone.Model
 
 
   initialize: ->
-    @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
 
     @on 'change:preview_image_id', @save
@@ -18,7 +17,8 @@ class App.Models.Scene extends Backbone.Model
 
 
   fetchKeyframes: ->
-    return if @_keyframesFetched || @isNew()
+    return if @isNew()
+
     @keyframes.fetch()
 
 

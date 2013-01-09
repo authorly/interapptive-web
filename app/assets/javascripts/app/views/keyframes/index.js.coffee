@@ -26,11 +26,22 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on 'add'   , @appendKeyframe
     @collection.on 'remove', @removeKeyframe
 
-    App.vent.on 'scene:remove', (scene) =>
-      if scene.canAddKeyframes() then @$el.empty()
+    App.currentSelection.on 'change:keyframe', @keyframeChanged
 
-    App.vent.on 'scene:active', (scene) =>
-      if scene.canAddKeyframes() then @$el.show() else @$el.hide()
+
+  # TODO RFCTR upgrate to Backbone 0.9.9 and use `listeTo` and `stopListening`
+  # instead of `on` and `off`
+  remove: ->
+    super
+
+    @collection.off 'change:positions reset add remove', @updateScenePreview    , @
+    @collection.off 'change:positions reset'           , @render                , @
+    @collection.off 'change:widgets'                   , @updateKeyframePreview , @
+    @collection.off 'change:preview'                   , @keyframePreviewChanged, @
+    @collection.off 'add'   , @appendKeyframe
+    @collection.off 'remove', @removeKeyframe
+
+    App.currentSelection.off 'change:keyframe', @keyframeChanged
 
     App.currentSelection.on 'change:keyframe', (__, keyframe) =>
       @keyframeChanged(keyframe)
@@ -40,11 +51,16 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     if @collection.length > 0
       @collection.each (keyframe) => @renderKeyframe(keyframe)
-      @switchKeyframe()
       @_updateDeleteButtons()
-
-    @delegateEvents() # needed, even though it should work without it
     @initSortable()
+
+    @switchKeyframe @lastKeyframe()
+
+    if @collection.scene.isMainMenu()
+      @$el.hide()
+    else
+      @$el.show()
+
     @
 
 
@@ -72,46 +88,47 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   switchKeyframe: (newKeyframe) =>
-    App.currentSelection.set keyframe: newKeyframe || @lastKeyframe()
+    App.currentSelection.set keyframe: newKeyframe
 
 
-  keyframeChanged: (keyframe) ->
+  keyframeChanged: (__, keyframe) =>
     @switchActiveKeyframeElement(keyframe)
-    @updateKeyframeWidgets(keyframe)
-    @updateSceneWidgets(keyframe)
+    # @updateKeyframeWidgets(keyframe)
+    # @updateSceneWidgets(keyframe)
 
 
   lastKeyframe: ->
     @collection.at(@collection.length - 1)
 
-  updateKeyframeWidgets: (newKeyframe) =>
-    if (removals = App.currentSelection.get('keyframe')?.widgets())?
-      # TODO: Kill rejection? This is legacy and a bit strange
-      removals = _.reject(removals, (w) -> w.type is "TextWidget")
-      for widget in removals
-        App.vent.trigger 'widget:remove', widget
 
-    if (additions = newKeyframe.widgets())?
-      for widget in additions
-        App.vent.trigger 'widget:add', widget
+  # updateKeyframeWidgets: (newKeyframe) =>
+    # if (removals = App.currentSelection.get('keyframe')?.widgets())?
+      # # TODO: Kill rejection? This is legacy and a bit strange
+      # removals = _.reject(removals, (w) -> w.type is "TextWidget")
+      # for widget in removals
+        # App.vent.trigger 'widget:remove', widget
+
+    # if (additions = newKeyframe.widgets())?
+      # for widget in additions
+        # App.vent.trigger 'widget:add', widget
 
 
-  updateSceneWidgets: (newKeyframe) =>
-    return unless (widgets = App.currentSelection.get('scene').widgets())?
+  # updateSceneWidgets: (newKeyframe) =>
+    # return unless (widgets = App.currentSelection.get('scene').widgets())?
 
-    for widget in widgets
-      if App.builder.widgetLayer.hasWidget(widget) and widget.retentionMutability
-        return if widget.isTouchWidget()
+    # for widget in widgets
+      # if App.builder.widgetLayer.hasWidget(widget) and widget.retentionMutability
+        # return if widget.isTouchWidget()
 
-        widget.setScale widget.getScaleForKeyframe(newKeyframe)
-        widget.setPosition widget.getPositionForKeyframe(newKeyframe)
-      else
-        App.vent.trigger 'widget:add', widget
+        # widget.setScale widget.getScaleForKeyframe(newKeyframe)
+        # widget.setPosition widget.getPositionForKeyframe(newKeyframe)
+      # else
+        # App.vent.trigger 'widget:add', widget
 
 
   switchActiveKeyframeElement: (keyframe) =>
     @$('li').removeClass('active').
-      filter("[data-id=#{keyframe.id}]").
+      filter("[data-id=#{keyframe?.id}]").
       addClass('active')
 
 
@@ -127,7 +144,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   removeKeyframe: (keyframe) =>
     $(".keyframe-list li[data-id=#{keyframe.id}]").remove()
-    @switchKeyframe()
+    @switchKeyframe @lastKeyframe()
     @_updateDeleteButtons()
 
 

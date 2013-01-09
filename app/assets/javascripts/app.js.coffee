@@ -12,7 +12,7 @@ window.App =
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
-    @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
+    # @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
 
     @vent.on 'scene:active', @openScene
 
@@ -25,13 +25,16 @@ window.App =
     @currentSelection.on 'change:storybook', (__, storybook) =>
       @_openStorybook(storybook)
 
-    @currentSelection.on 'change:scene', (__, scene) ->
-      console.log 'scene changed', scene
+    @currentSelection.on 'change:scene', (__, scene) =>
       App.vent.trigger 'scene:active', scene
-      keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
-      $('#keyframe-list').html keyframesView.render().el
+
+      @keyframesView.remove() if @keyframesView?
+      @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
+      $('#keyframe-list').html @keyframesView.render().el
       scene.fetchKeyframes()
 
+
+    @toolbar = new App.Views.ToolbarView  el: $('#toolbar')
 
     # @fontsCollection =         new App.Collections.FontsCollection         []
     # @imagesCollection =        new App.Collections.ImagesCollection        []
@@ -43,7 +46,6 @@ window.App =
 
     # @contentModal =   new App.Views.Modal className: 'content-modal'
     # @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
-    # @toolbar =        new App.Views.ToolbarView  el: $('#toolbar')
 
     # @spriteListPalette = new App.Views.PaletteContainer
       # view       : new App.Views.SpriteListPalette
