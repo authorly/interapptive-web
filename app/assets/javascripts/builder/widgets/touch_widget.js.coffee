@@ -19,7 +19,6 @@ DEFAULT_CONTROL_RADIUS = 28
 LINE_WIDTH_OUTER = 2
 LINE_WIDTH_INNER = 2
 
-CSS_SCALE_FACTOR = 0.59
 
 ##
 # A 'hotspot' widget, previously named touch zone. It has an associated
@@ -179,7 +178,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
   isPointInside: (point) ->
     inRect = super
     return false unless inRect
-    return (@_distanceFromCenter(point) < @getRadius() * CSS_SCALE_FACTOR)
+    return (@_distanceFromCenter(point) < @getRadius())
 
 
   highlight: ->
@@ -227,7 +226,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
 
     xLen = local.x - radius
     yLen = local.y - radius
-    return Math.sqrt((xLen * xLen) + (yLen * yLen)) * CSS_SCALE_FACTOR
+    return Math.sqrt((xLen * xLen) + (yLen * yLen))
 
 
 
