@@ -7,9 +7,9 @@
     Verdana
   %option{:value => "Georgia"}
     Georgia
-  - for font in @fonts
-    %option{:value => font.get('name')}
-      = font.get('name')
+  / - for font in @fonts
+  /   %option{:value => font.get('name')}
+  /     = font.get('name')
 
 %select.font_size
   - for i in [24..46]
@@ -18,6 +18,3 @@
 
 %button.delete
   Delete
-
-%button.close_x
-  x

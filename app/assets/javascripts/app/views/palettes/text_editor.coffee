@@ -7,6 +7,7 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   render: ->
+    @$el.html(@template())
     @
 
 
@@ -56,12 +57,6 @@ class App.Views.TextEditorPalette extends Backbone.View
     @$el.css
       top  : _top - (@$el.height() + 20)
       left : _left
-
-
-  hide: ->
-    return unless @_mouseEntered
-    @$el.hide()
-    @_hidden = true
 
 
   destroyKeyframeText: (e) ->
