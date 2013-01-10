@@ -1,3 +1,9 @@
+##
+# Relations
+# * it belongs to a story book. So far the need to get to the actual `Storybook` model
+# hasn't arrised, so the attribute `storybook_id` is used when needed.
+# * @keyframes - a scene has many keyframes. This is the Backbone collection
+# containing the keyframes that belong to this scene.
 class App.Models.Scene extends Backbone.Model
   paramRoot: 'scene'
 
@@ -10,10 +16,20 @@ class App.Models.Scene extends Backbone.Model
 
 
   initialize: ->
-    @keyframes = new App.Collections.KeyframesCollection [], scene_id: @id
-    @_getKeyframes(async: false)
+    @keyframes = new App.Collections.KeyframesCollection [], scene: @
+
     @on 'change:preview_image_id', @save
-    @on 'keyframeadded', @addKeyframeToCollection
+
+
+  fetchKeyframes: ->
+    return if @isNew()
+
+    @keyframes.fetch()
+
+
+  addNewKeyframe: (attributes) ->
+    @keyframes.addNewKeyframe(attributes)
+
 
   toJSON: ->
     json = super
@@ -25,15 +41,6 @@ class App.Models.Scene extends Backbone.Model
         delete widget.scene
     json
 
-
-  _getKeyframes: (options) ->
-    unless @isNew()
-      @keyframes.url = "/scenes/#{@get('id')}/keyframes.json"
-      @keyframes.fetch(options)
-    @keyframes
-
-  addKeyframeToCollection: (keyframe) ->
-    @keyframes.push(keyframe)
 
   setPreviewFrom: (keyframe) ->
     preview = keyframe.preview
@@ -116,12 +123,14 @@ class App.Models.Scene extends Backbone.Model
     widget
 
 
+##
+# Relations
+# * @storybook - It belongs to a story book.
 class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
 
-  initialize: (models, options) ->
-    if options
-      this.storybook_id = options.storybook_id
+  initialize: (models, options={}) ->
+    @storybook = options.storybook
 
     # TODO move cache to a separate class
     @on 'reset', =>
@@ -131,12 +140,15 @@ class App.Collections.ScenesCollection extends Backbone.Collection
       collection._recalculatePositionsAfterDelete(model)
 
 
+  baseUrl: ->
+    "/storybooks/#{@storybook.id}/scenes"
+
   url: ->
-    '/storybooks/' + this.storybook_id + '/scenes.json'
+    @baseUrl() + '.json'
 
 
-  ordinalUpdateUrl: (sceneId) ->
-    '/storybooks/' + this.storybook_id + '/scenes/sort.json'
+  ordinalUpdateUrl: ->
+    @baseUrl() + '/sort.json'
 
 
   comparator: (scene) ->
@@ -147,16 +159,22 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
 
 
-  addScene: (scene) ->
-    scene.save { position: @nextPosition(scene) },
-      success: =>
-        @add scene
-        scene._getKeyframes(async: false)
+  addNewScene: ->
+    @create {
+      storybook_id: @storybook.id
+      position: @nextPosition()
+    }, {
+      # so we don't add a scene without an `id` to the collection
+      # which would cause it to be rendered without an id
+      # which would cause subsequent interaction with the UI to fail
+      wait: true
+    }
 
 
-  nextPosition: (scene) ->
-    return null if scene.isMainMenu()
-    @filter((scene) -> !scene.isMainMenu()).length
+  nextPosition: (scene=null) ->
+    return null if scene?.isMainMenu()
+
+    @filter((s) -> !s.isMainMenu()).length
 
 
   savePositions: ->

@@ -29,27 +29,20 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addScene: ->
-    scene = new App.Models.Scene
-      storybook_id: App.currentStorybook().get 'id'
-
-    App.scenesCollection.addScene scene
+    storybook = App.currentSelection.get('storybook')
+    storybook.addNewScene()
 
 
   addKeyframe: ->
-    keyframe = new App.Models.Keyframe
-      scene_id: App.currentScene().get 'id'
-
-    App.keyframesCollection.addKeyframe keyframe
+    scene = App.currentSelection.get('scene')
+    scene.addNewKeyframe()
 
 
   addAnimationKeyframe: ->
-    return if @$('.animation-keyframe.disabled').length > 0
+    scene = App.currentSelection.get('scene')
+    return unless scene.canAddKeyframes()
 
-    keyframe = new App.Models.Keyframe
-      scene_id:     App.currentScene().get 'id'
-      is_animation: true
-
-    App.keyframesCollection.addKeyframe keyframe
+    scene.addNewKeyframe(is_animation: true)
 
 
   addText: ->

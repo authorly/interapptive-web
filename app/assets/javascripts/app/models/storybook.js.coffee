@@ -1,3 +1,7 @@
+##
+# Relations:
+# * `@scenes` - a storybook has many scenes. This is a Backbone collection
+# containing the scenes that belong to this story book.
 class App.Models.Storybook extends Backbone.Model
   schema:
     title:
@@ -64,6 +68,11 @@ class App.Models.Storybook extends Backbone.Model
       labeling:      ["On", "Off"]
       selectedIndex: 0
 
+
+  initialize: ->
+    @scenes = new App.Collections.ScenesCollection([], storybook: @)
+
+
   url: ->
     if @isNew()
       '/storybooks.json'
@@ -73,6 +82,15 @@ class App.Models.Storybook extends Backbone.Model
 
   toJSON: ->
     @attributes
+
+
+  fetchScenes: ->
+    @scenes.fetch()
+
+
+  addNewScene: ->
+    @scenes.addNewScene()
+
 
 class App.Collections.StorybooksCollection extends Backbone.Collection
   model: App.Models.Storybook

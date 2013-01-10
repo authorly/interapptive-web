@@ -19,12 +19,13 @@ class App.Views.SceneIndex extends Backbone.View
     @collection.on 'remove'          , @removeScene       , @
     @collection.on 'change:positions', @render            , @
     App.vent.on    'window:resize'   , @adjustSize        , @
+    App.currentSelection.on 'change:scene', @sceneChanged, @
 
 
   render: ->
     @$el.empty()
     @collection.each (scene) => @appendSceneElement(scene)
-    @changeSceneTo @collection.at(0)
+    @switchScene(@collection.at(0)) if @collection.length > 0
 
     @initSortable()
 
@@ -53,21 +54,16 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   onSceneClick: (event) =>
-    scene = @collection.get $(event.currentTarget).data('id')
-    @changeSceneTo scene
+    sceneId = $(event.currentTarget).data 'id'
+    scene = @collection.get(sceneId)
+    @switchScene(scene)
 
 
-  changeSceneTo: (scene) =>
-    return if scene is App.currentScene()
-
-    @switchActiveElement(scene)
-
-    App.currentScene(scene)
-
-    App.vent.trigger 'scene:active', scene
+  switchScene: (scene) ->
+    App.currentSelection.set scene: scene
 
 
-  switchActiveElement: (scene) =>
+  sceneChanged: (__, scene) ->
     $('li', @el).
     removeClass('active').
     find("span.scene-frame[data-id=#{scene.get('id')}]").

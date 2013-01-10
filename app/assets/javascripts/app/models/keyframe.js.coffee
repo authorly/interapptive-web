@@ -1,7 +1,13 @@
+##
+# Relations
+# * @scene. It belongs to a scene. The scene is either provided in the attributes
+# passed to the constructor, or is taken from the collection to which the scene
+# belongs (if any)
 class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
-  initialize: ->
+  initialize: (options) ->
+    @scene = options.scene if options?
     @texts = new App.Collections.KeyframeTextsCollection []
     @_getTexts(async: false)
     @on 'audiosync', @updateStorybookParagraph, @
@@ -11,6 +17,7 @@ class App.Models.Keyframe extends Backbone.Model
   updateStorybookParagraph: ->
     App.storybookJSON.updateParagraph(@)
 
+
   _getTexts: (options) ->
     unless @isNew()
       @texts.url = "/keyframes/#{@get('id')}/texts.json"
@@ -19,13 +26,13 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   url: ->
-    base = '/scenes/' + @get('scene_id') + '/'
+    base = '/scenes/' + @getScene().id + '/'
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
 
 
   getScene: =>
-    @_scene ||= App.scenesCollection.get @get('scene_id')
+    @_scene ||= @scene || @collection.scene
 
 
   initializePreview: ->
@@ -125,6 +132,9 @@ class App.Models.Keyframe extends Backbone.Model
     App.builder.widgetStore.addWidget(widget)
     widget
 
+##
+# Relations:
+# @scene - it belongs to a scene.
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
 
@@ -132,27 +142,26 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   initialize: (models, options) ->
-    # TODO move cache to a separate class
+    @scene = options.scene
+
     @on 'reset', =>
       @announceAnimation()
+      # TODO move cache to a separate class
       @_savePositionsCache(@_positionsJSON())
 
-    @on 'add', (model, _collection, options) =>
+    @on 'add remove', (model, _collection, options) =>
       @announceAnimation()
-
-    if options?
-      @scene_id = options.scene_id
 
     @on 'remove', (model, collection) ->
       collection._recalculatePositionsAfterDelete(model)
 
 
   url: ->
-    '/scenes/' + @scene_id + '/keyframes.json'
+    '/scenes/' + @scene.id + '/keyframes.json'
 
 
   ordinalUpdateUrl: ->
-    '/scenes/' + @scene_id + '/keyframes/sort.json'
+    '/scenes/' + @scene.id + '/keyframes/sort.json'
 
 
   toModdedJSON: ->
@@ -171,40 +180,38 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   announceAnimation: ->
-    scene = App.scenesCollection.get(@scene_id)
-    if scene?
-      App.vent.trigger 'scene:can_add_animation',
-        !@animationPresent() && scene.canAddKeyframes()
+    App.vent.trigger 'scene:can_add_animation',
+      !@animationPresent() && @scene.canAddKeyframes()
 
 
-  addKeyframe: (keyframe) ->
+  addNewKeyframe: (attributes={}) ->
     # We add orientation widget to all the keyframes
     # even to the animation keyframes. That might not
     # be desired.
-    sows = _.map(App.currentScene().spriteWidgets(), (sprite_widget) ->
+    sows = _.map(@scene.spriteWidgets(), (sprite_widget) ->
       new App.Builder.Widgets.SpriteOrientationWidget(
         keyframe: keyframe
         sprite_widget: sprite_widget
         sprite_widget_id: sprite_widget.id
       )
     )
-    keyframe.save { position: @nextPosition(keyframe), widgets: _.map(sows, (sow) -> sow.toHash()) },
+
+    @create _.extend(attributes, {
+      scene: @scene
+      position: @nextPosition(new App.Models.Keyframe(attributes))
+      widgets: _.map(sows, (sow) -> sow.toHash())
+    }), {
       wait: true
       success: =>
-        # XXX necessary because this would blow if, in between `save` and
-        # `success`, another scene was selected in the VIEW (!!), and therefore
-        # @scene_id was changed
-        # This is a temporary fix; having the collection change contents is a bad
-        # idea.
-        if keyframe.get('scene_id') == @scene_id
-          @add keyframe
-          _.each(sows, (sow) -> sow.updateStorybookJSON())
-          App.currentScene().trigger('keyframeadded', keyframe)
+        # TODO RFCTR move this to keyframe, on parse/initialize or where
+        # it's appropriate
+        _.each(sows, (sow) -> sow.updateStorybookJSON())
+    }
 
 
   nextPosition: (keyframe) ->
-    return null if keyframe.isAnimation()
-    @filter((keyframe) -> !keyframe.isAnimation()).length
+    return null if keyframe?.isAnimation()
+    @filter((k) -> !k.isAnimation()).length
 
 
   savePositions: ->

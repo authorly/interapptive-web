@@ -22,12 +22,13 @@ class App.Views.StorybookIndex extends Backbone.View
     @collection.on 'remove', @removeStorybook, @
     @collection.on 'reset',  @render         , @
     @selectedStorybook = null
+    App.currentSelection.on 'change:storybook', @hide
 
 
   render: ->
     @$el.html @template()
     @collection.each (storybook) => @appendStorybook(storybook)
-    $('.modal-body').removeClass 'loading-book'
+    @hideLoader()
 
     if App.Config.environment == 'development' && @collection.length > 0
       @selectStorybook @collection.at(0)
@@ -36,12 +37,7 @@ class App.Views.StorybookIndex extends Backbone.View
     @
 
 
-  appendStorybook: (storybook) ->
-    view = new App.Views.Storybook(model: storybook)
-    @$('#storybook-list').prepend view.render().el
-
-    @selectStorybook storybook
-
+  # storybooks
 
   createStorybook: (event) ->
     event.preventDefault()
@@ -52,32 +48,23 @@ class App.Views.StorybookIndex extends Backbone.View
       success: @closeStorybookForm
 
 
-  closeStorybookForm: =>
-    @$('.storybook-form input').val('')
-    @$('.storybook-form').fadeOut(130)
-    @$('.new-storybook-btn').delay(130).fadeIn(130)
+  appendStorybook: (storybook) ->
+    view = new App.Views.Storybook(model: storybook)
+    @$('#storybook-list').prepend view.render().el
+
+    @selectStorybook storybook
 
 
-  showStorybookForm: ->
-    @$('.new-storybook-btn').fadeOut(70)
-    @$('.storybook-form').delay(70).fadeIn()
-    window.setTimeout (=> @$('.storybook-form .storybook-title').focus()), 71
+  deleteStorybook: (event) ->
+    event.preventDefault()
+
+    if confirm(DELETE_STORYBOOK_MSG)
+      storybook = @collection.get $(event.currentTarget).data('id')
+      storybook.destroy()
 
 
-  openStorybook: ->
-    return unless @selectedStorybook?
-
-    $('#storybooks-modal').modal 'hide'
-
-    # XXX this should not be done here; this belongs to the model layer
-    # it should be done on initialization
-    scenesIndex = App.sceneList()
-    scenesIndex.collection.storybook_id = @selectedStorybook.get 'id'
-    scenesIndex.collection.fetch() # Triggers a render.
-
-    # these initialization statements belong to the view that renders the scenes
-    $('#scene-list').html(scenesIndex.el)
-    $('.scene').removeClass 'disabled'
+  removeStorybook: (storybook) ->
+    @$(".storybook[data-id=#{storybook.id}]").parent().remove()
 
 
   storybookSelected: (event) ->
@@ -93,14 +80,30 @@ class App.Views.StorybookIndex extends Backbone.View
     @$('.btn-primary.open-storybook').removeClass 'disabled'
 
 
-
-  deleteStorybook: (event) ->
-    event.preventDefault()
-
-    if confirm(DELETE_STORYBOOK_MSG)
-      storybook = @collection.get $(event.currentTarget).data('id')
-      storybook.destroy()
+  openStorybook: ->
+    App.currentSelection.set storybook: @selectedStorybook if @selectedStorybook?
 
 
-  removeStorybook: (storybook) ->
-    @$(".storybook[data-id=#{storybook.id}]").parent().remove()
+  # storybook form
+
+  showStorybookForm: ->
+    @$('.new-storybook-btn').fadeOut(70)
+    @$('.storybook-form').delay(70).fadeIn()
+    window.setTimeout (=> @$('.storybook-form .storybook-title').focus()), 71
+
+
+  closeStorybookForm: =>
+    @$('.storybook-form input').val('')
+    @$('.storybook-form').fadeOut(130)
+    @$('.new-storybook-btn').delay(130).fadeIn(130)
+
+
+  # others
+
+  hideLoader: ->
+    $('#storybooks-modal .modal-body').removeClass 'loading-book'
+
+
+  hide: ->
+    $('#storybooks-modal').modal 'hide'
+    $('.scene').removeClass 'disabled'
