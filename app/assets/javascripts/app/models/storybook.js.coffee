@@ -1,3 +1,7 @@
+##
+# Relations:
+# * `@scenes` - a storybook has many scenes. This is a Backbone collection
+# containing the scenes that belong to this story book.
 class App.Models.Storybook extends Backbone.Model
   schema:
     title:

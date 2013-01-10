@@ -1,3 +1,9 @@
+##
+# Relations
+# * it belongs to a story book. So far the need to get to the actual `Storybook` model
+# hasn't arrised, so the attribute `storybook_id` is used when needed.
+# * @keyframes - a scene has many keyframes. This is the Backbone collection
+# containing the keyframes that belong to this scene.
 class App.Models.Scene extends Backbone.Model
   paramRoot: 'scene'
 
@@ -117,6 +123,9 @@ class App.Models.Scene extends Backbone.Model
     widget
 
 
+##
+# Relations
+# * @storybook - It belongs to a story book.
 class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
 

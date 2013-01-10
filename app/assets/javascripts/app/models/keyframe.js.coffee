@@ -1,3 +1,8 @@
+##
+# Relations
+# * @scene. It belongs to a scene. The scene is either provided in the attributes
+# passed to the constructor, or is taken from the collection to which the scene
+# belongs (if any)
 class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
@@ -127,6 +132,9 @@ class App.Models.Keyframe extends Backbone.Model
     App.builder.widgetStore.addWidget(widget)
     widget
 
+##
+# Relations:
+# @scene - it belongs to a scene.
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
 
@@ -134,16 +142,15 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   initialize: (models, options) ->
-    # TODO move cache to a separate class
+    @scene = options.scene
+
     @on 'reset', =>
       @announceAnimation()
+      # TODO move cache to a separate class
       @_savePositionsCache(@_positionsJSON())
 
     @on 'add remove', (model, _collection, options) =>
       @announceAnimation()
-
-    if options?
-      @scene = options.scene
 
     @on 'remove', (model, collection) ->
       collection._recalculatePositionsAfterDelete(model)
