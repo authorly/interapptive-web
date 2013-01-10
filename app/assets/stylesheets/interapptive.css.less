@@ -88,18 +88,21 @@ button#export {
 }
 
 #canvas-wrapper {
-  .scale(0.59);
-
   position: relative;
   right: -86px;
   top: -74px;
-  height: 768px;
   width: 1024px;
+  height: 768px;
   overflow: hidden;
 }
 
 canvas#builder-canvas {
   overflow: hidden;
+}
+
+canvas {
+  width: 1024px;
+  height: 768px;
 }
 
 .loading {
@@ -160,7 +163,7 @@ header {
     padding-top: 2px;
     height: @fontMenuHeight;
   }
-  
+
   .navbar-fixed-top .container {
     width: 1125px;
   }
