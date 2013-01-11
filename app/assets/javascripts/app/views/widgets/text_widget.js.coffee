@@ -1,5 +1,3 @@
-# 1 / 0.59 = 1.69 [scale of builder-canvas reciprocal]
-SCALE_FACTOR = 1.69
 ENTER_KEY =    13
 
 class App.Views.TextWidget extends Backbone.View
@@ -145,7 +143,7 @@ class App.Views.TextWidget extends Backbone.View
 
   bottom: (_bottom) ->
     $el =           @el
-    _offsetTop =    $($el).position().top * SCALE_FACTOR
+    _offsetTop =    $($el).position().top
     _offsetBottom = 768 - _offsetTop - $($el).height()
 
     if _bottom then $($el).css(bottom: _bottom) else _offsetBottom
@@ -153,7 +151,7 @@ class App.Views.TextWidget extends Backbone.View
 
   left: (_left) ->
     $el =         @el
-    _offsetLeft = $($el).position().left * SCALE_FACTOR
+    _offsetLeft = $($el).position().left
 
     if _left then $($el).css(left: _left) else _offsetLeft
 
