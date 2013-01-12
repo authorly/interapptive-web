@@ -5,17 +5,14 @@
 # collection of images.
 #
 
-NO_IMAGES_MSG =
-  'You dont have any Images. Please upload some by clicking on \'Images\' icon in the toolbar.'
-
-
 class App.Views.SpriteIndex extends App.Views.ImageIndex
   template: JST['app/templates/assets/sprites/index']
 
   events:
-    'touchstart, touchend .zoomable'  : 'doZoom'
-    'click .image-row'                : 'setActiveImage'
-    'click .use-image'                : 'selectImage'
+    'click .image-row' : 'setActiveImage'
+    'click .use-image' : 'selectImage'
+
+  @NO_IMAGES_MSG = 'You dont have any Images. Please upload some by clicking on \'Images\' icon in the toolbar.'
 
 
   initialize: ->
@@ -32,7 +29,7 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
       @allowSortingSearching()
     else
       @$('.table').hide()
-      @$('.modal-body').text NO_IMAGES_MSG
+      @$('.modal-body').text @NO_IMAGES_MSG
 
     @
 
@@ -40,6 +37,10 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
   appendImage: (image) =>
     view = new App.Views.Sprite(model: image)
     @$('tbody.files').append(view.render().el)
+
+
+  selectImage: ->
+    @trigger 'select', @image
 
 
   allowSortingSearching: ->

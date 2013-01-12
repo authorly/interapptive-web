@@ -61,7 +61,7 @@ class App.Views.ToolbarView extends Backbone.View
       widget = new App.Builder.Widgets.SpriteWidget
         url:      image.get 'url'
         filename: image.get 'name'
-        scene:    App.currentScene()
+        scene:    App.currentSelection.get 'scene'
         zOrder:   $('#active-sprites-window ul li').size() || 1
       widget.save()
       App.builder.widgetLayer.addWidget(widget)
@@ -70,7 +70,7 @@ class App.Views.ToolbarView extends Backbone.View
 
       view.off('select', imageSelected)
 
-    view = new App.Views.SpriteIndex(collection: App.imagesCollection)
+    view = new App.Views.SpriteIndex(collection: new App.Collections.ImagesCollection [])
     view.on('select', imageSelected)
     App.modalWithView(view: view).show()
 

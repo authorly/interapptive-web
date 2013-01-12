@@ -1,5 +1,6 @@
 - for file in @files
   %tr.template-download.fade
+
     - if file.error
       %td.name
         %span file.name
@@ -8,6 +9,7 @@
       %td.error{:colspan => "5"}
         %span.label.label-important= locale.fileupload.error
           = file.error
+
     - else
       %td.preview
         - if file.thumbnail_url

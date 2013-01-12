@@ -2,8 +2,10 @@
   .modal-header
     %h3.modal-title
       Choose an image...
+
   .modal-body
     %ul
+
   .modal-footer
     .btn.btn-primary.use-image.disabled
       %i.icon-plus.icon-white

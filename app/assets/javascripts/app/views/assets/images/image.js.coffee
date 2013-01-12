@@ -5,5 +5,5 @@ class App.Views.Image extends Backbone.View
 
 
   render: ->
-    $(@el).html(@template(image: @model))
-    this
+    @$el.html(@template(image: @model))
+    @

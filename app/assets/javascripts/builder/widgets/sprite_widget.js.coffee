@@ -203,7 +203,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @getOrientationForKeyframe().point
 
   getOrientationForKeyframe: ->
-    keyframe = arguments[0] || App.currentKeyframe()
+    keyframe = arguments[0] || App.currentSelection.get('keyframe')
     orientation = null
     # TODO This is a dirty fix. This method should be in the Widget model, and
     # not depend on App.currentKeyframe()
@@ -251,8 +251,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     widgets.push(@toSceneHash())
     @scene().set('widgets', widgets)
     @scene().save({},
-      success: => @updateStorybookJSON()
-      error:   => @couldNotSave()
+      error: => @couldNotSave()
     )
 
   update: ->

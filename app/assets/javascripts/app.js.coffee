@@ -118,10 +118,10 @@ window.App =
    # if @_modal then @_modal.hide()
 
 
-  # modalWithView: (view) ->
-    # @view unless view
+  modalWithView: (view) ->
+    @view unless view
 
-    # @view = new App.Views.Modal view, className: 'content-modal'
+    @view = new App.Views.Modal view, className: 'content-modal'
 
 
   # lightboxWithView: (view) ->

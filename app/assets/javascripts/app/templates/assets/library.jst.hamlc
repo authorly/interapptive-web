@@ -4,7 +4,7 @@
   Only #{@acceptedFileTypes.slice(0, @acceptedFileTypes.length - 1).join(', ')} and #{@acceptedFileTypes[@acceptedFileTypes.length - 1]} file types are accepted
 
 .modal-body
-  %form{:action => "/storybooks/#{App.currentStorybook().get('id')}/scenes/#{App.currentScene().get('id')}/#{@assetType}s", :id => "fileupload", :method => "post", :multipart => true}
+  %form{:action => "/storybooks/#{App.currentSelection.get('storybook').get('id')}/scenes/#{App.currentSelection.get('scene').get('id')}/#{@assetType}s", :id => "fileupload", :method => "post", :multipart => true}
     .row.fileupload-buttonbar
       .span5
         %span.btn.btn-success.fileinput-button
