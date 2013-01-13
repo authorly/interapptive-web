@@ -76,7 +76,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   alignAudio: ->
-    view = new App.Views.AudioIndex App.currentKeyframe()
+    view = new App.Views.AudioIndex App.currentSelection.get('keyframe')
     App.modalWithView(view: view).show()
 
     # RFCTR - needs ventilation

@@ -31,11 +31,11 @@ class App.Views.AudioIndex extends Backbone.View
 
   acceptAlignment: (e) ->
     wordTimeIntervals = @collectTimeIntervals()
-    App.currentKeyframe().set('content_highlight_times', wordTimeIntervals)
-    App.currentKeyframe().save {},
+    App.currentSelection.get('keyframe').set('content_highlight_times', wordTimeIntervals)
+    App.currentSelection.get('keyframe').save {},
       success: =>
        App.modalWithView().hide()
-       App.currentKeyframe().trigger('audiosync')
+       App.currentSelection.get('keyframe').trigger('audiosync')
 
 
 
@@ -79,10 +79,10 @@ class App.Views.AudioIndex extends Backbone.View
 
 
   uploadDidFinish: (file) =>
-    App.currentKeyframe().set('content_highlight_times', null)
-    App.currentKeyframe().save {},
+    App.currentSelection.get('keyframe').set('content_highlight_times', null)
+    App.currentSelection.get('keyframe').save {},
       success: =>
-       App.currentKeyframe().trigger('audiosync')
+        App.currentSelection.get('keyframe').trigger('audiosync')
 
     audioFile = JSON.parse(file)
     @setAudioPlayerSrc(audioFile.url)
@@ -106,7 +106,7 @@ class App.Views.AudioIndex extends Backbone.View
 
 
   currentKeyframeAudioUrl: ->
-    "/keyframes/#{App.currentKeyframe().get('id')}/audio"
+    "/keyframes/#{App.currentSelection.get('keyframe').get('id')}/audio"
 
 
   appendKeyframetext: (keyframe_text) ->
