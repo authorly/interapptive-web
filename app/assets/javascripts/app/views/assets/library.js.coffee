@@ -63,7 +63,7 @@
 
 
   fileTypePattern: (assetType) ->
-    file_types = @fileTypes(assetType)
+    file_types = @acceptedFileTypes()
     up_file_types = file_types.map (type) ->
       type.toUpperCase()
 
