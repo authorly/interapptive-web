@@ -80,7 +80,10 @@ class App.Views.ToolbarView extends Backbone.View
     App.modalWithView(view: view).show()
 
     # RFCTR - needs ventilation
+    # In this file:
     # App.vent.trigger 'audio:align'
+    # In audio alignment view (in init):
+    # App.vent.on 'audio:align', @initAlignAudioModalInteractions
     view.initAlignAudioModalInteractions()
 
 
