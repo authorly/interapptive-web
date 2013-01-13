@@ -21,6 +21,8 @@ class App.Views.AudioIndex extends Backbone.View
     @_previewing =     false
     @keyframe = keyframe
 
+    App.vent.on 'audio:align', @initAlignAudioModalInteractions
+
 
   render: ->
     $(@el).html(@template(keyframe: @keyframe))
@@ -114,7 +116,7 @@ class App.Views.AudioIndex extends Backbone.View
     $(@el).find('ul#sortable-keyframe-texts').append(view.render().el)
 
 
-  initAlignAudioModalInteractions: ->
+  initAlignAudioModalInteractions: =>
     @initAudioUploader()
     @initSorting()
 
