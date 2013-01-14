@@ -10,7 +10,7 @@ class App.Views.SceneIndex extends Backbone.View
     'click .delete' : 'deleteScene'
 
 
-  @DELETE_SCENE_MSG: '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
+  DELETE_SCENE_MSG: '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
 
 
   initialize: ->
