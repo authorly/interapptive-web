@@ -26,9 +26,11 @@ class App.Views.AudioIndex extends Backbone.View
 
   render: ->
     $(@el).html(@template(keyframe: @keyframe))
+    # RFCTR why dealing with texts in the audio view?
+    # @author dira, @date 2013-01-14
     @keyframe.texts.fetch()
     @keyframe.texts.each (keyframe_text) => @appendKeyframetext(keyframe_text)
-    this
+    @
 
 
   acceptAlignment: (e) ->
