@@ -36,24 +36,24 @@ class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Wi
     widgets.push(@toHash())
     @keyframe.set('widgets', widgets)
     @keyframe.save({},
-      success: => @updateStorybookJSON
-      error: => @couldNotSave
+      success: @updateStorybookJSON
+      error: @couldNotSave
     )
 
 
   update: ->
-    orientationWidgets = @keyframe.get('widgets') || []
-    widgetFromKeyframe = _.find(orientationWidgets, (w) -> w.id == @id)
-    orientationWidgets.splice(orientationWidgets.indexOf(widgetFromKeyframe), 1, @toHash())
-    @keyframe.set('widgets', orientationWidgets)
+    widgets = @keyframe.get('widgets') || []
+    widgetFromKeyframe = _.find(widgets, (w) -> w.id == @id)
+    widgets.splice(widgets.indexOf(widgetFromKeyframe), 1, @toHash())
+    @keyframe.set('widgets', widgets)
     @keyframe.save {},
       success: => console.log "App.storybookJSON.updateSpriteOrientationWidget(this)"
       error:   => console.log('SpriteOrientationWidget did not save')
 
 
-  updateStorybookJSON: ->
+  updateStorybookJSON: =>
     App.storybookJSON.addSpriteOrientationWidget(this)
     App.builder.widgetStore.addWidget(this)
 
-  couldNotSave: ->
-
+  couldNotSave: =>
+    console.log('could not save SpriteOrientationWidget')

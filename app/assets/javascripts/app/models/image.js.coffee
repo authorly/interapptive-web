@@ -7,7 +7,7 @@ class App.Collections.ImagesCollection extends Backbone.Collection
   model: App.Models.Image
 
   url: ->
-    "/storybooks/#{App.currentSelection.get('storybook').get('id')}/images.json"
+    "/storybooks/" + App.currentSelection.get('storybook').get('id') + "/images.json"
 
 
 class App.Models.Preview extends App.Models.Image

@@ -19,9 +19,10 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   setFontDefaults: ->
-    @fontFace  App.currentScene().get('font_face')
-    @fontColor App.currentScene().get('font_color')
-    @fontSize  App.currentScene().get('font_size')
+    scene = App.currentSelection.get('scene')
+    @fontFace  scene.get('font_face')
+    @fontColor scene.get('font_color')
+    @fontSize  scene.get('font_size')
 
 
   collection: (collection) ->
@@ -33,7 +34,7 @@ class App.Views.TextEditorPalette extends Backbone.View
       font_color : @fontColor()
       font_face  : @fontFace()
       font_size  : @fontSize()
-    App.currentScene().save(attributes)
+    App.currentSelection.get('scene').save(attributes)
 
     $('.text_widget').css
       'font-family' : @fontFace()
@@ -59,9 +60,6 @@ class App.Views.TextEditorPalette extends Backbone.View
       left : _left
 
 
-  destroyKeyframeText: (e) ->
-    $target = $(e.target)
-    self = this
-    App.currentKeyframeText().destroy
-      success: (model, response) ->
-        $('#keyframe_text_' + model.id).remove()
+  destroyKeyframeText: ->
+    App.currentSelection.get('text_widget').destroy()
+    App.currentSelection.set(text_widget: null)

@@ -46,13 +46,14 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addText: ->
-    #text = new App.Builder.Widgets.TextWidget(string: (prompt('Enter some text') or '<No Text>'))
-    App.keyframeTextList().createText 'Enter some text...'
+    widget = new App.Builder.Widgets.TextWidget
+      string:   'Enter some text...'
+      keyframe: App.currentSelection.get('keyframe')
+    widget.create()
 
 
   addTouch: (event) ->
     return if $(event.currentTarget).hasClass('disabled')
-
     App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:create')
 
 
@@ -65,9 +66,7 @@ class App.Views.ToolbarView extends Backbone.View
         zOrder:   $('#active-sprites-window ul li').size() || 1
       widget.save()
       App.builder.widgetLayer.addWidget(widget)
-
       App.modalWithView().hide()
-
       view.off('select', imageSelected)
 
     view = new App.Views.SpriteIndex(collection: new App.Collections.ImagesCollection [])
