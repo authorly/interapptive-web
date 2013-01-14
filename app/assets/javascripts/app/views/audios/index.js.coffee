@@ -1,6 +1,15 @@
 COUNTDOWN_LENGTH_IN_SECONDS = 3
 AUDIO_UPLOAD_ERROR = 'There was an issue uploading your audio'
 
+# This view is used for aligning text to audio which, in turn, allows for users
+# to create word-by-word highlighting.
+# The audio will be a voice that, when played, enables the users to drag/click
+# word-by-word. As they click/drag over each word in sync with the associated audio,
+# we accumulate an array of time intervals. Intervals are then used for highlighting
+# word-by-word.
+# RFCTR rename to VoiceoverIndex. Also create a Voiceover Backbone model and move
+# there all the model related things - fetching, saving, changes.
+# @author dira, @date 2013-01-14
 class App.Views.AudioIndex extends Backbone.View
   template: JST["app/templates/audios/index"]
   events:
@@ -26,8 +35,9 @@ class App.Views.AudioIndex extends Backbone.View
 
   render: ->
     $(@el).html(@template(keyframe: @keyframe))
-    # RFCTR why dealing with texts in the audio view?
-    # @author dira, @date 2013-01-14
+    # Load the texts so the user can see the text which they are aligning audio to.
+    # RFCTR the keyframe will already have its texts available as TextWidgets. So
+    # fetching will go away.
     @keyframe.texts.fetch()
     @keyframe.texts.each (keyframe_text) => @appendKeyframetext(keyframe_text)
     @
@@ -146,7 +156,7 @@ class App.Views.AudioIndex extends Backbone.View
 
     @audioUploader = new audioUploader($file.get(0),
       url:                @currentKeyframeAudioUrl()
-      error:   (event) => @uploadDidError(ev)
+      error:   (event) => @uploadDidError(event)
       success: (file)  => @uploadDidFinish(file)
     )
 
