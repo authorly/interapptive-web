@@ -119,13 +119,15 @@ window.App =
 
 
   modalWithView: (view) ->
-    @view unless view
+    if view?
+      @view = new App.Views.Modal view, className: 'content-modal'
 
-    @view = new App.Views.Modal view, className: 'content-modal'
+    @view
+
 
 
   # lightboxWithView: (view) ->
-    # @lightboxView unless view
+    # return @lightboxView unless view?
 
     # @lightboxView = new App.Views.Lightbox view, className: 'lightbox-modal'
 
