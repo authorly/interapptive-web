@@ -3,12 +3,13 @@
 ## Setting up application on your machine
 
 1. Clone the repository on your machine
-2. Create a suitable `config/database.yml` (production will likely run on MySQL)
-3. `bundle install`
-4. `bundle exec rake db:create:all`
-5. `bundle exec rake db:migrate`
-6. `bundle exec rake db:seed`
-7. `bundle exec rails server` starts the server
+1. Install [sox](http://sox.sourceforge.net/) version 14.4.0
+1. Create a suitable `config/database.yml` (production will likely run on MySQL)
+1. `bundle install`
+1. `bundle exec rake db:create:all`
+1. `bundle exec rake db:migrate`
+1. `bundle exec rake db:seed`
+1. `bundle exec rails server` starts the server
 
 ### To run all the test cases
 
