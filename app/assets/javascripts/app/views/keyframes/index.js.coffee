@@ -1,11 +1,6 @@
 # Manages the list of keyframes (from the current scene).
 # Also manages the current keyframe selection and populates the WidgetLayer
 # accordingly.
-
-DELETE_KEYFRAME_MSG =
-  '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
-
-
 class App.Views.KeyframeIndex extends Backbone.View
   template:  JST['app/templates/keyframes/index']
 
@@ -16,6 +11,10 @@ class App.Views.KeyframeIndex extends Backbone.View
   events:
     'click  .keyframe-list li div' : 'keyframeClicked'
     'click  .delete-keyframe'      : 'destroyKeyframeClicked'
+
+
+  @DELETE_KEYFRAME_MSG =
+    '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
 
 
   initialize: ->
@@ -64,8 +63,9 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   appendKeyframe: (keyframe, _collection, options) =>
     @renderKeyframe(keyframe, options.index)
-    @switchKeyframe(keyframe)
     @_updateDeleteButtons()
+
+    @switchKeyframe(keyframe)
 
 
   renderKeyframe: (keyframe, index) =>
@@ -85,55 +85,25 @@ class App.Views.KeyframeIndex extends Backbone.View
     @switchKeyframe(keyframe)
 
 
+
   switchKeyframe: (newKeyframe) ->
     App.currentSelection.set keyframe: newKeyframe
 
 
   keyframeChanged: (__, keyframe) ->
-    @switchActiveKeyframeElement(keyframe)
-    # @updateKeyframeWidgets(keyframe)
-    # @updateSceneWidgets(keyframe)
+    @$('li').removeClass('active').
+      filter("[data-id=#{keyframe?.id}]").
+      addClass('active')
 
 
   lastKeyframe: ->
     @collection.at(@collection.length - 1)
 
 
-  # updateKeyframeWidgets: (newKeyframe) =>
-    # if (removals = App.currentSelection.get('keyframe')?.widgets())?
-      # # TODO: Kill rejection? This is legacy and a bit strange
-      # removals = _.reject(removals, (w) -> w.type is "TextWidget")
-      # for widget in removals
-        # App.vent.trigger 'widget:remove', widget
-
-    # if (additions = newKeyframe.widgets())?
-      # for widget in additions
-        # App.vent.trigger 'widget:add', widget
-
-
-  # updateSceneWidgets: (newKeyframe) =>
-    # return unless (widgets = App.currentSelection.get('scene').widgets())?
-
-    # for widget in widgets
-      # if App.builder.widgetLayer.hasWidget(widget) and widget.retentionMutability
-        # return if widget.isTouchWidget()
-
-        # widget.setScale widget.getScaleForKeyframe(newKeyframe)
-        # widget.setPosition widget.getPositionForKeyframe(newKeyframe)
-      # else
-        # App.vent.trigger 'widget:add', widget
-
-
-  switchActiveKeyframeElement: (keyframe) =>
-    @$('li').removeClass('active').
-      filter("[data-id=#{keyframe?.id}]").
-      addClass('active')
-
-
   destroyKeyframeClicked: (event) =>
     event.stopPropagation()
 
-    if confirm DELETE_KEYFRAME_MSG
+    if confirm(@DELETE_KEYFRAME_MSG)
       keyframe = @collection.get $(event.currentTarget).attr('data-id')
       keyframe.destroy
         success: =>
@@ -164,7 +134,6 @@ class App.Views.KeyframeIndex extends Backbone.View
   placeText: ->
     if App.currentKeyframe()?
       scene = cc.Director.sharedDirector().getRunningScene()
-      keyframeTexts = scene.widgetLayer.widgets
       App.builder.widgetLayer.removeAllChildrenWithCleanup()
       App.keyframesTextCollection.fetch
         success: (collection, response) =>

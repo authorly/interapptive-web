@@ -1,4 +1,4 @@
- class App.Views.AssetLibrary extends Backbone.View
+class App.Views.AssetLibrary extends Backbone.View
   template: JST['app/templates/assets/library']
 
   events:

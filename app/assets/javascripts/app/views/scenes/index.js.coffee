@@ -42,7 +42,7 @@ class App.Views.SceneIndex extends Backbone.View
   deleteScene: (event) =>
     event.stopPropagation()
 
-    if confirm @DELETE_SCENE_MSG
+    if confirm(@DELETE_SCENE_MSG)
       scene = @collection.get($(event.currentTarget).attr 'data-id')
       scene.destroy success: => @collection.remove(scene)
 

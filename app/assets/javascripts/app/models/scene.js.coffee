@@ -16,15 +16,17 @@ class App.Models.Scene extends Backbone.Model
 
 
   initialize: ->
+    @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
 
     @on 'change:preview_image_id', @save
 
 
   fetchKeyframes: ->
-    return if @isNew()
+    return if @isNew() || @_keyframesFetched
 
-    @keyframes.fetch()
+    @keyframes.fetch
+      success: => @_keyframesFetched = true
 
 
   addNewKeyframe: (attributes) ->
