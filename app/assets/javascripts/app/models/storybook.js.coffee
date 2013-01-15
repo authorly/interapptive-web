@@ -92,6 +92,15 @@ class App.Models.Storybook extends Backbone.Model
     @scenes.addNewScene()
 
 
+  compile: ->
+    $.post('/compiler',
+      storybook_json: App.storybookJSON.toString()
+      storybook_id: @get('id')
+      ->
+        console.log('enqueued for compilation')
+    'json')
+
+
 class App.Collections.StorybooksCollection extends Backbone.Collection
   model: App.Models.Storybook
 

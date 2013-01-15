@@ -36,13 +36,4 @@ class App.Views.FileMenuView extends Backbone.View
 
 
   compileStorybook: ->
-    #
-    # RFCTR:
-    #      To a model
-    #
-    $.post('/compiler',
-      storybook_json: App.storybookJSON.toString()
-      storybook_id: App.currentStorybook().id
-      ->
-        console.log('enqueued for compilation')
-    'json')
+    App.currenSelection.get('storybook').compile()
