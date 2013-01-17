@@ -2,6 +2,9 @@ class App.Models.Widget extends Backbone.Model
   # attributes: position z_order
   @idGenerator = new App.Lib.Counter
 
+  defaults:
+    position: { x: 1024/2, y: 768/2 }
+
 
 ##
 # A 'hotspot' widget, previously named touch zone. It has an associated
@@ -16,6 +19,13 @@ class App.Models.HotspotWidget extends App.Models.Widget
     control_radius: 28
 
 
+##
+# A widget that has an associated image.
+#
+# It belongs to a scene, and it can have a different position or scale in
+# each of the keyframes of that scene. SpriteOrientationWidget is the association
+# between a SpriteWidget and a Keyframe; it stores the position and scale of the
+# SpriteWidget in that Keyframe.
 class App.Models.SpriteWidget extends App.Models.Widget
   # attributes: url scale
 

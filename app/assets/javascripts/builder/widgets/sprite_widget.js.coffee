@@ -1,13 +1,7 @@
 #= require ./widget
 
 ##
-# A widget that has an associated image.
-#
-# It belongs to a scene, and it can have a different position or scale in
-# each of the keyframes of that scene. SpriteOrientationWidget is the association
-# between a SpriteWidget and a Keyframe; it stores the position and scale of the
-# SpriteWidget in that Keyframe.
-# TODO RFCTR extract a Backbone model out of this.
+# Show a SpriteWidget as a cc.Sprite.
 class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   COLOR_OUTER_STROKE: 'rgba(15, 79, 168, 0.8)'
   COLOR_OUTER_FILL: 'rgba(174, 204, 246, 0.66)'
@@ -19,6 +13,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   constructor: (options) ->
     super
 
+    # @model - is set by the super constructor
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
 
     @disableDragging()
@@ -29,6 +24,22 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_getImage()
 
 
+  constructorContinuation: (dataUrl) =>
+    @model.set url: dataUrl
+    cc.TextureCache.sharedTextureCache().addImageAsync @model.get('url'), @, =>
+      @sprite.initWithFile @model.get('url')
+
+      currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
+      position = currentOrientation.get('position')
+      @sprite.setPosition(new cc.Point(position.x, position.y))
+      @sprite.setScale(parseFloat(currentOrientation.get('scale')))
+
+      @addChild(@sprite)
+
+      # TODO RFCTR bring this back
+      # window.setTimeout @triggerLoaded, 0
+
+
   # TODO RFCTR this must be a change to the model, on which this
   # view will react
   updateOrientation: =>
@@ -37,25 +48,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       orientation.keyframe.id == keyframe.id
     orientationWidget.point = @getPosition()
     orientationWidget.update()
-
-
-  constructorContinuation: (dataUrl) =>
-    @model.set url: dataUrl
-    cc.TextureCache.sharedTextureCache().addImageAsync @model.get('url'), @, =>
-      @sprite.initWithFile @model.get('url')
-
-      currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
-      @setPosition currentOrientation.get('position')
-      @setScale    currentOrientation.get('scale')
-
-      @addChild(@sprite)
-      window.setTimeout @triggerLoaded, 0
-
-
-  setScale: (scale) ->
-    @sprite.setScale parseFloat(scale)
-
-
 
 
   # updateOrientation: =>
@@ -166,6 +158,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   # hasBorder: ->
     # @scene.border
 
+  # TODO RFCTR this belong to the model
   # toHash: ->
     # hash                      =    {}
     # hash.id                   =    @id
@@ -286,7 +279,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   from_proxy: (message) =>
-    if message.action == 'loaded' && message.path == @model.url()
+    if message.action == 'loaded' && message.path == @model.get('url')
       App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
       @constructorContinuation(message.bits)
 

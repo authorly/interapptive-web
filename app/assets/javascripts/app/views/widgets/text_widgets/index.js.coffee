@@ -17,7 +17,7 @@ class App.Views.TextWidgetIndex extends Backbone.View
     for text_widget in @model.widgetsByType('TextWidget')
       @addText(new App.Views.TextWidget(widget: text_widget))
       # Following should be moved to TextWidget after creation code
-      # Care should be taken to include the same when we bootstrap 
+      # Care should be taken to include the same when we bootstrap
       # the App json at the time of storybook load
       # App.storybookJSON.addText(keyframeText, keyframe)
 

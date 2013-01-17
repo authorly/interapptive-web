@@ -8,7 +8,7 @@ class App.Views.AssetLibrary extends Backbone.View
   initialize: (assetType, assets) ->
     @assetType = assetType
     @assets = assets
-    @acceptedFileTypes = @fileTypes(assetType)
+    @acceptedFileTypes = @acceptedFileTypes(@assetType)
 
     @assets.on 'reset', @render, @
     @assets.fetch()
@@ -24,7 +24,6 @@ class App.Views.AssetLibrary extends Backbone.View
 
   initAssetLib: ->
     $('.content-modal').addClass 'asset-library-modal'
-
     @$('#fileupload').fileupload
       acceptFileTypes: @fileTypePattern(@assetType)
       downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
@@ -66,8 +65,8 @@ class App.Views.AssetLibrary extends Backbone.View
 
 
 
-  fileTypePattern: (assetType) ->
-    file_types = @acceptedFileTypes()
+  fileTypePattern: () ->
+    file_types = @acceptedFileTypes
     up_file_types = file_types.map (type) ->
       type.toUpperCase()
 
@@ -80,8 +79,8 @@ class App.Views.AssetLibrary extends Backbone.View
     new RegExp(pattern)
 
 
-  acceptedFileTypes: ->
-    switch @activeAssetType
+  acceptedFileTypes: (assetType) ->
+    switch assetType
       when 'image', 'images' then return ['jpg', 'jpeg', 'gif', 'png']
       when 'video', 'videos' then return ['mov', 'mpg', 'mpeg', 'mkv', 'm4v', 'avi', 'flv', 'mp4']
       when 'font',  'fonts'  then return ['ttf']

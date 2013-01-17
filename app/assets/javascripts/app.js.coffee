@@ -14,8 +14,6 @@ window.App =
     @vent = _.extend {}, Backbone.Events
     @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
 
-    @vent.on 'scene:active', @openScene
-
     @currentSelection = new Backbone.Model
       storybook: null
       scene: null
@@ -50,9 +48,9 @@ window.App =
     @vent.on 'create:widget', (attributes) ->
       container = null
       switch attributes.type
-        when 'hotspot', 'sprite', 'button'
+        when 'HotspotWidget', 'SpriteWidget'
           container = 'scene'
-        when 'sprite_orientation', 'text'
+        when 'TextWidget'
           container = 'keyframe'
 
       App.currentSelection.get(container).widgets.add(attributes)

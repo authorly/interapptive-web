@@ -1,19 +1,14 @@
 
-# ##
-# # A `Widget` is an entity that has a graphical representation and that
-# # responds to user interactions.
-# #
-# # # dira, 2012-12-03 it would be better if widgets were independent of
-# # the concept of storybook.
-# # It also belongs to a storybook.
-# #
-# #
-# # Graphical properties:
-# # _opacity
-# # _highlighted
-# # _mouse_over
-# # draggable
-# #
+##
+# A `Widget` is an entity that has a graphical representation and that
+# responds to user interactions.
+#
+# Graphical properties:
+# _opacity
+# _highlighted
+# _mouse_over
+# draggable
+#
 class App.Builder.Widgets.Widget extends cc.Node
 
   # draggable: true
@@ -30,7 +25,7 @@ class App.Builder.Widgets.Widget extends cc.Node
     @_opacity = 255
     @_highlighted = false
 
-    @model.id = if @model.id
+    @model.id = if @model.id?
       App.Models.Widget.idGenerator.check(@model.id)
     else
       App.Models.Widget.idGenerator.next()

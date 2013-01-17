@@ -2,7 +2,8 @@
 # Relations
 # * @scene. It belongs to a scene. The scene is either provided in the attributes
 # passed to the constructor, or is taken from the collection to which the scene
-# belongs (if any)
+# belongs (if any). A Backbone model.
+# * @widgets. It has many widgets. A Backbone Collection.
 class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
@@ -173,7 +174,7 @@ class App.Models.Keyframe extends Backbone.Model
 
   widgetsByType: (type) ->
     return [] unless type?
-    _.filter(@widgets(), (w) -> w.type is type)
+    _.filter(@widgets, (w) -> w.type is type)
 
 
   # _findOrCreateWidgetByWidgetHash: (widget_hash) ->

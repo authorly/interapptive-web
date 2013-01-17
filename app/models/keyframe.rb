@@ -5,7 +5,8 @@ class Keyframe < ActiveRecord::Base
   belongs_to :scene
   belongs_to :preview_image, :class_name => 'Image'
 
-  has_many :texts, :class_name => 'KeyframeText', :dependent => :destroy
+  # TODO RFCTR fix all the methods that deal with texts
+  # has_many :texts, :class_name => 'KeyframeText', :dependent => :destroy
 
   serialize :widgets
   serialize :content_highlight_times, Array

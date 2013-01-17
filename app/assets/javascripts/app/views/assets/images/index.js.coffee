@@ -34,7 +34,3 @@ class App.Views.ImageIndex extends Backbone.View
 
   selectImage: ->
     @trigger('select', @image)
-
-
-  doZoom: ->
-    $('.zoomable').toggleClass 'zoomed-in'

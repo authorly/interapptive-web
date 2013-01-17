@@ -1,8 +1,8 @@
 ##
 # Relations
-# * it belongs to a story book.
-# * @keyframes - a scene has many keyframes. This is the Backbone collection
-# containing the keyframes that belong to this scene.
+# * it belongs to a story book. A Backbone model.
+# * @keyframes. It has many keyframes. A Backbone collection.
+# * @widgets. It has many widgets. A Backbone collection.
 class App.Models.Scene extends Backbone.Model
   paramRoot: 'scene'
 
