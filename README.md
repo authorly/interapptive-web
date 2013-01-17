@@ -59,6 +59,10 @@ specified.)
     - sets Builder.node to an instance of Builder if #new and #init succeed;
     - sets window.Builder to Builder.
 
+### Widgets
+
+Widgets are represented by two classes - a Backbone Model (that stores and manages the widget data) and a Builder View (which takes care of representing it on the UI and managing events).
+
 ### How widgets work
 
 1. The WidgetLayer manages widget space. It performs the following tasks too:

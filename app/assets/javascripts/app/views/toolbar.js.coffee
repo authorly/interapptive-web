@@ -4,8 +4,8 @@ class App.Views.ToolbarView extends Backbone.View
     'click .keyframe'           : 'addKeyframe'
     'click .animation-keyframe' : 'addAnimationKeyframe'
     'click .edit-text'          : 'addText'
-    'click .add-image'          : 'addSprite'
-    'click .touch-zones'        : 'addTouch'
+    'click .add-image'          : 'addImage'
+    'click .add-hotspot'        : 'addHotspot'
     'click .sync-audio'         : 'alignAudio'
     'click .images'             : 'showImageLibrary'
     'click .videos'             : 'showVideoLibrary'
@@ -20,8 +20,6 @@ class App.Views.ToolbarView extends Backbone.View
     @_enableOnEvent 'scene:can_add_animation', '.animation-keyframe'
     @_enableOnEvent 'keyframe:can_add_text'  , '.edit-text'
 
-    App.vent.on 'add:sprite', @addSprite
-
     App.vent.on 'scene:active', (scene) =>
       @$('li').removeClass 'disabled'
       if scene.isMainMenu()
@@ -29,49 +27,50 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addScene: ->
-    storybook = App.currentSelection.get('storybook')
-    storybook.addNewScene()
+    App.vent.trigger 'create:scene'
 
 
   addKeyframe: ->
-    scene = App.currentSelection.get('scene')
-    scene.addNewKeyframe()
+    App.vent.trigger 'create:keyframe'
 
 
   addAnimationKeyframe: ->
-    scene = App.currentSelection.get('scene')
-    return unless scene.canAddKeyframes()
-
-    scene.addNewKeyframe(is_animation: true)
+    App.vent.trigger 'create:keyframe', is_animation: true
 
 
   addText: ->
     widget = new App.Builder.Widgets.TextWidget
       string:   'Enter some text...'
       keyframe: App.currentSelection.get('keyframe')
+    # TODO RFCTR add this to the current keyframe's widgets as well
     widget.create()
 
 
-  addTouch: (event) ->
+  addImage: ->
+    App.vent.trigger 'create:image'
+
+
+  addHotspot: (event) ->
     return if $(event.currentTarget).hasClass('disabled')
-    App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:create')
+
+    App.vent.trigger 'create:widget', type: 'hotspot'
 
 
-  addSprite: ->
-    imageSelected = (image) =>
-      widget = new App.Builder.Widgets.SpriteWidget
-        url:      image.get 'url'
-        filename: image.get 'name'
-        scene:    App.currentSelection.get 'scene'
-        zOrder:   $('#active-sprites-window ul li').size() || 1
-      widget.save()
-      App.builder.widgetLayer.addWidget(widget)
-      App.modalWithView().hide()
-      view.off('select', imageSelected)
+  # addSprite: ->
+    # imageSelected = (image) =>
+      # widget = new App.Builder.Widgets.SpriteWidget
+        # url:      image.get 'url'
+        # filename: image.get 'name'
+        # scene:    App.currentSelection.get 'scene'
+        # zOrder:   $('#active-sprites-window ul li').size() || 1
+      # widget.save()
+      # App.builder.widgetLayer.addWidget(widget)
+      # App.modalWithView().hide()
+      # view.off('select', imageSelected)
 
-    view = new App.Views.SpriteIndex(collection: new App.Collections.ImagesCollection [])
-    view.on('select', imageSelected)
-    App.modalWithView(view: view).show()
+    # view = new App.Views.SpriteIndex(collection: new App.Collections.ImagesCollection [])
+    # view.on('select', imageSelected)
+    # App.modalWithView(view: view).show()
 
 
   alignAudio: ->
@@ -82,6 +81,8 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   showSceneOptions: ->
+    throw 'not implemented'
+    # RFCTR vent an event
     view = new App.Views.SceneForm()
     App.modalWithView(view: view).show()
 
@@ -111,20 +112,18 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   loadDataFor: (assetType) ->
-    view = new App.Views.AssetLibrary assetType
+    storybook = App.currentSelection.get('storybook')
+    view = new App.Views.AssetLibrary assetType, storybook[assetType + 's']
+
     App.modalWithView(view: view).show()
 
-    # Needs ventilation
-    view.setAllowedFilesFor "#{assetType}s"
-    view.initAssetLibFor "#{assetType}s"
 
+  # _addWidget: (widget) ->
+    # keyframe = App.currentKeyframe()
+    # App.builder.widgetLayer.addWidget widget
+    # keyframe.addWidget widget
 
-  _addWidget: (widget) ->
-    keyframe = App.currentKeyframe()
-    App.builder.widgetLayer.addWidget widget
-    keyframe.addWidget widget
-
-    widget.on 'change', -> keyframe.updateWidget widget
+    # widget.on 'change', -> keyframe.updateWidget widget
 
 
   _enableOnEvent: (event, selector) ->

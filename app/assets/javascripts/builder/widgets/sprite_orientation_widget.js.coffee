@@ -1,5 +1,9 @@
 #= require ./widget
 
+# The association between a SpriteWidget and a Keyframe; it stores the
+# position and scale of the SpriteWidget in that Keyframe.
+# RFCTR move this into a Backbone model. The WidgetLayer view will take care
+# of the display stuff.
 class App.Builder.Widgets.SpriteOrientationWidget extends App.Builder.Widgets.Widget
   constructor: (options = {}) ->
     throw new Error("Can not create a App.Builder.Widgets.SpriteOrientationWidget without a App.Models.Keyframe") unless (options.keyframe instanceof App.Models.Keyframe)

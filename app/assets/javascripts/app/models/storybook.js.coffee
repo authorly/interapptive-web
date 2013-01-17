@@ -71,6 +71,7 @@ class App.Models.Storybook extends Backbone.Model
 
   initialize: ->
     @scenes = new App.Collections.ScenesCollection([], storybook: @)
+    @images = new App.Collections.ImagesCollection([], storybook: @)
 
 
   url: ->

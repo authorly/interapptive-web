@@ -12,7 +12,7 @@ window.App =
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
-    # @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
+    @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
 
     @vent.on 'scene:active', @openScene
 
@@ -25,6 +25,7 @@ window.App =
     @currentSelection.on 'change:storybook', (__, storybook) =>
       @_openStorybook(storybook)
 
+
     @currentSelection.on 'change:scene', (__, scene) =>
       App.vent.trigger 'scene:active', scene
 
@@ -35,9 +36,47 @@ window.App =
 
 
     @toolbar = new App.Views.ToolbarView  el: $('#toolbar')
+    # Not sure if this belongs to `@currentSelection` or not. Keeping it
+    # separate for now. @dira 2013/01/10
+    @currentWidgets = new App.Collections.CurrentWidgets
+
+
+    @vent.on 'create:scene', ->
+      App.currentSelection.get('storybook').addNewScene()
+
+    @vent.on 'create:keyframe', (attributes) ->
+      App.currentSelection.get('scene').addNewKeyframe(attributes)
+
+    @vent.on 'create:widget', (attributes) ->
+      container = null
+      switch attributes.type
+        when 'hotspot', 'sprite', 'button'
+          container = 'scene'
+        when 'sprite_orientation', 'text'
+          container = 'keyframe'
+
+      App.currentSelection.get(container).widgets.add(attributes)
+
+    @vent.on 'create:image', ->
+      scene = App.currentSelection.get('scene')
+      view = new App.Views.SpriteIndex(collection: scene.storybook.images)
+
+      imageSelected = (image) ->
+        scene.widgets.add
+          type: 'SpriteWidget'
+          url:      image.get 'url'
+          filename: image.get 'name'
+          zOrder:   App.currentWidgets.size() || 1
+        scene.save()
+
+        view.off('select', imageSelected)
+        App.modalWithView().hide()
+
+      view.on 'select', imageSelected
+      App.modalWithView(view: view).show()
+
 
     # @fontsCollection =         new App.Collections.FontsCollection         []
-    # @imagesCollection =        new App.Collections.ImagesCollection        []
     # @soundsCollection =        new App.Collections.SoundsCollection        []
     # @keyframesTextCollection = new App.Collections.KeyframeTextsCollection []
     # @activeActionsCollection = new App.Collections.ActionsCollection       []
@@ -98,6 +137,13 @@ window.App =
       keyboard : false
 
 
+  modalWithView: (view) ->
+    if view?
+      @view = new App.Views.Modal view, className: 'content-modal'
+
+    @view
+
+
   # showSimulator: ->
     # @simulator = new App.Views.Simulator(json: App.storybookJSON.toString())
 
@@ -117,14 +163,6 @@ window.App =
   # # RFCTR: cont. from above
   # closeLargeModal: (animate=true) ->
    # if @_modal then @_modal.hide()
-
-
-  modalWithView: (view) ->
-    if view?
-      @view = new App.Views.Modal view, className: 'content-modal'
-
-    @view
-
 
 
   # lightboxWithView: (view) ->

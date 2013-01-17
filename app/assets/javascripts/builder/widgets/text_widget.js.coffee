@@ -4,17 +4,21 @@
 # A special kind of widget. It has a text property and it represents it
 # graphicaly with a label.
 #
+# It belongs to a Keyframe.
+# TODO RFCTR extract a Backbone model out of this.
+#
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   constructor: (options={}) ->
     super
 
-    throw new Error("Can not create a App.Builder.Widgets.TextWidget without a App.Models.Keyframe") unless (options.keyframe instanceof App.Models.Keyframe)
     @keyframe = options.keyframe
-    
+    throw new Error("Can not create a App.Builder.Widgets.TextWidget without a App.Models.Keyframe") unless (@keyframe instanceof App.Models.Keyframe)
+
     @createLabel(options.string)
     @string(options.string)
 
+    # TODO RFCTR Move these initializations to the model
     @type       = 'TextWidget'
     @left       = options.left       || 400 * Math.random()
     @bottom     = options.bottom     || 350 * Math.random()
@@ -87,6 +91,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     #  left: r.origin.x + $(cc.canvas).position().left
     #)
 
+  # TODO RFCTR move this to the model
   toHash: ->
     hash            =  super
     hash.string     =  @string()
@@ -109,7 +114,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   update: ->
     # RFCTR @create, @update and @destroy all have some common
-    # code that fetch widgets of a keyframe and save the 
+    # code that fetch widgets of a keyframe and save the
     # keyframe afterwards. The common should be moved to
     # Keyframe model.
     widgets = @keyframe.get('widgets') || []

@@ -118,7 +118,7 @@ class App.StorybookJSON
         audioFilePath: scene.get('sound_url')
 
     scene._page = page
-    @createWidgetsFor(scene)
+    # @createWidgetsFor(scene)
     @createParagraphsFor(scene)
     @document.Pages.push(page)
     page
@@ -154,7 +154,7 @@ class App.StorybookJSON
 
     page.Page.text.paragraphs.push(paragraph)
     keyframe._paragraph = paragraph
-    @createWidgetsFor(keyframe)
+    # @createWidgetsFor(keyframe)
     paragraph
 
   removeParagraph: (scene, keyframe) ->
@@ -181,35 +181,36 @@ class App.StorybookJSON
     p.linesOfText.push(_lineOfTextJSON)
 
 
-  addWidget: (keyframe, widget) ->
-    p = keyframe._paragraph
-    throw new Error("Keyframe has no Paragraph") unless p?
+  # RFCTR widgets
+  # addWidget: (keyframe, widget) ->
+    # p = keyframe._paragraph
+    # throw new Error("Keyframe has no Paragraph") unless p?
 
-    # FIXME Need a more generic way to add widgets to the JSON
-    # FIXME TextWidget should be handled by KeyframesTextIndex
-    if widget instanceof App.Views.TextWidget
-      line =
-        text: widget.getText()
-        xOffset: Math.round(widget.x())
-        yOffset: Math.round(widget.y())
+    # # FIXME Need a more generic way to add widgets to the JSON
+    # # FIXME TextWidget should be handled by KeyframesTextIndex
+    # if widget instanceof App.Views.TextWidget
+      # line =
+        # text: widget.getText()
+        # xOffset: Math.round(widget.x())
+        # yOffset: Math.round(widget.y())
 
-      widget._line = line
-      #TODO this logic should change according to new html text widgets
-      p.linesOfText.push(line)
+      # widget._line = line
+      # #TODO this logic should change according to new html text widgets
+      # p.linesOfText.push(line)
 
-    widget.on('change', (property) => @updateWidget(keyframe, widget, property))
+    # widget.on('change', (property) => @updateWidget(keyframe, widget, property))
 
-  createWidgetsFor: (owner) ->
-    _.each(owner.widgets(), (widget) =>
-      @createWidgetFor(owner, widget)
-    )
+  # createWidgetsFor: (owner) ->
+    # _.each(owner.widgets(), (widget) =>
+      # @createWidgetFor(owner, widget)
+    # )
 
-  createWidgetFor: (owner, widget) ->
-    this['add' + widget.type].call(this, widget)
+  # createWidgetFor: (owner, widget) ->
+    # this['add' + widget.type].call(this, widget)
 
-  updateWidget: (keyframe, widget, property) ->
-    p = keyframe._paragraph
-    throw new Error("Keyframe has no Paragraph") unless p?
+  # updateWidget: (keyframe, widget, property) ->
+    # p = keyframe._paragraph
+    # throw new Error("Keyframe has no Paragraph") unless p?
 
   removeTextFromKeyframe: () ->
     throw new Error("Not implemented yet")

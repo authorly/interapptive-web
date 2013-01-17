@@ -20,7 +20,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   initialize: ->
     @collection.on 'change:positions reset add remove', @updateScenePreview    , @
     @collection.on 'change:positions reset'           , @render                , @
-    @collection.on 'change:widgets'                   , @updateKeyframePreview , @
+    # @collection.on 'change:widgets'                   , @updateKeyframePreview , @
     @collection.on 'change:preview'                   , @keyframePreviewChanged, @
     @collection.on 'add'   , @appendKeyframe
     @collection.on 'remove', @removeKeyframe
@@ -36,7 +36,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     @collection.off 'change:positions reset add remove', @updateScenePreview    , @
     @collection.off 'change:positions reset'           , @render                , @
-    @collection.off 'change:widgets'                   , @updateKeyframePreview , @
+    # @collection.off 'change:widgets'                   , @updateKeyframePreview , @
     @collection.off 'change:preview'                   , @keyframePreviewChanged, @
     @collection.off 'add'   , @appendKeyframe
     @collection.off 'remove', @removeKeyframe

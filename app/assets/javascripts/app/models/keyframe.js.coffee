@@ -6,9 +6,14 @@
 class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
-  initialize: (options) ->
-    @scene = options.scene if options?
+  initialize: (attributes) ->
+    widgets = attributes.widgets; delete attributes.widgets
+    @widgets = new App.Collections.Widgets(widgets)
+
+    @scene = attributes?.scene || @collection?.scene
+
     @on 'audiosync', @updateStorybookParagraph, @
+
     @initializePreview()
 
 
@@ -34,13 +39,9 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   url: ->
-    base = '/scenes/' + @getScene().id + '/'
+    base = '/scenes/' + @scene.id + '/'
     return  (base + 'keyframes.json') if @isNew()
     base + 'keyframes/' + @get('id') + '.json'
-
-
-  getScene: =>
-    @_scene ||= @scene || @collection.scene
 
 
   initializePreview: ->
@@ -51,49 +52,77 @@ class App.Models.Keyframe extends Backbone.Model
       @save preview_image_id: @preview.id
 
 
-  hasWidget: (widget) ->
-    _.any((@get('widgets') || []), (w) -> widget.id is w.id)
+  getOrientationForWidget: (widget) ->
+    @widgets.find (w) ->
+      w.get('type') == 'SpriteOrientationWidget' &&
+      w.get('sprite_widget_id') == widget.id
 
 
-  addWidget: (widget) ->
-    widgets = @get('widgets') || []
-    widgets.push(widget.toHash())
-    @set('widgets', widgets)
-    @widgetsChanged()
+  # RFCTR widgets
+  # hasWidget: (widget) ->
+    # _.any((@get('widgets') || []), (w) -> widget.id is w.id)
 
 
-  updateWidget: (widget) =>
-    widgets = @get('widgets') || []
-
-    for w, i in widgets
-      if widget.id is w.id
-        widgets[i] = widget.toHash()
-        @widgetsChanged()
-        return
-
-    # Didn't update a widget, so we'll add it
-    @addWidget(widget)
+  # addWidget: (widget) ->
+    # widgets = @get('widgets') || []
+    # widgets.push(widget.toHash())
+    # @set('widgets', widgets)
+    # @widgetsChanged()
 
 
-  removeWidget: (widget, skipWidgetLayerRemoval) ->
-    widgets = @get('widgets')
-    return false unless widgets?
-    return false if widget instanceof App.Builder.Widgets.ButtonWidget
+  # updateWidget: (widget) =>
+    # widgets = @get('widgets') || []
 
-    for w, i in widgets
-      if w.id == widget.id
-        widgets.splice(i, 1)
-        @widgetsChanged()
-        break
+    # for w, i in widgets
+      # if widget.id is w.id
+        # widgets[i] = widget.toHash()
+        # @widgetsChanged()
+        # return
 
-    App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
-    @widgetsChanged()
-    true
+    # # Didn't update a widget, so we'll add it
+    # @addWidget(widget)
 
 
-  widgetsChanged: =>
-    @trigger 'change:widgets', @
-    @save()
+  # removeWidget: (widget, skipWidgetLayerRemoval) ->
+    # widgets = @get('widgets')
+    # return false unless widgets?
+    # return false if widget instanceof App.Builder.Widgets.ButtonWidget
+
+    # for w, i in widgets
+      # if w.id == widget.id
+        # widgets.splice(i, 1)
+        # @widgetsChanged()
+        # break
+
+    # App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
+    # @widgetsChanged()
+    # true
+
+
+  # widgetsChanged: =>
+    # @trigger 'change:widgets', @
+    # @save()
+
+  # spriteOrientationWidgetBySpriteWidget: (sprite_widget) ->
+    # @fetch(async: false)
+    # orientation = _.find(@widgets(), (widget) -> widget.sprite_widget_id == sprite_widget.id)
+    # return undefined unless orientation?
+    # orientation.sprite_widget = sprite_widget
+    # orientation
+
+  # widgets: ->
+    # widgets_array = @get('widgets')
+    # _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
+
+  # _findOrCreateWidgetByWidgetHash: (widget_hash) ->
+    # widget = App.builder.widgetStore.find(widget_hash.id)
+    # return widget if widget?
+    # widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { keyframe: this }))
+    # App.builder.widgetStore.addWidget(widget)
+    # widget
+
+
+
 
   # save: ->
     # if arguments.length > 0
@@ -116,18 +145,20 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   canAddText: ->
-    !@isAnimation() && @getScene().canAddText()
+    !@isAnimation() && @scene.canAddText()
 
 
   isAnimation: ->
     @get('is_animation')
 
-  spriteOrientationWidgetBySpriteWidget: (sprite_widget) ->
-    @fetch(async: false)
-    orientation = _.find(@widgets(), (widget) -> widget.sprite_widget_id == sprite_widget.id)
-    return undefined unless orientation?
-    orientation.sprite_widget = sprite_widget
-    orientation
+
+  # spriteOrientationWidgetBySpriteWidget: (sprite_widget) ->
+    # @fetch(async: false)
+    # orientation = _.find(@widgets(), (widget) -> widget.sprite_widget_id == sprite_widget.id)
+    # return undefined unless orientation?
+    # orientation.sprite_widget = sprite_widget
+    # orientation
+
 
   nextTextSyncOrder: ->
     text_widgets = @widgetsByType('TextWidget')
@@ -135,9 +166,9 @@ class App.Models.Keyframe extends Backbone.Model
     (text_widget_with_max_sync_order?.sync_order || 0) + 1
 
 
-  widgets: ->
-    widgets_array = @get('widgets')
-    _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
+  # widgets: ->
+    # widgets_array = @get('widgets')
+    # _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
 
 
   widgetsByType: (type) ->
@@ -145,12 +176,12 @@ class App.Models.Keyframe extends Backbone.Model
     _.filter(@widgets(), (w) -> w.type is type)
 
 
-  _findOrCreateWidgetByWidgetHash: (widget_hash) ->
-    widget = App.builder.widgetStore.find(widget_hash.id)
-    return widget if widget?
-    widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { keyframe: this }))
-    App.builder.widgetStore.addWidget(widget)
-    widget
+  # _findOrCreateWidgetByWidgetHash: (widget_hash) ->
+    # widget = App.builder.widgetStore.find(widget_hash.id)
+    # return widget if widget?
+    # widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { keyframe: this }))
+    # App.builder.widgetStore.addWidget(widget)
+    # widget
 
 
   updateContentHighlightTimes: (times, options={}) ->

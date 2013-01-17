@@ -1,10 +1,13 @@
-# Displays the widgets on the main canvas, and handles user interaction (mouse and
-# touch events).
+# Displays the widgets on the main canvas, and handles user interaction (mouse
+# and touch events).
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
-  constructor: ->
+  constructor: (widgetsCollection) ->
     super
-    @widgets = []
+
+    @widgets = widgetsCollection
+    @views = []
+
     @_capturedWidget = null
     @_selectedWidget = null
 
@@ -14,247 +17,246 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @addDblClickEventListener()
     @addClickOutsideEventListener()
 
-    App.vent.on 'widget:remove', @removeWidget, @
-    App.vent.on 'widget:add'   , @addWidget   , @
-    App.vent.on 'scene:active' , @clearScene
+    @widgets.on 'add', @addWidget, @
+    @widgets.on 'remove', @removeWidget, @
 
 
-  clearScene: =>
-    @clearWidgets()
-    @removeAllChildrenWithCleanup()
+  addWidget: (widget) ->
+    return if widget.get('type') == 'SpriteOrientationWidget'
 
-
-  clearWidgets: (conditionallyRemove = ((w) -> true)) ->
-    widgetsToRemove = _.filter(@widgets, conditionallyRemove)
-    @widgets = _.difference(@widgets, widgetsToRemove)
-    _.map(widgetsToRemove, (widget) =>
-      @removeChild(widget) if widget.type != "TextWidget"
-      delete widget.parent
-    )
+    view = new App.Builder.Widgets[widget.get('type')](model: widget)
+    @addChild(view)
+    @views.push view
 
 
   removeWidget: (widget) ->
-    for _widget, i in @widgets
-      if _widget && widget.id is _widget.id
-        @removeChild(_widget)
-        delete(_widget.parent)
-        @widgets.splice(i, 1)
+    return if widget.get('type') == 'SpriteOrientationWidget'
+
+    _.each @views, (view, index) =>
+      if view.model == widget
+        @removeChild(view)
+        @views.splice(index, 1)
 
 
-  hasWidget: (widget) ->
-    _.any(@widgets, (w) -> widget.id is w.id)
+  # clearScene: =>
+    # @clearWidgets()
+    # @removeAllChildrenWithCleanup()
 
 
-  # TODO: Refactor this to move sprites list additions and storybook updates
-  #       the responsibility of a different class.
-  addWidget: (widget, forSortable = false) ->
-    @widgets.push(widget)
-    @addChild(widget)
-    widget.parent = this
-    widget.setStorybook(App.storybookJSON)
-
-    unless forSortable
-      App.vent.trigger 'sprite_widget:add', widget
-
-    this
+  # clearWidgets: (conditionallyRemove = ((w) -> true)) ->
+    # widgetsToRemove = _.filter(@widgets, conditionallyRemove)
+    # @widgets = _.difference(@widgets, widgetsToRemove)
+    # _.map(widgetsToRemove, (widget) =>
+      # @removeChild(widget) if widget.type != "TextWidget"
+      # delete widget.parent
+    # )
 
 
-  widgetAtId: (id) =>
-    for widget, i in @widgets
-      if id is widget.id
-        return widget
 
 
-  widgetAtTouch: (touch) ->
-    @widgetAtPoint(touch.locationInView())
 
 
-  widgetAtPoint: (point) ->
-    widgetWithHighestZ =  @widgetHighestZAtPoint(point)
-    return widgetWithHighestZ if widgetWithHighestZ
-
-    for widget,i in @widgets
-      widget if widget.getIsVisible() and widget.isPointInside(point)
-
-    null
+  # hasWidget: (widget) ->
+    # _.any(@widgets, (w) -> widget.id is w.id)
 
 
-  widgetHighestZAtPoint: (point) ->
-    widgetWithHighestZ =
-      _.max @widgets, (widget) =>
-        if widget.getIsVisible() and widget.isPointInside(point)
-          return widget.getZOrder() unless typeof widget.getZOrder isnt "function"
 
-    widgetWithHighestZ || false
+  # widgetAtId: (id) =>
+    # for widget, i in @widgets
+      # if id is widget.id
+        # return widget
 
 
-  ccTouchesBegan: (touches) ->
-    widget = @widgetAtTouch(touches[0])
-    return unless widget
-    point = touches[0].locationInView()
-
-    widget.trigger('mousedown', {
-    touch: touches[0],
-    canvasPoint: point
-    })
-
-    @_capturedWidget = widget
-    @_previousPoint = new cc.Point(point.x, point.y)
-
-    return true
+  # widgetAtTouch: (touch) ->
+    # @widgetAtPoint(touch.locationInView())
 
 
-  ccTouchesMoved: (touches) ->
-    touch = touches[0]
-    point = touch.locationInView()
+  # widgetAtPoint: (point) ->
+    # widgetWithHighestZ =  @widgetHighestZAtPoint(point)
+    # return widgetWithHighestZ if widgetWithHighestZ
 
-    if @_capturedWidget and @_capturedWidget.draggable
-      @moveCapturedWidget(point)
+    # for widget,i in @widgets
+      # widget if widget.getIsVisible() and widget.isPointInside(point)
 
-    @mouseOverWidgetAtTouch(touch, @_capturedWidget)
-
-
-  ccTouchesEnded: (touches) ->
-    touch = touches[0]
-    point = touch.locationInView()
-
-    # TODO trigger('click')
-    # Causes a save
-    if @_capturedWidget
-      @_capturedWidget.trigger('mouseup', {
-        touch: touch,
-        canvasPoint: point
-      })
-
-      if @_capturedWidget.isSpriteWidget()
-        @_capturedWidget.trigger('change:orientation')
-      else if @_capturedWidget.isTouchWidget()
-        @_capturedWidget.trigger('change')
-
-    delete @_previousPoint
-    delete @_capturedWidget
+    # null
 
 
-  moveCapturedWidget: (point) ->
-    @_previousPoint ||= point
+  # widgetHighestZAtPoint: (point) ->
+    # widgetWithHighestZ =
+      # _.max @widgets, (widget) =>
+        # if widget.getIsVisible() and widget.isPointInside(point)
+          # return widget.getZOrder() unless typeof widget.getZOrder isnt "function"
 
-    delta = cc.ccpSub(point, @_previousPoint)
-    newPos = cc.ccpAdd(delta, @_capturedWidget.getPosition())
-
-    @_capturedWidget.setPosition(newPos, false)
-    @_previousPoint = new cc.Point(parseInt(point.x), parseInt(point.y))
-
-
-  mouseOverWidgetAtTouch: (touch, widget=null) ->
-    point = touch.locationInView()
-    widget ||= @widgetAtPoint(point)
-
-    if widget
-      widget.trigger('mousemove', {
-      touch: touch,
-      canvasPoint: point
-      })
-
-    if widget isnt @_mouseOverWidget
-      if @_mouseOverWidget
-        @_mouseOverWidget.trigger('mouseout', {
-        touch: touch,
-        canvasPoint: point,
-        newWidget: widget
-        })
-      if widget
-        widget.trigger('mouseover', {
-        touch: touch,
-        canvasPoint: point,
-        previousWidget: @_mouseOverWidget
-        })
-      @_mouseOverWidget = widget
+    # widgetWithHighestZ || false
 
 
-  setSelectedWidget: (widget) ->
-    @_selectedWidget = widget
+  # ccTouchesBegan: (touches) ->
+    # widget = @widgetAtTouch(touches[0])
+    # return unless widget
+    # point = touches[0].locationInView()
+
+    # widget.trigger('mousedown', {
+    # touch: touches[0],
+    # canvasPoint: point
+    # })
+
+    # @_capturedWidget = widget
+    # @_previousPoint = new cc.Point(point.x, point.y)
+
+    # return true
 
 
-  clearSelectedWidget: ->
-    @_selectedWidget = null
+  # ccTouchesMoved: (touches) ->
+    # touch = touches[0]
+    # point = touch.locationInView()
+
+    # if @_capturedWidget and @_capturedWidget.draggable
+      # @moveCapturedWidget(point)
+
+    # @mouseOverWidgetAtTouch(touch, @_capturedWidget)
 
 
-  getSelectedWidget: ->
-    @_selectedWidget
+  # ccTouchesEnded: (touches) ->
+    # touch = touches[0]
+    # point = touch.locationInView()
+
+    # # TODO trigger('click')
+    # # Causes a save
+    # if @_capturedWidget
+      # @_capturedWidget.trigger('mouseup', {
+        # touch: touch,
+        # canvasPoint: point
+      # })
+
+      # if @_capturedWidget.isSpriteWidget()
+        # @_capturedWidget.trigger('change:orientation')
+      # else if @_capturedWidget.isTouchWidget()
+        # @_capturedWidget.trigger('change')
+
+    # delete @_previousPoint
+    # delete @_capturedWidget
 
 
-  hasCapturedWidget: ->
-    true if @_capturedWidget
+  # moveCapturedWidget: (point) ->
+    # @_previousPoint ||= point
+
+    # delta = cc.ccpSub(point, @_previousPoint)
+    # newPos = cc.ccpAdd(delta, @_capturedWidget.getPosition())
+
+    # @_capturedWidget.setPosition(newPos, false)
+    # @_previousPoint = new cc.Point(parseInt(point.x), parseInt(point.y))
 
 
-  getWidgetById: (id) ->
-    for _widget in @widgets
-      return _widget if parseInt(id) is parseInt(_widget.id)
+  # mouseOverWidgetAtTouch: (touch, widget=null) ->
+    # point = touch.locationInView()
+    # widget ||= @widgetAtPoint(point)
+
+    # if widget
+      # widget.trigger('mousemove', {
+      # touch: touch,
+      # canvasPoint: point
+      # })
+
+    # if widget isnt @_mouseOverWidget
+      # if @_mouseOverWidget
+        # @_mouseOverWidget.trigger('mouseout', {
+        # touch: touch,
+        # canvasPoint: point,
+        # newWidget: widget
+        # })
+      # if widget
+        # widget.trigger('mouseover', {
+        # touch: touch,
+        # canvasPoint: point,
+        # previousWidget: @_mouseOverWidget
+        # })
+      # @_mouseOverWidget = widget
 
 
-  deselectSpriteWidgets: ->
-    for widget in App.builder.widgetLayer.widgets
-      continue unless widget instanceof App.Builder.Widgets.SpriteWidget
-      widget.hideBorder() and widget.disableDragging()
+  # setSelectedWidget: (widget) ->
+    # @_selectedWidget = widget
+
+
+  # clearSelectedWidget: ->
+    # @_selectedWidget = null
+
+
+  # getSelectedWidget: ->
+    # @_selectedWidget
+
+
+  # hasCapturedWidget: ->
+    # true if @_capturedWidget
+
+
+  # getWidgetById: (id) ->
+    # for _widget in @widgets
+      # return _widget if parseInt(id) is parseInt(_widget.id)
+
+
+  # deselectSpriteWidgets: ->
+    # for widget in App.builder.widgetLayer.widgets
+      # continue unless widget instanceof App.Builder.Widgets.SpriteWidget
+      # widget.hideBorder() and widget.disableDragging()
 
 
   addClickOutsideEventListener: ->
-    # Checks for a click outside the widget
-    cc.canvas.addEventListener('click', (event) =>
-      el = cc.canvas
-      pos = {left:0, top:0, height:el.height}
+    # # Checks for a click outside the widget
+    # cc.canvas.addEventListener('click', (event) =>
+      # el = cc.canvas
+      # pos = {left:0, top:0, height:el.height}
 
-      while el != null
-        pos.left += el.offsetLeft
-        pos.top += el.offsetTop
-        el = el.offsetParent
+      # while el != null
+        # pos.left += el.offsetLeft
+        # pos.top += el.offsetTop
+        # el = el.offsetParent
 
-      tx = event.pageX
-      ty = event.pageY
+      # tx = event.pageX
+      # ty = event.pageY
 
-      mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
-      mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
+      # mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
+      # mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
 
-      touch = new cc.Touch(0, mouseX, mouseY)
-      touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
-      cc.TouchDispatcher.preTouchPoint.x = mouseX
-      cc.TouchDispatcher.preTouchPoint.y = mouseY
+      # touch = new cc.Touch(0, mouseX, mouseY)
+      # touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
+      # cc.TouchDispatcher.preTouchPoint.x = mouseX
+      # cc.TouchDispatcher.preTouchPoint.y = mouseY
 
-      widget = @widgetAtPoint(touch.locationInView())
+      # widget = @widgetAtPoint(touch.locationInView())
 
-      if @_selectedWidget
-        if not widget
-          @_selectedWidget.trigger('clickOutside', touch, event)
+      # if @_selectedWidget
+        # if not widget
+          # @_selectedWidget.trigger('clickOutside', touch, event)
 
-        if widget
-          if @_selectedWidget.id != widget.id
-            @_selectedWidget.trigger('clickOutside', touch, event)
-    )
+        # if widget
+          # if @_selectedWidget.id != widget.id
+            # @_selectedWidget.trigger('clickOutside', touch, event)
+    # )
 
 
   addDblClickEventListener: ->
-    # FIXME Need a cleaner way to check for doubleclicks
-    cc.canvas.addEventListener('dblclick', (event) =>
-      el = cc.canvas
-      pos = {left:0, top:0, height:el.height}
+    ## FIXME Need a cleaner way to check for doubleclicks
+    # cc.canvas.addEventListener('dblclick', (event) =>
+      # el = cc.canvas
+      # pos = {left:0, top:0, height:el.height}
 
-      while el != null
-        pos.left += el.offsetLeft
-        pos.top += el.offsetTop
-        el = el.offsetParent
+      # while el != null
+        # pos.left += el.offsetLeft
+        # pos.top += el.offsetTop
+        # el = el.offsetParent
 
-      tx = event.pageX
-      ty = event.pageY
+      # tx = event.pageX
+      # ty = event.pageY
 
-      mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
-      mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
+      # mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
+      # mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
 
-      touch = new cc.Touch(0, mouseX, mouseY)
-      touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
-      cc.TouchDispatcher.preTouchPoint.x = mouseX
-      cc.TouchDispatcher.preTouchPoint.y = mouseY
+      # touch = new cc.Touch(0, mouseX, mouseY)
+      # touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
+      # cc.TouchDispatcher.preTouchPoint.x = mouseX
+      # cc.TouchDispatcher.preTouchPoint.y = mouseY
 
-      widget = @widgetAtPoint(touch.locationInView())
-      if widget
-        widget.trigger('dblclick', touch, event)
-    )
+      # widget = @widgetAtPoint(touch.locationInView())
+      # if widget
+        # widget.trigger('dblclick', touch, event)
+    # )

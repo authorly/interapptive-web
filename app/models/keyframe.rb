@@ -13,6 +13,8 @@ class Keyframe < ActiveRecord::Base
   validates :position, inclusion: { in: [nil] }, if: :is_animation
   validates :is_animation, uniqueness: { scope: :scene_id }, if: :is_animation
 
+  after_create :create_orientation_widgets
+
   def audio_text
     texts.order(:sync_order).collect(&:content).join(' ')
   end
@@ -87,6 +89,23 @@ class Keyframe < ActiveRecord::Base
   end
 
   private
+
+  def create_orientation_widgets
+    scene_widgets = (scene.try(:widgets) || []).select{|w| ['ButtonWidget', 'SpriteWidget'].include?(w[:type])}
+    widgets = scene_widgets.map do |w|
+      {
+        type: 'SpriteOrientationWidget',
+        keyframe_id:      id,
+        sprite_widget_id: w[:id],
+        position:         w[:position],
+        scale:            w[:scale],
+      }
+    end
+
+    self.widgets ||= []
+    self.widgets += widgets
+    save
+  end
 
   def one_animation_keyframe_per_scene
     if is_animation

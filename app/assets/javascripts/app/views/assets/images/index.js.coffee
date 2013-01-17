@@ -29,8 +29,12 @@ class App.Views.ImageIndex extends Backbone.View
     @$(event.currentTarget).addClass('selected').siblings().removeClass 'selected'
     @$('.use-image').removeClass('disabled')
 
-    @image = @collection.get $(event.currentTarget).data('id')
+    @image = @collection.get @$(event.currentTarget).data('id')
 
 
   selectImage: ->
     @trigger('select', @image)
+
+
+  doZoom: ->
+    $('.zoomable').toggleClass 'zoomed-in'

@@ -5,20 +5,28 @@ class App.Views.AssetLibrary extends Backbone.View
     'click .video-thumbnail' : 'playVideo'
 
 
-  initialize: (assetType) ->
-    @activeAssetType = assetType
+  initialize: (assetType, assets) ->
+    @assetType = assetType
+    @assets = assets
+    @acceptedFileTypes = @fileTypes(assetType)
+
+    @assets.on 'reset', @render, @
+    @assets.fetch()
 
 
   render: ->
-    @$el.html @template(assetType: @activeAssetType, acceptedFileTypes: @acceptedFileTypes())
+    @$el.html @template(assetType: @assetType, acceptedFileTypes: @acceptedFileTypes, assets: @assets)
+    @initAssetLib()
+    @loadAndShowFileData()
 
     @
 
 
-  initAssetLibFor: (type) ->
-    @assetType = type.replace(/(\s+)?.$/, "") # Remove last char. from params (an "s")
+  initAssetLib: ->
     $('.content-modal').addClass 'asset-library-modal'
-    $('#fileupload').fileupload
+
+    @$('#fileupload').fileupload
+      acceptFileTypes: @fileTypePattern(@assetType)
       downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
     .bind 'fileuploaddestroyed', ->
@@ -28,38 +36,34 @@ class App.Views.AssetLibrary extends Backbone.View
       # RFCTR - Need to trigger an update on the fonts collection
       console.log "Need to update Font Editor palette (fonts collection)"
 
-    @loadAndShowFileData()
 
 
   loadAndShowFileData: ->
-    self = this # Hack to preserve 'this' that is to be passed to advancedtable
-    $.getJSON "/storybooks/#{App.currentSelection.get('storybook').get('id')}/#{@assetType}s", (files) ->
-      fileData = $('#fileupload').data 'fileupload'
-      fileData._adjustMaxNumberOfFiles - files.length
-      template = fileData._renderDownload(files).prependTo $('#fileupload .files')
-      fileData._reflow = fileData._transition and template.length and template[0].offsetWidth
+    fileData = @$('#fileupload').data 'fileupload'
+    fileData._adjustMaxNumberOfFiles - @assets.length
+    template = fileData._renderDownload(@assets).prependTo @$('#fileupload .files')
+    fileData._reflow = fileData._transition and template.length and template[0].offsetWidth
 
-      template.addClass 'in'
+    template.addClass 'in'
 
-      $('#loading').remove()
-      $('#searchtable').show()
-      $('.table-striped').advancedtable
-        searchCaseSensitive : false
-        afterRedrawThis     : self
-        afterRedraw         : self.attachDeleteEvent
-        searchField         : '#search'
-        loadElement         : '#loader'
-        descImage           : '/assets/advancedtable/down.png'
-        ascImage            : '/assets/advancedtable/up.png'
+    @$('#loading').remove()
+    @$('#searchtable').show()
+    @$('.table-striped').advancedtable
+      searchCaseSensitive : false
+      afterRedrawThis     : @
+      afterRedraw         : @attachDeleteEvent
+      searchField         : '#search'
+      loadElement         : '#loader'
+      descImage           : '/assets/advancedtable/down.png'
+      ascImage            : '/assets/advancedtable/up.png'
 
 
   closeAssetLib: ->
-    $('#fileupload').fileupload 'disable'
+    @$('#fileupload').fileupload 'disable'
     $('.content-modal').removeClass 'asset-library-modal'
+    @assets.off 'reset', @render, @
 
 
-  setAllowedFilesFor: (assetType) ->
-    $('#fileupload').fileupload acceptFileTypes:(@fileTypePattern assetType)
 
 
   fileTypePattern: (assetType) ->

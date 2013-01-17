@@ -1,21 +1,26 @@
 ##
 # Relations
-# * it belongs to a story book. So far the need to get to the actual `Storybook` model
-# hasn't arrised, so the attribute `storybook_id` is used when needed.
+# * it belongs to a story book.
 # * @keyframes - a scene has many keyframes. This is the Backbone collection
 # containing the keyframes that belong to this scene.
 class App.Models.Scene extends Backbone.Model
   paramRoot: 'scene'
 
+
   url: ->
-    "/storybooks/#{@get('storybook_id')}/" +
+    "/storybooks/#{@storybook.id}/" +
     if @isNew()
       'scenes.json'
     else
       "scenes/#{@id}.json"
 
 
-  initialize: ->
+  initialize: (attributes) ->
+    @storybook = @collection.storybook
+
+    widgets = attributes.widgets; delete attributes.widgets
+    @widgets = new App.Collections.Widgets(widgets)
+
     @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
 
@@ -30,18 +35,13 @@ class App.Models.Scene extends Backbone.Model
 
 
   addNewKeyframe: (attributes) ->
+    return unless @canAddKeyframes()
+
     @keyframes.addNewKeyframe(attributes)
 
 
   toJSON: ->
-    json = super
-    # XXX PATCH - a reference to the scene ends up in each widget
-    # hash and creates a circular structure that cannot be transformed to JSON
-    # (therefore, cannot be saved)
-    if json.widgets?
-      _.each json.widgets, (widget) ->
-        delete widget.scene
-    json
+    _.extend super, widgets: @widgets.toJSON()
 
 
   setPreviewFrom: (keyframe) ->
@@ -82,47 +82,48 @@ class App.Models.Scene extends Backbone.Model
   previewUrlChanged: ->
     @trigger 'change:preview', @
 
-  hasWidget: (widget) =>
-    _.any((@get('widgets') || []), (w) -> widget.id is w.id)
+  # RFCTR widgets
+  # hasWidget: (widget) =>
+    # _.any((@get('widgets') || []), (w) -> widget.id is w.id)
 
-  addWidget: (widget) =>
-    widgets = @get('widgets') || []
-    widgets.push(widget.toSceneHash())
-    @set('widgets', widgets)
-    if (widget.isSpriteWidget() ) && !widget.isLoaded()
-      widget.on 'loaded', => setTimeout @widgetsChanged, 0
-    else
-      @widgetsChanged(widget)
+  # addWidget: (widget) =>
+    # widgets = @get('widgets') || []
+    # widgets.push(widget.toSceneHash())
+    # @set('widgets', widgets)
+    # if (widget.isSpriteWidget() ) && !widget.isLoaded()
+      # widget.on 'loaded', => setTimeout @widgetsChanged, 0
+    # else
+      # @widgetsChanged(widget)
 
 
-  removeWidget: (widget, skipWidgetLayerRemoval) =>
-    return unless (widgets = @get('widgets'))?
+  # removeWidget: (widget, skipWidgetLayerRemoval) =>
+    # return unless (widgets = @get('widgets'))?
 
-    for w, i in widgets
-      if w.id == widget.id
-        widgets.splice(i, 1)
-        @widgetsChanged(widget)
-        break
+    # for w, i in widgets
+      # if w.id == widget.id
+        # widgets.splice(i, 1)
+        # @widgetsChanged(widget)
+        # break
 
-    App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
-    @widgetsChanged()
+    # App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
+    # @widgetsChanged()
 
-  widgetsChanged: =>
-    @save()
+  # widgetsChanged: =>
+    # @save()
 
-  spriteWidgets: ->
-    _.select(@widgets(), (w) -> w.isSpriteWidget())
+  # spriteWidgets: ->
+    # _.select(@widgets(), (w) -> w.isSpriteWidget())
 
-  widgets: ->
-    widgets_array = @get('widgets')
-    _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
+  # widgets: ->
+    # widgets_array = @get('widgets')
+    # _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
 
-  _findOrCreateWidgetByWidgetHash: (widget_hash) ->
-    widget = App.builder.widgetStore.find(widget_hash.id)
-    return widget if widget
-    widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { scene: this }))
-    App.builder.widgetStore.addWidget(widget)
-    widget
+  # _findOrCreateWidgetByWidgetHash: (widget_hash) ->
+    # widget = App.builder.widgetStore.find(widget_hash.id)
+    # return widget if widget
+    # widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { scene: this }))
+    # App.builder.widgetStore.addWidget(widget)
+    # widget
 
 
 ##

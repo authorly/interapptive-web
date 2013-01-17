@@ -3,14 +3,27 @@ class App.Models.Image extends Backbone.Model
   toString: ->
     @get('name')
 
+
 class App.Collections.ImagesCollection extends Backbone.Collection
+
   model: App.Models.Image
 
+
+  initialize: (models, attributes) ->
+    super
+
+    @storybook = attributes.storybook
+
+
+  baseUrl: ->
+    "/storybooks/#{@storybook.id}/images"
+
   url: ->
-    "/storybooks/" + App.currentSelection.get('storybook').get('id') + "/images.json"
+    @baseUrl() + '.json'
 
 
 class App.Models.Preview extends App.Models.Image
+
   url: ->
     @cached_url ||= (new App.Collections.ImagesCollection).url()
     if @isNew() then @cached_url else @cached_url.replace(/\.json$/, "/#{@id}")
@@ -25,6 +38,7 @@ class App.Models.Preview extends App.Models.Image
 
   src: ->
     @get('data_url') || @get('url')
+
 
   # Override save to
   # - prevent `save` being called once to create the record, and then again before

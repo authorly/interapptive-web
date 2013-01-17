@@ -49,4 +49,36 @@ describe Keyframe do
     end
   end
 
+  describe 'a keyframe from a scene with sprite widgets' do
+    before(:each) do
+      @position = {x: 100, y: 200}
+      @scale = 3
+    end
+
+    it 'should create an orientation widget for each of the sprite widgets from the scene' do
+      scene = Factory.create(:scene, widgets: [{id: 1, type: 'SpriteWidget', position: @position, scale: @scale}])
+      keyframe = Factory.create(:keyframe, scene: scene)
+
+      keyframe.widgets.count.should == 1
+      keyframe.widgets[0][:position].should == @position
+      keyframe.widgets[0][:scale].should == @scale
+    end
+
+    it 'should create an orientation widget for each of the button widgets from the scene' do
+      scene = Factory.create(:scene, widgets: [{type: 'ButtonWidget', position: @position, scale: @scale}])
+      keyframe = Factory.create(:keyframe, scene: scene)
+
+      keyframe.widgets.count.should == 1
+      keyframe.widgets[0][:position].should == @position
+      keyframe.widgets[0][:scale].should == @scale
+    end
+
+    it 'should not create orientation widgets for other widgets from the scene' do
+      scene = Factory.create(:scene, widgets: [{type: 'HotspotWidget', position: @position, scale: @scale}])
+      keyframe = Factory.create(:keyframe, scene: scene)
+
+      keyframe.widgets.count.should == 0
+    end
+  end
+
 end

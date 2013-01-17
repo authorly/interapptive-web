@@ -1,12 +1,13 @@
 class App.Builder.Widgets.Lib.Sprite extends cc.Sprite
 
-  constructor: (options = {}) ->
+  constructor: (options) ->
     super
 
-    throw new Error("Can not create a App.Builder.Widgets.Lib.Sprite without a url")      unless options.url?
-    throw new Error("Can not create a App.Builder.Widgets.Lib.Sprite without a filename") unless options.filename?
-
-    @url      = options.url
-    @filename = options.filename
-    @zOrder   = options.zOrder || 1
+    @model = options.model
+    @url      = @model.get('url')
+    @filename = @model.get('filename')
+    @zOrder   = @model.get('z_order')
     @border   = false
+
+    throw new Error("Can not create a App.Builder.Widgets.Lib.Sprite without a url")      unless @url?
+    throw new Error("Can not create a App.Builder.Widgets.Lib.Sprite without a filename") unless @filename?
