@@ -37,8 +37,10 @@ class App.Views.TextWidgetIndex extends Backbone.View
 
 
   removeTexts: ->
-    @$el.html('')
-    @texts.length = 0
+    # TODO RFCTR this wipes out the contents of `#canvas-wrapper` - thus
+    # the builder-canvas as well.
+    # @$el.html('')
+    # @texts.length = 0
 
 
   addText: (text) ->
