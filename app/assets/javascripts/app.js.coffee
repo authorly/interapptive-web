@@ -20,6 +20,7 @@ window.App =
       storybook: null
       scene: null
       keyframe: null
+      text_widget: null
 
     @currentSelection.on 'change:storybook', (__, storybook) =>
       @_openStorybook(storybook)
@@ -57,9 +58,9 @@ window.App =
       # el        : $('#sprite-editor-palette')
       # resizable : false
 
-    # @textEditorPalette = new App.Views.PaletteContainer
-      # view : new App.Views.TextEditorPalette
-      # el   : $('#text-editor-palette')
+    @textEditorPalette = new App.Views.PaletteContainer
+      view : new App.Views.TextEditorPalette
+      el   : $('#text-editor-palette')
 
 
   _openStorybook: (storybook) ->

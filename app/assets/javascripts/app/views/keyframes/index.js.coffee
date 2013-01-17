@@ -26,6 +26,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on 'remove', @removeKeyframe
 
     App.currentSelection.on 'change:keyframe', @keyframeChanged, @
+    @keyframe_views = []
 
 
   # TODO RFCTR upgrate to Backbone 0.9.9 and use `listeTo` and `stopListening`
@@ -40,7 +41,8 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.off 'add'   , @appendKeyframe
     @collection.off 'remove', @removeKeyframe
 
-    App.currentSelection.on 'change:keyframe', @keyframeChanged, @
+    App.currentSelection.off 'change:keyframe', @keyframeChanged, @
+    @_removeKeyframeViews()
 
 
   render: ->
@@ -71,12 +73,13 @@ class App.Views.KeyframeIndex extends Backbone.View
   renderKeyframe: (keyframe, index) =>
     view = new App.Views.Keyframe(model: keyframe)
     viewElement = view.render().el
-
     if index == 0
       @$el.prepend viewElement
+
     else
       @$el.append  viewElement
 
+    @keyframe_views.push(view)
     @keyframePreviewChanged(keyframe)
 
 
@@ -87,7 +90,9 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   switchKeyframe: (newKeyframe) ->
+    App.currentSelection.get('keyframe')?.trigger('hide_views')
     App.currentSelection.set keyframe: newKeyframe
+    App.currentSelection.get('keyframe')?.trigger('show_views')
 
 
   keyframeChanged: (__, keyframe) ->
@@ -117,7 +122,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   updateKeyframePreview: (keyframe) ->
-    return unless keyframe == App.currentKeyframe()
+    return unless keyframe == App.currentSelection.get('keyframe')
 
     canvas = document.getElementById "builder-canvas"
     image = Canvas2Image.saveAsPNG canvas, true, 110, 83
@@ -167,6 +172,9 @@ class App.Views.KeyframeIndex extends Backbone.View
     buttons = @$('li .delete-keyframe')
     if @collection.length > 1 then buttons.show() else buttons.hide()
 
+  _removeKeyframeViews: ->
+    _.each(@keyframe_views, (kv) -> kv.remove())
+    @keyframe_views.length = 0
 
   updateScenePreview: ->
     @collection.scene.setPreviewFrom @collection.at(0)

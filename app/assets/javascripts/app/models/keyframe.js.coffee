@@ -8,8 +8,7 @@ class App.Models.Keyframe extends Backbone.Model
 
   initialize: (options) ->
     @scene = options.scene if options?
-    @texts = new App.Collections.KeyframeTextsCollection []
-    @_getTexts(async: false)
+    @on 'audiosync', @updateStorybookParagraph, @
     @initializePreview()
 
 
@@ -22,11 +21,16 @@ class App.Models.Keyframe extends Backbone.Model
     App.storybookJSON.updateParagraph(@)
 
 
-  _getTexts: (options) ->
-    unless @isNew()
-      @texts.url = "/keyframes/#{@get('id')}/texts.json"
-      @texts.fetch(options)
-    @texts
+  toJSON: ->
+    # HACK a reference to the keyframe ends up in each widget
+    # hash and creates a circular structure that cannot be
+    # transformed to JSON (therefore, cannot be saved)
+    json = super
+
+    if json.widgets?
+      _.each json.widgets, (w) ->
+        delete w.keyframe
+    json
 
 
   url: ->
@@ -125,9 +129,20 @@ class App.Models.Keyframe extends Backbone.Model
     orientation.sprite_widget = sprite_widget
     orientation
 
+  nextTextSyncOrder: ->
+    text_widgets = @widgetsByType('TextWidget')
+    text_widget_with_max_sync_order = _.max(text_widgets, (w) -> w.sync_order)
+    (text_widget_with_max_sync_order?.sync_order || 0) + 1
+
+
   widgets: ->
     widgets_array = @get('widgets')
     _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
+
+
+  widgetsByType: (type) ->
+    return [] unless type?
+    _.filter(@widgets(), (w) -> w.type is type)
 
 
   _findOrCreateWidgetByWidgetHash: (widget_hash) ->
@@ -153,6 +168,7 @@ class App.Models.Keyframe extends Backbone.Model
 ##
 # Relations:
 # @scene - it belongs to a scene.
+
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
 
@@ -206,6 +222,12 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     # We add orientation widget to all the keyframes
     # even to the animation keyframes. That might not
     # be desired.
+    keyframe = new App.Models.Keyframe(
+      _.extend(attributes, {
+        scene: @scene
+        position: @nextPosition(attributes)
+      }))
+
     sows = _.map(@scene.spriteWidgets(), (sprite_widget) ->
       new App.Builder.Widgets.SpriteOrientationWidget(
         keyframe: keyframe
@@ -214,21 +236,19 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
       )
     )
 
-    @create _.extend(attributes, {
-      scene: @scene
-      position: @nextPosition(new App.Models.Keyframe(attributes))
-      widgets: _.map(sows, (sow) -> sow.toHash())
-    }), {
+    keyframe.save(widgets: _.map(sows, (sow) -> sow.toHash())
+    , {
       wait: true
       success: =>
         # TODO RFCTR move this to keyframe, on parse/initialize or where
         # it's appropriate
         _.each(sows, (sow) -> sow.updateStorybookJSON())
-    }
+    })
+    @add(keyframe)
 
 
-  nextPosition: (keyframe) ->
-    return null if keyframe?.isAnimation()
+  nextPosition: (options) ->
+    return null if options.is_animation
     @filter((k) -> !k.isAnimation()).length
 
 

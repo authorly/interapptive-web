@@ -8,29 +8,27 @@ class App.Views.TextWidget extends Backbone.View
   events:
     'click'    : 'onClick'
     'focus'    : 'onFocus'
-    'blur'     : 'onBlur'
-    'paste'    : 'editActivity'
-    'keyup'    : 'editActivity'
+    'blur'     : 'editActivity'
     'keypress' : 'keyPress'
 
 
   initialize: ->
-    if @options.string then @content(@options.string)
+    throw new Error("Can not create a App.Views.TextWidget without a App.Builder.Widgets.TextWidget") unless (@options.widget instanceof App.Builder.Widgets.TextWidget)
+    @widget = @options.widget
 
-    @fromToolbar = null
-    @_editing =    false
-    @_content =    ''
+    @fromToolbar = @options.fromToolbar || null
+    @_editing    = false
+    @content(@widget.string())
+    @setFontFace  App.currentSelection.get('scene').get('font_face')
+    @setFontColor App.currentSelection.get('scene').get('font_color')
+    @setFontSize  App.currentSelection.get('scene').get('font_size')
 
-    @content      @model?.get('content')
-    @setFontFace  App.currentScene().get('font_face')
-    @setFontColor App.currentScene().get('font_color')
-    @setFontSize  App.currentScene().get('font_size')
-
-    @$el.css(position : 'absolute').
-      attr('id', "keyframe_text_ #{@model.id}").
+    @$el.css(position: 'absolute').
+      attr('id', "keyframe_text_#{@widget.id}").
+      attr('data-id', @widget.id).
       draggable
-        start: => App.currentKeyframeText(@model)
-        stop:  => @save()
+        start: => App.currentSelection.set(text_widget: @widget)
+        stop:  => @update()
 
 
   setFontFace: (font) ->
@@ -58,27 +56,22 @@ class App.Views.TextWidget extends Backbone.View
     if _text then @$el.html(_text) else @$el.html()
 
 
-  setPosition: (_left, _bottom) ->
+  position: ->
     @$el.css
-      'bottom': "#{_bottom}px"
-      'left':   "#{_left}px"
+      'bottom': "#{@widget.bottom}px"
+      'left':   "#{@widget.left}px"
 
 
   enableEditing: ->
     @$el.attr('contenteditable', 'true').focus()
-
     @disableDragging()
-
     return unless @fromToolbar
     @fromToolbar = null
-
     @$el.selectText()
-
 
 
   disableEditing: ->
     App.vent.trigger 'text_widget:done_editing'
-
     @$el.attr 'contenteditable', 'false'
 
 
@@ -109,36 +102,20 @@ class App.Views.TextWidget extends Backbone.View
     if @editing() then @disableDragging() else @enableEditing()
 
 
-  onBlur: ->
-    @editActivity()
-
-
   onFocus: ->
     @$el.data 'before', @$el.html()
+    @editTextWidget()
 
-    @editTextWidget(@)
 
-
-  editTextWidget: (textWidget) ->
-    App.selectedText(textWidget)
-
-    App.vent.trigger 'text_widget:edit', textWidget
-
-    # RFCTR: Needs ventilation
-    App.keyframeTextList().editText(textWidget)
-    App.currentKeyframeText(textWidget.model)
+  editTextWidget: ->
+    App.vent.trigger('text_widget_view:disable', @)
+    App.currentSelection.set(text_widget: @widget)
 
 
   editActivity: (e) ->
     return if @$el.data is @$el.html()
-
     @$el.data 'before', @$el.html()
-
-    @save()
-
-
-  deselect: ->
-    @$el.blur()
+    @update()
 
 
   bottom: (_bottom) ->
@@ -152,18 +129,13 @@ class App.Views.TextWidget extends Backbone.View
     if _left then @$el.css(left: _left) else _offsetLeft
 
 
-  content: (_content) ->
-    @$el.text() unless _content
+  content: (string) ->
+    @$el.text() unless string
+    @$el.html(string)
 
-    @_content = _content
-    @$el.html(_content)
 
-  save: ->
-    attributes =
-      content: "Some content"
-      x_coord: @left()
-      y_coord: @bottom()
-
-    @model.set(attributes)
-
-    @model.save()
+  update: ->
+    @widget.left  = @left()
+    @widget.right = @bottom()
+    @widget.string(@text())
+    @widget.update()
