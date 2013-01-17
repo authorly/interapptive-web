@@ -36,7 +36,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   updateOrientation: =>
-    keyframe = App.currentKeyframe()
+    keyframe = App.currentSelection.get('keyframe')
     orientationWidget = _.detect @orientations(), (orientation) ->
       orientation.keyframe.id == keyframe.id
     orientationWidget.point = @getPosition()
