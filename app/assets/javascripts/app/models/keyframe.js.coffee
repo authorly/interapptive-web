@@ -4,6 +4,11 @@
 # passed to the constructor, or is taken from the collection to which the scene
 # belongs (if any). A Backbone model.
 # * @widgets. It has many widgets. A Backbone Collection.
+# Some of these widgets are SpriteOrientationWidgets. These belong to the keyframe
+# (rather than the Scene, or the SpriteWidget) because this means that changing a
+# position or a scale on this keyframe implies saving the keyframe to the server.
+# Keeping the orientations in the Scene would imply saving the Scene everytime a
+# position or scale is saved (in a specific Keyframe), which isn't natural.
 class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
