@@ -1,4 +1,4 @@
-class CompilationQueue
+class CompilationWorker
   @queue = :compilation
 
   def self.logger

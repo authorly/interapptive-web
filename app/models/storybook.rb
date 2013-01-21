@@ -17,7 +17,10 @@ class Storybook < ActiveRecord::Base
   validates_presence_of :title
 
   def enqueue_for_compilation(json)
-    Resque.enqueue(CompilationQueue, self.id, json)
+    # WA: TODO: Implement a storybook application JSON
+    # verifier. Enqueue it for compilation only after
+    # it is verified.
+    Resque.enqueue(CompilationWorker, self.id, json)
   end
 
   private

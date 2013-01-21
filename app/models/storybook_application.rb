@@ -1,12 +1,16 @@
 class StorybookApplication
-  @@crucible_resources_dir = File.join(Rails.root, '../Crucible/HelloWorld/Resources')
-  @@crucible_ios_dir       = File.join(Rails.root, '../Crucible/HelloWorld/ios/')
-  @@downloadable_file_extension_regex = nil
-  @@fog_directory = Fog::Storage.new(
+  CRUCIBLE_RESOURCES_DIR = File.join(Rails.root, '../Crucible/HelloWorld/Resources')
+  CRUCIBLE_IOS_DIR       = File.join(Rails.root, '../Crucible/HelloWorld/ios/')
+  # Following should live outside of the codebase. So that
+  # configurations could be changed without redeploying
+  # the application.
+  FOG_DIRECTORY          = Fog::Storage.new(
     :provider               => 'AWS',
     :aws_access_key_id      => 'AKIAJ3N4AG2EGQRMHXRQ',
     :aws_secret_access_key  => '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'
   ).directories.get('interapptive')
+
+  @downloadable_file_extension_regex = nil
 
   def initialize(storybook, storybook_json, target)
     @storybook = storybook
@@ -57,24 +61,24 @@ class StorybookApplication
   end
 
   def upload_compiled_application
-    @storybook.compiled_application = File.open(File.join(@@crucible_ios_dir, 'pkg', 'dist', @target + '.ipa'))
+    @storybook.compiled_application = File.open(File.join(CRUCIBLE_IOS_DIR, 'pkg', 'dist', @target + '.ipa'))
     logger.info 'Uploading of ipa file started!'
     @storybook.save!
     logger.info 'Uploading of ipa file completed!'
 
-    @@fog_directory.files.new(
+    FOG_DIRECTORY.files.new(
       :key          => "compiled_applications/#{@storybook.id}/index.html",
       :content_type => 'text/html',
       :public       => true,
-      :body         => File.open(File.join(@@crucible_ios_dir, 'pkg', 'dist', 'index.html'))
+      :body         => File.open(File.join(CRUCIBLE_IOS_DIR, 'pkg', 'dist', 'index.html'))
     ).save
     logger.info 'Uploading of ipa file index.html completed!'
 
-    @@fog_directory.files.new(
+    FOG_DIRECTORY.files.new(
       :key          => "compiled_applications/#{@storybook.id}/manifest.plist",
       :content_type => 'text/xml',
       :public       => true,
-      :body         => File.open(File.join(@@crucible_ios_dir, 'pkg', 'dist', 'manifest.plist'))
+      :body         => File.open(File.join(CRUCIBLE_IOS_DIR, 'pkg', 'dist', 'manifest.plist'))
     ).save
     logger.info 'Uploading of ipa file manifest.plist completed!'
     true
@@ -84,9 +88,9 @@ class StorybookApplication
     return file unless file.is_a?(String)
     file_ext = File.extname(file)
 
-    if file.match(/^http/) && file_ext.match(downloadable_file_extension_regex)
+    if file.match(/^http/) && file_ext.match(self.class.downloadable_file_extension_regex)
       new_file_name = SecureRandom.hex
-      tf = Tempfile.new([new_file_name, file_ext], @@crucible_resources_dir)
+      tf = Tempfile.new([new_file_name, file_ext], CRUCIBLE_RESOURCES_DIR)
       tf.binmode
       open(file, 'rb') do |read_file|
         tf.write(read_file.read)
@@ -99,28 +103,28 @@ class StorybookApplication
 
   # Change this method to include any new uploaders to take care that
   # introduce new type of files in the application
-  def downloadable_file_extension_regex
-    return @@downloadable_file_extension_regex if @@downloadable_file_extension_regex
+  def self.downloadable_file_extension_regex
+    return @downloadable_file_extension_regex if @downloadable_file_extension_regex
 
     downloadable_extensions = FontUploader.new.extension_white_list +
       ImageUploader.new.extension_white_list +
       SoundUploader.new.extension_white_list +
       VideoUploader.new.extension_white_list
     downloadable_extensions.uniq!
-    @@downloadable_file_extension_regex = Regexp.new(downloadable_extensions.join('|'), true) # true means case insensitive
-    @@downloadable_file_extension_regex
+    @downloadable_file_extension_regex = Regexp.new(downloadable_extensions.join('|'), true) # true means case insensitive
+    @downloadable_file_extension_regex
   end
 
   private
 
   def xbuild_application
-    f = IO.popen("cd #{@@crucible_ios_dir} && security unlock-keychain -p curiousminds /Users/curiousminds/Library/Keychains/login.keychain && rake beta:deploy --trace")
+    f = IO.popen("cd #{CRUCIBLE_IOS_DIR} && security unlock-keychain -p curiousminds /Users/curiousminds/Library/Keychains/login.keychain && rake beta:deploy --trace")
     logger.info f.readlines.join
     f.close
   end
 
   def write_json_file
-    File.open(File.join(@@crucible_resources_dir, 'structure-ipad.json'), 'w') do |f|
+    File.open(File.join(CRUCIBLE_RESOURCES_DIR, 'structure-ipad.json'), 'w') do |f|
       f.write(ActiveSupport::JSON.encode(@json_hash))
     end
   end
@@ -142,7 +146,7 @@ class StorybookApplication
       end
     END
 
-    File.open(File.join(@@crucible_ios_dir, 'Rakefile'), 'w') do |f|
+    File.open(File.join(CRUCIBLE_IOS_DIR, 'Rakefile'), 'w') do |f|
       f.write(task)
     end
   end
