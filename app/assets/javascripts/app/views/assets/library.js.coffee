@@ -38,15 +38,20 @@ class App.Views.AssetLibrary extends Backbone.View
 
 
   loadAndShowFileData: ->
+    files = @assets.map (asset) -> asset.attributes
+
     fileData = @$('#fileupload').data 'fileupload'
-    fileData._adjustMaxNumberOfFiles - @assets.length
-    template = fileData._renderDownload(@assets).prependTo @$('#fileupload .files')
-    fileData._reflow = fileData._transition and template.length and template[0].offsetWidth
+    fileData._adjustMaxNumberOfFiles(files.length)
+
+    template = fileData._renderDownload(files).prependTo @$('#fileupload .files')
+    fileData._reflow = fileData._transition and template.length and
+      template[0].offsetWidth
 
     template.addClass 'in'
 
     @$('#loading').remove()
     @$('#searchtable').show()
+
     @$('.table-striped').advancedtable
       searchCaseSensitive : false
       afterRedrawThis     : @
