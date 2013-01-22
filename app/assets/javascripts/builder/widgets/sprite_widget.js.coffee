@@ -25,9 +25,9 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   constructorContinuation: (dataUrl) =>
-    @model.set url: dataUrl
-    cc.TextureCache.sharedTextureCache().addImageAsync @model.get('url'), @, =>
-      @sprite.initWithFile @model.get('url')
+    @model.dataUrl = dataUrl
+    cc.TextureCache.sharedTextureCache().addImageAsync @model.dataUrl, @, =>
+      @sprite.initWithFile @model.dataUrl
 
       currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
       position = currentOrientation.get('position')

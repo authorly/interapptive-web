@@ -4,7 +4,7 @@
 # passed to the constructor, or is taken from the collection to which the scene
 # belongs (if any). A Backbone model.
 # * @widgets. It has many widgets. A Backbone Collection.
-# Some of these widgets are SpriteOrientationWidgets. These belong to the keyframe
+# Some of these widgets are SpriteOrientations. These belong to the keyframe
 # (rather than the Scene, or the SpriteWidget) because this means that changing a
 # position or a scale on this keyframe implies saving the keyframe to the server.
 # Keeping the orientations in the Scene would imply saving the Scene everytime a
@@ -13,10 +13,21 @@ class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
   initialize: (attributes) ->
-    widgets = attributes.widgets; delete attributes.widgets
-    @widgets = new App.Collections.Widgets(widgets)
+    if @isNew()
+      # We add orientation widgets to all the keyframes,
+      # even to the animation keyframes. That might not
+      # be desired.
+      orientations = @scene.spriteWidgets().map @_orientationFor
+      @widgets = new App.Collections.Widgets(orientations)
+    else
+      widgets = @get('widgets'); delete @attributes.widgets
+      @widgets = new App.Collections.Widgets(widgets)
+    @widgets.on 'add remove change', => @save()
 
     @scene = attributes?.scene || @collection?.scene
+    delete @attributes.scene
+    @scene.widgets.on 'add',    @sceneWidgetAdded,   @
+    @scene.widgets.on 'remove', @sceneWidgetRemoved, @
 
     @on 'audiosync', @updateStorybookParagraph, @
 
@@ -33,15 +44,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   toJSON: ->
-    # HACK a reference to the keyframe ends up in each widget
-    # hash and creates a circular structure that cannot be
-    # transformed to JSON (therefore, cannot be saved)
-    json = super
-
-    if json.widgets?
-      _.each json.widgets, (w) ->
-        delete w.keyframe
-    json
+    _.extend super, widgets: @widgets.toJSON()
 
 
   url: ->
@@ -58,9 +61,29 @@ class App.Models.Keyframe extends Backbone.Model
       @save preview_image_id: @preview.id
 
 
-  getOrientationForWidget: (widget) ->
+  sceneWidgetAdded: (sceneWidget) ->
+    if sceneWidget.get('type') is 'SpriteWidget'
+      @widgets.add @_orientationFor(sceneWidget)
+
+
+  sceneWidgetRemoved: (sceneWidget) ->
+    if sceneWidget.get('type') is 'SpriteWidget'
+      @widgets.remove @getOrientationFor(widgets)
+
+
+  _orientationFor: (spriteWidget) ->
+    new App.Models.SpriteOrientation
+      keyframe_id:      @id
+      sprite_widget_id: spriteWidget.id
+      # TODO get the position from the previous keyframe, it's more logical
+      # to keep it than to use the initial position
+      position:         spriteWidget.get('position')
+      scale:            spriteWidget.get('scale')
+
+
+  getOrientationFor: (widget) ->
     @widgets.find (w) ->
-      w.get('type') == 'SpriteOrientationWidget' &&
+      w.get('type') == 'SpriteOrientation' &&
       w.get('sprite_widget_id') == widget.id
 
 
@@ -256,32 +279,15 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   addNewKeyframe: (attributes={}) ->
-    # We add orientation widget to all the keyframes
-    # even to the animation keyframes. That might not
-    # be desired.
-    keyframe = new App.Models.Keyframe(
+    @create new App.Models.Keyframe(
       _.extend(attributes, {
         scene: @scene
         position: @nextPosition(attributes)
-      }))
-
-    sows = _.map(@scene.spriteWidgets(), (sprite_widget) ->
-      new App.Builder.Widgets.SpriteOrientationWidget(
-        keyframe: keyframe
-        sprite_widget: sprite_widget
-        sprite_widget_id: sprite_widget.id
-      )
+      })
     )
 
-    keyframe.save(widgets: _.map(sows, (sow) -> sow.toHash())
-    , {
-      wait: true
-      success: =>
-        # TODO RFCTR move this to keyframe, on parse/initialize or where
-        # it's appropriate
-        _.each(sows, (sow) -> sow.updateStorybookJSON())
-    })
-    @add(keyframe)
+
+    keyframe.save()
 
 
   nextPosition: (options) ->

@@ -25,11 +25,6 @@ class App.Builder.Widgets.Widget extends cc.Node
     @_opacity = 255
     @_highlighted = false
 
-    @model.id = if @model.id?
-      App.Models.Widget.idGenerator.check(@model.id)
-    else
-      App.Models.Widget.idGenerator.next()
-
     position = @model.get('position')
     @setPosition new cc.Point(position.x, position.y)
 

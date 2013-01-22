@@ -2,8 +2,16 @@ class App.Models.Widget extends Backbone.Model
   # attributes: position z_order
   @idGenerator = new App.Lib.Counter
 
-  defaults:
-    position: { x: 1024/2, y: 768/2 }
+  defaults: ->
+    position: { x: 1024/4, y: 768/4 }
+
+
+  initialize: ->
+    generator = App.Models.Widget.idGenerator
+    if @id?
+      generator.check(@id)
+    else
+      @set id: generator.next()
 
 
 ##
@@ -13,24 +21,31 @@ class App.Models.Widget extends Backbone.Model
 class App.Models.HotspotWidget extends App.Models.Widget
   # attributes: radius controlRadius position{x, y} action_id video_id sound_id
 
-  defaults:
-    type: 'HotspotWidget'
-    radius: 48
-    control_radius: 28
+  defaults: ->
+    _.extend super, {
+      type: 'HotspotWidget'
+      radius: 48
+      control_radius: 28
+    }
 
 
 ##
 # A widget that has an associated image.
 #
 # It belongs to a scene, and it can have a different position or scale in
-# each of the keyframes of that scene. SpriteOrientationWidget is the association
+# each of the keyframes of that scene. SpriteOrientation is the association
 # between a SpriteWidget and a Keyframe; it stores the position and scale of the
 # SpriteWidget in that Keyframe.
 class App.Models.SpriteWidget extends App.Models.Widget
   # attributes: url scale
+  defaults: ->
+    _.extend super, {
+      type: 'SpriteWidget'
+      scale: 1
+    }
 
   getOrientationFor: (keyframe) ->
-    keyframe.getOrientationForWidget(@)
+    keyframe.getOrientationFor(@)
 
 
   applyOrientationFrom: (keyframe) ->
@@ -40,8 +55,10 @@ class App.Models.SpriteWidget extends App.Models.Widget
       position: orientation.position
 
 
-class App.Models.SpriteOrientationWidget extends App.Models.Widget
-  # attributes: position scale keyframe_id sprite_widget_id
+class App.Models.SpriteOrientation extends Backbone.Model
+  # attributes: keyframe_id sprite_widget_id position scale
+  defaults:
+    type: 'SpriteOrientation'
 
 
 ##
@@ -56,16 +73,21 @@ class App.Models.SpriteOrientationWidget extends App.Models.Widget
 class App.Models.ButtonWidget extends App.Models.SpriteWidget
   # attributes: name selected_url
 
-  defaults:
-    type: 'ButtonWidget'
+  defaults: ->
+    _.extend super, {
+      type: 'ButtonWidget'
+    }
 
 
   initialize: ->
+    super
+
     @set filename: "#{@get('name')}.png"                 unless @get('filename')?
     @set url:      "/assets/sprites/#{@get('filename')}" unless @get('url')?
 
 
 class App.Collections.Widgets extends Backbone.Collection
+
   model: (attrs, options) ->
     new App.Models[attrs.type](attrs, options)
 
@@ -83,7 +105,9 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
       @updateKeyframeWidgets(keyframe)
       @updateSceneWidgets(keyframe)
 
+      @_removeListeners(@currentKeyframe)
       @currentKeyframe = keyframe
+      @_addListeners(@currentKeyframe)
 
 
   updateKeyframeWidgets: (keyframe) ->
@@ -112,3 +136,19 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
           widget.applyOrientationFrom keyframe
       else
         @add(widget)
+
+
+  _addListeners: (keyframe) ->
+    return unless keyframe?
+
+    keyframe.widgets.on 'add',    @add,    @
+    keyframe.widgets.on 'remove', @remove, @
+    keyframe.scene.widgets.on 'add',    @add,    @
+    keyframe.scene.widgets.on 'remove', @remove, @
+
+
+  _removeListeners: (keyframe) ->
+    return unless keyframe?
+
+    keyframe.scene.widgets.off 'add',    @add,    @
+    keyframe.scene.widgets.off 'remove', @remove, @

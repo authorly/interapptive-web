@@ -95,7 +95,7 @@ class Keyframe < ActiveRecord::Base
     scene_widgets = (scene.try(:widgets) || []).select{|w| ['ButtonWidget', 'SpriteWidget'].include?(w[:type])}
     widgets = scene_widgets.map do |w|
       {
-        type: 'SpriteOrientationWidget',
+        type: 'SpriteOrientation',
         keyframe_id:      id,
         sprite_widget_id: w[:id],
         position:         w[:position],

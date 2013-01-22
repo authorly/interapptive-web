@@ -22,7 +22,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addWidget: (widget) ->
-    return if widget.get('type') == 'SpriteOrientationWidget'
+    return if widget.get('type') == 'SpriteOrientation'
 
     view = new App.Builder.Widgets[widget.get('type')](model: widget)
     @addChild(view)
@@ -30,7 +30,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   removeWidget: (widget) ->
-    return if widget.get('type') == 'SpriteOrientationWidget'
+    return if widget.get('type') == 'SpriteOrientation'
 
     _.each @views, (view, index) =>
       if view.model == widget
