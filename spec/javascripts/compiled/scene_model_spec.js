@@ -9,19 +9,19 @@
         image_id: 1,
         sound_id: 2,
         preview_image_id: 3,
-        storybook_id: this.storybook.id,
         page_number: 1
+      }, {
+        collection: this.storybook.scenes
       });
-      App.currentStorybook(this.storybook);
-      return App.currentScene(this.scene);
+      App.currentSelection.set({
+        storybook: this.storybook
+      });
+      return App.currentSelection.set({
+        scene: this.scene
+      });
     });
     it("should be defined", function() {
       return expect(App.Models.Scene).toBeDefined();
-    });
-    it("can be instantiated", function() {
-      var scene;
-      scene = new App.Models.Scene();
-      return expect(scene).not.toBeNull();
     });
     describe("when instantiated", function() {
       it("should expose the background image id attribute", function() {
@@ -33,11 +33,8 @@
       it("should expose the preview_image_id attribute", function() {
         return expect(this.scene.get("preview_image_id")).toEqual(3);
       });
-      it("should expose the page number attribute", function() {
+      return it("should expose the page number attribute", function() {
         return expect(this.scene.get("page_number")).toEqual(1);
-      });
-      return it("should expose the parent storybook's id attribute", function() {
-        return expect(this.scene.get("storybook_id")).toEqual(this.storybook.id);
       });
     });
     return describe("#save", function() {

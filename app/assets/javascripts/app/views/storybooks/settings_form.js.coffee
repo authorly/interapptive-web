@@ -10,7 +10,7 @@ class App.Views.Storybooks.SettingsForm extends App.Views.AbstractFormView
 
 
   getModel: ->
-    @model = App.currentStorybook()
+    @model = App.currentSelection.get('storybook')
 
 
   initialize: ->

@@ -23,8 +23,8 @@ class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
   initialize: (attributes) ->
-    @initializeWidgets(attributes)
     @initializeScenes(attributes)
+    @initializeWidgets(attributes)
     @initializePreview()
 
     @widgets.on 'add remove change', => @save()

@@ -45,7 +45,9 @@
       beforeEach(function() {
         var form, storybook;
         storybook = new App.Models.Storybook();
-        App.currentStorybook(storybook);
+        App.currentSelection.set({
+          storybook: storybook
+        });
         form = new App.Views.Storybooks.SettingsForm().form;
         return this.errors = form.commit();
       });

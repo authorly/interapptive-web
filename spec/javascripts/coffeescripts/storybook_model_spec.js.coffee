@@ -42,7 +42,7 @@ describe "App.Models.Storybook", ->
   describe "attribute validation", ->
     beforeEach ->
       storybook = new App.Models.Storybook()
-      App.currentStorybook(storybook)
+      App.currentSelection.set(storybook: storybook)
       form = new App.Views.Storybooks.SettingsForm().form
       @errors = form.commit()
 

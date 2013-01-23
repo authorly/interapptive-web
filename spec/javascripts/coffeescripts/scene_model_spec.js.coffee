@@ -3,23 +3,21 @@ describe "App.Models.Scene", ->
   beforeEach ->
     @storybook = new App.Models.Storybook(id: 1)
 
-    @scene = new App.Models.Scene(
-      image_id: 1,
-      sound_id: 2,
-      preview_image_id: 3,
-      storybook_id: @storybook.id,
-      page_number: 1
-    )
+    @scene = new App.Models.Scene({
+        image_id: 1,
+        sound_id: 2,
+        preview_image_id: 3,
+        page_number: 1
+      },
+      {
+        collection: @storybook.scenes
+      })
 
-    App.currentStorybook(@storybook)
-    App.currentScene(@scene)
+    App.currentSelection.set(storybook: @storybook)
+    App.currentSelection.set(scene: @scene)
 
   it "should be defined", ->
     expect(App.Models.Scene).toBeDefined()
-
-  it "can be instantiated", ->
-    scene = new App.Models.Scene()
-    expect(scene).not.toBeNull()
 
   describe "when instantiated", ->
     it "should expose the background image id attribute", ->
@@ -33,9 +31,6 @@ describe "App.Models.Scene", ->
 
     it "should expose the page number attribute", ->
       expect(@scene.get("page_number")).toEqual 1
-
-    it "should expose the parent storybook's id attribute", ->
-      expect(@scene.get("storybook_id")).toEqual @storybook.id
 
 
   describe "#save", ->

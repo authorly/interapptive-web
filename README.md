@@ -17,7 +17,7 @@
 
 ### Running Jasmine tests
 
-Jasmine tests need to be compiled down to standard JS before they're run. The best way to do that on an ongoing basis is to simply run `bundle exec guard`. You can then access the tests by running `rake jasmine` and by visiting `localhost:8888`.
+Jasmine tests need to be compiled down to standard JS before they're run. The best way to do that on an ongoing basis is to simply run `bundle exec guard`. You can then access the tests by running `bundle exec rake jasmine` and by visiting `localhost:8888`.
 
 ## Builder
 
