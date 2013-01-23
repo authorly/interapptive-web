@@ -61,6 +61,13 @@ class App.Models.SpriteOrientation extends Backbone.Model
     type: 'SpriteOrientation'
 
 
+  spriteWidget: ->
+    sceneWidgets = @collection.keyframe.scene.widgets
+    spriteWidgetId = @get('sprite_widget_id')
+    sceneWidgets.find (widget) => widget.id == spriteWidgetId
+
+
+
 ##
 # A button that has two associated images: one for its default state,
 # and one for its tapped/clicked state
@@ -86,6 +93,11 @@ class App.Models.ButtonWidget extends App.Models.SpriteWidget
     @set url:      "/assets/sprites/#{@get('filename')}" unless @get('url')?
 
 
+##
+# A collection of widgets.
+# Relations:
+# * keyframe - should be set if this collection belongs to a Keyframe
+# * scene - should be set if this collection belongs to a Scene
 class App.Collections.Widgets extends Backbone.Collection
 
   model: (attrs, options) ->
@@ -102,8 +114,8 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
     @currentKeyframe = null
 
     App.currentSelection.on 'change:keyframe', (__, keyframe) =>
-      @updateKeyframeWidgets(keyframe)
       @updateSceneWidgets(keyframe)
+      @updateKeyframeWidgets(keyframe)
 
       @_removeListeners(@currentKeyframe)
       @currentKeyframe = keyframe
@@ -131,11 +143,7 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
     return unless widgets?
 
     widgets.each (widget) =>
-      if @get(widget)?
-        if widget instanceof App.Models.SpriteWidget
-          widget.applyOrientationFrom keyframe
-      else
-        @add(widget)
+      @add(widget) unless @get(widget)?
 
 
   _addListeners: (keyframe) ->

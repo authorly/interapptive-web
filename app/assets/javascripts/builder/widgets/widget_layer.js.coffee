@@ -19,23 +19,46 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     @widgets.on 'add', @addWidget, @
     @widgets.on 'remove', @removeWidget, @
+    @widgets.on 'change:position change:scale', @updateWidget, @
 
 
   addWidget: (widget) ->
-    return if widget.get('type') == 'SpriteOrientation'
-
-    view = new App.Builder.Widgets[widget.get('type')](model: widget)
-    @addChild(view)
-    @views.push view
+    if widget.get('type') == 'SpriteOrientation'
+      @updateFromOrientation(widget)
+    else
+      # console.log 'add', widget
+      view = new App.Builder.Widgets[widget.get('type')](model: widget)
+      @addChild(view)
+      @views.push view
 
 
   removeWidget: (widget) ->
     return if widget.get('type') == 'SpriteOrientation'
+    # console.log 'remove', widget
 
-    _.each @views, (view, index) =>
-      if view.model == widget
-        @removeChild(view)
-        @views.splice(index, 1)
+    view = @_getView(widget)
+    @removeChild(view)
+    @views.splice(@views.indexOf(view), 1)
+
+
+  updateWidget: (widget) ->
+    if widget.get('type') == 'SpriteOrientation'
+      # `SpriteWidget`s are modified indirectly, by changing their
+      # current orientation. So we deal separately with changes in
+      # orientations
+      @updateFromOrientation(widget)
+
+
+  updateFromOrientation: (orientation) ->
+    sprite = orientation.spriteWidget()
+    # console.log 'update from orientation', orientation, sprite, @_getView(sprite)
+    @_getView(sprite).applyOrientation(orientation)
+
+
+  _getView: (widget) ->
+    view = _.find @views, (view) -> view.model == widget
+
+
 
 
   # clearScene: =>

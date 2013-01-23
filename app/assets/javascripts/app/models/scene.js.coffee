@@ -20,10 +20,12 @@ class App.Models.Scene extends Backbone.Model
 
     widgets = attributes.widgets; delete attributes.widgets
     @widgets = new App.Collections.Widgets(widgets)
+    @widgets.scene = @
     @widgets.on 'add remove change', => @save()
 
     @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
+    @keyframes.on 'add', @addOrientations, @
 
     @on 'change:preview_image_id', @save
 
@@ -39,6 +41,20 @@ class App.Models.Scene extends Backbone.Model
     return unless @canAddKeyframes()
 
     @keyframes.addNewKeyframe(attributes)
+
+
+  addOrientations: (keyframe) ->
+    previousKeyframe = @keyframes.at(@keyframes.indexOf(keyframe) - 1)
+
+    orientations = @spriteWidgets().map (spriteWidget) ->
+      source = previousKeyframe?.getOrientationFor(spriteWidget) || spriteWidget
+      new App.Models.SpriteOrientation
+        keyframe_id:      keyframe.id
+        sprite_widget_id: spriteWidget.id
+        position:         source.get('position')
+        scale:            source.get('scale')
+
+    keyframe.widgets.add orientations
 
 
   toJSON: ->
@@ -83,6 +99,11 @@ class App.Models.Scene extends Backbone.Model
   previewUrlChanged: ->
     @trigger 'change:preview', @
 
+
+  spriteWidgets: ->
+    @widgets.select (w) -> w.get('type') == 'SpriteWidget'
+
+
   # RFCTR widgets
   # hasWidget: (widget) =>
     # _.any((@get('widgets') || []), (w) -> widget.id is w.id)
@@ -112,8 +133,6 @@ class App.Models.Scene extends Backbone.Model
   # widgetsChanged: =>
     # @save()
 
-  # spriteWidgets: ->
-    # _.select(@widgets(), (w) -> w.isSpriteWidget())
 
   # widgets: ->
     # widgets_array = @get('widgets')

@@ -33,12 +33,9 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   initializeWidgets: (attributes) ->
-    if @isNew()
-      orientations = @scene.spriteWidgets().map @_orientationFor
-      @widgets = new App.Collections.Widgets(orientations)
-    else
-      widgets = @get('widgets'); delete @attributes.widgets
-      @widgets = new App.Collections.Widgets(widgets)
+    widgets = @get('widgets'); delete @attributes.widgets
+    @widgets = new App.Collections.Widgets(widgets)
+    @widgets.keyframe = @
 
 
   initializeScenes: (attributes) ->
@@ -66,7 +63,8 @@ class App.Models.Keyframe extends Backbone.Model
 
   sceneWidgetAdded: (sceneWidget) ->
     if sceneWidget.get('type') is 'SpriteWidget'
-      @widgets.add @_orientationFor(sceneWidget)
+      # add the widgets after adding `sceneWidget` finished (including its callbacks)
+      window.setTimeout (=> @addOrientationFor(sceneWidget)), 0
 
 
   sceneWidgetRemoved: (sceneWidget) ->
@@ -74,12 +72,10 @@ class App.Models.Keyframe extends Backbone.Model
       @widgets.remove @getOrientationFor(widgets)
 
 
-  _orientationFor: (spriteWidget) ->
-    new App.Models.SpriteOrientation
+  addOrientationFor: (sceneWidget) ->
+    @widgets.add new App.Models.SpriteOrientation
       keyframe_id:      @id
       sprite_widget_id: spriteWidget.id
-      # TODO get the position from the previous keyframe, it's more logical
-      # to keep it than to use the initial position
       position:         spriteWidget.get('position')
       scale:            spriteWidget.get('scale')
 
@@ -274,15 +270,17 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   addNewKeyframe: (attributes={}) ->
-    @create new App.Models.Keyframe(
+    # add the object to the collection after it was saved
+    # so we have only valid objects in the collection
+    # so the views don't need to deal with `id` changes
+    keyframe = new App.Models.Keyframe(
       _.extend(attributes, {
         scene: @scene
         position: @nextPosition(attributes)
       })
     )
-
-
-    keyframe.save()
+    keyframe.save [],
+      success: => @add keyframe
 
 
   nextPosition: (options) ->

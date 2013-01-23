@@ -30,14 +30,20 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @sprite.initWithFile @model.dataUrl
 
       currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
-      position = currentOrientation.get('position')
-      @sprite.setPosition(new cc.Point(position.x, position.y))
-      @sprite.setScale(parseFloat(currentOrientation.get('scale')))
+      @applyOrientation(currentOrientation)
 
       @addChild(@sprite)
 
       # TODO RFCTR bring this back
       # window.setTimeout @triggerLoaded, 0
+
+
+  applyOrientation: (orientation) ->
+    position = orientation.get('position')
+    @sprite.setPosition(new cc.Point(position.x, position.y))
+
+    scale = parseFloat(orientation.get('scale'))
+    @sprite.setScale(scale)
 
 
   # TODO RFCTR this must be a change to the model, on which this
