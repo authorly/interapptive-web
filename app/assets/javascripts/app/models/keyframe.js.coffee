@@ -9,29 +9,44 @@
 # position or a scale on this keyframe implies saving the keyframe to the server.
 # Keeping the orientations in the Scene would imply saving the Scene everytime a
 # position or scale is saved (in a specific Keyframe), which isn't natural.
+#
+# There is a special kind of keyframe: the animation keyframe, which has
+# the attribute `is_animation` set to true.
+# The purpose of the animation keyframe is to allow for a user to create
+# an animation, which is played/triggered as soon as the end-user turns to a
+# given scene. In the case of Stranger in the Woods, this animation is typically
+# a zoom effect. The scene will start zoomed in on part of a picture (i.e.,
+# an animal) and zoom out to it's regular size, resulting in a nice, smooth
+# animation. Once the animation is done, text from the first keyframe would be
+# shown.
 class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
   initialize: (attributes) ->
-    if @isNew()
-      # We add orientation widgets to all the keyframes,
-      # even to the animation keyframes. That might not
-      # be desired.
-      orientations = @scene.spriteWidgets().map @_orientationFor
-      @widgets = new App.Collections.Widgets(orientations)
-    else
-      widgets = @get('widgets'); delete @attributes.widgets
-      @widgets = new App.Collections.Widgets(widgets)
-    @widgets.on 'add remove change', => @save()
+    @initializeWidgets(attributes)
+    @initializeScenes(attributes)
+    @initializePreview()
 
-    @scene = attributes?.scene || @collection?.scene
-    delete @attributes.scene
+    @widgets.on 'add remove change', => @save()
     @scene.widgets.on 'add',    @sceneWidgetAdded,   @
     @scene.widgets.on 'remove', @sceneWidgetRemoved, @
 
     @on 'audiosync', @updateStorybookParagraph, @
 
-    @initializePreview()
+
+
+  initializeWidgets: (attributes) ->
+    if @isNew()
+      orientations = @scene.spriteWidgets().map @_orientationFor
+      @widgets = new App.Collections.Widgets(orientations)
+    else
+      widgets = @get('widgets'); delete @attributes.widgets
+      @widgets = new App.Collections.Widgets(widgets)
+
+
+  initializeScenes: (attributes) ->
+    @scene = attributes?.scene || @collection?.scene
+    delete @attributes.scene
 
 
   updateStorybookParagraph: ->
