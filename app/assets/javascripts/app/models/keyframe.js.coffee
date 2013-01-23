@@ -31,9 +31,6 @@ class App.Models.Keyframe extends Backbone.Model
     @scene.widgets.on 'add',    @sceneWidgetAdded,   @
     @scene.widgets.on 'remove', @sceneWidgetRemoved, @
 
-    @on 'audiosync', @updateStorybookParagraph, @
-
-
 
   initializeWidgets: (attributes) ->
     if @isNew()
@@ -47,15 +44,6 @@ class App.Models.Keyframe extends Backbone.Model
   initializeScenes: (attributes) ->
     @scene = attributes?.scene || @collection?.scene
     delete @attributes.scene
-
-
-  updateStorybookParagraph: ->
-    # RFCTR this is wrong. storybookJSON is a view reflecting the status of the
-    # models. `Keyframe` should not know about it. Rather, storybookJSON should
-    # listen to changes/events on keyframes (and all other models) and update
-    # accordingly.
-    # @author dira, @date 2013-01-14
-    App.storybookJSON.updateParagraph(@)
 
 
   toJSON: ->
@@ -229,15 +217,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   updateContentHighlightTimes: (times, options={}) ->
-    @save { content_highlight_times: times },
-      success: =>
-        options.success() if options.success?
-        ## RFCTR is this only on audiosync? what about other changes?
-        # I moved this here since we don't need to use events to communicate
-        # between an object and itself. The question still remains.
-        # @author dira, @date 2013-01-14
-        # @on 'audiosync', @updateStorybookParagraph, @
-        @updateStorybookParagraph()
+    @save { content_highlight_times: times }, options
 
 
 ##
