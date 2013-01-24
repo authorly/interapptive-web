@@ -19,6 +19,10 @@
 
 Jasmine tests need to be compiled down to standard JS before they're run. The best way to do that on an ongoing basis is to simply run `bundle exec guard`. You can then access the tests by running `bundle exec rake jasmine` and by visiting `localhost:8888`.
 
+### Writing Javascript tests
+
+Write your model, view or collections tests under corresponding directories inside `spec/javascripts/coffeescripts`. Make sure you follow the step above to run the tests.
+
 ## Builder
 
 ### Synopsis
