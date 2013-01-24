@@ -1,8 +1,5 @@
 describe "App.Collections.KeyframesCollection", ->
 
-  it "should be defined", ->
-    expect(App.Collections.KeyframesCollection).toBeDefined()
-
   it "can be instantiated", ->
     keyframesCollection = new App.Collections.KeyframesCollection([], {scene_id: 1})
     expect(keyframesCollection).not.toBeNull()
@@ -33,6 +30,8 @@ describe "App.Collections.KeyframesCollection", ->
       @collection.add { is_animation: true }
       expect(@collection.nextPosition(@keyframe)).toEqual 1
 
+   #TODO: WA: Following tests should be enabled only when
+   #App.Models.Scene#spriteWidgets() function is working
   xdescribe 'recalculate positions', ->
     describe 'on destroy', ->
       beforeEach ->

@@ -1,7 +1,7 @@
+# TODO: WA: Following tests should be enabled only when
+# App.Models.Scene#spriteWidgets() function is working
 xdescribe "App.Models.Keyframe", ->
 
-  # TODO: WA: Following tests should be enabled only when
-  # App.Models.Scene#spriteWidgets() function is working
   beforeEach ->
     @storybook = new App.Models.Storybook(id: 1)
     @scene = new App.Models.Scene({ id: 1 }, { collection: @storybook.scenes })
@@ -14,9 +14,6 @@ xdescribe "App.Models.Keyframe", ->
     )
     App.currentSelection.get('scene')
     App.currentSelection.get('keyframe')
-
-  it "should be defined", ->
-    expect(App.Models.Keyframe).toBeDefined()
 
   it "can be instantiated", ->
     keyframe = new App.Models.Keyframe()

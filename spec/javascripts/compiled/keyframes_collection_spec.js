@@ -1,9 +1,6 @@
 (function() {
 
   describe("App.Collections.KeyframesCollection", function() {
-    it("should be defined", function() {
-      return expect(App.Collections.KeyframesCollection).toBeDefined();
-    });
     it("can be instantiated", function() {
       var keyframesCollection;
       keyframesCollection = new App.Collections.KeyframesCollection([], {

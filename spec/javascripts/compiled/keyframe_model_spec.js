@@ -19,9 +19,6 @@
       App.currentSelection.get('scene');
       return App.currentSelection.get('keyframe');
     });
-    it("should be defined", function() {
-      return expect(App.Models.Keyframe).toBeDefined();
-    });
     it("can be instantiated", function() {
       var keyframe;
       keyframe = new App.Models.Keyframe();
