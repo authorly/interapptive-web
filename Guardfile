@@ -1,8 +1,11 @@
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
-guard 'coffeescript', :input => 'spec/javascripts/coffeescripts', :output => 'spec/javascripts/compiled'
-guard 'coffeescript', :input => 'spec/javascripts/helpers/coffeescripts', :output => 'spec/javascripts/helpers'
+guard 'coffeescript', :input => 'spec/javascripts/coffeescripts',              :output => 'spec/javascripts/compiled'
+guard 'coffeescript', :input => 'spec/javascripts/coffeescripts/models',       :output => 'spec/javascripts/compiled'
+guard 'coffeescript', :input => 'spec/javascripts/coffeescripts/views',        :output => 'spec/javascripts/compiled'
+guard 'coffeescript', :input => 'spec/javascripts/coffeescripts/collections',  :output => 'spec/javascripts/compiled'
+guard 'coffeescript', :input => 'spec/javascripts/helpers/coffeescripts',      :output => 'spec/javascripts/helpers'
 # 
 # guard 'rspec', :version => 2 do
 #   watch(%r{^spec/.+_spec\.rb$})
