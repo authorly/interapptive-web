@@ -8,6 +8,10 @@ class App.Models.Font extends Backbone.Model
 class App.Collections.FontsCollection extends Backbone.Collection
   model: App.Models.Font
 
+  initialize: (attributes) ->
+    super
+    @storybook = attributes.storybook
+
   url: ->
     "/storybooks/" + App.currentSelection.get('storybook').get('id') + "/fonts.json"
 

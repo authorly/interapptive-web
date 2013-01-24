@@ -12,6 +12,11 @@ class App.Models.Sound extends Backbone.Model
 class App.Collections.SoundsCollection extends Backbone.Collection
   model: App.Models.Sound
 
+  initialize: (models, attributes) ->
+    super
+    @storybook = attributes.storybook
+
+
   url: ->
     return "/storybooks/" + App.currentStorybook().get('id') + "/sounds.json"
 
