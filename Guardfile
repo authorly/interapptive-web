@@ -81,4 +81,4 @@ guard 'coffeescript', :input => 'spec/javascripts/helpers/coffeescripts',      :
 # end
 
 
-guard 'coffeescript', :input => 'app/assets/javascripts'
+#guard 'coffeescript', :input => 'app/assets/javascripts'

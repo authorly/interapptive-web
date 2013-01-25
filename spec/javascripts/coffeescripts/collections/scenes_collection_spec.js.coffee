@@ -1,16 +1,10 @@
 describe "App.Collections.ScenesCollection", ->
 
-  it "should be defined", ->
-    expect(App.Collections.ScenesCollection).toBeDefined();
-
-  it "can be instantiated", ->
-    scenesCollection = new App.Collections.ScenesCollection([], {storybook_id: 1})
-    expect(scenesCollection).not.toBeNull()
-
   describe 'next available position', ->
     beforeEach ->
-      @collection = new App.Collections.ScenesCollection
-      @scene = new App.Models.Scene
+      @storybook = new App.Models.Storybook(id: 1)
+      @scene = new App.Models.Scene({ id: 1 }, { collection: @storybook.scenes })
+      @collection = new App.Collections.ScenesCollection([], { storybook: @storybook })
 
     it 'should be null for a main menu scene', ->
       @collection.add { position: 0 }
