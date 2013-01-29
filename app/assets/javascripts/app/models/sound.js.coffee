@@ -1,6 +1,6 @@
 class App.Models.Sound extends Backbone.Model
   url: ->
-    '/storybooks/#{App.currentStorybook().get("id")}/scenes/#{App.currentScene().get("id")}/sounds.json'
+    '/storybooks/' + App.currentSelection.get('storybook').get("id") + '/scenes/' + App.currentSelection.get('scene').get("id") + '/sounds.json'
 
   toString: ->
     @get('name')

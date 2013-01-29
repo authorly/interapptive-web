@@ -2,8 +2,8 @@ describe "App.Collections.ScenesCollection", ->
 
   describe 'next available position', ->
     beforeEach ->
-      @storybook = new App.Models.Storybook(id: 1)
-      @scene = new App.Models.Scene({ id: 1 }, { collection: @storybook.scenes })
+      @storybook  = new App.Models.Storybook(id: 1)
+      @scene      = new App.Models.Scene({ id: 1 }, { collection: @storybook.scenes })
       @collection = new App.Collections.ScenesCollection([], { storybook: @storybook })
 
     it 'should be null for a main menu scene', ->

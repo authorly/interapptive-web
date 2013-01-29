@@ -5,7 +5,7 @@ describe "App.Collections.FontsCollection", ->
 
     App.currentSelection.set(storybook: storybook)
     App.currentSelection.set(scene: scene)
-    @collection = new App.Collections.FontsCollection(storybook: storybook)
+    @collection = new App.Collections.FontsCollection({ storybook: storybook })
 
   it "should have url based on current storybook", ->
     expect(@collection.url()).toEqual("/storybooks/" + App.currentSelection.get('storybook').get('id') + "/fonts.json")
