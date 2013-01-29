@@ -1,27 +1,7 @@
 #= require ./widget
 
-# RFCTR move these to class constants
-# COLOR_OUTER_STROKE = 'rgba(15, 79, 168, 0.8)'
-# COLOR_OUTER_FILL =   'rgba(174, 204, 246, 0.66)'
-# COLOR_INNER_STROKE = 'rgba(15, 79, 168, 1)'
-# COLOR_INNER_FILL =   'rgba(255, 255, 255, 1)'
-
-# CURSOR_DEFAULT = 'default'
-# CURSOR_MOVE =    'move'
-# CURSOR_RESIZE =  'se-resize'
-
-# DEFAULT_OPACITY =   150
-# HIGHLIGHT_OPACITY = 230
-# MOUSEOVER_OPACITY = 255
-
-
-# LINE_WIDTH_OUTER = 2
-# LINE_WIDTH_INNER = 2
-
-# CSS_SCALE_FACTOR = 0.59
-
 #
-# Represent a Hotspot widget, as a circle that can be moved. It can be resized using
+# Show a Hotspot widget, as a cc circle. It can be moved. It can be resized using
 # a dedicated UI control (a small circle).
 #
 # It reacts to mouseOver and mouseOut.
@@ -30,11 +10,32 @@
 # of that scene. If you move it or scale it in one keyframe, it will have the
 # new position / scale in all the keyframes)
 #
-# TODO RFCTR Rename to Hotspot. Extract a Backbone model.
-class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
+class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
+  OUTER_STROKE_COLOR: 'rgba(15, 79, 168, 0.8)'
+  OUTER_STROKE_WIDTH: 2
+  OUTER_STROKE_FILL:   'rgba(174, 204, 246, 0.66)'
+  INNER_STROKE_COLOR: 'rgba(15, 79, 168, 1)'
+  INNER_STROKE_WIDTH: 2
+  INNER_STROKE_FILL:   'rgba(255, 255, 255, 1)'
 
-  # constructor: (options={}) ->
-    # super
+  # CURSOR_DEFAULT: 'default'
+  # CURSOR_MOVE:    'move'
+  # CURSOR_RESIZE:  'se-resize'
+
+  DEFAULT_OPACITY:   150
+  HIGHLIGHT_OPACITY: 230
+  MOUSEOVER_OPACITY: 255
+
+
+  # CSS_SCALE_FACTOR: 0.59
+
+
+  constructor: (options={}) ->
+    super
+    @setOpacity @DEFAULT_OPACITY
+
+    @model.on 'change:radius', @updateContentSize, @
+    @model.on 'change:position', @updatePosition, @
 
     # @scene(options.scene)
     # @type      = 'TouchWidget'
@@ -44,13 +45,61 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     # @sound_id  ?= options.sound_id
     # @setZOrder(1000) #HACK TODO: Get rid of hardcode
 
-    # @setOpacity(DEFAULT_OPACITY)
     # @on('mousedown', @onMouseDown, this)
     # @on('mouseup',   @onMouseUp,   this)
     # @on('mousemove', @onMouseMove, this)
     # @on('change',    @update,      this)
     # @on('mouseover', @onMouseOver, this)
     # @on('mouseout',  @onMouseOut,  this)
+
+
+  draw: (ctx) ->
+    r = @model.get('radius')
+    cr = @model.get('controlRadius')
+
+    # FIXME We should monkey patch cocos2d-html5 to support opacity
+    ctx.save()
+    ctx.globalAlpha = @getOpacity() / 255.0
+
+    # Main Circle
+    ctx.beginPath()
+    ctx.arc(0, 0, r, 0 , Math.PI * 2, false)
+    ctx.strokeStyle = @OUTER_STROKE_COLOR
+    ctx.lineWidth = @OUTER_STROKE_WIDTH
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.arc(0, 0, r - (@OUTER_STROKE_WIDTH / 2), 0 , Math.PI * 2, false)
+    ctx.fillStyle = @OUTER_STROKE_FILL
+    ctx.fill()
+
+    # Resizer
+    center = @getControlCenter()
+    ctx.beginPath()
+    ctx.arc(center.x, center.y, cr, 0, Math.PI * 2, false)
+    ctx.strokeStyle = @INNER_STROKE_COLOR
+    ctx.lineWidth = @INNER_STROKE_WIDTH
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.arc(center.x, center.y, cr - (@INNER_STROKE_WIDTH / 2), 0, Math.PI * 2, false)
+    ctx.fillStyle = @INNER_STROKE_FILL
+    ctx.fill()
+
+    ctx.restore()
+
+
+  updateContentSize: ->
+    diameter = @model.get(radius) * 2
+    @setContentSize(new cc.Size(diameter, diameter))
+
+
+  getControlCenter: ->
+    radius = @model.get('radius')
+    controlRadius = @model.get('controlRadius')
+
+    return new cc.Point(
+      (radius - controlRadius) *  Math.sin(cc.DEGREES_TO_RADIANS(135))
+      (radius - controlRadius) * -Math.cos(cc.DEGREES_TO_RADIANS(135))
+    )
 
 
   # Reload attributes from a set of keypairs
@@ -92,7 +141,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     # document.body.style.cursor = if inControl then CURSOR_RESIZE else CURSOR_MOVE
 
     # if @resizing
-      # @setRadius(@_distanceFromCenter(point) + @_resizeOffset)
+      # @model.set radius: @_distanceFromCenter(point) + @_resizeOffset
 
 
   # onMouseUp: (e) ->
@@ -104,16 +153,6 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     # App.Builder.Widgets.WidgetDispatcher.trigger('widget:touch:edit', this)
 
 
-  # getRadius: ->
-    # @_radius
-
-
-  # setRadius: (r) ->
-    # r = 16 if r < 16
-    # @_radius = r
-    # @setContentSize(new cc.Size(@_radius * 2, @_radius * 2))
-
-    # this
 
 
   # setControlRadius: (r) ->
@@ -126,47 +165,7 @@ class App.Builder.Widgets.TouchWidget extends App.Builder.Widgets.Widget
     # @_controlRadius
 
 
-  # getControlCenter: ->
-    # radius = @getRadius()
-    # controlRadius = @getControlRadius()
 
-    # return new cc.Point(
-      # (radius - controlRadius) * Math.sin(cc.DEGREES_TO_RADIANS(135))
-      # (radius - controlRadius) * -Math.cos(cc.DEGREES_TO_RADIANS(135))
-    # )
-
-  # draw: (ctx) ->
-    # r = @getRadius()
-    # cr = @getControlRadius()
-
-    # # FIXME We should monkey patch cocos2d-html5 to support opacity
-    # ctx.save()
-    # ctx.globalAlpha = @getOpacity() / 255.0
-
-    # # Main Circle
-    # ctx.beginPath()
-    # ctx.arc(0, 0, r, 0 , Math.PI * 2, false)
-    # ctx.strokeStyle = COLOR_OUTER_STROKE
-    # ctx.lineWidth = LINE_WIDTH_OUTER
-    # ctx.stroke()
-    # ctx.beginPath()
-    # ctx.arc(0, 0, r - (LINE_WIDTH_OUTER / 2), 0 , Math.PI * 2, false)
-    # ctx.fillStyle = COLOR_OUTER_FILL
-    # ctx.fill()
-
-    # # Resizer
-    # center = @getControlCenter()
-    # ctx.beginPath()
-    # ctx.arc(center.x, center.y, cr, 0, Math.PI * 2, false)
-    # ctx.strokeStyle = COLOR_INNER_STROKE
-    # ctx.lineWidth = LINE_WIDTH_INNER
-    # ctx.stroke()
-    # ctx.beginPath()
-    # ctx.arc(center.x, center.y, cr - (LINE_WIDTH_INNER / 2), 0, Math.PI * 2, false)
-    # ctx.fillStyle = COLOR_INNER_FILL
-    # ctx.fill()
-
-    # ctx.restore()
 
 
   # # Overridden to make hit area circular

@@ -22,11 +22,10 @@ class App.Builder.Widgets.Widget extends cc.Node
     @model = options.model
     _.extend(this, Backbone.Events)
 
-    @_opacity = 255
-    @_highlighted = false
+    @setOpacity(255)
+    # @_highlighted = false
 
-    position = @model.get('position')
-    @setPosition new cc.Point(position.x, position.y)
+    @updatePosition()
 
     # @on 'mouseover', @mouseOver
     # @on 'mouseout',  @mouseOut
@@ -35,6 +34,18 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     # App.vent.on 'widget:change_zorder', @changeZOrder
 
+
+  setOpacity: (opacity) ->
+    @_opacity = opacity
+
+
+  getOpacity: ->
+    @_opacity
+
+
+  updatePosition: ->
+    position = @model.get('position')
+    @setPosition new cc.Point(position.x, position.y)
 
   # changeZOrder: (z) ->
     # @setZOrder(z)
@@ -71,13 +82,6 @@ class App.Builder.Widgets.Widget extends cc.Node
     # @_highlighted = false
     # App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight', @id)
 
-
-  # setOpacity: (opacity) ->
-    # @_opacity = opacity
-
-
-  # getOpacity: ->
-    # @_opacity
 
 
   # setZOrder: (z, triggerEvent=true) ->
