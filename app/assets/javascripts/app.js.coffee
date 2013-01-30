@@ -33,7 +33,8 @@ window.App =
       scene.fetchKeyframes()
 
 
-    @toolbar = new App.Views.ToolbarView  el: $('#toolbar')
+    @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
+    @file_menu = new App.Views.FileMenuView el: $('#file-menu')
     # Not sure if this belongs to `@currentSelection` or not. Keeping it
     # separate for now. @dira 2013/01/10
     @currentWidgets = new App.Collections.CurrentWidgets
@@ -82,7 +83,6 @@ window.App =
     # @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('#canvas-wrapper')
 
     # @contentModal =   new App.Views.Modal className: 'content-modal'
-    # @fileMenu =       new App.Views.FileMenuView el: $('#file-menu')
 
     # @spriteListPalette = new App.Views.PaletteContainer
       # view       : new App.Views.SpriteListPalette
