@@ -4,14 +4,16 @@
 # Show a SpriteWidget as a cc.Sprite.
 class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   COLOR_OUTER_STROKE: 'rgba(15, 79, 168, 0.8)'
-  COLOR_OUTER_FILL: 'rgba(174, 204, 246, 0.66)'
-  LINE_WIDTH_OUTER: 12
+  COLOR_OUTER_FILL:   'rgba(174, 204, 246, 0.66)'
   COLOR_INNER_STROKE: 'rgba(15, 79, 168, 1)'
-  COLOR_INNER_FILL: 'rgba(255, 255, 255, 1)'
-  LINE_WIDTH_INNER: 2
+  COLOR_INNER_FILL:   'rgba(255, 255, 255, 1)'
+  LINE_WIDTH_OUTER:   12
+  LINE_WIDTH_INNER:   2
 
   constructor: (options) ->
     super
+
+    @_border = false
 
     # @model - is set by the super constructor
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
@@ -20,6 +22,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @on 'clickOutside',       @setAsInactive
     @on 'change:orientation', @updateOrientation
+    @on 'dblclick',           @doubleClick
 
     @_getImage()
 
@@ -30,20 +33,15 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @sprite.initWithFile @model.dataUrl
 
       currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
-      @applyOrientation(currentOrientation)
-
+      position = currentOrientation.get('position')
+      @sprite.setPosition(new cc.Point(position.x, position.y))
+      @sprite.setScale(parseFloat(currentOrientation.get('scale')))
+      @setContentSize(@sprite.getContentSize())
+      #@setPosition(@sprite.getPosition())
       @addChild(@sprite)
 
       # TODO RFCTR bring this back
       # window.setTimeout @triggerLoaded, 0
-
-
-  applyOrientation: (orientation) ->
-    position = orientation.get('position')
-    @sprite.setPosition(new cc.Point(position.x, position.y))
-
-    scale = parseFloat(orientation.get('scale'))
-    @sprite.setScale(scale)
 
 
   # TODO RFCTR this must be a change to the model, on which this
@@ -115,20 +113,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_setActiveSpriteFromClick(e)
 
 
-  # setAsActive: (widget = null) ->
-    # _widget = widget || this
+  setAsActive: (widget = null) ->
+    _widget = widget || this
 
-    # App.vent.trigger 'sprite_widget:select', _widget
+    App.vent.trigger 'sprite_widget:select', _widget
 
-    # #
-    # # RFCTR: Needs ventilation
-    # #     App.vent.trigger 'sprite_widget:selected'
-    # #     App.vent.on 'sprite_widget:selected', @deselectSpriteWidgets
-    # #
-    # App.builder.widgetLayer.deselectSpriteWidgets()
-
-    # @enableDragging()
-    # @showBorder()
+    @enableDragging()
+    @showBorder()
 
 
   # setAsInactive: ->
@@ -145,24 +136,24 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     # # App.spriteForm.resetForm()
 
 
-  # enableDragging: ->
-    # @draggable = true
+  enableDragging: ->
+    @draggable = true
 
 
   disableDragging: ->
     @draggable = false
 
 
-  # showBorder: ->
-    # @scene.border = true
+  showBorder: ->
+    @_border = true
 
 
-  # hideBorder: ->
-    # @scene.border = false
+  hideBorder: ->
+    @_border = false
 
 
-  # hasBorder: ->
-    # @scene.border
+  hasBorder: ->
+   @_border
 
   # TODO RFCTR this belong to the model
   # toHash: ->
@@ -216,29 +207,29 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     # #@currentKeyframe().y = parseInt(y)
     # #super
 
-  # draw: (ctx) ->
-    # return unless @hasBorder()
+  draw: (ctx) ->
+    return unless @hasBorder()
 
-    # # FIXME We should monkey patch cocos2d-html5 to support opacity
-    # ctx.save()
-    # ctx.globalAlpha = 255 / 255.0
+    # FIXME We should monkey patch cocos2d-html5 to support opacity
+    ctx.save()
+    ctx.globalAlpha = 255 / 255.0
 
-    # ctx.beginPath()
-    # _x =     (@sprite.getContentSize().width * @sprite.getScale()) * -0.5
-    # _y =     (@sprite.getContentSize().height * @sprite.getScale()) * -0.5
-    # _width =  @sprite.getContentSize().width * @sprite.getScale()
-    # _height = @sprite.getContentSize().height * @sprite.getScale()
+    ctx.beginPath()
+    _x =     (@sprite.getContentSize().width * @sprite.getScale()) * -0.5
+    _y =     (@sprite.getContentSize().height * @sprite.getScale()) * -0.5
+    _width =  @sprite.getContentSize().width * @sprite.getScale()
+    _height = @sprite.getContentSize().height * @sprite.getScale()
 
-    # ctx.rect(_x, _y, _width, _height)
-    # ctx.strokeStyle = COLOR_OUTER_STROKE
-    # ctx.lineWidth = LINE_WIDTH_OUTER
-    # ctx.stroke()
+    ctx.rect(_x, _y, _width, _height)
+    ctx.strokeStyle = @COLOR_OUTER_STROKE
+    ctx.lineWidth = @LINE_WIDTH_OUTER
+    ctx.stroke()
 
-    # ctx.beginPath()
-    # ctx.fillStyle = COLOR_OUTER_FILL
-    # ctx.fill()
+    ctx.beginPath()
+    ctx.fillStyle = @COLOR_OUTER_FILL
+    ctx.fill()
 
-    # ctx.restore()
+    ctx.restore()
 
   # # save() should probably be named create() because
   # # it always creates a new SpriteWidget. There should
@@ -294,9 +285,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     # document.body.style.cursor = cursor
 
 
-  # _setActiveSpriteFromClick: (e) ->
-    # activeSpriteWidget = App.builder.widgetLayer.widgetAtPoint(e._point)
-    # return unless activeSpriteWidget
+  # RFCTR
+  #     This is all very bad (WIP), needs ventilation/decoupling
+  _setActiveSpriteFromClick: (e) ->
+    activeSpriteWidget = App.builder.widgetLayer.widgetAtPoint(e._point)
+    return unless activeSpriteWidget
 
-    # App.builder.widgetLayer.setSelectedWidget(activeSpriteWidget)
-    # @setAsActive(activeSpriteWidget)
+
+    App.builder.widgetLayer.setSelectedWidget(activeSpriteWidget)
+    @setAsActive(activeSpriteWidget)

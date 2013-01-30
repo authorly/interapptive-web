@@ -93,18 +93,18 @@ class App.Builder.Widgets.Widget extends cc.Node
     # @trigger('change', 'position') if triggerEvent
 
 
-  # rect: ->
-    # p = @getPosition()
-    # s = @getContentSize()
-    # a = @getAnchorPoint()
-    # scale = @getScale()
+  rect: ->
+    p = @getPosition()
+    s = @getContentSize()
+    a = @getAnchorPoint()
+    scale = @getScale()
 
-    # cc.RectMake(
-      # p.x - s.width  * a.x
-      # p.y - s.height * a.y
-      # s.width  * scale
-      # s.height * scale
-    # )
+    cc.RectMake(
+      p.x - s.width  * a.x
+      p.y - s.height * a.y
+      s.width  * scale
+      s.height * scale
+    )
 
 
   # toHash: ->
@@ -124,28 +124,28 @@ class App.Builder.Widgets.Widget extends cc.Node
     # @toHash()
 
 
-  # pointToLocal: (point) ->
-    # return unless @parent?
+  pointToLocal: (point) =>
+    return unless @parent?
 
-    # local = @convertToNodeSpace(point)
+    local = @convertToNodeSpace(point)
 
-    # r = @rect()
-    # r.origin = new cc.Point(0, 0)
+    r = @rect()
+    r.origin = new cc.Point(0, 0)
 
-    # # Fix bug in cocos2d-html5; It doesn't convert to local space correctly
-    # local.x += @parent.getAnchorPoint().x * r.size.width* 0.59
-    # local.y += @parent.getAnchorPoint().y * r.size.height* 0.59
+    # Fix bug in cocos2d-html5; It doesn't convert to local space correctly
+    local.x += @parent.getAnchorPoint().x * r.size.width
+    local.y += @parent.getAnchorPoint().y * r.size.height
 
-    # local
+    local
 
 
-  # isPointInside: (point) ->
-    # local = @pointToLocal(point)
+  isPointInside: (point) ->
+    local = @pointToLocal(point)
 
-    # r = @rect()
-    # r.origin = new cc.Point(0, 0)
+    r = @rect()
+    r.origin = new cc.Point(0, 0)
 
-    # return cc.Rect.CCRectContainsPoint(r, local)
+    cc.Rect.CCRectContainsPoint(r, local)
 
 
   # setStorybook: (storybook) ->
@@ -160,8 +160,8 @@ class App.Builder.Widgets.Widget extends cc.Node
   # # addToStorybookJSON: (storybook) =>
 
 
-  # isSpriteWidget: ->
-    # @ instanceof App.Builder.Widgets.SpriteWidget
+  isSpriteWidget: ->
+    @ instanceof App.Builder.Widgets.SpriteWidget
 
 
   # isTouchWidget: ->

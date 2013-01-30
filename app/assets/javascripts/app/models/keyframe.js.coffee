@@ -72,7 +72,7 @@ class App.Models.Keyframe extends Backbone.Model
       @widgets.remove @getOrientationFor(widgets)
 
 
-  addOrientationFor: (sceneWidget) ->
+  addOrientationFor: (spriteWidget) ->
     @widgets.add new App.Models.SpriteOrientation
       keyframe_id:      @id
       sprite_widget_id: spriteWidget.id
