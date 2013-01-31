@@ -114,36 +114,34 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
     @currentKeyframe = null
 
     App.currentSelection.on 'change:keyframe', (__, keyframe) =>
-      @updateSceneWidgets(keyframe)
-      @updateKeyframeWidgets(keyframe)
-
-      @_removeListeners(@currentKeyframe)
-      @currentKeyframe = keyframe
-      @_addListeners(@currentKeyframe)
+      @changeKeyframe(keyframe)
 
 
-  updateKeyframeWidgets: (keyframe) ->
-    # remove old keyframe widgets
-    removals = @currentKeyframe?.widgets
-    if removals?
-      removals.each (widget) => @remove(widget)
+  changeKeyframe: (keyframe) ->
+    @updateSceneWidgets(keyframe)
+    @updateKeyframeWidgets(keyframe)
 
-    # add new keyframe widgets
-    additions = keyframe?.widgets
-    if additions?
-      additions.each (widget) => @add(widget)
+    @_removeListeners(@currentKeyframe)
+    @currentKeyframe = keyframe
+    @_addListeners(@currentKeyframe)
 
 
   updateSceneWidgets: (keyframe) ->
-    if @currentKeyframe? and @currentKeyframe.scene != keyframe?.scene
-      # remove the widgets from the previous scene
-      @currentKeyframe.scene.widgets.each (widget) => @remove(widget)
+    if @currentKeyframe?
+      if @currentKeyframe.scene != keyframe?.scene
+        widgets = @currentKeyframe.scene.widgets
+        @remove(widgets.models) if widgets?
 
     widgets = keyframe?.scene.widgets
-    return unless widgets?
+    @add(widgets.models) if widgets?
 
-    widgets.each (widget) =>
-      @add(widget) unless @get(widget)?
+
+  updateKeyframeWidgets: (keyframe) ->
+    widgets = @currentKeyframe?.widgets
+    @remove(widgets.models) if widgets?
+
+    widgets = keyframe?.widgets
+    @add(widgets.models) if widgets?
 
 
   _addListeners: (keyframe) ->

@@ -30,6 +30,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       view = new App.Builder.Widgets[widget.get('type')](model: widget)
       @addChild(view)
       @views.push view
+      @updateKeyframePreview()
 
 
   removeWidget: (widget) ->
@@ -39,6 +40,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     view = @_getView(widget)
     @removeChild(view)
     @views.splice(@views.indexOf(view), 1)
+    @updateKeyframePreview()
 
 
   updateWidget: (widget) ->
@@ -53,10 +55,22 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     sprite = orientation.spriteWidget()
     # console.log 'update from orientation', orientation, sprite, @_getView(sprite)
     @_getView(sprite).applyOrientation(orientation)
+    @updateKeyframePreview()
 
 
   _getView: (widget) ->
     view = _.find @views, (view) -> view.model == widget
+
+
+  updateKeyframePreview: ->
+    window.setTimeout @_updateKeyframePreview, 100
+
+
+  _updateKeyframePreview: =>
+    canvas = document.getElementById "builder-canvas"
+    image = Canvas2Image.saveAsPNG canvas, true, 110, 83
+
+    @widgets.currentKeyframe?.setPreviewDataUrl image.src
 
 
 
