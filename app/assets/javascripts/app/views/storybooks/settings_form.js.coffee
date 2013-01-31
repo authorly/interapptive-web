@@ -13,10 +13,6 @@ class App.Views.Storybooks.SettingsForm extends App.Views.AbstractFormView
     @model = App.currentSelection.get('storybook')
 
 
-  initialize: ->
-    super
-
-
   deleteMessage: ->
     '\nYou are about to delete this storybook and all of it\'s scenes, keyframes, images, etc.\n\n\n' +
     'This cannot be undone.\n\n\n' +
