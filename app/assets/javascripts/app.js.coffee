@@ -13,7 +13,7 @@ window.App =
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
     @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
-    @vent.on 'modal:cancel', @hideModal, @
+    @vent.on 'modal-cancel', @hideModal, @
 
     @currentSelection = new Backbone.Model
       storybook: null
@@ -75,8 +75,8 @@ window.App =
       App.modalWithView(view: view).show()
 
 
-    @vent.on 'scene_form:show', ->
-      view = new App.Views.SceneForm()
+    @vent.on 'show:sceneform', ->
+      view = new App.Views.SceneForm(model: App.currentSelection.get('scene'))
       App.modalWithView(view: view).show()
 
 

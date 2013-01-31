@@ -47,7 +47,7 @@ class App.Views.AbstractFormView extends Backbone.View
   cancel: (event) ->
     event.preventDefault()
     @resetValues()
-    App.vent.trigger 'modal:cancel'
+    App.vent.trigger 'modal-cancel'
 
 
   # Defines jquery actions to reset the form to its default 

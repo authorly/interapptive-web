@@ -18,7 +18,7 @@ class App.Collections.SoundsCollection extends Backbone.Collection
 
 
   url: ->
-    "/storybooks/" + App.currentSelection.get('storybook').get('id') + "/sounds.json"
+    "/storybooks/" + @storybook.get('id') + "/sounds.json"
 
   toSelectOptionGroup: (callback) =>
     onSuccess = (collection) ->

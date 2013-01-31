@@ -4,12 +4,12 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
 
 
   formOptions: ->
-    model: @getModel()
+    model: @model
 
     schema:
       sound_id:
         type: "Select"
-        options: App.currentSelection.get('storybook').sounds
+        options: @model.storybook.sounds
         title: "Background Sound"
 
       sound_repeat_count:
@@ -24,10 +24,6 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
 
             err  if value < 0
           ]
-
-
-  getModel: ->
-    @model = App.currentSelection.get('scene')
 
 
   deleteMessage: ->

@@ -82,7 +82,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   showSceneOptions: ->
-    App.vent.trigger('scene_form:show')
+    App.vent.trigger('show:sceneform')
 
 
   showImageLibrary: -> @loadDataFor 'image'
