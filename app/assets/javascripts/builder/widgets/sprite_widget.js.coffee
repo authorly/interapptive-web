@@ -2,6 +2,10 @@
 
 ##
 # Show a SpriteWidget as a cc.Sprite.
+#
+# Graphical properties:
+# _border
+#
 class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   COLOR_OUTER_STROKE: 'rgba(15, 79, 168, 0.8)'
   COLOR_OUTER_FILL:   'rgba(174, 204, 246, 0.66)'
