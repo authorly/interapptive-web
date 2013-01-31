@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe User do
-  
+
   let!(:user) { Factory(:user) }
-  
+
   describe "authentication" do
     it "should require a unique email" do
       Factory(:user, :email => 'taken@example.com')
@@ -35,8 +35,8 @@ describe User do
     it "should not authenticate with a bad password" do
       user.authenticate('badpassword').should be_false
     end
-    
-    it "is invalid without email" do 
+
+    it "is invalid without email" do
       user = Factory.build(:user, :email => nil)
       user.should_not be_valid
 
@@ -45,14 +45,14 @@ describe User do
     end
 
   end
-  
+
   context "a user (in general)" do
-    it "has a valid factory" do 
+    it "has a valid factory" do
       user.should be_valid
     end
-    
+
     it "is invalid without password"
-    
+
     it { should have_many(:storybooks) }
 
     it do
@@ -60,19 +60,19 @@ describe User do
       should have_many(:actions)
     end
   end
-  
-  context "developer user should" do 
+
+  context "developer user should" do
     it "be invalid without username"
   end
-  
+
   context "password reset" do
-    it "generates token" do 
-      user.send_password_reset.should 
+    it "generates token" do
+      user.send_password_reset.should
     end
 
     it "saves password reset date"
     it "sends password reset email"
     it "fails if email doesn't exist"
   end
-  
+
 end
