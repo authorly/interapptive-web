@@ -22,6 +22,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     @widgets.on 'add', @addWidget, @
     @widgets.on 'remove', @removeWidget, @
+    @widgets.on 'change:position change:scale', @updateWidget, @
 
     App.vent.on 'sprite_widget:select', @deselectSpriteWidgets
 
