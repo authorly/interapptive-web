@@ -18,9 +18,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   initialize: ->
-    @collection.on 'change:positions reset add remove', @updateScenePreview    , @
     @collection.on 'change:positions reset'           , @render                , @
-    # @collection.on 'change:widgets'                   , @updateKeyframePreview , @
     @collection.on 'change:preview'                   , @keyframePreviewChanged, @
     @collection.on 'add'   , @appendKeyframe
     @collection.on 'remove', @removeKeyframe
@@ -34,9 +32,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   remove: ->
     super
 
-    @collection.off 'change:positions reset add remove', @updateScenePreview    , @
     @collection.off 'change:positions reset'           , @render                , @
-    # @collection.off 'change:widgets'                   , @updateKeyframePreview , @
     @collection.off 'change:preview'                   , @keyframePreviewChanged, @
     @collection.off 'add'   , @appendKeyframe
     @collection.off 'remove', @removeKeyframe
@@ -119,15 +115,6 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(".keyframe-list li[data-id=#{keyframe.id}]").remove()
     @switchKeyframe @lastKeyframe()
     @_updateDeleteButtons()
-
-
-  updateKeyframePreview: (keyframe) ->
-    return unless keyframe == App.currentSelection.get('keyframe')
-
-    canvas = document.getElementById "builder-canvas"
-    image = Canvas2Image.saveAsPNG canvas, true, 110, 83
-
-    keyframe.preview.set 'data_url', image.src
 
 
   keyframePreviewChanged: (keyframe) ->

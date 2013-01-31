@@ -27,15 +27,15 @@ class App.Models.Keyframe extends Backbone.Model
     @initializeWidgets(attributes)
     @initializePreview()
 
-    @widgets.on 'add remove change', => @save()
-    @scene.widgets.on 'add',    @sceneWidgetAdded,   @
-    @scene.widgets.on 'remove', @sceneWidgetRemoved, @
-
 
   initializeWidgets: (attributes) ->
     widgets = @get('widgets'); delete @attributes.widgets
     @widgets = new App.Collections.Widgets(widgets)
     @widgets.keyframe = @
+    @widgets.on 'add remove change', => @save()
+
+    @scene.widgets.on 'add',    @sceneWidgetAdded,   @
+    @scene.widgets.on 'remove', @sceneWidgetRemoved, @
 
 
   initializeScenes: (attributes) ->
@@ -55,10 +55,14 @@ class App.Models.Keyframe extends Backbone.Model
 
   initializePreview: ->
     attributes = App.Lib.AttributesHelper.filterByPrefix @attributes, 'preview_image_'
-    @preview = new App.Models.Preview(attributes)
+    @preview = new App.Models.Preview(attributes, storybook: @scene.storybook)
     @preview.on 'change:data_url', => @trigger 'change:preview', @
     @preview.on 'change:id', =>
       @save preview_image_id: @preview.id
+
+
+  setPreviewDataUrl: (dataUrl) ->
+    @preview.set 'data_url', dataUrl
 
 
   sceneWidgetAdded: (sceneWidget) ->
