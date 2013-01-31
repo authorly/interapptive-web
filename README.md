@@ -1,6 +1,6 @@
 # Welcome to Authorly
 
-## Setting up application on your machine
+## Setup the application
 
 1. Clone the repository on your machine
 1. Install [sox](http://sox.sourceforge.net/) version 14.4.0
@@ -11,17 +11,34 @@
 1. `bundle exec rake db:seed`
 1. `bundle exec rails server` starts the server
 
-### To run all the test cases
+## Tests
 
-`bundle exec rspec spec`
+### Set up the test environment
 
-### Running Jasmine tests
+1. Install [PhantomJS](https://github.com/netzpirat/guard-jasmine#phantomjs)
 
-Jasmine tests need to be compiled down to standard JS before they're run. The best way to do that on an ongoing basis is to simply run `bundle exec guard`. You can then access the tests by running `bundle exec rake jasmine` and by visiting `localhost:8888`.
+### Run all the test cases
 
-### Writing Javascript tests
+`bundle exec rake`
 
-Write your model, view or collections tests under corresponding directories inside `spec/javascripts/coffeescripts`. Make sure you follow the step above to run the tests.
+### Run only the javascript tests
+
+Continuous testing:
+
+    `bundle exec guard`
+
+Command line:
+
+    `bundle exec guard-jasmine`
+
+    or
+
+    `bundle exec rake guard:jasmine`
+
+
+### Write Javascript tests
+
+Write your model, view or collections tests under corresponding directories inside `spec/javascripts/coffeescripts`.
 
 ## Builder
 
