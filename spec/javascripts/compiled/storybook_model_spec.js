@@ -37,8 +37,17 @@
       it("should expose an attribute for setting target platform for compilation", function() {
         return expect(this.storybook.get("android_or_ios")).toEqual("both");
       });
-      return it("should expose the model's  voice recording option attribute", function() {
+      it("should expose the model's  voice recording option attribute", function() {
         return expect(this.storybook.get("record_enabled")).toEqual(true);
+      });
+      it("should expose model's scenes", function() {
+        return expect(Object.getPrototypeOf(this.storybook.scenes).constructor.name).toEqual("ScenesCollection");
+      });
+      it("should expose model's sounds", function() {
+        return expect(Object.getPrototypeOf(this.storybook.sounds).constructor.name).toEqual("SoundsCollection");
+      });
+      return it("should expose model's images", function() {
+        return expect(Object.getPrototypeOf(this.storybook.images).constructor.name).toEqual("ImagesCollection");
       });
     });
     describe("attribute validation", function() {
