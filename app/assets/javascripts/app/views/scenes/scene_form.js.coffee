@@ -14,7 +14,7 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
 
       sound_repeat_count:
         type: "Number"
-        title: "Repetation count"
+        title: "Repetition count"
         help: "0 for infinite"
         validators:    [
           checkRepetation = (value, formValues) ->
@@ -24,9 +24,3 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
 
             err  if value < 0
           ]
-
-
-  deleteMessage: ->
-    '\nYou are about to delete this scene\n\n\n' +
-    'This cannot be undone.\n\n\n' +
-    'Are you sure you want to continue?\n'
