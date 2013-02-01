@@ -34,6 +34,16 @@ Command line:
     or
 
     `bundle exec rake guard:jasmine`
+    
+In the browser:
+
+Run guard:
+
+    `bundle exec guard`
+
+
+The output contains the URL where it mounted the jasmine runner (something like http://localhost:[port]/jasmine).
+That URL works in the browser and you have the full UI (i.e. you can click on a test and it will only run that test)
 
 
 ### Write Javascript tests
