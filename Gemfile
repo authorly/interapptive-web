@@ -36,10 +36,10 @@ end
 
 group :development, :test do
   gem 'guard'
-  gem 'guard-coffeescript'
+  gem 'jasminerice'
+  gem 'guard-jasmine'
   gem 'capybara'
   gem 'guard-rspec'
-  gem 'jasmine'
 end
 
 group :development do

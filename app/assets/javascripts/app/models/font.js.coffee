@@ -1,19 +1,23 @@
 class App.Models.Font extends Backbone.Model
-  url: ->
-    '/storybooks/' + App.currentSelection.get('storybook').get("id") + '/scenes/' + App.currentSelection.get('scene').get("id") + '/fonts.json'
 
   toString: ->
     @get('name')
 
+
 class App.Collections.FontsCollection extends Backbone.Collection
   model: App.Models.Font
 
-  initialize: (attributes) ->
-    super
-    @storybook = attributes.storybook
+  initialize: (attributes, options) ->
+    @storybook = options.storybook
+
+
+  baseUrl: ->
+    "/storybooks/" + @storybook.id + "/fonts"
+
 
   url: ->
-    "/storybooks/" + App.currentSelection.get('storybook').get('id') + "/fonts.json"
+    @baseUrl() + '.json'
+
 
   toSelectOptionGroup: (callback) =>
     onSuccess = (collection) ->
