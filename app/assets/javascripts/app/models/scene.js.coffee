@@ -82,22 +82,24 @@ class App.Models.Scene extends Backbone.Model
     preview = @keyframes.at(0).preview
     return if preview? && @preview? && preview.cid == @preview.cid
 
-    @removePreviewListeners(@preview) if @preview?
+    @removePreviewListeners()
     @preview = preview
-    @addPreviewListeners(@preview)
+    @addPreviewListeners()
 
     @previewIdChanged()
     @previewUrlChanged()
 
 
-  addPreviewListeners: (preview) ->
-    preview.on  'change:id',       @previewIdChanged,  @
-    preview.on  'change:data_url', @previewUrlChanged, @
+  addPreviewListeners: ->
+    @preview.on  'change:id',       @previewIdChanged,  @
+    @preview.on  'change:data_url', @previewUrlChanged, @
 
 
-  removePreviewListeners: (preview) ->
-    preview.off 'change:id',       @previewIdChanged,  @
-    preview.off 'change:data_url', @previewUrlChanged, @
+  removePreviewListeners: ->
+    return unless @preview?
+
+    @preview.off 'change:id',       @previewIdChanged,  @
+    @preview.off 'change:data_url', @previewUrlChanged, @
 
 
   previewIdChanged: ->
