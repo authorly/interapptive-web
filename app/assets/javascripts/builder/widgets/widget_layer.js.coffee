@@ -5,6 +5,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   constructor: (widgetsCollection) ->
     super
 
+    @setScale(0.59)
     # Collection of Backbone models
     @widgets = widgetsCollection
 
