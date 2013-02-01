@@ -82,10 +82,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   showSceneOptions: ->
-    throw 'not implemented'
-    # RFCTR vent an event
-    view = new App.Views.SceneForm()
-    App.modalWithView(view: view).show()
+    App.vent.trigger('show:sceneform')
 
 
   showImageLibrary: -> @loadDataFor 'image'
