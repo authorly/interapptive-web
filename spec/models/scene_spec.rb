@@ -37,7 +37,7 @@ describe Scene do
       scene = Scene.create
       scene.keyframes.count.should == 1
       scene.keyframes.first.position.should == 0
-      scene.keyframes.first.widgets.should_not be
+      scene.keyframes.first.widgets.should == []
     end
 
     it 'should create a keyframe with 3 static widgets, in a main menu scene' do
