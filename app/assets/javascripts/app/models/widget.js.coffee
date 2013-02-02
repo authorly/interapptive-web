@@ -1,5 +1,5 @@
 class App.Models.Widget extends Backbone.Model
-  # attributes: position z_order
+  # attributes: position(attributes: x, y) z_order
   @idGenerator = new App.Lib.Counter
 
   defaults: ->
@@ -19,7 +19,8 @@ class App.Models.Widget extends Backbone.Model
 # video or sound (which will play when the hotspot is triggered).
 #
 class App.Models.HotspotWidget extends App.Models.Widget
-  # attributes: radius controlRadius position{x, y} action_id video_id sound_id
+  # attributes: radius controlRadius action_id video_id sound_id
+  MIN_RADIUS: 16
 
   defaults: ->
     _.extend super, {
