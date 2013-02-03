@@ -50,10 +50,6 @@ class App.Builder.Widgets.Widget extends cc.Node
   mouseOut: ->
     @_mouse_over = false
 
-
-  # mouseMove: ->
-
-
   doubleClick: ->
     # noop
 

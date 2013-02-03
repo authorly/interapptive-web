@@ -25,6 +25,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @on 'change:orientation', @updateOrientation
     @on 'double_click',       @doubleClick
     @on 'deselect',           @deselect
+    @on 'mousemove',          @mouseMove
 
     @_getImage()
 
@@ -58,8 +59,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @sprite._texture.complete && (size.width + size.height > 0)
 
 
-  doubleClick: (e) ->
-    @_setActiveSpriteFromClick(e)
+  mouseMove: ->
+    @_setCursor('move')
+
+
+  doubleClick: (event) ->
+    @_setActiveSpriteFromClick(event)
 
 
   applyOrientation: (orientation) ->
