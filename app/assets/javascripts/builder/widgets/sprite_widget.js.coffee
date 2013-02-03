@@ -22,8 +22,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     # @model - is set by the super constructor
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
 
-    @disableDragging()
-
     @on 'change:orientation', @updateOrientation
     @on 'double_click',       @doubleClick
     @on 'deselect',           @deselect
@@ -87,14 +85,11 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     App.vent.trigger 'sprite_widget:select', _widget
 
-    @enableDragging()
     @showBorder()
 
 
   deselect: ->
     @hideBorder()
-    @disableDragging()
-
 
   #mouseMove: (e) ->
   #  super
@@ -107,23 +102,15 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   #   @_setCursor('default')
 
 
-  enableDragging: ->
-    @draggable = true
-
-
-  disableDragging: ->
-    @draggable = false
-
-
-  showBorder: ->
+  showBorder: =>
     @_border = true
 
 
-  hideBorder: ->
+  hideBorder: =>
     @_border = false
 
 
-  hasBorder: ->
+  hasBorder: =>
     @_border
 
 
@@ -178,7 +165,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   # RFCTR!!!!
   _setActiveSpriteFromClick: (event) ->
-    console.log "hit _setA"
     activeSpriteWidget = App.builder.widgetLayer.widgetAtPoint(event._point)
     return unless activeSpriteWidget
 

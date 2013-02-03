@@ -5,6 +5,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   constructor: (widgetsCollection) ->
     super
 
+    # Scales entire scene/canvas
+    @setScale(0.59)
+
     # Collection of Backbone models
     @widgets = widgetsCollection
 
@@ -55,10 +58,15 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     for widget,i in @views
       if widget.getIsVisible() and widget.isPointInside(point)
-        console.log "return widget"
         return widget
 
     return null
+  #widgetAtPoint: (point) ->
+  #  #widgetWithHighestZ =  @widgetHighestZAtPoint(point)
+  #  #return widgetWithHighestZ if widgetWithHighestZ
+  #
+  #  return widget for widget,i in @views when widget.getIsVisible() and widget.isPointInside(point)
+  #  return null
 
   #
   # RFCTR: Re-integrate this functionality, move to modal
@@ -94,7 +102,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     touch = touches[0]
     point = touch.locationInView()
 
-    @moveCapturedWidget(point) if @_capturedWidget and @_capturedWidget.draggable
+    if @_capturedWidget and @_capturedWidget.draggable
+      @moveCapturedWidget(point)
+
     @mouseOverWidgetAtTouch(touch, @_capturedWidget)
 
 
