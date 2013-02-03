@@ -133,6 +133,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     delta = cc.ccpSub(point, @_previousPoint)
     newPos = cc.ccpAdd(delta, @_capturedWidget.getPosition())
 
+    widget = @_capturedWidget.model
+    if widget instanceof App.Models.SpriteWidget
+      widget = widget.getOrientationFor(@widgets.currentKeyframe)
+    widget.set position: {x: newPos.x, y: newPos.y}
+
     @_capturedWidget.setPosition(newPos, false)
     @_previousPoint = new cc.Point(parseInt(point.x), parseInt(point.y))
 
