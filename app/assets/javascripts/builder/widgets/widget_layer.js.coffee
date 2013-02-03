@@ -55,6 +55,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     for widget,i in @views
       if widget.getIsVisible() and widget.isPointInside(point)
+        console.log "return widget"
         return widget
 
     return null
@@ -228,4 +229,5 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       cc.TouchDispatcher.preTouchPoint.y = mouseY
 
       widget = @widgetAtPoint(touch.locationInView())
-      if widget then widget.trigger('dblclick', touch, event)
+      if widget
+        widget.trigger('double_click', touch, event)

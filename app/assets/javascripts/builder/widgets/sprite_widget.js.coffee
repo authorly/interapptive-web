@@ -25,7 +25,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @disableDragging()
 
     @on 'change:orientation', @updateOrientation
-    @on 'dblclick',           @doubleClick
+    @on 'double_click',       @doubleClick
     @on 'deselect',           @deselect
 
     @_getImage()
@@ -178,6 +178,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   # RFCTR!!!!
   _setActiveSpriteFromClick: (event) ->
+    console.log "hit _setA"
     activeSpriteWidget = App.builder.widgetLayer.widgetAtPoint(event._point)
     return unless activeSpriteWidget
 
