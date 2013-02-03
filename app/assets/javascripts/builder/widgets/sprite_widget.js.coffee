@@ -34,8 +34,24 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
       @addChild(@sprite)
 
-      # TODO RFCTR bring this back
-      # window.setTimeout @triggerLoaded, 0
+      window.setTimeout @checkLoadedStatus, 0
+
+
+  checkLoadedStatus: =>
+    if @isLoaded()
+      @setContentSize @sprite.getContentSize()
+      App.vent.trigger 'load:sprite'
+    else
+      window.setTimeout @checkLoadedStatus, 200
+
+
+  # # NOTE:
+  # #    There addImageSync() from Cocos2d, used in the constructor,
+  # #    may be worth using instead of this?
+  # #
+  isLoaded: ->
+    size = @sprite.getContentSize()
+    @sprite._texture.complete && (size.width + size.height > 0)
 
 
   applyOrientation: (orientation) ->
@@ -81,20 +97,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
 
-  # triggerLoaded: =>
-    # if @isLoaded()
-      # @setContentSize(@sprite.getContentSize())
-    # else
-      # window.setTimeout @triggerLoaded, 200
-
-  # #
-  # # NOTE:
-  # #    There addImageSync() from Cocos2d, used in the constructor,
-  # #    may be worth using instead of this?
-  # #
-  # isLoaded: ->
-    # size = @sprite.getContentSize()
-    # @sprite._texture.complete && (size.width + size.height > 0)
 
 
   # hasOrientationForKeyframe: (keyframe) =>

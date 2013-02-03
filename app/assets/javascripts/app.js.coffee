@@ -75,6 +75,22 @@ window.App =
       App.modalWithView(view: view).show()
 
 
+    @vent.on 'change:keyframeWidgets', (keyframe) =>
+      return unless App.currentSelection.get('keyframe') == keyframe
+      @saveCanvasAsPreview(keyframe)
+
+    @vent.on 'change:sceneWidgets load:sprite', =>
+      keyframe = App.currentSelection.get('keyframe')
+      @saveCanvasAsPreview(keyframe)
+
+
+  saveCanvasAsPreview: (keyframe) ->
+    canvas = document.getElementById "builder-canvas"
+    image = Canvas2Image.saveAsPNG canvas, true, 110, 83
+    keyframe.setPreviewDataUrl image.src
+
+
+
     # @fontsCollection =         new App.Collections.FontsCollection         []
     # @soundsCollection =        new App.Collections.SoundsCollection        []
     # @keyframesTextCollection = new App.Collections.KeyframeTextsCollection []

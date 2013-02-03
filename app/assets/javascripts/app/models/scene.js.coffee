@@ -21,7 +21,9 @@ class App.Models.Scene extends Backbone.Model
     widgets = attributes.widgets; delete attributes.widgets
     @widgets = new App.Collections.Widgets(widgets)
     @widgets.scene = @
-    @widgets.on 'add remove change', => @save()
+    @widgets.on 'add remove change', =>
+      App.vent.trigger 'change:sceneWidgets', @
+      @save()
 
     @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
