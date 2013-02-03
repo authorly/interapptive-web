@@ -36,7 +36,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       document.body.style.cursor = 'default'
 
   addWidget: (widget) ->
-    return if widget.get('type') is 'SpriteOrientation'
+    return if widget instanceof App.Models.SpriteOrientation
 
     view = new App.Builder.Widgets[widget.get('type')](model: widget)
     @addChild(view)
@@ -45,7 +45,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   removeWidget: (widget) ->
-    return if widget.get('type') is 'SpriteOrientation'
+    return if widget instanceof App.Models.SpriteOrientation
 
     _.each @views, (view, index) =>
       if view.model is widget
