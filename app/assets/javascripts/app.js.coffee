@@ -268,3 +268,7 @@ $ ->
 
   @storybooksRouter = new App.Routers.StorybooksRouter
   Backbone.history.start()
+
+  $('body').click (event) ->
+    unless $(event.target).closest('#builder-canvas').length
+      App.vent.trigger 'canvas:click_outside'

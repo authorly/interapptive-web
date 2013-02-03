@@ -24,8 +24,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @on 'change:orientation', @updateOrientation
     @on 'double_click',       @doubleClick
-    @on 'deselect',           @deselect
+    @on 'deselect body:click',@deselect
     @on 'mousemove',          @mouseMove
+
+    App.vent.on 'canvas:click_outside', @deselect
 
     @_getImage()
 
@@ -93,7 +95,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @showBorder()
 
 
-  deselect: ->
+  deselect: =>
     @hideBorder()
 
 
