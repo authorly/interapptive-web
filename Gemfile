@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.11'
 gem 'puma'
 gem 'mysql2'
 gem 'bcrypt-ruby'
@@ -36,10 +36,10 @@ end
 
 group :development, :test do
   gem 'guard'
-  gem 'guard-coffeescript'
+  gem 'jasminerice'
+  gem 'guard-jasmine'
   gem 'capybara'
   gem 'guard-rspec'
-  gem 'jasmine'
 end
 
 group :development do

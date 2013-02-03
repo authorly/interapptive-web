@@ -4,17 +4,17 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
 
 
   formOptions: ->
-    model: @getModel()
+    model: @model
 
     schema:
       sound_id:
         type: "Select"
-        options: App.soundsCollection
+        options: @model.storybook.sounds
         title: "Background Sound"
 
       sound_repeat_count:
         type: "Number"
-        title: "Repetation count"
+        title: "Repetition count"
         help: "0 for infinite"
         validators:    [
           checkRepetation = (value, formValues) ->
@@ -24,17 +24,3 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
 
             err  if value < 0
           ]
-
-
-  getModel: ->
-    @model = App.currentScene()
-
-
-  initialize: ->
-    super
-
-
-  deleteMessage: ->
-    '\nYou are about to delete this scene\n\n\n' +
-    'This cannot be undone.\n\n\n' +
-    'Are you sure you want to continue?\n'

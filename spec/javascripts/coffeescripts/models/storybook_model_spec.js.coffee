@@ -39,6 +39,15 @@ describe "App.Models.Storybook", ->
     it "should expose the model's  voice recording option attribute", ->
       expect(@storybook.get("record_enabled")).toEqual true
 
+    it "should expose model's scenes", ->
+      expect(Object.getPrototypeOf(@storybook.scenes).constructor.name).toEqual "ScenesCollection"
+
+    it "should expose model's sounds", ->
+      expect(Object.getPrototypeOf(@storybook.sounds).constructor.name).toEqual "SoundsCollection"
+
+    it "should expose model's images", ->
+      expect(Object.getPrototypeOf(@storybook.images).constructor.name).toEqual "ImagesCollection"
+
   describe "attribute validation", ->
     beforeEach ->
       storybook = new App.Models.Storybook()

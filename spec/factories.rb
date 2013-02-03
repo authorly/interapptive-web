@@ -2,7 +2,8 @@ require 'ffaker'
 require 'forgery'
 
 Factory.define :user do |f|
-  f.email 'user%d@example.com'
+  f.username 'user%d'
+  f.email    'user%d@example.com'
   f.password f.password_confirmation('supersecret')
 end
 
@@ -39,13 +40,13 @@ Factory.define :font, class: Asset do |f|
 end
 
 Factory.define :scene do |f|
-  f.preview_image_id Factory.create(:image)
+  f.preview_image_id Factory.create(:image).id
   f.sound_id Factory.create(:sound).id
   f.storybook Factory.create(:storybook)
 end
 
 Factory.define :main_menu_scene, class: Scene do |f|
-  f.preview_image_id Factory.create(:image)
+  f.preview_image_id Factory.create(:image).id
   f.sound_id Factory.create(:sound).id
   f.storybook Factory.create(:storybook)
   f.is_main_menu true
@@ -53,13 +54,13 @@ Factory.define :main_menu_scene, class: Scene do |f|
 end
 
 Factory.define :keyframe do |f|
-  f.scene_id Factory.create(:scene)
-  f.preview_image_id Factory.create(:image)
+  f.scene_id Factory.create(:scene).id
+  f.preview_image_id Factory.create(:image).id
 end
 
 Factory.define :animation_keyframe, class: Keyframe do |f|
-  f.scene_id Factory.create(:scene)
-  f.preview_image_id Factory.create(:image)
+  f.scene_id Factory.create(:scene).id
+  f.preview_image_id Factory.create(:image).id
   f.is_animation true
   f.position nil
 end
@@ -70,20 +71,20 @@ end
 
 Factory.define :settings do |f|
   f.type "font.ttf"
-  f.scene_id Factory.create(:scene)
-  f.storybook_id Factory.create(:storybook)
+  f.scene_id Factory.create(:scene).id
+  f.storybook_id Factory.create(:storybook).id
   font = Factory.create(:font)
-  f.font_id font
-  f.font_size font
+  f.font_id font.id
+  f.font_size 14
 end
 
 Factory.define :storybook_settings do |f|
   f.type "font.ttf"
-  f.scene_id Factory.create(:scene)
-  f.storybook_id Factory.create(:storybook)
+  f.scene_id Factory.create(:scene).id
+  f.storybook_id Factory.create(:storybook).id
   font = Factory.create(:font)
-  f.font_id font
-  f.font_size font
+  f.font_id font.id
+  f.font_size 14
 end
 
 Factory.define :keyframe_text do |f|

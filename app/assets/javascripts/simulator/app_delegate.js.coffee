@@ -1,3 +1,5 @@
+#= require ./init
+
 class Sim.AppDelegate extends cc.Application
   initInstance: ->
     true
