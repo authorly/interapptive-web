@@ -2,13 +2,12 @@
 # and touch events).
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
+  DEFAULT_CURSOR = 'default'
+
   constructor: (widgetsCollection) ->
     super
 
-    # Scales entire scene/canvas
-    @setScale(0.59)
-
-    # Collection of Backbone models
+    # Collection (array) of Backbone models
     @widgets = widgetsCollection
 
     # Array of Cocos2d objects ("widgets")
@@ -22,6 +21,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     @addDblClickEventListener()
     @addClickOutsideEventListener()
+    @addCanvasMouseLeaveListener()
 
     @widgets.on 'add',    @addWidget,    @
     @widgets.on 'remove', @removeWidget, @
@@ -29,6 +29,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     App.vent.on 'sprite_widget:select', @deselectSpriteWidgets
 
+
+  addCanvasMouseLeaveListener: ->
+    # RFCTR - ? Trigger method in Sprite Widget?
+    $('#builder-canvas').bind 'mouseout', (event) ->
+      document.body.style.cursor = 'default'
 
   addWidget: (widget) ->
     return if widget.get('type') is 'SpriteOrientation'

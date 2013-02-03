@@ -91,15 +91,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   deselect: ->
     @hideBorder()
 
-  #mouseMove: (e) ->
-  #  super
-  #  @_setCursor(if @hasBorder() then 'move' else 'default')
+
+  mouseOver: (e) ->
+    @_setCursor('move')
 
 
-  # mouseOut: ->
-  #   super
-  #
-  #   @_setCursor('default')
+  mouseOut: ->
+    @_setCursor('default')
 
 
   showBorder: =>
