@@ -1,6 +1,6 @@
 class App.Builder.Widgets.Lib.Sprite extends cc.Sprite
 
-  constructor: (options) ->
+  constructor: (options = {}) ->
     super
 
     @model = options.model

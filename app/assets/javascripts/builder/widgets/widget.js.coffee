@@ -1,7 +1,8 @@
-
 ##
 # A `Widget` is an entity that has a graphical representation and that
 # responds to user interactions.
+#
+# Widget attributes are managed via the @model property (Backbone model)
 #
 # Graphical properties:
 # _opacity
@@ -11,12 +12,12 @@
 #
 class App.Builder.Widgets.Widget extends cc.Node
 
-  # draggable: true
+  draggable: true
 
-  # _mouse_over: false
+  _mouse_over: false
 
 
-  constructor: (options) ->
+  constructor: (options={}) ->
     super
 
     @model = options.model
@@ -26,11 +27,12 @@ class App.Builder.Widgets.Widget extends cc.Node
     @_highlighted = false
 
     position = @model.get('position')
-    @setPosition new cc.Point(position.x, position.y)
 
-    # @on 'mouseover', @mouseOver
-    # @on 'mouseout',  @mouseOut
-    # @on 'mousemove', @mouseMove
+    @setPosition(new cc.Point(position.x, position.y))
+
+    @on 'mouseover', @mouseOver
+    @on 'mouseout',  @mouseOut
+    @on 'mousemove', @mouseMove
     # @on 'dblclick',  @doubleClick
 
     # App.vent.on 'widget:change_zorder', @changeZOrder
@@ -41,12 +43,12 @@ class App.Builder.Widgets.Widget extends cc.Node
     # @trigger 'change', 'zOrder'
 
 
-  # mouseOver: ->
-    # @_mouse_over = true
+  mouseOver: ->
+    @_mouse_over = true
 
 
-  # mouseOut: ->
-    # @_mouse_over = false
+  mouseOut: ->
+    @_mouse_over = false
 
 
   # mouseMove: ->
@@ -88,11 +90,6 @@ class App.Builder.Widgets.Widget extends cc.Node
     # @_zOrder
 
 
-  # setPosition: (pos, triggerEvent=true)->
-    # super
-    # @trigger('change', 'position') if triggerEvent
-
-
   rect: ->
     p = @getPosition()
     s = @getContentSize()
@@ -105,23 +102,6 @@ class App.Builder.Widgets.Widget extends cc.Node
       s.width  * scale
       s.height * scale
     )
-
-
-  # toHash: ->
-    # hash                      = {}
-    # hash.id                   = @id
-    # hash.type                 = Object.getPrototypeOf(this).constructor.name
-    # hash.position             =
-      # x: @getPosition().x
-      # y: @getPosition().y
-    # hash.retention            = @retention
-    # hash.retentionMutability  = @retentionMutability
-
-    # hash
-
-
-  # toSceneHash: ->
-    # @toHash()
 
 
   pointToLocal: (point) =>
@@ -148,18 +128,6 @@ class App.Builder.Widgets.Widget extends cc.Node
     cc.Rect.CCRectContainsPoint(r, local)
 
 
-  # setStorybook: (storybook) ->
-    # # @removeFromStorybook(@_storybook) if @_storybook
-    # @_storybook = storybook
-    # # @addToStorybook(storybook) if storybook
-
-
-  # # removeFromStorybookJSON: (storybook) =>
-
-
-  # # addToStorybookJSON: (storybook) =>
-
-
   isSpriteWidget: ->
     @ instanceof App.Builder.Widgets.SpriteWidget
 
@@ -167,6 +135,3 @@ class App.Builder.Widgets.Widget extends cc.Node
   # isTouchWidget: ->
     # @ instanceof App.Builder.Widgets.TouchWidget
 
-
-  # save: ->
-    # throw new Error("Must be implemented in the subclass")
