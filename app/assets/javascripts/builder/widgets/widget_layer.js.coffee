@@ -163,10 +163,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   #
 
   deselectSpriteWidgets: =>
-    for widget in @views
-      continue unless widget.isSpriteWidget()
-
-      widget
+    widget.deselect() for widget in @views when widget.isSpriteWidget()
 
 
   addClickOutsideEventListener: =>   # RFCTR - unnecessary
