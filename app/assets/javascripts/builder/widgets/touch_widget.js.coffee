@@ -26,26 +26,26 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   INNER_STROKE_WIDTH: 2
   INNER_STROKE_FILL:   'rgba(255, 255, 255, 1)'
 
-  CSS_SCALE_FACTOR: 0.59
-
 
   constructor: (options={}) ->
     super
     @setOpacity @DEFAULT_OPACITY
+    @updateContentSize()
 
     @model.on 'change:radius', @updateContentSize, @
     @model.on 'change:position', @updatePosition, @
 
-    @on 'mouse:over', @onMouseOver, @
-    @on 'mouse:out',  @onMouseOut,  @
-    @on 'mouse:down', @onMouseDown, @
-    @on 'mouse:up',   @onMouseUp,   @
-    @on 'mouse:move', @onMouseMove, @
+    # RFCTR @dira 2013-02-03 these events should be mouse-over #190
+    @on 'mouseover', @onMouseOver, @
+    @on 'mouseout',  @onMouseOut,  @
+    @on 'mousedown', @onMouseDown, @
+    @on 'mouseup',   @onMouseUp,   @
+    @on 'mousemove', @onMouseMove, @
 
 
   draw: (ctx) ->
     r = @model.get('radius')
-    cr = @model.get('controlRadius')
+    cr = @model.get('control_radius')
 
     # FIXME We should monkey patch cocos2d-html5 to support opacity
     ctx.save()
@@ -84,7 +84,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
   getControlCenter: ->
     radius = @model.get('radius')
-    controlRadius = @model.get('controlRadius')
+    controlRadius = @model.get('control_radius')
 
     return new cc.Point(
       (radius - controlRadius) *  Math.sin(cc.DEGREES_TO_RADIANS(135))
@@ -111,8 +111,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
 
   onMouseUp: (e) ->
-    @onMouseOut()
-    @_endResize(e)
+    @_endResize(e) if @resizing
 
 
   doubleClick: ->
@@ -124,10 +123,9 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     point = e.canvasPoint
 
     inControl = @resizing or @_isPointInsideControl(point)
-    @setCursor(if inControl then CURSOR_RESIZE else CURSOR_MOVE)
+    @setCursor(if inControl then @CURSOR_RESIZE else @CURSOR_MOVE)
 
-    if @resizing
-      @_setRadius(@_distanceFromCenter(point) + @_resizeOffset)
+    @_updateRadius(point) if @resizing
 
 
   setCursor: (cursor) ->
@@ -138,7 +136,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   isPointInside: (point) ->
     inRect = super
     return false unless inRect
-    @_distanceFromCenter(point) < @model.get('radius') * CSS_SCALE_FACTOR
+    @_distanceFromCenter(point) < @model.get('radius')
 
 
   _distanceFromCenter: (point) ->
@@ -147,8 +145,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
     xLen = local.x - radius
     yLen = local.y - radius
-    # TODO RFCTR CSS_SCALE_FACTOR was removed on master
-    Math.sqrt((xLen * xLen) + (yLen * yLen)) * @CSS_SCALE_FACTOR
+    Math.sqrt((xLen * xLen) + (yLen * yLen))
 
 
   _isPointInsideControl: (point) ->
@@ -167,7 +164,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     yLen = center.y + local.y # Y axis is inverted
     dist = Math.sqrt((xLen * xLen) + (yLen * yLen))
 
-    dist < @model.get('controlRadius')
+    dist < @model.get('control_radius')
 
 
   _startResize: (e) ->
@@ -188,7 +185,11 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
       @CURSOR_DEFAULT
     @setCursor(cursor)
 
-    @_setRadius(@_distanceFromCenter(point))
+    @_updateRadius(point)
+
+
+  _updateRadius: (point) ->
+    @_setRadius(@_distanceFromCenter(point) + @_resizeOffset)
 
 
   # TODO this enforcement of a min radius should be on the model
