@@ -5,9 +5,11 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
   constructor: (options) ->
     super
 
+    @model.on 'change:url', @refresh, @
+
     view = new App.Views.ButtonWidgetImagesSelector
-      collection: App.imagesCollection
-      widget:     options.model
+      widget:     @model
+      collection: @model.collection.scene.storybook.images
     view.on 'selected', @imagesSelected
     @selector = new App.Views.Modal(view: view)
 
@@ -17,16 +19,13 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
 
 
   imagesSelected: (values) =>
-    if @_url != values.baseUrl
-      @_url = values.baseUrl
-      @trigger('change', 'url')
-      # TODO integrate better with the new sprites
-      @sprite.url = @_url
-      @_getImage()
-
-    if @_selectedUrl != values.tappedUrl
-      @_selectedUrl = values.tappedUrl
-      @trigger('change', 'selectedUrl')
-
+    if values.baseUrl?
+      @model.set url: values.baseUrl
+    if values.tappedUrl?
+      @model.set selectedUrl: values.tappedUrl
 
     @selector.hide()
+
+
+  refresh: ->
+    @_getImage()
