@@ -269,6 +269,7 @@ $ ->
   @storybooksRouter = new App.Routers.StorybooksRouter
   Backbone.history.start()
 
+  # RFCTR - Move to Widget layer
   $('body').click (event) ->
     unless $(event.target).closest('#builder-canvas').length
       App.vent.trigger 'canvas:click_outside'

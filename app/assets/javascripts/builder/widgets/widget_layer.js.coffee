@@ -1,5 +1,10 @@
 # Displays the widgets on the main canvas, and handles user interaction (mouse
 # and touch events).
+#
+# Methods:
+#   _calculateTouchFrom(event) - Calculates the touch point relative to the canvas
+#
+
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   DEFAULT_CURSOR = 'default'
@@ -35,6 +40,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     $('#builder-canvas').bind 'mouseout', (event) ->
       document.body.style.cursor = 'default'
 
+
   addWidget: (widget) ->
     return if widget.get('type') is 'SpriteOrientation'
 
@@ -58,23 +64,20 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   widgetAtPoint: (point) ->
-    #widgetWithHighestZ =  @widgetHighestZAtPoint(point)
-    #return widgetWithHighestZ if widgetWithHighestZ
+    #
+    # RFCTR - Move to model layer
+    # widgetWithHighestZ =  @widgetHighestZAtPoint(point)
+    # return widgetWithHighestZ if widgetWithHighestZ
 
     for widget,i in @views
       if widget.getIsVisible() and widget.isPointInside(point)
         return widget
 
     return null
-  #widgetAtPoint: (point) ->
-  #  #widgetWithHighestZ =  @widgetHighestZAtPoint(point)
-  #  #return widgetWithHighestZ if widgetWithHighestZ
-  #
-  #  return widget for widget,i in @views when widget.getIsVisible() and widget.isPointInside(point)
-  #  return null
+
 
   #
-  # RFCTR: Re-integrate this functionality, move to modal
+  # RFCTR: Re-integrate this functionality, move to model / collection
   #
   # widgetHighestZAtPoint: (point) ->
   #   widgetWithHighestZ =
@@ -85,6 +88,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   #   widgetWithHighestZ || false
   #
 
+
   ccTouchesBegan: (touches) ->
     widget = @widgetAtTouch(touches[0])
     return unless widget
@@ -92,10 +96,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     point = touches[0].locationInView()
 
     # RFCTR - Remove brackets, match syntax
-    widget.trigger('mousedown', {
-      touch: touches[0],
+    widget.trigger 'mousedown',
+      touch: touches[0]
       canvasPoint: point
-    })
 
     @_capturedWidget = widget
     @_previousPoint = new cc.Point(point.x, point.y)
@@ -118,10 +121,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     point = touch.locationInView()
 
     if @_capturedWidget
-      @_capturedWidget.trigger('mouseup', {
+      @_capturedWidget.trigger 'mouseup',
         touch: touch,
         canvasPoint: point
-      })
 
     delete @_previousPoint
     delete @_capturedWidget
@@ -137,31 +139,27 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_previousPoint = new cc.Point(parseInt(point.x), parseInt(point.y))
 
 
-  # RFCTR - Eliminate some brackets!
   mouseOverWidgetAtTouch: (touch, widget=null) ->
     point = touch.locationInView()
     widget ||= @widgetAtPoint(point)
 
     if widget
-      widget.trigger('mousemove', {
-        touch:       touch,
+      widget.trigger 'mousemove',
+        touch:       touch
         canvasPoint: point
-      })
 
     if widget isnt @_mouseOverWidget
       if @_mouseOverWidget
-        @_mouseOverWidget.trigger('mouseout', {
-          touch:       touch,
-          canvasPoint: point,
+        @_mouseOverWidget.trigger 'mouseout',
+          touch:       touch
+          canvasPoint: point
           newWidget:   widget
-        })
 
       if widget
-        widget.trigger('mouseover', {
-          touch:          touch,
-          canvasPoint:    point,
+        widget.trigger 'mouseover',
+          touch:          touch
+          canvasPoint:    point
           previousWidget: @_mouseOverWidget
-        })
 
       @_mouseOverWidget = widget
 
@@ -169,9 +167,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   setSelectedWidget: (widget) ->
     @_selectedWidget = widget
 
-  ##
+  #
   # RFCTR - Used by the sprite form palette
-  #         Not sure if we'll need to keep it though.
+  #         Not sure if we'll need to keep it though, it smells.
+  #
+  #         Consider better naming convention (i.e., hasSelectedWidget)
+  #         to better match, if used.
   #                                         C.W. 2/2/2013
   #
   #   hasCapturedWidget: ->
@@ -182,36 +183,10 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     widget.deselect() for widget in @views when widget.isSpriteWidget()
 
 
-  addClickOutsideEventListener: =>   # RFCTR - unnecessary
+  addClickOutsideEventListener: =>
     # # Checks for a click outside the widget
     cc.canvas.addEventListener 'click', (event) =>
-      el = cc.canvas
-      pos = {left:0, top:0, height:el.height}
-
-      ##
-      # RFCTR - DRY up
-      #       - Convert to function that returns touch object
-      #
-
-      while el != null
-        pos.left += el.offsetLeft
-        pos.top += el.offsetTop
-        el = el.offsetParent
-
-      tx = event.pageX
-      ty = event.pageY
-
-      mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
-      mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
-
-      touch = new cc.Touch(0, mouseX, mouseY)
-      touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
-      cc.TouchDispatcher.preTouchPoint.x = mouseX
-      cc.TouchDispatcher.preTouchPoint.y = mouseY
-
-      #
-      # END DRY
-      ##
+      touch = @_calculateTouchFrom(event)
 
       return unless @_selectedWidget
 
@@ -220,29 +195,37 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         @_selectedWidget.trigger 'deselect'
 
 
-  # RFCTR - Dry up duplicate code w/ above
   addDblClickEventListener: ->
-    ## FIXME Need a cleaner way to check for doubleclicks
     cc.canvas.addEventListener 'dblclick', (event) =>
-      el = cc.canvas
-      pos = {left:0, top:0, height:el.height}
-
-      while el != null
-        pos.left += el.offsetLeft
-        pos.top += el.offsetTop
-        el = el.offsetParent
-
-      tx = event.pageX
-      ty = event.pageY
-
-      mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
-      mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
-
-      touch = new cc.Touch(0, mouseX, mouseY)
-      touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
-      cc.TouchDispatcher.preTouchPoint.x = mouseX
-      cc.TouchDispatcher.preTouchPoint.y = mouseY
+      touch = @_calculateTouchFrom(event)
 
       widget = @widgetAtPoint(touch.locationInView())
       if widget
         widget.trigger('double_click', touch, event)
+
+
+  _calculateTouchFrom: (event) ->
+    el = cc.canvas
+    pos =
+      left:0
+      top:0
+      height:el.height
+
+    while el != null
+      pos.left += el.offsetLeft
+      pos.top += el.offsetTop
+      el = el.offsetParent
+
+    tx = event.pageX
+    ty = event.pageY
+
+    mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
+    mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
+
+    touch = new cc.Touch(0, mouseX, mouseY)
+    touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
+    cc.TouchDispatcher.preTouchPoint.x = mouseX
+    cc.TouchDispatcher.preTouchPoint.y = mouseY
+
+    touch
+

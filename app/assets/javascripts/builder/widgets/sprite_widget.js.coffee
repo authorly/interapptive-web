@@ -23,8 +23,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
 
     @on 'change:orientation', @updateOrientation
-    @on 'double_click',       @doubleClick
     @on 'deselect body:click',@deselect
+    @on 'double_click',       @doubleClick
     @on 'mousemove',          @mouseMove
 
     App.vent.on 'canvas:click_outside', @deselect
@@ -99,10 +99,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @hideBorder()
 
 
+  # RFCTR - Move to widget layer
   mouseOver: (e) ->
     @_setCursor('move')
 
 
+  # RFCTR - Move to widget layer
   mouseOut: ->
     @_setCursor('default')
 
