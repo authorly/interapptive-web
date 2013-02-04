@@ -62,13 +62,13 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   sceneWidgetAdded: (sceneWidget) ->
-    if sceneWidget.get('type') is 'SpriteWidget'
+    if sceneWidget instanceof App.Models.SpriteWidget
       # add the widgets after adding `sceneWidget` finished (including its callbacks)
       window.setTimeout (=> @addOrientationFor(sceneWidget)), 0
 
 
   sceneWidgetRemoved: (sceneWidget) ->
-    if sceneWidget.get('type') is 'SpriteWidget'
+    if sceneWidget instanceof App.Models.SpriteWidget
       @widgets.remove @getOrientationFor(widgets)
 
 
@@ -82,7 +82,7 @@ class App.Models.Keyframe extends Backbone.Model
 
   getOrientationFor: (widget) ->
     @widgets.find (w) ->
-      w.get('type') == 'SpriteOrientation' &&
+      w instanceof App.Models.SpriteOrientation &&
       w.get('sprite_widget_id') == widget.id
 
 

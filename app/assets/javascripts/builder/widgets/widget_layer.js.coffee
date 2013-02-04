@@ -42,7 +42,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addWidget: (widget) ->
-    return if widget.get('type') is 'SpriteOrientation'
+    return if widget instanceof App.Models.SpriteOrientation
 
     view = new App.Builder.Widgets[widget.get('type')](model: widget)
     @addChild(view)
@@ -51,7 +51,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   removeWidget: (widget) ->
-    return if widget.get('type') is 'SpriteOrientation'
+    return if widget instanceof App.Models.SpriteOrientation
 
     _.each @views, (view, index) =>
       if view.model is widget
@@ -134,6 +134,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     delta = cc.ccpSub(point, @_previousPoint)
     newPos = cc.ccpAdd(delta, @_capturedWidget.getPosition())
+
+    widget = @_capturedWidget.model
+    if widget instanceof App.Models.SpriteWidget
+      widget = widget.getOrientationFor(@widgets.currentKeyframe)
+    widget.set position: {x: newPos.x, y: newPos.y}
 
     @_capturedWidget.setPosition(newPos, false)
     @_previousPoint = new cc.Point(parseInt(point.x), parseInt(point.y))

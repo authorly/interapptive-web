@@ -101,7 +101,7 @@ class App.Models.Scene extends Backbone.Model
 
 
   spriteWidgets: ->
-    @widgets.select (w) -> w.get('type') == 'SpriteWidget'
+    @widgets.select (w) -> w instanceof App.Models.SpriteWidget
 
 
   # RFCTR widgets
