@@ -10,6 +10,8 @@
 # of that scene. If you move it or scale it in one keyframe, it will have the
 # new position / scale in all the keyframes)
 #
+# radius - a local cache of the hotspot's radius; it is set to the model only
+# when changes to it are finished (when drag is finished)
 class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   DEFAULT_OPACITY:   150
   HIGHLIGHT_OPACITY: 230
@@ -30,15 +32,25 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   constructor: (options) ->
     super
     @setOpacity @DEFAULT_OPACITY
+
+    @model.on 'change:radius', @updateRadius, @
+    @updateRadius()
+    @controlRadius = @model.get 'control_radius'
+
+
+  updateRadius: ->
+    @radius = @model.get 'radius'
     @updateContentSize()
 
-    @model.on 'change:radius', @updateContentSize, @
-    @model.on 'change:position', @updatePosition, @
+
+  updateContentSize: ->
+    diameter = @radius * 2
+    @setContentSize(new cc.Size(diameter, diameter))
 
 
   draw: (ctx) ->
-    r = @model.get('radius')
-    cr = @model.get('control_radius')
+    r = @radius
+    cr = @controlRadius
 
     # FIXME We should monkey patch cocos2d-html5 to support opacity
     ctx.save()
@@ -70,18 +82,10 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     ctx.restore()
 
 
-  updateContentSize: ->
-    diameter = @model.get('radius') * 2
-    @setContentSize(new cc.Size(diameter, diameter))
-
-
   getControlCenter: ->
-    radius = @model.get('radius')
-    controlRadius = @model.get('control_radius')
-
     return new cc.Point(
-      (radius - controlRadius) *  Math.sin(cc.DEGREES_TO_RADIANS(135))
-      (radius - controlRadius) * -Math.cos(cc.DEGREES_TO_RADIANS(135))
+      (@radius - @controlRadius) *  Math.sin(cc.DEGREES_TO_RADIANS(135))
+      (@radius - @controlRadius) * -Math.cos(cc.DEGREES_TO_RADIANS(135))
     )
 
 
@@ -105,7 +109,10 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
 
   mouseUp: (options) ->
-    @_endResize(options) if @resizing
+    if @resizing
+      @_endResize(options)
+    else
+      super
 
 
   doubleClick: ->
@@ -123,7 +130,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     inControl = @resizing or @_isPointInsideControl(point)
     @setCursor(if inControl then @CURSOR_RESIZE else @CURSOR_MOVE)
 
-    @_updateRadius(point) if @resizing
+    @_resizeRadius(point) if @resizing
 
 
   setCursor: (cursor) ->
@@ -134,10 +141,15 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   isPointInside: (point) ->
     inRect = super
     return false unless inRect
-    @_distanceFromCenter(point) < @model.get('radius')
+    @_distanceFromCenter(point) < @radius
 
 
   _distanceFromCenter: (point) ->
+    # Could not figure out why using @radius makes the UI go erratic. Nor why this
+    # works.
+    # I suppose that changing @radius at the same time as computing distances based on
+    # it makes it err.
+    # @dira 2013-02-04
     radius = @model.get('radius')
     local = @pointToLocal(point)
 
@@ -150,9 +162,8 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     local = @pointToLocal(point)
 
     # Adjust origin to centre of circle
-    radius = @model.get('radius')
-    local.x -= radius
-    local.y -= radius
+    local.x -= @radius
+    local.y -= @radius
 
     # Centre of control circle relative to parent circle's centre
     center = @getControlCenter()
@@ -162,12 +173,12 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     yLen = center.y + local.y # Y axis is inverted
     dist = Math.sqrt((xLen * xLen) + (yLen * yLen))
 
-    dist < @model.get('control_radius')
+    dist < @controlRadius
 
 
   _startResize: (e) ->
     @resizing = true
-    @_resizeOffset = @model.get('radius') - @_distanceFromCenter(e.canvasPoint)
+    @_resizeOffset = @radius - @_distanceFromCenter(e.canvasPoint)
     @setCursor(@CURSOR_RESIZE)
 
 
@@ -183,11 +194,12 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
       @CURSOR_DEFAULT
     @setCursor(cursor)
 
-    @_updateRadius(point)
+    @_resizeRadius(point)
+    @_setRadius @radius
 
 
-  _updateRadius: (point) ->
-    @_setRadius(@_distanceFromCenter(point) + @_resizeOffset)
+  _resizeRadius: (point) ->
+    @radius = @_distanceFromCenter(point) + @_resizeOffset
 
 
   # TODO this enforcement of a min radius should be on the model
