@@ -16,6 +16,7 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     @model = options.model
     _.extend(this, Backbone.Events)
+    @model.on 'change:position', @updatePosition, @
 
     # @_highlighted = false
     @_mouse_over = false
