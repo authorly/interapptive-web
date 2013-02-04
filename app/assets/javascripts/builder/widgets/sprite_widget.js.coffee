@@ -22,10 +22,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     # @model - is set by the super constructor
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
 
-    @on 'change:orientation', @updateOrientation
-    @on 'deselect body:click',@deselect
-    @on 'double_click',       @doubleClick
-    @on 'mousemove',          @mouseMove
+    @on 'change:orientation',  @updateOrientation
+    @on 'deselect body:click', @deselect
 
     App.vent.on 'canvas:click_outside', @deselect
 
@@ -65,11 +63,9 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_setCursor('move')
 
 
-  doubleClick: (event) ->
-    @_setActiveSpriteFromClick(event)
-
-
   applyOrientation: (orientation) ->
+    @currentOrientation = orientation
+
     position = orientation.get('position')
 
     @setPosition(new cc.Point(position.x, position.y))
@@ -87,11 +83,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     orientationWidget.update()
 
 
-  select: (widget = null) =>
-    _widget = widget || this
-
-    App.vent.trigger 'sprite_widget:select', _widget
-
+  select: ->
     @showBorder()
 
 
@@ -99,12 +91,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @hideBorder()
 
 
-  # RFCTR - Move to widget layer
-  mouseOver: (e) ->
+  mouseOver: ->
     @_setCursor('move')
 
 
-  # RFCTR - Move to widget layer
   mouseOut: ->
     @_setCursor('default')
 
@@ -169,12 +159,3 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   _setCursor: (cursor) ->
     document.body.style.cursor = cursor
 
-
-  # RFCTR!!!!
-  _setActiveSpriteFromClick: (event) ->
-    activeSpriteWidget = App.builder.widgetLayer.widgetAtPoint(event._point)
-    return unless activeSpriteWidget
-
-    # RFCTR  Needs ventilation
-    App.builder.widgetLayer.setSelectedWidget(activeSpriteWidget)
-    @select(activeSpriteWidget)

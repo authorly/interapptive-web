@@ -8,14 +8,8 @@
 # _opacity
 # _highlighted
 # _mouse_over
-# draggable
 #
 class App.Builder.Widgets.Widget extends cc.Node
-
-  draggable: true
-
-  _mouse_over: false
-
 
   constructor: (options) ->
     super
@@ -23,15 +17,11 @@ class App.Builder.Widgets.Widget extends cc.Node
     @model = options.model
     _.extend(this, Backbone.Events)
 
-    @setOpacity(255)
     # @_highlighted = false
+    @_mouse_over = false
 
     @updatePosition()
-
-    @on 'mouseover', @mouseOver
-    @on 'mouseout',  @mouseOut
-    @on 'mousemove', @mouseMove
-    # @on 'dblclick',  @doubleClick
+    @setOpacity(255)
 
     # App.vent.on 'widget:change_zorder', @changeZOrder
 
@@ -48,10 +38,6 @@ class App.Builder.Widgets.Widget extends cc.Node
     position = @model.get('position')
     @setPosition new cc.Point(position.x, position.y)
 
-  # changeZOrder: (z) ->
-    # @setZOrder(z)
-    # @trigger 'change', 'zOrder'
-
 
   mouseOver: ->
     @_mouse_over = true
@@ -60,33 +46,33 @@ class App.Builder.Widgets.Widget extends cc.Node
   mouseOut: ->
     @_mouse_over = false
 
+
+  # options: { touch, canvasPoint }
+  mouseDown: (options) ->
+
+
+  mouseUp: ->
+
+
+  mouseMove: ->
+
+
   doubleClick: ->
-    # noop
 
 
-  # isHighlighted: ->
-    # return @_highlighted
+  select: ->
 
 
-  # highlight: ->
-    # return if @isHighlighted()
-    # @_highlighted = true
-    # App.Builder.Widgets.WidgetDispatcher.trigger('widget:highlight', @id)
+  deselect: ->
 
 
-  # unHighlight: ->
-    # return unless @isHighlighted()
-    # @_highlighted = false
-    # App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight', @id)
+  draggedTo: (position) ->
+    widget = @model
+    if widget instanceof App.Models.SpriteWidget
+      widget = @currentOrientation
+    widget.set position: {x: position.x, y: position.y}
 
-
-
-  # setZOrder: (z, triggerEvent=true) ->
-    # @_zOrder = z
-
-
-  # getZOrder: ->
-    # @_zOrder
+    @setPosition(position, false)
 
 
   rect: ->
@@ -133,4 +119,33 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   # isTouchWidget: ->
     # @ instanceof App.Builder.Widgets.TouchWidget
+
+  # isHighlighted: ->
+    # return @_highlighted
+
+
+  # highlight: ->
+    # return if @isHighlighted()
+    # @_highlighted = true
+    # App.Builder.Widgets.WidgetDispatcher.trigger('widget:highlight', @id)
+
+
+  # unHighlight: ->
+    # return unless @isHighlighted()
+    # @_highlighted = false
+    # App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight', @id)
+
+
+
+  # setZOrder: (z, triggerEvent=true) ->
+    # @_zOrder = z
+
+
+  # getZOrder: ->
+    # @_zOrder
+
+
+  # changeZOrder: (z) ->
+    # @setZOrder(z)
+    # @trigger 'change', 'zOrder'
 
