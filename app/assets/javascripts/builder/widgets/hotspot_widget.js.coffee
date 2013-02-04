@@ -105,7 +105,10 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
 
   mouseUp: (options) ->
-    @_endResize(options) if @resizing
+    if @resizing
+      @_endResize(options)
+    else
+      super
 
 
   doubleClick: ->

@@ -52,6 +52,12 @@ class App.Builder.Widgets.Widget extends cc.Node
 
 
   mouseUp: ->
+    widget = @model
+    if widget instanceof App.Models.SpriteWidget
+      widget = @currentOrientation
+
+    position = @getPosition()
+    widget.set position: {x: position.x, y: position.y}
 
 
   mouseMove: ->
@@ -67,11 +73,6 @@ class App.Builder.Widgets.Widget extends cc.Node
 
 
   draggedTo: (position) ->
-    widget = @model
-    if widget instanceof App.Models.SpriteWidget
-      widget = @currentOrientation
-    widget.set position: {x: position.x, y: position.y}
-
     @setPosition(position, false)
 
 
