@@ -14,7 +14,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   LINE_WIDTH_OUTER:   14
   LINE_WIDTH_INNER:   2
 
-  constructor: (options={}) ->
+  constructor: (options) ->
     super
 
     @_border = false

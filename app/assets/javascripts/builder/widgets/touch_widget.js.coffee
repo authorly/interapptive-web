@@ -27,7 +27,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   INNER_STROKE_FILL:   'rgba(255, 255, 255, 1)'
 
 
-  constructor: (options={}) ->
+  constructor: (options) ->
     super
     @setOpacity @DEFAULT_OPACITY
     @updateContentSize()

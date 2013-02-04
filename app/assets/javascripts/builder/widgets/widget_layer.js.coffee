@@ -36,7 +36,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addCanvasMouseLeaveListener: ->
-    # RFCTR - ? Trigger method in Sprite Widget?
+    # RFCTR - Move to Widget layer,
+    #         #builder-canvas will belong to it. (@el)
     $('#builder-canvas').bind 'mouseout', (event) ->
       document.body.style.cursor = 'default'
 
@@ -73,7 +74,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       if widget.getIsVisible() and widget.isPointInside(point)
         return widget
 
-    return null
+    null
 
 
   #
@@ -95,7 +96,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     point = touches[0].locationInView()
 
-    # RFCTR - Remove brackets, match syntax
     widget.trigger 'mousedown',
       touch: touches[0]
       canvasPoint: point
@@ -103,7 +103,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_capturedWidget = widget
     @_previousPoint = new cc.Point(point.x, point.y)
 
-    return true
+    true
 
 
   ccTouchesMoved: (touches) ->
@@ -195,6 +195,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       return unless @_selectedWidget
 
+      #
+      # RFCTR - Should invoke method rather than trigger event
+      #
       widget = @widgetAtPoint(touch.locationInView())
       if widget and @_selectedWidget isnt widget or not widget
         @_selectedWidget.trigger 'deselect'
@@ -204,17 +207,19 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     cc.canvas.addEventListener 'dblclick', (event) =>
       touch = @_calculateTouchFrom(event)
 
+      #
+      # RFCTR - Should invoke method rather than trigger event
+      #
       widget = @widgetAtPoint(touch.locationInView())
-      if widget
-        widget.trigger('double_click', touch, event)
+      widget.trigger('double_click', touch, event) if widget
 
 
   _calculateTouchFrom: (event) ->
     el = cc.canvas
     pos =
-      left:0
-      top:0
-      height:el.height
+      height: el.height
+      top:    0
+      left:   0
 
     while el != null
       pos.left += el.offsetLeft

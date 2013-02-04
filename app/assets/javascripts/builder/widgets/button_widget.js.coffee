@@ -2,7 +2,7 @@
 
 class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
 
-  constructor: (options={}) ->
+  constructor: (options) ->
     super
 
     view = new App.Views.ButtonWidgetImagesSelector

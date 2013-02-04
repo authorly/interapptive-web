@@ -9,7 +9,7 @@
 #
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
-  constructor: (options={}) ->
+  constructor: (options) ->
     super
 
     @keyframe = options.keyframe

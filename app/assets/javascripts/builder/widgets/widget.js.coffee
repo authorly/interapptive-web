@@ -17,7 +17,7 @@ class App.Builder.Widgets.Widget extends cc.Node
   _mouse_over: false
 
 
-  constructor: (options={}) ->
+  constructor: (options) ->
     super
 
     @model = options.model
