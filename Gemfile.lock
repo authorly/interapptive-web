@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/cswhitman/jquery-fileupload-rails.git
+  revision: 3cd1e2dccd9476f0847c343b206df4e0dbe6c0b9
+  specs:
+    jquery-fileupload-rails (0.3.0)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+
+GIT
   remote: git://github.com/waseem/betabuilder.git
   revision: c0950ba98be94eed0d80e1e78694bd68f5654f72
   branch: no_deploy
@@ -8,14 +16,6 @@ GIT
       json
       rest-client (~> 1.6.1)
       uuid (~> 2.3.1)
-
-GIT
-  remote: git://github.com/whitmanc/jquery-fileupload-rails.git
-  revision: 3cd1e2dccd9476f0847c343b206df4e0dbe6c0b9
-  specs:
-    jquery-fileupload-rails (0.3.0)
-      actionpack (>= 3.1)
-      railties (>= 3.1)
 
 GEM
   remote: https://rubygems.org/
