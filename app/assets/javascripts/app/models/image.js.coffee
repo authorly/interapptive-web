@@ -24,16 +24,18 @@ class App.Collections.ImagesCollection extends Backbone.Collection
 
 class App.Models.Preview extends App.Models.Image
 
-  url: ->
-    @cached_url ||= (new App.Collections.ImagesCollection).url()
-    if @isNew() then @cached_url else @cached_url.replace(/\.json$/, "/#{@id}")
-
-
   # id, url -> from the server
   # data_url -> from the app
-  initialize: ->
+  initialize: (attributes, options) ->
+    @storybook = options.storybook
+
     @set 'preview', true
     @on 'change:data_url', => @save()
+
+
+  url: ->
+    @cachedUrl ||= (new App.Collections.ImagesCollection([], storybook: @storybook)).baseUrl()
+    if @isNew() then @cachedUrl else @cachedUrl + "/#{@id}"
 
 
   src: ->

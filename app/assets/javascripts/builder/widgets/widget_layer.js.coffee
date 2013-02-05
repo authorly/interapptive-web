@@ -31,8 +31,73 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.on 'add',    @addWidget,    @
     @widgets.on 'remove', @removeWidget, @
     @widgets.on 'change:position change:scale', @updateWidget, @
-
     App.vent.on 'sprite_widget:select', @deselectSpriteWidgets
+
+  addWidget: (widget) ->
+    if widget.get('type') == 'SpriteOrientation'
+      @updateFromOrientation(widget)
+    else
+      # console.log 'add', widget
+      view = new App.Builder.Widgets[widget.get('type')](model: widget)
+      @addChild(view)
+      @views.push view
+      @updateKeyframePreview()
+
+
+  removeWidget: (widget) ->
+    return if widget.get('type') == 'SpriteOrientation'
+    # console.log 'remove', widget
+
+    view = @_getView(widget)
+    @removeChild(view)
+    @views.splice(@views.indexOf(view), 1)
+    @updateKeyframePreview()
+
+
+  updateWidget: (widget) ->
+    if widget.get('type') == 'SpriteOrientation'
+      # `SpriteWidget`s are modified indirectly, by changing their
+      # current orientation. So we deal separately with changes in
+      # orientations
+      @updateFromOrientation(widget)
+
+
+  updateFromOrientation: (orientation) ->
+    sprite = orientation.spriteWidget()
+    # console.log 'update from orientation', orientation, sprite, @_getView(sprite)
+    @_getView(sprite).applyOrientation(orientation)
+    @updateKeyframePreview()
+
+
+  _getView: (widget) ->
+    view = _.find @views, (view) -> view.model == widget
+
+
+  updateKeyframePreview: ->
+    window.setTimeout @_updateKeyframePreview, 100
+
+
+  _updateKeyframePreview: =>
+    canvas = document.getElementById "builder-canvas"
+    image = Canvas2Image.saveAsPNG canvas, true, 110, 83
+
+    @widgets.currentKeyframe?.setPreviewDataUrl image.src
+
+
+
+
+  # clearScene: =>
+    # @clearWidgets()
+    # @removeAllChildrenWithCleanup()
+
+
+  # clearWidgets: (conditionallyRemove = ((w) -> true)) ->
+    # widgetsToRemove = _.filter(@widgets, conditionallyRemove)
+    # @widgets = _.difference(@widgets, widgetsToRemove)
+    # _.map(widgetsToRemove, (widget) =>
+      # @removeChild(widget) if widget.type != "TextWidget"
+      # delete widget.parent
+    # )
 
 
   addCanvasMouseLeaveListener: ->
