@@ -2,5 +2,4 @@ development: 192.168.1.144:6379
 compilation: 172.16.10.52:6379
 test: localhost:6379:1
 staging: 66.175.216.99:6379
-fi: localhost:6379
 production: localhost:6379

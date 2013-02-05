@@ -16,4 +16,5 @@ namespace :deploy do
     run "cp #{shared_path}/database.yml #{release_path}/config/"
   end
 end
+
 after 'deploy:update_code', 'deploy:copy_configuration_files'
