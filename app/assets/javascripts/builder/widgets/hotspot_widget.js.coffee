@@ -35,13 +35,6 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     @model.on 'change:radius', @updateContentSize, @
     @model.on 'change:position', @updatePosition, @
 
-    # RFCTR @dira 2013-02-03 these events should be mouse-over #190
-    @on 'mouseover', @onMouseOver, @
-    @on 'mouseout',  @onMouseOut,  @
-    @on 'mousedown', @onMouseDown, @
-    @on 'mouseup',   @onMouseUp,   @
-    @on 'mousemove', @onMouseMove, @
-
 
   draw: (ctx) ->
     r = @model.get('radius')
@@ -92,26 +85,27 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     )
 
 
-  onMouseOver: ->
+  mouseOver: ->
+    super
     @setOpacity(@MOUSEOVER_OPACITY)
 
 
-  onMouseOut:  ->
-    @setOpacity(@DEFAULT_OPACITY)
-    @setCursor @CURSOR_DEFAULT unless @resizing
+  mouseOut:  ->
+    super
+    unless @resizing
+      @setOpacity(@DEFAULT_OPACITY)
+      @setCursor @CURSOR_DEFAULT
 
 
-  onMouseDown: (e) ->
-    point = e.canvasPoint
+  mouseDown: (options) ->
+    point = options.canvasPoint
     inControl = @_isPointInsideControl(point)
 
-    @draggable = not inControl
-
-    @_startResize(e) if inControl
+    @_startResize(options) if inControl
 
 
-  onMouseUp: (e) ->
-    @_endResize(e) if @resizing
+  mouseUp: (options) ->
+    @_endResize(options) if @resizing
 
 
   doubleClick: ->
@@ -119,8 +113,12 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     # App.vent.trigger('widget:touch:edit', this)
 
 
-  onMouseMove: (e) ->
-    point = e.canvasPoint
+  draggedTo: ->
+    super unless @resizing
+
+
+  mouseMove: (options) ->
+    point = options.canvasPoint
 
     inControl = @resizing or @_isPointInsideControl(point)
     @setCursor(if inControl then @CURSOR_RESIZE else @CURSOR_MOVE)
