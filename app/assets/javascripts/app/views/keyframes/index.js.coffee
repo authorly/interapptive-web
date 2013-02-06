@@ -2,7 +2,6 @@
 # Also manages the current keyframe selection and populates the WidgetLayer
 # accordingly.
 class App.Views.KeyframeIndex extends Backbone.View
-  template:  JST['app/templates/keyframes/index']
 
   tagName:   'ul'
 

@@ -1,5 +1,4 @@
 class App.Views.SceneIndex extends Backbone.View
-  template:  JST['app/templates/scenes/index']
 
   className: 'scene-list'
 
