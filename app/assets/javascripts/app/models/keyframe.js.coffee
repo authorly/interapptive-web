@@ -73,7 +73,7 @@ class App.Models.Keyframe extends Backbone.Model
 
   sceneWidgetRemoved: (sceneWidget) ->
     if sceneWidget instanceof App.Models.SpriteWidget
-      @widgets.remove @getOrientationFor(widgets)
+      @widgets.remove @getOrientationFor(sceneWidget)
 
 
   addOrientationFor: (spriteWidget) ->
