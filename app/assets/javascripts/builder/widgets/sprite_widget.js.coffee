@@ -20,12 +20,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_border = false
 
     # @model - is set by the super constructor
+
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
 
     @on 'change:orientation',  @updateOrientation
-    @on 'deselect body:click', @deselect
-
-    App.vent.on 'canvas:click_outside', @deselect
 
     @_getImage()
 

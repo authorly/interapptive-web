@@ -98,15 +98,6 @@ class App.Views.SpriteListPalette extends Backbone.View
     view = _.find @views, (view) -> view.model == widget
 
 
-  # setActiveSpriteWidget: (e) ->
-    # widgetId =       $(e.currentTarget).find('div').attr('data-widget-id')
-    # activeWidget =   App.builder.widgetLayer.getWidgetById(widgetId)
-    # return unless activeWidget?
-
-    # activeWidget.setAsActive()
-    # App.builder.widgetLayer.setSelectedWidget(activeWidget)
-
-
   # sortListByZOrder: ->
     # list = @$el.children('li').get()
     # list.sort (a, b) ->
@@ -115,8 +106,6 @@ class App.Views.SpriteListPalette extends Backbone.View
       # if compB < compA then -1 else (if compB > compA then 1 else 0)
 
     # $.each list, (index, widgetEl) -> @$el.append widgetEl
-
-
 
 
   # updateListWidgetsZ: ->
@@ -129,21 +118,6 @@ class App.Views.SpriteListPalette extends Backbone.View
       # App.vent.trigger 'widget:change_zorder'
 
 
-
-
-  # removeWidget: (widget) =>
-    # @removeListEntry(widget)
-    # App.spriteForm.resetForm()
-
-
-  # removeListEntry: (widget) =>
-    # return unless widget.type is "SpriteWidget"
-
-    # @$("div[data-widget-id=#{widget.id}]").parent().remove()
-
-
-  # removeAll: =>
-    # @$el.empty()
 
 
   # deselectAll: ->
