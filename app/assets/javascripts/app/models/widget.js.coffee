@@ -95,6 +95,23 @@ class App.Models.ButtonWidget extends App.Models.SpriteWidget
 
 
 ##
+# A text object which is displayed on the canvas.
+#
+# It has a string option, which is the string to be shown when displayed
+#
+# Text widgets belong to keyframe
+#
+class App.Models.TextWidget extends App.Models.Widget
+ # # attributes: string
+
+  defaults: ->
+    _.extend super, {
+      type:   'TextWidget'
+      string: 'Enter some text...'
+    }
+
+
+##
 # A collection of widgets.
 # Relations:
 # * keyframe - should be set if this collection belongs to a Keyframe

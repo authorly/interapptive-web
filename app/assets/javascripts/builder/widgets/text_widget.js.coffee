@@ -8,30 +8,26 @@
 # TODO RFCTR extract a Backbone model out of this.
 #
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
-
   constructor: (options) ->
     super
 
-    @keyframe = options.keyframe
-    throw new Error("Can not create a App.Builder.Widgets.TextWidget without a App.Models.Keyframe") unless (@keyframe instanceof App.Models.Keyframe)
+    @model = options.model
+    @createLabel(@model.get('string'))
+    @string(@model.get('string'))
 
-    @createLabel(options.string)
-    @string(options.string)
-
-    # TODO RFCTR Move these initializations to the model
-    @type       = 'TextWidget'
-    @left       = options.left       || 400 * Math.random()
-    @bottom     = options.bottom     || 350 * Math.random()
-    @sync_order = options.sync_order || @keyframe.nextTextSyncOrder()
+    # RFCTR Move initialization to the model
+    # @sync_order = @model.get('sync_order ') # || @keyframe.nextTextSyncOrder()
 
 
   string: (str) ->
     if arguments.length > 0
       @_string = str
+
       @label.setString(@_string)
       @setContentSize(@label.getContentSize())
-      @trigger('change', 'string')
 
+      # RFCTR - Trigger an update on the model
+      # @trigger('change', 'string')
     else
       @_string
 
@@ -43,10 +39,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   mouseOver: ->
-    super()
-    # these methods don't exist. dira 2012-12-
-    # App.selectedKeyframeText(this.id)
-    # App.toggleFontToolbar(this)
+    super
     @drawSelection()
 
 
@@ -66,6 +59,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   drawSelection: ->
     lSize = @label.getContentSize()
+    # RFCTR - User "constant" here
     cc.renderContext.strokeStyle = "rgba(0,0,255,1)"
     cc.renderContext.lineWidth = "2"
     # Fix update this to have padding and solve for font below baseline
@@ -91,66 +85,67 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     #  left: r.origin.x + $(cc.canvas).position().left
     #)
 
-  # TODO RFCTR move this to the model
-  toHash: ->
-    hash            =  super
-    hash.string     =  @string()
-    hash.type       =  @type
-    hash.left       =  @left
-    hash.bottom     =  @bottom
-    hash.sync_order =  @sync_order
 
-    hash
-
-  create: ->
-    widgets = @keyframe.get('widgets') || []
-    widgets.push(@toHash())
-    @keyframe.set('widgets', widgets)
-    @keyframe.save({},
-      success: @_afterCreate
-      error: @_couldNotCreate
-    )
-
-
-  update: ->
-    # RFCTR @create, @update and @destroy all have some common
-    # code that fetch widgets of a keyframe and save the
-    # keyframe afterwards. The common should be moved to
-    # Keyframe model.
-    widgets = @keyframe.get('widgets') || []
-    widgetFromKeyframe = _.find(widgets, (w) -> w.id == @id)
-    widgets.splice(widgets.indexOf(widgetFromKeyframe), 1, @toHash())
-    @keyframe.set('widgets', widgets)
-    @keyframe.save {},
-      success: => console.log("TextWidget updated")
-      error:   => console.log('TextWidget did not update')
-
-
-  destroy: ->
-    widgets = @keyframe.get('widgets') || []
-    widgetFromKeyframe = _.find(widgets, (w) -> w.id == @id)
-    widgets.splice(widgets.indexOf(widgetFromKeyframe), 1)
-    @keyframe.set('widgets', widgets)
-    @keyframe.save {},
-      success: @_afterDestroy
-      error:   @_couldNotDestroy
-
-
-  _afterDestroy: =>
-    App.builder.widgetStore.removeWidget(this)
-    @keyframe.trigger('widget:text:destroy', this)
-    # Remove text widget from Storybook JSON
-
-
-  _afterCreate: =>
-    App.builder.widgetStore.addWidget(this)
-    @keyframe.trigger('widget:text:create', this)
-    # Add text widget to Storybook JSON
-
-
-  _couldNotCreate: =>
-    console.log('TextWidget could not create')
-
-
-  _couldNotDestroy: =>
-    console.log('TextWidget did not destroy')
+  # toHash: ->
+  #   hash            =  super
+  #   hash.string     =  @string()
+  #   hash.type       =  @type
+  #   hash.left       =  @left
+  #   hash.bottom     =  @bottom
+  #   hash.sync_order =  @sync_order
+  #
+  #   hash
+  #
+  # create: ->
+  #   widgets = @keyframe.get('widgets') || []
+  #   widgets.push(@toHash())
+  #   @keyframe.set('widgets', widgets)
+  #   @keyframe.save({},
+  #     success: @_afterCreate
+  #     error: @_couldNotCreate
+  #   )
+  #
+  #
+  # update: ->
+  #   # RFCTR @create, @update and @destroy all have some common
+  #   # code that fetch widgets of a keyframe and save the
+  #   # keyframe afterwards. The common should be moved to
+  #   # Keyframe model.
+  #   widgets = @keyframe.get('widgets') || []
+  #   widgetFromKeyframe = _.find(widgets, (w) -> w.id == @id)
+  #   widgets.splice(widgets.indexOf(widgetFromKeyframe), 1, @toHash())
+  #   @keyframe.set('widgets', widgets)
+  #   @keyframe.save {},
+  #     success: => console.log("TextWidget updated")
+  #     error:   => console.log('TextWidget did not update')
+  #
+  #
+  # destroy: ->
+  #   widgets = @keyframe.get('widgets') || []
+  #   widgetFromKeyframe = _.find(widgets, (w) -> w.id == @id)
+  #   widgets.splice(widgets.indexOf(widgetFromKeyframe), 1)
+  #   @keyframe.set('widgets', widgets)
+  #   @keyframe.save {},
+  #     success: @_afterDestroy
+  #     error:   @_couldNotDestroy
+  #
+  #
+  # _afterDestroy: =>
+  #   App.builder.widgetStore.removeWidget(this)
+  #   @keyframe.trigger('widget:text:destroy', this)
+  #   # Remove text widget from Storybook JSON
+  #
+  #
+  # _afterCreate: =>
+  #   App.builder.widgetStore.addWidget(this)
+  #   @keyframe.trigger('widget:text:create', this)
+  #   # Add text widget to Storybook JSON
+  #
+  #
+  # _couldNotCreate: =>
+  #   console.log('TextWidget could not create')
+  #
+  #
+  # _couldNotDestroy: =>
+  #   console.log('TextWidget did not destroy')
+  #

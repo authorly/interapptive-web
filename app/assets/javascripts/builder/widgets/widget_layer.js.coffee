@@ -2,9 +2,12 @@
 # and touch events).
 #
 # Methods:
-#   _calculateTouchFrom(event) - Calculates the touch point relative to the canvas
+#   _calculateTouchFrom(event)  - Calculates the touch point relative to the canvas
 #
-
+#   addClickOutsideEventListener - Listens for a click off of the selected sprite,
+#                                  but only within the canvas
+#
+#
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   DEFAULT_CURSOR = 'default'
@@ -189,11 +192,10 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addClickOutsideEventListener: =>
-    # # Checks for a click outside the widget
     cc.canvas.addEventListener 'click', (event) =>
-      touch = @_calculateTouchFrom(event)
-
       return unless @_selectedWidget
+
+      touch = @_calculateTouchFrom(event)
 
       #
       # RFCTR - Should invoke method rather than trigger event
