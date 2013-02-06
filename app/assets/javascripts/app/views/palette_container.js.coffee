@@ -43,3 +43,7 @@ class App.Views.PaletteContainer extends Backbone.View
       containment: 'body'
 
     @$el.resizable(options)
+
+
+  reset: ->
+    @$el.attr('style', '')

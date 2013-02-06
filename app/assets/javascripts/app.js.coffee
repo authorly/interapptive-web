@@ -14,6 +14,7 @@ window.App =
     @vent = _.extend {}, Backbone.Events
     @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
     @vent.on 'modal-cancel', @hideModal, @
+    @vent.on 'reset:palettes', @resetPalettes, @
 
     @currentSelection = new Backbone.Model
       storybook: null
@@ -95,15 +96,18 @@ window.App =
       # el         : $('#sprite-list-palette')
       # title      : 'Scene Images'
       # alsoResize : '#sprite-list-palette ul li span'
+    # @spriteListPalette.on('toggle', @spriteListPalette.$el.toggle, @spriteListPalette.$el)
 
     # @spriteEditorPalette = new App.Views.PaletteContainer
       # view      : new App.Views.SpriteEditorPalette
       # el        : $('#sprite-editor-palette')
       # resizable : false
+    # @spriteEditorPalette.on('toggle', @spriteEditorPalette.$el.toggle, @spriteEditorPalette.$el)
 
     @textEditorPalette = new App.Views.PaletteContainer
       view : new App.Views.TextEditorPalette
       el   : $('#text-editor-palette')
+    @textEditorPalette.on('toggle', @textEditorPalette.$el.toggle, @textEditorPalette.$el)
 
 
   _openStorybook: (storybook) ->
@@ -113,6 +117,10 @@ window.App =
     storybook.fetchScenes()
 
 
+  resetPalettes: ->
+    @textEditorPalette.reset()
+    #@spriteEditorPalette.reset()
+    #@spriteListPalette.reset()
 
   # #
   # #  Temporarily Out of Service.
