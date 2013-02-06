@@ -9,9 +9,9 @@ class App.Views.SpriteListPalette extends Backbone.View
 
   template: JST["app/templates/palettes/sprite_list"]
 
-  # events:
+  events:
     # 'click .icon-plus': 'addSprite'
-    # 'click .delete':    'removeSprite'
+    'click .delete':    'removeSprite'
     # 'click li':         'setActiveSprite'
 
 
@@ -41,7 +41,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     return unless @_isSprite(widget)
 
     view = @_getView(widget)
-    # @removeChild(view)
+    view.el.remove()
     @views.splice(@views.indexOf(view), 1)
 
 
@@ -50,6 +50,16 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     view = @_getView(widget)
     view.render()
+
+
+  removeSprite: (e) ->
+    id = $(e.currentTarget).siblings('.sprite-image').data 'widget-id'
+    widget = @collection.get(id)
+    widget.collection.scene.widgets.remove(widget)
+
+
+  hasWidget: (widget) =>
+    @$("div[data-widget-id=#{widget.id}]").length
 
 
   _isSprite: (widget) ->
@@ -100,16 +110,6 @@ class App.Views.SpriteListPalette extends Backbone.View
       # App.vent.trigger 'widget:change_zorder'
 
 
-  # hasWidget: (widget) =>
-    # @$("div[data-widget-id=#{widget.id}]").length
-
-
-  # removeSpriteWidget: (e) =>
-    # id = $(e.currentTarget).siblings('.sprite-image').data 'widget-id'
-    # widget = App.builder.widgetLayer.getWidgetById(id)
-
-    # if App.builder.widgetLayer.removeWidget(widget) || App.currentScene().removeWidget(widget)
-      # @removeWidget(widget)
 
 
   # removeWidget: (widget) =>
