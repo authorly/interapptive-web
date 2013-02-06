@@ -62,6 +62,13 @@ class App.Views.SpriteListPalette extends Backbone.View
     widget.collection.scene.widgets.remove(widget)
 
 
+  makeSortable: ->
+    @$el.sortable
+      opacity : 0.6
+      axis    : 'y'
+      # update  : @updateListWidgetsZ
+
+
   hasWidget: (widget) =>
     @$("div[data-widget-id=#{widget.id}]").length
 
@@ -73,6 +80,7 @@ class App.Views.SpriteListPalette extends Backbone.View
   _getView: (widget) ->
     view = _.find @views, (view) -> view.model == widget
 
+
   # setActiveSpriteWidget: (e) ->
     # widgetId =       $(e.currentTarget).find('div').attr('data-widget-id')
     # activeWidget =   App.builder.widgetLayer.getWidgetById(widgetId)
@@ -80,8 +88,6 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     # activeWidget.setAsActive()
     # App.builder.widgetLayer.setSelectedWidget(activeWidget)
-
-
 
 
   # sortListByZOrder: ->
@@ -94,14 +100,6 @@ class App.Views.SpriteListPalette extends Backbone.View
     # $.each list, (index, widgetEl) -> @$el.append widgetEl
 
 
-  # makeSortable: ->
-    # options =
-      # opacity : 0.6
-      # axis    : 'y'
-      # update  : =>
-        # @updateListWidgets
-
-    # @$el.sortable(options)
 
 
   # updateListWidgetsZ: ->
