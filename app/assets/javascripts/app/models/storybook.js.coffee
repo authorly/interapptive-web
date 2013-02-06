@@ -73,6 +73,8 @@ class App.Models.Storybook extends Backbone.Model
     @scenes = new App.Collections.ScenesCollection([], storybook: @)
     @images = new App.Collections.ImagesCollection([], storybook: @)
     @sounds = new App.Collections.SoundsCollection([], storybook: @)
+    @videos = new App.Collections.VideosCollection([], storybook: @)
+    @fonts  = new App.Collections.FontsCollection([], storybook: @)
 
 
   url: ->
