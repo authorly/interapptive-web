@@ -41,26 +41,24 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @setScale(parseFloat(currentOrientation.get('scale')))
       @addChild(@sprite)
 
-      position = currentOrientation.get('position')
-      @setPosition(new cc.Point(position.x, position.y))
-
-      window.setTimeout @triggerLoaded, 0
+      window.setTimeout @checkLoadedStatus, 0
 
 
-  triggerLoaded: =>
+  checkLoadedStatus: =>
     if @isLoaded()
-      @setContentSize(@sprite.getContentSize())
+      @setContentSize @sprite.getContentSize()
+      App.vent.trigger 'load:sprite'
     else
-      window.setTimeout @triggerLoaded, 200
+      window.setTimeout @checkLoadedStatus, 200
 
 
+  # NOTE:
+  #    There addImageSync() from Cocos2d, used in the constructor,
+  #    may be worth using instead of this?
+  #
   isLoaded: ->
     size = @sprite.getContentSize()
     @sprite._texture.complete && (size.width + size.height > 0)
-
-
-  mouseMove: ->
-    @_setCursor('move')
 
 
   applyOrientation: (orientation) ->

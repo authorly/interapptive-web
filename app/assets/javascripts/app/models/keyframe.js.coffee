@@ -32,7 +32,9 @@ class App.Models.Keyframe extends Backbone.Model
     widgets = @get('widgets'); delete @attributes.widgets
     @widgets = new App.Collections.Widgets(widgets)
     @widgets.keyframe = @
-    @widgets.on 'add remove change', => @save()
+    @widgets.on 'add remove change', =>
+      App.vent.trigger 'change:keyframeWidgets', @
+      @save()
 
     @scene.widgets.on 'add',    @sceneWidgetAdded,   @
     @scene.widgets.on 'remove', @sceneWidgetRemoved, @

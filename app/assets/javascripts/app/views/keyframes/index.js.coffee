@@ -161,6 +161,3 @@ class App.Views.KeyframeIndex extends Backbone.View
   _removeKeyframeViews: ->
     _.each(@keyframe_views, (kv) -> kv.remove())
     @keyframe_views.length = 0
-
-  updateScenePreview: ->
-    @collection.scene.setPreviewFrom @collection.at(0)
