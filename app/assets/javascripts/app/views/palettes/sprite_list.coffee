@@ -10,7 +10,7 @@ class App.Views.SpriteListPalette extends Backbone.View
   template: JST["app/templates/palettes/sprite_list"]
 
   events:
-    # 'click .icon-plus': 'addSprite'
+    'click .icon-plus': 'addSprite'
     'click .delete':    'removeSprite'
     # 'click li':         'setActiveSprite'
 
@@ -50,6 +50,10 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     view = @_getView(widget)
     view.render()
+
+
+  addSprite: ->
+    App.vent.trigger 'create:image'
 
 
   removeSprite: (e) ->
