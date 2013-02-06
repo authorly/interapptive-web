@@ -12,13 +12,15 @@ class App.Views.SpriteListPalette extends Backbone.View
   events:
     'click .icon-plus': 'addSprite'
     'click .delete':    'removeSprite'
-    # 'click li':         'setActiveSprite'
+    'click li':         'selectSprite'
 
 
   initialize: ->
     @collection.on 'add', @widgetAdded, @
     @collection.on 'remove', @widgetRemoved, @
     @collection.on 'change:url', @widgetUrlChanged, @
+
+    App.currentSelection.on 'change:widget', @spriteSelected, @
 
     @views = []
 
@@ -60,6 +62,21 @@ class App.Views.SpriteListPalette extends Backbone.View
     id = $(e.currentTarget).siblings('.sprite-image').data 'widget-id'
     widget = @collection.get(id)
     widget.collection.scene.widgets.remove(widget)
+
+
+  selectSprite: (e) ->
+    e.stopPropagation()
+
+    id = $('.sprite-image', e.currentTarget).data 'widget-id'
+    widget = @collection.get(id)
+    App.currentSelection.set widget: widget
+
+
+  spriteSelected: (__, sprite) ->
+    @$('li.active').removeClass('active')
+
+    if (view = @_getView(sprite))?
+      view.$el.addClass('active')
 
 
   makeSortable: ->

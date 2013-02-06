@@ -27,7 +27,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.on 'add',    @addWidget,    @
     @widgets.on 'remove', @removeWidget, @
     @widgets.on 'change:position change:scale', @updateWidget, @
-    App.vent.on 'sprite_widget:select', @deselectSpriteWidgets
+
+    App.currentSelection.on 'change:widget', @widgetSelected, @
+
+    $('body').click (event) ->
+      unless $(event.target).closest('#builder-canvas').length
+        App.currentSelection.set widget: null
 
   addWidget: (widget) ->
     if widget.get('type') == 'SpriteOrientation'
@@ -223,9 +228,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       @_mouseOverWidget = widget
 
 
-  setSelectedWidget: (widget) ->
+  widgetSelected: (__, widget) ->
+    @_deselectSpriteWidgets()
+
+    widget = @_getView(widget)
     @_selectedWidget = widget
-    widget.select()
+    widget?.select()
 
   ##
   # RFCTR - Used by the sprite form palette
@@ -236,7 +244,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   #     true if @_capturedWidget
   #
 
-  deselectSpriteWidgets: =>
+  _deselectSpriteWidgets: =>
     widget.deselect() for widget in @views when widget.isSpriteWidget()
 
 
@@ -283,8 +291,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       return unless @_selectedWidget
 
       widget = @widgetAtPoint(touch.locationInView())
-      if widget and @_selectedWidget isnt widget or not widget
-        @_selectedWidget.deselect()
+      if @_selectedWidget != widget
+        App.currentSelection.set widget: null
 
 
   # RFCTR - Dry up duplicate code w/ above
@@ -297,7 +305,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       widget = @widgetAtPoint(point)
       if widget?
         widget.doubleClick touch: touch, point: point
-        @setSelectedWidget(widget)
+        App.currentSelection.set widget: widget.model
 
 
   _calculateTouchFrom: (event) ->
