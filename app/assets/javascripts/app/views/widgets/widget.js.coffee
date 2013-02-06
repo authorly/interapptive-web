@@ -1,15 +1,15 @@
-# class App.Views.SpriteWidget extends Backbone.View
-  # template: JST['app/templates/widgets/sprite_widget']
+class App.Views.SpriteWidget extends Backbone.View
+  template: JST['app/templates/widgets/sprite_widget']
 
-  # tagName:  'li'
+  tagName:  'li'
 
   # events:
     # 'click': "setActiveImage"
 
 
-  # render: ->
-    # @$el.html @template(widget: @options.widget)
-    # @
+  render: ->
+    @$el.html @template(widget: @model)
+    @
 
 
   # setActiveImage: (event) ->
@@ -17,4 +17,3 @@
       # addClass('active').
       # siblings().
       # removeClass('active')
-

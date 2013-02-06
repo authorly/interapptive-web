@@ -13,17 +13,26 @@ window.App =
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
     @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
-    @vent.on 'modal-cancel', @hideModal, @
 
     @currentSelection = new Backbone.Model
       storybook: null
       scene: null
       keyframe: null
       text_widget: null
+    @currentWidgets = new App.Collections.CurrentWidgets
+
+    @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
+    @file_menu = new App.Views.FileMenuView el: $('#file-menu')
+
+    @currentSpritesPalette = new App.Views.PaletteContainer
+      view       : new App.Views.SpriteListPalette(collection: @currentWidgets)
+      el         : $('#sprite-list-palette')
+      title      : 'Scene Images'
+      alsoResize : '#sprite-list-palette ul li span'
+
 
     @currentSelection.on 'change:storybook', (__, storybook) =>
       @_openStorybook(storybook)
-
 
     @currentSelection.on 'change:scene', (__, scene) =>
       App.vent.trigger 'scene:active', scene
@@ -34,12 +43,8 @@ window.App =
       scene.fetchKeyframes()
 
 
-    @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
-    @file_menu = new App.Views.FileMenuView el: $('#file-menu')
-    # Not sure if this belongs to `@currentSelection` or not. Keeping it
-    # separate for now. @dira 2013/01/10
-    @currentWidgets = new App.Collections.CurrentWidgets
 
+    @vent.on 'modal-cancel', @hideModal, @
 
     @vent.on 'create:scene', ->
       App.currentSelection.get('storybook').addNewScene()
@@ -97,6 +102,7 @@ window.App =
     ), 200 # wait for the changes to be shown in the canvas
 
 
+
     # @fontsCollection =         new App.Collections.FontsCollection         []
     # @soundsCollection =        new App.Collections.SoundsCollection        []
     # @keyframesTextCollection = new App.Collections.KeyframeTextsCollection []
@@ -105,12 +111,6 @@ window.App =
     # @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('#canvas-wrapper')
 
     # @contentModal =   new App.Views.Modal className: 'content-modal'
-
-    # @spriteListPalette = new App.Views.PaletteContainer
-      # view       : new App.Views.SpriteListPalette
-      # el         : $('#sprite-list-palette')
-      # title      : 'Scene Images'
-      # alsoResize : '#sprite-list-palette ul li span'
 
     # @spriteEditorPalette = new App.Views.PaletteContainer
       # view      : new App.Views.SpriteEditorPalette
