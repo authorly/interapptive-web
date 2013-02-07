@@ -119,6 +119,13 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
       @changeKeyframe(keyframe)
 
 
+  comparator: (widget) ->
+    if widget instanceof App.Models.SpriteWidget
+      return widget.get('z_order')
+    else if widget instanceof App.Models.HotspotWidget
+      return widget.get('z_order') - 1/widget.id
+
+
   changeKeyframe: (keyframe) ->
     @updateSceneWidgets(keyframe)
     @updateKeyframeWidgets(keyframe)
