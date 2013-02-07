@@ -17,12 +17,13 @@ class App.Builder.Widgets.Widget extends cc.Node
     @model = options.model
     _.extend(this, Backbone.Events)
     @model.on 'change:position', @updatePosition, @
+    @model.on 'change:z_order', @updateZOrder, @
 
     # @_highlighted = false
     @_mouse_over = false
-    @_zOrder = @model.get('z_order')
 
     @updatePosition()
+    @updateZOrder()
     @setOpacity(255)
 
     # App.vent.on 'widget:change_zorder', @changeZOrder
@@ -39,6 +40,10 @@ class App.Builder.Widgets.Widget extends cc.Node
   updatePosition: ->
     position = @model.get('position')
     @setPosition new cc.Point(position.x, position.y)
+
+
+  updateZOrder: ->
+    @_zOrder = @model.get('z_order')
 
 
   mouseOver: ->

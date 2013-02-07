@@ -83,7 +83,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     @$el.sortable
       opacity : 0.6
       axis    : 'y'
-      # update  : @updateListWidgetsZ
+      update  : @updateZOrder
 
 
   hasWidget: (widget) =>
@@ -98,27 +98,10 @@ class App.Views.SpriteListPalette extends Backbone.View
     view = _.find @views, (view) -> view.model == widget
 
 
-  # sortListByZOrder: ->
-    # list = @$el.children('li').get()
-    # list.sort (a, b) ->
-      # compA = $(a).find('div').attr('data-zorder')
-      # compB = $(b).find('div').attr('data-zorder')
-      # if compB < compA then -1 else (if compB > compA then 1 else 0)
+  updateZOrder: =>
+    nrSprites = @$('li').length
+    for view in @views
+      index = view.$el.closest('li').index()
+      view.model.set z_order: nrSprites - index
 
-    # $.each list, (index, widgetEl) -> @$el.append widgetEl
-
-
-  # updateListWidgetsZ: ->
-    # for widget in App.builder.widgetLayer.widgets
-      # continue if widget.type is 'SpriteWidget'
-
-      # @$("[data-widget-id='#{widget.id}']").closest('li').index()
-      # spriteZOrder = App.builder.widgetLayer.widgets.length - spriteIndex
-
-      # App.vent.trigger 'widget:change_zorder'
-
-
-
-
-  # deselectAll: ->
-    # @$('.active').removeClass 'active'
+    @collection.sort()

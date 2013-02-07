@@ -27,6 +27,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.on 'add',    @addWidget,    @
     @widgets.on 'remove', @removeWidget, @
     @widgets.on 'change:position change:scale', @updateWidget, @
+    @widgets.on 'change:z_order', @reorderWidget, @
 
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
@@ -61,6 +62,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       # current orientation. So we deal separately with changes in
       # orientations
       @updateFromOrientation(widget)
+
+
+  reorderWidget: (widget) ->
+    view = @_getView(widget)
+    # TODO RFCTR could not get cocos2d to reorder sprites..
+    # @dira 2013-02-07
+    # @reorderChild(child: view, z: widget.get('z_order'))
+
 
 
   updateFromOrientation: (orientation) ->
