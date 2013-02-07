@@ -3,7 +3,7 @@ describe "App.Views.FileMenuView", ->
     @file_menu_view = new App.Views.FileMenuView()
 
   describe '#toggleFontEditorPalette', ->
-    it 'triggers toggle event on textEditorPalette', ->
-      spyOn(App.textEditorPalette, 'trigger')
+    it 'triggers toggle event on App.vent', ->
+      spyOn(App.vent, 'trigger')
       @file_menu_view.toggleFontEditorPalette()
-      expect(App.textEditorPalette.trigger).toHaveBeenCalledWith('toggle')
+      expect(App.vent.trigger).toHaveBeenCalledWith('toggle:text_editor_palette')

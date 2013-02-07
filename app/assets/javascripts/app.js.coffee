@@ -14,7 +14,11 @@ window.App =
     @vent = _.extend {}, Backbone.Events
     @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
     @vent.on 'modal-cancel', @hideModal, @
-    @vent.on 'reset:palettes', @resetPalettes, @
+
+    @vent.on 'reset:palettes',               @_resetPalettes,              @
+    @vent.on 'toggle:text_editor_palette',   @_toggleTextEditorPalette,   @
+    @vent.on 'toggle:sprite_editor_palette', @_toggleSpriteEditorPalette, @
+    @vent.on 'toggle:sprite_list_palette',   @_toggleSpriteListPalette,   @
 
     @currentSelection = new Backbone.Model
       storybook: null
@@ -102,12 +106,22 @@ window.App =
       # view      : new App.Views.SpriteEditorPalette
       # el        : $('#sprite-editor-palette')
       # resizable : false
-    # @spriteEditorPalette.on('toggle', @spriteEditorPalette.$el.toggle, @spriteEditorPalette.$el)
 
     @textEditorPalette = new App.Views.PaletteContainer
       view : new App.Views.TextEditorPalette
       el   : $('#text-editor-palette')
-    @textEditorPalette.on('toggle', @textEditorPalette.$el.toggle, @textEditorPalette.$el)
+
+
+  _toggleTextEditorPalette: ->
+    @textEditorPalette.$el.toggle()
+
+
+  _toggleSpriteEditorPalette: ->
+    @spriteEditorPalette.$el.toggle()
+
+
+  _toggleSpriteListPalette: ->
+    @spriteListPalette.$el.toggle()
 
 
   _openStorybook: (storybook) ->
@@ -117,7 +131,7 @@ window.App =
     storybook.fetchScenes()
 
 
-  resetPalettes: ->
+  _resetPalettes: ->
     @textEditorPalette.reset()
     #@spriteEditorPalette.reset()
     #@spriteListPalette.reset()
