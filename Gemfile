@@ -64,3 +64,8 @@ group :test do
   gem 'launchy'
   gem 'connection_pool'
 end
+
+group :deployment do
+  gem 'capistrano'
+  gem 'rvm-capistrano'
+end
