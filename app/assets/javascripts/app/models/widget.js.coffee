@@ -27,6 +27,7 @@ class App.Models.HotspotWidget extends App.Models.Widget
       type: 'HotspotWidget'
       radius: 48
       control_radius: 28
+      z_order: 5000
     }
 
 

@@ -1,6 +1,7 @@
 describe "App.Models.Scene", ->
 
   beforeEach ->
+    @server = sinon.fakeServer.create()
     @storybook = new App.Models.Storybook(id: 1)
 
     @scene = new App.Models.Scene({
@@ -12,6 +13,10 @@ describe "App.Models.Scene", ->
       {
         collection: @storybook.scenes
       })
+
+
+  afterEach ->
+    @server.restore()
 
 
   it "should be defined", ->
@@ -30,6 +35,32 @@ describe "App.Models.Scene", ->
 
     it "should expose the page number attribute", ->
       expect(@scene.get("page_number")).toEqual 1
+
+
+  describe 'widgets', ->
+    beforeEach ->
+      @widgets = @scene.widgets
+
+    describe 'removal', ->
+      it 'should not allow removing ButtonWidgets', ->
+        @widgets.add [type: 'ButtonWidget']
+        @widgets.remove @widgets.at(0)
+        expect(@widgets.length).toEqual 1
+
+    describe 'z_order', ->
+      it 'should be 1 when adding the first SpriteWidget', ->
+        @widgets.add [type: 'SpriteWidget']
+        expect(@widgets.at(0).get('z_order')).toEqual 1
+
+      it 'should be the default for HotspotWidgets', ->
+        @widgets.add [type: 'HotspotWidget']
+        expect(@widgets.at(0).get('z_order')).toEqual (new App.Models.HotspotWidget).get('z_order')
+
+      it 'should be equal with the number of sprites when adding subsequent SpriteWidgets', ->
+        @widgets.add [type: 'HotspotWidget']
+        @widgets.add [type: 'SpriteWidget']
+        @widgets.add [type: 'SpriteWidget']
+        expect(@widgets.at(2).get('z_order')).toEqual 2
 
 
   describe "#save", ->

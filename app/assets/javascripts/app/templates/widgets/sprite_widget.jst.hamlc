@@ -1,5 +1,5 @@
 - _style =    "background-image: url(#{@widget.get('url')})"
-%div.sprite-image{:style => _style, :data-zorder => @widget.get('zOrder'), :data-widget-id => @widget.id}
+%div.sprite-image{:style => _style, :data-zorder => @widget.get('z_order'), :data-widget-id => @widget.id}
 %span
   = @widget.get('filename')
 - unless @widget.get('type') == 'ButtonWidget'
