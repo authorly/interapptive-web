@@ -24,6 +24,8 @@ class App.Models.Scene extends Backbone.Model
     @widgets.on 'add remove change', =>
       App.vent.trigger 'change:sceneWidgets', @
       @save()
+    widgets.remove = (widget) ->
+      super unless widget instanceof App.Models.ButtonWidget
 
     @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
@@ -31,6 +33,7 @@ class App.Models.Scene extends Backbone.Model
     @keyframes.on 'reset add remove change:positions change:preview', @updatePreview, @
 
     @on 'change:preview_image_id', @save
+
 
   fetchKeyframes: ->
     return if @isNew() || @_keyframesFetched
@@ -73,11 +76,6 @@ class App.Models.Scene extends Backbone.Model
 
   canAddKeyframes: ->
     !@isMainMenu()
-
-
-
-  spriteWidgets: ->
-    @widgets.select (w) -> w.get('type') == 'SpriteWidget'
 
 
   updatePreview: ->
