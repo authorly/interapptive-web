@@ -24,7 +24,7 @@ class App.Models.Scene extends Backbone.Model
     @widgets.on 'add remove change', =>
       App.vent.trigger 'change:sceneWidgets', @
       @save()
-    widgets.remove = (widget) ->
+    @widgets.remove = (widget) ->
       super unless widget instanceof App.Models.ButtonWidget
 
     @_keyframesFetched = false
