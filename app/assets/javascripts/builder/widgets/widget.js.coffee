@@ -20,6 +20,7 @@ class App.Builder.Widgets.Widget extends cc.Node
 
     # @_highlighted = false
     @_mouse_over = false
+    @_zOrder = @model.get('z_order')
 
     @updatePosition()
     @setOpacity(255)

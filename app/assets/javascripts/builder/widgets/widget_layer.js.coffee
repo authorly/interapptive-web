@@ -131,33 +131,13 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   widgetAtPoint: (point) ->
-    #widgetWithHighestZ =  @widgetHighestZAtPoint(point)
-    #return widgetWithHighestZ if widgetWithHighestZ
-
+    widgets = []
     for widget,i in @views
       if widget.getIsVisible() and widget.isPointInside(point)
-        return widget
+        widgets.push widget
 
-    null
+    _.max widgets, (widget) -> widget.model.get('z_order')
 
-  #widgetAtPoint: (point) ->
-  #  #widgetWithHighestZ =  @widgetHighestZAtPoint(point)
-  #  #return widgetWithHighestZ if widgetWithHighestZ
-  #
-  #  return widget for widget,i in @views when widget.getIsVisible() and widget.isPointInside(point)
-  #  return null
-
-  #
-  # RFCTR: Re-integrate this functionality, move to modal
-  #
-  # widgetHighestZAtPoint: (point) ->
-  #   widgetWithHighestZ =
-  #     _.max @views, (widget) =>
-  #       if widget.getIsVisible() and widget.isPointInside(point)
-  #         return widget.getZOrder() unless typeof widget.getZOrder isnt "function"
-  #
-  #   widgetWithHighestZ || false
-  #
 
   ccTouchesBegan: (touches) ->
     touch = touches[0]
