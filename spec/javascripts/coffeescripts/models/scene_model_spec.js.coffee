@@ -13,11 +13,10 @@ describe "App.Models.Scene", ->
         collection: @storybook.scenes
       })
 
-    App.currentSelection.set(storybook: @storybook)
-    App.currentSelection.set(scene: @scene)
 
   it "should be defined", ->
     expect(App.Models.Scene).toBeDefined()
+
 
   describe "when instantiated", ->
     it "should expose the background image id attribute", ->

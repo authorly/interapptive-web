@@ -1,38 +1,38 @@
 describe "App.Collections.KeyframesCollection", ->
+  beforeEach ->
+    storybook = new App.Models.Storybook
+    storybook.scenes.add {}
+    @scene = storybook.scenes.at(0)
 
   it "can be instantiated", ->
-    keyframesCollection = new App.Collections.KeyframesCollection([], {scene_id: 1})
+    keyframesCollection = new App.Collections.KeyframesCollection([], scene: @scene)
     expect(keyframesCollection).not.toBeNull()
 
-   #TODO: WA: Following tests should be enabled only when
-   #App.Models.Scene#spriteWidgets() function is working
-  xdescribe 'next available position', ->
+  describe 'next available position', ->
     beforeEach ->
-      @collection = new App.Collections.KeyframesCollection
+      @collection = new App.Collections.KeyframesCollection([], scene: @scene)
       sinon.stub(@collection, 'announceAnimation')
-      @keyframe = new App.Models.Keyframe
+      @keyframe = new App.Models.Keyframe(scene: @scene)
 
     it 'should be null for an animationkeyframe', ->
       @collection.add { position: 0 }
       @keyframe.set is_animation: true
-      expect(@collection.nextPosition(@keyframe)).toEqual null
+      expect(@collection.nextPosition(@keyframe.attributes)).toEqual null
 
     it 'should be 0 for the first keyframe', ->
-      expect(@collection.nextPosition(@keyframe)).toEqual 0
+      expect(@collection.nextPosition(@keyframe.attributes)).toEqual 0
 
     it 'should be the next number when there is no animation keyframe', ->
       @collection.add { position: 0 }
       @collection.add { position: 1 }
-      expect(@collection.nextPosition(@keyframe)).toEqual 2
+      expect(@collection.nextPosition(@keyframe.attributes)).toEqual 2
 
     it 'should be the next number when there is an animation keyframe', ->
       @collection.add { position: 0 }
       @collection.add { is_animation: true }
-      expect(@collection.nextPosition(@keyframe)).toEqual 1
+      expect(@collection.nextPosition(@keyframe.attributes)).toEqual 1
 
-   #TODO: WA: Following tests should be enabled only when
-   #App.Models.Scene#spriteWidgets() function is working
-  xdescribe 'recalculate positions', ->
+  describe 'recalculate positions', ->
     describe 'on destroy', ->
       beforeEach ->
         @server = sinon.fakeServer.create()

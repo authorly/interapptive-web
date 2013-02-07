@@ -193,17 +193,12 @@ class App.Collections.ScenesCollection extends Backbone.Collection
       scene.get 'position'
 
 
-
   addNewScene: ->
-    @create {
+    scene = new App.Models.Scene
       storybook_id: @storybook.id
       position: @nextPosition()
-    }, {
-      # so we don't add a scene without an `id` to the collection
-      # which would cause it to be rendered without an id
-      # which would cause subsequent interaction with the UI to fail
-      wait: true
-    }
+    scene.save [],
+      success: => @add scene
 
 
   nextPosition: (scene=null) ->
