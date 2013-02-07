@@ -35,10 +35,6 @@ class App.Models.Keyframe extends Backbone.Model
     @scene.widgets.on 'remove', @sceneWidgetRemoved, @
 
 
-  keyframeWidgetAdded: ->
-    console.log "keyframe widget added"
-
-
   initializeWidgets: (attributes) ->
     widgets = @get('widgets'); delete @attributes.widgets
     @widgets = new App.Collections.Widgets(widgets)

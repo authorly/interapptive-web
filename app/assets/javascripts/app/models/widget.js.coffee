@@ -108,6 +108,8 @@ class App.Models.TextWidget extends App.Models.Widget
     _.extend super, {
       type:   'TextWidget'
       string: 'Enter some text...'
+      font:   'Arial'
+      size:   24
     }
 
 
