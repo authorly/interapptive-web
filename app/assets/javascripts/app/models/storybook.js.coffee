@@ -74,6 +74,8 @@ class App.Models.Storybook extends Backbone.Model
     @images = new App.Collections.ImagesCollection([], storybook: @)
     @images.fetch(async: false) # needed to have access to the images when rendering sprites
     @sounds = new App.Collections.SoundsCollection([], storybook: @)
+    @videos = new App.Collections.VideosCollection([], storybook: @)
+    @fonts  = new App.Collections.FontsCollection([], storybook: @)
 
 
   url: ->

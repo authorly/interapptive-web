@@ -18,7 +18,12 @@ class App.Collections.SoundsCollection extends Backbone.Collection
 
 
   url: ->
-    "/storybooks/" + @storybook.get('id') + "/sounds.json"
+    @baseUrl() + '.json'
+
+
+  baseUrl: ->
+    "/storybooks/" + @storybook.id + "/sounds"
+
 
   toSelectOptionGroup: (callback) =>
     onSuccess = (collection) ->

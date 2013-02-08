@@ -7,8 +7,9 @@ class App.Models.Font extends Backbone.Model
 class App.Collections.FontsCollection extends Backbone.Collection
   model: App.Models.Font
 
-  initialize: (attributes, options) ->
-    @storybook = options.storybook
+  initialize: (models, attributes) ->
+    super
+    @storybook = attributes.storybook
 
 
   baseUrl: ->
