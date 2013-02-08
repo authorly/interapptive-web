@@ -5,6 +5,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   DEFAULT_CURSOR = 'default'
 
+  CANVAS_ID = 'builder-canvas'
+
   constructor: (widgetsCollection) ->
     super
 
@@ -21,7 +23,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @isKeyboardEnabled = true
 
     @addDblClickEventListener()
-    @addClickOutsideEventListener()
+    @addClickOutsideCanvasEventListener()
     @addCanvasMouseLeaveListener()
 
     @widgets.on 'add',    @addWidget,    @
@@ -30,9 +32,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
-    $('body').click (event) ->
-      unless $(event.target).closest('#builder-canvas').length
-        App.currentSelection.set widget: null
 
   addWidget: (widget) ->
     if widget.get('type') == 'SpriteOrientation'
@@ -79,7 +78,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   _updateKeyframePreview: =>
-    canvas = document.getElementById "builder-canvas"
+    canvas = document.getElementById @CANVAS_ID
     image = Canvas2Image.saveAsPNG canvas, true, 110, 83
 
     @widgets.currentKeyframe?.setPreviewDataUrl image.src
@@ -101,11 +100,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     # )
 
 
-  addCanvasMouseLeaveListener: ->
-    # RFCTR - Move to Widget layer,
-    #         #builder-canvas will belong to it. (@el)
-    $('#builder-canvas').bind 'mouseout', (event) ->
-      document.body.style.cursor = 'default'
 
 
   addWidget: (widget) ->
@@ -245,51 +239,62 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addCanvasMouseLeaveListener: ->
-    # RFCTR - Move to Widget layer,
-    #         #builder-canvas will belong to it. (@el)
-    $('#builder-canvas').bind 'mouseout', (event) ->
-      document.body.style.cursor = 'default'
-    $('#builder-canvas').bind 'mouseout', (event) ->
-      document.body.style.cursor = 'default'
+    $('#' + @CANVAS_ID).bind 'mouseout', (event) =>
+      @setCursor 'default'
 
 
-  addClickOutsideEventListener: =>   # RFCTR - unnecessary
-    # # Checks for a click outside the widget
-    cc.canvas.addEventListener 'click', (event) =>
-      el = cc.canvas
-      pos = {left:0, top:0, height:el.height}
+  setCursor: (name) ->
+    cursor = switch name
+      when 'resize'
+        'se-resize'
+      when 'move'
+        'move'
+      when 'default'
+        'default'
+    document.body.style.cursor = cursor
 
-      ##
-      # RFCTR - DRY up
-      #       - Convert to function that returns touch object
-      #
 
-      while el != null
-        pos.left += el.offsetLeft
-        pos.top += el.offsetTop
-        el = el.offsetParent
-
-      tx = event.pageX
-      ty = event.pageY
-
-      mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
-      mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
-
-      touch = new cc.Touch(0, mouseX, mouseY)
-      touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
-      cc.TouchDispatcher.preTouchPoint.x = mouseX
-      cc.TouchDispatcher.preTouchPoint.y = mouseY
-
-      #
-      # END DRY
-      ##
-
-      return unless @_selectedWidget
-
-      point = @_getTouchCoordinates(touch)
-      widget = @widgetAtPoint(point)
-      if @_selectedWidget != widget
+  addClickOutsideCanvasEventListener: =>
+    $('body').click (event) =>
+      unless $(event.target).closest('#' + @CANVAS_ID).length
         App.currentSelection.set widget: null
+
+    # # # Checks for a click outside the widget
+    # cc.canvas.addEventListener 'click', (event) =>
+      # el = cc.canvas
+      # pos = {left:0, top:0, height:el.height}
+
+      # ##
+      # # RFCTR - DRY up
+      # #       - Convert to function that returns touch object
+      # #
+
+      # while el != null
+        # pos.left += el.offsetLeft
+        # pos.top += el.offsetTop
+        # el = el.offsetParent
+
+      # tx = event.pageX
+      # ty = event.pageY
+
+      # mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
+      # mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
+
+      # touch = new cc.Touch(0, mouseX, mouseY)
+      # touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
+      # cc.TouchDispatcher.preTouchPoint.x = mouseX
+      # cc.TouchDispatcher.preTouchPoint.y = mouseY
+
+      # #
+      # # END DRY
+      # ##
+
+      # return unless @_selectedWidget
+
+      # point = @_getTouchCoordinates(touch)
+      # widget = @widgetAtPoint(point)
+      # if @_selectedWidget != widget
+        # App.currentSelection.set widget: null
 
 
   # RFCTR - Dry up duplicate code w/ above
