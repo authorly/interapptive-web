@@ -3,7 +3,7 @@ class App.Views.Keyframe extends Backbone.View
   tagName: 'li'
 
   initialize: ->
-    @text_list_view = new App.Views.TextWidgetIndex(model: @model, el: $('#canvas-wrapper'))
+    @text_list_view = new App.Views.TextWidgetIndex(model: @model, el: $('canvas'))
     @model.on('widget:text:create', @text_list_view.createText, @text_list_view)
     @model.on('widget:text:destroy', @text_list_view.removeText, @text_list_view)
     @model.on('hide_views',         @text_list_view.hide,       @text_list_view)

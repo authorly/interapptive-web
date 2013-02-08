@@ -37,9 +37,8 @@
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
                   %a.close{"data-dismiss" => "alert"}
                   = msg
-              #canvas-wrapper
-                %canvas{id: 'builder-canvas', width: 1024, height: 768}
-                  %p Your browser doesn't support the technology required to run this application.
+              %canvas{id: 'builder-canvas', width: 1024, height: 768}
+                %p Your browser doesn't support the technology required to run this application.
 
             #sprite-list-palette.palette.span2
             #sprite-editor-palette.palette.span2
