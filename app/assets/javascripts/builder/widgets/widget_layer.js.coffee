@@ -126,10 +126,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         @views.splice(index, 1)
 
 
-  widgetAtTouch: (touch) ->
-    @widgetAtPoint(touch.locationInView())
-
-
   widgetAtPoint: (point) ->
     #widgetWithHighestZ =  @widgetHighestZAtPoint(point)
     #return widgetWithHighestZ if widgetWithHighestZ
@@ -161,7 +157,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   ccTouchesBegan: (touches) ->
     touch = touches[0]
-    point = touch.locationInView()
+    point = @_getTouchCoordinates(touch)
     widget = @widgetAtPoint(point)
     return unless widget
 
@@ -175,7 +171,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   ccTouchesMoved: (touches) ->
     touch = touches[0]
-    point = touch.locationInView()
+    point = @_getTouchCoordinates(touch)
 
     @moveCapturedWidget(point) if @_capturedWidget?
     @mouseOverWidgetAtTouch(touch, @_capturedWidget)
@@ -183,7 +179,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   ccTouchesEnded: (touches) ->
     touch = touches[0]
-    point = touch.locationInView()
+    point = @_getTouchCoordinates(touch)
 
     if @_capturedWidget
       @_capturedWidget.mouseUp
@@ -206,7 +202,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   mouseOverWidgetAtTouch: (touch, widget=null) ->
-    point = touch.locationInView()
+    point = @_getTouchCoordinates(touch)
     widget ||= @widgetAtPoint(point)
 
     if widget
@@ -290,7 +286,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       return unless @_selectedWidget
 
-      widget = @widgetAtPoint(touch.locationInView())
+      point = @_getTouchCoordinates(touch)
+      widget = @widgetAtPoint(point)
       if @_selectedWidget != widget
         App.currentSelection.set widget: null
 
@@ -300,12 +297,20 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     ## FIXME Need a cleaner way to check for doubleclicks
     cc.canvas.addEventListener 'dblclick', (event) =>
       touch = @_calculateTouchFrom(event)
-      point = touch.locationInView()
+      point = @_getTouchCoordinates(touch)
 
       widget = @widgetAtPoint(point)
       if widget?
         widget.doubleClick touch: touch, point: point
         App.currentSelection.set widget: widget.model
+
+
+  _getTouchCoordinates: (touch) ->
+    point = touch.locationInView()
+    # compensate the pointer's dimensions
+    point.x -= 18
+    point.y += 14
+    point
 
 
   _calculateTouchFrom: (event) ->
