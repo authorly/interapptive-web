@@ -88,11 +88,11 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   mouseOver: ->
-    @_setCursor('move')
+    @parent.setCursor('move')
 
 
   mouseOut: ->
-    @_setCursor('default')
+    @parent.setCursor('default')
 
 
   showBorder: =>
@@ -150,8 +150,3 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       proxy.send
         action: 'load'
         path:   url
-
-
-  _setCursor: (cursor) ->
-    document.body.style.cursor = cursor
-
