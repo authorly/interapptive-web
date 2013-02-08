@@ -44,15 +44,15 @@ class App.Views.FileMenuView extends Backbone.View
 
 
   toggleImageEditorPalette: ->
-    App.vent.trigger('toggle:sprite_list_palette')
+    App.vent.trigger('toggle:palette', 'spriteListPalette')
 
 
   toggleSceneImagesPalette: ->
-    App.vent.trigger('toggle:sprite_editor_palette')
+    App.vent.trigger('toggle:palette', 'spriteEditorPalette')
 
 
   toggleFontEditorPalette: ->
-    App.vent.trigger('toggle:text_editor_palette')
+    App.vent.trigger('toggle:palette', 'textEditorPalette')
 
 
   resetPalettes: ->

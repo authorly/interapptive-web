@@ -6,4 +6,4 @@ describe "App.Views.FileMenuView", ->
     it 'triggers toggle event on App.vent', ->
       spyOn(App.vent, 'trigger')
       @file_menu_view.toggleFontEditorPalette()
-      expect(App.vent.trigger).toHaveBeenCalledWith('toggle:text_editor_palette')
+      expect(App.vent.trigger).toHaveBeenCalledWith('toggle:palette', 'textEditorPalette')

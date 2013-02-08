@@ -15,10 +15,8 @@ window.App =
     @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
     @vent.on 'modal-cancel', @hideModal, @
 
-    @vent.on 'reset:palettes',               @_resetPalettes,              @
-    @vent.on 'toggle:text_editor_palette',   @_toggleTextEditorPalette,   @
-    @vent.on 'toggle:sprite_editor_palette', @_toggleSpriteEditorPalette, @
-    @vent.on 'toggle:sprite_list_palette',   @_toggleSpriteListPalette,   @
+    @vent.on 'reset:palettes', @_resetPalettes, @
+    @vent.on 'toggle:palette', @_togglePalette, @
 
     @currentSelection = new Backbone.Model
       storybook: null
@@ -112,16 +110,8 @@ window.App =
       el   : $('#text-editor-palette')
 
 
-  _toggleTextEditorPalette: ->
-    @textEditorPalette.$el.toggle()
-
-
-  _toggleSpriteEditorPalette: ->
-    @spriteEditorPalette.$el.toggle()
-
-
-  _toggleSpriteListPalette: ->
-    @spriteListPalette.$el.toggle()
+  _togglePalette: (palette) ->
+    @[palette].$el.toggle()
 
 
   _openStorybook: (storybook) ->
