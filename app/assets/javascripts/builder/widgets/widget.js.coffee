@@ -31,7 +31,7 @@ class App.Builder.Widgets.Widget extends cc.Node
     @on 'mouseover', @mouseOver
     @on 'mouseout',  @mouseOut
     @on 'mousemove', @mouseMove
-    # @on 'dblclick',  @doubleClick
+    @on 'dblclick',  @doubleClick
 
     # App.vent.on 'widget:change_zorder', @changeZOrder
 

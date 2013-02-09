@@ -19,8 +19,17 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @createLabel(@model.get('string'))
     @string(@model.get('string'))
 
+    @on 'double_click', @doubleClick
+
+    App.vent.on 'text_widget:click_outside', @disableEditing
+
   # RFCTR Move initialization to the model
   # @sync_order = @model.get('sync_order ') # || @keyframe.nextTextSyncOrder()
+
+
+  disableEditing: ->
+    @input.hide()
+    @setIsVisible(true)
 
 
   string: (str) ->
@@ -37,6 +46,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @label = cc.LabelTTF.create(string, 'Arial', 24)
     @label.setColor(new cc.Color3B(255, 0, 0))
     @addChild(@label)
+    @setContentSize(@label.getContentSize())
 
 
   mouseOver: ->
@@ -49,11 +59,11 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   drawSelection: ->
-    lSize = @label.getContentSize()
-    # RFCTR - User "constant" here
     cc.renderContext.strokeStyle = @BORDER_STROKE_COLOR
     cc.renderContext.lineWidth = @BORDER_WIDTH
+
     # Fix update this to have padding and solve for font below baseline
+    lSize = @label.getContentSize()
     vertices = [cc.ccp(0 - lSize.width / 2, lSize.height / 2),
       cc.ccp(lSize.width / 2, lSize.height / 2),
       cc.ccp(lSize.width / 2, 0 - lSize.height / 2),
@@ -62,5 +72,22 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     cc.drawingUtil.drawPoly(vertices, 4, true)
 
 
-  handleDoubleClick: (touch, event) =>
+  doubleClick: (touch, event) =>
+    @setIsVisible(false)
     @string($('#font_settings').show())
+
+    @input = $('<div contenteditable="true">')
+    $(cc.canvas.parentNode).append(@input)
+
+    r = @rect()
+
+    @input.css(
+      'position': 'absolute'
+      'top': $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y* 0.59 - @input.height()/2
+      'left': r.origin.x*0.59 + $(cc.canvas).position().left - @getContentSize().width*0.59/2 - @BORDER_WIDTH
+      'height': '24px'
+      'color': 'red'
+      'min-width': "#{@getContentSize().wid th*0.59}px"
+      'border': '1px dashed red'
+    ).addClass('text-widget').
+      text 'Enter some text...'

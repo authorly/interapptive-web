@@ -264,6 +264,7 @@ $ ->
   window.initBuilder()
 
   $(window).resize -> App.vent.trigger('window:resize')
+
   App.initModals()
 
   @storybooksRouter = new App.Routers.StorybooksRouter
@@ -271,5 +272,11 @@ $ ->
 
   # RFCTR - Move to Widget layer
   $('body').click (event) ->
+    # RFCTR
     unless $(event.target).closest('#builder-canvas').length
       App.vent.trigger 'canvas:click_outside'
+
+    # RFCTR
+    unless $(event.target).closest('.text_widget').length
+      App.vent.trigger 'text_widget:click_outside'
+      console.log "click outside text widget"
