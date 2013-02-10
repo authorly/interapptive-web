@@ -17,10 +17,6 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   HIGHLIGHT_OPACITY: 230
   MOUSEOVER_OPACITY: 255
 
-  CURSOR_DEFAULT: 'default'
-  CURSOR_MOVE:    'move'
-  CURSOR_RESIZE:  'se-resize'
-
   OUTER_STROKE_COLOR: 'rgba(15, 79, 168, 0.8)'
   OUTER_STROKE_WIDTH: 2
   OUTER_STROKE_FILL:   'rgba(174, 204, 246, 0.66)'
@@ -98,7 +94,8 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     super
     unless @resizing
       @setOpacity(@DEFAULT_OPACITY)
-      @setCursor @CURSOR_DEFAULT
+      @parent.setCursor 'default'
+
 
 
   mouseDown: (options) ->
@@ -128,13 +125,9 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     point = options.canvasPoint
 
     inControl = @resizing or @_isPointInsideControl(point)
-    @setCursor(if inControl then @CURSOR_RESIZE else @CURSOR_MOVE)
+    @parent.setCursor(if inControl then 'resize' else 'move')
 
     @_resizeRadius(point) if @resizing
-
-
-  setCursor: (cursor) ->
-    document.body.style.cursor = cursor
 
 
   # Overridden to make hit area circular
@@ -179,7 +172,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   _startResize: (e) ->
     @resizing = true
     @_resizeOffset = @radius - @_distanceFromCenter(e.canvasPoint)
-    @setCursor(@CURSOR_RESIZE)
+    @parent.setCursor 'resize'
 
 
   _endResize: (e) ->
@@ -187,12 +180,12 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
     point = e.canvasPoint
     cursor = if @isPointInside(point)
-      @CURSOR_MOVE
+      'move'
     else if @_isPointInsideControl(point)
-      @CURSOR_RESIZE
+      'resize'
     else
-      @CURSOR_DEFAULT
-    @setCursor(cursor)
+      'default'
+    @parent.setCursor(cursor)
 
     @_resizeRadius(point)
     @_setRadius @radius
