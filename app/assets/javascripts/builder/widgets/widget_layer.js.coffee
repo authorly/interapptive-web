@@ -66,10 +66,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   reorderWidget: (widget) ->
     view = @_getView(widget)
-    # TODO RFCTR could not get cocos2d to reorder sprites..
-    # @dira 2013-02-07
-    # @reorderChild(child: view, z: widget.get('z_order'))
-
+    # Hack - remove & add again the widget, so the layer takes the new zOrder
+    # into account. Tried to use `reorderChild` but it did not work (the best
+    # result I got was having it not show all the widgets with a smaller zOrder).
+    # @dira 2013-02-11
+    @removeChild view
+    @addChild view
 
 
   updateFromOrientation: (orientation) ->
