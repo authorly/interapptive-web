@@ -5,6 +5,10 @@ class App.Views.FileMenuView extends Backbone.View
     'click .about-authorly'           : 'showAbout'
     'click .show-storybook-icons'     : 'showAppIcons'
     'click .compile-storybook'        : 'compileStorybook'
+    'click .toggle-image-editor'      : 'toggleImageEditorPalette'
+    'click .toggle-scene-images'      : 'toggleSceneImagesPalette'
+    'click .toggle-font-editor'       : 'toggleFontEditorPalette'
+    'click .reset-palettes'           : 'resetPalettes'
 
 
   render: ->
@@ -37,3 +41,19 @@ class App.Views.FileMenuView extends Backbone.View
 
   compileStorybook: ->
     App.currenSelection.get('storybook').compile()
+
+
+  toggleImageEditorPalette: ->
+    App.vent.trigger('toggle:palette', 'imageEditor')
+
+
+  toggleSceneImagesPalette: ->
+    App.vent.trigger('toggle:palette', 'sceneImages')
+
+
+  toggleFontEditorPalette: ->
+    App.vent.trigger('toggle:palette', 'fontEditor')
+
+
+  resetPalettes: ->
+    App.vent.trigger('reset:palettes')

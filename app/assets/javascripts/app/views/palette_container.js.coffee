@@ -36,3 +36,7 @@ class App.Views.PaletteContainer extends Backbone.View
       maxWidth:    width + 180
       alsoResize:  @options.alsoResize || false
       containment: 'body'
+
+
+  reset: ->
+    @$el.attr('style', '')

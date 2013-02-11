@@ -14,6 +14,9 @@ window.App =
     @vent = _.extend {}, Backbone.Events
     @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
 
+    @vent.on 'reset:palettes', @_resetPalettes, @
+    @vent.on 'toggle:palette', @_togglePalette, @
+
     @currentSelection = new Backbone.Model
       storybook: null
       scene: null
@@ -24,11 +27,17 @@ window.App =
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
     @file_menu = new App.Views.FileMenuView el: $('#file-menu')
 
-    @currentSpritesPalette = new App.Views.PaletteContainer
+    @spritesListPalette = new App.Views.PaletteContainer
       view       : new App.Views.SpriteListPalette(collection: @currentWidgets)
       el         : $('#sprite-list-palette')
       title      : 'Scene Images'
       alsoResize : '#sprite-list-palette ul li span'
+
+    @textEditorPalette = new App.Views.PaletteContainer
+      view : new App.Views.TextEditorPalette
+      el   : $('#text-editor-palette')
+
+    @palettes = [ @textEditorPalette, @spritesListPalette ] #, @spriteEditorPalette
 
 
     @currentSelection.on 'change:storybook', (__, storybook) =>
@@ -41,7 +50,6 @@ window.App =
       @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
       $('#keyframe-list').html @keyframesView.render().el
       scene.fetchKeyframes()
-
 
 
     @vent.on 'modal-cancel', @hideModal, @
@@ -117,9 +125,16 @@ window.App =
       # el        : $('#sprite-editor-palette')
       # resizable : false
 
-    @textEditorPalette = new App.Views.PaletteContainer
-      view : new App.Views.TextEditorPalette
-      el   : $('#text-editor-palette')
+
+
+  _togglePalette: (palette) ->
+    # translate from generic event names to variable names in this file
+    # (to avoid coupling the names)
+    palette = switch palette
+      when 'sceneImages' then @spritesListPalette
+      when 'fontEditor'  then @textEditorPalette
+      # when 'imageEditor':
+    palette.$el.toggle() if palette?
 
 
   _openStorybook: (storybook) ->
@@ -128,6 +143,9 @@ window.App =
 
     storybook.fetchScenes()
 
+
+  _resetPalettes: ->
+    palette.reset() for palette in @palettes
 
 
   # #
