@@ -102,12 +102,9 @@ window.App =
 
 
   saveCanvasAsPreview: (keyframe) ->
-    window.setTimeout (->
-      canvas = document.getElementById "builder-canvas"
-      image = Canvas2Image.saveAsPNG canvas, true, 110, 83
-      keyframe.setPreviewDataUrl image.src
+    window.setTimeout ( ->
+      App.Builder.Widgets.WidgetLayer.updateKeyframePreview(keyframe)
     ), 200 # wait for the changes to be shown in the canvas
-
 
 
     # @fontsCollection =         new App.Collections.FontsCollection         []

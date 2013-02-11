@@ -23,8 +23,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
 
-    @on 'change:orientation',  @updateOrientation
-
     @_getImage()
 
 
@@ -69,21 +67,11 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @sprite.setScale(scale)
 
 
-  # TODO RFCTR this must be a change to the model, on which this
-  # view will react
-  updateOrientation: =>
-    keyframe = App.currentSelection.get('keyframe')
-    orientationWidget = _.detect @orientations(), (orientation) ->
-      orientation.keyframe.id == keyframe.id
-    orientationWidget.point = @getPosition()
-    orientationWidget.update()
-
-
   select: ->
     @showBorder()
 
 
-  deselect: =>
+  deselect: ->
     @hideBorder()
 
 
@@ -95,7 +83,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @parent.setCursor('default')
 
 
-  showBorder: =>
+  showBorder: ->
     @_border = true
 
 

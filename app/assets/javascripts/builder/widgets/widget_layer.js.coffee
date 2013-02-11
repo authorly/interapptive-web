@@ -35,28 +35,27 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addWidget: (widget) ->
-    if widget.get('type') == 'SpriteOrientation'
+    console.log 'add', widget
+    if widget instanceof App.Models.SpriteOrientation
       @updateFromOrientation(widget)
     else
-      # console.log 'add', widget
       view = new App.Builder.Widgets[widget.get('type')](model: widget)
+      view.parent = @
       @addChild(view)
       @views.push view
-      @updateKeyframePreview()
 
 
   removeWidget: (widget) ->
-    return if widget.get('type') == 'SpriteOrientation'
-    # console.log 'remove', widget
+    console.log 'remove', widget
+    return if widget instanceof App.Models.SpriteOrientation
 
     view = @_getView(widget)
     @removeChild(view)
     @views.splice(@views.indexOf(view), 1)
-    @updateKeyframePreview()
 
 
   updateWidget: (widget) ->
-    if widget.get('type') == 'SpriteOrientation'
+    if widget instanceof App.Models.SpriteOrientation
       # `SpriteWidget`s are modified indirectly, by changing their
       # current orientation. So we deal separately with changes in
       # orientations
@@ -77,58 +76,17 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     sprite = orientation.spriteWidget()
     # console.log 'update from orientation', orientation, sprite, @_getView(sprite)
     @_getView(sprite).applyOrientation(orientation)
-    @updateKeyframePreview()
 
 
   _getView: (widget) ->
     view = _.find @views, (view) -> view.model == widget
 
 
-  updateKeyframePreview: ->
-    window.setTimeout @_updateKeyframePreview, 100
-
-
-  _updateKeyframePreview: =>
-    canvas = document.getElementById @CANVAS_ID
+  @updateKeyframePreview: (keyframe) ->
+    canvas = document.getElementById CANVAS_ID
     image = Canvas2Image.saveAsPNG canvas, true, 110, 83
 
-    @widgets.currentKeyframe?.setPreviewDataUrl image.src
-
-
-
-
-  # clearScene: =>
-    # @clearWidgets()
-    # @removeAllChildrenWithCleanup()
-
-
-  # clearWidgets: (conditionallyRemove = ((w) -> true)) ->
-    # widgetsToRemove = _.filter(@widgets, conditionallyRemove)
-    # @widgets = _.difference(@widgets, widgetsToRemove)
-    # _.map(widgetsToRemove, (widget) =>
-      # @removeChild(widget) if widget.type != "TextWidget"
-      # delete widget.parent
-    # )
-
-
-
-
-  addWidget: (widget) ->
-    return if widget instanceof App.Models.SpriteOrientation
-
-    view = new App.Builder.Widgets[widget.get('type')](model: widget)
-    @addChild(view)
-    view.parent = this
-    @views.push(view)
-
-
-  removeWidget: (widget) ->
-    return if widget instanceof App.Models.SpriteOrientation
-
-    _.each @views, (view, index) =>
-      if view.model is widget
-        @removeChild(view)
-        @views.splice(index, 1)
+    keyframe.setPreviewDataUrl image.src
 
 
   widgetAtPoint: (point) ->
