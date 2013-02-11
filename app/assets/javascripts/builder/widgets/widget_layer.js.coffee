@@ -29,6 +29,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.on 'add',    @addWidget,    @
     @widgets.on 'remove', @removeWidget, @
     @widgets.on 'change:position change:scale', @updateWidget, @
+    @widgets.on 'change:z_order', @reorderWidget, @
 
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
@@ -60,6 +61,16 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       # current orientation. So we deal separately with changes in
       # orientations
       @updateFromOrientation(widget)
+
+
+  reorderWidget: (widget) ->
+    view = @_getView(widget)
+    # Hack - remove & add again the widget, so the layer takes the new zOrder
+    # into account. Tried to use `reorderChild` but it did not work (the best
+    # result I got was having it not show all the widgets with a smaller zOrder).
+    # @dira 2013-02-11
+    @removeChild view
+    @addChild view
 
 
   updateFromOrientation: (orientation) ->
@@ -121,33 +132,13 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   widgetAtPoint: (point) ->
-    #widgetWithHighestZ =  @widgetHighestZAtPoint(point)
-    #return widgetWithHighestZ if widgetWithHighestZ
-
+    widgets = []
     for widget,i in @views
       if widget.getIsVisible() and widget.isPointInside(point)
-        return widget
+        widgets.push widget
 
-    null
+    _.max widgets, (widget) -> widget.model.get('z_order')
 
-  #widgetAtPoint: (point) ->
-  #  #widgetWithHighestZ =  @widgetHighestZAtPoint(point)
-  #  #return widgetWithHighestZ if widgetWithHighestZ
-  #
-  #  return widget for widget,i in @views when widget.getIsVisible() and widget.isPointInside(point)
-  #  return null
-
-  #
-  # RFCTR: Re-integrate this functionality, move to modal
-  #
-  # widgetHighestZAtPoint: (point) ->
-  #   widgetWithHighestZ =
-  #     _.max @views, (widget) =>
-  #       if widget.getIsVisible() and widget.isPointInside(point)
-  #         return widget.getZOrder() unless typeof widget.getZOrder isnt "function"
-  #
-  #   widgetWithHighestZ || false
-  #
 
   ccTouchesBegan: (touches) ->
     touch = touches[0]

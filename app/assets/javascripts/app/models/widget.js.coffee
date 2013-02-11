@@ -27,6 +27,7 @@ class App.Models.HotspotWidget extends App.Models.Widget
       type: 'HotspotWidget'
       radius: 48
       control_radius: 28
+      z_order: 5000
     }
 
 
@@ -116,6 +117,13 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
 
     App.currentSelection.on 'change:keyframe', (__, keyframe) =>
       @changeKeyframe(keyframe)
+
+
+  comparator: (widget) ->
+    if widget instanceof App.Models.SpriteWidget
+      return widget.get('z_order')
+    else if widget instanceof App.Models.HotspotWidget
+      return widget.get('z_order') - 1/widget.id
 
 
   changeKeyframe: (keyframe) ->

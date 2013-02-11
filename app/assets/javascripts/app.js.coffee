@@ -79,7 +79,6 @@ window.App =
           type: 'SpriteWidget'
           url:      image.get 'url'
           filename: image.get 'name'
-          zOrder:   App.currentWidgets.size() || 1
         scene.save()
 
         view.off('select', imageSelected)
