@@ -53,6 +53,9 @@ describe Scene do
       scene.widgets.detect{|w| w[:name] == 'read_it_myself' }.should be
       scene.widgets.detect{|w| w[:name] == 'auto_play' }.should be
       scene.widgets.detect{|w| w[:name] == 'read_to_me'}.should be
+      scene.widgets.detect{|w| w[:z_order] == 1}.should be
+      scene.widgets.detect{|w| w[:z_order] == 2}.should be
+      scene.widgets.detect{|w| w[:z_order] == 3}.should be
     end
 
   end

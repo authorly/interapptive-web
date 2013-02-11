@@ -18,21 +18,34 @@ class App.Models.Scene extends Backbone.Model
   initialize: (attributes) ->
     @storybook = @collection.storybook
 
-    widgets = attributes.widgets; delete attributes.widgets
+    @initializeWidgets()
+    @initializeKeyframes()
+
+    @on 'change:preview_image_id', @save
+
+
+  initializeWidgets: ->
+    widgets = @attributes.widgets; delete @attributes.widgets
     @widgets = new App.Collections.Widgets(widgets)
     @widgets.scene = @
+
+    @widgets.on 'add', (widget) =>
+      if widget instanceof App.Models.SpriteWidget
+        widget.set z_order: @nextSpriteZOrder(widget)
+
     @widgets.on 'add remove change', =>
       App.vent.trigger 'change:sceneWidgets', @
       @save()
+
     @widgets.remove = (widget) ->
       super unless widget instanceof App.Models.ButtonWidget
 
+
+  initializeKeyframes: ->
     @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
     @keyframes.on 'add', @addOrientations, @
     @keyframes.on 'reset add remove change:positions change:preview', @updatePreview, @
-
-    @on 'change:preview_image_id', @save
 
 
   fetchKeyframes: ->
@@ -114,6 +127,14 @@ class App.Models.Scene extends Backbone.Model
 
   spriteWidgets: ->
     @widgets.select (w) -> w instanceof App.Models.SpriteWidget
+
+
+  nextSpriteZOrder: (widget) ->
+    widgets = _.reject @spriteWidgets(), (sprite) -> sprite == widget
+    if widgets.length > 0
+      _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
+    else
+      return 1
 
 
   # RFCTR widgets
