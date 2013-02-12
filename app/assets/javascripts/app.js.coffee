@@ -279,4 +279,3 @@ $ ->
     # RFCTR
     unless $(event.target).closest('.text_widget').length
       App.vent.trigger 'text_widget:click_outside'
-      console.log "click outside text widget"
