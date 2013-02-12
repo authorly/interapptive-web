@@ -22,4 +22,4 @@ namespace :deploy do
 end
 
 after 'deploy:update_code', 'deploy:copy_god_restart_script'
-after "deploy:restart", ''
+after "deploy:restart", 'god:restart'
