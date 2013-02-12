@@ -15,6 +15,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   BORDER_STROKE_COLOR: 'rgba(0,0,255,1)'
   BORDER_WIDTH:  2
   SCALE:         0.59
+  ENTER_KEYCODE: 13
 
 
   constructor: (options) ->
@@ -87,7 +88,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     r = @rect()
 
     @input.keydown (event) =>
-      @disableEditing() if event.keyCode is 13
+      @disableEditing() if event.keyCode is @ENTER_KEYCODE
 
 
 
