@@ -14,7 +14,6 @@
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   BORDER_STROKE_COLOR: 'rgba(0,0,255,1)'
   BORDER_WIDTH:  2
-  ENTER_KEYCODE: 13
   SCALE:         0.59
 
 
@@ -22,32 +21,31 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     super
 
     @createLabel()
-    @setString()
 
     @on 'double_click', @doubleClick
 
-    App.vent.on 'text_widget:click_outside', @disableEditing
+    @model.on 'change:string', @stringChange, @
 
-  # Not completely sure what this is for yet
-  # @sync_order = @model.get('sync_order ') # || @keyframe.nextTextSyncOrder()
+    # Would like for this to work properly
+    # App.vent.on 'text_widget:click_outside', @disableEditing
+
+    # Not completely sure what this is for yet
+    # @sync_order = @model.get('sync_order ') # || @keyframe.nextTextSyncOrder()
 
 
   disableEditing: =>
     return if @getIsVisible()
 
+    @setIsVisible(true)
+
+    @model.set 'string', @input.text()
+
     @input.remove()
 
-    @setIsVisible(true)
-    @setString(@input.text())
 
-
-  setString: (string) ->
-    if arguments.length > 0
-      @label.setString(string)
-      @setContentSize @label.getContentSize()
-      @model.set 'string', string
-    else
-      @model.get('string')
+  stringChange: (model) ->
+    @label.setString(model.get('string'))
+    @setContentSize @label.getContentSize()
 
 
   createLabel: (string) ->
@@ -89,7 +87,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     r = @rect()
 
     @input.keydown (event) =>
-      @disableEditing() if event.keyCode is @ENTER_KEYCODE
+      @disableEditing() if event.keyCode is 13
+
 
 
 
