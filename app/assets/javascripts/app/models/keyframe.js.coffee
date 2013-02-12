@@ -1,5 +1,4 @@
-
-  ##
+##
 # Relations
 # * @scene. It belongs to a scene. The scene is either provided in the attributes
 # passed to the constructor, or is taken from the collection to which the scene
@@ -29,8 +28,6 @@ class App.Models.Keyframe extends Backbone.Model
     @initializePreview()
 
     @widgets.on 'add remove change', => @save()
-    @widgets.on 'add', @keyframeWidgetAdded
-
     @scene.widgets.on 'add',    @sceneWidgetAdded,   @
     @scene.widgets.on 'remove', @sceneWidgetRemoved, @
 
