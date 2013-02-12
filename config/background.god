@@ -1,7 +1,6 @@
-RAILS_ROOT = File.join(File.dirname(__FILE__), '..')
-RAILS_ENV   = ENV['RAILS_ENV']  || "staging"
-#NUM_WORKERS = RAILS_ENV == 'production' ? 5 : 2
-NUM_WORKERS = 1
+RAILS_ROOT  = File.join(File.dirname(__FILE__), '..')
+RAILS_ENV   = ENV['RAILS_ENV']   || "staging"
+NUM_WORKERS = ENV['NUM_WORKERS'] || 1
 
 NUM_WORKERS.times do |num|
   God.watch do |w|
@@ -9,12 +8,12 @@ NUM_WORKERS.times do |num|
     w.name            = "resque-#{num}"
     w.group           = 'resque'
     w.interval        = 30.seconds
-    w.log             = "#{RAILS_ROOT}/../../shared/authorly_resque_god.log"
-    w.env             = {"QUEUE"=>"*", "RAILS_ENV"=>RAILS_ENV}
+    w.log             = "#{RAILS_ROOT}/../../shared/log/#{RAILS_ENV}_authorly_resque_god.log"
+    w.env             = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV, "PIDFILE" => "#{RAILS_ROOT}/../../shared/pids/#{w.name}.pid" }
     w.start           = "cd #{RAILS_ROOT} && bundle exec rake -f #{RAILS_ROOT}/Rakefile environment resque:work --trace"
     w.stop_signal     = 'QUIT'
     w.stop_timeout    = 20.seconds
-    w.pid_file        = File.join(RAILS_ROOT, "/../../shared/resque.#{num}.pid")
+    #w.pid_file        = File.join(RAILS_ROOT, "/../../shared/resque.#{num}.pid")
 
     w.uid = 'Xcloud'
     w.gid = 'staff'
