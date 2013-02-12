@@ -10,7 +10,7 @@ role :stagingcompilation, "80.74.134.138"
 namespace :god do
   desc "Ask god to restart Resque"
   task :restart, :roles => :stagingcompilation do
-    run("cd #{deploy_to}/current; RAILS_ENV=#{rails_env} . script/restart_authorly_god.sh")
+    run("cd #{deploy_to}/current; . script/restart_authorly_god.sh")
   end
 end
 

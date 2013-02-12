@@ -12,13 +12,13 @@ NUM_WORKERS.times do |num|
     w.group           = 'resque'
     w.interval        = 30.seconds
     w.log             = "#{SHARED_PATH}/log/#{RAILS_ENV}_authorly_resque_god.log"
-    w.env             = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV, 'VERBOSE' => 'true', "PIDFILE" => "#{SHARED_PATH}/pids/#{w.name}.pid" }
+    w.env             = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV, 'VERBOSE' => 'true' }
     w.start           = "cd #{RAILS_ROOT} && bundle exec rake -f #{RAILS_ROOT}/Rakefile environment resque:work --trace"
     w.stop_signal     = 'QUIT'
     w.stop_timeout    = 20.seconds
-
-    w.uid = 'Xcloud'
-    w.gid = 'staff'
+    w.pid_file        = "#{SHARED_PATH}/pids/#{w.name}.pid"
+    w.uid             = 'Xcloud'
+    w.gid             = 'staff'
 
     w.behavior(:clean_pid_file)
 
