@@ -3,8 +3,6 @@ SHARED_PATH = RAILS_ROOT + '/../../shared'
 RAILS_ENV   = ENV['RAILS_ENV']   || "staging"
 NUM_WORKERS = ENV['NUM_WORKERS'] || 1
 
-God.pid_file_directory = SHARED_PATH + '/pids'
-
 NUM_WORKERS.times do |num|
   God.watch do |w|
     w.dir             = "#{RAILS_ROOT}"
