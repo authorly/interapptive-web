@@ -7,37 +7,41 @@
 # It belongs to a Keyframe.
 # TODO RFCTR extract a Backbone model out of this.
 #
+# Methods:
+#   setString - sets the cocos2d object text, ensures at least 1 character exists
+#               and sets the text widget's model's string attribute (triggers a save)
+#
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   BORDER_STROKE_COLOR: 'rgba(0,0,255,1)'
-  BORDER_WIDTH: 2
-  SCALE: 0.59
+  BORDER_WIDTH:  2
+  ENTER_KEYCODE: 13
+  SCALE:         0.59
 
 
   constructor: (options) ->
     super
 
-    @model = options.model
     @createLabel()
-    @string()
+    @setString()
 
     @on 'double_click', @doubleClick
 
     App.vent.on 'text_widget:click_outside', @disableEditing
 
-  # RFCTR Move initialization to the model
+  # Not completely sure what this is for yet
   # @sync_order = @model.get('sync_order ') # || @keyframe.nextTextSyncOrder()
 
 
   disableEditing: =>
     return if @getIsVisible()
 
-    @input.hide()
+    @input.remove()
 
     @setIsVisible(true)
-    @string(@input.text())
+    @setString(@input.text())
 
 
-  string: (string) ->
+  setString: (string) ->
     if arguments.length > 0
       @label.setString(string)
       @setContentSize @label.getContentSize()
@@ -77,25 +81,24 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   doubleClick: (touch, event) =>
-
     @setIsVisible(false)
-
-    # @string('Enter sime')
 
     @input = $('<div contenteditable="true">')
     $(cc.canvas.parentNode).append(@input)
 
     r = @rect()
 
+    @input.keydown (event) =>
+      @disableEditing() if event.keyCode is @ENTER_KEYCODE
+
+
+
     # Get scale factor from parent (widget layer)
     @input.css(
         'position':  'absolute'
         'top':       $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - @input.height()/2
         'left':      r.origin.x * @SCALE + $(cc.canvas).position().left - @getContentSize().width * @SCALE/2 - @BORDER_WIDTH
-        'min-width': "#{@getContentSize().width*0.59}px"
-        'height':    '24px'
-        'color':     'red'
-        'border':    '1px dashed red').
+        'color':     'red').
       addClass('text-widget').
       text(@model.get('string')).
       selectText()

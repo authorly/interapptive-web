@@ -56,14 +56,12 @@ class Sim.Paragraph extends cc.Node
     super
     @createLabels() if @labels.length == 0
 
-
   highlightWord: (index) ->
     i = 0
     while i < @labels.length
       label = @labels[i]
       label.setColor(if (i is index - 1) then @fontHighlightColor else @fontColor)
       i++
-
 
   startHighlight: ->
     @_highlightedLabel = 0

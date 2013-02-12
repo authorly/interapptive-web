@@ -39,14 +39,6 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addText: ->
-    # TODO RFCTR create a App.Models.TextWidget and just add it to the
-    # current keyframe's collection of widgets
-    #widget = new App.Builder.Widgets.TextWidget
-    #  string:   'Enter some text...'
-    #  keyframe: App.currentSelection.get('keyframe')
-    #widget.create()
-
-
     App.vent.trigger 'create:widget', type: 'TextWidget'
 
 
