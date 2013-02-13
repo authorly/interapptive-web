@@ -7,57 +7,60 @@
 # It belongs to a Keyframe.
 # TODO RFCTR extract a Backbone model out of this.
 #
+# Methods:
+#   setString - sets the cocos2d object text, ensures at least 1 character exists
+#               and sets the text widget's model's string attribute (triggers a save)
+#
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
+  BORDER_STROKE_COLOR: 'rgba(0,0,255,1)'
+  BORDER_WIDTH:  2
+  SCALE:         0.59
+  ENTER_KEYCODE: 13
+
 
   constructor: (options) ->
     super
 
-    @keyframe = options.keyframe
-    throw new Error("Can not create a App.Builder.Widgets.TextWidget without a App.Models.Keyframe") unless (@keyframe instanceof App.Models.Keyframe)
+    @createLabel()
 
-    @createLabel(options.string)
-    @string(options.string)
+    @on 'double_click', @doubleClick
 
-    # TODO RFCTR Move these initializations to the model
-    @type       = 'TextWidget'
-    @left       = options.left       || 400 * Math.random()
-    @bottom     = options.bottom     || 350 * Math.random()
-    @sync_order = options.sync_order || @keyframe.nextTextSyncOrder()
+    @model.on 'change:string', @stringChange, @
+
+    App.vent.on 'edit:text_widget', @disableEditing
+
+    # Would like for this to work properly
+    # App.vent.on 'click_outside:text_widget', @disableEditing
+
+    # Not completely sure what this is for yet
+    # @sync_order = @model.get('sync_order ') # || @keyframe.nextTextSyncOrder()
 
 
-  string: (str) ->
-    if arguments.length > 0
-      @_string = str
-      @label.setString(@_string)
-      @setContentSize(@label.getContentSize())
-      @trigger('change', 'string')
+  disableEditing: =>
+    return if @getIsVisible()
 
-    else
-      @_string
+    @setIsVisible(true)
+
+    @model.set 'string', @input.text()
+
+    @input.remove()
+
+
+  stringChange: (model) ->
+    @label.setString(model.get('string'))
+    @setContentSize @label.getContentSize()
 
 
   createLabel: (string) ->
-    @label = cc.LabelTTF.create(string, 'Arial', 24)
+    @label = cc.LabelTTF.create(@model.get('string'), 'Arial', 24)
     @label.setColor(new cc.Color3B(255, 0, 0))
     @addChild(@label)
+    @setContentSize(@label.getContentSize())
 
 
   mouseOver: ->
-    super()
-    # these methods don't exist. dira 2012-12-
-    # App.selectedKeyframeText(this.id)
-    # App.toggleFontToolbar(this)
+    super
     @drawSelection()
-
-
-  # mouseOut: ->
-    # super()
-    # # these methods don't exist. dira 2012-12-03
-    # # App.toggleFontToolbar(this)
-
-  # highlight: ->
-    # super()
-    # #@drawSelection()
 
 
   draw: ->
@@ -65,92 +68,39 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   drawSelection: ->
-    lSize = @label.getContentSize()
-    cc.renderContext.strokeStyle = "rgba(0,0,255,1)"
-    cc.renderContext.lineWidth = "2"
+    cc.renderContext.strokeStyle = @BORDER_STROKE_COLOR
+    cc.renderContext.lineWidth = @BORDER_WIDTH
+
+
     # Fix update this to have padding and solve for font below baseline
+    lSize = @label.getContentSize()
     vertices = [cc.ccp(0 - lSize.width / 2, lSize.height / 2),
-                cc.ccp(lSize.width / 2, lSize.height / 2),
-                cc.ccp(lSize.width / 2, 0 - lSize.height / 2),
-                cc.ccp(0 - lSize.width / 2, 0 - lSize.height / 2)]
+      cc.ccp(lSize.width / 2, lSize.height / 2),
+      cc.ccp(lSize.width / 2, 0 - lSize.height / 2),
+      cc.ccp(0 - lSize.width / 2, 0 - lSize.height / 2)]
 
     cc.drawingUtil.drawPoly(vertices, 4, true)
 
 
-  handleDoubleClick: (touch, event) =>
-    @string($('#font_settings').show())
+  doubleClick: (touch, event) =>
+    App.vent.trigger 'edit:text_widget'
 
-    #input = $('<textarea>')
-    #$(cc.canvas.parentNode).append(input)
+    @setIsVisible(false)
 
-    #r = @rect()
+    @input = $('<div contenteditable="true">')
+    $(cc.canvas.parentNode).append(@input)
 
-    #input.css(
-    #  position: 'absolute'
-    #  top: 100 + $(cc.canvas).position().top
-    #  left: r.origin.x + $(cc.canvas).position().left
-    #)
+    r = @rect()
 
-  # TODO RFCTR move this to the model
-  toHash: ->
-    hash            =  super
-    hash.string     =  @string()
-    hash.type       =  @type
-    hash.left       =  @left
-    hash.bottom     =  @bottom
-    hash.sync_order =  @sync_order
+    @input.keydown (event) =>
+      @disableEditing() if event.keyCode is @ENTER_KEYCODE
 
-    hash
-
-  create: ->
-    widgets = @keyframe.get('widgets') || []
-    widgets.push(@toHash())
-    @keyframe.set('widgets', widgets)
-    @keyframe.save({},
-      success: @_afterCreate
-      error: @_couldNotCreate
-    )
-
-
-  update: ->
-    # RFCTR @create, @update and @destroy all have some common
-    # code that fetch widgets of a keyframe and save the
-    # keyframe afterwards. The common should be moved to
-    # Keyframe model.
-    widgets = @keyframe.get('widgets') || []
-    widgetFromKeyframe = _.find(widgets, (w) -> w.id == @id)
-    widgets.splice(widgets.indexOf(widgetFromKeyframe), 1, @toHash())
-    @keyframe.set('widgets', widgets)
-    @keyframe.save {},
-      success: => console.log("TextWidget updated")
-      error:   => console.log('TextWidget did not update')
-
-
-  destroy: ->
-    widgets = @keyframe.get('widgets') || []
-    widgetFromKeyframe = _.find(widgets, (w) -> w.id == @id)
-    widgets.splice(widgets.indexOf(widgetFromKeyframe), 1)
-    @keyframe.set('widgets', widgets)
-    @keyframe.save {},
-      success: @_afterDestroy
-      error:   @_couldNotDestroy
-
-
-  _afterDestroy: =>
-    App.builder.widgetStore.removeWidget(this)
-    @keyframe.trigger('widget:text:destroy', this)
-    # Remove text widget from Storybook JSON
-
-
-  _afterCreate: =>
-    App.builder.widgetStore.addWidget(this)
-    @keyframe.trigger('widget:text:create', this)
-    # Add text widget to Storybook JSON
-
-
-  _couldNotCreate: =>
-    console.log('TextWidget could not create')
-
-
-  _couldNotDestroy: =>
-    console.log('TextWidget did not destroy')
+    # Get scale factor from parent (widget layer)
+    @input.css(
+        'position':  'absolute'
+        'top':       $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - @input.height()/2
+        'left':      r.origin.x * @SCALE + $(cc.canvas).position().left - @getContentSize().width * @SCALE/2 - @BORDER_WIDTH
+        'color':     'red').
+      addClass('text-widget').
+      text(@model.get('string')).
+      selectText()

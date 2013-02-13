@@ -1,6 +1,16 @@
 # Displays the widgets on the main canvas, and handles user interaction (mouse
 # and touch events).
-# @_capturedWidget the widget on which mouse down was triggered (before other UI events)
+#
+# Properties:
+#   @_capturedWidget - the widget on which mouse down was triggered (before other UI events)
+#
+# Methods:
+#   _calculateTouchFrom(event)  - Calculates the touch point relative to the canvas
+#
+#   addClickOutsideCanvasEventListener - Listens for a click off of the selected sprite,
+#                                        but only within the canvas
+#
+#
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   DEFAULT_CURSOR = 'default'
