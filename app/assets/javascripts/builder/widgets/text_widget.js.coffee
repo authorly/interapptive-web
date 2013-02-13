@@ -27,8 +27,10 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     @model.on 'change:string', @stringChange, @
 
+    App.vent.on 'edit:text_widget', @disableEditing
+
     # Would like for this to work properly
-    # App.vent.on 'text_widget:click_outside', @disableEditing
+    # App.vent.on 'click_outside:text_widget', @disableEditing
 
     # Not completely sure what this is for yet
     # @sync_order = @model.get('sync_order ') # || @keyframe.nextTextSyncOrder()
@@ -80,6 +82,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   doubleClick: (touch, event) =>
+    App.vent.trigger 'edit:text_widget'
+
     @setIsVisible(false)
 
     @input = $('<div contenteditable="true">')
@@ -89,9 +93,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     @input.keydown (event) =>
       @disableEditing() if event.keyCode is @ENTER_KEYCODE
-
-
-
 
     # Get scale factor from parent (widget layer)
     @input.css(
