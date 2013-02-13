@@ -1,10 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
-gem 'puma'
+gem 'rails', '3.2.12'
 gem 'mysql2'
 gem 'bcrypt-ruby'
-gem 'cancan'
 gem 'jquery-rails'
 gem 'haml'
 gem 'rails-backbone'
