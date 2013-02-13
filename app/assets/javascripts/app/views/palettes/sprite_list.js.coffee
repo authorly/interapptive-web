@@ -43,7 +43,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     return unless @_isSprite(widget)
 
     view = @_getView(widget)
-    view.el.remove()
+    view.$el.remove()
     @views.splice(@views.indexOf(view), 1)
 
 
