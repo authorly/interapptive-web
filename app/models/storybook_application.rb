@@ -1,6 +1,6 @@
 class StorybookApplication
-  CRUCIBLE_RESOURCES_DIR = File.join(Rails.root, '../Crucible/HelloWorld/Resources')
-  CRUCIBLE_IOS_DIR       = File.join(Rails.root, '../Crucible/HelloWorld/ios/')
+  CRUCIBLE_RESOURCES_DIR = File.join(Rails.root, '../../Crucible/HelloWorld/Resources')
+  CRUCIBLE_IOS_DIR       = File.join(Rails.root, '../../Crucible/HelloWorld/ios/')
   # Following should live outside of the codebase. So that
   # configurations could be changed without redeploying
   # the application.
