@@ -53,7 +53,9 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   createLabel: (string) ->
     @label = cc.LabelTTF.create(@model.get('string'), 'Arial', 24)
-    @label.setColor(new cc.Color3B(255, 0, 0))
+    scene = App.currentSelection.get('scene')
+    fontColor = scene.get('font_color')
+    @label.setColor(new cc.Color3B(fontColor.r, fontColor.g, fontColor.b))
     @addChild(@label)
     @setContentSize(@label.getContentSize())
 
@@ -70,7 +72,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   drawSelection: ->
     cc.renderContext.strokeStyle = @BORDER_STROKE_COLOR
     cc.renderContext.lineWidth = @BORDER_WIDTH
-
 
     # Fix update this to have padding and solve for font below baseline
     lSize = @label.getContentSize()
