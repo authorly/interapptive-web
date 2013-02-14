@@ -113,8 +113,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
 
   doubleClick: ->
-    # TODO deal with this - but not in the old WidgetDispatcher
-    # App.vent.trigger('widget:touch:edit', this)
+    App.vent.trigger('widget:touch:edit', @model)
 
 
   draggedTo: ->

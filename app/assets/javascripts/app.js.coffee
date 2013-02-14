@@ -12,10 +12,14 @@ window.App =
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
-    @vent.on 'all', -> console.log 'vent', arguments # debug everything going through the vent
+    @vent.on 'all', ->
+      console.log 'vent', arguments # debug everything going through the vent
+      console.trace()
 
     @vent.on 'reset:palettes', @_resetPalettes, @
     @vent.on 'toggle:palette', @_togglePalette, @
+
+    @vent.on 'widget:touch:edit', @_openHotspotModal, @
 
     @currentSelection = new Backbone.Model
       storybook: null
@@ -137,7 +141,12 @@ window.App =
     scenesIndex = new App.Views.SceneIndex(collection: storybook.scenes)
     $('#scene-list').html(scenesIndex.render().el)
 
-    storybook.fetchScenes()
+    storybook.fetchCollections()
+
+
+  _openHotspotModal: (widget) ->
+    view = new App.Views.HotspotsIndex(widget: widget)
+    @modalWithView(view: view).show()
 
 
   _resetPalettes: ->
