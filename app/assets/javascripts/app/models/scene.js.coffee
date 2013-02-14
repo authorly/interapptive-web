@@ -137,6 +137,13 @@ class App.Models.Scene extends Backbone.Model
       return 1
 
 
+  addWidget: (attributes) ->
+    if attributes.type == 'HotspotWidget'
+      App.vent.trigger('widget:touch:create')
+    else
+      @widgets.add(attributes)
+
+
   # RFCTR widgets
   # hasWidget: (widget) =>
     # _.any((@get('widgets') || []), (w) -> widget.id is w.id)

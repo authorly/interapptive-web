@@ -20,6 +20,7 @@ window.App =
     @vent.on 'toggle:palette', @_togglePalette, @
 
     @vent.on 'widget:touch:edit', @_openHotspotModal, @
+    @vent.on 'widget:touch:create', @_openHotspotModal, @
 
     @currentSelection = new Backbone.Model
       storybook: null
@@ -65,14 +66,8 @@ window.App =
       App.currentSelection.get('scene').addNewKeyframe(attributes)
 
     @vent.on 'create:widget', (attributes) ->
-      container = null
-      switch attributes.type
-        when 'HotspotWidget', 'SpriteWidget'
-          container = 'scene'
-        when 'TextWidget'
-          container = 'keyframe'
-
-      App.currentSelection.get(container).widgets.add(attributes)
+      container = App.Collections.Widgets.containers[attributes.type]
+      App.currentSelection.get(container).addWidget(attributes)
 
     @vent.on 'create:image', ->
       scene = App.currentSelection.get('scene')

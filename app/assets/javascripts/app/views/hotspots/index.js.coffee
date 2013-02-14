@@ -56,20 +56,18 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
 
    updateAttributes: (event) =>
      event.preventDefault()
+     touch_options = @prepareHashForWidget(@form.getValue())
+     if @widget?.id
+       @widget.set(touch_options)
+     else
+       @widget = App.currentSelection.get('scene').widgets.add(_.extend(touch_options, {type: 'HotspotWidget'}))
 
-     # Creates either sound_id or video_id key/value pair for passing to new touch widget
-     touch_options = {}
-     touch_options[@keysForSelect[@form.getValue().on_touch]] = @form.getValue().asset_id
-
-     @widget = App.Builder.Widgets.WidgetDispatcher.createWidget(touch_options) unless @widget?.id
-
-     hashForWidget = @prepareHashForWidget(@form.getValue())
-     @widget.set(hashForWidget)
      App.vent.trigger('modal-cancel')
 
 
+   # Creates either sound_id or video_id key/value pair for passing to new touch widget
    prepareHashForWidget: (form_value) ->
-     hash = new Object()
+     hash = {}
      hash[@keysForSelect[form_value.on_touch]] = form_value.asset_id
      hash
 
