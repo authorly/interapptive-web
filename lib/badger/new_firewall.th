@@ -1,0 +1,4 @@
+new_firewall() {
+  iptables -I INPUT 10 -p tcp --dport 3306 -2 80.74.134.138 -j ACCEPT
+  iptables -I INPUT 10 -p tcp --dport 6379 -2 80.74.134.138 -j ACCEPT
+}
