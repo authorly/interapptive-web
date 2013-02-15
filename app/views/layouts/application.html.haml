@@ -55,3 +55,9 @@
     = render 'storybooks/index_modal'
     = render 'shared/content_modal'
     = render 'shared/lightbox_modal'
+    %div#rails-environment{'data-rails-environment' => Rails.env, 'data-git-head' => Rails.application.config.git_head}
+    :javascript
+      App.version = {
+        environment: $('#rails-environment').data('rails-environment'),
+        git_head: $('#rails-environment').data('git-head')
+      }
