@@ -290,6 +290,10 @@ window.App =
 
 
 $ ->
+  App.version =
+    environment: $('#rails-environment').data('rails-environment'),
+    git_head:    $('#rails-environment').data('git-head')
+
   App.init()
   window.initBuilder()
 
