@@ -19,8 +19,7 @@ window.App =
     @vent.on 'reset:palettes', @_resetPalettes, @
     @vent.on 'toggle:palette', @_togglePalette, @
 
-    @vent.on 'widget:touch:edit', @_openHotspotModal, @
-    @vent.on 'widget:touch:create', @_openHotspotModal, @
+    @vent.on 'widget-initialize:touch', @_openHotspotModal, @
 
     @currentSelection = new Backbone.Model
       storybook: null
@@ -67,7 +66,7 @@ window.App =
 
     @vent.on 'create:widget', (attributes) ->
       container = App.Collections.Widgets.containers[attributes.type]
-      App.currentSelection.get(container).addWidget(attributes)
+      App.currentSelection.get(container).widgets.add(attributes)
 
     @vent.on 'create:image', ->
       scene = App.currentSelection.get('scene')
@@ -140,7 +139,7 @@ window.App =
 
 
   _openHotspotModal: (widget) ->
-    view = new App.Views.HotspotsIndex(widget: widget)
+    view = new App.Views.HotspotsIndex(widget: widget, storybook: @currentSelection.get('storybook'))
     @modalWithView(view: view).show()
 
 

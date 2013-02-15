@@ -92,9 +92,6 @@ class App.Models.Keyframe extends Backbone.Model
       w.get('sprite_widget_id') == widget.id
 
 
-  addWidget: (attributes) ->
-    @widgets.add(attributes)
-
   # RFCTR widgets
   # hasWidget: (widget) ->
     # _.any((@get('widgets') || []), (w) -> widget.id is w.id)

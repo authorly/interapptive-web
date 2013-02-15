@@ -8,10 +8,11 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
 
    initialize: (options) ->
      @widget = options.widget if options?.widget
-     @on('touch_select', @updateTouchWidget)
+     @storybook = options.storybook
+
      @collections =
-       videos: App.currentSelection.get('storybook').videos
-       sounds: App.currentSelection.get('storybook').sounds
+       videos: @storybook.videos
+       sounds: @storybook.sounds
      super
 
 
@@ -31,7 +32,7 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
 
 
    delete: (e) =>
-     @widget.collection.scene.widgets.remove(@widget)
+     @widget.collection.remove(@widget)
      @cancel(e)
 
 
@@ -60,7 +61,7 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
      if @widget?.id
        @widget.set(touch_options)
      else
-       @widget = App.currentSelection.get('scene').widgets.add(_.extend(touch_options, {type: 'HotspotWidget'}))
+       App.vent.trigger('create:widget', _.extend(touch_options, {type: 'HotspotWidget'}))
 
      App.vent.trigger('modal-cancel')
 
@@ -68,11 +69,11 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
    # Creates either sound_id or video_id key/value pair for passing to new touch widget
    prepareHashForWidget: (form_value) ->
      hash = {}
-     hash[@keysForSelect[form_value.on_touch]] = form_value.asset_id
+     hash[@keyForSelect[form_value.on_touch]] = form_value.asset_id
      hash
 
 
-   keysForSelect:
+   keyForSelect:
      'Show video': 'video_id',
      'Play sound': 'sound_id',
 
