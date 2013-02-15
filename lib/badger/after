@@ -1,2 +1,8 @@
+#Patch for plugins this will be fixed in bader-rails 1.0.5
+for tooth in `cd /opt/web/current/lib/badger/teeth/ && ls`
+do
+  source /opt/web/current/lib/badger/teeth/$tooth
+done
+
 #add_fail2ban
 new_firewall
