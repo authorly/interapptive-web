@@ -19,7 +19,7 @@ window.App =
     @vent.on 'reset:palettes', @_resetPalettes, @
     @vent.on 'toggle:palette', @_togglePalette, @
 
-    @vent.on 'widget-initialize:touch', @_openHotspotModal, @
+    @vent.on 'initialize:hotspotWidget', @_openHotspotModal, @
 
     @currentSelection = new Backbone.Model
       storybook: null

@@ -54,7 +54,7 @@ class App.Views.ToolbarView extends Backbone.View
   addHotspot: (event) ->
     return if $(event.currentTarget).hasClass('disabled')
 
-    App.vent.trigger('widget-initialize:touch')
+    App.vent.trigger('initialize:hotspotWidget')
 
 
   # addSprite: ->

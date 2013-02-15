@@ -113,7 +113,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
 
   doubleClick: ->
-    App.vent.trigger('widget-initialize:touch', @model)
+    App.vent.trigger('initialize:hotspotWidget', @model)
 
 
   draggedTo: ->
