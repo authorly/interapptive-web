@@ -17,10 +17,10 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   initialize: ->
-    @_enableOnEvent 'scene:can_add_animation', '.animation-keyframe'
-    @_enableOnEvent 'keyframe:can_add_text'  , '.edit-text'
+    @_enableOnEvent 'can_add:sceneAnimation', '.animation-keyframe'
+    @_enableOnEvent 'can_add:keyframeText'  , '.edit-text'
 
-    App.vent.on 'scene:active', (scene) =>
+    App.vent.on 'activate:scene', (scene) =>
       @$('li').removeClass 'disabled'
       if scene.isMainMenu()
         @$('.edit-text,.touch-zones,.animation-keyframe,.keyframe').addClass 'disabled'
@@ -73,7 +73,7 @@ class App.Views.ToolbarView extends Backbone.View
     view = new App.Views.AudioIndex App.currentSelection.get('keyframe')
     App.modalWithView(view: view).show()
 
-    App.vent.trigger 'audio:align'
+    App.vent.trigger 'align:audio'
 
 
   showSceneOptions: ->

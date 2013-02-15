@@ -271,7 +271,7 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   announceAnimation: ->
-    App.vent.trigger 'scene:can_add_animation',
+    App.vent.trigger 'can_add:sceneAnimation',
       !@animationPresent() && @scene.canAddKeyframes()
 
 

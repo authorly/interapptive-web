@@ -44,7 +44,7 @@ window.App =
       @_openStorybook(storybook)
 
     @currentSelection.on 'change:scene', (__, scene) =>
-      App.vent.trigger 'scene:active', scene
+      App.vent.trigger 'activate:scene', scene
 
       @keyframesView.remove() if @keyframesView?
       @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
@@ -52,7 +52,7 @@ window.App =
       scene.fetchKeyframes()
 
 
-    @vent.on 'modal-cancel', @hideModal, @
+    @vent.on 'hide:modal', @hideModal, @
 
     @vent.on 'create:scene', ->
       App.currentSelection.get('storybook').addNewScene()
@@ -258,7 +258,7 @@ window.App =
   # currentKeyframe: (keyframe) ->
     # if keyframe
       # @keyframe = keyframe
-      # App.vent.trigger 'keyframe:can_add_text', keyframe.canAddText()
+      # App.vent.trigger 'can_add:keyframeText', keyframe.canAddText()
     # else
       # @keyframe
 

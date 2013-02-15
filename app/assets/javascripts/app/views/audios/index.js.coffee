@@ -30,7 +30,7 @@ class App.Views.AudioIndex extends Backbone.View
     @_previewing =     false
     @keyframe = keyframe
 
-    App.vent.on 'audio:align', @initAlignAudioModalInteractions
+    App.vent.on 'align:audio', @initAlignAudioModalInteractions
 
 
   render: ->
