@@ -23,7 +23,6 @@ class Scene < ActiveRecord::Base
   # has_many :attributes, :through => :actions
 
   belongs_to :preview_image, :class_name => 'Image'
-  belongs_to :background_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound'
 
   validates :position, inclusion: { in: [nil] }, if: :is_main_menu
