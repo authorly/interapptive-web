@@ -27,6 +27,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     @model.on 'change:string', @stringChange, @
 
+    # App.currentSelection.get('scene').on 'change:font_color
+
     App.vent.on 'edit:text_widget', @disableEditing
 
     # Would like for this to work properly

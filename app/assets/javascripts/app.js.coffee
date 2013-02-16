@@ -34,8 +34,9 @@ window.App =
       alsoResize : '#sprite-list-palette ul li span'
 
     @textEditorPalette = new App.Views.PaletteContainer
-      view : new App.Views.TextEditorPalette
-      el   : $('#text-editor-palette')
+      title      : 'Font Settings'
+      view       : new App.Views.TextEditorPalette
+      el         : $('#text-editor-palette')
 
     @palettes = [ @textEditorPalette, @spritesListPalette ] #, @spriteEditorPalette
 

@@ -1,4 +1,4 @@
-%select.font_face#font_face
+%select#font-face
   %option{:value => "Arial"}
     Arial
   %option{:value => "Times New Roman"}
@@ -11,10 +11,10 @@
   /   %option{:value => font.get('name')}
   /     = font.get('name')
 
-%select.font_size
+%select#font-size
   - for i in [24..46]
     %option{:value => "#{i}"} 
       = i
 
-%button.delete
+%button.delete{:disabled => true}
   Delete
