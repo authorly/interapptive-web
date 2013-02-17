@@ -72,7 +72,6 @@ class App.Models.Storybook extends Backbone.Model
   initialize: ->
     @scenes = new App.Collections.ScenesCollection([], storybook: @)
     @images = new App.Collections.ImagesCollection([], storybook: @)
-    @images.fetch(async: false) # needed to have access to the images when rendering sprites
     @sounds = new App.Collections.SoundsCollection([], storybook: @)
     @videos = new App.Collections.VideosCollection([], storybook: @)
     @fonts  = new App.Collections.FontsCollection([], storybook: @)
@@ -89,7 +88,11 @@ class App.Models.Storybook extends Backbone.Model
     @attributes
 
 
-  fetchScenes: ->
+  fetchCollections: ->
+    @images.fetch(async: false)
+    @sounds.fetch(async: false)
+    @videos.fetch(async: false)
+    @fonts.fetch(async: false)
     @scenes.fetch()
 
 
