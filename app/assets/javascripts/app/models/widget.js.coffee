@@ -126,6 +126,12 @@ class App.Collections.Widgets extends Backbone.Collection
     new App.Models[attrs.type](attrs, options)
 
 
+  @containers:
+    'HotspotWidget': 'scene'
+    'SpriteWidget':  'scene'
+    'TextWidget':    'keyframe'
+
+
 ##
 # The collection of widgets that are present for the current keyframe.
 # It listens for changes in the current keyframe and updates its contents
