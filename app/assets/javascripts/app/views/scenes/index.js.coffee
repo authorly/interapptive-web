@@ -47,8 +47,6 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   removeScene: (scene) =>
-    App.vent.trigger 'scene:remove'
-
     @$("li[data-id=#{scene.id}]").remove()
 
 

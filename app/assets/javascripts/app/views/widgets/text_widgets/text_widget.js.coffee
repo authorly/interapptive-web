@@ -71,7 +71,6 @@ class App.Views.TextWidget extends Backbone.View
 
 
   disableEditing: ->
-    App.vent.trigger 'text_widget:done_editing'
     @$el.attr 'contenteditable', 'false'
 
 
@@ -108,7 +107,7 @@ class App.Views.TextWidget extends Backbone.View
 
 
   editTextWidget: ->
-    App.vent.trigger('text_widget_view:disable', @)
+    App.vent.trigger('disable:textWidgetView', @)
     App.currentSelection.set(text_widget: @widget)
 
 
