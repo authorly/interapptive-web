@@ -9,7 +9,7 @@ class App.Views.Keyframe extends Backbone.View
     @model.on('hide_views',         @text_list_view.hide,       @text_list_view)
     @model.on('show_views',         @text_list_view.show,       @text_list_view)
 
-    App.vent.on('text_widget_view:disable', @text_list_view.disableOtherTextWidgetViewsThan, @text_list_view)
+    App.vent.on('disable:textWidgetView', @text_list_view.disableOtherTextWidgetViewsThan, @text_list_view)
 
   render: ->
     @$el.html(@template(keyframe: @model)).attr('data-id', @model.id)
@@ -28,5 +28,5 @@ class App.Views.Keyframe extends Backbone.View
     @model.off('hide_views',         @text_list_view.hide,       @text_list_view)
     @model.off('show_views',         @text_list_view.show,       @text_list_view)
 
-    App.vent.off('text_widget_view:disable', @text_list_view.disableOtherTextWidgetViewsThan, @text_list_view)
+    App.vent.off('disable:textWidgetView', @text_list_view.disableOtherTextWidgetViewsThan, @text_list_view)
     @text_list_view.empty()
