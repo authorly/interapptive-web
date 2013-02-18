@@ -47,6 +47,11 @@ describe "App.Models.Scene", ->
         @widgets.remove @widgets.at(0)
         expect(@widgets.length).toEqual 1
 
+      it 'should allow removing other kinds of widgets', ->
+        @widgets.add [type: 'SpriteWidget']
+        @widgets.remove @widgets.at(0)
+        expect(@widgets.length).toEqual 0
+
     describe 'z_order', ->
       it 'should be 1 when adding the first SpriteWidget', ->
         @widgets.add [type: 'SpriteWidget']
