@@ -122,19 +122,51 @@
 }
 
 #text-editor-palette {
-  min-height: 95px;
-  right: 175px;
+  min-height: 67px;
+  right: 160px;
+  width: 276px;
+
+  .scale(0.8);
 
   #font-face {
-    width: 100px;
+    width: 169px;
     margin: 8px 0 2px 8px;
     float: left;
+  }
+
+  #font-face.disabled {
+    opacity: 0.5;
   }
 
   #font-size {
     margin: 8px 0 0 5px;
     width: 50px;
     float: left;
+  }
+
+  #font-size.disabled {
+    opacity: 0.5;
+  }
+
+  #colorpicker {
+    float: left;
+    margin: 8px 0 0 7px;
+
+    span i {
+      background-color: rgb(255,0,18);
+    }
+  }
+
+  #colorpicker.disabled {
+    opacity: 0.5;
+  }
+
+  #colorpicker.disabled:hover {
+    cursor: not-allowed;
+
+    span i {
+      cursor: not-allowed;
+    }
   }
 
   .delete {

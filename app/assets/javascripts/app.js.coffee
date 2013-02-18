@@ -34,9 +34,9 @@ window.App =
       alsoResize : '#sprite-list-palette ul li span'
 
     @textEditorPalette = new App.Views.PaletteContainer
-      title      : 'Font Settings'
-      view       : new App.Views.TextEditorPalette
-      el         : $('#text-editor-palette')
+      title: 'Font Settings'
+      view : new App.Views.TextEditorPalette
+      el   : $('#text-editor-palette')
 
     @palettes = [ @textEditorPalette, @spritesListPalette ] #, @spriteEditorPalette
 
@@ -293,6 +293,20 @@ window.App =
 $ ->
   App.init()
   window.initBuilder()
+
+  # I couldn't run this in the render method of the text edit / font settings palette
+  $colorPickerEl = '#colorpicker'
+  $($colorPickerEl).colorpicker().on('show', (event) ->
+    if $($colorPickerEl).hasClass('disabled')
+      $($colorPickerEl).colorpicker('hide')
+      return
+  ).on('changeColor', (event) ->
+    @rgb = event.color.toRGB()
+    App.vent.trigger 'change:font_color', @rgb
+  ).on 'hide', ->
+    App.vent.trigger 'select:font_color', @rgb
+
+
 
   $(window).resize -> App.vent.trigger('window:resize')
   App.initModals()
