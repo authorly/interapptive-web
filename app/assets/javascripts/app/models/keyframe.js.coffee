@@ -195,8 +195,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   nextTextSyncOrder: ->
-    text_widgets = @widgetsByType('TextWidget')
-    text_widget_with_max_sync_order = _.max(text_widgets, (w) -> w.sync_order)
+    text_widget_with_max_sync_order = _.max(@text_widgets(), (w) -> w.sync_order)
     (text_widget_with_max_sync_order?.sync_order || 0) + 1
 
 
@@ -205,9 +204,13 @@ class App.Models.Keyframe extends Backbone.Model
     # _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
 
 
-  widgetsByType: (type) ->
-    return [] unless type?
-    _.filter(@widgets, (w) -> w.type is type)
+  textWidgets: ->
+    @widgetsByClass(App.Models.TextWidget)
+
+
+  widgetsByClass: (klass) ->
+    return [] unless klass?
+    @widgets.filter (w) -> w instanceof klass
 
 
   # _findOrCreateWidgetByWidgetHash: (widget_hash) ->
