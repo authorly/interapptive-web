@@ -29,14 +29,14 @@ class App.Views.TextEditorPalette extends Backbone.View
     @rgb = null
 
 
-    colorPickerEl = $('#colorpicker')
+    colorPickerEl = @$('#colorpicker')
     colorPickerEl.colorpicker().on('show', (event) ->
       if colorPickerEl.hasClass('disabled')
         colorPickerEl.colorpicker('hide')
-    ).on('changeColor', (event) ->
+    ).on('changeColor', (event) =>
       @rgb = event.color.toRGB()
       App.vent.trigger 'change:font_color', @rgb
-    ).on('hide', ->
+    ).on('hide', =>
       App.vent.trigger 'select:font_color', @rgb
     )
 

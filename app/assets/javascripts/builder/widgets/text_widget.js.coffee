@@ -48,7 +48,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @createLabel()
 
 
-  disablediting: =>
+  disableEditing: =>
     return if @getIsVisible()
     @setIsVisible(true)
 
