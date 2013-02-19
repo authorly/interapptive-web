@@ -125,6 +125,9 @@ class App.Collections.Widgets extends Backbone.Collection
   model: (attrs, options) ->
     new App.Models[attrs.type](attrs, options)
 
+  remove: (widget) ->
+    super unless widget instanceof App.Models.ButtonWidget
+
 
 ##
 # The collection of widgets that are present for the current keyframe.
