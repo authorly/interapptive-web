@@ -1,33 +1,29 @@
 # TODO: WA: Following tests should be enabled only when
 # App.Models.Scene#spriteWidgets() function is working
-xdescribe "App.Models.Keyframe", ->
+describe "App.Models.Keyframe", ->
 
   beforeEach ->
+    @server = sinon.fakeServer.create()
     @storybook = new App.Models.Storybook(id: 1)
-    @scene = new App.Models.Scene({ id: 1 }, { collection: @storybook.scenes })
 
-    @keyframe = new App.Models.Keyframe(
-      background_x_coord: 512,
-      background_y_coord: 386,
+    @scene = new App.Models.Scene({
+      id: 1,
+      image_id: 1,
+      sound_id: 2,
       preview_image_id: 3,
+      page_number: 1
+    },
+    {
+      collection: @storybook.scenes
+    })
+
+
+    @keyframe = new App.Models.Keyframe({
+      id: 100,
       scene: @scene
-    )
+    })
     App.currentSelection.get('scene')
     App.currentSelection.get('keyframe')
-
-  it "can be instantiated", ->
-    keyframe = new App.Models.Keyframe()
-    expect(keyframe).not.toBeNull()
-
-  describe "when instantiated", ->
-    it "should expose the background image x coordinate attribute", ->
-      expect(@keyframe.get("background_x_coord")).toEqual 512
-
-    it "should expose the background image y coordinate attribute", ->
-      expect(@keyframe.get("background_y_coord")).toEqual 386
-
-    it "should expose the background image's id attribute", ->
-      expect(@keyframe.get("image_id")).toEqual 3
 
 
   describe "#save", ->
@@ -58,7 +54,7 @@ xdescribe "App.Models.Keyframe", ->
           expect(@request).toBeAsync()
 
         it "should have valid url", ->
-          expect(@request).toHaveUrl("/scenes/1/keyframes/1.json")
+          expect(@request).toHaveUrl("/scenes/1/keyframes/100.json")
 
       describe "on update", ->
         beforeEach ->
@@ -73,3 +69,22 @@ xdescribe "App.Models.Keyframe", ->
 
         it "should have valid url", ->
           expect("/scenes/1/keyframes/#{@keyframe.get("id")}.json").toEqual "/scenes/1/keyframes/3.json"
+
+
+  describe 'widgets', ->
+
+    it 'can filter widgets by class', ->
+      @keyframe.widgets.add [type: 'ButtonWidget']
+      @keyframe.widgets.add [type: 'SpriteWidget']
+
+      expect(@keyframe.widgets.length).toEqual(2)
+      console.log @keyframe.widgets
+      expect(@keyframe.widgetsByClass(App.Models.SpriteWidget).length).toEqual(2)
+      expect(@keyframe.widgetsByClass(App.Models.ButtonWidget).length).toEqual(1)
+      expect(@keyframe.widgetsByClass(App.Models.HotspotWidget).length).toEqual(0)
+
+    it 'knows its text widgets', ->
+      @keyframe.widgets.add [type: 'TextWidget']
+      @keyframe.widgets.add [type: 'SpriteWidget']
+
+      expect(@keyframe.textWidgets().length).toEqual(1)
