@@ -5,7 +5,6 @@
 # graphicaly with a label.
 #
 # It belongs to a Keyframe.
-# TODO RFCTR extract a Backbone model out of this.
 #
 # Methods:
 #   setString - sets the cocos2d object text, ensures at least 1 character exists
@@ -29,8 +28,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     App.vent.on 'edit:text_widget',  @disableEditing
     App.vent.on 'change:font_face',  @fontFaceChanged,   @
+    App.vent.on 'change:font_size',  @fontSizeChanged,   @
     App.vent.on 'change:font_color', @fontColorChanged,  @
-    App.vent.on 'change:font_size',  @fontSizeChanged,  @
     App.vent.on 'select:font_color', @fontColorSelected, @
 
 

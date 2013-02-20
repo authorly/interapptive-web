@@ -1,5 +1,5 @@
 class SerializeSceneFontColor < ActiveRecord::Migration
-  class Scene < ActiveRecord::Base\
+  class Scene < ActiveRecord::Base
 
     def self.serialize_font_color
       find_each do |s|
