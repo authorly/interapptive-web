@@ -1,20 +1,41 @@
-%select.font_face#font_face
-  %option{:value => "Arial"}
-    Arial
-  %option{:value => "Times New Roman"}
-    Times New Roman
-  %option{:value => "Verdana"}
-    Verdana
-  %option{:value => "Georgia"}
-    Georgia
+%select#font-face{:readonly => "", :disabled => ""}
+
+  %optgroup{:label => "Uploaded Fonts"}
+    %option{:value => "", :disabled => ""}
+      no fonts uploaded..
+  %optgroup{:label => "Standard Fonts"}
+    %option{:value => "Arial"}
+      Arial
+    %option{:value => "Comic Sans MS"}
+      Comic Sans MS
+    %option{:value => "Courier New"}
+      Courier New
+    %option{:value => "Georgia"}
+      Georgia
+    %option{:value => "Impact"}
+      Impact
+    %option{:value => "Lucida Console"}
+      Lucida Console
+    %option{:value => "Lucida Sans Unicode"}
+      Lucida Sans Unicode
+    %option{:value => "Tahoma"}
+      Tahoma
+    %option{:value => "Times New Roman", :selected => ""}
+      Times New Roman
+    %option{:value => "Trebuchet MS"}
+      Trebuchet MS
+    %option{:value => "Verdana"}
+      Verdana
   / - for font in @fonts
   /   %option{:value => font.get('name')}
   /     = font.get('name')
 
-%select.font_size
-  - for i in [24..46]
-    %option{:value => "#{i}"} 
-      = i
+%select#font-size{:readonly => "", :disabled => ""}
+  - fontSizes = [24..46]
+  - for fontSize in fontSizes
+    %option{:value => "#{fontSize}"}
+      = fontSize
 
-%button.delete
-  Delete
+#colorpicker.input-append.color{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "rgb"}
+  %span.add-on
+    %i{:style => "background-color: rgb(255, 146, 180);"}

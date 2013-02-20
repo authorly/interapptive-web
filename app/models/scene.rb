@@ -29,6 +29,7 @@ class Scene < ActiveRecord::Base
   validates :is_main_menu, uniqueness: { scope: :storybook_id }, if: :is_main_menu
 
   serialize :widgets
+  serialize :font_color
 
   before_create :create_main_menu_widgets, if: :is_main_menu
   after_create :create_keyframe

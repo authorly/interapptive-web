@@ -22,6 +22,7 @@
 #= require ./vendor/form-editors/jquery.ui
 #= require ./vendor/jquery.selecttext
 #= require backbone-deepmodel
+#= require bootstrap-colorpicker
 #= require_tree ../../../vendor/assets/javascripts/.
 #= require_tree ../../../vendor/assets/images/.
 

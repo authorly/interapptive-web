@@ -5,7 +5,6 @@
 # graphicaly with a label.
 #
 # It belongs to a Keyframe.
-# TODO RFCTR extract a Backbone model out of this.
 #
 # Methods:
 #   setString - sets the cocos2d object text, ensures at least 1 character exists
@@ -27,23 +26,35 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     @model.on 'change:string', @stringChange, @
 
-    App.vent.on 'edit:text_widget', @disableEditing
+    App.vent.on 'edit:text_widget',  @disableEditing
+    App.vent.on 'change:font_face',  @fontFaceChanged,   @
+    App.vent.on 'change:font_size',  @fontSizeChanged,   @
+    App.vent.on 'change:font_color', @fontColorChanged,  @
+    App.vent.on 'select:font_color', @fontColorSelected, @
 
-    # Would like for this to work properly
-    # App.vent.on 'click_outside:text_widget', @disableEditing
 
-    # Not completely sure what this is for yet
-    # @sync_order = @model.get('sync_order ') # || @keyframe.nextTextSyncOrder()
+  fontColorChanged: (rgb) ->
+    @label.setColor(new cc.Color3B(rgb.r, rgb.g, rgb.b))
+
+
+  fontFaceChanged: ->
+    @label.removeFromParentAndCleanup()
+    @createLabel()
+
+
+  fontSizeChanged: ->
+    @label.removeFromParentAndCleanup()
+    @createLabel()
 
 
   disableEditing: =>
     return if @getIsVisible()
-
     @setIsVisible(true)
 
     @model.set 'string', @input.text()
-
     @input.remove()
+
+    App.vent.trigger 'done_editing:text'
 
 
   stringChange: (model) ->
@@ -51,9 +62,12 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @setContentSize @label.getContentSize()
 
 
-  createLabel: (string) ->
-    @label = cc.LabelTTF.create(@model.get('string'), 'Arial', 24)
-    @label.setColor(new cc.Color3B(255, 0, 0))
+  createLabel: ->
+    currentScene = App.currentSelection.get('scene')
+    @label = cc.LabelTTF.create @model.get('string'), currentScene.get('font_face'), currentScene.get('font_size')
+
+    fontColor = currentScene.get('font_color')
+    @label.setColor(new cc.Color3B(fontColor.r, fontColor.g, fontColor.b))
     @addChild(@label)
     @setContentSize(@label.getContentSize())
 
@@ -71,8 +85,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     cc.renderContext.strokeStyle = @BORDER_STROKE_COLOR
     cc.renderContext.lineWidth = @BORDER_WIDTH
 
-
-    # Fix update this to have padding and solve for font below baseline
     lSize = @label.getContentSize()
     vertices = [cc.ccp(0 - lSize.width / 2, lSize.height / 2),
       cc.ccp(lSize.width / 2, lSize.height / 2),
@@ -95,12 +107,18 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @input.keydown (event) =>
       @disableEditing() if event.keyCode is @ENTER_KEYCODE
 
-    # Get scale factor from parent (widget layer)
+    @scene = App.currentSelection.get('scene')
+    color = @scene.get('font_color')
     @input.css(
         'position':  'absolute'
-        'top':       $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - @input.height()/2
-        'left':      r.origin.x * @SCALE + $(cc.canvas).position().left - @getContentSize().width * @SCALE/2 - @BORDER_WIDTH
-        'color':     'red').
-      addClass('text-widget').
-      text(@model.get('string')).
-      selectText()
+        'top':       $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - (@getContentSize().height / 2)
+        'left':      r.origin.x * @SCALE - (@getContentSize().width / 2) + $(cc.canvas).position().left
+        'color':     'red')
+      .addClass('text-widget')
+      .css('font-family', @scene.get('font_face'))
+      .css('font-size', "#{@scene.get('font_size')}px")
+      .css('color', "rgb(#{color.r}, #{color.g}, #{color.b})")
+        .css('min-width', "#{@getContentSize().width}px")
+        .css('min-height', "#{@getContentSize().height}px")
+      .text(@model.get('string'))
+      .selectText()
