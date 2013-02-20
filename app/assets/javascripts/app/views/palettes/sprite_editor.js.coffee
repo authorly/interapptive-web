@@ -57,7 +57,7 @@
 
    setActiveSprite: (__, sprite) ->
      if sprite
-       @widget = App.builder.widgetLayer._getView(sprite)
+       @widget = sprite.widget
 
        @$('.disabled').removeClass 'disabled'
        @$('#x-coord').val parseInt(@widget.getPositionX())
