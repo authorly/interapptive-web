@@ -15,8 +15,6 @@ class App.Builder.Widgets.Widget extends cc.Node
     super
 
     @model = options.model
-    @model.widget = @
-
     _.extend(this, Backbone.Events)
     @model.on 'change:position', @updatePosition, @
     @model.on 'change:z_order', @updateZOrder, @
