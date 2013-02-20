@@ -77,7 +77,6 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     if (view = @_getView(sprite))?
       view.$el.addClass('active')
-      App.vent.trigger('sprite_widget:select', sprite)
 
 
   makeSortable: ->

@@ -4,8 +4,7 @@
    className: 'sprite-editor'
 
    initialize: ->
-     App.vent.on 'sprite_widget:deselect widget:remove', @resetForm
-     App.vent.on 'sprite_widget:select'                , @setActiveSprite, @
+     App.currentSelection.on 'change:widget', @setActiveSprite, @
 
 
    render: ->
@@ -35,8 +34,8 @@
        change: (event, ui) =>
          return unless @widget?
          @$('#scale-amount').text(ui.value)
-         console.log "Slide changed, trigger save"
-         @widget.changeZOrder(ui.value)
+         # WA: FIXME: Following gives undefined method changeZOrder
+         #@widget.changeZOrder(ui.value)
 
      # RFCTR: Needs ventilation
      # App.storybookJSON.updateSprite(App.currentScene(), App.builder.widgetLayer.getWidgetById(@getWidget().id))
@@ -64,18 +63,19 @@
      @disableFields()
 
 
-   setActiveSprite: (spriteWidget) ->
-     return unless spriteWidget
+   setActiveSprite: (__, sprite) ->
+     if sprite
+       @widget = App.builder.widgetLayer._getView(sprite)
 
-     @widget = spriteWidget
+       @$('.disabled').removeClass 'disabled'
+       @$('#x-coord').val parseInt(@widget.getPositionX())
+       @$('#y-coord').val parseInt(@widget.getPositionY())
+       @$('#scale').slider 'value', @widget.getScale()
 
-     @$('.disabled').removeClass 'disabled'
-     @$('#x-coord').val parseInt(@widget.getPositionX())
-     @$('#y-coord').val parseInt(@widget.getPositionY())
-     @$('#scale').slider 'value', @widget.getScale()
-
-     @displayFilename()
-     @enableFields()
+       @displayFilename()
+       @enableFields()
+     else
+       @resetForm()
 
 
    disableFields: ->
