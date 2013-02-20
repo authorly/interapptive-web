@@ -25,21 +25,13 @@
        min:      0.2
        max:      2.0
        step:     0.01
-
        slide: (event, ui) =>
          return unless @widget?
          @$('#scale-amount').text(ui.value)
          @widget.setScale ui.value
-
        change: (event, ui) =>
          return unless @widget?
          @$('#scale-amount').text(ui.value)
-         # WA: FIXME: Following gives undefined method changeZOrder
-         #@widget.changeZOrder(ui.value)
-
-     # RFCTR: Needs ventilation
-     # App.storybookJSON.updateSprite(App.currentScene(), App.builder.widgetLayer.getWidgetById(@getWidget().id))
-
      @$('#scale').slider(options)
 
 
