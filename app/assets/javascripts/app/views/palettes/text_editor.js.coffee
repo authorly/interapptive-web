@@ -42,9 +42,7 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   changeScene: (model) ->
-    @scene.off('change') if @scene
     @scene = model
-    @scene.on 'change', -> @.save()
 
     if @scene.isMainMenu() then @disable() else @enable()
 
@@ -95,6 +93,8 @@ class App.Views.TextEditorPalette extends Backbone.View
       .attr('disabled','true')
       .addClass('disabled')
     @$('#colorpicker').addClass('disabled')
+      .find('span i')
+      .css('background-color', 'rgb(0, 0, 0)')
 
 
   enable: ->
