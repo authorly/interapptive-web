@@ -12,14 +12,25 @@ window.App =
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
-    @vent.on 'all', ->
-      console.log 'vent', arguments # debug everything going through the vent
-      console.trace()
+    if @version.environment == 'development'
+      @vent.on 'all', ->
+        console.log 'vent', arguments # debug everything going through the vent
+        console.trace()
 
-    @vent.on 'reset:palettes', @_resetPalettes, @
-    @vent.on 'toggle:palette', @_togglePalette, @
-
+    @vent.on 'reset:palettes',           @_resetPalettes,    @
+    @vent.on 'toggle:palette',           @_togglePalette,    @
     @vent.on 'initialize:hotspotWidget', @_openHotspotModal, @
+    @vent.on 'hide:modal',               @_hideModal,        @
+
+    @vent.on 'create:scene',    @_addNewScene,    @
+    @vent.on 'create:keyframe', @_addNewKeyframe, @
+    @vent.on 'create:widget',   @_addNewWidget,   @
+    @vent.on 'create:image',    @_addNewImage,    @
+
+    @vent.on 'show:sceneform',  @_showSceneForm,  @
+
+    @vent.on 'change:keyframeWidgets',          @_changeKeyframeWidgets, @
+    @vent.on 'change:sceneWidgets load:sprite', @_changeSceneWidgets,    @
 
     @currentSelection = new Backbone.Model
       storybook: null
@@ -44,60 +55,8 @@ window.App =
 
     @palettes = [ @textEditorPalette, @spritesListPalette ] #, @spriteEditorPalette
 
-
-    @currentSelection.on 'change:storybook', (__, storybook) =>
-      @_openStorybook(storybook)
-
-    @currentSelection.on 'change:scene', (__, scene) =>
-      App.vent.trigger 'activate:scene', scene
-
-      @keyframesView.remove() if @keyframesView?
-      @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
-      $('#keyframe-list').html @keyframesView.render().el
-      scene.fetchKeyframes()
-
-
-    @vent.on 'hide:modal', @hideModal, @
-
-    @vent.on 'create:scene', ->
-      App.currentSelection.get('storybook').addNewScene()
-
-    @vent.on 'create:keyframe', (attributes) ->
-      App.currentSelection.get('scene').addNewKeyframe(attributes)
-
-    @vent.on 'create:widget', (attributes) ->
-      container = App.Collections.Widgets.containers[attributes.type]
-      App.currentSelection.get(container).widgets.add(attributes)
-
-    @vent.on 'create:image', ->
-      scene = App.currentSelection.get('scene')
-      view = new App.Views.SpriteIndex(collection: scene.storybook.images)
-
-      imageSelected = (image) ->
-        scene.widgets.add
-          type: 'SpriteWidget'
-          url:      image.get 'url'
-          filename: image.get 'name'
-        scene.save()
-
-        view.off('select', imageSelected)
-        App.modalWithView().hide()
-
-      view.on 'select', imageSelected
-      App.modalWithView(view: view).show()
-
-
-    @vent.on 'show:sceneform', ->
-      view = new App.Views.SceneForm(model: App.currentSelection.get('scene'))
-      App.modalWithView(view: view).show()
-
-    @vent.on 'change:keyframeWidgets', (keyframe) =>
-      return unless App.currentSelection.get('keyframe') == keyframe
-      @saveCanvasAsPreview(keyframe)
-
-    @vent.on 'change:sceneWidgets load:sprite', =>
-      keyframe = App.currentSelection.get('keyframe')
-      @saveCanvasAsPreview(keyframe)
+    @currentSelection.on 'change:storybook', @_openStorybook, @
+    @currentSelection.on 'change:scene',     @_changeScene,   @
 
 
   saveCanvasAsPreview: (keyframe) ->
@@ -132,11 +91,63 @@ window.App =
     palette.$el.toggle() if palette?
 
 
-  _openStorybook: (storybook) ->
+  _openStorybook: (__, storybook) ->
     scenesIndex = new App.Views.SceneIndex(collection: storybook.scenes)
     $('#scene-list').html(scenesIndex.render().el)
-
     storybook.fetchCollections()
+
+
+  _showSceneForm: ->
+    view = new App.Views.SceneForm(model: App.currentSelection.get('scene'))
+    App.modalWithView(view: view).show()
+
+
+  _changeScene: (__, scene) ->
+    App.vent.trigger 'activate:scene', scene
+    @keyframesView.remove() if @keyframesView?
+    @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
+    $('#keyframe-list').html @keyframesView.render().el
+    scene.fetchKeyframes()
+
+
+  _changeKeyframeWidgets: (keyframe) ->
+    return unless App.currentSelection.get('keyframe') == keyframe
+    @saveCanvasAsPreview(keyframe)
+
+
+  _changeSceneWidgets: ->
+    keyframe = App.currentSelection.get('keyframe')
+    @saveCanvasAsPreview(keyframe)
+
+
+  _addNewScene: ->
+    App.currentSelection.get('storybook').addNewScene()
+
+
+  _addNewKeyframe: (attributes) ->
+    App.currentSelection.get('scene').addNewKeyframe(attributes)
+
+
+  _addNewWidget: (attributes) ->
+    container = App.Collections.Widgets.containers[attributes.type]
+    App.currentSelection.get(container).widgets.add(attributes)
+
+
+  _addNewImage: ->
+    scene = App.currentSelection.get('scene')
+    view = new App.Views.SpriteIndex(collection: scene.storybook.images)
+
+    imageSelected = (image) ->
+      scene.widgets.add
+        type: 'SpriteWidget'
+        url:      image.get 'url'
+        filename: image.get 'name'
+      scene.save()
+
+      view.off('select', imageSelected)
+      App.vent.trigger('hide:modal')
+    view.on 'select', imageSelected
+    App.modalWithView(view: view).show()
 
 
   _openHotspotModal: (widget) ->
@@ -183,7 +194,7 @@ window.App =
 
 
 
-  hideModal: ->
+  _hideModal: ->
     @modalWithView().hide()
 
 
