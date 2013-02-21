@@ -85,9 +85,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   switchKeyframe: (newKeyframe) ->
-    App.currentSelection.get('keyframe')?.trigger('hide_views')
     App.currentSelection.set keyframe: newKeyframe
-    App.currentSelection.get('keyframe')?.trigger('show_views')
 
 
   keyframeChanged: (__, keyframe) ->
