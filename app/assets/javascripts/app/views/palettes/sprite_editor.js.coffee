@@ -3,6 +3,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   tagName:   'form'
   className: 'sprite-editor'
   CONTROLE_KEYS: [8, 9, 13, 35, 36, 37, 39]
+  TIMER: null
 
   initialize: ->
     App.currentSelection.on 'change:widget', @setActiveSprite, @
@@ -37,7 +38,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   setSpritePosition: ->
-    @widget.set(position: @position())
+    @_delayedSavePosition(@_position())
 
 
   updateXYFormVals: (touch) ->
@@ -99,7 +100,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   addEnterKeyInputListener: ->
     @$('#x-coord, #y-coord').keydown (e) => # Submit position on enter key
       if e.keyCode is 13
-        @widget.set(@_position())
+        @setSpritePosition()
 
 
   addNumericInputListener: ->
@@ -111,7 +112,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   addUpDownArrowListeners: =>
-    @$('#x-coord').keydown (event) => # Move/position sprite with up/down keyboard arrows
+    @$('#x-coord').keyup (event) => # Move/position sprite with up/down keyboard arrows
       _kc = event.keyCode
       if _kc == 38
         @$('#x-coord').val(parseInt(@widget.get('position').x) + 1)
@@ -121,9 +122,9 @@ class App.Views.SpriteEditorPalette extends Backbone.View
         @$('#x-coord').val(parseInt(@widget.get('position').x) - 1)
         point = @_point(@widget.get('position').x - 1, @widget.get('position').y)
 
-      @widget.set(position: { x: point.x, y: point.y }) if point?
+      @_delayedSavePosition(point) if point?
 
-    @$('#y-coord').keydown (event) =>
+    @$('#y-coord').keyup (event) =>
       _kc = event.keyCode
       if _kc == 38
         @$('#y-coord').val(parseInt(@widget.get('position').y) + 1)
@@ -133,15 +134,21 @@ class App.Views.SpriteEditorPalette extends Backbone.View
         @$('#y-coord').val(parseInt(@widget.get('position').y) - 1)
         point = @_point(@widget.get('position').x, @widget.get('position').y - 1)
 
-      @widget.set(position: { x: point.x, y: point.y }) if point?
+      @_delayedSavePosition(point) if point?
 
 
   _position: ->
-     point = @_point(@$('#x-coord').val(), @$('#y-coord').val())
-     console.log(point.x)
-     console.log(point.y)
-     { x: point.x, y: point.y }
+    @_point(@$('#x-coord').val(), @$('#y-coord').val())
 
 
   _point: (x, y) ->
      new cc.Point(x, y)
+
+
+  _delayedSavePosition: (point) ->
+    window.clearTimeout(@TIMER)
+    @TIMER = window.setTimeout((=> @_savePosition(point)), 400)
+
+
+  _savePosition: (point) ->
+    @widget.set(position: { x: point.x, y: point.y })
