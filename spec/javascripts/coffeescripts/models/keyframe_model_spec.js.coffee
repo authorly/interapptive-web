@@ -22,8 +22,6 @@ describe "App.Models.Keyframe", ->
       id: 100,
       scene: @scene
     })
-    App.currentSelection.get('scene')
-    App.currentSelection.get('keyframe')
 
 
   describe "#save", ->

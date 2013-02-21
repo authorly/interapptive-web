@@ -144,9 +144,6 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
   initialize: ->
     @currentKeyframe = null
 
-    App.currentSelection.on 'change:keyframe', (__, keyframe) =>
-      @changeKeyframe(keyframe)
-
 
   comparator: (widget) ->
     if widget instanceof App.Models.SpriteWidget

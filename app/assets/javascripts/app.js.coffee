@@ -26,7 +26,7 @@ window.App =
       scene: null
       keyframe: null
       text_widget: null
-    @currentWidgets = new App.Collections.CurrentWidgets
+    @currentWidgets = new App.Collections.CurrentWidgets(@currentSelection)
 
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
     @file_menu = new App.Views.FileMenuView el: $('#file-menu')
@@ -55,6 +55,8 @@ window.App =
       @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
       $('#keyframe-list').html @keyframesView.render().el
       scene.fetchKeyframes()
+
+    @currentSelection.on 'change:keyframe', @_changeKeyframe, @
 
 
     @vent.on 'hide:modal', @hideModal, @
@@ -187,6 +189,10 @@ window.App =
     @modalWithView().hide()
 
 
+  _changeKeyframe: (__, keyframe) ->
+    @currentWidgets.changeKeyframe(keyframe)
+
+
   # showSimulator: ->
     # @simulator = new App.Views.Simulator(json: App.storybookJSON.toString())
 
@@ -292,17 +298,17 @@ window.App =
     # $('.video-player')[0].pause()
     # $('.content-modal').show()
 
+  start: ->
+    App.version =
+      environment: $('#rails-environment').data('rails-environment'),
+      git_head:    $('#rails-environment').data('git-head')
 
-$ ->
-  App.version =
-    environment: $('#rails-environment').data('rails-environment'),
-    git_head:    $('#rails-environment').data('git-head')
+    App.init()
+    window.initBuilder()
 
-  App.init()
-  window.initBuilder()
+    $(window).resize -> App.vent.trigger('window:resize')
+    App.initModals()
 
-  $(window).resize -> App.vent.trigger('window:resize')
-  App.initModals()
+    @storybooksRouter = new App.Routers.StorybooksRouter
+    Backbone.history.start()
 
-  @storybooksRouter = new App.Routers.StorybooksRouter
-  Backbone.history.start()
