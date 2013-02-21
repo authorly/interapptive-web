@@ -15,27 +15,38 @@ class App.Models.Scene extends Backbone.Model
       "scenes/#{@id}.json"
 
 
+  parse: (attributes) ->
+    @storybook ||= attributes?.storybook
+    delete attributes.storybook
+
+    widgets = attributes.widgets; delete attributes.widgets
+    if @widgets?
+      # RFCTR enable this when upgrading to Backbone 0.9.9
+      # @widgets.update(widgets)
+    else
+      @widgets = new App.Collections.Widgets(widgets)
+      @widgets.scene = @
+
+    attributes
+
+
   initialize: (attributes) ->
-    @storybook = @collection.storybook
+    @parse(attributes)
+    @storybook ||= @collection?.storybook
 
     @initializeWidgets()
     @initializeKeyframes()
 
-    @on 'change', @save
+    @on 'change:preview_image_id change:font_color change:font_size change:font_face change:widgets', @save
 
 
   initializeWidgets: ->
-    widgets = @attributes.widgets; delete @attributes.widgets
-    @widgets = new App.Collections.Widgets(widgets)
-    @widgets.scene = @
-
     @widgets.on 'add', (widget) =>
       if widget instanceof App.Models.SpriteWidget
         widget.set z_order: @nextSpriteZOrder(widget)
 
-    @widgets.on 'add remove change', =>
-      App.vent.trigger 'change:sceneWidgets', @
-      @save()
+    @widgets.on 'reset add remove change', =>
+      @trigger 'change:widgets change'
 
 
   initializeKeyframes: ->
