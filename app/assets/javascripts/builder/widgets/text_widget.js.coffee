@@ -11,8 +11,10 @@
 #               and sets the text widget's model's string attribute (triggers a save)
 #
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
-  BORDER_STROKE_COLOR: 'rgba(0,0,255,1)'
-  BORDER_WIDTH:  2
+  BORDER_STROKE_COLOR: 'rgba(15, 79, 168, 0.8)'
+  BORDER_WIDTH:  4
+  TEXT_PADDING:  10
+  TEXT_PAD_TOP:  7
   SCALE:         0.59
   ENTER_KEYCODE: 13
 
@@ -86,11 +88,17 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     cc.renderContext.lineWidth = @BORDER_WIDTH
 
     lSize = @label.getContentSize()
-    vertices = [cc.ccp(0 - lSize.width / 2, lSize.height / 2),
-      cc.ccp(lSize.width / 2, lSize.height / 2),
-      cc.ccp(lSize.width / 2, 0 - lSize.height / 2),
-      cc.ccp(0 - lSize.width / 2, 0 - lSize.height / 2)]
 
+    # top left
+    a = cc.ccp(0 - lSize.width / 2 - @TEXT_PADDING, lSize.height / 2 + @TEXT_PAD_TOP)
+    # top right
+    b = cc.ccp(lSize.width / 2 + @TEXT_PADDING, lSize.height / 2 + @TEXT_PAD_TOP)
+    # bottom right
+    c = cc.ccp(lSize.width / 2 + @TEXT_PADDING, 0 - lSize.height / 2 - @TEXT_PADDING)
+    # bottom left
+    d = cc.ccp(0 - lSize.width / 2 - @TEXT_PADDING, 0 - lSize.height / 2 - @TEXT_PADDING)
+
+    vertices = [a, b, c, d]
     cc.drawingUtil.drawPoly(vertices, 4, true)
 
 
