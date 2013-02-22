@@ -6,4 +6,4 @@
 #= require_tree ./
 #= require_tree ../../app/assets/javascripts
 #
-App.init()
+App.start()
