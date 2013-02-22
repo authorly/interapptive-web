@@ -2,7 +2,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   template: JST['app/templates/palettes/sprite_editor']
   tagName:   'form'
   className: 'sprite-editor'
-  CONTROLE_KEYS: [8, 9, 13, 35, 36, 37, 39]
+  CONTROL_KEYS: [8, 9, 13, 35, 36, 37, 39]
   TIMER: null
 
   initialize: ->
@@ -21,6 +21,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   initScaleSlider: ->
+    $scale_amount = @$('scale-amount')
     options =
       disabled: true
       value:    1.0
@@ -29,23 +30,16 @@ class App.Views.SpriteEditorPalette extends Backbone.View
       step:     0.01
       slide: (event, ui) =>
         return unless @widget?
-        @$('#scale-amount').text(ui.value)
+        $scale_amount.text(ui.value)
         @widget.set(scale: ui.value)
       change: (event, ui) =>
         return unless @widget?
-        @$('#scale-amount').text(ui.value)
+        $scale_amount.text(ui.value)
     @$('#scale').slider(options)
 
 
   setSpritePosition: ->
     @_delayedSavePosition(@_position())
-
-
-  updateXYFormVals: (touch) ->
-    return unless @widget and App.builder.widgetLayer.hasCapturedWidget()
-
-    @$('#x-coord').val(parseInt(@widget.get('position').x))
-    @$('#y-coord').val(parseInt(@widget.get('position').y))
 
 
   resetForm: =>
@@ -75,7 +69,6 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   disableFields: ->
     @$('#scale').slider(disabled: true).slider('value', 1.0)
     @$('#x-coord, #y-coord').attr('disabled', true)
-    @$el.parent().find('label, span').addClass('disabled')
 
 
   enableFields: ->
@@ -84,10 +77,11 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   displayFilename: ->
+    filename = @widget.get('filename')
     @$('#sprite-filename')
-     .text(@widget.get('filename'))
-     .attr('title', @widget.get('filename'))
-     .attr('data-original-title', @widget.get('filename'))
+     .text(filename)
+     .attr('title', filename)
+     .attr('data-original-title', filename)
      .tooltip(placement: 'left')
 
 
@@ -105,7 +99,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   addNumericInputListener: ->
     @$('#x-coord, #y-coord').keypress (event) -> # Numeric keyboard inputs only
-      if not event.which or (49 <= event.which and event.which <= 57) or (48 is event.which and $(this).attr('value')) or @CONTROLE_KEYS.indexOf(event.which) > -1
+      if not event.which or (49 <= event.which and event.which <= 57) or (48 is event.which and $(this).attr('value')) or @CONTROL_KEYS.indexOf(event.which) > -1
         return
       else
         event.preventDefault()
@@ -114,25 +108,31 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   addUpDownArrowListeners: =>
     @$('#x-coord').keyup (event) => # Move/position sprite with up/down keyboard arrows
       _kc = event.keyCode
+      x_oord = @widget.get('position').x
+      y_oord = @widget.get('position').y
+
       if _kc == 38
-        @$('#x-coord').val(parseInt(@widget.get('position').x) + 1)
-        point = @_point(@widget.get('position').x + 1, @widget.get('position').y)
+        @$('#x-coord').val(parseInt(x_oord) + 1)
+        point = @_point(x_oord + 1, y_oord)
 
       if _kc == 40
-        @$('#x-coord').val(parseInt(@widget.get('position').x) - 1)
-        point = @_point(@widget.get('position').x - 1, @widget.get('position').y)
+        @$('#x-coord').val(parseInt(x_oord) - 1)
+        point = @_point(x_oord - 1, y_oord)
 
       @_delayedSavePosition(point) if point?
 
     @$('#y-coord').keyup (event) =>
       _kc = event.keyCode
+      x_oord = @widget.get('position').x
+      y_oord = @widget.get('position').y
+
       if _kc == 38
-        @$('#y-coord').val(parseInt(@widget.get('position').y) + 1)
-        point = @_point(@widget.get('position').x, @widget.get('position').y + 1)
+        @$('#y-coord').val(parseInt(y_oord) + 1)
+        point = @_point(x_oord, y_oord + 1)
 
       if _kc == 40
-        @$('#y-coord').val(parseInt(@widget.get('position').y) - 1)
-        point = @_point(@widget.get('position').x, @widget.get('position').y - 1)
+        @$('#y-coord').val(parseInt(y_oord) - 1)
+        point = @_point(x_oord, y_oord - 1)
 
       @_delayedSavePosition(point) if point?
 
@@ -147,8 +147,8 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   _delayedSavePosition: (point) ->
     window.clearTimeout(@TIMER)
-    @TIMER = window.setTimeout((=> @_savePosition(point)), 400)
+    @TIMER = window.setTimeout((=> @_setPosition(point)), 400)
 
 
-  _savePosition: (point) ->
+  _setPosition: (point) ->
     @widget.set(position: { x: point.x, y: point.y })
