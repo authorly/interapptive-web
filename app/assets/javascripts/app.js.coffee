@@ -97,7 +97,7 @@ window.App =
       return unless App.currentSelection.get('keyframe') == keyframe
       @saveCanvasAsPreview(keyframe)
 
-    @vent.on 'change:sceneWidgets load:sprite', =>
+    @vent.on 'load:sprite', =>
       keyframe = App.currentSelection.get('keyframe')
       @saveCanvasAsPreview(keyframe)
 
@@ -138,7 +138,12 @@ window.App =
     scenesIndex = new App.Views.SceneIndex(collection: storybook.scenes)
     $('#scene-list').html(scenesIndex.render().el)
 
+    storybook.scenes.on 'change:widgets', =>
+      keyframe = App.currentSelection.get('keyframe')
+      @saveCanvasAsPreview(keyframe)
+
     storybook.fetchCollections()
+
 
 
   _openHotspotModal: (widget) ->

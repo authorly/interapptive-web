@@ -22,17 +22,27 @@
 class App.Models.Keyframe extends Backbone.Model
   paramRoot: 'keyframe'
 
+  parse: (attributes) ->
+    widgets = attributes.widgets; delete attributes.widgets
+    if @widgets?
+      # RFCTR enable this when upgrading to Backbone 0.9.9
+      # @widgets.update(widgets)
+    else
+      @widgets = new App.Collections.Widgets(widgets)
+      @widgets.keyframe = @
+
+    attributes
+
   initialize: (attributes) ->
+    @parse(attributes)
+
     @initializeScenes(attributes)
     @initializeWidgets(attributes)
     @initializePreview()
 
 
   initializeWidgets: (attributes) ->
-    widgets = @get('widgets'); delete @attributes.widgets
-    @widgets = new App.Collections.Widgets(widgets)
-    @widgets.keyframe = @
-    @widgets.on 'add remove change', =>
+    @widgets.on 'reset add remove change', =>
       App.vent.trigger 'change:keyframeWidgets', @
       @save()
 

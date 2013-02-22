@@ -25,9 +25,6 @@ describe "App.Models.Keyframe", ->
 
 
   describe "#save", ->
-    beforeEach ->
-      @server = sinon.fakeServer.create()
-
     afterEach ->
       @server.restore()
 
