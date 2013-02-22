@@ -143,6 +143,7 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
 
   initialize: ->
     @currentKeyframe = null
+    App.currentSelection.on 'change:keyframe', @changeKeyframe, @
 
 
   comparator: (widget) ->
@@ -152,7 +153,7 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
       return widget.get('z_order') - 1/widget.id
 
 
-  changeKeyframe: (keyframe) ->
+  changeKeyframe: (__, keyframe) ->
     @updateSceneWidgets(keyframe)
     @updateKeyframeWidgets(keyframe)
 
