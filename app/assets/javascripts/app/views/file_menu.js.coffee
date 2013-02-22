@@ -40,7 +40,7 @@ class App.Views.FileMenuView extends Backbone.View
 
 
   compileStorybook: ->
-    App.currenSelection.get('storybook').compile()
+    App.currentSelection.get('storybook').compile()
 
 
   toggleImageEditorPalette: ->
