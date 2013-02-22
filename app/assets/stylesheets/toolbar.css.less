@@ -47,24 +47,8 @@ nav.toolbar {
         background-position: @toolbarItemWidth*-3 0;
       }
 
-      li.videos {
-        background-position: @toolbarItemWidth*-6 0;
-      }
-
       li.actions {
         background-position: @toolbarItemWidth*-5 0;
-      }
-
-      li.images {
-        background-position: @toolbarItemWidth*-7 0;
-      }
-
-      li.sounds {
-        background-position: @toolbarItemWidth*-8 0;
-      }
-
-      li.fonts {
-        background-position: @toolbarItemWidth*-9 0;
       }
 
       li.scene-options {
@@ -233,8 +217,12 @@ nav.toolbar {
     background-position: right center;
   }
 
-  ul li.toolbar-group.last {
-    background-image:none;
+  ul li.toolbar-group.last, ul li.toolbar-group.preview {
+    background-image: none;
+  }
+
+  ul li.toolbar-group.preview {
+    float: right;
   }
 }
 
