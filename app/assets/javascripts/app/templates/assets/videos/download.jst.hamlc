@@ -25,7 +25,6 @@
         %button.btn.btn-danger.delete-asset{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}"}
           %i.icon-trash.icon-white
           %span= locale.fileupload.destroy
-        %input{:name => "delete", :type => "checkbox", :value => "1"}
     - else
       %td{:colspan => "11"}
         Your video is being transcoded. Please check later.
