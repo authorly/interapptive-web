@@ -2,34 +2,27 @@
 #= require hamlcoffee
 #= require jquery
 #= require jquery_ujs
-#= require ./vendor/jquery-ui-1.8.23.js
+#= require jquery-ui-1.8.23.js
 #= require twitter/bootstrap
 #= require bootstrap
 #= require underscore
 #= require backbone
 #= require jquery-fileupload
 
-#= require ./vendor/popcorn-complete.min.js
-#= require ./vendor/jquery.countdown.js
-#= require ./vendor/backbone-forms.js
-#= require ./vendor/backbone-forms-list.min.js
-#= require ./vendor/base64.js
-#= require ./vendor/canvas2image.js
-#= require ./vendor/jquery.audioupload.js
-#= require ./vendor/form-templates/bootstrap
-#= require ./vendor/form-editors/currency
-#= require ./vendor/form-editors/buttons
-#= require ./vendor/form-editors/jquery.ui
-#= require ./vendor/jquery.selecttext
+#= require popcorn-complete.min.js
+#= require jquery.countdown.js
+#= require backbone-forms.js
+#= require backbone-forms-list.min.js
+#= require base64.js
+#= require canvas2image.js
+#= require jquery.audioupload.js
+#= require form-templates/bootstrap
+#= require form-editors/currency
+#= require form-editors/buttons
+#= require form-editors/jquery.ui
+#= require jquery.selecttext
 #= require backbone-deepmodel
 #= require bootstrap-colorpicker
-#= require_tree ../../../vendor/assets/javascripts/.
-#= require_tree ../../../vendor/assets/images/.
-
-#= require ./vendor/rangy-core
-#= require ./vendor/rangy-classapplier
-#= require ./vendor/rangy-selectionsaverestore
-#= require ./vendor/canpaste
 
 #= require app
 #= require config
