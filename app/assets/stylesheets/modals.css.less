@@ -141,21 +141,46 @@
     margin-bottom: 14px;
   }
 
+  .fileinput-button {
+    float: right;
+    position: absolute;
+    top: 18px;
+    z-index: 9000;
+    right: 9px;
+  }
+
   .table {
-    margin-top: 9px;
+    position: relative;
+    top: -49px;
   }
 
   td {
     vertical-align: middle;
+    padding: 2px;
   }
 
   td.delete {
     text-align: right;
+
+    button {
+      margin-right: 20px;
+    }
+  }
+
+  td.start {
+    button {
+      width: 78px;
+    }
   }
 
   td.cancel {
     padding-right: 26px !important;
     text-align: right;
+
+    button {
+      width: 100px;
+      margin-left: 25px;
+    }
   }
 
   td.start button {
