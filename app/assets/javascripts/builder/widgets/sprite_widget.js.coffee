@@ -14,12 +14,11 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   LINE_WIDTH_OUTER:   14
   LINE_WIDTH_INNER:   2
 
+
   constructor: (options) ->
     super
 
     @_border = false
-
-    # @model - is set by the super constructor
 
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
 
@@ -77,10 +76,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   mouseOver: ->
     @parent.setCursor('move')
+    @showBorder()
 
 
   mouseOut: ->
     @parent.setCursor('default')
+    @hideBorder()
 
 
   showBorder: ->
