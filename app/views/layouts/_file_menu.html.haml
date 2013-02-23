@@ -37,6 +37,20 @@
       -#%li.divider
       -#%li
         -#= link_to "Special Characters....", "#"
+
+  %li.dropdown.parent
+    = link_to "Media Libraries", "#menu1", :class => "dropdown-toggle", "data-toggle" => "dropdown"
+    %ul.dropdown-menu
+      %li
+        %a.fonts{:href => '#'} Fonts...
+      %li
+        %a.images{:href => '#'} Images...
+      %li
+        %a.sounds{:href => '#'} Sounds...
+      %li
+        %a.videos{:href => '#'} Videos...
+      -#%li
+        -#= link_to "Device Simulator", "#"
   %li.dropdown.parent
     = link_to "View", "#menu1", :class => "dropdown-toggle", "data-toggle" => "dropdown"
     %ul.dropdown-menu
