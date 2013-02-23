@@ -76,7 +76,13 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   mouseOver: ->
     super
+    @parent.setCursor('move')
     @drawSelection()
+
+
+  mouseOut: ->
+    super
+    @parent.setCursor('default')
 
 
   draw: ->
