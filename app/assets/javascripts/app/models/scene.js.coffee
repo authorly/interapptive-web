@@ -225,6 +225,7 @@ class App.Collections.ScenesCollection extends Backbone.Collection
   addNewScene: ->
     scene = new App.Models.Scene
       storybook_id: @storybook.id
+      storybook: @storybook
       position: @nextPosition()
     scene.save [],
       success: => @add scene
