@@ -23,6 +23,8 @@
 #= require jquery.selecttext
 #= require backbone-deepmodel
 #= require bootstrap-colorpicker
+#= require advancedtable
+#= require jquery.tablesorter
 
 #= require app
 #= require config
