@@ -1,4 +1,8 @@
+require 'resque-loner'
+
 class CompilationQueue
+  include Resque::Plugins::UniqueJob
+
   @queue = :compilation
 
   def self.logger

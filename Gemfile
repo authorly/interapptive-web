@@ -21,6 +21,7 @@ gem 'jasmine'
 gem 'barista'
 gem 'ttfunk'
 gem 'resque'
+gem 'resque-loner'
 gem 'god'
 
 group :osx do
