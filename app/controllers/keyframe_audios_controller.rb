@@ -1,4 +1,4 @@
-class KeyframeAudiosController < ApplicationController
+  class KeyframeAudiosController < ApplicationController
   before_filter :authorize
   protect_from_forgery :except => :create
 
@@ -12,7 +12,6 @@ class KeyframeAudiosController < ApplicationController
     keyframe = Keyframe.find params[:keyframe_id]
 
     keyframe.audio = params[:file]
-
     keyframe.save
 
     respond_to do |format|

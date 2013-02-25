@@ -65,6 +65,11 @@ class App.Models.Keyframe extends Backbone.Model
     base + 'keyframes/' + @get('id') + '.json'
 
 
+  voiceOverUrl: ->
+    console.log "/keyframes/@get(id)/audio", "/keyframes/#{@get('id')}/audio"
+    "/keyframes/#{@get('id')}/audio"
+
+
   initializePreview: ->
     attributes = App.Lib.AttributesHelper.filterByPrefix @attributes, 'preview_image_'
     @preview = new App.Models.Preview(attributes, storybook: @scene.storybook)

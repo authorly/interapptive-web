@@ -1,0 +1,226 @@
+#voiceovers {
+  .modal-header {
+    .modal-title {
+      display: inline-block;
+    }
+
+    #voiceover-file {
+      float: right;
+
+      .fileinput-button.disabled {
+        display: none;
+      }
+
+      .filename {
+        margin-right: 6px;
+      }
+
+      button.disabled {
+        display: none;
+      }
+    }
+
+    #sync-player {
+      display: none;
+
+      audio {
+        display: none;
+      }
+
+      audio.disabled {
+        -webkit-filter: blur(1px);
+        opacity: 0.25;
+        overflow: visible;
+        word-spacing: 1;
+      }
+    }
+  }
+
+  .modal-body {
+    max-height:500px;
+    min-height: 130px;
+
+    #reorder-text {
+      font-size: 11px;
+      margin-left: 155px;
+      margin-top: 10px;
+    }
+
+    ul {
+      color: #444;
+      width: 60%;
+      margin: 0 auto;
+      margin-top: 20px;
+
+      li {
+        display: inline;
+        margin-left: 10px;
+      }
+
+      span {
+        overflow: visible;
+        font-size: 22px;
+        line-height: 30px;
+        word-spacing: -4px;
+      }
+
+      span:not(:first-child) {
+        padding-left: 5px;
+      }
+
+      span.enabled {
+        color:black;
+      }
+
+      span.highlighted {
+        background-color:yellow;
+      }
+    }
+
+    #sortable-keyframe-texts.ui-sortable li:active {
+      cursor: url(https://mail.google.com/mail/images/2/closedhand.cur) 8 8, move;
+    }
+
+    .sortable li:hover {
+      cursor: move
+    }
+
+    #preview-alignment {
+      padding-right: 18px;
+      position: absolute;
+      bottom: 116px;
+      left: 600px;
+      font-weight: bolder;
+    }
+
+    #preview-alignment.disabled {
+      color: white;
+      font-weight: normal;
+    }
+
+    #user-action-after-alignment {
+      #alignment-errors {
+        position: absolute;
+        bottom: 80px;
+        width: 80px;
+        display: none;
+      }
+    }
+  }
+
+  .modal-footer {
+    overflow-x: hidden;
+
+    .btn {
+      text-shadow: 1px 1px 1px @black;
+    }
+
+
+
+    #accept-alignment {
+      padding: 14px 17px 14px 12px;
+      margin-right: 1px;
+      float: right;
+    }
+
+    .disabled {
+      background-color: #C5C4C3;
+      text-shadow: none;
+    }
+  }
+}
+
+#countdown {
+  display: inline-block;
+  float: right;
+
+  .countdownHolder{
+    width:450px;
+    margin:0 auto;
+    font: 40px/1.5 'Open Sans Condensed',sans-serif;
+    text-align:center;
+    letter-spacing:-3px;
+    font-size: 20px;
+  }
+
+  .position{
+    display: inline-block;
+    height: 1.6em;
+    overflow: hidden;
+    position: relative;
+    width: 1.05em;
+  }
+
+  .digit{
+    position:absolute;
+    display:block;
+    width:1em;
+    background-color:#444;
+    border-radius:0.2em;
+    text-align:center;
+    color:#fff;
+    letter-spacing:-1px;
+  }
+
+  .digit.static{
+    .grey-button();
+  }
+
+/**
+* Use these classes to hide parts of the
+* countdown that you don't need.
+*/
+
+  .countDays{ /* display:none !important;*/ }
+  .countDiv0{ /* display:none !important;*/ }
+  .countHours{}
+  .countDiv1{}
+  .countMinutes{}
+  .countDiv2{}
+  .countSeconds{}
+
+
+  .countDiv{
+    display:inline-block;
+    width:16px;
+    height:1.6em;
+    position:relative;
+  }
+
+  .countDiv:before,
+  .countDiv:after{
+    position:absolute;
+    width:5px;
+    height:5px;
+    background-color:#444;
+    border-radius:50%;
+    left:50%;
+    margin-left:-3px;
+    top:0.5em;
+    box-shadow:1px 1px 1px rgba(4, 4, 4, 0.5);
+    content:'';
+  }
+
+  .countDiv:after{
+    top:0.9em;
+  }
+
+  .countDays, .countDiv0, .countHours, .countDiv1 {
+    display:none !important;
+  }
+}
+
+/* Continuous blinking/fading */
+.glowing {
+  -webkit-animation-direction: normal;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-name: colours;
+  -webkit-animation-timing-function: ease-in;
+}
+
+#player {
+  clear:both;
+  width: 320px;
+  z-index: 5;
+}
