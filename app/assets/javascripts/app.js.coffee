@@ -55,7 +55,6 @@ window.App =
 
     @palettes = [ @textEditorPalette, @spritesListPalette ] #, @spriteEditorPalette
 
-    @currentSelection.on 'change:keyframe', @_changeKeyframe, @
     @currentSelection.on 'change:storybook', @_openStorybook, @
     @currentSelection.on 'change:scene',     @_changeScene,   @
 
