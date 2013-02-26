@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authorize, :only => [:edit, :update, :destroy]
+  skip_before_filter :authorize, :except => [:edit, :update, :destroy]
 
   def show
     @user = User.find params[:id]

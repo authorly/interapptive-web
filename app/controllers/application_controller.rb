@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_filter :authorize
   # force_ssl unless Rails.env.test?
 
   private

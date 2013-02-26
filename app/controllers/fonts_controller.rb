@@ -1,6 +1,4 @@
 class FontsController < ApplicationController
-  before_filter :authorize
-
   def index
     storybook = current_user.storybooks.find(params[:storybook_id])
     render :json => storybook.fonts.map(&:as_jquery_upload_response).to_json

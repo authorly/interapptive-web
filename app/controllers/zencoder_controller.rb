@@ -1,5 +1,5 @@
 class ZencoderController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token, :authorize
 
   def create
     video = Video.find_by_id(params[:job][:pass_through])

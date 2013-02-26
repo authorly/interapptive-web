@@ -1,6 +1,4 @@
 class StorybookIconsController < ApplicationController
-  before_filter :authorize
-
   def create
     storybook = Storybook.find(params[:storybook_id])
     image = Image.find(params[:image_id])

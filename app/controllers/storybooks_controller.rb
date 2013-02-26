@@ -1,5 +1,5 @@
 class StorybooksController < ApplicationController
-  before_filter :authorize, :except => :show
+  skip_before_filter :authorize, :only => :show
 
   # Backbone.js extraneous parameter hack
   param_protected [:action, :controller, :format, :storybook], :only => :update

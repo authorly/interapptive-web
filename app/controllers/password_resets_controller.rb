@@ -1,5 +1,6 @@
 class PasswordResetsController < ApplicationController
   layout 'user_sessions'
+  skip_before_filter :authorize
 
   # GET /account/password_reset
   def new

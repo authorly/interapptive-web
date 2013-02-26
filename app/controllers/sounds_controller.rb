@@ -1,6 +1,4 @@
 class SoundsController < ApplicationController
-  before_filter :authorize
-
   def index
     sounds = Sound.where(:storybook_id => params[:storybook_id])
 

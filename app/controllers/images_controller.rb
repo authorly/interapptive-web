@@ -1,8 +1,6 @@
 require "base64"
 
 class ImagesController < ApplicationController
-  before_filter :authorize
-
   def index
     images = Image.where(:storybook_id => params[:storybook_id], :generated => false)
 

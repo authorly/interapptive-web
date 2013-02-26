@@ -23,6 +23,10 @@ class Storybook < ActiveRecord::Base
     Resque.enqueue(CompilationQueue, self.id, json)
   end
 
+  def owned_by?(other_user)
+    other_user == user
+  end
+
   private
 
   def create_default_scene

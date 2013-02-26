@@ -1,6 +1,4 @@
 class KeyframesController < ApplicationController
-  before_filter :authorize
-
   # GET /scenes/:id/keyframes
   # GET /scenes/:id/keyframes.json
   def index

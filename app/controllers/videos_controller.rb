@@ -1,8 +1,6 @@
 require "base64"
 
 class VideosController < ApplicationController
-  before_filter :authorize
-
   def index
     videos = Video.where(:storybook_id => params[:storybook_id])
 

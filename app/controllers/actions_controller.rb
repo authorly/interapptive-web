@@ -1,4 +1,5 @@
 class ActionsController < ApplicationController
+  before_filter :authorize_scene_ownership, :except => :update
 
   # GET /actions/definitions.json
   def definitions
@@ -11,7 +12,6 @@ class ActionsController < ApplicationController
 
   # GET /scenes/:scene_id/actions.json
   def index
-    @scene = Scene.find params[:scene_id]
     @actions = @scene.actions
 
     respond_to do |format|
@@ -21,7 +21,6 @@ class ActionsController < ApplicationController
 
   # GET /scenes/:scene_id/actions/:id.json
   def show
-    @scene = Scene.find params[:scene_id]
     @action = @scene.actions.find params[:id]
     
     respond_to do |format|
@@ -31,7 +30,6 @@ class ActionsController < ApplicationController
 
   # GET /scenes/:scene_id/keyframes/:keyframe_id/actions/new.json
   def new
-    @scene = Scene.find params[:scene_id]
     @action = @scene.actions.new
 
     respond_to do |format|
@@ -41,7 +39,6 @@ class ActionsController < ApplicationController
 
   # POST /scene/:scene_id/keyframes/:keyframe_id/actions.json
   def create
-    @scene = Scene.find params.delete(:scene_id)
     @definition = ActionDefinition.find params.delete(:action_definition)[:id]
     @action = @scene.actions.create(:action_definition => @definition)
     
@@ -77,11 +74,17 @@ class ActionsController < ApplicationController
 
   # DELETE /scenes/:scene_id/actions/:id.json
   def destroy
-    @scene = Scene.find params[:scene_id]
     @scene.actions.find(params[:id]).try(:destroy)
 
     respond_to do |format|
       format.json { render :json => {:status => :ok} }
     end
+  end
+
+  private
+
+  def authorize_scene_ownership
+    @scene = Scene.find(params[:scene_id])
+    raise ActiveRecord::RecordNotFound unless @scene.storybook.owned_by?(current_user)
   end
 end
