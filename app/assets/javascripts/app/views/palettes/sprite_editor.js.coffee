@@ -12,15 +12,19 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   render: ->
     @$el.html(@template())
 
-    @initScaleSlider()
-    @addUpDownArrowListeners()
-    @addNumericInputListener()
-    @addEnterKeyInputListener()
+    @_initScaleSlider()
+    @_addCoordinatesListeners()
 
     @
 
 
-  initScaleSlider: ->
+  _addCoordinatesListeners: ->
+    @_addClickListener()
+    @_addUpDownArrowListeners()
+    @_addNumericInputListener()
+    @_addEnterKeyInputListener()
+
+  _initScaleSlider: ->
     $scale_amount = @$('#scale-amount')
     options =
       disabled: true
@@ -59,10 +63,14 @@ class App.Views.SpriteEditorPalette extends Backbone.View
       @$('#x-coord').val parseInt(@widget.get('position').x)
       @$('#y-coord').val parseInt(@widget.get('position').y)
       @$('#scale').slider 'value', @widget.get('scale')
-
       @displayFilename()
       @enableFields()
+      $('body').on('keyup', @_moveSpriteWithArrows)
+      @widget.on('move', @changeCoordinates, @)
+
     else
+      @widget.off('move', @changeCoordinates, @) if @widget?
+      $('body').off('keyup', @_moveSpriteWithArrows)
       @resetForm()
 
 
@@ -91,50 +99,81 @@ class App.Views.SpriteEditorPalette extends Backbone.View
      .tooltip('destroy')
 
 
-  addEnterKeyInputListener: ->
+  changeCoordinates: (new_point) ->
+    return unless new_point?
+    @$('#x-coord').val(parseInt(new_point.x))
+    @$('#y-coord').val(parseInt(new_point.x))
+
+
+  _moveSpriteWithArrows: (event) =>
+    switch event.keyCode
+      when 37 then @_moveSprite('left',  1)  # Left
+      when 38 then @_moveSprite('up',    1)  # Up
+      when 39 then @_moveSprite('right', 1)  # Right
+      when 40 then @_moveSprite('down',  1)  # Down
+
+
+  _moveSprite: (direction, pixels) ->
+    x_oord = @widget.get('position').x
+    y_oord = @widget.get('position').y
+    point  = null
+
+    switch direction
+      when 'left'
+        @$('#x-coord').val(parseInt(x_oord) - pixels)
+        point = @_point(x_oord - pixels, y_oord)
+
+      when 'up'
+        @$('#y-coord').val(parseInt(y_oord) + pixels)
+        point = @_point(x_oord, y_oord + pixels)
+
+      when 'right'
+        @$('#x-coord').val(parseInt(x_oord) + pixels)
+        point = @_point(x_oord + pixels, y_oord)
+
+      when 'down'
+        @$('#y-coord').val(parseInt(y_oord) - pixels)
+        point = @_point(x_oord, y_oord - pixels)
+
+    @_delayedSavePosition(point) if point?
+
+
+  _addClickListener: ->
+    @$('li.half').find('label, input').click (event) ->
+      event.stopPropagation()
+
+  _addEnterKeyInputListener: ->
     @$('#x-coord, #y-coord').keydown (e) => # Submit position on enter key
       if e.keyCode is 13
         @setSpritePosition()
 
 
-  addNumericInputListener: ->
-    @$('#x-coord, #y-coord').keypress (event) -> # Numeric keyboard inputs only
-      if not event.which or (49 <= event.which and event.which <= 57) or (48 is event.which and $(this).attr('value')) or @CONTROL_KEYS.indexOf(event.which) > -1
+  _addNumericInputListener: ->
+    @$('#x-coord, #y-coord').keypress (event) => # Numeric keyboard inputs only
+      if not event.which or (49 <= event.which <= 57) or (48 is event.which and $(this).attr('value')) or @CONTROL_KEYS.indexOf(event.which) > -1
         return
       else
         event.preventDefault()
 
 
-  addUpDownArrowListeners: =>
+  _addUpDownArrowListeners: ->
     @$('#x-coord').keyup (event) => # Move/position sprite with up/down keyboard arrows
       _kc = event.keyCode
-      x_oord = @widget.get('position').x
-      y_oord = @widget.get('position').y
 
       if _kc == 38
-        @$('#x-coord').val(parseInt(x_oord) + 1)
-        point = @_point(x_oord + 1, y_oord)
+        @_moveSprite('right', 1)
 
       if _kc == 40
-        @$('#x-coord').val(parseInt(x_oord) - 1)
-        point = @_point(x_oord - 1, y_oord)
-
-      @_delayedSavePosition(point) if point?
+        @_moveSprite('left', 1)
 
     @$('#y-coord').keyup (event) =>
       _kc = event.keyCode
-      x_oord = @widget.get('position').x
-      y_oord = @widget.get('position').y
 
       if _kc == 38
-        @$('#y-coord').val(parseInt(y_oord) + 1)
-        point = @_point(x_oord, y_oord + 1)
+        @_moveSprite('up', 1)
 
       if _kc == 40
-        @$('#y-coord').val(parseInt(y_oord) - 1)
-        point = @_point(x_oord, y_oord - 1)
-
-      @_delayedSavePosition(point) if point?
+        @_moveSprite('down', 1)
 
 
   _position: ->
