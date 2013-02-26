@@ -21,7 +21,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   initScaleSlider: ->
-    $scale_amount = @$('scale-amount')
+    $scale_amount = @$('#scale-amount')
     options =
       disabled: true
       value:    1.0
