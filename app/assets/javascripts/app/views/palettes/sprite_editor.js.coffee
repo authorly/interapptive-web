@@ -195,9 +195,10 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _delayedSavePosition: (point) ->
+    console.trace()
     window.clearTimeout(@TIMER)
     @TIMER = window.setTimeout((=> @_setPosition(point)), 400)
 
 
   _setPosition: (point) ->
-    @getCurrentOrientation().set(position: { x: point.x, y: point.y })
+    @getCurrentOrientation().set(position: { x: parseInt(point.x), y: parseInt(point.y) })
