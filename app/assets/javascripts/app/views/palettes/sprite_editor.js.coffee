@@ -115,6 +115,8 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _moveSpriteWithArrows: (event) =>
+    return unless @$('li.half').find('input').attr('disabled') is 'disabled'
+
     switch event.keyCode
       when 37 then @_moveSprite('left',  1)  # Left
       when 38 then @_moveSprite('up',    1)  # Up
@@ -160,7 +162,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   _addNumericInputListener: ->
     @$('#x-coord, #y-coord').keypress (event) => # Numeric keyboard inputs only
-      if not event.which or (49 <= event.which <= 57) or (48 is event.which and $(this).attr('value')) or @CONTROL_KEYS.indexOf(event.which) > -1
+      if not event.which or (48 <= event.which <= 57) or (48 is event.which and $(this).attr('value')) or @CONTROL_KEYS.indexOf(event.which) > -1
         return
       else
         event.preventDefault()
