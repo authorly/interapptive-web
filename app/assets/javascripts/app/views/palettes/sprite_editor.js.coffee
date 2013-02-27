@@ -35,12 +35,15 @@ class App.Views.SpriteEditorPalette extends Backbone.View
       slide: (event, ui) =>
         return unless @widget?
         $scale_amount.text(ui.value)
-        @widget.set(scale: ui.value)
+        @getCurrentOrientation().set(scale: ui.value)
       change: (event, ui) =>
         return unless @widget?
         $scale_amount.text(ui.value)
     @$('#scale').slider(options)
 
+
+  getCurrentOrientation: ->
+    @widget.getOrientationFor(App.currentSelection.get('keyframe'))
 
   setSpritePosition: ->
     @_delayedSavePosition(@_position())
@@ -58,11 +61,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   setActiveSprite: (__, sprite) ->
     if sprite
       @widget = sprite
-
-      @$('.disabled').removeClass 'disabled'
-      @$('#x-coord').val parseInt(@widget.get('position').x)
-      @$('#y-coord').val parseInt(@widget.get('position').y)
-      @$('#scale').slider 'value', @widget.get('scale')
+      @enablePalette()
       @displayFilename()
       @enableFields()
       $('body').on('keyup', @_moveSpriteWithArrows)
@@ -72,6 +71,15 @@ class App.Views.SpriteEditorPalette extends Backbone.View
       @widget.off('move', @changeCoordinates, @) if @widget?
       $('body').off('keyup', @_moveSpriteWithArrows)
       @resetForm()
+
+
+  enablePalette: ->
+    @$('.disabled').removeClass('disabled')
+
+    current_orientation = @getCurrentOrientation()
+    @$('#x-coord').val(parseInt(current_orientation.get('position').x))
+    @$('#y-coord').val(parseInt(current_orientation.get('position').y))
+    @$('#scale').slider('value', current_orientation.get('scale'))
 
 
   disableFields: ->
@@ -103,6 +111,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     return unless new_point?
     @$('#x-coord').val(parseInt(new_point.x))
     @$('#y-coord').val(parseInt(new_point.x))
+    @setSpritePosition()
 
 
   _moveSpriteWithArrows: (event) =>
@@ -114,8 +123,9 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _moveSprite: (direction, pixels) ->
-    x_oord = @widget.get('position').x
-    y_oord = @widget.get('position').y
+    current_orientation = @getCurrentOrientation()
+    x_oord = current_orientation.get('position').x
+    y_oord = current_orientation.get('position').y
     point  = null
 
     switch direction
@@ -190,4 +200,4 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _setPosition: (point) ->
-    @widget.set(position: { x: point.x, y: point.y })
+    @getCurrentOrientation().set(position: { x: point.x, y: point.y })
