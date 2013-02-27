@@ -13,6 +13,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
   events:
     'change input[type=file]': 'fileChanged'
     'click #upload':           'uploadAudio'
+    'click .icon-edit':        'showUploadForm'
      # 'click #start-manual-align': 'initCountForAlignment'
      # 'click #preview-alignment':  'playWithAlignment'
      # 'click #accept-alignment':   'acceptAlignment'
@@ -33,19 +34,31 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @
 
 
+  showUploadForm: ->
+    @$('.filename').hide()
+    @$('.fileinput-button').removeClass('disabled')
+
+
+  showEditIcon: ->
+    @$(e.currentTarget).css('display', 'inline-block')
+
+
   fileChanged: (event) ->
+    @$('#upload').show()
     @$('#voiceover-file button').removeClass('disabled')
     @$('.fileinput-button').addClass('disabled')
 
     path = @$(event.currentTarget).val()
     filename =  @_pathToFilename(path)
-    @$('.filename').text(filename)
+    @$('.filename span').text(filename)
+      .parent().css('display', 'inline-block')
 
 
   uploadAudio: (event) ->
     return if @$(event.currentTarget).hasClass('disabled')
 
-    @$('#upload').addClass('disabled').text('Uploading...')
+    @$('.loading').show()
+    @$('#upload, .filename').hide()
 
     @voiceoverUploader.send()
 
@@ -64,9 +77,12 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   uploadFinished: (file) ->
-    console.log "Upload finished"
-
-    @$('#upload-audio').hide()
+    @$('.loading').hide()
+    @$('.filename').css('display', 'inline-block')
+      .addClass('uploaded')
+    @$('.success').css('display', 'inline-block')
+      .delay(1300)
+      .fadeOut(700)
 
 
   _pathToFilename: (path) ->

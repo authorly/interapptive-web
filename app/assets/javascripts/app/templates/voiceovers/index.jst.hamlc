@@ -12,10 +12,15 @@
         %i.icon-plus-sign.icon-white
         %span Select a Voiceover
         %input#audio-file{:accept => "audio/vnd.wave", :name => "file", :type => "file"}
-      %span.filename
+      %div.success
+      %div.filename
+        %i.icon-edit.icon-black
+        %span
+      %div.loading
       %button#upload.btn.btn-primary.disabled
         %i.icon-arrow-up.icon-white
-        Upload File
+        Start Upload
+
   .modal-body
     %ul
       - for widget in @keyframe.widgets.models
@@ -36,5 +41,5 @@
 
   .modal-footer
     %button#accept-alignment.btn.btn-large.btn-primary.disabled
-      %i.icon-ok.icon-white
+      %i.icon-check.icon-white
       Accept Alignment

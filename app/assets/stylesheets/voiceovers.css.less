@@ -6,17 +6,69 @@
 
     #voiceover-file {
       float: right;
+      margin-top: 5px;
+
+      .fileinput-button {
+        margin: -4px 0 0 0;
+      }
 
       .fileinput-button.disabled {
         display: none;
       }
 
       .filename {
-        margin-right: 6px;
+        display: none;
+        float: left;
+
+        span {
+          margin-right: 6px;
+          padding-top: 6px;
+        }
+
+        i {
+         display: none;
+        }
+      }
+
+      .filename.uploaded:hover{
+        i {
+          display: inline-block;
+          opacity: 0.6;
+        }
+
+        i:hover {
+          cursor: pointer;
+          opacity: 1.0;
+        }
+      }
+
+      button {
+        float: right;
+        margin-top: -4px;
       }
 
       button.disabled {
         display: none;
+      }
+
+      div.loading {
+        display: none;
+        height: 16px;
+        width: 16px;
+        float: right;
+        padding-top: 6px;
+        background: asset-url('loading.gif') no-repeat;
+      }
+
+      div.success {
+        width: 13px;
+        height: 11px;
+        position: relative;
+        bottom: -4px;
+        display: none;
+        float: left;
+        margin-right: 6px;
+        background: asset-url('green-checkmark.png') no-repeat;
       }
     }
 
