@@ -65,9 +65,13 @@ class App.Models.Keyframe extends Backbone.Model
     base + 'keyframes/' + @get('id') + '.json'
 
 
-  voiceOverUrl: ->
-    console.log "/keyframes/@get(id)/audio", "/keyframes/#{@get('id')}/audio"
+  voiceoverUrl: ->
     "/keyframes/#{@get('id')}/audio"
+
+
+  voiceoverFile: ->
+    $.getJSON @voiceOverUrl(), (file) ->
+      if file? then file else false
 
 
   initializePreview: ->

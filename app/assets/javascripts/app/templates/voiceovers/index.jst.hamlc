@@ -8,7 +8,7 @@
       %span
         %a{:href => '#'}
     #voiceover-file
-      %span.fileinput-button.btn.btn-success
+      %span.fileinput-button.btn.btn-success.disabled
         %i.icon-plus-sign.icon-white
         %span Select a Voiceover
         %input#audio-file{:accept => "audio/vnd.wave", :name => "file", :type => "file"}
@@ -32,9 +32,12 @@
               = word
     #reorder-text
       %a{:href => "#"} Text not in correct order?
-    #user-action-after-alignment
+    #controls
+      %button#begin-alignment.btn.disabled
+        %i.icon-exclamation-sign.icon-black
+        Begin Highlighting
       %button#preview-alignment.btn.disabled
-        %i.icon-play.icon-white
+        %i.icon-play.icon-black
         Preview
       #alignment-errors.alert.alert-error
         Oops! looks like there's an issue with your alignment.

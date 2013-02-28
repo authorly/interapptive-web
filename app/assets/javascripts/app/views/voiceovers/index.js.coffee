@@ -4,8 +4,8 @@
 # word-by-word. As they click/drag over each word in sync with the associated audio,
 # we accumulate an array of time intervals. Intervals are then used for highlighting
 # word-by-word.
-# RFCTR rename to VoiceoverIndex. Also create a Voiceover Backbone model and move
-# there all the model related things - fetching, saving, changes.
+# RFCTR Create a Voiceover Backbone model and move
+# model related things - fetching, saving, changes.
 # @author dira, @date 2013-01-14
 class App.Views.VoiceoverIndex extends Backbone.View
   template: JST["app/templates/voiceovers/index"]
@@ -31,7 +31,30 @@ class App.Views.VoiceoverIndex extends Backbone.View
   render: ->
     @$el.html(@template(keyframe: @keyframe))
     @initUploader()
+    @findExistingVoiceover()
     @
+
+
+  findExistingVoiceover: ->
+    $.getJSON @keyframe.voiceoverUrl(), (file) =>
+      unless file.url? and file.name?
+        @noVoiceoverFound()
+      else
+        #@noVoiceoverFound()
+        @loadExistingVoiceover(file)
+
+
+  loadExistingVoiceover: (file) ->
+    @$('.loading').hide()
+    @$('.filename').css('display', 'inline-block')
+      .addClass('uploaded')
+    @$('.filename span').text(file.name)
+
+
+  noVoiceoverFound: ->
+    @$('.loading').hide()
+    @$('.fileinput-button').removeClass('disabled')
+
 
 
   showUploadForm: ->
@@ -39,8 +62,8 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @$('.fileinput-button').removeClass('disabled')
 
 
-  showEditIcon: ->
-    @$(e.currentTarget).css('display', 'inline-block')
+  showEditIcon: (event) ->
+    @$(event.currentTarget).css('display', 'inline-block')
 
 
   fileChanged: (event) ->
@@ -67,7 +90,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   initUploader: ->
     @voiceoverUploader = new voiceoverUploader @$('#audio-file').get(0),
-      url:                @keyframe.voiceOverUrl()
+      url:                @keyframe.voiceoverUrl()
       error: (event) =>   @uploadErrored(event)
       success: (file)  => @uploadFinished(file)
 

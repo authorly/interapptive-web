@@ -52,7 +52,7 @@
       }
 
       div.loading {
-        display: none;
+        display: inline;
         height: 16px;
         width: 16px;
         float: right;
@@ -137,20 +137,27 @@
       cursor: move
     }
 
-    #preview-alignment {
-      padding-right: 18px;
-      position: absolute;
-      bottom: 116px;
-      left: 600px;
-      font-weight: bolder;
-    }
+    #controls {
+      float: right;
+      margin: 0 15px 5px;
 
-    #preview-alignment.disabled {
-      color: white;
-      font-weight: normal;
-    }
+      button.disabled {
+        opacity: 0.5;
+      }
 
-    #user-action-after-alignment {
+      button.disabled:hover {
+        cursor: not-allowed;
+      }
+
+      #preview-alignment {
+        padding-right: 18px;
+        font-weight: bolder;
+      }
+
+      #preview-alignment.disabled {
+        font-weight: normal;
+      }
+
       #alignment-errors {
         position: absolute;
         bottom: 80px;
