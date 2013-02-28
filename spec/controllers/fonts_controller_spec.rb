@@ -27,6 +27,8 @@ describe FontsController do
     it 'should create multiple fonts' do
       fake_font = "font.wav"
       @storybook = Factory(:storybook)
+      @user.stub(:storybooks).and_return(Storybook)
+      Storybook.stub(:find).with('1').and_return(@storybook)
       Font.should_receive(:create).with({:font => fake_font, :storybook_id => @storybook.id }).exactly(2).times.and_return(@font)
 
       post :create, :font => { :files => [fake_font, fake_font] }, :storybook_id => @storybook.id, :format => :json
@@ -39,6 +41,8 @@ describe FontsController do
   context "#destroy" do
     it 'should destroy font' do
       Font.should_receive(:find).with(@font.id.to_s).and_return(@font)
+      @font.stub(:storybook).and_return(@storybook)
+      @storybook.stub(:owned_by?).with(@user).and_return(true)
       @font.should_receive(:destroy).and_return(true)
       delete :destroy, :id => @font.id, :format => :json
 

@@ -1,17 +1,17 @@
 require 'spec_helper'
 
 describe StorybooksController do
-  let!(:user) { Factory(:user) }
-  let!(:storybook) { Factory(:storybook) }
-  
-  #TODO make a before call to sign in user and DRY up
-  
+  before :all do
+    @storybook = Factory.create(:storybook)
+    @user = Factory.create(:user)
+    @storybook.update_attribute(:user_id, @user.id)
+  end
+
   describe '#index' do
     it "populates an array of storybooks" do
       storybooks = []
-      storybooks << Factory.create(:storybook, :user => user)
-      test_sign_in(user)
-
+      storybooks << @storybook
+      test_sign_in(@storybook.user)
       get :index, :format => :json
       response.should be_success
       response.body.should eq storybooks.to_json 
@@ -21,20 +21,19 @@ describe StorybooksController do
   describe 'GET #show' do
     it "requires user sign in"
     it "shows the right storybook" do
-      #storybook = Factory.create(:storybook)
-      get :show, :id => storybook['id'], :format => :json
-      storybook.to_json.should eq response.body
+      test_sign_in(@storybook.user)
+      get :show, :id => @storybook['id'], :format => :json
+      @storybook.to_json.should eq response.body
     end
   end
     
   describe 'PUT #update' do
     context "with valid attributes" do
       it "updates the contact in the database" do 
-        test_sign_in(user)
-        storybook = Factory.create(:storybook, :user => user)
-        put :update, :id => storybook['id'], :storybook => storybook.to_json, :format => :json
+        test_sign_in(@storybook.user)
+        put :update, :id => @storybook['id'], :storybook => @storybook.to_json, :format => :json
         response.should be_success
-        response.body.should eq storybook.to_json
+        response.body.should eq @storybook.to_json
       end
     end
     
