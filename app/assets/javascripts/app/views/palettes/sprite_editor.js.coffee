@@ -3,7 +3,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   tagName:   'form'
   className: 'sprite-editor'
   CONTROL_KEYS: [8, 9, 13, 35, 36, 37, 39]
-  TIMER: null
+  POSITION_TIMER: null
 
   initialize: ->
     App.currentSelection.on 'change:widget', @setActiveSprite, @
@@ -32,7 +32,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
       min:      0.2
       max:      2.0
       step:     0.01
-      slide: (event, ui) =>
+      stop: (event, ui) =>
         return unless @widget?
         $scale_amount.text(ui.value)
         @getCurrentOrientation().set(scale: ui.value)
@@ -197,9 +197,8 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _delayedSavePosition: (point) ->
-    console.trace()
-    window.clearTimeout(@TIMER)
-    @TIMER = window.setTimeout((=> @_setPosition(point)), 400)
+    window.clearTimeout(@POSITION_TIMER)
+    @POSITION_TIMER = window.setTimeout((=> @_setPosition(point)), 400)
 
 
   _setPosition: (point) ->
