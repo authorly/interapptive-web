@@ -53,7 +53,13 @@ window.App =
       view : new App.Views.TextEditorPalette
       el   : $('#text-editor-palette')
 
-    @palettes = [ @textEditorPalette, @spritesListPalette ] #, @spriteEditorPalette
+
+    @spriteEditorPalette = new App.Views.PaletteContainer
+      view      : new App.Views.SpriteEditorPalette
+      el        : $('#sprite-editor-palette')
+      resizable : false
+
+    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette ]
 
     @currentSelection.on 'change:storybook', @_openStorybook, @
     @currentSelection.on 'change:scene',     @_changeScene,   @
@@ -63,22 +69,6 @@ window.App =
     window.setTimeout ( ->
       App.Builder.Widgets.WidgetLayer.updateKeyframePreview(keyframe)
     ), 200 # wait for the changes to be shown in the canvas
-
-
-    # @fontsCollection =         new App.Collections.FontsCollection         []
-    # @soundsCollection =        new App.Collections.SoundsCollection        []
-    # @keyframesTextCollection = new App.Collections.KeyframeTextsCollection []
-    # @activeActionsCollection = new App.Collections.ActionsCollection       []
-
-    # @keyframeTextList  new App.Views.KeyframeTextIndex collection: @keyframesTextCollection, el: $('#canvas-wrapper')
-
-    # @contentModal =   new App.Views.Modal className: 'content-modal'
-
-    # @spriteEditorPalette = new App.Views.PaletteContainer
-      # view      : new App.Views.SpriteEditorPalette
-      # el        : $('#sprite-editor-palette')
-      # resizable : false
-
 
 
   _togglePalette: (palette) ->

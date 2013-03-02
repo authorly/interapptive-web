@@ -1,142 +1,205 @@
-# class App.Views.SpriteEditorPalette extends Backbone.View
-  # template: JST['app/templates/palettes/sprite_editor']
+class App.Views.SpriteEditorPalette extends Backbone.View
+  template: JST['app/templates/palettes/sprite_editor']
+  tagName:   'form'
+  className: 'sprite-editor'
+  CONTROL_KEYS: [8, 9, 13, 35, 36, 37, 39]
+  POSITION_TIMER: null
 
-  # tagName:   'form'
-
-  # className: 'sprite-editor'
-
-  # initialize: ->
-    # App.vent.on 'sprite_widget:deselect widget:remove', @resetForm
-    # App.vent.on 'sprite_widget:select'                , @setActiveSprite, @
-
-
-  # render: ->
-    # @$el.html(@template())
-
-    # @initScaleSlider()
-    # @addUpDownArrowListeners()
-    # @addNumericInputListener()
-    # @addEnterKeyInputListener()
-
-    # @
+  initialize: ->
+    App.currentSelection.on 'change:widget', @setActiveSprite, @
 
 
-  # initScaleSlider: ->
-    # options =
-      # disabled: true
-      # value:    1.0
-      # min:      0.2
-      # max:      2.0
-      # step:     0.01
+  render: ->
+    @$el.html(@template())
 
-      # slide: (event, ui) =>
-        # return unless @widget?
-        # @$('#scale-amount').text(ui.value)
-        # @widget.setScale ui.value
+    @_initScaleSlider()
+    @_addCoordinatesListeners()
 
-      # change: (event, ui) =>
-        # return unless @widget?
-        # @$('#scale-amount').text(ui.value)
-        # console.log "Slide changed, trigger save"
-        # @widget.changeZOrder(ui.value)
-
-    # # RFCTR: Needs ventilation
-    # # App.storybookJSON.updateSprite(App.currentScene(), App.builder.widgetLayer.getWidgetById(@getWidget().id))
-
-    # @$('#scale').slider(options)
+    @
 
 
-  # setSpritePosition: ->
-    # @widget.setPosition(new cc.Point @$('#x-coord').val(), @$('#y-coord').val())
+  _addCoordinatesListeners: ->
+    @_addClickListener()
+    @_addUpDownArrowListeners()
+    @_addNumericInputListener()
+    @_addEnterKeyInputListener()
+
+  _initScaleSlider: ->
+    $scale_amount = @$('#scale-amount')
+    options =
+      disabled: true
+      value:    1.0
+      min:      0.2
+      max:      2.0
+      step:     0.01
+      stop: (event, ui) =>
+        return unless @widget?
+        $scale_amount.text(ui.value)
+        @getCurrentOrientation().set(scale: ui.value)
+      change: (event, ui) =>
+        return unless @widget?
+        $scale_amount.text(ui.value)
+    @$('#scale').slider(options)
 
 
-  # updateXYFormVals: (touch) ->
-    # return unless @widget and App.builder.widgetLayer.hasCapturedWidget()
+  getCurrentOrientation: ->
+    @widget.getOrientationFor(App.currentSelection.get('keyframe'))
 
-    # @$('#x-coord').val(parseInt(@widget.getPositionX()))
-    # @$('#y-coord').val(parseInt(@widget.getPositionY()))
-
-
-  # resetForm: =>
-    # @widget = null
-
-    # @$('#x-coord, #y-coord').val(0)
-
-    # @clearFilename()
-    # @disableFields()
+  setSpritePosition: ->
+    @_delayedSavePosition(@_position())
 
 
-  # setActiveSprite: (spriteWidget) ->
-    # return unless spriteWidget
+  resetForm: =>
+    @widget = null
 
-    # @widget = spriteWidget
+    @$('#x-coord, #y-coord').val(0)
 
-    # @$('.disabled').removeClass 'disabled'
-    # @$('#x-coord').val parseInt(@widget.getPositionX())
-    # @$('#y-coord').val parseInt(@widget.getPositionY())
-    # @$('#scale').slider 'value', @widget.getScale()
-
-    # @displayFilename()
-    # @enableFields()
+    @clearFilename()
+    @disableFields()
 
 
-  # disableFields: ->
-    # @$('#scale').slider(disabled: true).slider('value', 1.0)
-    # @$('#x-coord, #y-coord').attr('disabled', true)
-    # @$el.parent().find('label, span').addClass('disabled')
+  setActiveSprite: (__, sprite) ->
+    if sprite
+      @widget = sprite
+      @enablePalette()
+      @displayFilename()
+      @enableFields()
+      $('body').on('keyup', @_moveSpriteWithArrows)
+      @widget.on('move', @changeCoordinates, @)
+
+    else
+      @widget.off('move', @changeCoordinates, @) if @widget?
+      $('body').off('keyup', @_moveSpriteWithArrows)
+      @resetForm()
 
 
-  # enableFields: ->
-    # @$('#scale').slider disabled: false
-    # @$('#x-coord, #y-coord').attr 'disabled', false
+  enablePalette: ->
+    @$('.disabled').removeClass('disabled')
+
+    current_orientation = @getCurrentOrientation()
+    @$('#x-coord').val(parseInt(current_orientation.get('position').x))
+    @$('#y-coord').val(parseInt(current_orientation.get('position').y))
+    @$('#scale').slider('value', current_orientation.get('scale'))
 
 
-  # displayFilename: ->
-    # @$('#sprite-filename').
-    # text(@widget.getFilename()).
-    # attr('title', @widget.getFilename()).
-    # attr('data-original-title', @widget.getFilename()).
-    # tooltip(placement: 'left')
+  disableFields: ->
+    @$('#scale').slider(disabled: true).slider('value', 1.0)
+    @$('#x-coord, #y-coord').attr('disabled', true)
 
 
-  # clearFilename: ->
-    # @$('#sprite-filename').
-      # text('No image selected.').
-      # tooltip('destroy')
+  enableFields: ->
+    @$('#scale').slider disabled: false
+    @$('#x-coord, #y-coord').attr 'disabled', false
 
 
-  # addEnterKeyInputListener: ->
-    # @$('#x-coord, #y-coord').keydown (e) => # Submit position on enter key
-      # if e.keyCode is 13
-        # @widget.setPosition(new cc.Point @$('#x-coord').val(), $('#y-coord').val())
+  displayFilename: ->
+    filename = @widget.get('filename')
+    @$('#sprite-filename')
+     .text(filename)
+     .attr('title', filename)
+     .attr('data-original-title', filename)
+     .tooltip(placement: 'left')
 
 
-  # addNumericInputListener: ->
-    # @$('#x-coord, #y-coord').keypress (event) -> # Numeric keyboard inputs only
-      # controlKeys = [8, 9, 13, 35, 36, 37, 39]
-      # isControlKey = controlKeys.join(",").match(new RegExp(event.which))
-
-      # if not event.which or (49 <= event.which and event.which <= 57) or (48 is event.which and $(this).attr('value')) or isControlKey
-        # return
-      # else
-        # event.preventDefault()
+  clearFilename: ->
+    @$('#sprite-filename')
+     .text('No image selected.')
+     .tooltip('destroy')
 
 
-  # addUpDownArrowListeners: =>
-    # @$('#x-coord').keydown (event) => # Move/position sprite with up/down keyboard arrows
-      # _kc = event.keyCode
-      # if _kc == 38
-        # @$('#x-coord').val(parseInt(@widget.getPositionX())+1)
-        # @widget.setPosition(new cc.Point(@widget.getPositionX()+1, @widget.getPositionY()))
-      # if _kc == 40
-        # @$('#x-coord').val(parseInt(@widget.getPositionX())-1)
-        # @widget.setPosition(new cc.Point(@widget.getPositionX()-1, @widget.getPositionY()))
+  changeCoordinates: (new_point) ->
+    return unless new_point?
+    @$('#x-coord').val(parseInt(new_point.x))
+    @$('#y-coord').val(parseInt(new_point.x))
+    @setSpritePosition()
 
-    # @$('#y-coord').keydown (event) =>
-      # _kc = event.keyCode
-      # if _kc == 38
-        # @$('#y-coord').val(parseInt(@widget.getPositionY())+1)
-        # @widget.setPosition(new cc.Point(@widget.getPositionX(), @widget.getPositionY()+1))
-      # if _kc == 40
-        # @$('#y-coord').val(parseInt(@widget.getPositionY())-1)
-        # @widget.setPosition(new cc.Point(@widget.getPositionX(), @widget.getPositionY()-1))
+
+  _moveSpriteWithArrows: (event) =>
+    return unless @$('li.half').find('input').attr('disabled') is 'disabled'
+
+    switch event.keyCode
+      when 37 then @_moveSprite('left',  1)  # Left
+      when 38 then @_moveSprite('up',    1)  # Up
+      when 39 then @_moveSprite('right', 1)  # Right
+      when 40 then @_moveSprite('down',  1)  # Down
+
+
+  _moveSprite: (direction, pixels) ->
+    current_orientation = @getCurrentOrientation()
+    x_oord = current_orientation.get('position').x
+    y_oord = current_orientation.get('position').y
+    point  = null
+
+    switch direction
+      when 'left'
+        @$('#x-coord').val(parseInt(x_oord) - pixels)
+        point = @_point(x_oord - pixels, y_oord)
+
+      when 'up'
+        @$('#y-coord').val(parseInt(y_oord) + pixels)
+        point = @_point(x_oord, y_oord + pixels)
+
+      when 'right'
+        @$('#x-coord').val(parseInt(x_oord) + pixels)
+        point = @_point(x_oord + pixels, y_oord)
+
+      when 'down'
+        @$('#y-coord').val(parseInt(y_oord) - pixels)
+        point = @_point(x_oord, y_oord - pixels)
+
+    @_delayedSavePosition(point) if point?
+
+
+  _addClickListener: ->
+    @$('li.half').find('label, input').click (event) ->
+      event.stopPropagation()
+
+  _addEnterKeyInputListener: ->
+    @$('#x-coord, #y-coord').keydown (e) => # Submit position on enter key
+      if e.keyCode is 13
+        @setSpritePosition()
+
+
+  _addNumericInputListener: ->
+    @$('#x-coord, #y-coord').keypress (event) => # Numeric keyboard inputs only
+      if not event.which or (48 <= event.which <= 57) or (48 is event.which and $(this).attr('value')) or @CONTROL_KEYS.indexOf(event.which) > -1
+        return
+      else
+        event.preventDefault()
+
+
+  _addUpDownArrowListeners: ->
+    @$('#x-coord').keyup (event) => # Move/position sprite with up/down keyboard arrows
+      _kc = event.keyCode
+
+      if _kc == 38
+        @_moveSprite('right', 1)
+
+      if _kc == 40
+        @_moveSprite('left', 1)
+
+    @$('#y-coord').keyup (event) =>
+      _kc = event.keyCode
+
+      if _kc == 38
+        @_moveSprite('up', 1)
+
+      if _kc == 40
+        @_moveSprite('down', 1)
+
+
+  _position: ->
+    @_point(@$('#x-coord').val(), @$('#y-coord').val())
+
+
+  _point: (x, y) ->
+     new cc.Point(x, y)
+
+
+  _delayedSavePosition: (point) ->
+    window.clearTimeout(@POSITION_TIMER)
+    @POSITION_TIMER = window.setTimeout((=> @_setPosition(point)), 400)
+
+
+  _setPosition: (point) ->
+    @getCurrentOrientation().set(position: { x: parseInt(point.x), y: parseInt(point.y) })
