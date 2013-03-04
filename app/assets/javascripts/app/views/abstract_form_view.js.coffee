@@ -1,4 +1,3 @@
-
 DELETE_MSG =
   '\nYou are about to delete this. This cannot be undone.\n\n\n' +
   'Are you sure you wish to continue?'

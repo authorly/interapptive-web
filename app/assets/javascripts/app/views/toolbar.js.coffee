@@ -48,23 +48,6 @@ class App.Views.ToolbarView extends Backbone.View
     App.vent.trigger('initialize:hotspotWidget')
 
 
-  # addSprite: ->
-    # imageSelected = (image) =>
-      # widget = new App.Builder.Widgets.SpriteWidget
-        # url:      image.get 'url'
-        # filename: image.get 'name'
-        # scene:    App.currentSelection.get 'scene'
-        # zOrder:   $('#active-sprites-window ul li').size() || 1
-      # widget.save()
-      # App.builder.widgetLayer.addWidget(widget)
-      # App.modalWithView().hide()
-      # view.off('select', imageSelected)
-
-    # view = new App.Views.SpriteIndex(collection: new App.Collections.ImagesCollection [])
-    # view.on('select', imageSelected)
-    # App.modalWithView(view: view).show()
-
-
   alignAudio: ->
     view = new App.Views.AudioIndex App.currentSelection.get('keyframe')
     App.modalWithView(view: view).show()
@@ -86,14 +69,6 @@ class App.Views.ToolbarView extends Backbone.View
         activeDefinition = @actionDefinitions.first
         view = new App.Views.ActionFormContainer actionDefinitions: @actionDefinitions
         App.modalWithView(view: view).show()
-
-
-  # _addWidget: (widget) ->
-    # keyframe = App.currentKeyframe()
-    # App.builder.widgetLayer.addWidget widget
-    # keyframe.addWidget widget
-
-    # widget.on 'change', -> keyframe.updateWidget widget
 
 
   _enableOnEvent: (event, selector) ->

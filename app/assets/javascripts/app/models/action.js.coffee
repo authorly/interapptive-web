@@ -65,32 +65,6 @@ class App.Models.Action extends Backbone.DeepModel
 
     schema
 
-  # RFCTR widgets
-  # schema: =>
-    # schema = _.extend({}, @schemaForAttributes(), {
-      # 'action_attributes.sprite_widget_id.value':
-        # type: 'Select'
-        # title: 'Image to animate'
-        # fieldClass: 'action-image-dropdown'
-        # options: @spriteWidgetsToSchema()
-        # validators: [
-          # type: 'required'
-          # message: 'Action must have an image'
-        # ]
-    # })
-
-    # schema
-
-
-  # spriteWidgetsToSchema: ->
-    # widgets = []
-    # for widget in App.builder.widgetLayer.widgets
-      # continue unless widget.sprite?
-      # _widget = {}
-      # _widget.val = widget.id
-      # _widget.label = widget.getFilename()
-      # widgets.push(_widget)
-    # widgets
 
   url: =>
     if @isNew()
