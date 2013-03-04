@@ -201,13 +201,3 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   _setRadius: (radius) ->
     radius = @model.MIN_RADIUS if radius < @model.MIN_RADIUS
     @model.set radius: radius
-
-
-  # highlight: ->
-    # super
-    # @setOpacity(HIGHLIGHT_OPACITY)
-
-
-  # unHighlight: ->
-    # super
-    # @setOpacity(DEFAULT_OPACITY)

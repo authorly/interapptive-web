@@ -123,37 +123,3 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   isSpriteWidget: ->
     @ instanceof App.Builder.Widgets.SpriteWidget
-
-
-  # isTouchWidget: ->
-    # @ instanceof App.Builder.Widgets.TouchWidget
-
-  # isHighlighted: ->
-    # return @_highlighted
-
-
-  # highlight: ->
-    # return if @isHighlighted()
-    # @_highlighted = true
-    # App.Builder.Widgets.WidgetDispatcher.trigger('widget:highlight', @id)
-
-
-  # unHighlight: ->
-    # return unless @isHighlighted()
-    # @_highlighted = false
-    # App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight', @id)
-
-
-
-  # setZOrder: (z, triggerEvent=true) ->
-    # @_zOrder = z
-
-
-  # getZOrder: ->
-    # @_zOrder
-
-
-  # changeZOrder: (z) ->
-    # @setZOrder(z)
-    # @trigger 'change', 'zOrder'
-

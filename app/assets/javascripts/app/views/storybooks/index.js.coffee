@@ -1,4 +1,3 @@
-
 DELETE_STORYBOOK_MSG =
   '\nYou are about to delete this storybook and all of it\'s scenes, keyframes, images, etc.\n\n\n' +
   'This cannot be undone.\n\n\n' +
