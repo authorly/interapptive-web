@@ -118,7 +118,7 @@ class StorybookApplication
   private
 
   def xbuild_application
-    f = IO.popen("cd #{CRUCIBLE_IOS_DIR} && security unlock-keychain -p curiousminds /Users/curiousminds/Library/Keychains/login.keychain && rake beta:deploy --trace")
+    f = IO.popen("cd #{CRUCIBLE_IOS_DIR} && security unlock-keychain -p '#{Rails.application.config.crucible_keychain_password}' /Users/Xcloud/Library/Keychains/login.keychain && bundle exec rake beta:deploy --trace")
     logger.info f.readlines.join
     f.close
   end

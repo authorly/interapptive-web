@@ -19,7 +19,19 @@ namespace :deploy do
   task :copy_god_restart_script, :roles => :stagingcompilation do 
     run "cp #{shared_path}/script/restart_authorly_god.sh #{release_path}/script/"
   end
+
+  desc "Copy Gemfile and Gemfile.lock to CRUCIBLE_IOS_DIR"
+  task :copy_gemfile_to_crucible, :roles => :stagingcompilation do
+    run "cp #{release_path}/.bundle/config #{shared_path}/../Crucible/HelloWorld/ios/.bundle"
+    run "cp #{release_path}/Gemfile #{release_path}/Gemfile.lock #{shared_path}/../Crucible/HelloWorld/ios"
+  end
+
+  desc "Copies keychain unlock password file to config"
+  task :copy_keychain_password, :rolses => :stagingcompilation do
+    run "cp #{shared_path}/config/keychain_password.txt #{release_path}/config"
+  end
 end
 
-after 'deploy:update_code', 'deploy:copy_god_restart_script'
+after 'deploy:update_code', 'deploy:copy_god_restart_script', 'deploy:copy_keychain_password'
 after "deploy:restart", 'god:restart'
+after "bundle:install", 'deploy:copy_gemfile_to_crucible'
