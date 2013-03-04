@@ -102,91 +102,6 @@ class App.Models.Keyframe extends Backbone.Model
       w.get('sprite_widget_id') == widget.id
 
 
-  # RFCTR widgets
-  # hasWidget: (widget) ->
-    # _.any((@get('widgets') || []), (w) -> widget.id is w.id)
-
-
-  # addWidget: (widget) ->
-    # widgets = @get('widgets') || []
-    # widgets.push(widget.toHash())
-    # @set('widgets', widgets)
-    # @widgetsChanged()
-
-
-  # updateWidget: (widget) =>
-    # widgets = @get('widgets') || []
-
-    # for w, i in widgets
-      # if widget.id is w.id
-        # widgets[i] = widget.toHash()
-        # @widgetsChanged()
-        # return
-
-    # # Didn't update a widget, so we'll add it
-    # @addWidget(widget)
-
-
-  # removeWidget: (widget, skipWidgetLayerRemoval) ->
-    # widgets = @get('widgets')
-    # return false unless widgets?
-    # return false if widget instanceof App.Builder.Widgets.ButtonWidget
-
-    # for w, i in widgets
-      # if w.id == widget.id
-        # widgets.splice(i, 1)
-        # @widgetsChanged()
-        # break
-
-    # App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
-    # @widgetsChanged()
-    # true
-
-
-  # widgetsChanged: =>
-    # @trigger 'change:widgets', @
-    # @save()
-
-  # spriteOrientationWidgetBySpriteWidget: (sprite_widget) ->
-    # @fetch(async: false)
-    # orientation = _.find(@widgets(), (widget) -> widget.sprite_widget_id == sprite_widget.id)
-    # return undefined unless orientation?
-    # orientation.sprite_widget = sprite_widget
-    # orientation
-
-  # widgets: ->
-    # widgets_array = @get('widgets')
-    # _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
-
-  # _findOrCreateWidgetByWidgetHash: (widget_hash) ->
-    # widget = App.builder.widgetStore.find(widget_hash.id)
-    # return widget if widget?
-    # widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { keyframe: this }))
-    # App.builder.widgetStore.addWidget(widget)
-    # widget
-
-
-
-
-  # save: ->
-    # if arguments.length > 0
-      # @_actualSave.apply @, arguments
-    # else
-      # # Use `debounce` to actually save only once if save is called
-      # # rapid sequence (as it happens when multiple change events are fired
-      # # asynchronously, from different sources, but close to one another in time)
-      # # To take advantage of this, use `set` to change the attributes, followed by
-      # # `save` # without parameters
-      # @_debouncedSave().apply @
-
-
-  # _debouncedSave: ->
-    # @_deboucedSaveMemoized ||= _.debounce @_actualSave, 500
-
-
-  # _actualSave: =>
-    # Backbone.Model.prototype.save.apply @, arguments
-
 
   canAddText: ->
     !@isAnimation() && @scene.canAddText()
@@ -196,22 +111,10 @@ class App.Models.Keyframe extends Backbone.Model
     @get('is_animation')
 
 
-  # spriteOrientationWidgetBySpriteWidget: (sprite_widget) ->
-    # @fetch(async: false)
-    # orientation = _.find(@widgets(), (widget) -> widget.sprite_widget_id == sprite_widget.id)
-    # return undefined unless orientation?
-    # orientation.sprite_widget = sprite_widget
-    # orientation
-
 
   nextTextSyncOrder: ->
     text_widget_with_max_sync_order = _.max(@text_widgets(), (w) -> w.sync_order)
     (text_widget_with_max_sync_order?.sync_order || 0) + 1
-
-
-  # widgets: ->
-    # widgets_array = @get('widgets')
-    # _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
 
 
   textWidgets: ->
@@ -221,14 +124,6 @@ class App.Models.Keyframe extends Backbone.Model
   widgetsByClass: (klass) ->
     return [] unless klass?
     @widgets.filter (w) -> w instanceof klass
-
-
-  # _findOrCreateWidgetByWidgetHash: (widget_hash) ->
-    # widget = App.builder.widgetStore.find(widget_hash.id)
-    # return widget if widget?
-    # widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { keyframe: this }))
-    # App.builder.widgetStore.addWidget(widget)
-    # widget
 
 
   updateContentHighlightTimes: (times, options={}) ->

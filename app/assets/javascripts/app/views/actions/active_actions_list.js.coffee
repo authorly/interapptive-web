@@ -1,4 +1,3 @@
-
 DELETE_ACTION_MSG =
   'Are you sure you want to delete this action?\n'
 
@@ -35,23 +34,6 @@ class App.Views.ActiveActionsList extends Backbone.View
   edit: (event) =>
     action = @collection.get $(event.currentTarget).data('action-id')
 
-    #
-    # RFCTR
-    #     Needs ventilation
-    #
-    #
-    #     @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
-    #     @actionDefinitions.fetch
-    #      success: =>
-    #        activeDefinition = @actionDefinitions.get(action.get('action_definition_id'))
-    #        view = new App.Views.ActionFormContainer(
-    #          action: action
-    #          activeDefinition: activeDefinition
-    #          actionDefinitions: @actionDefinitions
-    #        )
-    #
-    #        App.modalWithView(view: view).show()
-
 
   delete: (event) ->
     if confirm DELETE_ACTION_MSG
@@ -75,5 +57,3 @@ class App.Views.ActiveActionsList extends Backbone.View
     actionEl =   actionView.render().el
 
     @$el.append(actionEl)
-
-

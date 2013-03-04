@@ -145,48 +145,6 @@ class App.Models.Scene extends Backbone.Model
       return 1
 
 
-  # RFCTR widgets
-  # hasWidget: (widget) =>
-    # _.any((@get('widgets') || []), (w) -> widget.id is w.id)
-
-  # addWidget: (widget) =>
-    # widgets = @get('widgets') || []
-    # widgets.push(widget.toSceneHash())
-    # @set('widgets', widgets)
-    # if (widget.isSpriteWidget() ) && !widget.isLoaded()
-      # widget.on 'loaded', => setTimeout @widgetsChanged, 0
-    # else
-      # @widgetsChanged(widget)
-
-
-  # removeWidget: (widget, skipWidgetLayerRemoval) =>
-    # return unless (widgets = @get('widgets'))?
-
-    # for w, i in widgets
-      # if w.id == widget.id
-        # widgets.splice(i, 1)
-        # @widgetsChanged(widget)
-        # break
-
-    # App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
-    # @widgetsChanged()
-
-  # widgetsChanged: =>
-    # @save()
-
-
-  # widgets: ->
-    # widgets_array = @get('widgets')
-    # _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
-
-  # _findOrCreateWidgetByWidgetHash: (widget_hash) ->
-    # widget = App.builder.widgetStore.find(widget_hash.id)
-    # return widget if widget
-    # widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { scene: this }))
-    # App.builder.widgetStore.addWidget(widget)
-    # widget
-
-
 ##
 # Relations
 # * @storybook - It belongs to a story book.
@@ -283,17 +241,3 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
     @sort silent: true
     @savePositions()
-
-
-  # reposition: (new_positions, el) ->
-    # $.ajax
-      # contentType:"application/json"
-      # dataType: 'json'
-      # type: 'POST'
-      # data: new_positions
-      # url: "#{@ordinalUpdateUrl(App.currentScene().get('id'))}"
-      # success: =>
-        # $(el).sortable('refresh')
-        # @fetch
-         # success: =>
-           # @trigger('reset', this)
