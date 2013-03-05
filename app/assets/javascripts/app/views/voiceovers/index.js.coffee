@@ -53,21 +53,18 @@ class App.Views.VoiceoverIndex extends Backbone.View
       .addClass('disabled')
     @$('#begin-alignment').addClass('disabled')
 
-    @setCountdownNotEnded()
+    @placeCountdownElements()
+
+
+  placeCountdownElements: ->
+    countdownEnded = false
     endTime = (new Date()).getTime() + @COUNTDOWN_LENGTH_IN_SECONDS * 1000
     @$('#countdown').jcountdown
       timestamp: endTime
       callback: (days, hours, minutes, seconds) =>
         if seconds is 0 and not countdownEnded
           @countdownEnded()
-
-
-  countdownEnded: ->
-    @countdownEnded = true
-
-
-  setCountdownNotEnded: ->
-    @countdownEnded = false
+          countdownEnded = true
 
 
   stopAlignment: =>
