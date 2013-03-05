@@ -303,12 +303,10 @@ class App.Views.VoiceoverIndex extends Backbone.View
           effect:     'applyclass'
           applyclass: 'highlighted'
 
-
     @player.play()
     @player.playbackRate(1.0)
 
     @_previewingAlignment = true
-
 
 
   _playerCurrentTimeInSeconds: ->
