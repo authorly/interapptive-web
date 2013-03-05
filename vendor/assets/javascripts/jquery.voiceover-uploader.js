@@ -1,4 +1,4 @@
-function audioUploader(input, options) {
+function voiceoverUploader(input, options) {
     var $this = this;
 
     // Default settings (mostly debug functions)

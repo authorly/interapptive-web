@@ -22,12 +22,15 @@
       %li.add-image.disabled
         = link_to "Add Image", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
 
-  %li.toolbar-group.last
+  %li.toolbar-group
     %ul
       %li.scene-options.disabled
         = link_to "Scene Options", "#"
+
+  %li.toolbar-group.last
+    %ul
       %li.sync-audio.disabled
-        = link_to "Sync Audio", "#"
+        = link_to "Highlighting & Voiceovers", "#"
 
   %li.toolbar-group.preview
     %ul

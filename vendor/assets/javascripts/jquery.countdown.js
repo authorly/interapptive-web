@@ -14,7 +14,7 @@
         minutes	= 60;
 
     // Creating the plugin
-    $.fn.countdown = function(prop){
+    $.fn.jcountdown = function(prop){
 
         var options = $.extend({
             callback	: function(){},
