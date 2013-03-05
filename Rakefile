@@ -9,9 +9,8 @@ Interapptive::Application.load_tasks
 if %w(test development).include?(ENV['RAILS_ENV'])
   require 'guard/jasmine/task'
   Guard::JasmineTask.new
+  require 'rspec/core/rake_task'
+  RSpec::Core::RakeTask.new(:spec)
 end
-
-require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec)
 
 task 'default' => ['guard:jasmine', 'spec']
