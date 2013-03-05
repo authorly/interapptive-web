@@ -1,4 +1,4 @@
-  class KeyframeAudiosController < ApplicationController
+class KeyframeAudiosController < ApplicationController
   before_filter :authorize
   protect_from_forgery :except => :create
 
