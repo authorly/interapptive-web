@@ -40,7 +40,8 @@
           Begin Highlighting
       %button#preview-alignment.btn.disabled
         %i.icon-play.icon-black
-        Preview
+        %span
+          Preview
       #alignment-errors.alert.alert-error
         Oops! looks like there's an issue with your alignment.
 

@@ -10,14 +10,14 @@ class App.Views.VoiceoverIndex extends Backbone.View
   template: JST['app/templates/voiceovers/index']
 
   events:
-    'change input[type=file]': 'fileChanged'
-    'click #upload':           'uploadAudio'
-    'click .icon-edit':        'showUploadForm'
-    'mousedown .word':         'mouseDownOnWord'
-    'mouseover .word':         'mouseOverWord'
-    'selectstart':             'cancelNativeHighlighting'
-    'click #begin-alignment':  'clickBeginOrStopAlignment'
-     # 'click #preview-alignment':  'playWithAlignment'
+    'change input[type=file]':  'fileChanged'
+    'click #upload':            'uploadAudio'
+    'click .icon-edit':         'showUploadForm'
+    'mousedown .word':          'mouseDownOnWord'
+    'mouseover .word':          'mouseOverWord'
+    'selectstart':              'cancelNativeHighlighting'
+    'click #begin-alignment':   'clickBeginAlignment'
+    'click #preview-alignment': 'clickPreviewAlignment'
      # 'click #accept-alignment':   'acceptAlignment'
 
   COUNTDOWN_LENGTH_IN_SECONDS: 5
@@ -41,7 +41,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @
 
 
-  clickBeginOrStopAlignment: (event) =>
+  clickBeginAlignment: (event) =>
     event.preventDefault()
 
     if @_canManuallyAlign then @stopAlignment() else @startCountdown()
@@ -64,6 +64,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   stopAlignment: =>
+    @enablePreview()
     @disableHelperArrow()
     @removeWordHighlights()
     @player.pause(@player.duration())
@@ -208,6 +209,11 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   voiceoverEnded: ->
+    if @_previewingAlignment
+      @previewingEnded()
+    else
+      @enablePreview()
+
     @$('.word.highlighted').removeClass('highlighted')
     @$('#begin-alignment').find('span')
       .text('Begin Highlighting')
@@ -216,6 +222,16 @@ class App.Views.VoiceoverIndex extends Backbone.View
       .addClass('icon-exclamation-sign')
 
     @_canManuallyAlign = false
+
+
+  previewingEnded: ->
+    @_previewingAlignment = false
+    @$('#begin-alignment').removeClass('disabled')
+    @$('#preview-alignment').find('span')
+      .text('Preview')
+      .parent().find('i')
+      .removeClass('icon-stop')
+      .addClass('icon-play')
 
 
   uploadErrored: (event) ->
@@ -236,12 +252,63 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @$('#preview-alignment').removeClass('disabled')
 
 
+  disablePreview: ->
+    @$('#preview-alignment').addClass('disabled')
+
+
   enableHighlighting: ->
     @$('#begin-alignment').removeClass('disabled')
 
 
   setAudioPlayerSrc: (voiceoverUrl) ->
     @$('audio').attr('src', voiceoverUrl)
+
+
+  clickPreviewAlignment: (event) ->
+    $el = @$(event.currentTarget)
+    if $el.find('i').hasClass('icon-play')
+      @$('#begin-alignment').addClass('disabled')
+      $el.find('span')
+        .text('Stop')
+        .parent().find('i')
+        .removeClass('icon-play')
+        .addClass('icon-stop')
+    else
+      $el.find('span')
+        .text('Preview')
+        .parent().find('i')
+        .removeClass('icon-stop')
+        .addClass('icon-play')
+
+    # Can this be 1 line? -C.W 3.5.2013
+    $words = @$('.word')
+    $words.removeClass('highlighted')
+
+    unless @_initialized
+      @_initialized = true
+
+      $.each $words, (index, word) =>
+        @$(word).attr("id", "word-#{index}")
+
+        if @$(words[index + 1]).length > 0
+          endTime = parseFloat(@$($words[index + 1]).attr('data-start'))
+        else
+          endTime = parseFloat(@$(word).attr('data-start')) + 1
+
+        @player.footnote
+          start:      @$(word).attr('data-start')
+          end:        endTime
+          text:       ''
+          target:     "word-#{index}"
+          effect:     'applyclass'
+          applyclass: 'highlighted'
+
+
+    @player.play()
+    @player.playbackRate(1.0)
+
+    @_previewingAlignment = true
+
 
 
   _playerCurrentTimeInSeconds: ->
