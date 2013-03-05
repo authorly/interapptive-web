@@ -69,11 +69,6 @@ class App.Models.Keyframe extends Backbone.Model
     "/keyframes/#{@get('id')}/audio"
 
 
-  voiceoverFile: ->
-    $.getJSON @voiceOverUrl(), (file) ->
-      if file? then file else false
-
-
   initializePreview: ->
     attributes = App.Lib.AttributesHelper.filterByPrefix @attributes, 'preview_image_'
     @preview = new App.Models.Preview(attributes, storybook: @scene.storybook)
