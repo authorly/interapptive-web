@@ -92,13 +92,24 @@
     max-height:500px;
     min-height: 130px;
 
+    i.icon-arrow-right.icon-black {
+      position: absolute;
+      left: 127px;
+      top: 75px;
+      display: none;
+    }
+
+    i.icon-arrow-right.icon-black.disabled {
+      display: none !important;
+    }
+
     #reorder-text {
       font-size: 11px;
       margin-left: 155px;
       margin-top: 10px;
     }
 
-    ul {
+    ul#words {
       color: #444;
       width: 60%;
       margin: 0 auto;
@@ -106,7 +117,14 @@
 
       li {
         display: inline;
-        margin-left: 10px;
+
+        span.disabled {
+          color: #c6c6c6;
+        }
+      }
+
+      li:not(:first-child) {
+        margin-left: 7px;
       }
 
       span {
@@ -125,7 +143,7 @@
       }
 
       span.highlighted {
-        background-color:yellow;
+        color: #cbcbcb;
       }
     }
 
@@ -174,8 +192,6 @@
       text-shadow: 1px 1px 1px @black;
     }
 
-
-
     #accept-alignment {
       padding: 14px 17px 14px 12px;
       margin-right: 1px;
@@ -190,8 +206,9 @@
 }
 
 #countdown {
-  display: inline-block;
-  float: right;
+  position: absolute;
+  left: 330px;
+  top: 90px;
 
   .countdownHolder{
     width:450px;

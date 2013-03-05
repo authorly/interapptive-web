@@ -4,51 +4,164 @@
 # word-by-word. As they click/drag over each word in sync with the associated audio,
 # we accumulate an array of time intervals. Intervals are then used for highlighting
 # word-by-word.
-# RFCTR Create a Voiceover Backbone model and move
-# model related things - fetching, saving, changes.
+# RFCTR Create a Voiceover Backbone model and move model related things.
 # @author dira, @date 2013-01-14
 class App.Views.VoiceoverIndex extends Backbone.View
-  template: JST["app/templates/voiceovers/index"]
+  template: JST['app/templates/voiceovers/index']
 
   events:
     'change input[type=file]': 'fileChanged'
     'click #upload':           'uploadAudio'
     'click .icon-edit':        'showUploadForm'
-     # 'click #start-manual-align': 'initCountForAlignment'
+    'mousedown .word':         'mouseDownOnWord'
+    'mouseover .word':         'mouseOverWord'
+    'selectstart':             'cancelNativeHighlighting'
+    'click #begin-alignment':  'clickBeginOrStopAlignment'
      # 'click #preview-alignment':  'playWithAlignment'
      # 'click #accept-alignment':   'acceptAlignment'
 
-
-  @COUNTDOWN_LENGTH_IN_SECONDS = 3
-
-  @AUDIO_UPLOAD_ERROR = 'There was an issue uploading your audio'
+  COUNTDOWN_LENGTH_IN_SECONDS: 5
 
 
   initialize: (keyframe) ->
     @keyframe = keyframe
 
+    @_canManuallyAlign = false
+    @_mouseDown = false
+    @player = null
+
+    $(document).mouseup => @_mouseDown = false
+
 
   render: ->
     @$el.html(@template(keyframe: @keyframe))
     @initUploader()
+    @pulsateArrowIcon()
     @findExistingVoiceover()
     @
 
 
+  clickBeginOrStopAlignment: (event) =>
+    event.preventDefault()
+
+    if @_canManuallyAlign then @stopAlignment() else @startCountdown()
+
+
+  startCountdown: ->
+    @$('#words').after('<div id="countdown"></div>')
+      .find('span.word')
+      .addClass('disabled')
+    @$('#begin-alignment').addClass('disabled')
+
+    countdownEnded = false
+    endTime = (new Date()).getTime() + @COUNTDOWN_LENGTH_IN_SECONDS * 1000
+    @$('#countdown').jcountdown
+      timestamp: endTime
+      callback: (days, hours, minutes, seconds) =>
+        if seconds is 0 and not countdownEnded
+          @countdownEnded()
+          countdownEnded = true
+
+
+  stopAlignment: =>
+    @disableHelperArrow()
+    @removeWordHighlights()
+    @player.pause(@player.duration())
+
+
+  countdownEnded: =>
+    @removeWordHighlights()
+
+    @player.play()
+    @player.playbackRate(0.6)
+
+    @$('#countdown').remove()
+    @$('.word').removeClass('disabled')
+    @$('i.icon-arrow-right.icon-black').removeClass('disabled')
+    @$('#begin-alignment').removeClass('disabled')
+      .find('span')
+      .text('Stop Highlighting')
+      .parent().find('i')
+      .removeClass('icon-exclamation-sign')
+      .addClass('icon-stop')
+
+    @_canManuallyAlign = true
+
+
+  removeWordHighlights: =>
+    $('span.word.highlighted').removeClass('highlighted')
+
+
+  cancelNativeHighlighting: ->
+    false
+
+
+  mouseOverWord: (event) =>
+    return false unless @_canManuallyAlign
+
+    $wordEl = @$(event.currentTarget)
+    if @_mouseDown and @canHighlightEl($wordEl)
+      $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
+
+
+  mouseDownOnWord: (event) =>
+    return false unless @_canManuallyAlign
+
+    @_mouseDown = true
+
+    $wordEl = @$(event.currentTarget)
+    if @canHighlightEl($wordEl)
+      @disableHelperArrow() if @isFirstWord($wordEl)
+      $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
+
+    false
+
+
+  disableHelperArrow: ->
+    @$('i.icon-arrow-right.icon-black').addClass('disabled')
+
+
+  pulsateArrowIcon: ->
+    @$('i.icon-arrow-right.icon-black').effect 'pulsate',
+      times: 1
+    , 900, =>
+       #repeat after pulsating
+      @pulsateArrowIcon()
+
+
+  isFirstWord: (el) ->
+    el.is('span:first-child') and el.parent().is('li:first-child')
+
+
+  prevElHighlighted: (el) ->
+    lastElWasHighlighted =
+      el.is('span:first-child') and el.parent().prev().find('span:last-child').hasClass('highlighted')
+    el.prev().hasClass('highlighted') or lastElWasHighlighted
+
+
+  canHighlightEl: (el) ->
+    @prevElHighlighted(el) or @isFirstWord(el)
+
+
+  # RFCTR: Move to a Voiceover model
   findExistingVoiceover: ->
     $.getJSON @keyframe.voiceoverUrl(), (file) =>
-      unless file.url? and file.name?
-        @noVoiceoverFound()
+      @initMediaPlayer()
+
+      if file.url? and file.name?
+        @setExistingVoiceover(file)
       else
-        #@noVoiceoverFound()
-        @loadExistingVoiceover(file)
+        @noVoiceoverFound()
 
 
-  loadExistingVoiceover: (file) ->
+  setExistingVoiceover: (file) ->
     @$('.loading').hide()
     @$('.filename').css('display', 'inline-block')
       .addClass('uploaded')
     @$('.filename span').text(file.name)
+    @$('#begin-alignment').removeClass('disabled')
+    @setAudioPlayerSrc(file.url)
+    @enableHighlighting()
 
 
   noVoiceoverFound: ->
@@ -56,14 +169,9 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @$('.fileinput-button').removeClass('disabled')
 
 
-
   showUploadForm: ->
     @$('.filename').hide()
     @$('.fileinput-button').removeClass('disabled')
-
-
-  showEditIcon: (event) ->
-    @$(event.currentTarget).css('display', 'inline-block')
 
 
   fileChanged: (event) ->
@@ -79,13 +187,12 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   uploadAudio: (event) ->
     return if @$(event.currentTarget).hasClass('disabled')
+    event.preventDefault()
 
     @$('.loading').show()
     @$('#upload, .filename').hide()
 
     @voiceoverUploader.send()
-
-    event.preventDefault()
 
 
   initUploader: ->
@@ -95,17 +202,50 @@ class App.Views.VoiceoverIndex extends Backbone.View
       success: (file)  => @uploadFinished(file)
 
 
+  initMediaPlayer: =>
+    @player = Popcorn('audio')
+    @player.play().on 'ended', => @voiceoverEnded()
+
+
+  voiceoverEnded: ->
+    @$('.word.highlighted').removeClass('highlighted')
+    @$('#begin-alignment').find('span')
+      .text('Begin Highlighting')
+      .parent().find('i')
+      .removeClass('icon-stop')
+      .addClass('icon-exclamation-sign')
+
+    @_canManuallyAlign = false
+
+
   uploadErrored: (event) ->
     console.log "Error uploading"
 
 
   uploadFinished: (file) ->
     @$('.loading').hide()
-    @$('.filename').css('display', 'inline-block')
-      .addClass('uploaded')
-    @$('.success').css('display', 'inline-block')
-      .delay(1300)
-      .fadeOut(700)
+    @$('.filename').css('display', 'inline-block').addClass('uploaded')
+    @$('.success').css('display', 'inline-block').delay(1300).fadeOut(700)
+
+    _file = JSON.parse(file)
+    @setAudioPlayerSrc(_file.url)
+    @enableHighlighting()
+
+
+  enablePreview: ->
+    @$('#preview-alignment').removeClass('disabled')
+
+
+  enableHighlighting: ->
+    @$('#begin-alignment').removeClass('disabled')
+
+
+  setAudioPlayerSrc: (voiceoverUrl) ->
+    @$('audio').attr('src', voiceoverUrl)
+
+
+  _playerCurrentTimeInSeconds: ->
+    Math.round(1000 * @player.currentTime()) / 1000
 
 
   _pathToFilename: (path) ->

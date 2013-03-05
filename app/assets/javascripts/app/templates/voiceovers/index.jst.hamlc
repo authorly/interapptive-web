@@ -3,7 +3,7 @@
     %h3.modal-title
       Voiceovers and highlighting...
     #sync-player
-      %audio{:controls => "controls", :class => "disabled"}
+      %audio{:id => "media-player", :controls => "controls", :class => "disabled"}
         Your browser does not support the audio element.
       %span
         %a{:href => '#'}
@@ -22,20 +22,22 @@
         Start Upload
 
   .modal-body
-    %ul
+    %i.icon-arrow-right.icon-black.disabled
+    %ul#words
       - for widget in @keyframe.widgets.models
         - continue unless widget.get('type') is 'TextWidget'
         %li
           - words = widget.get('string').split(' ')
           - for word, index in words
-            %span
-              = word
+            %span.word
+              = word + " "
     #reorder-text
       %a{:href => "#"} Text not in correct order?
     #controls
       %button#begin-alignment.btn.disabled
         %i.icon-exclamation-sign.icon-black
-        Begin Highlighting
+        %span
+          Begin Highlighting
       %button#preview-alignment.btn.disabled
         %i.icon-play.icon-black
         Preview
