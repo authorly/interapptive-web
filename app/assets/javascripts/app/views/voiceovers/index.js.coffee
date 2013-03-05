@@ -198,9 +198,18 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   initUploader: ->
     @voiceoverUploader = new voiceoverUploader @$('#audio-file').get(0),
-      url:                @keyframe.voiceoverUrl()
-      error: (event) =>   @uploadErrored(event)
-      success: (file)  => @uploadFinished(file)
+      url: @keyframe.voiceoverUrl()
+      error: (event) =>
+        console.log "Error uploading"
+      success: (file)  =>
+        @$('.loading').hide()
+        @$('.filename').css('display', 'inline-block').addClass('uploaded')
+        @$('.success').css('display', 'inline-block').delay(1300).fadeOut(700)
+
+        _file = JSON.parse(file)
+        @setAudioPlayerSrc(_file.url)
+        @enableHighlighting()
+
 
 
   initMediaPlayer: =>
@@ -232,20 +241,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
       .parent().find('i')
       .removeClass('icon-stop')
       .addClass('icon-play')
-
-
-  uploadErrored: (event) ->
-    console.log "Error uploading"
-
-
-  uploadFinished: (file) ->
-    @$('.loading').hide()
-    @$('.filename').css('display', 'inline-block').addClass('uploaded')
-    @$('.success').css('display', 'inline-block').delay(1300).fadeOut(700)
-
-    _file = JSON.parse(file)
-    @setAudioPlayerSrc(_file.url)
-    @enableHighlighting()
 
 
   enablePreview: ->
