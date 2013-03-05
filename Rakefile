@@ -11,6 +11,5 @@ if %w(test development).include?(ENV['RAILS_ENV'])
   Guard::JasmineTask.new
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new(:spec)
+  task 'default' => ['guard:jasmine', 'spec']
 end
-
-task 'default' => ['guard:jasmine', 'spec']
