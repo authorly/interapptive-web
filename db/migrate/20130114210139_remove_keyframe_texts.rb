@@ -16,8 +16,8 @@ class RemoveKeyframeTexts < ActiveRecord::Migration
     end
 
     def self.find_max_widget_id
-      (Keyframe.all.collect(&:widgets).flatten + Scene.all.collect(&:widgets).flatten).
-        collect do |f|
+      (Keyframe.all.collect(&:widgets).flatten + Scene.all.collect(&:widgets).flatten).compact
+        .collect do |f|
         f['id'].to_i
         end.max
     end
