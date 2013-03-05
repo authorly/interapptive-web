@@ -12,17 +12,14 @@
 
 #= require popcorn-complete.min.js
 #= require jquery.countdown
-#= require jquery
 #= require backbone-forms.js
 #= require backbone-forms-list.min.js
 #= require base64.js
 #= require canvas2image.js
-#= require jquery
 #= require form-templates/bootstrap
 #= require form-editors/currency
 #= require form-editors/buttons
 #= require form-editors/jquery.ui
-#= require jquery
 #= require backbone-deepmodel
 #= require bootstrap-colorpicker
 
