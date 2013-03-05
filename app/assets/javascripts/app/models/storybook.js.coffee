@@ -1,3 +1,7 @@
+##
+# Relations:
+# * `@scenes`. It has many scenes. A Backbone collection.
+# * `@images`. It has many images. A Backbone collection.
 class App.Models.Storybook extends Backbone.Model
   schema:
     title:
@@ -64,6 +68,15 @@ class App.Models.Storybook extends Backbone.Model
       labeling:      ["On", "Off"]
       selectedIndex: 0
 
+
+  initialize: ->
+    @scenes = new App.Collections.ScenesCollection([], storybook: @)
+    @images = new App.Collections.ImagesCollection([], storybook: @)
+    @sounds = new App.Collections.SoundsCollection([], storybook: @)
+    @videos = new App.Collections.VideosCollection([], storybook: @)
+    @fonts  = new App.Collections.FontsCollection([], storybook: @)
+
+
   url: ->
     if @isNew()
       '/storybooks.json'
@@ -73,6 +86,28 @@ class App.Models.Storybook extends Backbone.Model
 
   toJSON: ->
     @attributes
+
+
+  fetchCollections: ->
+    @images.fetch(async: false)
+    @sounds.fetch(async: false)
+    @videos.fetch(async: false)
+    @fonts.fetch(async: false)
+    @scenes.fetch()
+
+
+  addNewScene: ->
+    @scenes.addNewScene()
+
+
+  compile: ->
+    $.post('/compiler',
+      storybook_json: App.storybookJSON.toString()
+      storybook_id: @get('id')
+      ->
+        console.log('enqueued for compilation')
+    'json')
+
 
 class App.Collections.StorybooksCollection extends Backbone.Collection
   model: App.Models.Storybook

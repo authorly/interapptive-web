@@ -7,4 +7,4 @@ class App.Views.Keyframe extends Backbone.View
     if @model.isAnimation()
       @$el.attr('data-is_animation', '1').addClass('animation')
 
-    this
+    @

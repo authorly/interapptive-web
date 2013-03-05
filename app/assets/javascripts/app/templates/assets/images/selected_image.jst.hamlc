@@ -1,5 +1,6 @@
 - if @url?
   %p Selected image:
   %img{:src => "#{@url}"}
+
 - else
   Please select an image.

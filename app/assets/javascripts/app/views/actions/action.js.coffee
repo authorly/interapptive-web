@@ -1,7 +1,10 @@
 class App.Views.Action extends Backbone.View
-  template: JST["app/templates/actions/action"]
+  template: JST['app/templates/actions/action']
+
   tagName: 'li'
 
+
   render: =>
-    $(@el).html(@template(action: @model))
-    this
+    @$el.html(@template(action: @model))
+
+    @

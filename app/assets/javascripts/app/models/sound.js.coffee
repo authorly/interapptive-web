@@ -1,6 +1,6 @@
 class App.Models.Sound extends Backbone.Model
   url: ->
-    '/storybooks/#{App.currentStorybook().get("id")}/scenes/#{App.currentScene().get("id")}/sounds.json'
+    '/storybooks/' + App.currentSelection.get('storybook').get("id") + '/scenes/' + App.currentSelection.get('scene').get("id") + '/sounds.json'
 
   toString: ->
     @get('name')
@@ -12,8 +12,18 @@ class App.Models.Sound extends Backbone.Model
 class App.Collections.SoundsCollection extends Backbone.Collection
   model: App.Models.Sound
 
+  initialize: (models, attributes) ->
+    super
+    @storybook = attributes.storybook
+
+
   url: ->
-    return "/storybooks/" + App.currentStorybook().get('id') + "/sounds.json"
+    @baseUrl() + '.json'
+
+
+  baseUrl: ->
+    "/storybooks/" + @storybook.id + "/sounds"
+
 
   toSelectOptionGroup: (callback) =>
     onSuccess = (collection) ->

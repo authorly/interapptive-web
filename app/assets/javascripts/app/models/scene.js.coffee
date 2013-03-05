@@ -1,55 +1,90 @@
+##
+# Relations
+# * it belongs to a story book. A Backbone model.
+# * @keyframes. It has many keyframes. A Backbone collection.
+# * @widgets. It has many widgets. A Backbone collection.
 class App.Models.Scene extends Backbone.Model
   paramRoot: 'scene'
 
+
   url: ->
-    "/storybooks/#{@get('storybook_id')}/" +
+    "/storybooks/#{@storybook.id}/" +
     if @isNew()
       'scenes.json'
     else
       "scenes/#{@id}.json"
 
 
-  initialize: ->
-    @keyframes = new App.Collections.KeyframesCollection [], scene_id: @id
-    @_getKeyframes(async: false)
-    @on 'change:preview_image_id', @save
-    @on 'keyframeadded', @addKeyframeToCollection
+  parse: (attributes) ->
+    @storybook ||= attributes?.storybook
+    delete attributes.storybook
+
+    widgets = attributes.widgets; delete attributes.widgets
+    if @widgets?
+      # RFCTR enable this when upgrading to Backbone 0.9.9
+      # @widgets.update(widgets)
+    else
+      @widgets = new App.Collections.Widgets(widgets)
+      @widgets.scene = @
+
+    attributes
+
+
+  initialize: (attributes) ->
+    @parse(attributes)
+    @storybook ||= @collection?.storybook
+
+    @initializeWidgets()
+    @initializeKeyframes()
+
+    @on 'change:preview_image_id change:font_color change:font_size change:font_face change:widgets', @save
+
+
+  initializeWidgets: ->
+    @widgets.on 'add', (widget) =>
+      if widget instanceof App.Models.SpriteWidget
+        widget.set z_order: @nextSpriteZOrder(widget)
+
+    @widgets.on 'reset add remove change', =>
+      @trigger 'change:widgets change'
+
+
+  initializeKeyframes: ->
+    @_keyframesFetched = false
+    @keyframes = new App.Collections.KeyframesCollection [], scene: @
+    @keyframes.on 'add', @addOrientations, @
+    @keyframes.on 'reset add remove change:positions change:preview', @updatePreview, @
+
+
+  fetchKeyframes: ->
+    return if @isNew() || @_keyframesFetched
+
+    @keyframes.fetch
+      success: => @_keyframesFetched = true
+
+
+  addNewKeyframe: (attributes) ->
+    return unless @canAddKeyframes()
+
+    @keyframes.addNewKeyframe(attributes)
+
+
+  addOrientations: (keyframe) ->
+    previousKeyframe = @keyframes.at(@keyframes.indexOf(keyframe) - 1)
+
+    orientations = @spriteWidgets().map (spriteWidget) ->
+      source = previousKeyframe?.getOrientationFor(spriteWidget) || spriteWidget
+      new App.Models.SpriteOrientation
+        keyframe_id:      keyframe.id
+        sprite_widget_id: spriteWidget.id
+        position:         source.get('position')
+        scale:            source.get('scale')
+
+    keyframe.widgets.add orientations
+
 
   toJSON: ->
-    json = super
-    # XXX PATCH - a reference to the scene ends up in each widget
-    # hash and creates a circular structure that cannot be transformed to JSON
-    # (therefore, cannot be saved)
-    if json.widgets?
-      _.each json.widgets, (widget) ->
-        delete widget.scene
-    json
-
-
-  _getKeyframes: (options) ->
-    unless @isNew()
-      @keyframes.url = "/scenes/#{@get('id')}/keyframes.json"
-      @keyframes.fetch(options)
-    @keyframes
-
-  addKeyframeToCollection: (keyframe) ->
-    @keyframes.push(keyframe)
-
-  setPreviewFrom: (keyframe) ->
-    preview = keyframe.preview
-    return if preview? && @preview? && preview.cid == @preview.cid
-
-    if @preview?
-      @preview.off 'change:id',       @previewIdChanged,  @
-      @preview.off 'change:data_url', @previewUrlChanged, @
-
-    @preview = preview
-
-    @preview.on    'change:id',       @previewIdChanged,  @
-    @preview.on    'change:data_url', @previewUrlChanged, @
-
-    @previewIdChanged()
-    @previewUrlChanged()
+    _.extend super, widgets: @widgets.toJSON()
 
 
   isMainMenu: ->
@@ -64,6 +99,30 @@ class App.Models.Scene extends Backbone.Model
     !@isMainMenu()
 
 
+  updatePreview: ->
+    preview = @keyframes.at(0).preview
+    return if preview? && @preview? && preview.cid == @preview.cid
+
+    @removePreviewListeners()
+    @preview = preview
+    @addPreviewListeners()
+
+    @previewIdChanged()
+    @previewUrlChanged()
+
+
+  addPreviewListeners: ->
+    @preview.on  'change:id',       @previewIdChanged,  @
+    @preview.on  'change:data_url', @previewUrlChanged, @
+
+
+  removePreviewListeners: ->
+    return unless @preview?
+
+    @preview.off 'change:id',       @previewIdChanged,  @
+    @preview.off 'change:data_url', @previewUrlChanged, @
+
+
   previewIdChanged: ->
     @set
       preview_image_id:  @preview.id
@@ -73,55 +132,27 @@ class App.Models.Scene extends Backbone.Model
   previewUrlChanged: ->
     @trigger 'change:preview', @
 
-  hasWidget: (widget) =>
-    _.any((@get('widgets') || []), (w) -> widget.id is w.id)
-
-  addWidget: (widget) =>
-    widgets = @get('widgets') || []
-    widgets.push(widget.toSceneHash())
-    @set('widgets', widgets)
-    if (widget.isSpriteWidget() ) && !widget.isLoaded()
-      widget.on 'loaded', => setTimeout @widgetsChanged, 0
-    else
-      @widgetsChanged(widget)
-
-
-  removeWidget: (widget, skipWidgetLayerRemoval) =>
-    return unless (widgets = @get('widgets'))?
-
-    for w, i in widgets
-      if w.id == widget.id
-        widgets.splice(i, 1)
-        @widgetsChanged(widget)
-        break
-
-    App.builder.widgetLayer.removeWidget(widget) unless skipWidgetLayerRemoval
-    @widgetsChanged()
-
-  widgetsChanged: =>
-    @save()
 
   spriteWidgets: ->
-    _.select(@widgets(), (w) -> w.isSpriteWidget())
-
-  widgets: ->
-    widgets_array = @get('widgets')
-    _.map(widgets_array, @_findOrCreateWidgetByWidgetHash, this)
-
-  _findOrCreateWidgetByWidgetHash: (widget_hash) ->
-    widget = App.builder.widgetStore.find(widget_hash.id)
-    return widget if widget
-    widget = new App.Builder.Widgets[widget_hash.type](_.extend(widget_hash, { scene: this }))
-    App.builder.widgetStore.addWidget(widget)
-    widget
+    @widgets.select (w) -> w instanceof App.Models.SpriteWidget
 
 
+  nextSpriteZOrder: (widget) ->
+    widgets = _.reject @spriteWidgets(), (sprite) -> sprite == widget
+    if widgets.length > 0
+      _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
+    else
+      return 1
+
+
+##
+# Relations
+# * @storybook - It belongs to a story book.
 class App.Collections.ScenesCollection extends Backbone.Collection
   model: App.Models.Scene
 
-  initialize: (models, options) ->
-    if options
-      this.storybook_id = options.storybook_id
+  initialize: (models, options={}) ->
+    @storybook = options.storybook
 
     # TODO move cache to a separate class
     @on 'reset', =>
@@ -131,12 +162,15 @@ class App.Collections.ScenesCollection extends Backbone.Collection
       collection._recalculatePositionsAfterDelete(model)
 
 
+  baseUrl: ->
+    "/storybooks/#{@storybook.id}/scenes"
+
   url: ->
-    '/storybooks/' + this.storybook_id + '/scenes.json'
+    @baseUrl() + '.json'
 
 
-  ordinalUpdateUrl: (sceneId) ->
-    '/storybooks/' + this.storybook_id + '/scenes/sort.json'
+  ordinalUpdateUrl: ->
+    @baseUrl() + '/sort.json'
 
 
   comparator: (scene) ->
@@ -146,17 +180,19 @@ class App.Collections.ScenesCollection extends Backbone.Collection
       scene.get 'position'
 
 
+  addNewScene: ->
+    scene = new App.Models.Scene
+      storybook_id: @storybook.id
+      storybook: @storybook
+      position: @nextPosition()
+    scene.save [],
+      success: => @add scene
 
-  addScene: (scene) ->
-    scene.save { position: @nextPosition(scene) },
-      success: =>
-        @add scene
-        scene._getKeyframes(async: false)
 
+  nextPosition: (scene=null) ->
+    return null if scene?.isMainMenu()
 
-  nextPosition: (scene) ->
-    return null if scene.isMainMenu()
-    @filter((scene) -> !scene.isMainMenu()).length
+    @filter((s) -> !s.isMainMenu()).length
 
 
   savePositions: ->
@@ -205,17 +241,3 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
     @sort silent: true
     @savePositions()
-
-
-  # reposition: (new_positions, el) ->
-    # $.ajax
-      # contentType:"application/json"
-      # dataType: 'json'
-      # type: 'POST'
-      # data: new_positions
-      # url: "#{@ordinalUpdateUrl(App.currentScene().get('id'))}"
-      # success: =>
-        # $(el).sortable('refresh')
-        # @fetch
-         # success: =>
-           # @trigger('reset', this)

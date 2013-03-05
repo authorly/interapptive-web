@@ -5,13 +5,16 @@ class Keyframe < ActiveRecord::Base
   belongs_to :scene
   belongs_to :preview_image, :class_name => 'Image'
 
-  has_many :texts, :class_name => 'KeyframeText', :dependent => :destroy
+  # TODO RFCTR fix all the methods that deal with texts
+  # has_many :texts, :class_name => 'KeyframeText', :dependent => :destroy
 
   serialize :widgets
   serialize :content_highlight_times, Array
 
   validates :position, inclusion: { in: [nil] }, if: :is_animation
   validates :is_animation, uniqueness: { scope: :scene_id }, if: :is_animation
+
+  after_create :create_orientation_widgets
 
   def audio_text
     texts.order(:sync_order).collect(&:content).join(' ')
@@ -87,6 +90,23 @@ class Keyframe < ActiveRecord::Base
   end
 
   private
+
+  def create_orientation_widgets
+    scene_widgets = (scene.try(:widgets) || []).select{|w| ['ButtonWidget', 'SpriteWidget'].include?(w[:type])}
+    widgets = scene_widgets.map do |w|
+      {
+        type: 'SpriteOrientation',
+        keyframe_id:      id,
+        sprite_widget_id: w[:id],
+        position:         w[:position],
+        scale:            w[:scale],
+      }
+    end
+
+    self.widgets ||= []
+    self.widgets += widgets
+    save
+  end
 
   def one_animation_keyframe_per_scene
     if is_animation

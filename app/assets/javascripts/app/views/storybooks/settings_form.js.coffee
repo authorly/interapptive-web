@@ -1,16 +1,17 @@
 App.Views.Storybooks ?= {}
+
 class App.Views.Storybooks.SettingsForm extends App.Views.AbstractFormView
   events: ->
     _.extend({}, super, {})
 
+
   formOptions: =>
     model: @getModel()
 
+
   getModel: ->
-    @model = App.currentStorybook()
-    
-  initialize: ->
-    super
+    @model = App.currentSelection.get('storybook')
+
 
   deleteMessage: ->
     '\nYou are about to delete this storybook and all of it\'s scenes, keyframes, images, etc.\n\n\n' +

@@ -27,7 +27,7 @@ describe ImagesController do
       Scene.should_receive(:find).with(scene.id.to_s).and_return(scene)
       Image.should_receive(:find).with(image.id.to_s).and_return(image)
 
-      get :show, :scene_id => scene.id, :id => image.id, :format => :json
+      get :show, :scene_id => scene.id.to_s, :id => image.id.to_s, :format => :json
       response.body.should eql(image.to_json)
     end
   end

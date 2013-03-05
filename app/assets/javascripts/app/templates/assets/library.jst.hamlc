@@ -4,31 +4,12 @@
   Only #{@acceptedFileTypes.slice(0, @acceptedFileTypes.length - 1).join(', ')} and #{@acceptedFileTypes[@acceptedFileTypes.length - 1]} file types are accepted
 
 .modal-body
-  %form{:action => "/storybooks/#{App.currentStorybook().get('id')}/scenes/#{App.currentScene().get('id')}/#{@assetType}s", :id => "fileupload", :method => "post", :multipart => true}
-    .row.fileupload-buttonbar
-      .span5
-        %span.btn.btn-success.fileinput-button
-          %i.icon-plus.icon-white
-          %span= "Add #{@assetType}s..."
+  %form{:action => "#{@assets.baseUrl()}", :id => "fileupload", :method => "post", :multipart => true}
+    .fileupload-buttonbar
+      %span.btn.btn-success.fileinput-button
+        %i.icon-plus.icon-white
+        %span= "Add #{@assetType}s..."
           %input{:multiple => true, :name => "#{@assetType}[files][]", :type => "file"}
-
-        %button.btn.btn-primary.start{:type => "submit"}
-          %i.icon-upload.icon-white
-          %span Start upload
-
-        %button.btn.btn-warning.cancel{:type => "reset"}
-          %i.icon-ban-circle.icon-white
-          %span Cancel upload
-
-        / %button.btn.btn-danger.delete{:type => "button"}
-        /   %i.icon-trash.icon-white
-        /   %span Delete
-        / %input.toggle{:type => "checkbox"}
-
-      .span3
-        .progress.progress-success.progress-striped.active.fade
-          .bar{:style => "width:0%;"}
-
     %table.table.table-striped
       %thead
         %tr
@@ -41,7 +22,7 @@
 
 .modal-footer
   .search
-    %input{:name => "search", :type => "text", :id => "search", :placeholder => "Search for a #{assetTitle.toLowerCase()}"} 
+    %input{:name => "search", :type => "text", :id => "search", :placeholder => "Search for a #{assetTitle.toLowerCase()}"}
     %span#loader{:style => "display: none"}
       %img{:src => "/assets/advancedtable/loader.gif", :alt => "Loader"}
 

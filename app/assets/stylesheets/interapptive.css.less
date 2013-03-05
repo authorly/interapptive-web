@@ -17,14 +17,12 @@
 
 @import 'modals.css.less';
 
+@import 'voiceovers.css.less';
+
 /* Widget related */
-@import 'keyframe_text.css.less';
-@import 'font_toolbar.css.less';
-@import 'widget_windows.css.less';
-@import 'sprite_form.css.less';
-@import 'active_sprites_list.css.less';
-@import 'touch_zones.css.less';
-@import 'audio_alignment.css.less';
+@import 'palettes.css.less';
+@import 'text_widgets.css.less';
+@import 'hotspots.css.less';
 
 
 html, body{
@@ -54,6 +52,7 @@ html, body{
 
 .container {
   background-color: transparent !important;
+  width: 100% !important;
 }
 
 .grab {
@@ -87,16 +86,12 @@ button#export {
   overflow: visible;
 }
 
-#canvas-wrapper {
-  position: relative;
-  right: -86px;
-  top: -74px;
-  width: 1024px;
-  height: 768px;
-  overflow: hidden;
-}
-
 canvas#builder-canvas {
+  position: relative;
+  top: 82px;
+  left: 0px;
+  width: 604px;
+  height: 453px;
   overflow: hidden;
 }
 

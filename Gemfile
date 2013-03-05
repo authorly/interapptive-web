@@ -1,12 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.2'
-gem 'puma'
+gem 'rails', '3.2.12'
 gem 'mysql2'
 gem 'bcrypt-ruby'
-gem 'cancan'
 gem 'jquery-rails'
 gem 'haml'
+gem 'cancan'
 gem 'rails-backbone'
 gem 'less-rails-bootstrap'
 gem 'carrierwave'
@@ -17,7 +16,6 @@ gem 'param_protected', '~> 4.0.0'
 gem 'jquery-fileupload-rails', :git => 'git://github.com/cswhitman/jquery-fileupload-rails.git'
 gem 'unicorn'
 gem 'therubyracer', '~> 0.10.2'
-gem 'jasmine'
 gem 'barista'
 gem 'ttfunk'
 gem 'resque'
@@ -38,7 +36,8 @@ end
 
 group :development, :test do
   gem 'guard'
-  gem 'guard-coffeescript'
+  gem 'jasminerice'
+  gem 'guard-jasmine'
   gem 'capybara'
   gem 'guard-rspec'
 end
@@ -64,6 +63,7 @@ group :test do
   gem 'forgery'
   gem 'launchy'
   gem 'connection_pool'
+  gem 'jasmine-rails'
 end
 
 group :deployment do

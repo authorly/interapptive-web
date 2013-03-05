@@ -8,17 +8,6 @@
       %li.keyframe.disabled
         %a.add-keyframe{:href => '#'} Keyframe
 
-  %li.toolbar-group
-    %ul
-      %li.videos
-        = link_to "Videos", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-      %li.images
-        = link_to "Images", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-      %li.sounds
-        = link_to "Sounds", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-      %li.fonts
-        = link_to "Fonts", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
-
   -#%li.toolbar-group
     -#%ul
       -#%li.actions
@@ -28,8 +17,8 @@
     %ul
       %li.edit-text.disabled
         %a.add-text{:href => '#'} Add Text
-      %li.touch-zones.disabled
-        %a.add-touch{:href => '#'} Add Hotspot
+      %li.add-hotspot.disabled
+        %a{:href => '#'} Add Hotspot
       %li.add-image.disabled
         = link_to "Add Image", "#", {:remote => true, 'data-controls-modal' =>  "modal-window", 'data-backdrop' => true, 'data-keyboard' => true}
 
@@ -37,10 +26,13 @@
     %ul
       %li.scene-options.disabled
         = link_to "Scene Options", "#"
-      %li.sync-audio.disabled
-        = link_to "Sync Audio", "#"
 
   %li.toolbar-group.last
+    %ul
+      %li.sync-audio.disabled
+        = link_to "Highlighting & Voiceovers", "#"
+
+  %li.toolbar-group.preview
     %ul
       %li.preview.disabled
         %a.show-preview{:href => '#'} Preview

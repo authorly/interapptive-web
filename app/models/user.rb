@@ -2,11 +2,9 @@ class User < ActiveRecord::Base
   has_secure_password
 
   validates :password, :length => { :minimum => 6 }, 
-            :confirmation => true,
             :on => :create
 
   validates :password, :length => { :minimum => 6 }, 
-            :confirmation => true,
             :on => :update,
             :if => :password_digest_changed?
 

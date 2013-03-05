@@ -1,6 +1,6 @@
 class App.Models.Video extends Backbone.Model
   url: ->
-    '/storybooks/#{App.currentStorybook().get("id")}/scenes/#{App.currentScene().get("id")}/videos.json'
+    '/storybooks/' + App.currentSelection.get('storybook').get("id") + '/scenes/' + App.currentSelection.get('scene').get("id") + '/videos.json'
 
   toString: ->
     @get('name')
@@ -12,8 +12,18 @@ class App.Models.Video extends Backbone.Model
 class App.Collections.VideosCollection extends Backbone.Collection
   model: App.Models.Video
 
+  initialize: (models, attributes) ->
+    super
+    @storybook = attributes.storybook
+
+
   url: ->
-    return "/storybooks/" + App.currentStorybook().get('id') + "/videos.json"
+    @baseUrl() + '.json'
+
+
+  baseUrl: ->
+    "/storybooks/" + @storybook.id + "/videos"
+
 
   toSelectOptionGroup: (callback) =>
     onSuccess = (collection) ->

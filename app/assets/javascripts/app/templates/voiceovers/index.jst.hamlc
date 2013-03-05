@@ -1,0 +1,51 @@
+#voiceovers
+  .modal-header
+    %h3.modal-title
+      Voiceovers and highlighting...
+    #sync-player
+      %audio{:id => "media-player", :controls => "controls", :class => "disabled"}
+        Your browser does not support the audio element.
+      %span
+        %a{:href => '#'}
+    #voiceover-file
+      %span.fileinput-button.btn.btn-success.disabled
+        %i.icon-plus-sign.icon-white
+        %span Select a Voiceover
+        %input#audio-file{:accept => "audio/vnd.wave", :name => "file", :type => "file"}
+      %div.success
+      %div.filename
+        %i.icon-edit.icon-black
+        %span
+      %div.loading
+      %button#upload.btn.btn-primary.disabled
+        %i.icon-arrow-up.icon-white
+        Start Upload
+
+  .modal-body
+    %i.icon-arrow-right.icon-black.disabled
+    %ul#words
+      - for widget in @keyframe.widgets.models
+        - continue unless widget.get('type') is 'TextWidget'
+        %li
+          - words = widget.get('string').split(' ')
+          - for word, index in words
+            %span.word
+              = word + " "
+    #reorder-text
+      %a{:href => "#"} Text not in correct order?
+    #controls
+      %button#begin-alignment.btn.disabled
+        %i.icon-exclamation-sign.icon-black
+        %span
+          Begin Highlighting
+      %button#preview-alignment.btn.disabled
+        %i.icon-play.icon-black
+        %span
+          Preview
+      #alignment-errors.alert.alert-error
+        Oops! looks like there's an issue with your alignment.
+
+  .modal-footer
+    %button#accept-alignment.btn.btn-large.btn-primary.disabled
+      %i.icon-check.icon-white
+      Accept Alignment

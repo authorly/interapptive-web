@@ -23,13 +23,13 @@ class Scene < ActiveRecord::Base
   # has_many :attributes, :through => :actions
 
   belongs_to :preview_image, :class_name => 'Image'
-  belongs_to :background_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound'
 
   validates :position, inclusion: { in: [nil] }, if: :is_main_menu
   validates :is_main_menu, uniqueness: { scope: :storybook_id }, if: :is_main_menu
 
   serialize :widgets
+  serialize :font_color
 
   before_create :create_main_menu_widgets, if: :is_main_menu
   after_create :create_keyframe
@@ -59,9 +59,9 @@ class Scene < ActiveRecord::Base
 
   def create_main_menu_widgets
     self.widgets = [
-      {type: 'ButtonWidget', id: 1, name: 'read_it_myself', position: { y: 100, x: 200 }, scale: 1, zOrder: 1 },
-      {type: 'ButtonWidget', id: 2, name: 'read_to_me',     position: { y: 200, x: 200 }, scale: 1, zOrder: 1 },
-      {type: 'ButtonWidget', id: 3, name: 'auto_play',      position: { y: 300, x: 200 }, scale: 1, zOrder: 1 },
+      {type: 'ButtonWidget', id: 1, name: 'read_it_myself', position: { y: 100, x: 200 }, scale: 1, z_order: 1 },
+      {type: 'ButtonWidget', id: 2, name: 'read_to_me',     position: { y: 200, x: 200 }, scale: 1, z_order: 2 },
+      {type: 'ButtonWidget', id: 3, name: 'auto_play',      position: { y: 300, x: 200 }, scale: 1, z_order: 3 },
     ]
   end
 

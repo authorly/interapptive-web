@@ -2,79 +2,31 @@
 # A `Widget` is an entity that has a graphical representation and that
 # responds to user interactions.
 #
-# # dira, 2012-12-03 it would be better if widgets were independent of
-# the concept of storybook.
-# It also belongs to a storybook.
-#
+# Widget attributes are managed via the @model property (Backbone model)
 #
 # Graphical properties:
 # _opacity
 # _highlighted
 # _mouse_over
-# draggable
 #
 class App.Builder.Widgets.Widget extends cc.Node
 
-  draggable: true
-
-  _mouse_over: false
-
-  retention: 'keyframe'
-
-  retentionMutability: false
-
-  @idGenerator = new App.Lib.Counter
-
-
-  constructor: (options={}) ->
+  constructor: (options) ->
     super
+
+    @model = options.model
     _.extend(this, Backbone.Events)
+    @model.on 'change:position', @updatePosition, @
+    @model.on 'change:z_order', @updateZOrder, @
 
-    @_opacity = 255
-    @_highlighted = false
-
-    if options.id
-      @id = App.Builder.Widgets.Widget.idGenerator.check(options.id)
-    else
-      @id = App.Builder.Widgets.Widget.idGenerator.next()
-
-    if options.position
-      @setPosition(new cc.Point(options.position.x, options.position.y))
-
-    @on 'mouseover', @mouseOver
-    @on 'mouseout',  @mouseOut
-    @on 'mousemove', @mouseMove
-    @on 'dblclick',  @doubleClick
-
-
-  mouseOver: ->
-    @_mouse_over = true
-
-
-  mouseOut: ->
+    # @_highlighted = false
     @_mouse_over = false
 
+    @updatePosition()
+    @updateZOrder()
+    @setOpacity(255)
 
-  mouseMove: ->
-
-
-  doubleClick: ->
-
-
-  isHighlighted: ->
-    return @_highlighted
-
-
-  highlight: ->
-    return if @isHighlighted()
-    @_highlighted = true
-    App.Builder.Widgets.WidgetDispatcher.trigger('widget:highlight', @id)
-
-
-  unHighlight: ->
-    return unless @isHighlighted()
-    @_highlighted = false
-    App.Builder.Widgets.WidgetDispatcher.trigger('widget:unhighlight', @id)
+    # App.vent.on 'widget:change_zorder', @changeZOrder
 
 
   setOpacity: (opacity) ->
@@ -85,17 +37,50 @@ class App.Builder.Widgets.Widget extends cc.Node
     @_opacity
 
 
-  setZOrder: (z, triggerEvent=true) ->
-    @_zOrder = z
+  updatePosition: ->
+    position = @model.get('position')
+    @setPosition new cc.Point(position.x, position.y)
 
 
-  getZOrder: ->
-    @_zOrder
+  updateZOrder: ->
+    @_zOrder = @model.get('z_order')
 
 
-  setPosition: (pos, triggerEvent=true)->
-    super
-    @trigger('change', 'position') if triggerEvent
+  mouseOver: ->
+    @_mouse_over = true
+
+
+  mouseOut: ->
+    @_mouse_over = false
+
+
+  # options: { touch, canvasPoint }
+  mouseDown: (options) ->
+
+
+  mouseUp: ->
+    widget = @model
+    if widget instanceof App.Models.SpriteWidget
+      widget = @currentOrientation
+
+    position = @getPosition()
+    widget.set position: {x: position.x, y: position.y}
+
+
+  mouseMove: ->
+
+
+  doubleClick: ->
+
+
+  select: ->
+
+
+  deselect: ->
+
+
+  draggedTo: (position) ->
+    @setPosition(position, false)
 
 
   rect: ->
@@ -112,24 +97,7 @@ class App.Builder.Widgets.Widget extends cc.Node
     )
 
 
-  toHash: ->
-    hash                      = {}
-    hash.id                   = @id
-    hash.type                 = Object.getPrototypeOf(this).constructor.name
-    hash.position             =
-      x: @getPosition().x
-      y: @getPosition().y
-    hash.retention            = @retention
-    hash.retentionMutability  = @retentionMutability
-
-    hash
-
-
-  toSceneHash: ->
-    @toHash()
-
-
-  pointToLocal: (point) ->
+  pointToLocal: (point) =>
     return unless @parent?
 
     local = @convertToNodeSpace(point)
@@ -150,28 +118,8 @@ class App.Builder.Widgets.Widget extends cc.Node
     r = @rect()
     r.origin = new cc.Point(0, 0)
 
-    return cc.Rect.CCRectContainsPoint(r, local)
-
-
-  setStorybook: (storybook) ->
-    # @removeFromStorybook(@_storybook) if @_storybook
-    @_storybook = storybook
-    # @addToStorybook(storybook) if storybook
-
-
-  # removeFromStorybookJSON: (storybook) =>
-
-
-  # addToStorybookJSON: (storybook) =>
+    cc.Rect.CCRectContainsPoint(r, local)
 
 
   isSpriteWidget: ->
     @ instanceof App.Builder.Widgets.SpriteWidget
-
-
-  isTouchWidget: ->
-    @ instanceof App.Builder.Widgets.TouchWidget
-
-
-  save: ->
-    throw new Error("Must be implemented in the subclass")

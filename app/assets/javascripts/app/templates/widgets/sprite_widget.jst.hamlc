@@ -1,11 +1,6 @@
-- _widget =   @widget.toHash()
-- _filename = _widget.filename
-- _zOrder =   _widget.zOrder
-- _id =       _widget.id
-- _style =    "background-image: url(#{_widget.url})"
-
-%div.sprite-image{:style => _style, :data-zorder => _zOrder, :data-widget-id => _id}
+- _style =    "background-image: url(#{@widget.get('url')})"
+%div.sprite-image{:style => _style, :data-widget-id => @widget.id}
 %span
-  = _filename
-- unless _widget.type == 'ButtonWidget'
+  = @widget.get('filename')
+- unless @widget.get('type') == 'ButtonWidget'
   %div.delete

@@ -16,12 +16,12 @@ class App.Models.Action extends Backbone.DeepModel
   # Okay, this is super hacky, but it's necessary at least for the time being.
   # The problem here is that when we have a new object, we load our action
   # definition from its collection. That means that accessing the attribute
-  # definitions must occur through its @get method (i.e. it's not made 
+  # definitions must occur through its @get method (i.e. it's not made
   # available through the simple accessor.
   #
-  # When we load an existing action, though, we're loading it from 
+  # When we load an existing action, though, we're loading it from
   # the action, which Rails returns a JSON object to that will cause
-  # the direct attribute to be set instead of putting it inside of 
+  # the direct attribute to be set instead of putting it inside of
   # attributes.
   #
   # I'm not sure what the best way to rectify this is, but this works for now.
@@ -65,31 +65,6 @@ class App.Models.Action extends Backbone.DeepModel
 
     schema
 
-  schema: =>
-    schema = _.extend({}, @schemaForAttributes(), {
-      'action_attributes.sprite_widget_id.value':
-        type: 'Select'
-        title: 'Image to animate'
-        fieldClass: 'action-image-dropdown'
-        options: @spriteWidgetsToSchema()
-        validators: [
-          type: 'required'
-          message: 'Action must have an image'
-        ]
-    })
-
-    schema
-
-
-  spriteWidgetsToSchema: ->
-    widgets = []
-    for widget in App.builder.widgetLayer.widgets
-      continue unless widget.sprite?
-      _widget = {}
-      _widget.val = widget.id
-      _widget.label = widget.getFilename()
-      widgets.push(_widget)
-    widgets
 
   url: =>
     if @isNew()
@@ -102,6 +77,6 @@ class App.Models.Action extends Backbone.DeepModel
 
 class App.Collections.ActionsCollection extends Backbone.Collection
   model: App.Models.Action
-  
+
   url: ->
     "/scenes/#{App.currentScene().get('id')}/actions.json"

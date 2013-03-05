@@ -1,40 +1,53 @@
+DELETE_MSG =
+  '\nYou are about to delete this. This cannot be undone.\n\n\n' +
+  'Are you sure you wish to continue?'
+
+
 class App.Views.AbstractFormView extends Backbone.View
+
   events: ->
-    "click .btn-submit": "updateAttributes"
-    "click .btn-danger": "delete"
-    "click .btn-submit-cancel": "cancel"
+    'click .btn-submit-cancel' : 'cancel'
+    'click .btn-submit'        : 'updateAttributes'
+    'click .btn-danger'        : 'delete'
+
 
   initialize: ->
     @form = new Backbone.Form(@formOptions()).render()
 
+
   formOptions: ->
     model: @model
 
+
   deleteMessage: ->
-    '\nYou are about to delete this. This cannot be undone.\n\n\n' +
-    'Are you sure you wish to continue?'
+    DELETE_MSG
 
   render: ->
-    $(@el).append @form.el
-    this
+    @$el.append @form.el
+    @
 
-  updateAttributes: (e) ->
-    e.preventDefault()
+
+  updateAttributes: (event) ->
+    event.preventDefault()
+
     @form.commit()
-
     @model.save {},
       success: ->
         App.modalWithView().hide()
 
-  delete: (e) ->
-    e.preventDefault()
 
-    if confirm(@deleteMessage()) then @form.model.destroy() and document.location.reload true
+  delete: (event) ->
+    event.preventDefault()
 
-  cancel: (e) ->
-    e.preventDefault()
+    if confirm DELETE_MSG
+      @form.model.destroy() and document.location.reload true
+
+
+  cancel: (event) ->
+    event.preventDefault()
     @resetValues()
-    App.modalWithView().hide()
+    App.vent.trigger 'hide:modal'
+
 
   # Defines jquery actions to reset the form to its default 
   # (since we use M/V bindings we have to reset it or 

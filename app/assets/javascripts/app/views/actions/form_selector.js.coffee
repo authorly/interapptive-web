@@ -1,5 +1,6 @@
 class App.Views.ActionFormSelector extends Backbone.View
-  template: JST["app/templates/actions/form_selector"]
+  template: JST['app/templates/actions/form_selector']
+
   events:
     'change #action-list': 'changeActionDefinition'
   
@@ -9,8 +10,9 @@ class App.Views.ActionFormSelector extends Backbone.View
     @disabled           = @options.disabled
     @parent             = @options.parent
 
+
   render: =>
-    $(@el).html(
+    @$el.html(
       @template(
         actionDefinitions: @actionDefinitions.models
         activeDefinition: @activeDefinition
@@ -18,9 +20,9 @@ class App.Views.ActionFormSelector extends Backbone.View
       )
     )
 
-    this
+    @
 
-  changeActionDefinition: (e) =>
-    selected      = $(e.currentTarget)
-    definitionId  = $('option:selected', selected).val()
+
+  changeActionDefinition: (event) =>
+    definitionId  = $('option:selected', $(event.currentTarget)).val()
     @parent.trigger('change:actionDefinition', definitionId)

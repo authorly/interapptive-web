@@ -1,0 +1,14 @@
+%ul
+  %li#sprite-filename
+    No image selected.
+  %li.half
+    %label.disabled{:for => "x-coord"} X:
+    %input.small{:id => "x-coord", :disabled => true, :value => 0}
+  %li.half
+    %label.disabled{:for => "y-coord"} Y:
+    %input.small{:id => "y-coord", :disabled => true, :value => 0}
+  %li.slider
+    %span.disabled
+      Scale:
+      %span{:id => "scale-amount"} 1.0
+    #scale

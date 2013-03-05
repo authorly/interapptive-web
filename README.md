@@ -1,22 +1,54 @@
 # Welcome to Authorly
 
-## Setting up application on your machine
+## Setup the application
 
 1. Clone the repository on your machine
-2. Create a suitable `config/database.yml` (production will likely run on MySQL)
-3. `bundle install`
-4. `bundle exec rake db:create:all`
-5. `bundle exec rake db:migrate`
-6. `bundle exec rake db:seed`
-7. `bundle exec rails server` starts the server
+1. Install [sox](http://sox.sourceforge.net/) version 14.4.0
+1. Create a suitable `config/database.yml` (production will likely run on MySQL)
+1. `bundle install`
+1. `bundle exec rake db:create:all`
+1. `bundle exec rake db:migrate`
+1. `bundle exec rake db:seed`
+1. `bundle exec rails server` starts the server
 
-### To run all the test cases
+## Tests
 
-`bundle exec rspec spec`
+### Set up the test environment
 
-### Running Jasmine tests
+1. Install [PhantomJS](https://github.com/netzpirat/guard-jasmine#phantomjs)
 
-Jasmine tests need to be compiled down to standard JS before they're run. The best way to do that on an ongoing basis is to simply run `bundle exec guard`. You can then access the tests by running `rake jasmine` and by visiting `localhost:8888`.
+### Run all the test cases
+
+`bundle exec rake`
+
+### Run only the javascript tests
+
+Continuous testing:
+
+    `bundle exec guard`
+
+Command line:
+
+    `bundle exec guard-jasmine`
+
+    or
+
+    `bundle exec rake guard:jasmine`
+    
+In the browser:
+
+Run guard:
+
+    `bundle exec guard`
+
+
+The output contains the URL where it mounted the jasmine runner (something like http://localhost:[port]/jasmine).
+That URL works in the browser and you have the full UI (i.e. you can click on a test and it will only run that test)
+
+
+### Write Javascript tests
+
+Write your model, view or collections tests under corresponding directories inside `spec/javascripts/coffeescripts`.
 
 ## Builder
 
@@ -57,6 +89,10 @@ specified.)
     - it sets builder's scene to the present scene, and sets builder as the child of the scene;
     - sets Builder.node to an instance of Builder if #new and #init succeed;
     - sets window.Builder to Builder.
+
+### Widgets
+
+Widgets are represented by two classes - a Backbone Model (that stores and manages the widget data) and a Builder View (which takes care of representing it on the UI and managing events).
 
 ### How widgets work
 

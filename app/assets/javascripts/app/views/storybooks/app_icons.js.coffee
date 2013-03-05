@@ -1,13 +1,15 @@
 #= require ../assets/sprites/index
 
 App.Views.Storybooks ?= {}
+
 class App.Views.Storybooks.AppIcons extends App.Views.SpriteIndex
-  template: JST["app/templates/storybooks/app_icons"]
+  template: JST['app/templates/storybooks/app_icons']
 
   events:
-    "click .image-row":               "setActiveImage"
-    "touchstart, touchend .zoomable": "doZoom"
-    "click .use-image":               "setAppIcon"
+    'click .image-row'               : 'setActiveImage'
+    'touchstart, touchend .zoomable' : 'doZoom'
+    'click .use-image'               : 'setAppIcon'
+
 
   setAppIcon: ->
     $('.use-image').addClass('disabled')
@@ -16,6 +18,7 @@ class App.Views.Storybooks.AppIcons extends App.Views.SpriteIndex
       image_id: @image.id,
       ->,
       'json').success(@appIconSet)
+
 
   appIconSet: ->
     App.modalWithView().hide()

@@ -1,36 +1,36 @@
 class App.Views.SceneIndex extends Backbone.View
-  template: JST["app/templates/scenes/index"]
-
-  tagName: 'ul'
 
   className: 'scene-list'
 
+  tagName:   'ul'
 
   events:
-    'click    span a.delete': 'deleteScene'
-    'click .scene-list span': 'onSceneClick'
+    'click  span'   : 'onSceneClick'
+    'click .delete' : 'deleteScene'
+
+
+  DELETE_SCENE_MSG: '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
+
 
   initialize: ->
-    @collection.on('reset',  @render, @)
-    @collection.on('change:positions', @render, @)
-    @collection.on('add',    @appendSceneElement, @)
-    @collection.on('remove', @removeScene, @)
-    App.vent.on('window:resize', @adjustSize, @)
+    @collection.on 'add'             , @appendSceneElement, @
+    @collection.on 'reset'           , @render            , @
+    @collection.on 'remove'          , @removeScene       , @
+    @collection.on 'change:positions', @render            , @
+    App.vent.on    'window:resize'   , @adjustSize        , @
+    App.currentSelection.on 'change:scene', @sceneChanged, @
 
 
   render: ->
-    $(@el).html('')
-
+    @$el.empty()
     @collection.each (scene) => @appendSceneElement(scene)
+    @switchScene(@collection.at(0)) if @collection.length > 0
 
-    $('.scene-list li:first span:first').click()
+    @initSortable()
 
-    @initSortable() if @collection?
+    @adjustSize()
 
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
-
-    this
+    @
 
 
   appendSceneElement: (scene) ->
@@ -40,61 +40,48 @@ class App.Views.SceneIndex extends Backbone.View
 
   deleteScene: (event) =>
     event.stopPropagation()
-    # TODO: Prevent this from working in the event there is only one scene?
-    message = '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
 
-    if confirm(message)
-      target  = $(event.currentTarget)
-      scene = @collection.get(target.attr('data-id'))
-      scene.destroy
-        success: => @collection.remove(scene)
+    if confirm(@DELETE_SCENE_MSG)
+      scene = @collection.get $(event.currentTarget).attr('data-id')
+      scene.destroy success: => @collection.remove(scene)
 
 
   removeScene: (scene) =>
-    $("li[data-id=#{scene.id}]").remove()
-    $('.keyframe-list').empty()
-    @toggleSceneChange scene
+    @$("li[data-id=#{scene.id}]").remove()
 
 
   onSceneClick: (event) =>
-    $('.keyframe-list').empty()
-    $('.text_widget').remove()
     sceneId = $(event.currentTarget).data 'id'
     scene = @collection.get(sceneId)
-    @toggleSceneChange scene
+    @switchScene(scene)
 
 
-  toggleSceneChange: (scene) =>
-    return if scene is App.currentScene()
-    service = new App.Services.SwitchSceneService(App.currentScene(), scene)
-    service.execute()
+  switchScene: (scene) ->
+    App.currentSelection.set scene: scene
 
 
-  switchActiveElement: (scene) =>
-    $('li', @el)
-      .removeClass('active')
-      .find("span.scene-frame[data-id=#{scene.get('id')}]")
-      .parent().addClass('active')
+  sceneChanged: (__, scene) ->
+    $('li', @el).
+    removeClass('active').
+    find("span.scene-frame[data-id=#{scene.get('id')}]").
+    parent().addClass 'active'
 
 
   initSortable: =>
-
-    $(@el).sortable
-      opacity: 0.6
-      containment: '.sidebar'
-      axis: 'y'
-      update: @_numberScenes
-      items: 'li[data-is_main_menu!="1"]'
+    @$el.sortable
+      containment : '.sidebar'
+      items       : 'li[data-is_main_menu!="1"]'
+      axis        : 'y'
+      opacity     : 0.6
+      update      : @_numberScenes
 
 
   adjustSize: ->
-    $("#scene-list").css height: ($(window).height()) + "px"
-    $(".scene-list").css height: ($(window).height()) + "px"
+    $('#scene-list, .scene-list').css height: "#{$(window).height()}px"
 
 
   _numberScenes: =>
     @$('li[data-is_main_menu!="1"]').each (index, element) =>
-      # console.log index, element
       element = $(element)
 
       if (id = element.data('id'))? && (scene = @collection.get(id))?
