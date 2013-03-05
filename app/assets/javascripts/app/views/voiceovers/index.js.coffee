@@ -214,23 +214,20 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   initMediaPlayer: =>
     @player = Popcorn('audio')
-    @player.play().on 'ended', => @voiceoverEnded()
+    @player.play().on 'ended', =>
+      if @_previewingAlignment
+        @previewingEnded()
+      else
+        @enablePreview()
 
+      @$('.word.highlighted').removeClass('highlighted')
+      @$('#begin-alignment').find('span')
+        .text('Begin Highlighting')
+        .parent().find('i')
+        .removeClass('icon-stop')
+        .addClass('icon-exclamation-sign')
 
-  voiceoverEnded: ->
-    if @_previewingAlignment
-      @previewingEnded()
-    else
-      @enablePreview()
-
-    @$('.word.highlighted').removeClass('highlighted')
-    @$('#begin-alignment').find('span')
-      .text('Begin Highlighting')
-      .parent().find('i')
-      .removeClass('icon-stop')
-      .addClass('icon-exclamation-sign')
-
-    @_canManuallyAlign = false
+      @_canManuallyAlign = false
 
 
   previewingEnded: ->
