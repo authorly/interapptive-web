@@ -18,7 +18,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
     'selectstart':              'cancelNativeHighlighting'
     'click #begin-alignment':   'clickBeginAlignment'
     'click #preview-alignment': 'clickPreviewAlignment'
-     # 'click #accept-alignment':   'acceptAlignment'
+    'click #accept-alignment':  'acceptAlignment'
 
   COUNTDOWN_LENGTH_IN_SECONDS: 5
 
@@ -94,7 +94,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   removeWordHighlights: =>
-    $('span.word.highlighted').removeClass('highlighted')
+    @$('span.word.highlighted').removeClass('highlighted')
 
 
   cancelNativeHighlighting: ->
@@ -222,6 +222,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
       if @_previewingAlignment
         @previewingEnded()
       else
+        @$('#accept-alignment').removeClass('disabled')
         @enablePreview()
 
       @$('.word.highlighted').removeClass('highlighted')
@@ -313,18 +314,10 @@ class App.Views.VoiceoverIndex extends Backbone.View
     path.split('\\').pop()
 
 
-  # acceptAlignment: (e) ->
-  #   wordTimeIntervals = @collectTimeIntervals()
-  #   keyframe = App.currentSelection.get('keyframe')
-  #   keyframe.updateContentHighlightTimes wordTimeIntervals,
-  #     success: -> App.modalWithView().hide()
+  acceptAlignment: (event) ->
+    @keyframe.updateContentHighlightTimes @_collectTimeIntervals(),
+      success: -> App.vent.trigger 'hide:modal'
 
 
-  # collectTimeIntervals: ->
-  #   @_intervals = []
-  #
-  #   words = @$('ul li span')
-  #   $.each words, (index, wordEl) =>
-  #     @_intervals.push $(wordEl).data('start')
-  #
-  #   @_intervals
+  _collectTimeIntervals: ->
+    _.map @$('.word'), (el) -> @$(el).data('start')
