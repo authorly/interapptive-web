@@ -24,6 +24,7 @@
 #= require bootstrap-colorpicker
 #= require advancedtable
 #= require jquery.tablesorter
+#= require jquery.selecttext
 
 #= require app
 #= require config
