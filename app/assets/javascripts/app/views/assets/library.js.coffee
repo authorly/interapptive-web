@@ -28,13 +28,8 @@ class App.Views.AssetLibrary extends Backbone.View
       acceptFileTypes: @fileTypePattern(@assetType)
       downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
-    .bind 'fileuploaddestroyed', ->
-      # RFCTR - Need to trigger an update on the fonts collection
-      console.log "Need to update Font Editor palette (fonts collection)"
-    .bind 'fileuploadcompleted', ->
-      # RFCTR - Need to trigger an update on the fonts collection
-      console.log "Need to update Font Editor palette (fonts collection)"
-
+    .bind 'fileuploaddestroyed', => @assets.fetch()
+    .bind 'fileuploadcompleted', => @assets.fetch()
 
 
   loadAndShowFileData: ->
@@ -66,8 +61,6 @@ class App.Views.AssetLibrary extends Backbone.View
     @$('#fileupload').fileupload 'disable'
     $('.content-modal').removeClass 'asset-library-modal'
     @assets.off 'reset', @render, @
-
-
 
 
   fileTypePattern: () ->
