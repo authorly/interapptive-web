@@ -78,7 +78,6 @@ function voiceoverUploader(input, options) {
     if(this.settings.progress) this.xhr.upload.addEventListener('progress',this.settings.progress,false);
     this.xhr.onreadystatechange = function(ev){
         if($this.xhr.readyState == 4) {
-            console.log('done!');
             if($this.xhr.status == 200) {
                 if($this.settings.success) $this.settings.success($this.xhr.responseText,ev);
                 $this.input.value = '';
