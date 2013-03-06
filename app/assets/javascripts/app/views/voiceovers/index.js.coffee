@@ -38,7 +38,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @initUploader()
     @pulsateArrowIcon()
     @findExistingVoiceover()
-    @findExistingHighlightTimes()
     @
 
 
@@ -220,6 +219,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
       if file.url? and file.name?
         @setExistingVoiceover(file)
+        @findExistingHighlightTimes()
       else
         @noVoiceoverFound()
 
