@@ -1,7 +1,7 @@
 class StorybookIconsController < ApplicationController
   def create
-    storybook = Storybook.find(params[:storybook_id])
-    image = Image.find(params[:image_id])
+    storybook = current_user.storybooks.find(params[:storybook_id])
+    image = storybook.images.find(params[:image_id])
     storybook.remote_icon_url = image.image.url
 
     if storybook.save

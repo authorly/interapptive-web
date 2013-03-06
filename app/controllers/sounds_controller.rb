@@ -1,27 +1,33 @@
 class SoundsController < ApplicationController
+  before_filter :find_storybook, :except => :destroy
+
   def index
-    sounds = Sound.where(:storybook_id => params[:storybook_id])
+    sounds = @storybook.sounds
 
     render :json => sounds.map(&:as_jquery_upload_response).to_json
   end
 
   def create
-    
-    storybook = Storybook.find params[:storybook_id]
-
-    sounds = params[:sound][:files].map { |f| Sound.create(:sound => f, :storybook_id => storybook.id) }
+    sounds = params[:sound][:files].map { |f| Sound.create(:sound => f, :storybook_id => @storybook.id) }
     
     respond_to do |format|
       format.json { render :json => sounds.map(&:as_jquery_upload_response).to_json }
     end
   end
 
-  # DELETE /fonts/:id.json
   def destroy
-    Sound.find(params[:id]).try(:destroy)
+    sound = Sound.find(params[:id])
+    raise ActiveRecord::RecordNotFound unless sound.storybook.owned_by?(current_user)
+    sound.destroy
 
     respond_to do |format|
       format.json { head :ok }
     end
+  end
+
+  private
+
+  def find_storybook
+    @storybook = current_user.storybooks.find(params[:storybook_id])
   end
 end
