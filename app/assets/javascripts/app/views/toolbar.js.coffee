@@ -34,7 +34,8 @@ class App.Views.ToolbarView extends Backbone.View
     App.vent.trigger 'create:keyframe', is_animation: true
 
 
-  addText: ->
+  addText: (event) ->
+    event.preventDefault()
     return if $(event.currentTarget).hasClass('disabled')
 
     App.vent.trigger 'create:widget', type: 'TextWidget'
