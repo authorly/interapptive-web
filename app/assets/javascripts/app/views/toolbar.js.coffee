@@ -35,6 +35,8 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addText: ->
+    return if $(event.currentTarget).hasClass('disabled')
+
     App.vent.trigger 'create:widget', type: 'TextWidget'
 
 
