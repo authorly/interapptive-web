@@ -15,11 +15,9 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   initialize: (options={}) ->
-    App.vent.on 'opened:storybook',  @openedStorybook,   @
     App.vent.on 'select:font_color', @fontColorSelected, @
     App.vent.on 'uploaded:fonts',    @fontsUploaded, @
     App.vent.on 'activate:scene',    @changeScene,   @
-    # App.vent.on 'destroyed:font',  @fontDestroyed, @
     App.vent.on 'edit:text_widget',  @disable
     App.vent.on 'done_editing:text', @enable
 
@@ -54,8 +52,7 @@ class App.Views.TextEditorPalette extends Backbone.View
 
   setDefaultValsForScene: ->
     color = @scene.get('font_color')
-    rgb = [color.r,color.g,color.b]
-    @$('#colorpicker span i').css('background-color', "rgb(#{rgb[0]}, #{rgb[1]}, #{rgb[2]})")
+    @$('#colorpicker span i').css('background-color', "rgb(#{color.r}, #{color.g}, #{color.b})")
     @$('#font-face').val @scene.get('font_face')
     @$('#font-size').val @scene.get('font_size')
 
@@ -82,7 +79,7 @@ class App.Views.TextEditorPalette extends Backbone.View
       b: color.b
 
 
-  openedStorybook: (storybook) ->
+  openStorybook: (storybook) ->
     @storybook = storybook
     @cacheExistingFonts()
     @addExistingFontOptions()
@@ -110,7 +107,7 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   addExistingFontOptions: ->
-    return if @fonts < 1
+    return if @fonts.length < 1
 
     $fontOptionGroupEl = '#uploaded-fonts'
     @$($fontOptionGroupEl).empty()
@@ -120,11 +117,6 @@ class App.Views.TextEditorPalette extends Backbone.View
   fontsUploaded: (fonts) ->
     @addFontToCache(font.name, font.url) for font in fonts
     @addFontOption(font.name) for font in fonts
-
-
-  # fontDestroyed: (font) ->
-  #   console.log "destroyed font: ", font
-  #   console.log "destroyed JSON.parse(font): ", JSON.parse(font)
 
 
   disable: =>

@@ -12,10 +12,6 @@ window.App =
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
-    if @version.environment == 'development'
-      @vent.on 'all', ->
-        # console.log 'vent', arguments # debug everything going through the vent
-        # console.trace()
 
     @vent.on 'reset:palettes',           @_resetPalettes,    @
     @vent.on 'toggle:palette',           @_togglePalette,    @
@@ -53,7 +49,6 @@ window.App =
       view : new App.Views.TextEditorPalette
       el   : $('#text-editor-palette')
 
-
     @spriteEditorPalette = new App.Views.PaletteContainer
       view      : new App.Views.SpriteEditorPalette
       el        : $('#sprite-editor-palette')
@@ -77,7 +72,6 @@ window.App =
     palette = switch palette
       when 'sceneImages' then @spritesListPalette
       when 'fontEditor'  then @textEditorPalette
-      # when 'imageEditor':
     palette.$el.toggle() if palette?
 
 
@@ -91,7 +85,7 @@ window.App =
 
     storybook.fetchCollections()
 
-    App.vent.trigger 'opened:storybook', storybook
+    @textEditorPalette.view.openStorybook(storybook)
 
 
   _showSceneForm: ->
@@ -156,22 +150,6 @@ window.App =
     palette.reset() for palette in @palettes
 
 
-  # #
-  # #  Temporarily Out of Service.
-  # #
-  # #    @activeActionsWindow(new App.Views.ActiveActionsList collection: @activeActionsCollection)
-  # #
-  # #    activeActionsWindow: (view) ->
-  # #      if view
-  # #        @actionsWindow = new App.Views.WidgetWindow(
-  # #          view:       view,
-  # #          el:         $('#active-actions-window'),
-  # #          alsoResize: '#active-actions'
-  # #        )
-  # #      else
-  # #        @actionsWindow
-  # #
-
   initModals: ->
     $('.content-modal').modal(backdrop: true).modal('hide')
     $('.lightbox-modal').modal().modal('hide').on 'hide', App.pauseVideos
@@ -190,7 +168,6 @@ window.App =
     @view
 
 
-
   _hideModal: ->
     @modalWithView().hide()
 
@@ -198,37 +175,6 @@ window.App =
   _changeKeyframe: (__, keyframe) ->
     @currentWidgets.changeKeyframe(keyframe)
 
-
-  # showSimulator: ->
-    # @simulator = new App.Views.Simulator(json: App.storybookJSON.toString())
-
-    # @openLargeModal(@simulator)
-
-
-  # # RFCTR: Use generic modal & add sizing options to it
-  # openLargeModal: (view, className='') ->
-    # return unless view
-    # @closeLargeModal(false)
-
-    # @_modal = new App.Views.LargeModal(view: view, className: 'large-modal')
-    # $('body').append(@_modal.render().el)
-    # $('.large-modal').modal(backdrop: true)
-
-
-  # # RFCTR: cont. from above
-  # closeLargeModal: (animate=true) ->
-   # if @_modal then @_modal.hide()
-
-
-  # lightboxWithView: (view) ->
-    # return @lightboxView unless view?
-
-    # @lightboxView = new App.Views.Lightbox view, className: 'lightbox-modal'
-
-  # # RFCTR: Move to asset library view, use vent where needed
-  # pauseVideos: ->
-    # $('.video-player')[0].pause()
-    # $('.content-modal').show()
 
   start: ->
     App.version =

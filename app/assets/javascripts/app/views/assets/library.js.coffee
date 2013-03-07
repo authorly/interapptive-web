@@ -29,11 +29,9 @@ class App.Views.AssetLibrary extends Backbone.View
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
     ).bind('fileuploaddestroyed',  =>
       @assets.fetch()
-      # App.vent.trigger('destroyed:font', data) if @assetType is 'font'
-    ).bind('fileuploadcompleted', (event, data) =>
+    ).bind 'fileuploadcompleted', (event, data) =>
       @assets.fetch()
       App.vent.trigger('uploaded:fonts', data.result) if @assetType is 'font'
-    )
 
 
   loadAndShowFileData: ->
