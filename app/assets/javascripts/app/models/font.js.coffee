@@ -29,3 +29,7 @@ class App.Collections.FontsCollection extends Backbone.Collection
       )
 
     @fetch {success: (collection, response) -> onSuccess(collection) }
+
+
+  comparator: (model) ->
+    model.get('name')
