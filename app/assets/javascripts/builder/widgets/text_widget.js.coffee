@@ -29,6 +29,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @model.on 'change:string', @stringChange, @
 
     App.vent.on 'edit:text_widget',  @disableEditing
+    App.vent.on 'activate:scene',    @disableEditing
     App.vent.on 'change:font_face',  @fontFaceChanged,   @
     App.vent.on 'change:font_size',  @fontSizeChanged,   @
     App.vent.on 'change:font_color', @fontColorChanged,  @
