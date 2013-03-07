@@ -22,6 +22,8 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   COUNTDOWN_LENGTH_IN_SECONDS: 5
 
+  VOICEOVER_UPLOAD_ERROR: 'There was a problem uploading your file. Please try again.'
+
 
   initialize: (keyframe) ->
     @keyframe = keyframe
@@ -54,56 +56,61 @@ class App.Views.VoiceoverIndex extends Backbone.View
       success: -> App.vent.trigger 'hide:modal'
 
 
-  clickPreviewAlignment: (event) ->
+  clickPreviewAlignment: (event) =>
+    @previewOrStopAlignment(event)
+    @setHighlightTimesForWordEls()
+
+    @_previewingAlignment = true
+
+
+  previewOrStopAlignment: (event) ->
     $el = @$(event.currentTarget)
     if $el.find('i').hasClass('icon-play')
-      @$('#begin-alignment').addClass('disabled')
+      @player.play()
+      @player.playbackRate(1.0)
+      @disableBeginAlignment()
       $el.find('span')
         .text('Stop')
         .parent().find('i')
         .removeClass('icon-play')
         .addClass('icon-stop')
     else
+      @stopAlignment()
       $el.find('span')
         .text('Preview')
         .parent().find('i')
         .removeClass('icon-stop')
         .addClass('icon-play')
 
+
+  setHighlightTimesForWordEls: ->
     $words = @$('.word')
     $words.removeClass('highlighted')
+    $.each $words, (index, word) =>
+      @$(word).attr("id", "word-#{index}")
 
-    unless @_initialized
-      @_initialized = true
+      if @$(words[index + 1]).length > 0
+        endTime = parseFloat(@$($words[index + 1]).attr('data-start'))
+      else
+        endTime = parseFloat(@$(word).attr('data-start')) + 1
 
-      $.each $words, (index, word) =>
-        @$(word).attr("id", "word-#{index}")
-
-        if @$(words[index + 1]).length > 0
-          endTime = parseFloat(@$($words[index + 1]).attr('data-start'))
-        else
-          endTime = parseFloat(@$(word).attr('data-start')) + 1
-
-        @player.footnote
-          start:      @$(word).attr('data-start')
-          end:        endTime
-          text:       ''
-          target:     "word-#{index}"
-          effect:     'applyclass'
-          applyclass: 'highlighted'
-
-    @player.play()
-    @player.playbackRate(1.0)
-
-    @_previewingAlignment = true
+      @player.footnote
+        start:      @$(word).attr('data-start')
+        end:        endTime
+        text:       ''
+        target:     "word-#{index}"
+        effect:     'applyclass'
+        applyclass: 'highlighted'
 
 
   startCountdown: ->
     @$('#words').after('<div id="countdown"></div>')
       .find('span.word')
       .addClass('disabled')
-    @$('#begin-alignment').addClass('disabled')
+    @disableBeginAlignment()
 
+    @disablePreview()
+    @disableAcceptAlignment()
     @initCountdownElement()
 
 
@@ -119,10 +126,10 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   stopAlignment: =>
+    @player.pause(@player.duration())
     @enablePreview()
     @disableHelperArrow()
     @removeWordHighlights()
-    @player.pause(@player.duration())
 
 
   countdownEnded: =>
@@ -268,7 +275,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @voiceoverUploader = new voiceoverUploader @$('#audio-file').get(0),
       url: @keyframe.voiceoverUrl()
       error: (event) =>
-        console.log "Error uploading"
+        alert @VOICEOVER_UPLOAD_ERROR
       success: (file)  =>
         @$('.loading').hide()
         @$('.filename').css('display', 'inline-block').addClass('uploaded')
@@ -287,7 +294,8 @@ class App.Views.VoiceoverIndex extends Backbone.View
       if @_previewingAlignment
         @previewingEnded()
       else
-        @$('#accept-alignment').removeClass('disabled')
+
+        @enableAcceptAlignment()
         @enablePreview()
 
       @$('.word.highlighted').removeClass('highlighted')
@@ -318,8 +326,20 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @$('#preview-alignment').addClass('disabled')
 
 
+  enableAcceptAlignment: ->
+    @$('#accept-alignment').removeClass('disabled')
+
+
+  disableAcceptAlignment: ->
+    @$('#accept-alignment').addClass('disabled')
+
+
   enableHighlighting: ->
     @$('#begin-alignment').removeClass('disabled')
+
+
+  disableBeginAlignment: ->
+    @$('#begin-alignment').addClass('disabled')
 
 
   setAudioPlayerSrc: (voiceoverUrl) ->
