@@ -13,7 +13,7 @@ class App.Models.Storybook extends Backbone.Model
                            type: "title"
                            message: "Oops! Title must be 2-25 characters"
 
-                         err  if value.length < 3 or value.length > 25
+                         err  if value.length < 2 or value.length > 25
                       ]
 
     price:
@@ -52,21 +52,6 @@ class App.Models.Storybook extends Backbone.Model
 
           err  if value.length < 3 or value.length > 25
       ]
-
-    android_or_ios:
-      title:         "Mobile Platform"
-      type:          "Buttons"
-      buttonType:    "radio"
-      labeling:      ["iOS", "Both", "Android"]
-      selectedIndex: 1
-
-    record_enabled:
-      title:         "Voice recording?"
-      help:          "Allows your users to record and share voiceovers"
-      type:          "Buttons"
-      buttonType:    "radio"
-      labeling:      ["On", "Off"]
-      selectedIndex: 0
 
 
   initialize: ->
