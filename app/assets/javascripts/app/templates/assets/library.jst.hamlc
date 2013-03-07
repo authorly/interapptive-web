@@ -10,6 +10,9 @@
         %i.icon-plus.icon-white
         %span= "Add #{@assetType}s..."
           %input{:multiple => true, :name => "#{@assetType}[files][]", :type => "file"}
+      %button.btn.btn-primary.start{:type => "submit"}
+        %i.icon-upload.icon-white
+        %span Start upload
     %table.table.table-striped
       %thead
         %tr
