@@ -91,7 +91,7 @@ window.App =
 
     storybook.fetchCollections()
 
-    console.log "storybook.fonts", storybook.fonts
+    App.vent.trigger 'opened:storybook', storybook
 
 
   _showSceneForm: ->

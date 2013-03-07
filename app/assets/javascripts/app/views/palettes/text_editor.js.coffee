@@ -14,14 +14,14 @@ class App.Views.TextEditorPalette extends Backbone.View
     'change #font-size ': 'fontSizeChanged'
 
 
-  initialize: ->
-    App.vent.on 'activate:scene', @changeScene, @
+  initialize: (options={}) ->
+    App.vent.on 'opened:storybook',  @openedStorybook,   @
     App.vent.on 'select:font_color', @fontColorSelected, @
-    App.vent.on 'edit:text_widget', @disable
+    App.vent.on 'uploaded:fonts',    @fontsUploaded, @
+    App.vent.on 'activate:scene',    @changeScene,   @
+    # App.vent.on 'destroyed:font',  @fontDestroyed, @
+    App.vent.on 'edit:text_widget',  @disable
     App.vent.on 'done_editing:text', @enable
-    App.vent.on 'change:storybook', @cacheUploadedFonts, @
-
-
 
 
   render: ->
@@ -53,14 +53,11 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   setDefaultValsForScene: ->
+    color = @scene.get('font_color')
+    rgb = [color.r,color.g,color.b]
+    @$('#colorpicker span i').css('background-color', "rgb(#{rgb[0]}, #{rgb[1]}, #{rgb[2]})")
     @$('#font-face').val @scene.get('font_face')
     @$('#font-size').val @scene.get('font_size')
-
-    color = @scene.get('font_color')
-    r = color.r
-    g = color.g
-    b = color.b
-    @$('#colorpicker span i').css('background-color', "rgb(#{r}, #{g}, #{b})")
 
 
   fontFaceChanged: (event) ->
@@ -85,13 +82,49 @@ class App.Views.TextEditorPalette extends Backbone.View
       b: color.b
 
 
-  cacheUploadedFonts: (storybook) ->
-    fonts = storybook.fonts
-    console.log "cacheUploadedFonts: (fonts); fonts: ", fonts
-    #$storybookFontFaces = $('#storybook-font-faces').empty()
-    #_.each fonts, (f) ->
-    #  fontFace = "@font-face { font-family: '#{f.get('name')}'; src: url('#{f.get('url')}'); }"
-    #  $storybookFontFaces.append(fontFace)
+  openedStorybook: (storybook) ->
+    @storybook = storybook
+    @cacheExistingFonts()
+    @addExistingFontOptions()
+
+
+  cacheExistingFonts: ->
+    $fontCacheEl = @$('#font-cache')
+    $fontCacheEl.empty()
+
+    @fonts = @storybook.fonts.models
+    _.each @fonts, (f) =>
+      @addFontToCache f.get('name'), f.get('url')
+
+
+  addFontToCache: (name, url) ->
+    $fontFaceImportEl = "@font-face { font-family: '#{name}'; src: url('#{url}'); }"
+    @$('#font-cache').append($fontFaceImportEl)
+
+
+  addFontOption: (name) ->
+    $('<option/>',
+      value: name
+      text:  name
+    ).appendTo('#uploaded-fonts')
+
+
+  addExistingFontOptions: ->
+    return if @fonts < 1
+
+    $fontOptionGroupEl = '#uploaded-fonts'
+    @$($fontOptionGroupEl).empty()
+    @addFontOption(font.get('name')) for font in @fonts
+
+
+  fontsUploaded: (fonts) ->
+    @addFontToCache(font.name, font.url) for font in fonts
+    @addFontOption(font.name) for font in fonts
+
+
+  # fontDestroyed: (font) ->
+  #   console.log "destroyed font: ", font
+  #   console.log "destroyed JSON.parse(font): ", JSON.parse(font)
 
 
   disable: =>
