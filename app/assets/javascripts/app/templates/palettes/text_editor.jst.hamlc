@@ -1,6 +1,5 @@
 %select#font-face{:readonly => "", :disabled => ""}
-
-  %optgroup{:label => "Uploaded Fonts"}
+  %optgroup{:id => "uploaded-fonts", :label => "Uploaded Fonts"}
     %option{:value => "", :disabled => ""}
       no fonts uploaded..
   %optgroup{:label => "Standard Fonts"}
@@ -26,9 +25,6 @@
       Trebuchet MS
     %option{:value => "Verdana"}
       Verdana
-  / - for font in @fonts
-  /   %option{:value => font.get('name')}
-  /     = font.get('name')
 
 %select#font-size{:readonly => "", :disabled => ""}
   - fontSizes = [24..46]
@@ -39,3 +35,5 @@
 #colorpicker.input-append.color{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "rgb"}
   %span.add-on
     %i{:style => "background-color: rgb(255, 146, 180);"}
+
+#font-cache

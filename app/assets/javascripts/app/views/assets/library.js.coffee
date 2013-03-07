@@ -18,18 +18,20 @@ class App.Views.AssetLibrary extends Backbone.View
     @$el.html @template(assetType: @assetType, acceptedFileTypes: @acceptedFileTypes, assets: @assets)
     @initAssetLib()
     @loadAndShowFileData()
-
     @
 
 
   initAssetLib: ->
     $('.content-modal').addClass 'asset-library-modal'
-    @$('#fileupload').fileupload
+    @$('#fileupload').fileupload(
       acceptFileTypes: @fileTypePattern(@assetType)
       downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
-    .bind 'fileuploaddestroyed', => @assets.fetch()
-    .bind 'fileuploadcompleted', => @assets.fetch()
+    ).bind('fileuploaddestroyed',  =>
+      @assets.fetch()
+    ).bind 'fileuploadcompleted', (event, data) =>
+      @assets.fetch()
+      App.vent.trigger('uploaded:fonts', data.result) if @assetType is 'font'
 
 
   loadAndShowFileData: ->
