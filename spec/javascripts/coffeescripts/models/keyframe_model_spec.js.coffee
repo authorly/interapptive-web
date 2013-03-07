@@ -12,6 +12,7 @@ describe "App.Models.Keyframe", ->
       sound_id: 2,
       preview_image_id: 3,
       page_number: 1
+      content_highlight_times: [1, 2, 3, 4]
     },
     {
       collection: @storybook.scenes
