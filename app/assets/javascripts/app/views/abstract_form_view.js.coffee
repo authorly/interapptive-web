@@ -30,7 +30,9 @@ class App.Views.AbstractFormView extends Backbone.View
   updateAttributes: (event) ->
     event.preventDefault()
 
-    @form.commit()
+    errors = @form.commit()
+    return if errors
+
     @model.save {},
       success: ->
         App.modalWithView().hide()
