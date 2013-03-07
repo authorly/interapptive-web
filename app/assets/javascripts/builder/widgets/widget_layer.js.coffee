@@ -45,7 +45,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addWidget: (widget) ->
-    console.log 'add', widget
     if widget instanceof App.Models.SpriteOrientation
       @updateFromOrientation(widget)
     else
@@ -56,7 +55,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   removeWidget: (widget) ->
-    console.log 'remove', widget
     return if widget instanceof App.Models.SpriteOrientation
 
     view = @_getView(widget)

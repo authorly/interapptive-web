@@ -19,6 +19,8 @@ class App.Views.TextEditorPalette extends Backbone.View
     App.vent.on 'select:font_color', @fontColorSelected, @
     App.vent.on 'edit:text_widget', @disable
     App.vent.on 'done_editing:text', @enable
+    App.vent.on 'change:storybook', @cacheUploadedFonts, @
+
 
 
 
@@ -83,11 +85,13 @@ class App.Views.TextEditorPalette extends Backbone.View
       b: color.b
 
 
-  cacheUploadedFonts: (fonts) ->
-    $storybookFontFaces = $('#storybook-font-faces').empty()
-    _.each fonts, (f) ->
-      fontFace = "@font-face { font-family: '#{f.get('name')}'; src: url('#{f.get('url')}'); }"
-      $storybookFontFaces.append(fontFace)
+  cacheUploadedFonts: (storybook) ->
+    fonts = storybook.fonts
+    console.log "cacheUploadedFonts: (fonts); fonts: ", fonts
+    #$storybookFontFaces = $('#storybook-font-faces').empty()
+    #_.each fonts, (f) ->
+    #  fontFace = "@font-face { font-family: '#{f.get('name')}'; src: url('#{f.get('url')}'); }"
+    #  $storybookFontFaces.append(fontFace)
 
 
   disable: =>

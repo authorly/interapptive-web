@@ -14,8 +14,8 @@ window.App =
     @vent = _.extend {}, Backbone.Events
     if @version.environment == 'development'
       @vent.on 'all', ->
-        console.log 'vent', arguments # debug everything going through the vent
-        console.trace()
+        # console.log 'vent', arguments # debug everything going through the vent
+        # console.trace()
 
     @vent.on 'reset:palettes',           @_resetPalettes,    @
     @vent.on 'toggle:palette',           @_togglePalette,    @
@@ -90,6 +90,8 @@ window.App =
       @saveCanvasAsPreview(keyframe)
 
     storybook.fetchCollections()
+
+    console.log "storybook.fonts", storybook.fonts
 
 
   _showSceneForm: ->
