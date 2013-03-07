@@ -9,6 +9,19 @@
 # _highlighted
 # _mouse_over
 #
+# When inheriting from this class (i.e., SpriteWidget):
+#   - Must set @setPosition, @setScale, etc. on the class and cocos2d object
+#     created in the class.
+#
+#     *This is required in class inheriting from
+#      Widget when setting visual attributes of
+#      a cocos2d object (scale, position, etc.)
+#
+#          SpriteWidget i.e.,
+#          @sprite = cc.sprite.create(...)
+#          @sprite.setScale(SCALE)
+#          @setScale(SCALE)
+#
 class App.Builder.Widgets.Widget extends cc.Node
 
   constructor: (options) ->
