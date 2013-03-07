@@ -236,8 +236,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   _getTouchCoordinates: (touch) ->
     point = touch.locationInView()
     # compensate the pointer's dimensions
-    point.x -= 18
-    point.y += 14
+    # point.x -= 18
+    # point.y += 14
     point
 
 
