@@ -18,17 +18,19 @@ class App.Views.VoiceoverIndex extends Backbone.View
     'selectstart':              'cancelNativeHighlighting'
     'click #begin-alignment':   'clickBeginAlignment'
     'click #preview-alignment': 'clickPreviewAlignment'
-     # 'click #accept-alignment':   'acceptAlignment'
+    'click #accept-alignment':  'acceptAlignment'
 
   COUNTDOWN_LENGTH_IN_SECONDS: 5
+
+  VOICEOVER_UPLOAD_ERROR: 'There was a problem uploading your file. Please try again.'
 
 
   initialize: (keyframe) ->
     @keyframe = keyframe
+    @player = null
 
     @_canManuallyAlign = false
     @_mouseDown = false
-    @player = null
 
     $(document).mouseup => @_mouseDown = false
 
@@ -47,16 +49,72 @@ class App.Views.VoiceoverIndex extends Backbone.View
     if @_canManuallyAlign then @stopAlignment() else @startCountdown()
 
 
+  acceptAlignment: (event) ->
+    return if @$(event.currentTarget).hasClass('disabled')
+
+    @keyframe.updateContentHighlightTimes @_collectTimeIntervals(),
+      success: -> App.vent.trigger 'hide:modal'
+
+
+  clickPreviewAlignment: (event) =>
+    @previewOrStopPreview(event)
+    @setHighlightTimesForWordEls()
+
+    @_previewingAlignment = true
+
+
+  previewOrStopPreview: (event) ->
+    $el = @$(event.currentTarget)
+    if $el.find('i').hasClass('icon-play')
+      @player.play()
+      @player.playbackRate(1.0)
+      @disableBeginAlignment()
+      $el.find('span')
+        .text('Stop')
+        .parent().find('i')
+        .removeClass('icon-play')
+        .addClass('icon-stop')
+    else
+      @stopAlignment()
+      $el.find('span')
+        .text('Preview')
+        .parent().find('i')
+        .removeClass('icon-stop')
+        .addClass('icon-play')
+
+
+  setHighlightTimesForWordEls: ->
+    $words = @$('.word')
+    $words.removeClass('highlighted')
+    $.each $words, (index, word) =>
+      @$(word).attr("id", "word-#{index}")
+
+      if @$(words[index + 1]).length > 0
+        endTime = parseFloat(@$($words[index + 1]).attr('data-start'))
+      else
+        endTime = parseFloat(@$(word).attr('data-start')) + 1
+
+      @player.footnote
+        start:      @$(word).attr('data-start')
+        end:        endTime
+        text:       ''
+        target:     "word-#{index}"
+        effect:     'applyclass'
+        applyclass: 'highlighted'
+
+
   startCountdown: ->
     @$('#words').after('<div id="countdown"></div>')
       .find('span.word')
       .addClass('disabled')
-    @$('#begin-alignment').addClass('disabled')
+    @disableBeginAlignment()
 
-    @placeCountdownElements()
+    @disablePreview()
+    @disableAcceptAlignment()
+    @initCountdownElement()
 
 
-  placeCountdownElements: ->
+  initCountdownElement: ->
     countdownEnded = false
     endTime = (new Date()).getTime() + @COUNTDOWN_LENGTH_IN_SECONDS * 1000
     @$('#countdown').jcountdown
@@ -68,13 +126,15 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   stopAlignment: =>
+    @player.pause(@player.duration())
     @enablePreview()
     @disableHelperArrow()
     @removeWordHighlights()
-    @player.pause(@player.duration())
 
 
   countdownEnded: =>
+    @_canManuallyAlign = true
+
     @removeWordHighlights()
 
     @player.play()
@@ -90,11 +150,9 @@ class App.Views.VoiceoverIndex extends Backbone.View
       .removeClass('icon-exclamation-sign')
       .addClass('icon-stop')
 
-    @_canManuallyAlign = true
-
 
   removeWordHighlights: =>
-    $('span.word.highlighted').removeClass('highlighted')
+    @$('span.word.highlighted').removeClass('highlighted')
 
 
   cancelNativeHighlighting: ->
@@ -127,10 +185,10 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   pulsateArrowIcon: ->
+    speed = 900
     @$('i.icon-arrow-right.icon-black').effect 'pulsate',
       times: 1
-    , 900, =>
-       #repeat after pulsating
+    , speed, =>
       @pulsateArrowIcon()
 
 
@@ -148,6 +206,18 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @prevElHighlighted(el) or @isFirstWord(el)
 
 
+  findExistingHighlightTimes: ->
+    intervals = @keyframe.get('content_highlight_times')
+    return unless intervals?
+
+    $words = @$('.word')
+    $.each $words, (index, word) =>
+      @$(word).attr("data-start", "#{intervals[index]}")
+
+    @$('#preview-alignment').removeClass('disabled')
+    @$('#accept-alignment').removeClass('disabled')
+
+
   # RFCTR: Move to a Voiceover model
   findExistingVoiceover: ->
     $.getJSON @keyframe.voiceoverUrl(), (file) =>
@@ -155,6 +225,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
       if file.url? and file.name?
         @setExistingVoiceover(file)
+        @findExistingHighlightTimes()
       else
         @noVoiceoverFound()
 
@@ -204,7 +275,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @voiceoverUploader = new voiceoverUploader @$('#audio-file').get(0),
       url: @keyframe.voiceoverUrl()
       error: (event) =>
-        console.log "Error uploading"
+        alert @VOICEOVER_UPLOAD_ERROR
       success: (file)  =>
         @$('.loading').hide()
         @$('.filename').css('display', 'inline-block').addClass('uploaded')
@@ -215,13 +286,16 @@ class App.Views.VoiceoverIndex extends Backbone.View
         @enableHighlighting()
 
 
-
   initMediaPlayer: =>
     @player = Popcorn('audio')
     @player.play().on 'ended', =>
+      @disableHelperArrow()
+
       if @_previewingAlignment
         @previewingEnded()
       else
+
+        @enableAcceptAlignment()
         @enablePreview()
 
       @$('.word.highlighted').removeClass('highlighted')
@@ -252,57 +326,24 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @$('#preview-alignment').addClass('disabled')
 
 
+  enableAcceptAlignment: ->
+    @$('#accept-alignment').removeClass('disabled')
+
+
+  disableAcceptAlignment: ->
+    @$('#accept-alignment').addClass('disabled')
+
+
   enableHighlighting: ->
     @$('#begin-alignment').removeClass('disabled')
 
 
+  disableBeginAlignment: ->
+    @$('#begin-alignment').addClass('disabled')
+
+
   setAudioPlayerSrc: (voiceoverUrl) ->
     @$('audio').attr('src', voiceoverUrl)
-
-
-  clickPreviewAlignment: (event) ->
-    $el = @$(event.currentTarget)
-    if $el.find('i').hasClass('icon-play')
-      @$('#begin-alignment').addClass('disabled')
-      $el.find('span')
-        .text('Stop')
-        .parent().find('i')
-        .removeClass('icon-play')
-        .addClass('icon-stop')
-    else
-      $el.find('span')
-        .text('Preview')
-        .parent().find('i')
-        .removeClass('icon-stop')
-        .addClass('icon-play')
-
-    # Can this be 1 line? -C.W 3.5.2013
-    $words = @$('.word')
-    $words.removeClass('highlighted')
-
-    unless @_initialized
-      @_initialized = true
-
-      $.each $words, (index, word) =>
-        @$(word).attr("id", "word-#{index}")
-
-        if @$(words[index + 1]).length > 0
-          endTime = parseFloat(@$($words[index + 1]).attr('data-start'))
-        else
-          endTime = parseFloat(@$(word).attr('data-start')) + 1
-
-        @player.footnote
-          start:      @$(word).attr('data-start')
-          end:        endTime
-          text:       ''
-          target:     "word-#{index}"
-          effect:     'applyclass'
-          applyclass: 'highlighted'
-
-    @player.play()
-    @player.playbackRate(1.0)
-
-    @_previewingAlignment = true
 
 
   _playerCurrentTimeInSeconds: ->
@@ -313,18 +354,5 @@ class App.Views.VoiceoverIndex extends Backbone.View
     path.split('\\').pop()
 
 
-  # acceptAlignment: (e) ->
-  #   wordTimeIntervals = @collectTimeIntervals()
-  #   keyframe = App.currentSelection.get('keyframe')
-  #   keyframe.updateContentHighlightTimes wordTimeIntervals,
-  #     success: -> App.modalWithView().hide()
-
-
-  # collectTimeIntervals: ->
-  #   @_intervals = []
-  #
-  #   words = @$('ul li span')
-  #   $.each words, (index, wordEl) =>
-  #     @_intervals.push $(wordEl).data('start')
-  #
-  #   @_intervals
+  _collectTimeIntervals: ->
+    _.map @$('.word'), (el) -> @$(el).data('start')
