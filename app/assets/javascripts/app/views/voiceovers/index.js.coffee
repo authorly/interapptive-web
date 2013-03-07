@@ -205,7 +205,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
     $words = @$('.word')
     $.each $words, (index, word) =>
-      console.log "@$(word), index, intervals[index]", @$(word), index, intervals[index]
       @$(word).attr("data-start", "#{intervals[index]}")
 
     @$('#preview-alignment').removeClass('disabled')
