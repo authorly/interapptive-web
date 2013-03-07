@@ -35,7 +35,7 @@ class App.Views.AbstractFormView extends Backbone.View
 
     @model.save {},
       success: ->
-        App.modalWithView().hide()
+        App.vent.trigger 'hide:modal'
 
 
   delete: (event) ->
