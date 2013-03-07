@@ -7,7 +7,7 @@ class App.Views.SpriteListPalette extends Backbone.View
 
   className: 'sprites'
 
-  template: JST["app/templates/palettes/sprite_list"]
+  template: JST['app/templates/palettes/sprite_list']
 
   events:
     'click .icon-plus': 'addSprite'
@@ -27,9 +27,14 @@ class App.Views.SpriteListPalette extends Backbone.View
 
   render: ->
     @$el.html @template(title: @options.title)
-
+    @initAddSpriteIconTooltip()
     @
 
+
+  initAddSpriteIconTooltip: ->
+    @$('.icon-plus').tooltip
+      title:     'Add image...'
+      placement: 'right'
 
   widgetAdded: (widget) ->
     return unless @_isSprite(widget)
