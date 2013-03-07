@@ -66,6 +66,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @setPosition(new cc.Point(position.x, position.y))
     scale = parseFloat(orientation.get('scale'))
     @sprite.setScale(scale)
+    @setScale(scale)
 
 
   select: ->
