@@ -57,13 +57,13 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   clickPreviewAlignment: (event) =>
-    @previewOrStopAlignment(event)
+    @previewOrStopPreview(event)
     @setHighlightTimesForWordEls()
 
     @_previewingAlignment = true
 
 
-  previewOrStopAlignment: (event) ->
+  previewOrStopPreview: (event) ->
     $el = @$(event.currentTarget)
     if $el.find('i').hasClass('icon-play')
       @player.play()
