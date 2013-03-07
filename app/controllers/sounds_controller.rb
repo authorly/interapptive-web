@@ -1,5 +1,5 @@
 class SoundsController < ApplicationController
-  before_filter :find_storybook, :except => :destroy
+  before_filter :authorize_storybook_ownership, :except => :destroy
 
   def index
     sounds = @storybook.sounds
@@ -23,11 +23,5 @@ class SoundsController < ApplicationController
     respond_to do |format|
       format.json { head :ok }
     end
-  end
-
-  private
-
-  def find_storybook
-    @storybook = current_user.storybooks.find(params[:storybook_id])
   end
 end

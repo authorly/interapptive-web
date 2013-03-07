@@ -31,8 +31,6 @@ class ImagesController < ApplicationController
     end
   end
 
-  # POST /images/:id
-  # PUT /images/:id.format
   def update
     image = Image.find params[:id]
     raise ActiveRecord::RecordNotFound unless image.storybook.owned_by?(current_user)
@@ -46,8 +44,6 @@ class ImagesController < ApplicationController
     end
   end
 
-  # DELETE /images/:id
-  # DELETE /images/:id.json
   def destroy
     image = Image.find(params[:id])
     raise ActiveRecord::RecordNotFound unless image.storybook.owned_by?(current_user)

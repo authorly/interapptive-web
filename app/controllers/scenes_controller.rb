@@ -1,5 +1,5 @@
 class ScenesController < ApplicationController
-  before_filter :find_storybook, :except => [:images, :sort]
+  before_filter :authorize_storybook_ownership, :except => [:images, :sort]
 
   def index
     scenes = @storybook.scenes
@@ -22,7 +22,7 @@ class ScenesController < ApplicationController
     scene = @storybook.scenes.new params[:scene]
 
     respond_to do |format|
-      if @scene.save
+      if scene.save
         format.json { render :json => scene, :status => :created }
       else
         format.json { render :json => scene.errors, :status => :unprocessable_entity }
@@ -58,12 +58,12 @@ class ScenesController < ApplicationController
   end
 
   def images
-    @scene = Scene.find params[:id]
-    raise ActiveRecord::RecordNotFound unless @scene.storybook.owned_by?(current_user)
-    @images = @scene.images
+    scene = Scene.find params[:id]
+    raise ActiveRecord::RecordNotFound unless scene.storybook.owned_by?(current_user)
+    images = scene.images
 
     respond_to do |format|
-      format.json { render :json => @images }
+      format.json { render :json => images }
     end
   end
 
@@ -77,12 +77,5 @@ class ScenesController < ApplicationController
     respond_to do |format|
       format.json { head :no_content }
     end
-  end
-
-  private
-
-  def find_storybook
-    @storybook = Storybook.find(params[:storybook_id])
-    raise ActiveRecord::RecordNotFound unless @storybook.owned_by?(current_user)
   end
 end
