@@ -21,6 +21,7 @@ class App.Views.TextEditorPalette extends Backbone.View
     App.vent.on 'done_editing:text', @enable
 
 
+
   render: ->
     @$el.html(@template())
     @initColorPicker()
