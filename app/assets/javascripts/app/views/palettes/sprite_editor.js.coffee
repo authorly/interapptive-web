@@ -43,6 +43,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   getCurrentOrientation: ->
+    return if @widget instanceof App.Models.TextWidget
     @widget.getOrientationFor(App.currentSelection.get('keyframe'))
 
   setSpritePosition: ->
@@ -59,6 +60,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   setActiveSprite: (__, sprite) ->
+    return if sprite instanceof App.Models.TextWidget
     if sprite
       @widget = sprite
       @enablePalette()

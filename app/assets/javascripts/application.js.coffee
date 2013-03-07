@@ -2,7 +2,7 @@
 #= require hamlcoffee
 #= require jquery
 #= require jquery_ujs
-#= require jquery-ui-1.8.23.js
+#= require jquery-ui-1.8.23
 #= require twitter/bootstrap
 #= require bootstrap
 #= require underscore
@@ -10,10 +10,10 @@
 #= require jquery-fileupload
 #= require jquery.voiceover-uploader
 
-#= require popcorn-complete.min.js
+#= require popcorn-complete.min
 #= require jquery.countdown
 #= require backbone-forms.js
-#= require backbone-forms-list.min.js
+#= require backbone-forms-list.min
 #= require base64.js
 #= require canvas2image.js
 #= require form-templates/bootstrap
