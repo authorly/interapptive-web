@@ -3,7 +3,7 @@ class App.Models.Widget extends Backbone.Model
   @idGenerator = new App.Lib.Counter
 
   defaults: ->
-    position: { x: 1024/4, y: 768/4 }
+    position: { x: 1024/2, y: 768/2 }
 
 
   initialize: ->
