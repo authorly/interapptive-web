@@ -5,11 +5,22 @@
 .text-widget {
   .scale(0.59);
 
-  outline: none;
+  outline: none; /* fix for weird border from contentEditable */
   padding: 20px 20px 4px 20px;
   border: 2px dashed #0c3f86;
-  min-width: 50px;
+  min-width: 40px;
   text-align: center;
+  white-space: nowrap;
+  overflow-x: scroll;
+}
+
+[contenteditable="true"].text-widget br {
+  display: none;
+}
+
+[contenteditable="true"].text-widget * {
+  display: inline;
+  white-space: nowrap;
 }
 
 .text-widget:hover {

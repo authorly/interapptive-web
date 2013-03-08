@@ -10,9 +10,10 @@
 #   setString - sets the cocos2d object text, ensures at least 1 character exists
 #               and sets the text widget's model's string attribute (triggers a save)
 #
-#   disableEditing - Removes the contenteditable overlay for editing and saves the string.
+#   disableEditing - Saves string to DB and removes the contentEditable
+#                    overlay for editing. Done via ENTER key
 #
-#   cancelEditing - Same as disableEditing but with no save of string. Done via ESC key
+#   cancelEditing - Like disableEditing but with no save of string. Done via ESC key
 #
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   BORDER_STROKE_COLOR: 'rgba(15, 79, 168, 0.8)'
@@ -144,32 +145,34 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     App.vent.trigger 'edit:text_widget'
 
     @setIsVisible(false)
-    @convertCocosLabelToHtml()
-    @initContentEditableListenders()
+    @convertLabelToEditableText()
+    @initContentEditableListeners()
 
 
-  initContentEditableListenders: ->
-    $el = $('.text-widget')
-    $el.keydown (event) =>
+  initContentEditableListeners: ->
+    $contentEditableEl = $('.text-widget')
+
+    # Remove new lines when pasted into element
+    $contentEditableEl.on 'input', =>
+      return unless @_editing()
+      return App.Lib.LinebreakFilter.filter($contentEditableEl)
+
+    $contentEditableEl.keydown (event) =>
       @reorientateTextWidgetElement()
-      @disableEditing() if event.keyCode is @ENTER_KEYCODE
-      @cancelEditing() if event.keyCode is @ESCAPE_KEYCODE
+      if event.keyCode is @ENTER_KEYCODE then @disableEditing()
+      if event.keyCode is @ESCAPE_KEYCODE then @cancelEditing()
 
 
   reorientateTextWidgetElement: ->
     $el = $('.text-widget')
-    $el.css('min-width', "#{$el.width()}px")
-    $el.css('min-height', "#{$el.height()}px")
     elWidth = $el.width()
     elWidth += parseInt($el.css("padding-left"), 10) + parseInt($el.css("padding-right"), 10)
     r = @rect()
     $el.css('left',r.origin.x * @SCALE - (elWidth/2) + $(cc.canvas).position().left)
 
 
-  convertCocosLabelToHtml: ->
-    @scene = App.currentSelection.get('scene')
+  convertLabelToEditableText: =>
     color = @scene.get('font_color')
-
     @input = $('<div contenteditable="true">')
     @input.appendTo(cc.canvas.parentNode).css(
       'position': 'absolute'
@@ -188,12 +191,12 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   _leftOffset: ->
     r = @rect()
-    r.origin.x * @SCALE - (@getContentSize().width / 2) + $(cc.canvas).position().left - @TEXT_PADDING*2
+    r.origin.x * @SCALE - (@getContentSize().width / 2) + $(cc.canvas).position().left - 22
 
 
   _topOffset: ->
     r = @rect()
-    $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - (@getContentSize().height / 2) - 8
+    $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - (@getContentSize().height / 2) - @BORDER_WIDTH*2 + 1
 
 
   _editing: ->
