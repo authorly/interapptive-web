@@ -1,11 +1,9 @@
 class UsersController < ApplicationController
-  skip_before_filter :authorize, :except => [:edit, :update, :destroy]
+  skip_before_filter :authorize, :only => [:new, :create]
 
   def show
-    @user = User.find params[:id]
-
     respond_to do |format|
-      format.json { render :json => @user }
+      format.json { render :json => current_user }
     end
   end
 
@@ -56,7 +54,7 @@ class UsersController < ApplicationController
     current_user.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_sign_in_path }
+      format.html { redirect_to sign_in_path }
       format.json { head :ok }
     end
   end

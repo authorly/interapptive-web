@@ -3,9 +3,9 @@ require 'spec_helper'
 
 describe ScenesController do
   before(:each) do
-    @user = mock_model(User, :id => 1)
-    @storybook = mock_model(Storybook, :id => 1)
-    @scene = mock_model(Scene, :id => 1)
+    @user = mock_model(User)
+    @storybook = mock_model(Storybook)
+    @scene = mock_model(Scene)
     test_sign_in(@user)
   end
 
@@ -33,7 +33,7 @@ describe ScenesController do
         Scene.should_receive(:find).with(@scene.id.to_s).and_return(@scene)
         @scene.stub(:as_json).and_return({ :id => @scene.id })
 
-        get :show, :storybook_id => @scene.id, :id => @scene.id, :format => :json
+        get :show, :storybook_id => @storybook.id, :id => @scene.id, :format => :json
 
         response.should be_success
         response.body.should eql({ :id => @scene.id }.to_json)
@@ -127,7 +127,7 @@ describe ScenesController do
         @scene.should_receive(:position=).with(1).exactly(2).times
         @scene.should_receive(:save).with(:validate => false).exactly(2).times.and_return(true)
 
-        post :sort, :storybook_id => @scene.id, :scenes => [{ :id => @scene.id, :position => 1}, { :id => @scene.id, :position => 1}], :format => :json
+        post :sort, :storybook_id => @storybook.id, :scenes => [{ :id => @scene.id, :position => 1}, { :id => @scene.id, :position => 1}], :format => :json
 
         response.should be_success
       end
@@ -136,7 +136,7 @@ describe ScenesController do
 
   context '#images' do
     it 'should return all the images of a scene' do
-      @image = mock_model(Image, :id => 1)
+      @image = mock_model(Image)
       Scene.should_receive(:find).with(@scene.id.to_s).and_return(@scene)
       @scene.should_receive(:storybook).and_return(@storybook)
       @storybook.stub(:owned_by?).with(@user).and_return(true)

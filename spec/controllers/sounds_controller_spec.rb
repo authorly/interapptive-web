@@ -13,9 +13,10 @@ describe SoundsController do
     it 'should give all the sounds' do
       @user.stub(:storybooks).and_return(Storybook)
       Storybook.stub(:find).with(@storybook.id.to_s).and_return(@storybook)
+      @storybook.stub(:owned_by?).with(@user).and_return(true)
       @storybook.stub(:sounds).and_return([@sound])
 
-      get :index, :storybook_id => @storybook.id
+      get :index, :storybook_id => @storybook.id, :format => :json
 
       response.should be_success
       response.body.should eql([{:id => @sound.id, :sound => @sound.sound }].to_json)
@@ -27,6 +28,7 @@ describe SoundsController do
       fake_sound = "sound.wav"
       @user.stub(:storybooks).and_return(Storybook)
       Storybook.stub(:find).with(@storybook.id.to_s).and_return(@storybook)
+      @storybook.stub(:owned_by?).with(@user).and_return(true)
       Sound.should_receive(:create).with(:sound => fake_sound, :storybook_id => @storybook.id).exactly(2).times.and_return(@sound)
 
       post :create, :sound => { :files => [fake_sound, fake_sound] }, :storybook_id => @storybook.id, :format => :json

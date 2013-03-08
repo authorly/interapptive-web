@@ -7,7 +7,7 @@ describe ActionsController do
   end
 
   context '#definitions' do
-    it 'should give all the action definitions with attribute definitions' do
+    xit 'should give all the action definitions with attribute definitions' do
       # See the rationale behind this spec at https://github.com/rspec/rspec-mocks/issues/78
       @action_definition = ActionDefinition.new(:description => 'some description', :name => "CCSomeAction", :enabled => true)
       @attribute_definition = AttributeDefinition.new(:type => 'some_type', :name => 'attribute_name')
@@ -28,7 +28,7 @@ describe ActionsController do
         Action.stub(:find).and_return(@action)
       end
 
-      it 'should update the action' do
+      xit 'should update the action' do
         @action.should_receive(:update_attributes).with('value' => 'some value').and_return(true)
 
         put :update, :id => @action.id, :aktion => { :value => 'some value' }, :format => :json
@@ -36,7 +36,7 @@ describe ActionsController do
         response.should be_success
       end
 
-      it 'should not update the action when invalid' do
+      xit 'should not update the action when invalid' do
         @action.should_receive(:update_attributes).with('value' => 'some value').and_return(false)
         errors = { :error => 'some error' }
         @action.stub(:errors).and_return(errors)
@@ -62,7 +62,7 @@ describe ActionsController do
     end
 
     context '#index' do
-      it 'should give actions of the scene in question' do
+      xit 'should give actions of the scene in question' do
         @scene.should_receive(:actions).and_return([@action])
 
         get :index, :scene_id => @scene.id, :format => :json
@@ -73,7 +73,7 @@ describe ActionsController do
     end
 
     context '#show' do
-      it 'should render a specific action' do
+      xit 'should render a specific action' do
         @scene.stub(:actions).and_return(Action)
         Action.stub(:find).with(@action.id.to_s).and_return(@action)
 
@@ -99,7 +99,7 @@ describe ActionsController do
         .exactly(2).times.and_return(true)
       end
 
-      it 'should create an action with action definition and attributes for valid attributes' do
+      xit 'should create an action with action definition and attributes for valid attributes' do
         @action.stub(:as_json).and_return({ :id => @action.id })
         @action.should_receive(:save).and_return(true)
 
@@ -110,7 +110,7 @@ describe ActionsController do
         response.body.should eql(@action.to_json)
       end
 
-      it 'should not create an action with action definition and attributes for invalid attributes' do
+      xit 'should not create an action with action definition and attributes for invalid attributes' do
         errors = { :error => 'some error' }
         @action.should_receive(:save).and_return(false)
         @action.stub(:errors).and_return(errors)
@@ -124,7 +124,7 @@ describe ActionsController do
     end
 
     context '#destroy' do
-      it 'should destroy an action' do
+      xit 'should destroy an action' do
         @scene.stub(:actions).and_return(Action)
         Action.stub(:find).with(@action.id.to_s).and_return(@action)
         @action.should_receive(:destroy).and_return(true)
