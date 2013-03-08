@@ -14,7 +14,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   BORDER_STROKE_COLOR: 'rgba(15, 79, 168, 0.8)'
   BORDER_WIDTH:  4
   TEXT_PADDING:  10
-  TEXT_PAD_TOP:  7
+  TEXT_PAD_TOP:  4
   SCALE:         0.59
   ENTER_KEYCODE: 13
 
@@ -134,13 +134,14 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   initContentEditableListenders: ->
     $el = $('.text-widget')
     $el.keydown (event) =>
-      @repositionTextWidgetElement()
+      @reorientateTextWidgetElement()
+      @disableEditing() if event.keyCode is @ENTER_KEYCODE
 
-      if event.keyCode is @ENTER_KEYCODE then @disableEditing()
 
-
-  repositionTextWidgetElement: ->
+  reorientateTextWidgetElement: ->
     $el = $('.text-widget')
+    $el.css('min-width', "#{$el.width()}px")
+    $el.css('min-height', "#{$el.height()}px")
     elWidth = $el.width()
     elWidth += parseInt($el.css("padding-left"), 10) + parseInt($el.css("padding-right"), 10)
     r = @rect()
@@ -169,12 +170,12 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   _leftOffset: ->
     r = @rect()
-    r.origin.x * @SCALE - (@getContentSize().width / 2) + $(cc.canvas).position().left
+    r.origin.x * @SCALE - (@getContentSize().width / 2) + $(cc.canvas).position().left - @TEXT_PADDING*2
 
 
   _topOffset: ->
     r = @rect()
-    $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - (@getContentSize().height / 2)
+    $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - (@getContentSize().height / 2) - 8
 
 
   _editing: ->
