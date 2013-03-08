@@ -18,7 +18,6 @@ class App.Views.TextEditorPalette extends Backbone.View
     App.vent.on 'select:font_color', @fontColorSelected, @
     App.vent.on 'uploaded:fonts',    @fontsUploaded, @
     App.vent.on 'activate:scene',    @changeScene,   @
-    App.vent.on 'edit:text_widget',  @disable
     App.vent.on 'done_editing:text', @enable
 
 
@@ -38,9 +37,9 @@ class App.Views.TextEditorPalette extends Backbone.View
     ).on('changeColor', (event) =>
       @rgb = event.color.toRGB()
       App.vent.trigger 'change:font_color', @rgb
-    ).on('hide', =>
+    ).on 'hide', =>
       App.vent.trigger 'select:font_color', @rgb
-    )
+
 
 
   changeScene: (model) ->
@@ -73,10 +72,7 @@ class App.Views.TextEditorPalette extends Backbone.View
 
   fontColorSelected: (color) ->
     @scene = App.currentSelection.get('scene')
-    @scene.set 'font_color',
-      r: color.r
-      g: color.g
-      b: color.b
+    @scene.set 'font_color', {r: color.r, g: color.g, b: color.b}
 
 
   openStorybook: (storybook) ->

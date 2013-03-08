@@ -1,9 +1,25 @@
 class App.Views.SpriteEditorPalette extends Backbone.View
-  template: JST['app/templates/palettes/sprite_editor']
+  template:  JST['app/templates/palettes/sprite_editor']
+
   tagName:   'form'
+
   className: 'sprite-editor'
-  CONTROL_KEYS: [8, 9, 13, 35, 36, 37, 39]
+
+
+  ENTER_KEYCODE:  13
+
+  LEFT_KEYCODE:   37
+
+  UP_KEYCODE:     38
+
+  RIGHT_KEYCODE:  39
+
+  DOWN_KEYCODE:   40
+
+  CONTROL_KEYS:   [8, 9, 13, 35, 36, 37, 39]
+
   POSITION_TIMER: null
+
 
   initialize: ->
     App.currentSelection.on 'change:widget', @setActiveSprite, @
@@ -11,10 +27,8 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   render: ->
     @$el.html(@template())
-
     @_initScaleSlider()
     @_addCoordinatesListeners()
-
     @
 
 
@@ -23,6 +37,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     @_addUpDownArrowListeners()
     @_addNumericInputListener()
     @_addEnterKeyInputListener()
+
 
   _initScaleSlider: ->
     $scale_amount = @$('#scale-amount')
@@ -45,6 +60,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   getCurrentOrientation: ->
     @widget.getOrientationFor(App.currentSelection.get('keyframe'))
 
+
   setSpritePosition: ->
     @_delayedSavePosition(@_position())
 
@@ -59,6 +75,8 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   setActiveSprite: (__, sprite) ->
+    return unless sprite instanceof App.Models.SpriteWidget
+
     if sprite
       @widget = sprite
       @enablePalette()
@@ -118,10 +136,10 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     return unless @$('li.half').find('input').attr('disabled') is 'disabled'
 
     switch event.keyCode
-      when 37 then @_moveSprite('left',  1)  # Left
-      when 38 then @_moveSprite('up',    1)  # Up
-      when 39 then @_moveSprite('right', 1)  # Right
-      when 40 then @_moveSprite('down',  1)  # Down
+      when @LEFT_KEYCODE  then @_moveSprite('left',  1)
+      when @UP_KEYCODE    then @_moveSprite('up',    1)
+      when @RIGHT_KEYCODE then @_moveSprite('right', 1)
+      when @DOWN_KEYCODE  then @_moveSprite('down',  1)
 
 
   _moveSprite: (direction, pixels) ->
@@ -154,10 +172,10 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     @$('li.half').find('label, input').click (event) ->
       event.stopPropagation()
 
+
   _addEnterKeyInputListener: ->
-    @$('#x-coord, #y-coord').keydown (e) => # Submit position on enter key
-      if e.keyCode is 13
-        @setSpritePosition()
+    @$('#x-coord, #y-coord').keydown (e) =>
+      @setSpritePosition() if e.keyCode is @ENTER_KEYCODE
 
 
   _addNumericInputListener: ->
@@ -169,22 +187,22 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _addUpDownArrowListeners: ->
-    @$('#x-coord').keyup (event) => # Move/position sprite with up/down keyboard arrows
+    @$('#x-coord').keyup (event) =>
       _kc = event.keyCode
 
-      if _kc == 38
+      if _kc is @UP_KEYCODE
         @_moveSprite('right', 1)
 
-      if _kc == 40
+      if _kc is @DOWN_KEYCODE
         @_moveSprite('left', 1)
 
     @$('#y-coord').keyup (event) =>
       _kc = event.keyCode
 
-      if _kc == 38
+      if _kc is @UP_KEYCODE
         @_moveSprite('up', 1)
 
-      if _kc == 40
+      if _kc is @DOWN_KEYCODE
         @_moveSprite('down', 1)
 
 
