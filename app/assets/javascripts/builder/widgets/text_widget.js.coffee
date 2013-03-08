@@ -134,13 +134,17 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   initContentEditableListenders: ->
     $el = $('.text-widget')
     $el.keydown (event) =>
-      r = @rect()
-      elWidth = $el.width()
-      elWidth += parseInt($el.css("padding-left"), 10) + parseInt($el.css("padding-right"), 10)
-
-      $el.css('left',r.origin.x - (elWidth/2) + $(cc.canvas).position().left)
+      @repositionTextWidgetElement()
 
       if event.keyCode is @ENTER_KEYCODE then @disableEditing()
+
+
+  repositionTextWidgetElement: ->
+    $el = $('.text-widget')
+    elWidth = $el.width()
+    elWidth += parseInt($el.css("padding-left"), 10) + parseInt($el.css("padding-right"), 10)
+    r = @rect()
+    $el.css('left',r.origin.x * @SCALE - (elWidth/2) + $(cc.canvas).position().left)
 
 
   convertCocosLabelToHtml: ->
