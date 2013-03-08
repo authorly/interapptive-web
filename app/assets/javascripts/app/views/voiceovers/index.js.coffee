@@ -168,14 +168,12 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   mouseDownOnWord: (event) =>
-    console.log "mouseDownOnWord  @_canManuallyAlign: ",  @_canManuallyAlign
     return false unless @_canManuallyAlign
 
     @_mouseDown = true
 
     $wordEl = @$(event.currentTarget)
     if @canHighlightEl($wordEl)
-      console.log "mouseDownOnWord passed canHighlightEl()"
       @disableHelperArrow() if @isFirstWord($wordEl)
       $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
 

@@ -5,7 +5,6 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   className: 'sprite-editor'
 
-
   ENTER_KEYCODE:  13
 
   LEFT_KEYCODE:   37
