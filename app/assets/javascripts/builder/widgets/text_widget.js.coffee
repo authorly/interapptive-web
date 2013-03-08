@@ -6,36 +6,47 @@
 #
 # It belongs to a Keyframe.
 #
+##
 # Methods:
-#   setString - sets the cocos2d object text, ensures at least 1 character exists
+#   setString - Sets the cocos2d object text, ensures at least 1 character exists
 #               and sets the text widget's model's string attribute (triggers a save)
 #
+#
 #   disableEditing - Saves string to DB and removes the contentEditable
-#                    overlay for editing. Done via ENTER key
+#                    overlay for editing. Done via ENTER key when editing text
 #
-#   cancelEditing - Like disableEditing but with no save of string. Done via ESC key
 #
+#   cancelEditing - Similar to disableEditing but doesn't save. Changes are
+#                   released/unsaved. Achieved via ESC key when editing text.
+#
+#
+#   _topOffset/_leftOffset - Converts Cocos2d positions into a values which will be
+#                            displayed at the same position using CSS positioning
+#
+
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
-  BORDER_STROKE_COLOR: 'rgba(15, 79, 168, 0.8)'
-  BORDER_WIDTH: 4
-  ENTER_KEYCODE:  13
   ESCAPE_KEYCODE: 27
-  TEXT_PADDING: 14
-  TEXT_PAD_TOP: 6
-  TEXT_PAD_BTM: 16
-  SCALE: 0.59
+  ENTER_KEYCODE:  13
+  TEXT_PADDING:   14
+  TEXT_PAD_BTM:   16
+  TEXT_PAD_TOP:   6
+  BORDER_WIDTH:   4
+  BORDER_COLOR:   'rgba(15, 79, 168, 0.8)'
+  SCALE:          0.59
 
 
   constructor: (options) ->
     super
 
-    @scene = App.currentSelection.get('scene')
+    @scene = options.model.collection.keyframe.scene
 
     @createLabel()
 
     @on 'double_click', @doubleClick
+
     @model.on 'change:string', @stringChanged, @
-    App.vent.on 'activate:scene',    @disableEditing,    @
+
+    App.vent.on 'activate:scene edit:text_widget', @disableEditing, @
     App.vent.on 'change:font_face',  @fontFaceChanged,   @
     App.vent.on 'change:font_size',  @fontSizeChanged,   @
     App.vent.on 'change:font_color', @fontColorChanged,  @
@@ -130,7 +141,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   drawSelection: ->
-    cc.renderContext.strokeStyle = @BORDER_STROKE_COLOR
+    cc.renderContext.strokeStyle = @BORDER_COLOR
     cc.renderContext.lineWidth = @BORDER_WIDTH
 
     lSize = @label.getContentSize()
@@ -196,7 +207,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   _topOffset: ->
     r = @rect()
-    $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - (@getContentSize().height / 2) - @BORDER_WIDTH*2 + 1
+    $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - (@getContentSize().height / 2) - @BORDER_WIDTH*2
 
 
   _editing: ->
