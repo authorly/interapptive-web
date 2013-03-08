@@ -32,14 +32,11 @@ class App.Builder.Widgets.Widget extends cc.Node
     @model.on 'change:position', @updatePosition, @
     @model.on 'change:z_order', @updateZOrder, @
 
-    # @_highlighted = false
     @_mouse_over = false
 
     @updatePosition()
     @updateZOrder()
     @setOpacity(255)
-
-    # App.vent.on 'widget:change_zorder', @changeZOrder
 
 
   setOpacity: (opacity) ->

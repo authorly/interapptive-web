@@ -5,19 +5,19 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   className: 'sprite-editor'
 
-  ENTER_KEYCODE:  13
-
-  LEFT_KEYCODE:   37
-
-  UP_KEYCODE:     38
-
-  RIGHT_KEYCODE:  39
-
-  DOWN_KEYCODE:   40
-
-  CONTROL_KEYS:   [8, 9, 13, 35, 36, 37, 39]
-
   POSITION_TIMER: null
+
+  SLIDER_DEFAULT: 1.0
+  SLIDER_STEP:    0.01
+  SLIDER_MIN:     0.2
+  SLIDER_MAX:     2.0
+
+  ENTER_KEYCODE: 13
+  LEFT_KEYCODE:  37
+  UP_KEYCODE:    38
+  RIGHT_KEYCODE: 39
+  DOWN_KEYCODE:  40
+  CONTROL_KEYS: [8, 9, @ENTER_KEYCODE, 35, 36, @LEFT_KEYCODE, @RIGHT_KEYCODE]
 
 
   initialize: ->
@@ -39,20 +39,30 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _initScaleSlider: ->
-    $scale_amount = @$('#scale-amount')
+    $scaleValueEl = @$('#scale-amount')
     options =
       disabled: true
-      value:    1.0
-      min:      0.2
-      max:      2.0
-      step:     0.01
+      value:    @SLIDER_DEFAULT
+      step:     @SLIDER_STEP
+      min:      @SLIDER_MIN
+      max:      @SLIDER_MAX
       stop: (event, ui) =>
         return unless @widget?
-        $scale_amount.text(ui.value)
+        $scaleValueEl.text(ui.value)
         @getCurrentOrientation().set(scale: ui.value)
+
+      slide: (event, ui) =>
+        return unless @widget?
+        $scaleValueEl.text(ui.value)
+        data =
+          model: @widget
+          scale: ui.value
+        App.vent.trigger 'scale:sprite_widget', data
+
       change: (event, ui) =>
         return unless @widget?
-        $scale_amount.text(ui.value)
+        $scaleValueEl.text(ui.value)
+
     @$('#scale').slider(options)
 
 

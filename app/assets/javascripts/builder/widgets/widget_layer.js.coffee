@@ -41,6 +41,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.on 'change:position change:scale', @updateWidget, @
     @widgets.on 'change:z_order', @reorderWidget, @
 
+    App.vent.on 'scale:sprite_widget', @scaleSpriteWidgetFromModel, @
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
 
@@ -183,14 +184,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_selectedWidget = widget
     widget?.select()
 
-  ##
-  # RFCTR - Used by the sprite form palette
-  #         Not sure if we'll need to keep it though.
-  #                                         C.W. 2/2/2013
-  #
-  #   hasCapturedWidget: ->
-  #     true if @_capturedWidget
-  #
 
   _deselectSpriteWidgets: =>
     widget.deselect() for widget in @views when widget.isSpriteWidget()
@@ -218,9 +211,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         App.currentSelection.set widget: null
 
 
-  # RFCTR - Dry up duplicate code w/ above
   addDblClickEventListener: ->
-    ## FIXME Need a cleaner way to check for doubleclicks
     cc.canvas.addEventListener 'dblclick', (event) =>
       touch = @_calculateTouchFrom(event)
       point = @_getTouchCoordinates(touch)
@@ -231,11 +222,16 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         App.currentSelection.set widget: widget.model
 
 
+   scaleSpriteWidgetFromModel: (modelAndScaleData) ->
+     widgetModel = modelAndScaleData.model
+     scale = modelAndScaleData.scale
+
+     view = @_getView(widgetModel)
+     view.setScale(scale)
+
+
   _getTouchCoordinates: (touch) ->
     point = touch.locationInView()
-    # compensate the pointer's dimensions
-    # point.x -= 18
-    # point.y += 14
     point
 
 
