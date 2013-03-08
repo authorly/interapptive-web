@@ -52,6 +52,7 @@ class App.Models.Scene extends Backbone.Model
   initializeKeyframes: ->
     @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
+
     @keyframes.on 'add', @addOrientations, @
     @keyframes.on 'reset add remove change:positions change:preview', @updatePreview, @
 
@@ -133,8 +134,19 @@ class App.Models.Scene extends Backbone.Model
     @trigger 'change:preview', @
 
 
+  hotspotWidgets: ->
+    @widgetsByClass(App.Models.HotspotWidget)
+
   spriteWidgets: ->
-    @widgets.select (w) -> w instanceof App.Models.SpriteWidget
+    @widgetsByClass(App.Models.SpriteWidget)
+
+
+  buttonWidgets: ->
+    @widgetsByClass(App.Models.ButtonWidget)
+
+
+  widgetsByClass: (klass) ->
+    @widgets.filter (w) -> w instanceof klass
 
 
   nextSpriteZOrder: (widget) ->

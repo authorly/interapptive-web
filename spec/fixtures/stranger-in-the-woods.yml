@@ -1,0 +1,385 @@
+
+---
+assets:
+  columns:
+  - id
+  - type
+  - image
+  - video
+  - sound
+  - font
+  - created_at
+  - updated_at
+  - storybook_id
+  - generated
+  - meta_info
+  records: 
+  - - 8
+    - Image
+    - background0010.jpg
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:33:23.000000000Z
+    - 2013-03-06 15:33:23.000000000Z
+    - 3
+    - false
+    - !!null 
+  - - 9
+    - Image
+    - background0020.jpg
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:33:27.000000000Z
+    - 2013-03-06 15:33:27.000000000Z
+    - 3
+    - false
+    - !!null 
+  - - 14
+    - Image
+    - image20130307-10231-1fq2p9p.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:37:47.000000000Z
+    - 2013-03-07 19:22:33.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+  - - 15
+    - Image
+    - image20130307-10231-1p0aq5w.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:39:48.000000000Z
+    - 2013-03-07 19:22:42.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+  - - 16
+    - Image
+    - image20130306-85754-1fxalq8.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:40:19.000000000Z
+    - 2013-03-06 15:40:19.000000000Z
+    - 3
+    - true
+    - !!null 
+  - - 17
+    - Image
+    - image20130307-4843-sv32dl.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:40:35.000000000Z
+    - 2013-03-07 18:48:13.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+  - - 18
+    - Image
+    - image20130307-4843-cs3rjq.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:40:54.000000000Z
+    - 2013-03-07 19:02:22.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+  - - 19
+    - Image
+    - image20130306-85754-22x20f.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:41:24.000000000Z
+    - 2013-03-06 15:41:50.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+  - - 20
+    - Image
+    - image20130307-4843-12ypqpp.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:42:05.000000000Z
+    - 2013-03-07 18:54:49.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+  - - 36
+    - Image
+    - image20130307-4843-kdacqz.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-07 19:02:55.000000000Z
+    - 2013-03-07 19:05:04.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+
+---
+keyframes:
+  columns:
+  - id
+  - scene_id
+  - created_at
+  - updated_at
+  - preview_image_id
+  - widgets
+  - position
+  - audio
+  - content_highlight_times
+  - is_animation
+  records: 
+  - - 8
+    - 5
+    - 2013-03-06 15:25:37.000000000Z
+    - 2013-03-06 15:38:24.000000000Z
+    - 14
+    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 1\n
+      \ position:\n    x: 792.6092715231787\n    y: 673.781456953642\n  scale: 1\n-
+      type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 2\n  position:\n
+      \   x: 486.98013245033087\n    y: 686.158940397351\n  scale: 1\n- type: SpriteOrientation\n
+      \ keyframe_id: 8\n  sprite_widget_id: 3\n  position:\n    x: 163.1523178807948\n
+      \   y: 670.9668874172186\n  scale: 1\n"
+    - 0
+    - !!null 
+    - ! "--- !!null \n...\n"
+    - false
+  - - 9
+    - 6
+    - 2013-03-06 15:25:37.000000000Z
+    - 2013-03-07 18:54:28.000000000Z
+    - 15
+    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 9\n  sprite_widget_id: 4\n
+      \ position:\n    x: 504.0331125827815\n    y: 380.9403973509934\n  scale: 1\n-
+      position:\n    x: 515.9403973509935\n    y: 288.7350993377483\n  type: TextWidget\n
+      \ string: For those who protect wild places\n  font: Arial\n  size: 24\n  z_order:
+      6000\n  id: 6\n- position:\n    x: 519.2317880794701\n    y: 202.4569536423839\n
+      \ type: TextWidget\n  string: And to the snowman that lives\n  font: Arial\n
+      \ size: 24\n  z_order: 6000\n  id: 7\n- position:\n    x: 508.68874172185417\n
+      \   y: 129.3311258278145\n  type: TextWidget\n  string: In every child's heart\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 8\n"
+    - 0
+    - !!null 
+    - ! "--- !!null \n...\n"
+    - false
+  - - 12
+    - 7
+    - 2013-03-06 15:40:45.000000000Z
+    - 2013-03-07 19:02:07.000000000Z
+    - 18
+    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 12\n  sprite_widget_id: 5\n
+      \ position:\n    x: 789.4105960264898\n    y: 361.76158940397346\n  scale: 1.02\n-
+      position:\n    x: 266.65562913907263\n    y: 203.51655629139069\n  type: TextWidget\n
+      \ string: The snowflakes were\n  font: Arial\n  size: 24\n  z_order: 6000\n
+      \ id: 9\n- position:\n    x: 237.76158940397355\n    y: 164.23178807947016\n
+      \ type: TextWidget\n  string:  resting after their twisting,\n  font: Arial\n
+      \ size: 24\n  z_order: 6000\n  id: 10\n- position:\n    x: 240.9337748344373\n
+      \   y: 131.5364238410596\n  type: TextWidget\n  string: twirling dance through\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 11\n- position:\n    x: 277.7350993377483\n
+      \   y: 74.69536423841058\n  type: TextWidget\n  string: the crisp night air.\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 12\n- position:\n    x: 784.2516556291389\n
+      \   y: 122.70198675496687\n  type: TextWidget\n  string: Every twig in the forest\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 13\n- position:\n    x: 780.185430463576\n
+      \   y: 83.76158940397346\n  type: TextWidget\n  string: wore a new coat\n  font:
+      Arial\n  size: 24\n  z_order: 6000\n  id: 14\n- position:\n    x: 844.1258278145692\n
+      \   y: 35.602649006622556\n  type: TextWidget\n  string:  of glimmering white.\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 15\n"
+    - 0
+    - !!null 
+    - ! "--- !!null \n...\n"
+    - false
+  - - 26
+    - 7
+    - 2013-03-07 19:02:47.000000000Z
+    - 2013-03-07 19:05:08.000000000Z
+    - 36
+    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 26\n  sprite_widget_id: 5\n
+      \ position:\n    x: -223.4172185430466\n    y: 760.7814569536429\n  scale: 1.58\n-
+      position:\n    x: 177.75496688741714\n    y: 180.11258278145687\n  type: TextWidget\n
+      \ string: Daybreak came\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 16\n-
+      position:\n    x: 262.2847682119203\n    y: 143.50993377483437\n  type: TextWidget\n
+      \ string: softly moving through the woods\n  font: Arial\n  size: 24\n  z_order:
+      6000\n  id: 17\n- position:\n    x: 228.6291390728477\n    y: 110.06622516556295\n
+      \ type: TextWidget\n  string: and yawning\n  font: Arial\n  size: 24\n  z_order:
+      6000\n  id: 18\n- position:\n    x: 274.9602649006624\n    y: 70.80132450331126\n
+      \ type: TextWidget\n  string: as its rays slowly stretched\n  font: Arial\n
+      \ size: 24\n  z_order: 6000\n  id: 19\n- position:\n    x: 331.1920529801323\n
+      \   y: 29.23841059602648\n  type: TextWidget\n  string: across the snowy meadows.\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 20\n- position:\n    x: 512\n
+      \   y: 384\n  type: TextWidget\n  string: Enter some text...\n  font: Arial\n
+      \ size: 24\n  z_order: 6000\n  id: 21\n"
+    - 1
+    - !!null 
+    - ! "--- !!null \n...\n"
+    - false
+
+---
+scenes:
+  columns:
+  - id
+  - storybook_id
+  - sound_id
+  - position
+  - created_at
+  - updated_at
+  - preview_image_id
+  - sound_repeat_count
+  - widgets
+  - font_face
+  - font_size
+  - font_color
+  - is_main_menu
+  records: 
+  - - 5
+    - 3
+    - !!null 
+    - !!null 
+    - 2013-03-06 15:25:37.000000000Z
+    - 2013-03-06 15:37:50.000000000Z
+    - 14
+    - 0
+    - ! "---\n- position:\n    y: 100\n    x: 200\n  type: ButtonWidget\n  scale:
+      1\n  id: 1\n  name: read_it_myself\n  z_order: 1\n  filename: read_it_myself.png\n
+      \ url: /assets/sprites/read_it_myself.png\n- position:\n    y: 200\n    x: 200\n
+      \ type: ButtonWidget\n  scale: 1\n  id: 2\n  name: read_to_me\n  z_order: 2\n
+      \ filename: read_to_me.png\n  url: /assets/sprites/read_to_me.png\n- position:\n
+      \   y: 300\n    x: 200\n  type: ButtonWidget\n  scale: 1\n  id: 3\n  name: auto_play\n
+      \ z_order: 3\n  filename: auto_play.png\n  url: /assets/sprites/auto_play.png\n"
+    - Arial
+    - '25'
+    - ! '--- rgb(0, 0, 0)
+
+      ...
+
+'
+    - true
+  - - 6
+    - 3
+    - !!null 
+    - 0
+    - 2013-03-06 15:25:37.000000000Z
+    - 2013-03-07 18:54:22.000000000Z
+    - 15
+    - 0
+    - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
+      1\n  url: https://interapptive.s3.amazonaws.com/images/8/background0010.jpg\n
+      \ filename: background0010.jpg\n  id: 4\n  z_order: 1\n"
+    - Tahoma
+    - '44'
+    - ! '---
+
+      r: 242
+
+      g: 24
+
+      b: 24
+
+'
+    - false
+  - - 7
+    - 3
+    - !!null 
+    - 1
+    - 2013-03-06 15:40:45.000000000Z
+    - 2013-03-07 18:57:31.000000000Z
+    - 18
+    - 0
+    - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
+      1\n  url: https://interapptive.s3.amazonaws.com/images/9/background0020.jpg\n
+      \ filename: background0020.jpg\n  id: 5\n  z_order: 1\n"
+    - Arial
+    - '29'
+    - ! '--- rgb(0, 0, 0)
+
+      ...
+
+'
+    - false
+
+---
+storybooks:
+  columns:
+  - id
+  - user_id
+  - title
+  - created_at
+  - updated_at
+  - author
+  - description
+  - publisher
+  - published_on
+  - price
+  - record_enabled
+  - android_or_ios
+  - tablet_or_phone
+  - icon
+  - compiled_application
+  records: 
+  - - 3
+    - 1
+    - ! 'testing json''
+
+'
+    - 2013-03-06 15:25:37.000000000Z
+    - 2013-03-06 15:27:05.000000000Z
+    - !!null 
+    - !!null 
+    - !!null 
+    - !!null 
+    - !!null 
+    - !!null 
+    - both
+    - both
+    - !!null 
+    - !!null 
+
+---
+users:
+  columns:
+  - id
+  - email
+  - username
+  - role
+  - permalink
+  - password_digest
+  - auth_token
+  - password_reset_token
+  - password_reset_sent_at
+  - created_at
+  - updated_at
+  records: 
+  - - 1
+    - irina.dumitrascu@gmail.com
+    - !!null 
+    - user
+    - !!null 
+    - $2a$10$5K1nSA0Yo4omVZnBW1XqDOi80.6JnG6nizuH07ZTYKSOjly68mSta
+    - TJDV_mEYnNzhCtWHWdEvAQ
+    - !!null 
+    - !!null 
+    - 2013-02-18 22:28:49.000000000Z
+    - 2013-02-18 22:28:49.000000000Z

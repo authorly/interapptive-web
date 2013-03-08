@@ -28,6 +28,8 @@ window.App =
     @vent.on 'change:keyframeWidgets',          @_changeKeyframeWidgets, @
     @vent.on 'change:sceneWidgets load:sprite', @_changeSceneWidgets,    @
 
+    @vent.on 'show:simulator', @showSimulator
+
     @currentSelection = new Backbone.Model
       storybook: null
       scene: null
@@ -56,8 +58,9 @@ window.App =
 
     @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette ]
 
-    @currentSelection.on 'change:storybook', @_openStorybook, @
-    @currentSelection.on 'change:scene',     @_changeScene,   @
+    @currentSelection.on 'change:storybook', @_openStorybook,  @
+    @currentSelection.on 'change:scene',     @_changeScene,    @
+    @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
 
 
   saveCanvasAsPreview: (keyframe) ->
@@ -101,6 +104,10 @@ window.App =
     scene.fetchKeyframes()
 
 
+  _changeKeyframe: (__, keyframe) ->
+    @currentWidgets.changeKeyframe(keyframe)
+
+
   _changeKeyframeWidgets: (keyframe) ->
     return unless App.currentSelection.get('keyframe') == keyframe
     @saveCanvasAsPreview(keyframe)
@@ -137,6 +144,7 @@ window.App =
 
       view.off('select', imageSelected)
       App.vent.trigger('hide:modal')
+
     view.on 'select', imageSelected
     App.modalWithView(view: view).show()
 
@@ -172,8 +180,10 @@ window.App =
     @modalWithView().hide()
 
 
-  _changeKeyframe: (__, keyframe) ->
-    @currentWidgets.changeKeyframe(keyframe)
+  showSimulator: =>
+    json = new App.JSON(storybook).app
+    console.log JSON.stringify(json)
+    # @simulator ||= new App.Views.Simulator(json: App.storybookJSON.toString())
 
 
   start: ->
