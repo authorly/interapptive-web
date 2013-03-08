@@ -10,13 +10,19 @@
 #   setString - sets the cocos2d object text, ensures at least 1 character exists
 #               and sets the text widget's model's string attribute (triggers a save)
 #
+#   disableEditing - Removes the contenteditable overlay for editing and saves the string.
+#
+#   cancelEditing - Same as disableEditing but with no save of string. Done via ESC key
+#
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   BORDER_STROKE_COLOR: 'rgba(15, 79, 168, 0.8)'
-  BORDER_WIDTH:  4
-  TEXT_PADDING:  10
-  TEXT_PAD_TOP:  4
-  SCALE:         0.59
-  ENTER_KEYCODE: 13
+  BORDER_WIDTH: 4
+  ENTER_KEYCODE:  13
+  ESCAPE_KEYCODE: 27
+  TEXT_PADDING: 14
+  TEXT_PAD_TOP: 6
+  TEXT_PAD_BTM: 16
+  SCALE: 0.59
 
 
   constructor: (options) ->
@@ -71,15 +77,26 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   disableEditing: (activatedScene) =>
-    @_editing(false)
-    @scene = activatedScene
     return if @getIsVisible()
     @setIsVisible(true)
+
+    @_editing(false)
+
+    if activatedScene?
+      @scene = activatedScene
 
     @model.set 'string', @input.text()
     @input.remove()
 
     App.vent.trigger 'done_editing:text'
+
+
+  cancelEditing: ->
+    return if @getIsVisible()
+
+    @_editing(false)
+    @setIsVisible(true)
+    @input.remove()
 
 
   stringChanged: (model) ->
@@ -118,8 +135,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     lSize = @label.getContentSize()
     a = cc.ccp(0 - lSize.width / 2 - @TEXT_PADDING, lSize.height / 2 + @TEXT_PAD_TOP)     # top left
     b = cc.ccp(lSize.width / 2 + @TEXT_PADDING, lSize.height / 2 + @TEXT_PAD_TOP)         # top right
-    c = cc.ccp(lSize.width / 2 + @TEXT_PADDING, 0 - lSize.height / 2 - @TEXT_PADDING)     # bottom right
-    d = cc.ccp(0 - lSize.width / 2 - @TEXT_PADDING, 0 - lSize.height / 2 - @TEXT_PADDING) # bottom left
+    c = cc.ccp(lSize.width / 2 + @TEXT_PADDING, 0 - lSize.height / 2 - @TEXT_PAD_BTM)     # bottom right
+    d = cc.ccp(0 - lSize.width / 2 - @TEXT_PADDING, 0 - lSize.height / 2 - @TEXT_PAD_BTM) # bottom left
     cc.drawingUtil.drawPoly([a, b, c, d], 4, true)
 
 
@@ -136,6 +153,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     $el.keydown (event) =>
       @reorientateTextWidgetElement()
       @disableEditing() if event.keyCode is @ENTER_KEYCODE
+      @cancelEditing() if event.keyCode is @ESCAPE_KEYCODE
 
 
   reorientateTextWidgetElement: ->
