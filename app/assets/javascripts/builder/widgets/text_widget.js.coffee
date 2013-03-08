@@ -128,11 +128,19 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     @setIsVisible(false)
     @convertCocosLabelToHtml()
-    @initEnterKeyListener()
+    @initContentEditableListenders()
 
 
-  initEnterKeyListener: ->
-    @input.keydown (event) =>  @disableEditing() if event.keyCode is @ENTER_KEYCODE
+  initContentEditableListenders: ->
+    $el = $('.text-widget')
+    $el.keydown (event) =>
+      r = @rect()
+      elWidth = $el.width()
+      elWidth += parseInt($el.css("padding-left"), 10) + parseInt($el.css("padding-right"), 10)
+
+      $el.css('left',r.origin.x - (elWidth/2) + $(cc.canvas).position().left)
+
+      if event.keyCode is @ENTER_KEYCODE then @disableEditing()
 
 
   convertCocosLabelToHtml: ->
