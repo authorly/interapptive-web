@@ -16,5 +16,5 @@ class App.Views.Modal extends Backbone.View
     @render()
 
 
-  hide: ->
+  hide: =>
     @modal.modal 'hide'
