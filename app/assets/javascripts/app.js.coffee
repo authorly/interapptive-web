@@ -71,6 +71,7 @@ window.App =
     # (to avoid coupling the names)
     palette = switch palette
       when 'sceneImages' then @spritesListPalette
+      when 'imageEditor' then @spriteEditorPalette
       when 'fontEditor'  then @textEditorPalette
     palette.$el.toggle() if palette?
 
