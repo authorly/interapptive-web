@@ -223,7 +223,7 @@ class App.JSON
         # }
       ]
 
-      # fallingPhysicsSettings:
+      fallingPhysicsSettings:
         # draggable         : false
         # maxNumber         : 0
         # speedX            : 145
@@ -233,7 +233,7 @@ class App.JSON
         # hasFloor          : false
         # hasWalls          : true
         # dropBetweenPoints : [0, 600]
-        # plistfilename     : 'snowflake-main-menu.plist'
+        plistfilename     : 'snowflake-main-menu.plist'
 
       MenuItems:
         scene.buttonWidgets().map (button) ->

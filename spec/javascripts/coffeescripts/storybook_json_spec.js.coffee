@@ -31,6 +31,9 @@ describe "App.JSON", ->
       expect(@json.app.MainMenu).toBeDefined()
 
       expect(@json.app.MainMenu.CCSprites.length).toEqual 0
+      expect(@json.app.MainMenu.fallingPhysicsSettings).toBeDefined()
+      # a fake entry as the IOS app needs something
+      expect(@json.app.MainMenu.fallingPhysicsSettings.plistfilename).toEqual 'snowflake-main-menu.plist'
 
       items = @json.app.MainMenu.MenuItems
       expect(items.length).toEqual 3
