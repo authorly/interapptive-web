@@ -24,12 +24,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @_getImage()
 
-    App.vent.on 'scale:sprite', @adjustSpriteScale
-
-
-  adjustSpriteScale: (val) =>
-    @setScale(parseFloat(val))
-
 
   constructorContinuation: (dataUrl) =>
     @model.dataUrl = dataUrl

@@ -49,16 +49,15 @@ class App.Views.SpriteEditorPalette extends Backbone.View
       stop: (event, ui) =>
         return unless @widget?
         $scaleValueEl.text(ui.value)
-        @getCurrentOrientation().set(scale: ui.value)
-
       slide: (event, ui) =>
         return unless @widget?
+
         $scaleValueEl.text(ui.value)
         data =
           model: @widget
           scale: ui.value
-        App.vent.trigger 'scale:sprite_widget', data
 
+        App.vent.trigger 'scale:sprite_widget', data
       change: (event, ui) =>
         return unless @widget?
         $scaleValueEl.text(ui.value)
