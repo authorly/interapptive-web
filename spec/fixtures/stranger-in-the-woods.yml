@@ -36,103 +36,51 @@ assets:
     - 3
     - false
     - !!null 
-  - - 14
+  - - 37
     - Image
-    - image20130307-10231-1fq2p9p.png
+    - image20130309-10231-cjh5i2.png
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-06 15:37:47.000000000Z
-    - 2013-03-07 19:22:33.000000000Z
+    - 2013-03-08 22:56:35.000000000Z
+    - 2013-03-08 23:13:56.000000000Z
     - 3
     - true
     - ! '--- {}
 
 '
-  - - 15
+  - - 38
     - Image
-    - image20130307-10231-1p0aq5w.png
+    - image20130309-10231-1ka4y7v.png
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-06 15:39:48.000000000Z
-    - 2013-03-07 19:22:42.000000000Z
+    - 2013-03-08 23:10:23.000000000Z
+    - 2013-03-08 23:14:09.000000000Z
     - 3
     - true
     - ! '--- {}
 
 '
-  - - 16
+  - - 39
     - Image
-    - image20130306-85754-1fxalq8.png
+    - image20130309-10231-1r8vla9.png
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-06 15:40:19.000000000Z
-    - 2013-03-06 15:40:19.000000000Z
+    - 2013-03-08 23:10:34.000000000Z
+    - 2013-03-08 23:10:34.000000000Z
     - 3
     - true
     - !!null 
-  - - 17
+  - - 40
     - Image
-    - image20130307-4843-sv32dl.png
+    - image20130309-10231-17pk0h0.png
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-06 15:40:35.000000000Z
-    - 2013-03-07 18:48:13.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
-  - - 18
-    - Image
-    - image20130307-4843-cs3rjq.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-06 15:40:54.000000000Z
-    - 2013-03-07 19:02:22.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
-  - - 19
-    - Image
-    - image20130306-85754-22x20f.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-06 15:41:24.000000000Z
-    - 2013-03-06 15:41:50.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
-  - - 20
-    - Image
-    - image20130307-4843-12ypqpp.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-06 15:42:05.000000000Z
-    - 2013-03-07 18:54:49.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
-  - - 36
-    - Image
-    - image20130307-4843-kdacqz.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-07 19:02:55.000000000Z
-    - 2013-03-07 19:05:04.000000000Z
+    - 2013-03-08 23:10:37.000000000Z
+    - 2013-03-08 23:14:02.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -156,8 +104,8 @@ keyframes:
   - - 8
     - 5
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-06 15:38:24.000000000Z
-    - 14
+    - 2013-03-08 22:56:38.000000000Z
+    - 37
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 1\n
       \ position:\n    x: 792.6092715231787\n    y: 673.781456953642\n  scale: 1\n-
       type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 2\n  position:\n
@@ -171,10 +119,10 @@ keyframes:
   - - 9
     - 6
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-07 18:54:28.000000000Z
-    - 15
+    - 2013-03-08 22:56:28.000000000Z
+    - 40
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 9\n  sprite_widget_id: 4\n
-      \ position:\n    x: 504.0331125827815\n    y: 380.9403973509934\n  scale: 1\n-
+      \ position:\n    x: 507.635761589404\n    y: 380.24503311258286\n  scale: 1\n-
       position:\n    x: 515.9403973509935\n    y: 288.7350993377483\n  type: TextWidget\n
       \ string: For those who protect wild places\n  font: Arial\n  size: 24\n  z_order:
       6000\n  id: 6\n- position:\n    x: 519.2317880794701\n    y: 202.4569536423839\n
@@ -189,10 +137,10 @@ keyframes:
   - - 12
     - 7
     - 2013-03-06 15:40:45.000000000Z
-    - 2013-03-07 19:02:07.000000000Z
-    - 18
+    - 2013-03-08 23:10:39.000000000Z
+    - 39
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 12\n  sprite_widget_id: 5\n
-      \ position:\n    x: 789.4105960264898\n    y: 361.76158940397346\n  scale: 1.02\n-
+      \ position:\n    x: 799.0794701986752\n    y: 364.68211920529797\n  scale: 1.02\n-
       position:\n    x: 266.65562913907263\n    y: 203.51655629139069\n  type: TextWidget\n
       \ string: The snowflakes were\n  font: Arial\n  size: 24\n  z_order: 6000\n
       \ id: 9\n- position:\n    x: 237.76158940397355\n    y: 164.23178807947016\n
@@ -215,8 +163,8 @@ keyframes:
   - - 26
     - 7
     - 2013-03-07 19:02:47.000000000Z
-    - 2013-03-07 19:05:08.000000000Z
-    - 36
+    - 2013-03-08 23:10:25.000000000Z
+    - 38
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 26\n  sprite_widget_id: 5\n
       \ position:\n    x: -223.4172185430466\n    y: 760.7814569536429\n  scale: 1.58\n-
       position:\n    x: 177.75496688741714\n    y: 180.11258278145687\n  type: TextWidget\n
@@ -259,8 +207,8 @@ scenes:
     - !!null 
     - !!null 
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-06 15:37:50.000000000Z
-    - 14
+    - 2013-03-08 22:56:38.000000000Z
+    - 37
     - 0
     - ! "---\n- position:\n    y: 100\n    x: 200\n  type: ButtonWidget\n  scale:
       1\n  id: 1\n  name: read_it_myself\n  z_order: 1\n  filename: read_it_myself.png\n
@@ -282,8 +230,8 @@ scenes:
     - !!null 
     - 0
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-07 18:54:22.000000000Z
-    - 15
+    - 2013-03-08 23:10:40.000000000Z
+    - 40
     - 0
     - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
       1\n  url: https://interapptive.s3.amazonaws.com/images/8/background0010.jpg\n
@@ -305,8 +253,8 @@ scenes:
     - !!null 
     - 1
     - 2013-03-06 15:40:45.000000000Z
-    - 2013-03-07 18:57:31.000000000Z
-    - 18
+    - 2013-03-08 23:10:39.000000000Z
+    - 39
     - 0
     - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
       1\n  url: https://interapptive.s3.amazonaws.com/images/9/background0020.jpg\n

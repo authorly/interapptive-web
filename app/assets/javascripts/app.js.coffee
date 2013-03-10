@@ -86,6 +86,12 @@ window.App =
       keyframe = App.currentSelection.get('keyframe')
       @saveCanvasAsPreview(keyframe)
 
+
+    storybook.scenes.on 'reset', (scenes) ->
+      # The simulator needs all the information upfront
+      scenes.each (scene) ->
+        scene.fetchKeyframes()
+
     storybook.fetchCollections()
 
     @textEditorPalette.view.openStorybook(storybook)
@@ -181,6 +187,7 @@ window.App =
 
 
   showSimulator: =>
+    storybook = App.currentSelection.get('storybook')
     json = new App.JSON(storybook).app
     console.log JSON.stringify(json)
     # @simulator ||= new App.Views.Simulator(json: App.storybookJSON.toString())

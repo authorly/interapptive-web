@@ -11,18 +11,15 @@ describe "App.Models.Keyframe", ->
       image_id: 1,
       sound_id: 2,
       preview_image_id: 3,
-      page_number: 1
-      content_highlight_times: [1, 2, 3, 4]
+      position: 1,
+      content_highlight_times: [1, 2, 3, 4],
     },
     {
       collection: @storybook.scenes
     })
 
 
-    @keyframe = new App.Models.Keyframe({
-      id: 100,
-      scene: @scene
-    })
+    @keyframe = new App.Models.Keyframe scene: @scene
 
 
   describe "#save", ->
@@ -30,11 +27,11 @@ describe "App.Models.Keyframe", ->
       @server.restore()
 
     it "sends valid data to the server", ->
-      @keyframe.save page_number: 2
+      @keyframe.save position: 2
       request = @server.requests[0]
       keyframe_response = JSON.parse(request.requestBody)
       expect(keyframe_response).toBeDefined()
-      expect(keyframe_response.page_number).toEqual 2
+      expect(keyframe_response.position).toEqual 2
 
     describe "request", ->
       describe "on create", ->
@@ -44,13 +41,13 @@ describe "App.Models.Keyframe", ->
           @request = @server.requests[0]
 
         it "should be POST", ->
-          #expect(@request).toBePOST()
+          expect(@request).toBePOST()
 
         it "should be async", ->
           expect(@request).toBeAsync()
 
         it "should have valid url", ->
-          expect(@request).toHaveUrl("/scenes/1/keyframes/100.json")
+          expect(@request).toHaveUrl("/scenes/1/keyframes.json")
 
       describe "on update", ->
         beforeEach ->
