@@ -20,6 +20,14 @@ class Video < Asset
     }
   end
 
+  # To locally test the videos, aftetr zencoder has done
+  # transcoding it, do following in rails console
+  #
+  # >> v = Video.find(id) # id of the video models
+  # >> v.meta_info = v.meta_info.merge(:response => { :input => { :duration_in_ms => 3000 }, :job => { :state => 'finished' }})
+  # >> v.save!
+  #
+  # Refresh the page, the video shall play.
   def duration
     ((meta_info[:response].try(:[], :input).
       try(:[], :duration_in_ms) || 0) / 1000.0).ceil

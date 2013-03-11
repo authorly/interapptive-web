@@ -28,6 +28,8 @@ window.App =
     @vent.on 'change:keyframeWidgets',          @_changeKeyframeWidgets, @
     @vent.on 'change:sceneWidgets load:sprite', @_changeSceneWidgets,    @
 
+    @vent.on 'play:video', @_playVideo, @
+
     @currentSelection = new Backbone.Model
       storybook: null
       scene: null
@@ -153,7 +155,7 @@ window.App =
 
   initModals: ->
     $('.content-modal').modal(backdrop: true).modal('hide')
-    $('.lightbox-modal').modal().modal('hide').on 'hide', App.pauseVideos
+    $('.lightbox-modal').modal().modal('hide')
 
     # RFCTR: Should use generic modal view
     $('#storybooks-modal').modal
@@ -169,12 +171,22 @@ window.App =
     @view
 
 
+  lightboxWithView: (view) ->
+    if view?
+      @lightboxView = new App.Views.Lightbox view, className: 'lightbox-modal'
+    @lightboxView
+
+
   _hideModal: ->
     @modalWithView().hide()
 
 
   _changeKeyframe: (__, keyframe) ->
     @currentWidgets.changeKeyframe(keyframe)
+
+
+  _playVideo: (video_view) ->
+    @lightboxWithView(view: video_view).show()
 
 
   start: ->

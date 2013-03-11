@@ -88,10 +88,11 @@ class App.Views.AssetLibrary extends Backbone.View
 
 
   playVideo: (em) ->
-    $('.content-modal').hide()
+    App.vent.trigger('hide:modal')
 
     video = $(em.currentTarget).data('video')
-    App.lightboxWithView(view: new App.Views.VideoPlayer(video)).show()
+    view = new App.Views.VideoPlayer(video)
+    App.vent.trigger('play:video', view)
 
 
   attachDeleteEvent: ->
