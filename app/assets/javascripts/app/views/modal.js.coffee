@@ -1,9 +1,6 @@
 class App.Views.Modal extends Backbone.View
-
   initialize: ->
     @modal = $('.content-modal')
-
-    App.vent.on 'model:cancel', @hide
 
 
   render: =>
@@ -16,5 +13,5 @@ class App.Views.Modal extends Backbone.View
     @render()
 
 
-  hide: =>
+  hide: ->
     @modal.modal 'hide'

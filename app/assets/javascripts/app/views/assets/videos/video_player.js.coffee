@@ -20,3 +20,8 @@ class App.Views.VideoPlayer extends Backbone.View
       $video[0].pause()
       $('.content-modal').show()
       @off('pause', @_pauseVideo, @)
+
+
+  hideCallback: ->
+    @_pauseVideo()
+    $('.videos').trigger('click')

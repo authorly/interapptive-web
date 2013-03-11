@@ -154,7 +154,7 @@ window.App =
 
   initModals: ->
     $('.content-modal').modal(backdrop: true).modal('hide')
-    $('.lightbox-modal').modal().modal('hide').on('hide', @_triggerLightboxHideEvents, @)
+    $('.lightbox-modal').modal().modal('hide')
 
     # RFCTR: Should use generic modal view
     $('#storybooks-modal').modal
