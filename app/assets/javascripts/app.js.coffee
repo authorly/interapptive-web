@@ -188,10 +188,6 @@ window.App =
     @lightboxWithView(view: video_view).show()
 
 
-  _triggerLightboxHideEvents: ->
-    @lightboxView.view.trigger('pause')
-
-
   start: ->
     App.version =
       environment: $('#rails-environment').data('rails-environment'),
