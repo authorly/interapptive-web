@@ -94,6 +94,13 @@ class App.Models.Storybook extends Backbone.Model
     'json')
 
 
+  setIcon: (image_id, successCallback) ->
+    $.post("/storybooks/#{@get('id')}/icon",
+      image_id: image_id,
+      ->,
+      'json').success(successCallback)
+
+
 class App.Collections.StorybooksCollection extends Backbone.Collection
   model: App.Models.Storybook
 

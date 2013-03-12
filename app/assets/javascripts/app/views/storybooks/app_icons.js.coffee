@@ -7,18 +7,18 @@ class App.Views.Storybooks.AppIcons extends App.Views.SpriteIndex
 
   events:
     'click .image-row'               : 'setActiveImage'
-    'touchstart, touchend .zoomable' : 'doZoom'
     'click .use-image'               : 'setAppIcon'
 
 
+  initialize: ->
+    @storybook = @options.storybook
+    @collection = @storybook.images
+    super
+
   setAppIcon: ->
     $('.use-image').addClass('disabled')
-
-    $.post("/storybooks/#{App.currentStorybook().id}/icon",
-      image_id: @image.id,
-      ->,
-      'json').success(@appIconSet)
+    @storybook.setIcon(@image.id, @appIconSet)
 
 
-  appIconSet: ->
-    App.modalWithView().hide()
+  appIconSet: =>
+    App.vent.trigger('hide:modal')
