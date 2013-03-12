@@ -46,6 +46,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addHotspot: (event) ->
+    event.preventDefault()
     return if $(event.currentTarget).hasClass('disabled')
 
     App.vent.trigger('initialize:hotspotWidget')
