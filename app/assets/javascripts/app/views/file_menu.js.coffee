@@ -1,18 +1,18 @@
 class App.Views.FileMenuView extends Backbone.View
   events:
     'click .show-storybook-settings': 'showSettings'
-    'click .show-storybook-icons'   : 'showAppIcons'
-    'click .toggle-image-editor'    : 'toggleImageEditorPalette'
-    'click .toggle-scene-images'    : 'toggleSceneImagesPalette'
-    'click .compile-storybook' : 'compileStorybook'
-    'click .toggle-font-editor': 'toggleFontEditorPalette'
-    'click .switch-storybook'  : 'switchStorybook'
-    'click .about-authorly'    : 'showAbout'
-    'click .reset-palettes'    : 'resetPalettes'
-    'click .images': 'showImageLibrary'
-    'click .videos': 'showVideoLibrary'
-    'click .fonts':  'showFontLibrary'
-    'click .sounds': 'showSoundLibrary'
+    'click .show-storybook-icons':    'showAppIcons'
+    'click .toggle-image-editor':     'toggleImageEditorPalette'
+    'click .toggle-scene-images':     'toggleSceneImagesPalette'
+    'click .compile-storybook':       'compileStorybook'
+    'click .toggle-font-editor':      'toggleFontEditorPalette'
+    'click .switch-storybook':        'switchStorybook'
+    'click .about-authorly':          'showAbout'
+    'click .reset-palettes':          'resetPalettes'
+    'click .images':                  'showImageLibrary'
+    'click .videos':                  'showVideoLibrary'
+    'click .fonts':                   'showFontLibrary'
+    'click .sounds':                  'showSoundLibrary'
 
 
   render: ->
@@ -34,13 +34,8 @@ class App.Views.FileMenuView extends Backbone.View
 
 
   showAppIcons: ->
-    #
-    # RFCTR:
-    #     Needs ventilation
-    #
-    view = new App.Views.Storybooks.AppIcons(collection: App.imagesCollection)
+    view = new App.Views.Storybooks.AppIcons(storybook: App.currentSelection.get('storybook'))
     App.modalWithView(view: view).show()
-    view.fetchImages()
 
 
   compileStorybook: ->
