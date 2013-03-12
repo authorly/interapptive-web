@@ -11,9 +11,7 @@ Interapptive::Application.routes.draw do
   match 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
   get  'users/settings'  => 'users#edit'
 
-  resources :users, :except => [:new, :edit, :index] do
-    resources :fonts
-  end
+  resource :user
 
   get  'password_reset'      => 'password_resets#new',   :as => :new_password_reset
   get  'password_resets/:id' => 'password_resets#edit',  :as => :edit_password_reset
@@ -29,14 +27,8 @@ Interapptive::Application.routes.draw do
   resources :fonts
 
   #resources :actions do
-    #resources :attributes
-
     #collection do
       #get 'definitions'
-    #end
-
-    #member do
-      #get 'attributes'
     #end
   #end
 
@@ -61,6 +53,7 @@ Interapptive::Application.routes.draw do
   resources :scenes do
     #resources :actions
 
+    member { get :images }
     resources :keyframes do
       collection { post :sort }
     end

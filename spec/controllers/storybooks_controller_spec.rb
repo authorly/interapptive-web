@@ -1,107 +1,104 @@
 require 'spec_helper'
 
 describe StorybooksController do
-  let!(:user) { Factory(:user) }
-  let!(:storybook) { Factory(:storybook) }
-  
-  #TODO make a before call to sign in user and DRY up
-  
-  describe '#index' do
-    it "populates an array of storybooks" do
-      storybooks = []
-      storybooks << Factory.create(:storybook, :user => user)
-      test_sign_in(user)
-
-      get :index, :format => :json
-      response.should be_success
-      response.body.should eq storybooks.to_json 
-    end
+  before(:each) do
+    @user = mock_model(User)
+    @storybook = mock_model(Storybook, :title => "Some title")
+    test_sign_in(@user)
   end
 
-  describe 'GET #show' do
-    it "requires user sign in"
-    it "shows the right storybook" do
-      #storybook = Factory.create(:storybook)
-      get :show, :id => storybook['id'], :format => :json
-      storybook.to_json.should eq response.body
+  context "not requiring preloaded storybook" do
+    before(:each) do
+      @user.should_receive(:storybooks).and_return(Storybook)
     end
-  end
-    
-  describe 'PUT #update' do
-    context "with valid attributes" do
-      it "updates the contact in the database" do 
-        test_sign_in(user)
-        storybook = Factory.create(:storybook, :user => user)
-        put :update, :id => storybook['id'], :storybook => storybook.to_json, :format => :json
+
+    context '#index' do
+      it "should give all storybooks of the current user" do
+        Storybook.should_receive(:all).and_return([@storybook])
+        @storybook.stub(:as_json).and_return({ :id => @storybook.id, :title => @storybook.title })
+        get :index, :format => :json
+
         response.should be_success
-        response.body.should eq storybook.to_json
+        response.body.should eql([{ :id => @storybook.id, :title => @storybook.title }].to_json)
       end
     end
-    
-    context "with invalid attributes" do 
-      it "does not update the storybook" do
-        pending "code works & test fails"
-        # test_sign_in(user)
-        # storybook = Factory.create(:storybook, :user => user)
-        # put "/storybooks/#{storybook['id']}", :id => storybook['id'], :storybook => storybook.to_json, :format => :json
-        # response.should fail
-        #last_response.body.should eq storybook.to_json
+
+    context '#create' do
+      before(:each) do
+        Storybook.should_receive(:new).with('title' => 'Some title').and_return(@storybook)
       end
-      
-      it "issues an error message" do
-        
+
+      it 'should create a storybook for current user' do
+        @storybook.should_receive(:save).and_return(true)
+        @storybook.stub(:as_json).and_return({ :id => @storybook.id, :title => @storybook.title })
+
+        post :create, :storybook => { :title => 'Some title' }, :format => :json
+
+        response.code.should eql('201')
+        response.body.should eql({ :id => @storybook.id, :title => @storybook.title }.to_json)
       end
-    end 
-  end
-  
-  describe 'DELETE #destroy' do
-    it "deletes the storybook from the database" do
-      
-    end
-  end
-  
-  describe "POST #create" do
-    context "with valid attributes" do
-      it "saves the new storybook" do
-      
+
+      it 'should not create a storybook for invalid data' do
+        errors = { :error => 'some error' }
+        @storybook.should_receive(:save).and_return(false)
+        @storybook.stub(:errors).and_return(errors)
+
+        post :create, :storybook => { :title => 'Some title' }, :format => :json
+
+        response.should_not be_success
+        response.body.should eql(errors.to_json)
       end
     end
-    context "with invalid attributes" do
-      it "does not save the new storybook in the database" 
-    end 
   end
-  
-  describe 'PUT #update' do
-    context "with valid attributes" do
-      it "updates the storybook"
+
+  context "requiring preloaded storybook" do
+    before(:each) do
+      @user.should_receive(:storybooks).and_return(Storybook)
+      Storybook.should_receive(:find).with(@storybook.id.to_s).and_return(@storybook)
     end
-    context "with invalid attributes" do 
-      it "does not update the contact" 
-    end 
+
+    context '#show' do
+      it "shows a storybook" do
+        @storybook.stub(:as_json).and_return(:id => @storybook.id, :title => @storybook.title)
+
+        get :show, :id => @storybook.id, :format => :json
+
+        response.should be_success
+        response.body.should eql({ :id => @storybook.id, :title => @storybook.title }.to_json)
+      end
+    end
+
+    context '#update' do
+      it 'updates the storybook' do
+        @storybook.should_receive(:update_attributes).with('title' => 'Some other title', 'id' => @storybook.id.to_s).and_return(true)
+        @storybook.stub(:as_json).and_return(:id => @storybook.id, :title => 'Some other title')
+
+        put :update, :id => @storybook.id, :title => 'Some other title', :format => :json
+
+        response.should be_success
+        response.body.should eql({ :id => @storybook.id, :title => 'Some other title' }.to_json)
+      end
+
+      it 'does not update invalid storybook' do
+        errors = { :error => 'some error' }
+        @storybook.should_receive(:update_attributes).with('title' => 'Some other title', 'id' => @storybook.id.to_s).and_return(false)
+        @storybook.stub(:errors).and_return(errors)
+
+        put :update, :id => @storybook.id, :title => 'Some other title', :format => :json
+
+        response.should_not be_success
+        response.body.should eql(errors.to_json)
+      end
+    end
+
+    context '#destroy' do
+      it 'destroys the storybook' do
+        @storybook.should_receive(:destroy).and_return(true)
+
+        delete :destroy, :id => @storybook.id, :format => :json
+
+        response.should be_success
+      end
+    end
   end
-  
-  
-  context 'guest user' do
-    describe 'GET #show' do
-      it "assigns the requested storybook" 
-      it "renders the :show template"
-    end
-    describe 'GET #new' do 
-      it "requires login"
-    end
-    describe "POST #create" do 
-      it "requires login"
-    end
-    describe 'PUT #update' do 
-      it "requires login"
-    end
-    describe 'DELETE #destroy' do 
-      it "requires login"
-    end
-  end
-  
-  context 'admin user' do
-    it "require admin login"
-  end
-  
 end

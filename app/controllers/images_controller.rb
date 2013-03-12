@@ -1,25 +1,24 @@
 require "base64"
 
 class ImagesController < ApplicationController
-  before_filter :authorize
-
   def index
-    images = Image.where(:storybook_id => params[:storybook_id], :generated => false)
+    images = current_user.storybooks.find(params[:storybook_id]).images.where(:generated => false)
 
     render :json => images.map(&:as_jquery_upload_response).to_json
   end
 
   def show
-    @scene = Scene.find params[:scene_id]
-    @image = @scene.images.find params[:id]
+    scene = Scene.find params[:scene_id]
+    raise ActiveRecord::RecordNotFound unless scene.storybook.owned_by?(current_user)
+    image = scene.images.find(params[:id])
 
     respond_to do |format|
-      format.json { render :json => @image }
+      format.json { render :json => image }
     end
   end
 
   def create
-    storybook = Storybook.find params[:storybook_id]
+    storybook = current_user.storybooks.find(params[:storybook_id])
 
     respond_to do |format|
       if params[:preview]
@@ -32,24 +31,23 @@ class ImagesController < ApplicationController
     end
   end
 
-  # POST /images/:id
-  # PUT /images/:id.format
   def update
-    @image = Image.find params[:id]
-    @image.remove_image!
+    image = Image.find params[:id]
+    raise ActiveRecord::RecordNotFound unless image.storybook.owned_by?(current_user)
+    image.remove_image!
 
     data = params[:base64] ? file : params[:data_url]
-    @image.update_attribute(:data_encoded_image, data)
+    image.update_attribute(:data_encoded_image, data)
 
     respond_to do |format|
-      format.json { render :json => [@image.as_jquery_upload_response] }
+      format.json { render :json => [image.as_jquery_upload_response] }
     end
   end
 
-  # DELETE /images/:id
-  # DELETE /images/:id.json
   def destroy
-    Image.find(params[:id]).try(:destroy)
+    image = Image.find(params[:id])
+    raise ActiveRecord::RecordNotFound unless image.storybook.owned_by?(current_user)
+    image.try(:destroy)
 
     respond_to do |format|
       format.json { head :ok }

@@ -1,8 +1,6 @@
 class CompilersController < ApplicationController
-  before_filter :authorize
-
   def create
-    storybook = Storybook.find(params[:storybook_id])
+    storybook = current_user.storybooks.find(params[:storybook_id])
     storybook.enqueue_for_compilation(params[:storybook_json])
 
     respond_to do |format|

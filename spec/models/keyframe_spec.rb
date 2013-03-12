@@ -12,8 +12,6 @@ describe Keyframe do
             'url'              => nil,
             'sphinx_audio'     => { 'url' => nil },
           },
-          'background_x_coord' => keyframe.background_x_coord,
-          'background_y_coord' => keyframe.background_y_coord,
           'content_highlight_times' => [],
           'created_at'         => keyframe.created_at,
           'id'                 => keyframe.id,

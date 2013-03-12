@@ -39,4 +39,14 @@ describe Storybook do
     end
   end
 
+  describe '#owned_by?' do
+    it 'should be owned by its user' do
+      storybook.owned_by?(storybook.user).should be_true
+    end
+
+    it 'should not be owned by somone else' do
+      user = Factory(:user)
+      storybook.owned_by?(user).should be_false
+    end
+  end
 end
