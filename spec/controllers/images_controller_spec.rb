@@ -5,14 +5,17 @@ describe ImagesController do
     @storybook = Factory(:storybook)
     @image = mock_model(Image, :image => "image.png")
     @image.stub!(:as_jquery_upload_response).and_return({ :id => @image.id, :image => @image.image })
-    user = Factory(:user)
-    test_sign_in(user)
+    @user = Factory(:user)
+    test_sign_in(@user)
   end
 
   context "#index" do
     it 'should give all the images of storybook' do
       @storybook = Factory(:storybook)
-      image = Image.stub!(:where).with(:storybook_id => @storybook.id.to_s, :generated => false).and_return([@image])
+      @user.stub(:storybooks).and_return(Storybook)
+      Storybook.stub(:find).with(@storybook.id.to_s).and_return(@storybook)
+      @storybook.stub(:images).and_return(Image)
+      Image.stub!(:where).with(:generated => false).and_return([@image])
       get :index, :storybook_id => @storybook.id
 
       response.should be_success
@@ -22,7 +25,8 @@ describe ImagesController do
 
   context "#show" do
     it 'should give image of a scene' do
-      scene = mock_model(Scene, :images => Image)
+      scene = mock_model(Scene, :images => Image, :storybook => @storybook)
+      @storybook.stub(:owned_by?).with(@user).and_return(true)
       image = Factory(:image)
       Scene.should_receive(:find).with(scene.id.to_s).and_return(scene)
       Image.should_receive(:find).with(image.id.to_s).and_return(image)
@@ -36,6 +40,8 @@ describe ImagesController do
     before(:each) do
       @image_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/factories/images/350x350.png'), 'image/png')
       @storybook = Factory(:storybook)
+      @user.stub(:storybooks).and_return(Storybook)
+      Storybook.stub(:find).with(@storybook.id.to_s).and_return(@storybook)
     end
 
     it 'should create one single image' do
@@ -64,6 +70,8 @@ describe ImagesController do
 
     it 'should update image' do
       Image.should_receive(:find).with(@image.id.to_s).and_return(@image)
+      @image.stub(:storybook).and_return(@storybook)
+      @storybook.stub(:owned_by?).and_return(true)
       @image.should_receive(:remove_image!).and_return(true)
       @image.should_receive(:update_attribute).and_return(@image)
 
@@ -77,6 +85,8 @@ describe ImagesController do
   context "#destroy" do
     it 'should destroy image' do
       Image.should_receive(:find).with(@image.id.to_s).and_return(@image)
+      @image.stub(:storybook).and_return(@storybook)
+      @storybook.stub(:owned_by?).and_return(true)
       @image.should_receive(:destroy).and_return(true)
       delete :destroy, :id => @image.id, :format => :json
 

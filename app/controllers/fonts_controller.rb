@@ -1,13 +1,11 @@
 class FontsController < ApplicationController
-  before_filter :authorize
-
   def index
     storybook = current_user.storybooks.find(params[:storybook_id])
     render :json => storybook.fonts.map(&:as_jquery_upload_response).to_json
   end
 
   def create
-    storybook = Storybook.find params[:storybook_id]
+    storybook = current_user.storybooks.find params[:storybook_id]
 
     fonts = params[:font][:files].map { |f| Font.create(:font => f, :storybook_id => storybook.id) }
     
@@ -18,7 +16,9 @@ class FontsController < ApplicationController
 
   # DELETE /fonts/:id.json
   def destroy
-    Font.find(params[:id]).try(:destroy)
+    font = Font.find(params[:id])
+    raise ActiveRecord::RecordNotFound unless font.storybook.owned_by?(current_user)
+    font.try(:destroy)
 
     respond_to do |format|
       format.json { head :ok }

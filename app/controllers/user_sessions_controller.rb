@@ -1,9 +1,9 @@
 class UserSessionsController < ApplicationController
-  # GET /users/sign_in
+  skip_before_filter :authorize
+
   def new
   end 
 
-  # POST /users/sign_in
   def create
     user = User.find_by_email params[:email]
 

@@ -1,33 +1,25 @@
 class UsersController < ApplicationController
-  before_filter :authorize, :only => [:edit, :update, :destroy]
+  skip_before_filter :authorize, :only => [:new, :create]
 
   def show
-    @user = User.find params[:id]
-
     respond_to do |format|
-      format.html # show.html.haml
-      format.json { render :json => @user }
+      format.json { render :json => current_user }
     end
   end
 
-  # GET /users/sign_up
-  # GET /users/sign_up.json
   def new
     @user = User.new
 
     respond_to do |format|
-      format.html { render :layout => 'user_sessions' } # new.html.haml
+      format.html { render :layout => 'user_sessions' }
       format.json { render :json => @user }
     end
   end
 
-  # GET /account/settings
   def edit
     @user = current_user
   end
 
-  # PUT /account
-  # PUT /account.json
   def update
     respond_to do |format|
       params[:user].slice!(:email, :password, :password_confirmation)
@@ -42,8 +34,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # POST /users
-  # POST /users.json
   def create
     @user = User.new params[:user]
 
@@ -60,13 +50,11 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /account
-  # DELETE /account.json
   def destroy
     current_user.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_sign_in_path }
+      format.html { redirect_to sign_in_path }
       format.json { head :ok }
     end
   end

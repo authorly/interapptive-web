@@ -1,23 +1,20 @@
 class PasswordResetsController < ApplicationController
   layout 'user_sessions'
+  skip_before_filter :authorize
 
-  # GET /account/password_reset
   def new
   end
 
-  # POST /account/password_resets
   def create
     user = User.find_by_email params[:email]
     user.send_password_reset if user
     redirect_to sign_in_url, :notice => "Email sent with password reset instructions."
   end
   
-  # GET /account/password_resets/:id
   def edit
     @user = User.find_by_password_reset_token!(params[:id])
   end
   
-  # PUT /account/password_resets/:id
   def update
     @user = User.find_by_password_reset_token!(params[:id])
 
