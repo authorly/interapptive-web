@@ -7,7 +7,6 @@ class App.Views.Storybooks.AppIcons extends App.Views.SpriteIndex
 
   events:
     'click .image-row'               : 'setActiveImage'
-    'touchstart, touchend .zoomable' : 'doZoom'
     'click .use-image'               : 'setAppIcon'
 
 
@@ -23,7 +22,3 @@ class App.Views.Storybooks.AppIcons extends App.Views.SpriteIndex
 
   appIconSet: =>
     App.vent.trigger('hide:modal')
-
-
-  doZoom: ->
-    console.log('zooming')
