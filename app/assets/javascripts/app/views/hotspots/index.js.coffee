@@ -78,6 +78,8 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
 
 
   populateAssetsFor: (asset_type) ->
+    return "<option>There are no uploaded #{asset_type}.</option>" if @collections[asset_type].length is 0
+
     _.map @collections[asset_type].models, (m) =>
       "<option value='#{m.get('url')}' selected='#{@_selectedAsset(m)}'>" + m.get('name') + "</option>"
     .join('')
