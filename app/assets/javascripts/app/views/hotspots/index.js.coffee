@@ -15,6 +15,7 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
     @$el.html(@template(widget: @widget))
     @$el.find('#touch_zones.modal-body').append(@form.el)
     @_selectOption()
+    @_showUploadAssetMessage()
     @attachDeleteButton() if @widget?.id
     this
 
@@ -84,6 +85,12 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
     _.map @collections[asset_type].models, (m) =>
       "<option value='#{m.get('url')}'>" + m.get('name') + "</option>"
     .join('')
+
+
+  _showUploadAssetMessage: ->
+    if @collections.videos.length is 0 and @collections.sounds.length is 0
+      @form.$el.hide()
+      @$('#touch_zones').html("<center>There are no uploaded videos or sounds.</center>")
 
 
   _selectOption: ->
