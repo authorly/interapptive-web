@@ -14,6 +14,7 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
   render: ->
     @$el.html(@template(widget: @widget))
     @$el.find('#touch_zones.modal-body').append(@form.el)
+    @_selectOption()
     @attachDeleteButton() if @widget?.id
     this
 
@@ -81,15 +82,16 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
     return "<option disabled='true'>There are no uploaded #{asset_type}.</option>" if @collections[asset_type].length is 0
 
     _.map @collections[asset_type].models, (m) =>
-      "<option value='#{m.get('url')}' #{@_selectedAsset(m)}>" + m.get('name') + "</option>"
+      "<option value='#{m.get('url')}'>" + m.get('name') + "</option>"
     .join('')
 
 
-  _selectedAsset: (asset) ->
-    return '' unless @widget?
-    return 'selected="selected"' if asset.get('url') is @widget.get('sound_id') or
-      asset.get('url') is @widget.get('video_id')
-    ''
+  _selectOption: ->
+    return unless @widget?
+    if @widget.get('video_id')?
+      @$("option[value='#{@widget.get('video_id')}']").attr('selected', 'selected')
+    else
+      @$("option[value='#{@widget.get('sound_id')}']").attr('selected', 'selected')
 
 
   _setAssetIdToWidget: (options) ->
