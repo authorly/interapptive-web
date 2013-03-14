@@ -54,7 +54,7 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
 
     if touch_options?
       if @widget?.id
-        @widget.set(touch_options)
+        @_setAssetIdToWidget(touch_options)
       else
         App.vent.trigger('create:widget', _.extend(touch_options, {type: 'HotspotWidget'}))
 
@@ -78,14 +78,23 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
 
 
   populateAssetsFor: (asset_type) ->
-    return "<option>There are no uploaded #{asset_type}.</option>" if @collections[asset_type].length is 0
+    return "<option disabled='true'>There are no uploaded #{asset_type}.</option>" if @collections[asset_type].length is 0
 
     _.map @collections[asset_type].models, (m) =>
-      "<option value='#{m.get('url')}' selected='#{@_selectedAsset(m)}'>" + m.get('name') + "</option>"
+      "<option value='#{m.get('url')}' #{@_selectedAsset(m)}>" + m.get('name') + "</option>"
     .join('')
 
 
   _selectedAsset: (asset) ->
     return '' unless @widget?
-    asset.get('url') is @widget.get('sound_id') or
+    return 'selected="selected"' if asset.get('url') is @widget.get('sound_id') or
       asset.get('url') is @widget.get('video_id')
+    ''
+
+
+  _setAssetIdToWidget: (options) ->
+    if options.video_id?
+      @widget.unset('sound_id')
+    else if options.sound_id?
+      @widget.unset('video_id')
+    @widget.set(options)
