@@ -39,30 +39,19 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _initScaleSlider: ->
-    $scaleValueEl = @$('#scale-amount')
+    @$('#scale').slider(@_sliderOptions())
+
+
+  _sliderOptions: ->
     options =
       disabled: true
       value:    @SLIDER_DEFAULT
       step:     @SLIDER_STEP
       min:      @SLIDER_MIN
       max:      @SLIDER_MAX
-      stop: (event, ui) =>
-        return unless @widget?
-        $scaleValueEl.text(ui.value)
-      slide: (event, ui) =>
-        return unless @widget?
-
-        $scaleValueEl.text(ui.value)
-        data =
-          model: @widget
-          scale: ui.value
-
-        App.vent.trigger 'scale:sprite_widget', data
-      change: (event, ui) =>
-        return unless @widget?
-        $scaleValueEl.text(ui.value)
-
-    @$('#scale').slider(options)
+      stop:     @_setScale
+      slide:    @_propagateSlide
+      change:   @_setScaleOnSpriteElement
 
 
   getCurrentOrientation: ->
@@ -229,3 +218,27 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   _setPosition: (point) ->
     @getCurrentOrientation().set(position: { x: parseInt(point.x), y: parseInt(point.y) })
+
+
+  _scaleElement: ->
+    @$('#scale-amount')
+
+
+  _setScale: (event, ui) =>
+    return unless @widget?
+    @_scaleElement().text(ui.value)
+    @getCurrentOrientation().set(scale: ui.value)
+
+
+  _propagateSlide: (event, ui) =>
+    return unless @widget?
+    @_scaleElement().text(ui.value)
+    data =
+      model: @widget
+      scale: ui.value
+    App.vent.trigger 'scale:sprite_widget', data
+
+
+  _setScaleOnSpriteElement: (event, ui) =>
+    return unless @widget?
+    @_scaleElement().text(ui.value)
