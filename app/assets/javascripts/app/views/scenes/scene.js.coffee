@@ -5,7 +5,8 @@ class App.Views.Scene extends Backbone.View
 
 
   initialize: ->
-    @model.on 'change:preview', @updatePreview
+    @model.on 'change:preview', @updatePreview, @
+    @model.on 'destroy', @remove, @
 
 
   render: ->

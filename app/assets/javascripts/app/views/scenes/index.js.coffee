@@ -15,7 +15,6 @@ class App.Views.SceneIndex extends Backbone.View
   initialize: ->
     @collection.on 'add'             , @appendSceneElement, @
     @collection.on 'reset'           , @render            , @
-    @collection.on 'remove'          , @removeScene       , @
     @collection.on 'change:positions', @render            , @
     App.vent.on    'window:resize'   , @adjustSize        , @
     App.currentSelection.on 'change:scene', @sceneChanged, @
@@ -23,7 +22,7 @@ class App.Views.SceneIndex extends Backbone.View
 
   render: ->
     @$el.empty()
-    @collection.each (scene) => @appendSceneElement(scene)
+    @collection.each @appendSceneElement
     @switchScene(@collection.at(0)) if @collection.length > 0
 
     @initSortable()
@@ -33,7 +32,7 @@ class App.Views.SceneIndex extends Backbone.View
     @
 
 
-  appendSceneElement: (scene) ->
+  appendSceneElement: (scene) =>
     view = new App.Views.Scene(model: scene)
     @$el.append view.render().el
 
@@ -43,11 +42,7 @@ class App.Views.SceneIndex extends Backbone.View
 
     if confirm(@DELETE_SCENE_MSG)
       scene = @collection.get $(event.currentTarget).attr('data-id')
-      scene.destroy success: => @collection.remove(scene)
-
-
-  removeScene: (scene) =>
-    @$("li[data-id=#{scene.id}]").remove()
+      scene.destroy success: @_removeScene
 
 
   onSceneClick: (event) =>
@@ -62,9 +57,9 @@ class App.Views.SceneIndex extends Backbone.View
 
   sceneChanged: (__, scene) ->
     $('li', @el).
-    removeClass('active').
-    find("span.scene-frame[data-id=#{scene.get('id')}]").
-    parent().addClass 'active'
+    removeClass('active')
+      .find("span.scene-frame[data-id=#{scene.get('id')}]")
+      .parent().addClass 'active'
 
 
   initSortable: =>
@@ -79,6 +74,10 @@ class App.Views.SceneIndex extends Backbone.View
   adjustSize: ->
     $('#scene-list, .scene-list').css height: "#{$(window).height()}px"
 
+
+  _removeScene: (scene) =>
+    @collection.remove(scene)
+    @render()
 
   _numberScenes: =>
     @$('li[data-is_main_menu!="1"]').each (index, element) =>
