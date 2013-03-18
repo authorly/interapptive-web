@@ -26,7 +26,7 @@ window.App =
     @vent.on 'show:sceneform',  @_showSceneForm,  @
 
     @vent.on 'change:keyframeWidgets',          @_changeKeyframeWidgets, @
-    @vent.on 'change:sceneWidgets load:sprite', @_changeSceneWidgets,    @
+    @vent.on 'load:sprite', @_changeSceneWidgets,    @
 
     @vent.on 'play:video', @_playVideo, @
 
