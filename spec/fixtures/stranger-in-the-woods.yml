@@ -38,12 +38,12 @@ assets:
     - !!null 
   - - 37
     - Image
-    - image20130318-2498-1it2vms.png
+    - image20130320-28415-iwz8w2.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-08 22:56:35.000000000Z
-    - 2013-03-18 21:55:56.000000000Z
+    - 2013-03-19 23:08:16.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -208,12 +208,12 @@ assets:
     - !!null 
   - - 51
     - Image
-    - image20130318-2498-j4to1o.png
+    - image20130319-89661-1mmdt8k.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-18 21:42:17.000000000Z
-    - 2013-03-18 21:59:16.000000000Z
+    - 2013-03-19 20:27:40.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -245,12 +245,12 @@ assets:
 '
   - - 54
     - Image
-    - image20130318-2498-1ym8d86.png
+    - image20130320-28415-9c02ir.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-18 21:48:34.000000000Z
-    - 2013-03-18 21:59:32.000000000Z
+    - 2013-03-19 22:50:56.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -271,6 +271,17 @@ assets:
       \   id: 83125703\n  - label: webogv\n    url: http://interapptive.s3.amazonaws.com/videos/55/ogv_video_owl.ogv\n
       \   id: 83125704\n  - label: !!null \n    url: https://zencoder-temp-storage-us-east-1.s3.amazonaws.com/o/20130318/5840938ef86406a54eec9fd627e327a0/17490215392fa880a3be4b0fa638e0ea.mp4?AWSAccessKeyId=AKIAI456JQ76GBU7FECA&Signature=lbW6Uiyf%2FFNHSrpA8iPPwzp55vQ%3D&Expires=1363730000\n
       \   id: 83125705\n  id: 41261820\n"
+  - - 56
+    - Image
+    - background0000.jpg
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-19 21:17:18.000000000Z
+    - 2013-03-19 21:17:18.000000000Z
+    - 3
+    - false
+    - !!null 
 
 ---
 keyframes:
@@ -292,11 +303,12 @@ keyframes:
     - 2013-03-08 22:56:38.000000000Z
     - 37
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 1\n
-      \ position:\n    x: 792.6092715231787\n    y: 673.781456953642\n  scale: 1\n-
+      \ position:\n    x: 245.72185430463543\n    y: 94.11920529801296\n  scale: 1\n-
       type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 2\n  position:\n
-      \   x: 486.98013245033087\n    y: 686.158940397351\n  scale: 1\n- type: SpriteOrientation\n
-      \ keyframe_id: 8\n  sprite_widget_id: 3\n  position:\n    x: 163.1523178807948\n
-      \   y: 670.9668874172186\n  scale: 1\n"
+      \   x: 535.3443708609269\n    y: 98.33112582781462\n  scale: 1\n- type: SpriteOrientation\n
+      \ keyframe_id: 8\n  sprite_widget_id: 3\n  position:\n    x: 831.4701986754968\n
+      \   y: 98.8675496688742\n  scale: 1\n- type: SpriteOrientation\n  keyframe_id:
+      8\n  sprite_widget_id: 48\n  position:\n    x: 512\n    y: 384\n  scale: 1\n"
     - 0
     - !!null 
     - ! "--- !!null \n...\n"
@@ -418,22 +430,21 @@ keyframes:
   - - 30
     - 9
     - 2013-03-18 21:42:14.000000000Z
-    - 2013-03-18 21:43:08.000000000Z
+    - 2013-03-19 20:27:37.000000000Z
     - 51
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 30\n  sprite_widget_id: 31\n
-      \ position:\n    x: 510.708609271523\n    y: 382.8278145695365\n  scale: 1\n-
-      position:\n    x: 186.10596026490057\n    y: 565.7350993377484\n  type: TextWidget\n
-      \ string: ! '\"Yes,\" he whispered.'\n  font: Arial\n  size: 24\n  z_order:
-      6000\n  id: 36\n- position:\n    x: 265.6225165562913\n    y: 516.847682119205\n
-      \ type: TextWidget\n  string: ! '\"I always listen to the birds,'\n  font: Arial\n
-      \ size: 24\n  z_order: 6000\n  id: 37\n- position:\n    x: 339.60927152317896\n
-      \   y: 481.09933774834457\n  type: TextWidget\n  string: the wind blowing through
-      the trees,\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 38\n- position:\n
-      \   x: 282.25827814569533\n    y: 445.52980132450307\n  type: TextWidget\n  string:
-      the rustling of the leaves\n  font: Arial\n  size: 24\n  z_order: 6000\n  id:
-      39\n- position:\n    x: 361.3973509933775\n    y: 407.1721854304635\n  type:
-      TextWidget\n  string: and all the sounds of the woods.\"\n  font: Arial\n  size:
-      24\n  z_order: 6000\n  id: 40\n"
+      \ position:\n    x: 512\n    y: 384\n  scale: 1\n- position:\n    x: 186.10596026490057\n
+      \   y: 565.7350993377484\n  type: TextWidget\n  string: ! '\"Yes,\" he whispered.'\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 36\n- position:\n    x: 265.6225165562913\n
+      \   y: 516.847682119205\n  type: TextWidget\n  string: ! '\"I always listen
+      to the birds,'\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 37\n- position:\n
+      \   x: 339.60927152317896\n    y: 481.09933774834457\n  type: TextWidget\n  string:
+      the wind blowing through the trees,\n  font: Arial\n  size: 24\n  z_order: 6000\n
+      \ id: 38\n- position:\n    x: 282.25827814569533\n    y: 445.52980132450307\n
+      \ type: TextWidget\n  string: the rustling of the leaves\n  font: Arial\n  size:
+      24\n  z_order: 6000\n  id: 39\n- position:\n    x: 361.3973509933775\n    y:
+      407.1721854304635\n  type: TextWidget\n  string: and all the sounds of the woods.\"\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 40\n"
     - 1
     - !!null 
     - ! "--- !!null \n...\n"
@@ -492,16 +503,19 @@ scenes:
     - !!null 
     - !!null 
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-09 13:53:22.000000000Z
+    - 2013-03-19 21:17:30.000000000Z
     - 37
     - 0
     - ! "---\n- position:\n    y: 100\n    x: 200\n  type: ButtonWidget\n  scale:
-      1\n  id: 1\n  name: read_it_myself\n  z_order: 1\n  filename: read_it_myself.png\n
+      1\n  id: 1\n  name: read_it_myself\n  z_order: 2\n  filename: read_it_myself.png\n
       \ url: /assets/sprites/read_it_myself.png\n- position:\n    y: 200\n    x: 200\n
-      \ type: ButtonWidget\n  scale: 1\n  id: 2\n  name: read_to_me\n  z_order: 2\n
+      \ type: ButtonWidget\n  scale: 1\n  id: 2\n  name: read_to_me\n  z_order: 3\n
       \ filename: read_to_me.png\n  url: /assets/sprites/read_to_me.png\n- position:\n
       \   y: 300\n    x: 200\n  type: ButtonWidget\n  scale: 1\n  id: 3\n  name: auto_play\n
-      \ z_order: 3\n  filename: auto_play.png\n  url: /assets/sprites/auto_play.png\n"
+      \ z_order: 4\n  filename: auto_play.png\n  url: /assets/sprites/auto_play.png\n-
+      position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale: 1\n  url:
+      https://interapptive.s3.amazonaws.com/images/56/background0000.jpg\n  filename:
+      background0000.jpg\n  id: 48\n  z_order: 1\n"
     - Arial
     - '25'
     - ! '--- rgb(0, 0, 0)
