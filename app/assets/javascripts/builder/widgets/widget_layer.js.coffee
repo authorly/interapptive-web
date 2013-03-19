@@ -35,6 +35,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @addDblClickEventListener()
     @addClickOutsideCanvasEventListener()
     @addCanvasMouseLeaveListener()
+    @addContextMenuEventListener()
 
     @widgets.on 'add',    @addWidget,    @
     @widgets.on 'remove', @removeWidget, @
@@ -222,12 +223,23 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         App.currentSelection.set widget: widget.model
 
 
-   scaleSpriteWidgetFromModel: (modelAndScaleData) ->
-     widgetModel = modelAndScaleData.model
-     scale = modelAndScaleData.scale
+  addContextMenuEventListener: (event) ->
+    cc.canvas.addEventListener 'contextmenu', (event) =>
+      touch = @_calculateTouchFrom(event)
 
-     view = @_getView(widgetModel)
-     view.setScale(scale)
+      point = @_getTouchCoordinates(touch)
+
+      widget = @widgetAtPoint(point)
+      if widget?
+        alert "Right clicked a widget"
+
+
+  scaleSpriteWidgetFromModel: (modelAndScaleData) ->
+    widgetModel = modelAndScaleData.model
+    scale = modelAndScaleData.scale
+
+    view = @_getView(widgetModel)
+    view.setScale(scale)
 
 
   _getTouchCoordinates: (touch) ->
