@@ -25,6 +25,7 @@
 #= require advancedtable
 #= require jquery.tablesorter
 #= require jquery.selecttext
+#= require jquery.contextmenu
 
 #= require app
 #= require config

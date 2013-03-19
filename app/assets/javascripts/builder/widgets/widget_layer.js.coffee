@@ -17,6 +17,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   CANVAS_ID = 'builder-canvas'
 
+  RIGHT_CLICK_KEYCODE = 93
+
   constructor: (widgetsCollection) ->
     super
 
@@ -214,6 +216,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   addDblClickEventListener: ->
     cc.canvas.addEventListener 'dblclick', (event) =>
+      return if event.keyCode is RIGHT_CLICK_KEYCODE
       touch = @_calculateTouchFrom(event)
       point = @_getTouchCoordinates(touch)
 
@@ -226,12 +229,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   addContextMenuEventListener: (event) ->
     cc.canvas.addEventListener 'contextmenu', (event) =>
       touch = @_calculateTouchFrom(event)
-
       point = @_getTouchCoordinates(touch)
 
       widget = @widgetAtPoint(point)
       if widget?
-        alert "Right clicked a widget"
+        event.preventDefault()
+        alert "Right clicked a sprite widget"
 
 
   scaleSpriteWidgetFromModel: (modelAndScaleData) ->
