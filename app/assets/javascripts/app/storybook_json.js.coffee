@@ -217,21 +217,14 @@ class App.JSON
 
 
   mainMenuNode: (scene) ->
-    {
+    node =
       # audio:
         # backgroundMusic      : 'main-menu-title-sound.mp3'
         # backgroundMusicLoops : 1
         # soundEffect          : 'main-menu-title-sound.mp3'
         # soundEffectLoops     : 1
 
-      CCSprites: [
-        # {
-          # image     : 'background0000.jpg'
-          # spriteTag : @spriteIdCounter.next()
-          # visible   : true
-          # position  : [512, 384]
-        # }
-      ]
+      CCSprites: []
 
       fallingPhysicsSettings:
         # draggable         : false
@@ -247,7 +240,7 @@ class App.JSON
 
       MenuItems:
         scene.buttonWidgets().map (button) ->
-          position = button.get('position')
+          position = scene.keyframes.at(0).getOrientationFor(button).get('position')
           str = App.Lib.StringHelper
           {
             normalStateImage: button.get('url')
@@ -258,7 +251,20 @@ class App.JSON
 
       API: {}
 
-    }
+    _.each _.difference(scene.spriteWidgets(), scene.buttonWidgets()), (spriteWidget) =>
+      position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
+      spriteId = @spriteIdCounter.next()
+      spriteNode =
+        image:     spriteWidget.get 'url'
+        spriteTag: spriteId
+        # TODO does the app require this? because we have a Move action for the first
+        # keyframe anyway
+        position:  [position.x, position.y]
+        visible: true
+      node.CCSprites.push(spriteNode)
+
+    node
+
 
 
   # _updatePageNumbers: (from_number) =>
