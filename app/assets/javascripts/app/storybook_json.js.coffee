@@ -115,10 +115,10 @@ class App.JSON
           fontSize: Number(scene.get('font_size')),
         text:
           paragraphs: []
-    # if scene.get('sound_url')?
-      # page.Page.settings.backgroundMusicFile =
-        # loop: true
-        # audioFilePath: scene.get('sound_url')
+    if scene.get('sound_url')?
+      page.Page.settings.backgroundMusicFile =
+        loop: scene.get('sound_repeat_count') == 0
+        audioFilePath: scene.get('sound_url')
     # @scenesToJSON[scene.id] = page
     scene.keyframes.each (k) => @addTextNodeFor(k, page)
 
