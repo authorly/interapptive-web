@@ -180,15 +180,6 @@ class App.Views.SpriteEditorPalette extends Backbone.View
       if _kc is @DOWN_KEYCODE
         @_moveSprite('down', 1)
 
-    @$('#scale-amount').keyup (event) =>
-      _kc = event.keyCode
-
-      if _kc is @UP_KEYCODE
-        @_propagateScale(@SCALE_STEP)
-
-      if _kc is @DOWN_KEYCODE
-        @_propagateScale(-@SCALE_STEP)
-
 
   _position: ->
     @_point(@$('#x-coord').val(), @$('#y-coord').val())
@@ -214,17 +205,3 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   _setScale: =>
     return unless @widget?
     @getCurrentOrientation().set(scale: @_currentScale() / 100)
-    @_propagateScale(0)
-
-
-  _propagateScale: (scale_by) =>
-    return unless @widget?
-    @_updateScaleInputBy(scale_by)
-    data =
-      model: @widget
-      scale: @_currentScale() / 100
-    App.vent.trigger 'scale:sprite_widget', data
-
-
-  _updateScaleInputBy: (scale_by) ->
-    @$('#scale-amount').val(window.parseFloat(@_currentScale()) + scale_by)
