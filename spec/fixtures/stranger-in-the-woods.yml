@@ -38,12 +38,12 @@ assets:
     - !!null 
   - - 37
     - Image
-    - image20130320-28415-iwz8w2.png
+    - image20130320-28415-exnd0u.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-08 22:56:35.000000000Z
-    - 2013-03-19 23:08:16.000000000Z
+    - 2013-03-19 23:25:11.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -503,7 +503,7 @@ scenes:
     - !!null 
     - !!null 
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-19 21:17:30.000000000Z
+    - 2013-03-19 23:30:22.000000000Z
     - 37
     - 0
     - ! "---\n- position:\n    y: 100\n    x: 200\n  type: ButtonWidget\n  scale:
@@ -518,9 +518,13 @@ scenes:
       background0000.jpg\n  id: 48\n  z_order: 1\n"
     - Arial
     - '25'
-    - ! '--- rgb(0, 0, 0)
+    - ! '---
 
-      ...
+      r: 255
+
+      g: 0
+
+      b: 0
 
 '
     - true
@@ -529,7 +533,7 @@ scenes:
     - !!null 
     - 0
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-10 22:37:28.000000000Z
+    - 2013-03-19 23:30:22.000000000Z
     - 40
     - 0
     - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
@@ -539,11 +543,11 @@ scenes:
     - '40'
     - ! '---
 
-      r: 242
+      r: 255
 
-      g: 24
+      g: 0
 
-      b: 24
+      b: 0
 
 '
     - false
@@ -552,7 +556,7 @@ scenes:
     - !!null 
     - 1
     - 2013-03-06 15:40:45.000000000Z
-    - 2013-03-09 13:53:22.000000000Z
+    - 2013-03-19 23:30:22.000000000Z
     - 39
     - 0
     - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
@@ -560,9 +564,13 @@ scenes:
       \ filename: background0020.jpg\n  id: 5\n  z_order: 1\n"
     - Arial
     - '29'
-    - ! '--- rgb(0, 0, 0)
+    - ! '---
 
-      ...
+      r: 255
+
+      g: 0
+
+      b: 0
 
 '
     - false
@@ -571,7 +579,7 @@ scenes:
     - !!null 
     - 2
     - 2013-03-18 21:32:17.000000000Z
-    - 2013-03-18 21:35:05.000000000Z
+    - 2013-03-19 23:30:22.000000000Z
     - 44
     - 0
     - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
@@ -584,9 +592,13 @@ scenes:
       \ filename: arrow-pointing-left.png\n  id: 25\n  z_order: 2\n"
     - Arial
     - '25'
-    - ! '--- rgb(0, 0, 0)
+    - ! '---
 
-      ...
+      r: 255
+
+      g: 0
+
+      b: 0
 
 '
     - false
@@ -595,7 +607,7 @@ scenes:
     - 50
     - 3
     - 2013-03-18 21:37:03.000000000Z
-    - 2013-03-18 21:37:35.000000000Z
+    - 2013-03-19 23:30:22.000000000Z
     - 49
     - 0
     - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
@@ -603,9 +615,13 @@ scenes:
       \ filename: background0040.jpg\n  id: 31\n  z_order: 1\n"
     - Arial
     - '25'
-    - ! '--- rgb(0, 0, 0)
+    - ! '---
 
-      ...
+      r: 255
+
+      g: 0
+
+      b: 0
 
 '
     - false
@@ -614,7 +630,7 @@ scenes:
     - 52
     - 4
     - 2013-03-18 21:44:41.000000000Z
-    - 2013-03-18 21:53:54.000000000Z
+    - 2013-03-19 23:30:22.000000000Z
     - 53
     - 1
     - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
@@ -625,9 +641,13 @@ scenes:
       \ id: 43\n"
     - Arial
     - '25'
-    - ! '--- rgb(0, 0, 0)
+    - ! '---
 
-      ...
+      r: 255
+
+      g: 0
+
+      b: 0
 
 '
     - false
@@ -642,12 +662,7 @@ storybooks:
   - updated_at
   - author
   - description
-  - publisher
-  - published_on
   - price
-  - record_enabled
-  - android_or_ios
-  - tablet_or_phone
   - icon
   - compiled_application
   records: 
@@ -661,11 +676,6 @@ storybooks:
     - !!null 
     - !!null 
     - !!null 
-    - !!null 
-    - !!null 
-    - !!null 
-    - both
-    - both
     - !!null 
     - !!null 
 
