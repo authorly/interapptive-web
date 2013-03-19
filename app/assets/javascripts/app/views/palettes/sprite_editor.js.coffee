@@ -141,7 +141,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _addClickListener: ->
-    @$('li.half').find('label, input').click (event) ->
+    @$('li').find('label, input').click (event) ->
       event.stopPropagation()
 
 
