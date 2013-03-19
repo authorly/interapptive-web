@@ -38,7 +38,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     @widgets.on 'add',    @addWidget,    @
     @widgets.on 'remove', @removeWidget, @
-    @widgets.on 'change:position change:scale', @updateWidget, @
+    @widgets.on 'change:position', @updateWidget, @
     @widgets.on 'change:z_order', @reorderWidget, @
 
     App.vent.on 'scale:sprite_widget', @scaleSpriteWidgetFromModel, @
