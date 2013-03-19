@@ -164,29 +164,39 @@ class App.JSON
       page.API.CCSprites.push(spriteNode)
 
       actions = page.API.CCStorySwipeEnded.runAction
+      previousOrientation = null
       scene.keyframes.each (keyframe, index) =>
         orientation = keyframe.getOrientationFor(spriteWidget)
 
-        # TODO optimization: do not add actions if nothing changes
         # TODO optimization: reuse actions if they are available already
-        scaleId = @actionIdCounter.next()
-        page.API.CCScaleTo.push
-          actionTag: scaleId
-          # TODO is this what we need?
-          duration: if index == 0 then 0 else 3
-          intensity: orientation.get('scale')
+        scaleId = null
+        unless previousOrientation? && previousOrientation.get('scale') == orientation.get('scale')
+          scaleId = @actionIdCounter.next()
+          page.API.CCScaleTo.push
+            actionTag: scaleId
+            # TODO is this what we need?
+            duration: if index == 0 then 0 else 3
+            intensity: orientation.get('scale')
 
-        moveId = @actionIdCounter.next()
+        moveId = null
+        previousPosition = previousOrientation?.get('position')
         position = orientation.get('position')
-        page.API.CCMoveTo.push
-          actionTag: moveId
-          duration: if index == 0 then 0 else 3
-          position: [position.x, position.y]
+        unless previousOrientation? && previousPosition.x == position.x && previousPosition.y == position.y
+          moveId = @actionIdCounter.next()
+          position = orientation.get('position')
+          page.API.CCMoveTo.push
+            actionTag: moveId
+            duration: if index == 0 then 0 else 3
+            position: [position.x, position.y]
 
-        actions.push
-          runAfterSwipeNumber: index
-          spriteTag: spriteId
-          actionTags: [scaleId, moveId]
+        currentActions = _.without [scaleId, moveId], null
+        if currentActions.length > 0
+          actions.push
+            runAfterSwipeNumber: index
+            spriteTag: spriteId
+            actionTags: currentActions
+
+        previousOrientation = orientation
 
 
   configurationNode: ->
