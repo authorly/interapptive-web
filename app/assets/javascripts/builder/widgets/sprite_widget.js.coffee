@@ -32,6 +32,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @sprite.initWithFile @model.dataUrl
 
       currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
+      currentOrientation.on('change:scale', @_changeScale, @)
       @applyOrientation(currentOrientation)
 
       @setScale(parseFloat(currentOrientation.get('scale')))
@@ -128,6 +129,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     if message.action == 'loaded' && message.path == @model.get('url')
       App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
       @constructorContinuation(message.bits)
+
+
+  _changeScale: (__, scale) ->
+    @sprite.setScale(parseFloat(scale))
 
 
   _getImage: ->

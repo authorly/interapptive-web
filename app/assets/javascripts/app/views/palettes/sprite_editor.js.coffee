@@ -223,7 +223,6 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     data =
       model: @widget
       scale: @_currentScale() / 100
-
     App.vent.trigger 'scale:sprite_widget', data
 
 
