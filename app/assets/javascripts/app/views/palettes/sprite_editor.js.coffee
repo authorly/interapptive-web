@@ -7,10 +7,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   POSITION_TIMER: null
 
-  SLIDER_DEFAULT: 1.0
-  SLIDER_STEP:    0.01
-  SLIDER_MIN:     0.2
-  SLIDER_MAX:     2.0
+  SCALE_STEP:    1
 
   ENTER_KEYCODE: 13
   LEFT_KEYCODE:  37
@@ -26,32 +23,15 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   render: ->
     @$el.html(@template())
-    @_initScaleSlider()
-    @_addCoordinatesListeners()
+    @_addListeners()
     @
 
 
-  _addCoordinatesListeners: ->
+  _addListeners: ->
     @_addClickListener()
     @_addUpDownArrowListeners()
     @_addNumericInputListener()
     @_addEnterKeyInputListener()
-
-
-  _initScaleSlider: ->
-    @$('#scale').slider(@_sliderOptions())
-
-
-  _sliderOptions: ->
-    options =
-      disabled: true
-      value:    @SLIDER_DEFAULT
-      step:     @SLIDER_STEP
-      min:      @SLIDER_MIN
-      max:      @SLIDER_MAX
-      stop:     @_setScale
-      slide:    @_propagateSlide
-      change:   @_setScaleOnSpriteElement
 
 
   getCurrentOrientation: ->
@@ -64,17 +44,12 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   resetForm: =>
     @widget = null
-
-    @$('#x-coord, #y-coord').val(0)
-
     @clearFilename()
     @disableFields()
 
 
   setActiveSprite: (__, sprite) ->
-    return unless sprite instanceof App.Models.SpriteWidget
-
-    if sprite
+    if sprite? and sprite instanceof App.Models.SpriteWidget
       @widget = sprite
       @enablePalette()
       @displayFilename()
@@ -94,17 +69,17 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     current_orientation = @getCurrentOrientation()
     @$('#x-coord').val(parseInt(current_orientation.get('position').x))
     @$('#y-coord').val(parseInt(current_orientation.get('position').y))
-    @$('#scale').slider('value', current_orientation.get('scale'))
+    @$('#scale-amount').val(current_orientation.get('scale') * 100)
 
 
   disableFields: ->
-    @$('#scale').slider(disabled: true).slider('value', 1.0)
-    @$('#x-coord, #y-coord').attr('disabled', true)
+    @$('#x-coord, #y-coord, #scale-amount').attr('disabled', true)
+    @$('#x-coord, #y-coord').val(0)
+    @$('#scale-amount').val(100)
 
 
   enableFields: ->
-    @$('#scale').slider disabled: false
-    @$('#x-coord, #y-coord').attr 'disabled', false
+    @$('#x-coord, #y-coord, #scale-amount').attr('disabled', false)
 
 
   displayFilename: ->
@@ -166,7 +141,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _addClickListener: ->
-    @$('li.half').find('label, input').click (event) ->
+    @$('li').find('label, input').click (event) ->
       event.stopPropagation()
 
 
@@ -174,9 +149,12 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     @$('#x-coord, #y-coord').keydown (e) =>
       @setSpritePosition() if e.keyCode is @ENTER_KEYCODE
 
+    @$('#scale-amount').keydown (e) =>
+      @_setScale() if e.keyCode is @ENTER_KEYCODE
+
 
   _addNumericInputListener: ->
-    @$('#x-coord, #y-coord').keypress (event) => # Numeric keyboard inputs only
+    @$('#x-coord, #y-coord, #scale-amount').keypress (event) => # Numeric keyboard inputs only
       if not event.which or (48 <= event.which <= 57) or (48 is event.which and $(this).attr('value')) or @CONTROL_KEYS.indexOf(event.which) > -1
         return
       else
@@ -220,25 +198,10 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     @getCurrentOrientation().set(position: { x: parseInt(point.x), y: parseInt(point.y) })
 
 
-  _scaleElement: ->
-    @$('#scale-amount')
+  _currentScale: ->
+    window.parseFloat(@$('#scale-amount').val())
 
 
-  _setScale: (event, ui) =>
+  _setScale: =>
     return unless @widget?
-    @_scaleElement().text(ui.value)
-    @getCurrentOrientation().set(scale: ui.value)
-
-
-  _propagateSlide: (event, ui) =>
-    return unless @widget?
-    @_scaleElement().text(ui.value)
-    data =
-      model: @widget
-      scale: ui.value
-    App.vent.trigger 'scale:sprite_widget', data
-
-
-  _setScaleOnSpriteElement: (event, ui) =>
-    return unless @widget?
-    @_scaleElement().text(ui.value)
+    @getCurrentOrientation().set(scale: @_currentScale() / 100)
