@@ -89,11 +89,13 @@ class App.JSON
     fontColor = scene.get('font_color')
     page =
       API:
-        CCMoveTo: []
-        CCScaleTo: []
-        CCStorySwipeEnded: {
+        CCMoveTo:    []
+        CCScaleTo:   []
+        CCSequence:  []
+        CCDelayTime: []
+        CCSpawn:     []
+        CCStorySwipeEnded:
           runAction: []
-        }
         CCStoryTouchableNode:
           nodes: scene.hotspotWidgets().map (widget) ->
             position = widget.get('position')
@@ -165,8 +167,14 @@ class App.JSON
 
       actions = page.API.CCStorySwipeEnded.runAction
       previousOrientation = null
+      animationNode = null
       scene.keyframes.each (keyframe, index) =>
         orientation = keyframe.getOrientationFor(spriteWidget)
+        keyframeIndex = keyframe.get('position')
+        if keyframe.get('is_animation') || keyframeIndex == 0 and index == 0
+          duration = 0
+        else
+          duration = 3
 
         # TODO optimization: reuse actions if they are available already
         scaleId = null
@@ -174,8 +182,7 @@ class App.JSON
           scaleId = @actionIdCounter.next()
           page.API.CCScaleTo.push
             actionTag: scaleId
-            # TODO is this what we need?
-            duration: if index == 0 then 0 else 3
+            duration: duration
             intensity: orientation.get('scale')
 
         moveId = null
@@ -183,20 +190,42 @@ class App.JSON
         position = orientation.get('position')
         unless previousOrientation? && previousPosition.x == position.x && previousPosition.y == position.y
           moveId = @actionIdCounter.next()
-          position = orientation.get('position')
           page.API.CCMoveTo.push
             actionTag: moveId
-            duration: if index == 0 then 0 else 3
+            duration: duration
             position: [position.x, position.y]
 
-        currentActions = _.without [scaleId, moveId], null
-        if currentActions.length > 0
-          actions.push
-            runAfterSwipeNumber: index
-            spriteTag: spriteId
-            actionTags: currentActions
+        if keyframe.get('is_animation')
+          delayId = @actionIdCounter.next()
+          page.API.CCDelayTime.push
+            actionTag: delayId
+            duration: 3
 
-        previousOrientation = orientation
+          spawnId = @actionIdCounter.next()
+          animationNode =
+            actionTag: spawnId
+            actions: []
+          page.API.CCSpawn.push animationNode
+
+          sequenceId = @actionIdCounter.next()
+          page.API.CCSequence.push
+            actionTag: sequenceId
+            actions: [delayId, spawnId]
+
+          spriteNode.actions = [sequenceId]
+        else
+          currentActions = _.without [scaleId, moveId], null
+          if currentActions.length > 0
+            if keyframeIndex > 0 or keyframeIndex == 0 and index == 0
+              actions.push
+                runAfterSwipeNumber: keyframeIndex
+                spriteTag: spriteId
+                actionTags: currentActions
+            else
+              # keyframeIndex == 0 and index > 0 - there was an animation keyframe
+              animationNode.actions = currentActions
+
+          previousOrientation = orientation
 
 
   configurationNode: ->
