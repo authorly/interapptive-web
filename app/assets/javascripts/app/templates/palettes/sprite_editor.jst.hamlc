@@ -7,8 +7,8 @@
   %li.half
     %label.disabled{:for => "y-coord"} Y:
     %input.small{:id => "y-coord", :disabled => true, :value => 0}
-  %li.slider
-    %span.disabled
-      Scale:
-      %span{:id => "scale-amount"} 1.0
-    #scale
+  %li
+    %br
+    %label.disabled{:for => 'scale-amount'} Scale:
+    %input.small{:id => "scale-amount", :disabled => true, :value => 100}
+    &#37;
