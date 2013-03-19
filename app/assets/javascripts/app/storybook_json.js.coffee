@@ -72,8 +72,8 @@ class App.JSON
       # highlightingTimes: [0.3, 1.3, #_.map(keyframe.get('content_highlight_times'), (num) -> Number(num))
       linesOfText: widgets.map (widget) ->
         text: widget.get('string'),
-        xOffset: widget.get('position').x,
-        yOffset: widget.get('position').y
+        xOffset: Math.round(widget.get('position').x),
+        yOffset: Math.round(widget.get('position').y)
     #voiceAudioFile: keyframe.get('url')
     if widgets.length == 0
       paragraph.linesOfText = [{
@@ -100,8 +100,8 @@ class App.JSON
           nodes: scene.hotspotWidgets().map (widget) ->
             position = widget.get('position')
             hash =
-              position: [position.x, position.y]
-              radius:   widget.get('radius')
+              position: [Math.round(position.x), Math.round(position.y)]
+              radius:   Math.round(widget.get('radius'))
             if (sound = widget.get('sound_id'))?
               hash.soundToPlay = sound
             if (video = widget.get('video_id'))?
@@ -193,7 +193,7 @@ class App.JSON
           page.API.CCMoveTo.push
             actionTag: moveId
             duration: duration
-            position: [position.x, position.y]
+            position: [Math.round(position.x), Math.round(position.y)]
 
         if keyframe.get('is_animation')
           delayId = @actionIdCounter.next()
@@ -275,7 +275,7 @@ class App.JSON
             normalStateImage: button.get('url')
             tappedStateImage: button.get('selected_url') || button.get('url')
             storyMode: str.decapitalize(str.camelize(button.get('name')))
-            position: [position.x, position.y]
+            position: [Math.round(position.x), Math.round(position.y)]
           }
 
       API: {}
