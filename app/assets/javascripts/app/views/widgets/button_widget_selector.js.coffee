@@ -9,8 +9,8 @@ class App.Views.ButtonWidgetImagesSelector extends Backbone.View
 
     @widget = options.widget
 
-    @baseImageUrl = @widget._url
-    @tappedImageUrl = @widget._selectedUrl
+    @baseImageUrl = @widget.get('url')
+    @tappedImageUrl = @widget.get('selected_url')
 
 
   render: ->
