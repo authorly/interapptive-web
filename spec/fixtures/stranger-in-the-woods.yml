@@ -38,12 +38,12 @@ assets:
     - !!null 
   - - 37
     - Image
-    - image20130320-28415-exnd0u.png
+    - image20130320-28415-18n9cxx.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-08 22:56:35.000000000Z
-    - 2013-03-19 23:25:11.000000000Z
+    - 2013-03-20 00:09:21.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -282,6 +282,28 @@ assets:
     - 3
     - false
     - !!null 
+  - - 57
+    - Image
+    - read-it-myself-over.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-20 00:00:30.000000000Z
+    - 2013-03-20 00:00:30.000000000Z
+    - 3
+    - false
+    - !!null 
+  - - 58
+    - Image
+    - read-it-myself.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-20 00:00:32.000000000Z
+    - 2013-03-20 00:00:32.000000000Z
+    - 3
+    - false
+    - !!null 
 
 ---
 keyframes:
@@ -300,10 +322,10 @@ keyframes:
   - - 8
     - 5
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-08 22:56:38.000000000Z
+    - 2013-03-20 00:01:11.000000000Z
     - 37
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 1\n
-      \ position:\n    x: 245.72185430463543\n    y: 94.11920529801296\n  scale: 1\n-
+      \ position:\n    x: 197.27814569536395\n    y: 85.1324503311253\n  scale: 1\n-
       type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 2\n  position:\n
       \   x: 535.3443708609269\n    y: 98.33112582781462\n  scale: 1\n- type: SpriteOrientation\n
       \ keyframe_id: 8\n  sprite_widget_id: 3\n  position:\n    x: 831.4701986754968\n
@@ -503,16 +525,18 @@ scenes:
     - !!null 
     - !!null 
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-19 23:30:22.000000000Z
+    - 2013-03-20 00:09:06.000000000Z
     - 37
     - 0
     - ! "---\n- position:\n    y: 100\n    x: 200\n  type: ButtonWidget\n  scale:
       1\n  id: 1\n  name: read_it_myself\n  z_order: 2\n  filename: read_it_myself.png\n
-      \ url: /assets/sprites/read_it_myself.png\n- position:\n    y: 200\n    x: 200\n
-      \ type: ButtonWidget\n  scale: 1\n  id: 2\n  name: read_to_me\n  z_order: 3\n
-      \ filename: read_to_me.png\n  url: /assets/sprites/read_to_me.png\n- position:\n
-      \   y: 300\n    x: 200\n  type: ButtonWidget\n  scale: 1\n  id: 3\n  name: auto_play\n
-      \ z_order: 4\n  filename: auto_play.png\n  url: /assets/sprites/auto_play.png\n-
+      \ url: https://interapptive.s3.amazonaws.com/images/58/read-it-myself.png\n
+      \ selectedUrl: https://interapptive.s3.amazonaws.com/images/57/read-it-myself-over.png\n
+      \ selected_url: https://interapptive.s3.amazonaws.com/images/57/read-it-myself-over.png\n-
+      position:\n    y: 200\n    x: 200\n  type: ButtonWidget\n  scale: 1\n  id: 2\n
+      \ name: read_to_me\n  z_order: 3\n  filename: read_to_me.png\n  url: /assets/sprites/read_to_me.png\n-
+      position:\n    y: 300\n    x: 200\n  type: ButtonWidget\n  scale: 1\n  id: 3\n
+      \ name: auto_play\n  z_order: 4\n  filename: auto_play.png\n  url: /assets/sprites/auto_play.png\n-
       position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale: 1\n  url:
       https://interapptive.s3.amazonaws.com/images/56/background0000.jpg\n  filename:
       background0000.jpg\n  id: 48\n  z_order: 1\n"
