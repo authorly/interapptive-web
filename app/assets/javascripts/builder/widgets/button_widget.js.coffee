@@ -22,7 +22,7 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
     if values.baseUrl?
       @model.set url: values.baseUrl
     if values.tappedUrl?
-      @model.set selectedUrl: values.tappedUrl
+      @model.set selected_url: values.tappedUrl
 
     @selector.hide()
 
