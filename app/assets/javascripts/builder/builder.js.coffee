@@ -6,6 +6,7 @@ class Builder extends cc.Layer
     @setIsTouchEnabled true
 
     @widgetLayer = new App.Builder.Widgets.WidgetLayer(App.currentWidgets)
+    @canvasOverflowLayer = new App.Builder.Widgets.CanvasOverflowLayer()
     # @widgetStore = new App.Builder.Widgets.WidgetStore
     #HACK should fix hardcoded CCNode tag (10)
     @addChild(@widgetLayer, 100, 10)
