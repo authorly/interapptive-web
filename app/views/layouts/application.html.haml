@@ -54,6 +54,7 @@
     = render 'storybooks/index_modal'
     = render 'shared/content_modal'
     = render 'shared/lightbox_modal'
+    #context-menu
     %span#rails-environment{'data-rails-environment' => Rails.env, 'data-git-head' => Rails.application.config.git_head}
     :javascript
       $(document).ready(function(){ App.start() })

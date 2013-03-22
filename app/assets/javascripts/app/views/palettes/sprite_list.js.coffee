@@ -22,6 +22,8 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     App.currentSelection.on 'change:widget', @spriteSelected, @
 
+    App.vent.on ''
+
     @views = []
 
 
@@ -35,6 +37,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     @$('.icon-plus').tooltip
       title:     'Add image...'
       placement: 'right'
+
 
   widgetAdded: (widget) ->
     return unless @_isSprite(widget)

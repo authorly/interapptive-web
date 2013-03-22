@@ -19,6 +19,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   RIGHT_CLICK_KEYCODE = 93
 
+
   constructor: (widgetsCollection) ->
     super
 
@@ -37,6 +38,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @addDblClickEventListener()
     @addClickOutsideCanvasEventListener()
     @addCanvasMouseLeaveListener()
+
+    @initializeContextMenu()
     @addContextMenuEventListener()
 
     @widgets.on 'add',    @addWidget,    @
@@ -226,15 +229,46 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         App.currentSelection.set widget: widget.model
 
 
-  addContextMenuEventListener: (event) ->
+  addContextMenuEventListener: ->
     cc.canvas.addEventListener 'contextmenu', (event) =>
       touch = @_calculateTouchFrom(event)
       point = @_getTouchCoordinates(touch)
 
       widget = @widgetAtPoint(point)
-      if widget?
+      if widget? and widget.isSpriteWidget()
         event.preventDefault()
-        alert "Right clicked a sprite widget"
+        $('#context-menu').contextMenu x: event.clientX, y: event.clientY
+
+
+  initializeContextMenu: ->
+    $.contextMenu
+      selector: '#context-menu'
+
+      items:
+        bring_to_front:
+          name: 'Bring to Front'
+          callback: (key, opt) ->
+            alert 'Foo!'
+
+        put_in_back:
+          name: 'Put in Back'
+          callback: (key, opt) ->
+            alert 'Bar!'
+
+        sep1: "---------",
+
+        edit_image:
+          name: 'Edit Image...'
+          callback: =>
+            App.currentSelection.set widget: @_capturedWidget.model
+            @_capturedWidget = null
+
+        remove_image:
+          name: 'Remove Image'
+          callback: =>
+            @_capturedWidget.model.collection.remove(@_capturedWidget.model)
+            @_capturedWidget = null
+            App.vent.trigger 'remove:widget'
 
 
   scaleSpriteWidgetFromModel: (modelAndScaleData) ->
