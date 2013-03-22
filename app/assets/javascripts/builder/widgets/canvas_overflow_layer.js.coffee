@@ -1,4 +1,4 @@
-class App.Builder.Widgets.CanvasOverflowLayer extends cc.Node
+class App.Builder.Widgets.CanvasOverflowLayer extends cc.Layer
   COLOR_OUTER_STROKE: 'rgba(15, 79, 168, 0.8)'
   COLOR_OUTER_FILL:   'rgba(174, 204, 246, 0.66)'
   COLOR_INNER_STROKE: 'rgba(15, 79, 168, 1)'
@@ -11,7 +11,6 @@ class App.Builder.Widgets.CanvasOverflowLayer extends cc.Node
 
 
   draw: (ctx) ->
-    console.log('called')
     # FIXME We should monkey patch cocos2d-html5 to support opacity
     ctx.save()
     ctx.globalAlpha = 255 / 255.0
