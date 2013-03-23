@@ -240,6 +240,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   initializeContextMenu: ->
     $.contextMenu
       selector: '#context-menu'
+      events:
+        hide: -> @_capturedWidget = null
       items:
         bring_to_front:
           name: 'Bring to Front'
