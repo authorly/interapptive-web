@@ -29,8 +29,8 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     App.currentSelection.on 'change:widget', @spriteSelected, @
 
-    App.vent.on 'bring_to_front:widget', @bringToFront, @
-    App.vent.on 'put_in_back:widget', @putInBack, @
+    App.vent.on 'bring_to_front:sprite', @bringToFront, @
+    App.vent.on 'put_in_back:sprite', @putInBack, @
 
     @views = []
 

@@ -275,12 +275,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   bringWidgetToFront: =>
-    App.vent.trigger 'bring_to_front:widget', @_capturedWidget.model
+    App.vent.trigger 'bring_to_front:sprite', @_capturedWidget.model
     @_capturedWidget = null
 
 
   putWidgetInBack: =>
-    App.vent.trigger 'put_in_back:widget', @_capturedWidget.model
+    App.vent.trigger 'put_in_back:sprite', @_capturedWidget.model
     @_capturedWidget = null
 
 
