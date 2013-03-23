@@ -1,9 +1,12 @@
 #= require ../assets/sprites/sprite
 
+#
 # Used for the menu for managing the sprites of the current keyframe.
 #
 # Methods:
 #   bringToFront - Brings a sprite (and element) to top of list
+#
+#   putInBack - Places sprite on botton of list (lowest z index)
 #
 class App.Views.SpriteListPalette extends Backbone.View
 
@@ -27,6 +30,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     App.currentSelection.on 'change:widget', @spriteSelected, @
 
     App.vent.on 'bring_to_front:widget', @bringToFront, @
+    App.vent.on 'put_in_back:widget', @putInBack, @
 
     @views = []
 

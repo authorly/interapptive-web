@@ -17,8 +17,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   CANVAS_ID = 'builder-canvas'
 
-  RIGHT_CLICK_KEYCODE = 93
-
 
   constructor: (widgetsCollection) ->
     super
@@ -219,7 +217,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   addDblClickEventListener: ->
     cc.canvas.addEventListener 'dblclick', (event) =>
-      return if event.keyCode is RIGHT_CLICK_KEYCODE
       touch = @_calculateTouchFrom(event)
       point = @_getTouchCoordinates(touch)
 
@@ -243,33 +240,41 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   initializeContextMenu: ->
     $.contextMenu
       selector: '#context-menu'
-
       items:
         bring_to_front:
           name: 'Bring to Front'
-          callback: (key, opt) =>
-            App.vent.trigger 'bring_to_front:widget', @_capturedWidget.model
-            @_capturedWidget = null
-
+          callback: @bringWidgetToFront
         put_in_back:
           name: 'Put in Back'
-          callback: (key, opt) ->
-            alert 'Bar!'
-
+          callback: @putWidgetInBack
         seperator: "---------",
-
         edit_image:
           name: 'Edit Image...'
-          callback: =>
-            App.currentSelection.set widget: @_capturedWidget.model
-            @_capturedWidget = null
-
+          callback: @editWidgetWithContextMenu
         remove_image:
           name: 'Remove Image'
-          callback: =>
-            @_capturedWidget.model.collection.remove(@_capturedWidget.model)
-            @_capturedWidget = null
-            App.vent.trigger 'remove:widget'
+          callback: @removeWidgetWithContextMenu
+
+
+  bringWidgetToFront: =>
+    App.vent.trigger 'bring_to_front:widget', @_capturedWidget.model
+    @_capturedWidget = null
+
+
+  putWidgetInBack: =>
+    App.vent.trigger 'put_in_back:widget', @_capturedWidget.model
+    @_capturedWidget = null
+
+
+  removeWidgetWithContextMenu: =>
+    @_capturedWidget.model.collection.remove(@_capturedWidget.model)
+    @_capturedWidget = null
+    App.vent.trigger 'remove:widget'
+
+
+  editWidgetWithContextMenu: =>
+    App.currentSelection.set widget: @_capturedWidget.model
+    @_capturedWidget = null
 
 
   scaleSpriteWidgetFromModel: (modelAndScaleData) ->
