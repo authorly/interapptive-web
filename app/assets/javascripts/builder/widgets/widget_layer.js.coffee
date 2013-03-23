@@ -20,6 +20,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   constructor: (widgetsCollection) ->
     super
 
+    # For image overflow layer, reposition widget layer
+    @setPosition new cc.Point(250, 400)
+
     # Collection (array) of Backbone models
     @widgets = widgetsCollection
 
