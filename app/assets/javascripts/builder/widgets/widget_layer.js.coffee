@@ -243,19 +243,21 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       events:
         hide: -> @_capturedWidget = null
       items:
+        edit_image:
+          name: 'Edit Image...'
+          icon: 'edit'
+          callback: @editWidgetWithContextMenu
+        remove_image:
+          name: 'Remove Image'
+          icon: 'delete'
+          callback: @removeWidgetWithContextMenu
+        seperator: "---------",
         bring_to_front:
           name: 'Bring to Front'
           callback: @bringWidgetToFront
         put_in_back:
           name: 'Put in Back'
           callback: @putWidgetInBack
-        seperator: "---------",
-        edit_image:
-          name: 'Edit Image...'
-          callback: @editWidgetWithContextMenu
-        remove_image:
-          name: 'Remove Image'
-          callback: @removeWidgetWithContextMenu
 
 
   bringWidgetToFront: =>
