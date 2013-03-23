@@ -241,7 +241,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     $.contextMenu
       selector: '#context-menu'
       events:
-        hide: -> @_capturedWidget = null
+        hide: =>
+          @_capturedWidget = null
       items:
         edit_image:
           name: 'Edit Image...'

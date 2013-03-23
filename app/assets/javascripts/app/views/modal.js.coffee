@@ -9,6 +9,8 @@ class App.Views.Modal extends Backbone.View
 
 
   show: ->
+    App.vent.trigger 'show:modal'
+
     @modal.modal('show').html @el
     @render()
 
