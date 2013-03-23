@@ -265,21 +265,21 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
         bring_to_front:
           name:     'Bring to Front'
-          callback: @bringWidgetToFront
+          callback: @bringSpriteToFront
 
         put_in_back:
           name:     'Put in Back'
-          callback: @putWidgetInBack
+          callback: @putSpriteInBack
 
     $.contextMenu(options)
 
 
-  bringWidgetToFront: =>
+  bringSpriteToFront: =>
     App.vent.trigger 'bring_to_front:sprite', @_capturedWidget.model
     @_capturedWidget = null
 
 
-  putWidgetInBack: =>
+  putSpriteInBack: =>
     App.vent.trigger 'put_in_back:sprite', @_capturedWidget.model
     @_capturedWidget = null
 
