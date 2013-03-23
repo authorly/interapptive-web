@@ -234,31 +234,44 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       widget = @widgetAtPoint(point)
       if widget? and widget.isSpriteWidget()
         event.preventDefault()
-        $('#context-menu').contextMenu x: event.clientX, y: event.clientY
+
+        $el = $('#context-menu')
+        $el.contextMenu x: event.clientX, y: event.clientY
+
+        $('header').on 'click', -> $el.contextMenu 'hide'
 
 
   initializeContextMenu: ->
-    $.contextMenu
+    options =
       selector: '#context-menu'
+
+      zIndex: 100
+
       events:
-        hide: =>
-          @_capturedWidget = null
+        hide: => @_capturedWidget = null
+
       items:
         edit_image:
-          name: 'Edit Image...'
-          icon: 'edit'
-          callback: @editWidgetWithContextMenu
+          name:     'Edit Image...'
+          icon:     'edit'
+          callback: @editSpriteWithContextMenu
+
         remove_image:
-          name: 'Remove Image'
-          icon: 'delete'
-          callback: @removeWidgetWithContextMenu
-        seperator: "---------",
+          name:     'Remove Image'
+          icon:     'delete'
+          callback: @removeSpriteWithContextMenu
+
+        seperator:  "---------",
+
         bring_to_front:
-          name: 'Bring to Front'
+          name:     'Bring to Front'
           callback: @bringWidgetToFront
+
         put_in_back:
-          name: 'Put in Back'
+          name:     'Put in Back'
           callback: @putWidgetInBack
+
+    $.contextMenu(options)
 
 
   bringWidgetToFront: =>
@@ -271,13 +284,13 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_capturedWidget = null
 
 
-  removeWidgetWithContextMenu: =>
+  removeSpriteWithContextMenu: =>
     @_capturedWidget.model.collection.remove(@_capturedWidget.model)
     @_capturedWidget = null
     App.vent.trigger 'remove:widget'
 
 
-  editWidgetWithContextMenu: =>
+  editSpriteWithContextMenu: =>
     App.currentSelection.set widget: @_capturedWidget.model
     @_capturedWidget = null
 
