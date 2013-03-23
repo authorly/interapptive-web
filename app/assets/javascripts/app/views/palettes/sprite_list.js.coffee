@@ -1,6 +1,10 @@
 #= require ../assets/sprites/sprite
 
 # Used for the menu for managing the sprites of the current keyframe.
+#
+# Methods:
+#   bringToFront - Brings a sprite (and element) to top of list
+#
 class App.Views.SpriteListPalette extends Backbone.View
 
   tagName: 'ul'
@@ -22,7 +26,7 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     App.currentSelection.on 'change:widget', @spriteSelected, @
 
-    App.vent.on ''
+    App.vent.on 'bring_to_front:widget', @bringToFront, @
 
     @views = []
 
@@ -85,6 +89,18 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     if (view = @_getView(sprite))?
       view.$el.addClass('active')
+
+
+  bringToFront: (widget) =>
+    el = @$("[data-widget-id='#{widget.get('id')}']").parent()
+    @$el.prepend(el)
+    @updateZOrder()
+
+
+  putInBack: (widget) =>
+    el = @$("[data-widget-id='#{widget.get('id')}']").parent()
+    @$el.append(el)
+    @updateZOrder()
 
 
   makeSortable: ->

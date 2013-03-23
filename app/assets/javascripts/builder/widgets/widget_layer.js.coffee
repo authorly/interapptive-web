@@ -247,15 +247,16 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       items:
         bring_to_front:
           name: 'Bring to Front'
-          callback: (key, opt) ->
-            alert 'Foo!'
+          callback: (key, opt) =>
+            App.vent.trigger 'bring_to_front:widget', @_capturedWidget.model
+            @_capturedWidget = null
 
         put_in_back:
           name: 'Put in Back'
           callback: (key, opt) ->
             alert 'Bar!'
 
-        sep1: "---------",
+        seperator: "---------",
 
         edit_image:
           name: 'Edit Image...'
