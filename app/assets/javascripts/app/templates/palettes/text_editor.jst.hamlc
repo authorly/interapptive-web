@@ -1,6 +1,6 @@
 %select#font-face{:readonly => "", :disabled => ""}
   %optgroup{:id => "uploaded-fonts", :label => "Uploaded Fonts"}
-    %option{:value => "", :disabled => ""}
+    %option#no-fonts-uploaded{:value => "", :disabled => ""}
       no fonts uploaded..
   %optgroup{:label => "Standard Fonts"}
     %option{:value => "Arial"}

@@ -96,6 +96,8 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   addFontOption: (name) ->
+    @removeNoUploadedFontText()
+
     $('<option/>',
       value: name
       text:  name
@@ -130,3 +132,9 @@ class App.Views.TextEditorPalette extends Backbone.View
       .removeClass('disabled')
     @$('#colorpicker').removeClass('disabled')
     @$('#colorpicker span i').css("background-color", "rgb(#{color.r}, #{color.g}, #{color.b})")
+
+
+  removeNoUploadedFontText: ->
+    $firstUploadedFontEl = @$('#no-fonts-uploaded').first()
+    if $.trim($firstUploadedFontEl.text()) is 'no fonts uploaded..'
+      $firstUploadedFontEl.remove()
