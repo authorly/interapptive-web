@@ -50,7 +50,9 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   setActiveSprite: (__, sprite) ->
-    if sprite? and sprite instanceof App.Models.SpriteWidget
+    return unless sprite instanceof App.Models.SpriteWidget
+
+    if sprite
       @widget = sprite
       @enablePalette()
       @displayFilename()
