@@ -43,8 +43,11 @@ class App.Views.KeyframeIndex extends Backbone.View
     @$el.empty()
 
     if @collection.length > 0
-      @collection.each (keyframe) => @renderKeyframe(keyframe)
+      @collection.each (keyframe) =>
+        @renderKeyframe(keyframe)
+        @_disableIntroButtonIfAnimation(keyframe)
       @_updateDeleteButtons()
+
     @initSortable()
 
     @switchKeyframe @lastKeyframe()
@@ -134,6 +137,11 @@ class App.Views.KeyframeIndex extends Backbone.View
       items       : 'li[data-is_animation!="1"]'
       opacity     : 0.6
       update      : @_numberKeyframes
+
+
+  _disableIntroButtonIfAnimation: (keyframe) ->
+    return unless keyfame.isAnimation()
+    App.vent.trigger 'can_add:sceneAnimation', keyframe.isAnimation()
 
 
   _numberKeyframes: =>
