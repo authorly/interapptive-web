@@ -128,16 +128,12 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   mouseOver: ->
     super
     @parent.setCursor('move')
-    @drawSelection()
+    @label.setOpacity(155)
 
 
   mouseOut: ->
     super
-    @parent.setCursor('default')
-
-
-  draw: ->
-    if @_mouse_over then @drawSelection()
+    @label.setOpacity(255)
 
 
   drawSelection: ->

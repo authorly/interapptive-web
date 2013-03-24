@@ -36,4 +36,4 @@
   %span.add-on
     %i{:style => "background-color: rgb(255, 146, 180);"}
 
-#font-cache
+%style#font-cache{:type => 'text/css'}
