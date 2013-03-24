@@ -20,9 +20,9 @@ class App.Views.VoiceoverIndex extends Backbone.View
     'click #preview-alignment': 'clickPreviewAlignment'
     'click #accept-alignment':  'acceptAlignment'
 
-  COUNTDOWN_LENGTH_IN_SECONDS = 5
+  COUNTDOWN_LENGTH_IN_SECONDS: 5
 
-  VOICEOVER_UPLOAD_ERROR = 'There was a problem uploading your file. Please try again.'
+  VOICEOVER_UPLOAD_ERROR: 'There was a problem uploading your file. Please try again.'
 
 
   initialize: (keyframe) ->

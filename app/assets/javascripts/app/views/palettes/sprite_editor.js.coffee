@@ -5,21 +5,16 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   className: 'sprite-editor'
 
-  POSITION_TIMER = null
+  POSITION_TIMER: null
 
-  SCALE_STEP = 1
+  SCALE_STEP:    1
 
-  ENTER_KEYCODE = 13
-
-  LEFT_KEYCODE =  37
-
-  UP_KEYCODE =    38
-
-  RIGHT_KEYCODE = 39
-
-  DOWN_KEYCODE =  40
-
-  CONTROL_KEYS = [8, 9, @ENTER_KEYCODE, 35, 36, @LEFT_KEYCODE, @RIGHT_KEYCODE]
+  ENTER_KEYCODE: 13
+  LEFT_KEYCODE:  37
+  UP_KEYCODE:    38
+  RIGHT_KEYCODE: 39
+  DOWN_KEYCODE:  40
+  CONTROL_KEYS: [8, 9, @ENTER_KEYCODE, 35, 36, @LEFT_KEYCODE, @RIGHT_KEYCODE]
 
 
   initialize: ->
