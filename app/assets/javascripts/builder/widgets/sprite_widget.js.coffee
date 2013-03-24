@@ -87,7 +87,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @hideBorder()
 
 
-  showBorder: ->
+  showBorder: =>
     @_border = true
 
 

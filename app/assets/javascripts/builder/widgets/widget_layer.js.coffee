@@ -17,6 +17,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   CANVAS_ID = 'builder-canvas'
 
+
   constructor: (widgetsCollection) ->
     super
 
@@ -36,11 +37,15 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @addClickOutsideCanvasEventListener()
     @addCanvasMouseLeaveListener()
 
+    @initializeContextMenu()
+    @addContextMenuEventListener()
+
     @widgets.on 'add',    @addWidget,    @
     @widgets.on 'remove', @removeWidget, @
     @widgets.on 'change:position change:scale', @updateWidget, @
     @widgets.on 'change:z_order', @reorderWidget, @
 
+    App.vent.on 'scale:sprite_widget', @scaleSpriteWidgetFromModel, @
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
 
@@ -219,6 +224,83 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       if widget?
         widget.doubleClick touch: touch, point: point
         App.currentSelection.set widget: widget.model
+
+
+  addContextMenuEventListener: ->
+    cc.canvas.addEventListener 'contextmenu', (event) =>
+      touch = @_calculateTouchFrom(event)
+      point = @_getTouchCoordinates(touch)
+
+      widget = @widgetAtPoint(point)
+      if widget? and widget.isSpriteWidget()
+        event.preventDefault()
+
+        $el = $('#context-menu')
+        $el.contextMenu x: event.clientX, y: event.clientY
+
+        $('header').on 'click', -> $el.contextMenu 'hide'
+
+
+  initializeContextMenu: ->
+    options =
+      selector: '#context-menu'
+
+      zIndex: 100
+
+      events:
+        hide: => @_capturedWidget = null
+
+      items:
+        edit_image:
+          name:     'Edit Image...'
+          icon:     'edit'
+          callback: @editSpriteWithContextMenu
+
+        remove_image:
+          name:     'Remove Image'
+          icon:     'delete'
+          callback: @removeSpriteWithContextMenu
+
+        seperator:  "---------",
+
+        bring_to_front:
+          name:     'Bring to Front'
+          callback: @bringSpriteToFront
+
+        put_in_back:
+          name:     'Put in Back'
+          callback: @putSpriteInBack
+
+    $.contextMenu(options)
+
+
+  bringSpriteToFront: =>
+    App.vent.trigger 'bring_to_front:sprite', @_capturedWidget.model
+    @_capturedWidget = null
+
+
+  putSpriteInBack: =>
+    App.vent.trigger 'put_in_back:sprite', @_capturedWidget.model
+    @_capturedWidget = null
+
+
+  removeSpriteWithContextMenu: =>
+    @_capturedWidget.model.collection.remove(@_capturedWidget.model)
+    @_capturedWidget = null
+    App.vent.trigger 'remove:widget'
+
+
+  editSpriteWithContextMenu: =>
+    App.currentSelection.set widget: @_capturedWidget.model
+    @_capturedWidget = null
+
+
+  scaleSpriteWidgetFromModel: (modelAndScaleData) ->
+    widgetModel = modelAndScaleData.model
+    scale = modelAndScaleData.scale
+
+    view = @_getView(widgetModel)
+    view.setScale(scale)
 
 
   _getTouchCoordinates: (touch) ->

@@ -1,6 +1,13 @@
 #= require ../assets/sprites/sprite
 
+#
 # Used for the menu for managing the sprites of the current keyframe.
+#
+# Methods:
+#   bringToFront - Brings a sprite (and element) to top of list
+#
+#   putInBack - Places sprite on botton of list (lowest z index)
+#
 class App.Views.SpriteListPalette extends Backbone.View
 
   tagName: 'ul'
@@ -22,6 +29,9 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     App.currentSelection.on 'change:widget', @spriteSelected, @
 
+    App.vent.on 'bring_to_front:sprite', @bringToFront, @
+    App.vent.on 'put_in_back:sprite', @putInBack, @
+
     @views = []
 
 
@@ -35,6 +45,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     @$('.icon-plus').tooltip
       title:     'Add image...'
       placement: 'right'
+
 
   widgetAdded: (widget) ->
     return unless @_isSprite(widget)
@@ -82,6 +93,18 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     if (view = @_getView(sprite))?
       view.$el.addClass('active')
+
+
+  bringToFront: (widget) =>
+    el = @$("[data-widget-id='#{widget.get('id')}']").parent()
+    @$el.prepend(el)
+    @updateZOrder()
+
+
+  putInBack: (widget) =>
+    el = @$("[data-widget-id='#{widget.get('id')}']").parent()
+    @$el.append(el)
+    @updateZOrder()
 
 
   makeSortable: ->

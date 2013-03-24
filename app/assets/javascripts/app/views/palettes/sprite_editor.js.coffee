@@ -19,6 +19,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   initialize: ->
     App.currentSelection.on 'change:widget', @setActiveSprite, @
+    App.vent.on 'remove:widget', @resetForm
 
 
   render: ->
