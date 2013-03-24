@@ -25,14 +25,21 @@
 #
 
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
-  ESCAPE_KEYCODE: 27
-  ENTER_KEYCODE:  13
-  TEXT_PADDING:   14
-  TEXT_PAD_BTM:   16
-  TEXT_PAD_TOP:   6
-  BORDER_WIDTH:   4
-  BORDER_COLOR:   'rgba(15, 79, 168, 0.8)'
-  SCALE:          0.59
+  ESCAPE_KEYCODE = 27
+
+  ENTER_KEYCODE =  13
+
+  TEXT_PADDING =   14
+
+  TEXT_PAD_BTM =   16
+
+  TEXT_PAD_TOP =   6
+
+  BORDER_WIDTH =   4
+
+  BORDER_COLOR =   'rgba(15, 79, 168, 0.8)'
+
+  SCALE =          0.59
 
 
   constructor: (options) ->
