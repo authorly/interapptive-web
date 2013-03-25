@@ -103,8 +103,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   changeCoordinates: (new_point) ->
     return unless new_point?
     @$('#x-coord').val(parseInt(new_point.x))
-    @$('#y-coord').val(parseInt(new_point.x))
-    @setSpritePosition()
+    @$('#y-coord').val(parseInt(new_point.y))
 
 
   _moveSpriteWithArrows: (event) =>
