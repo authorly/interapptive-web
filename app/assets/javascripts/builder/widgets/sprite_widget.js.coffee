@@ -32,11 +32,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @sprite.initWithFile @model.dataUrl
 
       currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
-      currentOrientation.on('change:scale', @_changeScale, @)
+      currentOrientation.on('change:scale', ((__, scale) -> @setScale(scale)), @)
       @applyOrientation(currentOrientation)
 
-      @setScale(parseFloat(currentOrientation.get('scale')))
-      @addChild(@sprite)
+      @addChild @sprite
 
       window.setTimeout @checkLoadedStatus, 0
 
@@ -65,8 +64,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @setPosition(new cc.Point(position.x, position.y))
     scale = parseFloat(orientation.get('scale'))
-    @sprite.setScale(scale)
-    @setScale(scale)
+    @setScale scale
 
 
   select: ->
@@ -129,10 +127,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     if message.action == 'loaded' && message.path == @model.get('url')
       App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
       @constructorContinuation(message.bits)
-
-
-  _changeScale: (__, scale) ->
-    @sprite.setScale(parseFloat(scale))
 
 
   _getImage: ->
