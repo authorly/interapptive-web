@@ -56,7 +56,13 @@ window.App =
       el        : $('#sprite-editor-palette')
       resizable : false
 
-    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette ]
+    @spriteSelectionPalette = new App.Views.PaletteContainer
+      title:     'Choose a Sprite..'
+      view:      new App.Views.SpriteSelectionPalette
+      el:        $('#sprite-slection-palette')
+      resizable: false
+
+    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteSelectionPalette ]
 
     @currentSelection.on 'change:storybook', @_openStorybook, @
     @currentSelection.on 'change:scene',     @_changeScene,   @
@@ -89,6 +95,7 @@ window.App =
     storybook.fetchCollections()
 
     @textEditorPalette.view.openStorybook(storybook)
+    @spriteSelectionPalette.view.openStorybook(storybook)
 
 
   _showSceneForm: ->
