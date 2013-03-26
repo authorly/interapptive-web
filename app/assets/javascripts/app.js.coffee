@@ -17,6 +17,7 @@ window.App =
     @vent.on 'toggle:palette',           @_togglePalette,    @
     @vent.on 'initialize:hotspotWidget', @_openHotspotModal, @
     @vent.on 'hide:modal',               @_hideModal,        @
+    @vent.on 'show:imageLibrary',        @_showImageLibrary, @
 
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:keyframe', @_addNewKeyframe, @
@@ -25,8 +26,8 @@ window.App =
 
     @vent.on 'show:sceneform',  @_showSceneForm,  @
 
-    @vent.on 'change:keyframeWidgets',          @_changeKeyframeWidgets, @
-    @vent.on 'load:sprite', @_changeSceneWidgets,    @
+    @vent.on 'change:keyframeWidgets', @_changeKeyframeWidgets, @
+    @vent.on 'load:sprite',            @_changeSceneWidgets,    @
 
     @vent.on 'play:video', @_playVideo, @
 
@@ -185,6 +186,10 @@ window.App =
 
   _playVideo: (video_view) ->
     @lightboxWithView(view: video_view).show()
+
+
+  _showImageLibrary: ->
+    @file_menu.showImageLibrary()
 
 
   start: ->

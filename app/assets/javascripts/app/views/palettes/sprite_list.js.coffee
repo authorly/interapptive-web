@@ -9,15 +9,10 @@
 #   putInBack - Places sprite on botton of list (lowest z index)
 #
 class App.Views.SpriteListPalette extends Backbone.View
-
   tagName: 'ul'
-
   className: 'sprites'
 
-  template: JST['app/templates/palettes/sprite_list']
-
   events:
-    'click .icon-plus': 'addSprite'
     'click .delete':    'removeSprite'
     'click li':         'selectSprite'
 
@@ -33,18 +28,6 @@ class App.Views.SpriteListPalette extends Backbone.View
     App.vent.on 'put_in_back:sprite', @putInBack, @
 
     @views = []
-
-
-  render: ->
-    @$el.html @template(title: @options.title)
-    @initAddSpriteIconTooltip()
-    @
-
-
-  initAddSpriteIconTooltip: ->
-    @$('.icon-plus').tooltip
-      title:     'Add image...'
-      placement: 'right'
 
 
   widgetAdded: (widget) ->
@@ -68,10 +51,6 @@ class App.Views.SpriteListPalette extends Backbone.View
 
     view = @_getView(widget)
     view.render()
-
-
-  addSprite: ->
-    App.vent.trigger 'create:image'
 
 
   removeSprite: (e) ->
