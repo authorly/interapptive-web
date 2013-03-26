@@ -14,7 +14,7 @@ class App.Views.ToolbarView extends Backbone.View
 
   initialize: ->
     @_enableOnEvent 'can_add:sceneAnimation', '.animation-keyframe'
-    @_enableOnEvent 'can_add:keyframeText'  , '.edit-text'
+    @_enableOnEvent 'can_add:keyframeText' ,  '.edit-text'
 
     App.vent.on 'activate:scene', (scene) =>
       @$('li').removeClass 'disabled'

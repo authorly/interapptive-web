@@ -11,14 +11,13 @@ class App.Views.KeyframeIndex extends Backbone.View
     'click  .keyframe-list li div' : 'keyframeClicked'
     'click  .delete-keyframe'      : 'destroyKeyframeClicked'
 
-
   DELETE_KEYFRAME_MSG:
     '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
 
 
   initialize: ->
-    @collection.on 'change:positions reset'           , @render                , @
-    @collection.on 'change:preview'                   , @keyframePreviewChanged, @
+    @collection.on 'change:positions reset', @render                , @
+    @collection.on 'change:preview'        , @keyframePreviewChanged, @
     @collection.on 'add'   , @appendKeyframe
     @collection.on 'remove', @removeKeyframe
 
@@ -31,8 +30,8 @@ class App.Views.KeyframeIndex extends Backbone.View
   remove: ->
     super
 
-    @collection.off 'change:positions reset'           , @render                , @
-    @collection.off 'change:preview'                   , @keyframePreviewChanged, @
+    @collection.off 'change:positions reset', @render, @
+    @collection.off 'change:preview', @keyframePreviewChanged, @
     @collection.off 'add'   , @appendKeyframe
     @collection.off 'remove', @removeKeyframe
 
@@ -44,8 +43,11 @@ class App.Views.KeyframeIndex extends Backbone.View
     @$el.empty()
 
     if @collection.length > 0
-      @collection.each (keyframe) => @renderKeyframe(keyframe)
+      @collection.each (keyframe) =>
+        @renderKeyframe(keyframe)
+        @_disableIntroButtonIfAnimation(keyframe)
       @_updateDeleteButtons()
+
     @initSortable()
 
     @switchKeyframe @lastKeyframe()
@@ -127,6 +129,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       App.keyframesTextCollection.fetch
         success: (collection, response) =>
 
+
   initSortable: =>
     $(@el).sortable
       cancel      : ''
@@ -134,6 +137,11 @@ class App.Views.KeyframeIndex extends Backbone.View
       items       : 'li[data-is_animation!="1"]'
       opacity     : 0.6
       update      : @_numberKeyframes
+
+
+  _disableIntroButtonIfAnimation: (keyframe) ->
+    return unless keyfame.isAnimation()
+    App.vent.trigger 'can_add:sceneAnimation', keyframe.isAnimation()
 
 
   _numberKeyframes: =>
@@ -155,6 +163,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     buttons = @$('li .delete-keyframe')
     if @collection.length > 1 then buttons.show() else buttons.hide()
+
 
   _removeKeyframeViews: ->
     _.each(@keyframe_views, (kv) -> kv.remove())
