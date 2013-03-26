@@ -21,6 +21,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_border = false
 
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
+    currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
+    @applyOrientation(currentOrientation)
 
     @_getImage()
 
@@ -31,12 +33,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     cc.TextureCache.sharedTextureCache().addImageAsync @model.dataUrl, @, =>
       @sprite.initWithFile @model.dataUrl
 
-      currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
-      currentOrientation.on('change:scale', @_changeScale, @)
-      @applyOrientation(currentOrientation)
 
-      @setScale(parseFloat(currentOrientation.get('scale')))
-      @addChild(@sprite)
+      @addChild @sprite
 
       window.setTimeout @checkLoadedStatus, 0
 
@@ -59,14 +57,24 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   applyOrientation: (orientation) ->
+    @currentOrientation?.off('change:scale', @_changeScale, @)
     @currentOrientation = orientation
+    @currentOrientation.on('change:scale', @_changeScale, @)
+    @currentOrientation.on('change:position', @_changePosition, @)
 
     position = orientation.get('position')
 
     @setPosition(new cc.Point(position.x, position.y))
     scale = parseFloat(orientation.get('scale'))
-    @sprite.setScale(scale)
-    @setScale(scale)
+    @setScale scale
+
+
+  @_changeScale: (__, scale) ->
+    @setScale scale
+
+  @_changePosition: (__, position) ->
+    @setPosition position
+
 
 
   select: ->
@@ -129,10 +137,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     if message.action == 'loaded' && message.path == @model.get('url')
       App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
       @constructorContinuation(message.bits)
-
-
-  _changeScale: (__, scale) ->
-    @sprite.setScale(parseFloat(scale))
 
 
   _getImage: ->
