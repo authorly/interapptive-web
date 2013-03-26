@@ -110,12 +110,12 @@ class App.Builder.Widgets.Widget extends cc.Node
   pointToLocal: (point) =>
     return unless @parent?
 
-
     # Fix bug in cocos2d-html5; It doesn't convert to local space correctly
     r = @rect()
+    root = @parent.getPosition()
     anchor = @parent.getAnchorPoint()
-    new cc.Point(-r.origin.x + point.x + anchor.x * r.size.width,
-                 -r.origin.y + point.y + anchor.y * r.size.height)
+    new cc.Point(-root.x - r.origin.x + point.x + anchor.x * r.size.width,
+                 -root.y - r.origin.y + point.y + anchor.y * r.size.height)
 
 
   isPointInside: (point) ->
