@@ -56,13 +56,13 @@ window.App =
       el        : $('#sprite-editor-palette')
       resizable : false
 
-    @spriteSelectionPalette = new App.Views.PaletteContainer
+    @spriteLibraryPalette = new App.Views.PaletteContainer
       title:     'Choose a Sprite..'
-      view:      new App.Views.SpriteSelectionPalette
-      el:        $('#sprite-slection-palette')
+      view:      new App.Views.SpriteLibraryPalette
+      el:        $('#sprite-library-palette')
       resizable: false
 
-    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteSelectionPalette ]
+    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
 
     @currentSelection.on 'change:storybook', @_openStorybook, @
     @currentSelection.on 'change:scene',     @_changeScene,   @
@@ -95,7 +95,7 @@ window.App =
     storybook.fetchCollections()
 
     @textEditorPalette.view.openStorybook(storybook)
-    @spriteSelectionPalette.view.openStorybook(storybook)
+    @spriteLibraryPalette.view.openStorybook(storybook)
 
 
   _showSceneForm: ->
@@ -134,21 +134,12 @@ window.App =
     App.currentSelection.get(container).widgets.add(attributes)
 
 
-  _addNewImage: ->
+  _addNewImage: (image) ->
     scene = App.currentSelection.get('scene')
-    view = new App.Views.SpriteIndex(collection: scene.storybook.images)
-
-    imageSelected = (image) ->
-      scene.widgets.add
-        type: 'SpriteWidget'
-        url:      image.get 'url'
-        filename: image.get 'name'
-      scene.save()
-
-      view.off('select', imageSelected)
-      App.vent.trigger('hide:modal')
-    view.on 'select', imageSelected
-    App.modalWithView(view: view).show()
+    scene.widgets.add
+      type: 'SpriteWidget'
+      url:  image.get('url')
+      filename: image.get('name')
 
 
   _openHotspotModal: (widget) ->
