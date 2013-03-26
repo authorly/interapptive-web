@@ -218,7 +218,7 @@ class App.JSON
           if currentActions.length > 0
             if keyframeIndex > 0 or keyframeIndex == 0 and index == 0
               actions.push
-                runAfterSwipeNumber: keyframeIndex
+                runAfterSwipeNumber: index
                 spriteTag: spriteId
                 actionTags: currentActions
             else

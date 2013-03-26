@@ -14,13 +14,24 @@ describe "App.JSON", ->
       storybook: @storybook
       is_main_menu: true
       widgets: [
-        {'position':{'y':100,'x':200},'type':'ButtonWidget','id':1,'name':'read_it_myself','filename':'read_it_myself.png','url':'/assets/sprites/read_it_myself.png', 'selected_url': 'http://authorly.dev/read_it_myself-over.png'},
-        {'position':{'y':200,'x':200},'type':'ButtonWidget','id':2,'name':'read_to_me','filename':'read_to_me.png','url':'/assets/sprites/read_to_me.png'},
-        {'position':{'y':300,'x':200},'type':'ButtonWidget','id':3,'name':'auto_play','filename':'auto_play.png','url':'/assets/sprites/auto_play.png'}
+        {'type':'ButtonWidget','id':1,'name':'read_it_myself','filename':'read_it_myself.png','url':'/assets/sprites/read_it_myself.png', 'selected_url': 'http://authorly.dev/read_it_myself-over.png'},
+        {'type':'ButtonWidget','id':2,'name':'read_to_me','filename':'read_to_me.png','url':'/assets/sprites/read_to_me.png'},
+        {'type':'ButtonWidget','id':3,'name':'auto_play','filename':'auto_play.png','url':'/assets/sprites/auto_play.png'}
       ]
     }, parse: true
     @storybook.scenes.add @mainMenu
 
+    @mainMenuKeyframe = new App.Models.Keyframe {
+      id: 101,
+      scene: @mainMenu,
+      position: 0,
+      widgets: [
+        { 'type': 'SpriteOrientation', 'id': 4, keyframe_id: 101, sprite_widget_id: 1, position: { x: 200, y: 100}, scale: 1 }
+        { 'type': 'SpriteOrientation', 'id': 5, keyframe_id: 101, sprite_widget_id: 2, position: { x: 200, y: 200}, scale: 1 }
+        { 'type': 'SpriteOrientation', 'id': 6, keyframe_id: 101, sprite_widget_id: 3, position: { x: 200, y: 300}, scale: 1 }
+      ]
+    }, parse: true
+    @mainMenu.keyframes.add @mainMenuKeyframe
 
 
   describe "the main menu", ->
@@ -84,7 +95,7 @@ describe "App.JSON", ->
           },
           { 'type': 'HotspotWidget', 'id': 8, 'position': {'x': 410, 'y': 210}, 'radius': 20, 'video_id': "https://interapptive.s3.amazonaws.com/videos/8/voicemail_received.mov"
           },
-          { 'type': 'SpriteWidget', 'id': 6, 'url': 'https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg'},
+          { 'type': 'SpriteWidget', 'id': 9, 'url': 'https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg'},
         ]
       }, parse: true
 
@@ -93,7 +104,7 @@ describe "App.JSON", ->
         scene: @scene1,
         position: 1,
         widgets: [
-          { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 6, position: { x: 400, y: 200}, scale: 1.5 }
+          { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 9, position: { x: 400, y: 200}, scale: 1.5 }
           { 'type': 'TextWidget', 'id': 12, 'position': {'x': 120, 'y': 330}, 'string': 'Some text' },
           { 'type': 'TextWidget', 'id': 13, 'position': {'x': 150, 'y': 370}, 'string': 'Some other text' },
         ]
@@ -106,7 +117,7 @@ describe "App.JSON", ->
         scene: @scene1,
         position: 2,
         widgets: [
-          { 'type': 'SpriteOrientation', 'id': 14, keyframe_id: 2, sprite_widget_id: 6, position: { x: 500, y: 300}, scale: 1 }
+          { 'type': 'SpriteOrientation', 'id': 14, keyframe_id: 2, sprite_widget_id: 9, position: { x: 500, y: 300}, scale: 1 }
         ]
       }, parse: true
       @scene1.keyframes.add @keyframe2
@@ -190,7 +201,7 @@ describe "App.JSON", ->
       expect(api.CCMoveTo.length).toEqual 2
       move = api.CCMoveTo[0]
       expect(move.position).toEqual [400, 200]
-      expect(move.duration).toEqual 0
+      expect(move.duration).toEqual 3
       k1MoveId = move.actionTag
 
       move = api.CCMoveTo[1]
@@ -202,7 +213,7 @@ describe "App.JSON", ->
       expect(api.CCScaleTo.length).toEqual 2
       scale = api.CCScaleTo[0]
       expect(scale.intensity).toEqual 1.5
-      expect(scale.duration).toEqual 0
+      expect(scale.duration).toEqual 3
       k1ScaleId = scale.actionTag
 
       scale = api.CCScaleTo[1]
