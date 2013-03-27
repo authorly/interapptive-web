@@ -38,12 +38,12 @@ assets:
     - !!null 
   - - 37
     - Image
-    - image20130320-28415-18n9cxx.png
+    - image20130327-76514-12uc6z.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-08 22:56:35.000000000Z
-    - 2013-03-20 00:09:21.000000000Z
+    - 2013-03-27 00:36:54.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -51,12 +51,12 @@ assets:
 '
   - - 38
     - Image
-    - image20130318-2498-104bmhv.png
+    - image20130327-76514-1612waz.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-08 23:10:23.000000000Z
-    - 2013-03-18 21:57:19.000000000Z
+    - 2013-03-27 00:43:44.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -64,12 +64,12 @@ assets:
 '
   - - 39
     - Image
-    - image20130318-2498-1788rw7.png
+    - image20130327-76514-mm1pbu.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-08 23:10:34.000000000Z
-    - 2013-03-18 17:23:28.000000000Z
+    - 2013-03-27 00:43:53.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -77,12 +77,12 @@ assets:
 '
   - - 40
     - Image
-    - image20130318-2498-89paeq.png
+    - image20130327-76514-1nf4axh.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-08 23:10:37.000000000Z
-    - 2013-03-18 17:21:47.000000000Z
+    - 2013-03-27 00:47:28.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -127,12 +127,12 @@ assets:
     - !!null 
   - - 44
     - Image
-    - image20130318-2498-phdlsn.png
+    - image20130327-76514-1drt4yv.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-18 21:33:12.000000000Z
-    - 2013-03-18 21:57:25.000000000Z
+    - 2013-03-27 00:52:00.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -184,12 +184,12 @@ assets:
     - !!null 
   - - 49
     - Image
-    - image20130318-2498-1yk2shx.png
+    - image20130327-76514-b8lrmz.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-18 21:37:36.000000000Z
-    - 2013-03-18 21:42:12.000000000Z
+    - 2013-03-27 00:44:33.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -208,12 +208,12 @@ assets:
     - !!null 
   - - 51
     - Image
-    - image20130319-89661-1mmdt8k.png
+    - image20130327-76514-gxnyb3.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-18 21:42:17.000000000Z
-    - 2013-03-19 20:27:40.000000000Z
+    - 2013-03-27 00:52:27.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -232,12 +232,12 @@ assets:
     - !!null 
   - - 53
     - Image
-    - image20130318-2498-ppbpck.png
+    - image20130327-76514-1g032hf.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-18 21:45:58.000000000Z
-    - 2013-03-18 21:48:06.000000000Z
+    - 2013-03-27 00:45:00.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -245,12 +245,12 @@ assets:
 '
   - - 54
     - Image
-    - image20130320-28415-9c02ir.png
+    - image20130327-76514-7urjno.png
     - !!null 
     - !!null 
     - !!null 
     - 2013-03-18 21:48:34.000000000Z
-    - 2013-03-19 22:50:56.000000000Z
+    - 2013-03-27 00:44:49.000000000Z
     - 3
     - true
     - ! '--- {}
@@ -304,6 +304,67 @@ assets:
     - 3
     - false
     - !!null 
+  - - 59
+    - Image
+    - image20130325-11878-135rw67.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-25 10:27:59.000000000Z
+    - 2013-03-25 10:29:48.000000000Z
+    - 4
+    - true
+    - ! '--- {}
+
+'
+  - - 60
+    - Image
+    - Screen_Shot_2013-03-25_at_11.25.31_AM.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-25 10:30:34.000000000Z
+    - 2013-03-25 10:30:34.000000000Z
+    - 4
+    - false
+    - !!null 
+  - - 61
+    - Image
+    - image20130325-11878-n84a7w.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-25 10:30:56.000000000Z
+    - 2013-03-25 13:31:35.000000000Z
+    - 4
+    - true
+    - ! '--- {}
+
+'
+  - - 64
+    - Image
+    - 1000x600.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-25 11:14:49.000000000Z
+    - 2013-03-25 11:14:49.000000000Z
+    - 4
+    - false
+    - !!null 
+  - - 65
+    - Image
+    - image20130327-76514-1gi9skl.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-03-25 11:33:02.000000000Z
+    - 2013-03-26 23:26:04.000000000Z
+    - 4
+    - true
+    - ! '--- {}
+
+'
 
 ---
 keyframes:
@@ -338,11 +399,11 @@ keyframes:
   - - 9
     - 6
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-10 22:37:28.000000000Z
+    - 2013-03-27 00:43:24.000000000Z
     - 40
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 9\n  sprite_widget_id: 4\n
-      \ position:\n    x: 512.5562913907289\n    y: 358.6490066225171\n  scale: 1\n-
-      position:\n    x: 528.3443708609284\n    y: 251.12582781456933\n  type: TextWidget\n
+      \ position:\n    x: 508.7499253429819\n    y: 406.8123532360601\n  scale: 1\n-
+      position:\n    x: 528.9867549668886\n    y: 253.03973509933752\n  type: TextWidget\n
       \ string: For those who protect wild places\n  font: Arial\n  size: 24\n  z_order:
       6000\n  id: 6\n- position:\n    x: 545.0927152317877\n    y: 190.15894039735053\n
       \ type: TextWidget\n  string: And to the snowman that lives\n  font: Arial\n
@@ -350,47 +411,131 @@ keyframes:
       \   y: 128.30463576158945\n  type: TextWidget\n  string: In every child's heart\n
       \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 8\n"
     - 0
-    - !!null 
-    - ! "--- !!null \n...\n"
+    - page-1-paragraph-1.mp3
+    - ! '---
+
+      - 0.48
+
+      - 0.576
+
+      - 0.615
+
+      - 1.047
+
+      - 1.354
+
+      - 1.757
+
+      - 2.639
+
+      - 3.314
+
+      - 2.891
+
+      - 3.52
+
+      - 3.896
+
+      - 4.224
+
+      - 4.56
+
+      - 4.782
+
+      - 5.232
+
+      - 5.808
+
+'
     - false
   - - 12
     - 7
     - 2013-03-06 15:40:45.000000000Z
-    - 2013-03-18 21:27:56.000000000Z
+    - 2013-03-27 00:43:51.000000000Z
     - 39
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 12\n  sprite_widget_id: 5\n
-      \ position:\n    x: 770\n    y: 384\n  scale: 1\n- position:\n    x: 181.3642384105958\n
-      \   y: 150.91390728476813\n  type: TextWidget\n  string: The snowflakes were\n
-      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 9\n- position:\n    x: 252.78145695364245\n
-      \   y: 112.92052980132445\n  type: TextWidget\n  string:  resting after their
-      twisting,\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 10\n- position:\n
-      \   x: 272.4834437086091\n    y: 75.29801324503312\n  type: TextWidget\n  string:
-      twirling dance through\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 11\n-
-      position:\n    x: 286.28476821192066\n    y: 40.47682119205298\n  type: TextWidget\n
-      \ string: the crisp night air.\n  font: Arial\n  size: 24\n  z_order: 6000\n
-      \ id: 12\n- position:\n    x: 784.2516556291389\n    y: 122.70198675496687\n
-      \ type: TextWidget\n  string: Every twig in the forest\n  font: Arial\n  size:
-      24\n  z_order: 6000\n  id: 13\n- position:\n    x: 780.185430463576\n    y:
-      83.76158940397346\n  type: TextWidget\n  string: wore a new coat\n  font: Arial\n
-      \ size: 24\n  z_order: 6000\n  id: 14\n- position:\n    x: 847.7019867549665\n
+      \ position:\n    x: 563.3395225464158\n    y: 394.09827357236816\n  scale: 1\n-
+      position:\n    x: 185.5165914241044\n    y: 156.39874057852447\n  type: TextWidget\n
+      \ string: The snowflakes were\n  font: Arial\n  size: 24\n  z_order: 6000\n
+      \ id: 9\n- position:\n    x: 257.3311258278146\n    y: 121.67549668874166\n
+      \ type: TextWidget\n  string:  resting after their twisting,\n  font: Arial\n
+      \ size: 24\n  z_order: 6000\n  id: 10\n- position:\n    x: 272.4834437086091\n
+      \   y: 75.29801324503312\n  type: TextWidget\n  string: twirling dance through\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 11\n- position:\n    x: 286.28476821192066\n
+      \   y: 40.47682119205298\n  type: TextWidget\n  string: the crisp night air.\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 12\n- position:\n    x: 784.2516556291389\n
+      \   y: 122.70198675496687\n  type: TextWidget\n  string: Every twig in the forest\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 13\n- position:\n    x: 795.7875524794906\n
+      \   y: 85.85720693385389\n  type: TextWidget\n  string: wore a new coat\n  font:
+      Arial\n  size: 24\n  z_order: 6000\n  id: 14\n- position:\n    x: 847.7019867549665\n
       \   y: 46.894039735099376\n  type: TextWidget\n  string:  of glimmering white.\n
       \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 15\n"
     - 0
-    - !!null 
-    - ! '--- []
+    - page-2-paragraph-1.mp3
+    - ! '---
+
+      - 0.829
+
+      - 1.008
+
+      - 3.73
+
+      - 3.696
+
+      - 3.679
+
+      - 3.787
+
+      - 4.47
+
+      - 6.624
+
+      - 6.59
+
+      - 6.141
+
+      - 6.569
+
+      - 11.568
+
+      - 11.376
+
+      - 8.511
+
+      - 11.372
+
+      - 9.592
+
+      - 11.347
+
+      - 9.868
+
+      - 11.328
+
+      - 11.328
+
+      - 10.752
+
+      - 11.616
+
+      - 11.839
+
+      - 11.885
+
+      - 12.205
 
 '
     - false
   - - 26
     - 7
     - 2013-03-07 19:02:47.000000000Z
-    - 2013-03-18 21:28:38.000000000Z
+    - 2013-03-27 00:43:41.000000000Z
     - 38
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 26\n  sprite_widget_id: 5\n
-      \ position:\n    x: -27.781456953642248\n    y: 620.3973509933778\n  scale:
-      1.2\n- position:\n    x: 127.89403973509923\n    y: 186.80132450331126\n  type:
+      \ position:\n    x: -49.704533876728476\n    y: 641.3495422284309\n  scale:
+      1.5\n- position:\n    x: 127.89403973509923\n    y: 188.49668874172187\n  type:
       TextWidget\n  string: Daybreak came\n  font: Arial\n  size: 24\n  z_order: 6000\n
-      \ id: 16\n- position:\n    x: 262.2847682119203\n    y: 143.50993377483437\n
+      \ id: 16\n- position:\n    x: 264.2715231788077\n    y: 144.43708609271513\n
       \ type: TextWidget\n  string: softly moving through the woods\n  font: Arial\n
       \ size: 24\n  z_order: 6000\n  id: 17\n- position:\n    x: 173.45695364238412\n
       \   y: 106.12582781456958\n  type: TextWidget\n  string: and yawning\n  font:
@@ -404,40 +549,119 @@ keyframes:
       \   y: 97.91390728476827\n  type: TextWidget\n  string: The birds were the first
       to notice...\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 22\n"
     - 1
-    - !!null 
-    - ! "--- !!null \n...\n"
+    - page-2-paragraph-2.mp3
+    - ! '---
+
+      - 1.099
+
+      - 1.343
+
+      - 3.563
+
+      - 3.552
+
+      - 3.528
+
+      - 3.49
+
+      - 3.888
+
+      - 4.27
+
+      - 7.296
+
+      - 7.253
+
+      - 5.876
+
+      - 7.232
+
+      - 6.775
+
+      - 7.728
+
+      - 8.086
+
+      - 8.569
+
+      - 8.832
+
+      - 9.438
+
+'
     - false
   - - 28
     - 8
     - 2013-03-18 21:32:17.000000000Z
-    - 2013-03-18 21:36:37.000000000Z
+    - 2013-03-27 00:44:04.000000000Z
     - 44
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 28\n  sprite_widget_id: 23\n
-      \ position:\n    x: 512\n    y: 384\n  scale: 1\n- type: SpriteOrientation\n
-      \ keyframe_id: 28\n  sprite_widget_id: 25\n  position:\n    x: 540.748344370861\n
-      \   y: 608.2052980132444\n  scale: 1\n- position:\n    x: 896.1854304635759\n
-      \   y: 235.8741721854305\n  type: TextWidget\n  string: ! '\"Take care!'\n  font:
-      Arial\n  size: 24\n  z_order: 6000\n  id: 26\n- position:\n    x: 917.2715231788078\n
-      \   y: 198.3841059602647\n  type: TextWidget\n  string: Take care!\"\n  font:
-      Arial\n  size: 24\n  z_order: 6000\n  id: 27\n- position:\n    x: 892.5364238410594\n
-      \   y: 151.45695364238406\n  type: TextWidget\n  string: The blue jays cawed\n
-      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 28\n- position:\n    x: 847.9337748344371\n
-      \   y: 116.1192052980132\n  type: TextWidget\n  string: a warning from high
-      in the\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 29\n- position:\n
-      \   x: 888.8278145695363\n    y: 80.66887417218544\n  type: TextWidget\n  string:
-      tops of the tall oaks.\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 30\n"
+      \ position:\n    x: 527.1125827814569\n    y: 376.0000000000001\n  scale: 1\n-
+      type: SpriteOrientation\n  keyframe_id: 28\n  sprite_widget_id: 25\n  position:\n
+      \   x: 540.748344370861\n    y: 608.2052980132444\n  scale: 1\n- position:\n
+      \   x: 887.1133732675175\n    y: 238.53702189036366\n  type: TextWidget\n  string:
+      ! '\"Take care!'\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 26\n- position:\n
+      \   x: 917.2715231788078\n    y: 198.3841059602647\n  type: TextWidget\n  string:
+      Take care!\"\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 27\n- position:\n
+      \   x: 892.5364238410594\n    y: 151.45695364238406\n  type: TextWidget\n  string:
+      The blue jays cawed\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 28\n-
+      position:\n    x: 847.9337748344371\n    y: 116.1192052980132\n  type: TextWidget\n
+      \ string: a warning from high in the\n  font: Arial\n  size: 24\n  z_order:
+      6000\n  id: 29\n- position:\n    x: 889.0794701986754\n    y: 78.04635761589405\n
+      \ type: TextWidget\n  string: tops of the tall oaks.\n  font: Arial\n  size:
+      24\n  z_order: 6000\n  id: 30\n"
     - 0
-    - !!null 
-    - ! "--- !!null \n...\n"
+    - page-3-paragraph-1.mp3
+    - ! '---
+
+      - 0.962
+
+      - 1.936
+
+      - 2.736
+
+      - 3.024
+
+      - 5.432
+
+      - 5.425
+
+      - 5.414
+
+      - 5.28
+
+      - 5.617
+
+      - 5.713
+
+      - 5.809
+
+      - 6.405
+
+      - 7.153
+
+      - 7.345
+
+      - 7.623
+
+      - 7.917
+
+      - 8.209
+
+      - 8.512
+
+      - 8.915
+
+'
     - false
   - - 29
     - 9
     - 2013-03-18 21:37:03.000000000Z
-    - 2013-03-18 21:42:10.000000000Z
+    - 2013-03-27 00:44:31.000000000Z
     - 49
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 29\n  sprite_widget_id: 31\n
-      \ position:\n    x: 512\n    y: 384\n  scale: 1\n- position:\n    x: 251.93377483443695\n
-      \   y: 572.9602649006619\n  type: TextWidget\n  string: ! '\"Do you hear the
+      \ position:\n    x: 510\n    y: 380\n  scale: 1\n- position:\n    x: 254.1523178807946\n
+      \   y: 581.5827814569533\n  type: TextWidget\n  string: ! '\"Do you hear the
       jays calling?\"'\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 32\n- position:\n
       \   x: 253.86092715231803\n    y: 526.7152317880799\n  type: TextWidget\n  string:
       Mother Doe spoke softly\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 33\n-
@@ -446,17 +670,45 @@ keyframes:
       position:\n    x: 512\n    y: 384\n  type: TextWidget\n  string: ''\n  font:
       Arial\n  size: 24\n  z_order: 6000\n  id: 35\n"
     - 0
-    - !!null 
-    - ! "--- !!null \n...\n"
+    - page-4-paragraph-1.mp3
+    - ! '---
+
+      - 1.152
+
+      - 2.218
+
+      - 2.303
+
+      - 2.885
+
+      - 3.168
+
+      - 3.701
+
+      - 5.665
+
+      - 5.368
+
+      - 5.857
+
+      - 6.173
+
+      - 6.817
+
+      - 7.105
+
+      - 7.345
+
+'
     - false
   - - 30
     - 9
     - 2013-03-18 21:42:14.000000000Z
-    - 2013-03-19 20:27:37.000000000Z
+    - 2013-03-27 00:44:21.000000000Z
     - 51
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 30\n  sprite_widget_id: 31\n
-      \ position:\n    x: 512\n    y: 384\n  scale: 1\n- position:\n    x: 186.10596026490057\n
-      \   y: 565.7350993377484\n  type: TextWidget\n  string: ! '\"Yes,\" he whispered.'\n
+      \ position:\n    x: 510\n    y: 380\n  scale: 1\n- position:\n    x: 186.10596026490057\n
+      \   y: 567.430463576159\n  type: TextWidget\n  string: ! '\"Yes,\" he whispered.'\n
       \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 36\n- position:\n    x: 265.6225165562913\n
       \   y: 516.847682119205\n  type: TextWidget\n  string: ! '\"I always listen
       to the birds,'\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 37\n- position:\n
@@ -468,40 +720,163 @@ keyframes:
       407.1721854304635\n  type: TextWidget\n  string: and all the sounds of the woods.\"\n
       \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 40\n"
     - 1
-    - !!null 
-    - ! "--- !!null \n...\n"
+    - page-4-paragraph-2.mp3
+    - ! '---
+
+      - 0.336
+
+      - 0.864
+
+      - 1.398
+
+      - 2.544
+
+      - 2.688
+
+      - 3.166
+
+      - 4.08
+
+      - 3.85
+
+      - 4.272
+
+      - 4.656
+
+      - 4.823
+
+      - 5.232
+
+      - 6.964
+
+      - 6.96
+
+      - 6.957
+
+      - 6.685
+
+      - 7.248
+
+      - 7.467
+
+      - 7.487
+
+      - 7.678
+
+      - 8.339
+
+      - 8.688
+
+      - 8.716
+
+      - 9.216
+
+      - 9.292
+
+      - 9.693
+
+      - 10.368
+
+'
     - false
   - - 31
     - 10
     - 2013-03-18 21:44:41.000000000Z
-    - 2013-03-18 21:55:41.000000000Z
+    - 2013-03-27 00:44:48.000000000Z
     - 54
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 31\n  sprite_widget_id: 41\n
-      \ position:\n    x: -350\n    y: 384\n  scale: 1.2\n- position:\n    x: 187.82781456953643\n
-      \   y: 184.29801324503325\n  type: TextWidget\n  string: ! '\"Who-hoo''s in
-      the woods?'\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 44\n- position:\n
-      \   x: 253.30463576158942\n    y: 145.23841059602643\n  type: TextWidget\n  string:
-      Where? Where did the jays say?\n  font: Arial\n  size: 24\n  z_order: 6000\n
-      \ id: 45\n- position:\n    x: 227.7814569536424\n    y: 114.07284768211917\n
-      \ type: TextWidget\n  string: Where is he?\"\n  font: Arial\n  size: 24\n  z_order:
-      6000\n  id: 46\n- position:\n    x: 281.96026490066237\n    y: 72.40397350993382\n
-      \ type: TextWidget\n  string: asked the Owl of Many Questions.\n  font: Arial\n
-      \ size: 24\n  z_order: 6000\n  id: 47\n"
+      \ position:\n    x: -417.34633829290425\n    y: 406.4074298831108\n  scale:
+      1.45\n- position:\n    x: 187.82781456953643\n    y: 184.29801324503325\n  type:
+      TextWidget\n  string: ! '\"Who-hoo''s in the woods?'\n  font: Arial\n  size:
+      24\n  z_order: 6000\n  id: 44\n- position:\n    x: 253.30463576158942\n    y:
+      145.23841059602643\n  type: TextWidget\n  string: Where? Where did the jays
+      say?\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 45\n- position:\n    x:
+      227.7814569536424\n    y: 114.07284768211917\n  type: TextWidget\n  string:
+      Where is he?\"\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 46\n- position:\n
+      \   x: 281.96026490066237\n    y: 72.40397350993382\n  type: TextWidget\n  string:
+      asked the Owl of Many Questions.\n  font: Arial\n  size: 24\n  z_order: 6000\n
+      \ id: 47\n"
     - 0
-    - !!null 
-    - ! "--- !!null \n...\n"
+    - page-5-paragraph-1.mp3
+    - ! '---
+
+      - 0.407
+
+      - 0.877
+
+      - 0.91
+
+      - 1.155
+
+      - 2.198
+
+      - 2.549
+
+      - 3.305
+
+      - 4.193
+
+      - 5.037
+
+      - 5.385
+
+      - 5.904
+
+      - 7.053
+
+      - 7.056
+
+      - 7.2
+
+      - 7.347
+
+      - 8.222
+
+      - 7.992
+
+      - 8.428
+
+      - 8.702
+
+'
     - false
   - - 32
     - 10
     - 2013-03-18 21:45:46.000000000Z
-    - 2013-03-18 21:49:54.000000000Z
+    - 2013-03-27 00:44:58.000000000Z
     - 53
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 32\n  sprite_widget_id: 41\n
-      \ position:\n    x: 812\n    y: 384\n  scale: 1.2\n"
+      \ position:\n    x: 972.9899520438429\n    y: 458.24118097147436\n  scale: 1\n"
     - !!null 
     - !!null 
     - ! "--- !!null \n...\n"
     - true
+  - - 34
+    - 12
+    - 2013-03-25 10:27:57.000000000Z
+    - 2013-03-25 11:32:39.000000000Z
+    - 61
+    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 34\n  sprite_widget_id: 1\n
+      \ position:\n    x: 523.2980132450326\n    y: 355.85430463576165\n  scale: 2\n-
+      type: SpriteOrientation\n  keyframe_id: 34\n  sprite_widget_id: 4\n  position:\n
+      \   x: 506\n    y: 356\n  scale: 1\n"
+    - 0
+    - !!null 
+    - ! "--- !!null \n...\n"
+    - false
+  - - 35
+    - 12
+    - 2013-03-25 11:32:44.000000000Z
+    - 2013-03-26 23:25:11.000000000Z
+    - 65
+    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 35\n  sprite_widget_id: 1\n
+      \ position:\n    x: 556.366943629548\n    y: 548.8521235147441\n  scale: 0.4\n-
+      type: SpriteOrientation\n  keyframe_id: 35\n  sprite_widget_id: 4\n  position:\n
+      \   x: 468.93377483443555\n    y: 440.3443708609274\n  scale: 1\n"
+    - 1
+    - !!null 
+    - ! "--- !!null \n...\n"
+    - false
 
 ---
 scenes:
@@ -557,7 +932,7 @@ scenes:
     - !!null 
     - 0
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-19 23:30:22.000000000Z
+    - 2013-03-27 00:42:43.000000000Z
     - 40
     - 0
     - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
@@ -567,7 +942,7 @@ scenes:
     - '40'
     - ! '---
 
-      r: 255
+      r: 0
 
       g: 0
 
@@ -580,7 +955,7 @@ scenes:
     - !!null 
     - 1
     - 2013-03-06 15:40:45.000000000Z
-    - 2013-03-19 23:30:22.000000000Z
+    - 2013-03-27 00:43:41.000000000Z
     - 39
     - 0
     - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
@@ -590,7 +965,7 @@ scenes:
     - '29'
     - ! '---
 
-      r: 255
+      r: 0
 
       g: 0
 
@@ -603,13 +978,13 @@ scenes:
     - !!null 
     - 2
     - 2013-03-18 21:32:17.000000000Z
-    - 2013-03-19 23:30:22.000000000Z
+    - 2013-03-27 00:44:04.000000000Z
     - 44
     - 0
     - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
       1\n  url: https://interapptive.s3.amazonaws.com/images/43/background0030.jpg\n
       \ filename: background0030.jpg\n  id: 23\n  z_order: 1\n- position:\n    x:
-      332.7748344370861\n    y: 533.158940397351\n  type: HotspotWidget\n  radius:
+      462.82781456953603\n    y: 407.88741721854296\n  type: HotspotWidget\n  radius:
       81.88300373675547\n  control_radius: 28\n  z_order: 5000\n  sound_id: https://interapptive.s3.amazonaws.com/sounds/45/effect-bluejay-caw.mp3\n
       \ id: 24\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
       1\n  url: https://interapptive.s3.amazonaws.com/images/46/arrow-pointing-left.png\n
@@ -618,11 +993,11 @@ scenes:
     - '25'
     - ! '---
 
-      r: 255
+      r: 8
 
-      g: 0
+      g: 7
 
-      b: 0
+      b: 7
 
 '
     - false
@@ -631,7 +1006,7 @@ scenes:
     - 50
     - 3
     - 2013-03-18 21:37:03.000000000Z
-    - 2013-03-19 23:30:22.000000000Z
+    - 2013-03-27 00:44:31.000000000Z
     - 49
     - 0
     - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
@@ -641,7 +1016,7 @@ scenes:
     - '25'
     - ! '---
 
-      r: 255
+      r: 0
 
       g: 0
 
@@ -654,15 +1029,41 @@ scenes:
     - 52
     - 4
     - 2013-03-18 21:44:41.000000000Z
-    - 2013-03-19 23:30:22.000000000Z
+    - 2013-03-27 00:44:48.000000000Z
     - 53
     - 1
     - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
       1\n  url: https://interapptive.s3.amazonaws.com/images/48/background0050.jpg\n
       \ filename: background0050.jpg\n  id: 41\n  z_order: 1\n- position:\n    x:
-      700.9205298013243\n    y: 312.75496688741754\n  type: HotspotWidget\n  radius:
+      698.9364449206877\n    y: 315.0790040720124\n  type: HotspotWidget\n  radius:
       90.74957651891769\n  control_radius: 28\n  z_order: 5000\n  video_id: https://interapptive.s3.amazonaws.com/videos/55/video_owl.mp4\n
       \ id: 43\n"
+    - Arial
+    - '25'
+    - ! '---
+
+      r: 5
+
+      g: 5
+
+      b: 5
+
+'
+    - false
+  - - 12
+    - 4
+    - !!null 
+    - 0
+    - 2013-03-25 10:27:57.000000000Z
+    - 2013-03-25 11:15:00.000000000Z
+    - 61
+    - 0
+    - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
+      1\n  url: https://interapptive.s3.amazonaws.com/images/60/Screen_Shot_2013-03-25_at_11.25.31_AM.png\n
+      \ filename: Screen_Shot_2013-03-25_at_11.25.31_AM.png\n  id: 1\n  z_order: 2\n-
+      position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale: 1\n  url:
+      https://interapptive.s3.amazonaws.com/images/64/1000x600.png\n  filename: 1000x600.png\n
+      \ id: 4\n  z_order: 1\n"
     - Arial
     - '25'
     - ! '---
@@ -697,6 +1098,16 @@ storybooks:
 '
     - 2013-03-06 15:25:37.000000000Z
     - 2013-03-06 15:27:05.000000000Z
+    - !!null 
+    - !!null 
+    - !!null 
+    - !!null 
+    - !!null 
+  - - 4
+    - 1
+    - testing scale
+    - 2013-03-25 10:27:57.000000000Z
+    - 2013-03-25 10:27:57.000000000Z
     - !!null 
     - !!null 
     - !!null 

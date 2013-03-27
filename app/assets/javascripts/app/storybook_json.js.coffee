@@ -76,7 +76,9 @@ class App.JSON
         text: widget.get('string'),
         xOffset: Math.round(widget.get('position').x),
         yOffset: Math.round(widget.get('position').y)
-    #voiceAudioFile: keyframe.get('url')
+      highlightingTimes: keyframe.get('content_highlight_times')
+      voiceAudioFile: keyframe.get('url')
+
     if widgets.length == 0
       paragraph.linesOfText = [{
         text: ''

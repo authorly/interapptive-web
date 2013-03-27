@@ -107,7 +107,9 @@ describe "App.JSON", ->
           { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 9, position: { x: 400, y: 200}, scale: 1.5 }
           { 'type': 'TextWidget', 'id': 12, 'position': {'x': 120, 'y': 330}, 'string': 'Some text' },
           { 'type': 'TextWidget', 'id': 13, 'position': {'x': 150, 'y': 370}, 'string': 'Some other text' },
-        ]
+        ],
+        content_highlight_times: [1, 2, 4, 5, 20]
+        url: 'https://interapptive.s3.amazonaws.com/sounds/29/page2.mp3'
       }, parse: true
       @scene1.keyframes.add @keyframe1
 
@@ -179,6 +181,9 @@ describe "App.JSON", ->
       expect(text.xOffset).toEqual 150
       expect(text.yOffset).toEqual 370
 
+      expect(keyframe.highlightingTimes).toEqual [1, 2, 4, 5, 20]
+      expect(keyframe.voiceAudioFile).toEqual 'https://interapptive.s3.amazonaws.com/sounds/29/page2.mp3'
+
       keyframe = keyframes[1]
       # one fake entry. TODO the iphone app should work with an empty array
       expect(keyframe.linesOfText.length).toEqual(1)
@@ -239,7 +244,6 @@ describe "App.JSON", ->
       expect(action.runAfterSwipeNumber).toEqual 1
       expect(action.spriteTag).toEqual 1
       expect(action.actionTags).toEqual [ k2ScaleId, k2MoveId ]
-
 
 
     # it 'addition', ->
