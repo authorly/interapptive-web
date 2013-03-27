@@ -62,6 +62,20 @@ window.App =
       el:        $('#sprite-library-palette')
       resizable: false
 
+    canvas = $('#builder-canvas')
+    canvasAttributes =
+      height: canvas.height()
+      offset: canvas.offset()
+      scale:  canvas.attr('height') / canvas.height()
+    canvas.droppable
+      accept: '.sprite-image'
+      drop: (__, ui) ->
+        App.vent.trigger 'create:image', null,
+          id: ui.draggable.data('id')
+          position:
+            x: (ui.position.left - canvasAttributes.offset.left) * canvasAttributes.scale
+            y: (canvasAttributes.height - (ui.position.top - canvasAttributes.offset.top)) * canvasAttributes.scale
+
     @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
 
     @currentSelection.on 'change:storybook', @_openStorybook, @
@@ -134,12 +148,20 @@ window.App =
     App.currentSelection.get(container).widgets.add(attributes)
 
 
-  _addNewImage: (image) ->
+  _addNewImage: (image, options={}) ->
     scene = App.currentSelection.get('scene')
-    scene.widgets.add
+
+    spriteOptions = {}
+    unless image
+      image = scene.storybook.images.get(options.id)
+      spriteOptions.position = options.position
+
+    $.extend spriteOptions,
       type: 'SpriteWidget'
       url:  image.get('url')
       filename: image.get('name')
+
+    scene.widgets.add spriteOptions
 
 
   _openHotspotModal: (widget) ->
