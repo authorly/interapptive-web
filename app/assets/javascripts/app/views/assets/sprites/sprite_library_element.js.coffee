@@ -7,13 +7,10 @@ class App.Views.SpriteLibraryElement extends Backbone.View
 
   render: ->
     @$el.html(@template(sprite: @model))
-    @$el.draggable
-      opacity: 0.7
-      helper: ->
-        $(@).clone()
+    @$('.sprite-image').draggable
+      helper: 'clone'
       appendTo: 'body'
-      addClasses: false
-      scroll: false
+      zIndex: 10000
     @
 
 

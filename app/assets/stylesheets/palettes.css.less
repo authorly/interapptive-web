@@ -36,6 +36,21 @@
   }
 }
 
+.sprite-library-image {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+  float: left;
+}
+
+// drag a sprite to the canvas
+.sprite-image.ui-draggable-dragging {
+  .sprite-library-image;
+}
+
 #sprite-library-palette {
   top: 435px;
   max-height: 150px;
@@ -44,20 +59,14 @@
   ul.sprites {
     margin-top: 3px;
     padding-bottom: 20px;
-    
+
     li {
       list-style: none;
       font-family: 'Arial Black';
       font-size: 10px;
 
-      span.sprite-image {
-        background-size: 100%;
-        background-repeat: no-repeat;
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        margin: 10px;
-        float: left;
+      .sprite-image {
+        .sprite-library-image
       }
 
       span.add {
