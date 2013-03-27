@@ -66,6 +66,8 @@ class App.JSON
 
 
   addTextNodeFor: (keyframe, page) =>
+    return if keyframe.isAnimation()
+
     widgets = keyframe.textWidgets()
     paragraph =
       # delayForPanning: true
