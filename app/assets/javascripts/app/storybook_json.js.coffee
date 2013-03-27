@@ -83,7 +83,7 @@ class App.JSON
       }]
 
     page.Page.text.paragraphs.push(paragraph)
-    keyframe._paragraph = paragraph
+    # keyframe._paragraph = paragraph
     #@createWidgetsFor(keyframe)
 
 
