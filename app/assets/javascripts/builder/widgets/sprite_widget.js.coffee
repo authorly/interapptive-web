@@ -21,8 +21,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_border = false
 
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
-    currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
-    @applyOrientation(currentOrientation)
 
     @_getImage()
 
@@ -33,6 +31,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     cc.TextureCache.sharedTextureCache().addImageAsync @model.dataUrl, @, =>
       @sprite.initWithFile @model.dataUrl
 
+      currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
+      @applyOrientation(currentOrientation)
 
       @addChild @sprite
 
