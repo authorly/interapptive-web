@@ -104,6 +104,11 @@ window.App =
     scene.fetchKeyframes()
 
 
+  _changeKeyframe: (__, keyframe) ->
+    App.vent.trigger 'can_add:text', keyframe.canAddText() if keyframe?
+    @currentWidgets.changeKeyframe(keyframe)
+
+
   _changeKeyframeWidgets: (keyframe) ->
     return unless App.currentSelection.get('keyframe') == keyframe
     @saveCanvasAsPreview(keyframe)
@@ -179,10 +184,6 @@ window.App =
 
   _hideModal: ->
     @modalWithView().hide()
-
-
-  _changeKeyframe: (__, keyframe) ->
-    @currentWidgets.changeKeyframe(keyframe)
 
 
   _playVideo: (video_view) ->
