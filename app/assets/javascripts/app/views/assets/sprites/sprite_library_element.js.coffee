@@ -7,9 +7,13 @@ class App.Views.SpriteLibraryElement extends Backbone.View
 
   render: ->
     @$el.html(@template(sprite: @model))
-    @$el.tooltip
-      title: @model.get('name')
-      placement: 'left'
+    @$el.draggable
+      opacity: 0.7
+      helper: ->
+        $(@).clone()
+      appendTo: 'body'
+      addClasses: false
+      scroll: false
     @
 
 
