@@ -35,7 +35,7 @@ window.App =
       scene: null
       keyframe: null
       text_widget: null
-    @currentWidgets = new App.Collections.CurrentWidgets(@currentSelection)
+    @currentWidgets = new App.Collections.CurrentWidgets()
 
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
     @file_menu = new App.Views.FileMenuView el: $('#file-menu')
