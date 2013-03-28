@@ -17,6 +17,7 @@ window.App =
     @vent.on 'toggle:palette',           @_togglePalette,    @
     @vent.on 'initialize:hotspotWidget', @_openHotspotModal, @
     @vent.on 'hide:modal',               @_hideModal,        @
+    @vent.on 'show:imageLibrary',        @_showImageLibrary, @
 
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:keyframe', @_addNewKeyframe, @
@@ -25,8 +26,8 @@ window.App =
 
     @vent.on 'show:sceneform',  @_showSceneForm,  @
 
-    @vent.on 'change:keyframeWidgets',          @_changeKeyframeWidgets, @
-    @vent.on 'load:sprite', @_changeSceneWidgets,    @
+    @vent.on 'change:keyframeWidgets', @_changeKeyframeWidgets, @
+    @vent.on 'load:sprite',            @_changeSceneWidgets,    @
 
     @vent.on 'play:video', @_playVideo, @
 
@@ -56,7 +57,27 @@ window.App =
       el        : $('#sprite-editor-palette')
       resizable : false
 
-    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette ]
+    @spriteLibraryPalette = new App.Views.PaletteContainer
+      title:     'Image Library'
+      view:      new App.Views.SpriteLibraryPalette
+      el:        $('#sprite-library-palette')
+      resizable: false
+
+    canvas = $('#builder-canvas')
+    canvasAttributes =
+      height: canvas.height()
+      offset: canvas.offset()
+      scale:  canvas.attr('height') / canvas.height()
+    canvas.droppable
+      accept: '.sprite-image'
+      drop: (__, ui) ->
+        App.vent.trigger 'create:image', null,
+          id: ui.draggable.data('id')
+          position:
+            x: (ui.position.left - canvasAttributes.offset.left) * canvasAttributes.scale
+            y: (canvasAttributes.height - (ui.position.top - canvasAttributes.offset.top)) * canvasAttributes.scale
+
+    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
 
     @currentSelection.on 'change:storybook', @_openStorybook, @
     @currentSelection.on 'change:scene',     @_changeScene,   @
@@ -89,6 +110,7 @@ window.App =
     storybook.fetchCollections()
 
     @textEditorPalette.view.openStorybook(storybook)
+    @spriteLibraryPalette.view.openStorybook(storybook)
 
 
   _showSceneForm: ->
@@ -127,21 +149,20 @@ window.App =
     App.currentSelection.get(container).widgets.add(attributes)
 
 
-  _addNewImage: ->
+  _addNewImage: (image, options={}) ->
     scene = App.currentSelection.get('scene')
-    view = new App.Views.SpriteIndex(collection: scene.storybook.images)
 
-    imageSelected = (image) ->
-      scene.widgets.add
-        type: 'SpriteWidget'
-        url:      image.get 'url'
-        filename: image.get 'name'
-      scene.save()
+    spriteOptions = {}
+    unless image
+      image = scene.storybook.images.get(options.id)
+      spriteOptions.position = options.position
 
-      view.off('select', imageSelected)
-      App.vent.trigger('hide:modal')
-    view.on 'select', imageSelected
-    App.modalWithView(view: view).show()
+    $.extend spriteOptions,
+      type: 'SpriteWidget'
+      url:  image.get('url')
+      filename: image.get('name')
+
+    scene.widgets.add spriteOptions
 
 
   _openHotspotModal: (widget) ->
@@ -187,6 +208,10 @@ window.App =
 
   _playVideo: (video_view) ->
     @lightboxWithView(view: video_view).show()
+
+
+  _showImageLibrary: ->
+    @file_menu.showImageLibrary()
 
 
   start: ->
