@@ -10,9 +10,20 @@ class App.Views.SpriteLibraryElement extends Backbone.View
     @$('.sprite-image').draggable
       helper: 'clone'
       appendTo: 'body'
+      cursor: 'move'
       zIndex: 10000
+      start: @_highlightCanvas
+      stop: @_removeCanvasHighlight
     @
 
 
   addImage: ->
     App.vent.trigger('create:image', @model)
+
+
+  _highlightCanvas: =>
+    $('canvas#builder-canvas').css('border', '1px solid blue')
+
+
+  _removeCanvasHighlight: =>
+    $('canvas#builder-canvas').css('border', '')
