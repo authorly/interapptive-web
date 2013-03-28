@@ -15,7 +15,7 @@ class App.Models.Scene extends Backbone.Model
       "scenes/#{@id}.json"
 
 
-  parse: (attributes) ->
+  parse: (attributes={}) ->
     @storybook ||= attributes?.storybook
     delete attributes.storybook
 

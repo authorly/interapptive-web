@@ -21,6 +21,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   constructor: (widgetsCollection) ->
     super
 
+    # For image overflow layer, reposition widget layer
+    @setPosition new cc.Point(250, 400)
+
     # Collection (array) of Backbone models
     @widgets = widgetsCollection
 
@@ -97,7 +100,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   @updateKeyframePreview: (keyframe) ->
     canvas = document.getElementById CANVAS_ID
-    image = Canvas2Image.saveAsPNG canvas, true, 110, 83
+    image = Canvas2Image.saveAsPNG canvas, true, 168, 164
 
     keyframe.setPreviewDataUrl image.src
 
@@ -154,7 +157,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     newPosition = cc.ccpAdd(delta, @_capturedWidget.getPosition())
 
     @_capturedWidget.draggedTo(newPosition)
-    @_capturedWidget.model.trigger('move', newPoint)
+    @_capturedWidget.model.trigger('move', newPosition)
     @_previousPoint = newPoint
 
 

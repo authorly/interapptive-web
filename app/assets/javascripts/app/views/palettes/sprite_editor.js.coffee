@@ -39,10 +39,6 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     @widget.getOrientationFor(App.currentSelection.get('keyframe'))
 
 
-  setSpritePosition: ->
-    @_delayedSavePosition(@_position())
-
-
   resetForm: =>
     @widget = null
     @clearFilename()
@@ -103,8 +99,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
   changeCoordinates: (new_point) ->
     return unless new_point?
     @$('#x-coord').val(parseInt(new_point.x))
-    @$('#y-coord').val(parseInt(new_point.x))
-    @setSpritePosition()
+    @$('#y-coord').val(parseInt(new_point.y))
 
 
   _moveSpriteWithArrows: (event) =>
@@ -150,7 +145,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   _addEnterKeyInputListener: ->
     @$('#x-coord, #y-coord').keydown (e) =>
-      @setSpritePosition() if e.keyCode is @ENTER_KEYCODE
+      @_delayedSavePosition(@_position()) if e.keyCode is @ENTER_KEYCODE
 
     @$('#scale-amount').keydown (e) =>
       @_setScale() if e.keyCode is @ENTER_KEYCODE
