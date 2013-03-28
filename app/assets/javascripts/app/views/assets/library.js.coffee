@@ -9,9 +9,7 @@ class App.Views.AssetLibrary extends Backbone.View
     @assetType = assetType
     @assets = assets
     @acceptedFileTypes = @acceptedFileTypes(@assetType)
-
     @assets.on 'reset', @render, @
-    @assets.fetch()
 
 
   render: ->
@@ -28,10 +26,18 @@ class App.Views.AssetLibrary extends Backbone.View
       downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
     ).bind('fileuploaddestroyed',  =>
+      # OPTIMIZE: Instead of using .fetch down below, we should
+      # use .remove. We should also make sure that any views/models
+      # listening to 'reset' event on asset collection should
+      # be updated to listen to 'remove'
       @assets.fetch()
     ).bind 'fileuploadcompleted', (event, data) =>
+      # OPTIMIZE: Instead of using .fetch down below, we should
+      # use .add. We should also make sure that any views/models
+      # listening to 'reset' event on asset collection should
+      # be updated to listen to 'add'
       @assets.fetch()
-      App.vent.trigger('uploaded:fonts', data.result) if @assetType is 'font'
+      App.vent.trigger('uploaded:fonts', data.result)  if @assetType is 'font'
 
 
   loadAndShowFileData: ->

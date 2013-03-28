@@ -17,6 +17,7 @@ window.App =
     @vent.on 'toggle:palette',           @_togglePalette,    @
     @vent.on 'initialize:hotspotWidget', @_openHotspotModal, @
     @vent.on 'hide:modal',               @_hideModal,        @
+    @vent.on 'show:imageLibrary',        @_showImageLibrary, @
 
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:keyframe', @_addNewKeyframe, @
@@ -207,6 +208,10 @@ window.App =
 
   _playVideo: (video_view) ->
     @lightboxWithView(view: video_view).show()
+
+
+  _showImageLibrary: ->
+    @file_menu.showImageLibrary()
 
 
   start: ->
