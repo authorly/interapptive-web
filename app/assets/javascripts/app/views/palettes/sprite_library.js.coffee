@@ -20,18 +20,14 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
     @collection.on('reset', @_reRenderSpriteLibraryElements, @)
 
 
-  imagesUploaded: (images) ->
-    if @views.length is 0
-      @_removeImageAbsenceMessage()
-    @_renderSpriteLibraryElement(sprite) for sprite in images
-
-
   _reRenderSpriteLibraryElements: ->
     @_removeSpriteLibraryElements()
     @_renderSpriteLibraryElements()
 
 
   _removeSpriteLibraryElements: ->
+    if @views.length is 0
+      @_removeImageAbsenceMessage()
     view.remove() for view in @views
     @views = []
 

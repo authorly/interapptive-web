@@ -12,6 +12,8 @@ class App.Views.SpriteLibraryElement extends Backbone.View
       appendTo: 'body'
       cursor: 'move'
       zIndex: 10000
+      opacity: 0.5
+      scroll: false
       start: @_highlightCanvas
       stop: @_removeCanvasHighlight
     @
