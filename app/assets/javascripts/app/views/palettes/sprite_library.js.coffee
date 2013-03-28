@@ -17,7 +17,7 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
     @storybook = storybook
     @collection = @storybook.images
     @_renderSpriteLibraryElements()
-    @collection.on('reset', @_reRenderSpriteLibraryElements)
+    @collection.on('reset', @_reRenderSpriteLibraryElements, @)
 
 
   imagesUploaded: (images) ->
@@ -26,7 +26,7 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
     @_renderSpriteLibraryElement(sprite) for sprite in images
 
 
-  _reRenderSpriteLibraryElements: =>
+  _reRenderSpriteLibraryElements: ->
     @_removeSpriteLibraryElements()
     @_renderSpriteLibraryElements()
 
