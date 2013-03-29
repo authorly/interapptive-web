@@ -10,7 +10,7 @@ class App.Views.PaletteContainer extends Backbone.View
 
   render: ->
     @$el.html @template(title: @options.title)
-    @$el.append @view.render().el
+    @$('.palette-content-wrapper').append @view.render().el
 
     @initDraggable()
     @initResizable() if @options.resizable
