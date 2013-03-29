@@ -1,4 +1,3 @@
 - _style =    "background-image: url(#{@sprite.get('thumbnail_url')})"
 %span.sprite-image{:style => _style, :alt => @sprite.get('name'), :title => @sprite.get('name'), :data-id => @sprite.id }
-  -#%span.sprite-filename= App.Lib.StringHelper.truncate(@sprite.get('name'))
-%span.add
+  %span.sprite-filename= App.Lib.StringHelper.truncate(@sprite.get('name'))
