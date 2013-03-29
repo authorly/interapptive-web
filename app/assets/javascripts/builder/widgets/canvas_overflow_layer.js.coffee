@@ -5,7 +5,7 @@ class App.Builder.Widgets.CanvasOverflowLayer extends cc.Layer
 
   COLOR_INNER_STROKE: 'rgba(15, 79, 168, 0.9)'
 
-  COLOR_INNER_FILL: 'rgba(0, 0, 0, 0.1)'
+  COLOR_INNER_FILL: 'rgba(190, 190, 190, 0.75)'
 
   LINE_WIDTH_OUTER: 2
 
