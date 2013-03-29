@@ -41,8 +41,8 @@
   background-repeat: no-repeat;
   display: inline-block;
   width: 50px;
-  height: 50px;
-  margin: 10px;
+  height: 61px;
+  margin: -1px 10px 10px;
   float: left;
 }
 
@@ -57,20 +57,33 @@
   overflow: auto;
 
   ul.sprites {
-    margin-top: 3px;
+    margin: 3px 3px 0px 3px;
     padding-bottom: 20px;
 
+    li.selected:hover {
+      .grab()
+    }
+
     li {
+      .round-corners();
+
       list-style: none;
       font-family: 'Arial Black';
       font-size: 10px;
-      width: 85px;
+      width: 82px;
       display: inline-block;
+      position: relative;
 
       .sprite-image {
         .sprite-library-image;
 
+        background-position: center center;
         margin-left: 16px;
+      }
+
+      .sprite-filename {
+        position: absolute;
+        bottom: 0;
       }
 
       span.add {
@@ -85,8 +98,12 @@
       }
     }
 
+    li.selected {
+      background-color: rgba(33, 143, 255, 0.54);
+    }
+
     li:hover {
-      .grab();
+      cursor: pointer;
 
       span.add {
         cursor: pointer;
