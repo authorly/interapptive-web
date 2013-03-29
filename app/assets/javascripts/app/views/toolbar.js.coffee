@@ -4,7 +4,6 @@ class App.Views.ToolbarView extends Backbone.View
     'click .keyframe'           : 'addKeyframe'
     'click .animation-keyframe' : 'addAnimationKeyframe'
     'click .edit-text'          : 'addText'
-    'click .add-image'          : 'addImage'
     'click .add-hotspot'        : 'addHotspot'
     'click .sync-audio'         : 'alignAudio'
     'click .actions'            : 'showActionLibrary'
@@ -39,10 +38,6 @@ class App.Views.ToolbarView extends Backbone.View
     return if $(event.currentTarget).hasClass('disabled')
 
     App.vent.trigger 'create:widget', type: 'TextWidget'
-
-
-  addImage: ->
-    App.vent.trigger 'create:image'
 
 
   addHotspot: (event) ->
