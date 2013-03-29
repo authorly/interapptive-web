@@ -41,8 +41,8 @@
   background-repeat: no-repeat;
   display: inline-block;
   width: 50px;
-  height: 50px;
-  margin: 10px;
+  height: 61px;
+  margin: -1px 10px 10px;
   float: left;
 }
 
@@ -57,41 +57,42 @@
   overflow: auto;
 
   ul.sprites {
-    margin-top: 3px;
+    margin: 3px 3px 0px 3px;
     padding-bottom: 20px;
 
+    li.selected:hover {
+      .grab()
+    }
+
     li {
+      .round-corners();
+
       list-style: none;
       font-family: 'Arial Black';
       font-size: 10px;
+      width: 82px;
+      display: inline-block;
+      position: relative;
 
       .sprite-image {
-        .sprite-library-image
+        .sprite-library-image;
+
+        background-position: center center;
+        margin-left: 16px;
       }
 
-      span.add {
-        background: asset-url('green-checkmark.png') no-repeat;
-        background-size: 100%;
-        height: 17px;
-        width: 17px;
-        margin: 11px -28px 0;
-        display: none;
-        opacity: 0.7;
-        float: left;
+      .sprite-filename {
+        position: absolute;
+        bottom: 0;
       }
+    }
+
+    li.selected {
+      background-color: rgba(33, 143, 255, 0.54);
     }
 
     li:hover {
-      .grab();
-
-      span.add {
-        cursor: pointer;
-        display: block;
-      }
-    }
-
-    span.add:hover {
-      opacity: 1.0
+      cursor: pointer;
     }
   }
 }

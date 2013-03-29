@@ -7,6 +7,7 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
   tagName: 'ul'
   events:
     'click #sprite-message-library-link': '_openUploadModal'
+    'click li': '_highlightSpriteElement'
 
 
   initialize: ->
@@ -20,18 +21,14 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
     @collection.on('reset', @_reRenderSpriteLibraryElements, @)
 
 
-  imagesUploaded: (images) ->
-    if @views.length is 0
-      @_removeImageAbsenceMessage()
-    @_renderSpriteLibraryElement(sprite) for sprite in images
-
-
   _reRenderSpriteLibraryElements: ->
     @_removeSpriteLibraryElements()
     @_renderSpriteLibraryElements()
 
 
   _removeSpriteLibraryElements: ->
+    if @views.length is 0
+      @_removeImageAbsenceMessage()
     view.remove() for view in @views
     @views = []
 
@@ -64,3 +61,7 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
       html: 'No images have been uploaded, <a id="sprite-message-library-link" href="#">click here</a> to upload images to add to.'
     )
     @$el.append($message)
+
+
+  _highlightSpriteElement: (event) ->
+    @$(event.currentTarget).toggleClass('selected').siblings().removeClass('selected')
