@@ -61,7 +61,7 @@ window.App =
       title:     'Image Library'
       view:      new App.Views.SpriteLibraryPalette
       el:        $('#sprite-library-palette')
-      resizable: false
+      resizable: true
 
     canvas = $('#builder-canvas')
     canvasAttributes =
