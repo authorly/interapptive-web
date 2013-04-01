@@ -15,7 +15,7 @@ class App.Views.SceneIndex extends Backbone.View
   initialize: ->
     @collection.on 'add'             , @appendSceneElement, @
     @collection.on 'reset'           , @render            , @
-    @collection.on 'change:positions', @render            , @
+    @collection.on 'change:positions', @_updatePositions  , @
     App.vent.on    'window:resize'   , @adjustSize        , @
     App.currentSelection.on 'change:scene', @sceneChanged, @
 
@@ -79,6 +79,7 @@ class App.Views.SceneIndex extends Backbone.View
     @collection.remove(scene)
     @render()
 
+
   _numberScenes: =>
     @$('li[data-is_main_menu!="1"]').each (index, element) =>
       element = $(element)
@@ -91,3 +92,11 @@ class App.Views.SceneIndex extends Backbone.View
       @collection.sort silent: true
       @collection.savePositions()
     ), 0
+
+
+  _updatePositions: =>
+    @$('li[data-is_main_menu!="1"]').each (__, element) =>
+      element = $(element)
+
+      if (id = element.data('id'))? && (scene = @collection.get(id))?
+        element.find('.page-number').text(scene.get('position') + 1)
