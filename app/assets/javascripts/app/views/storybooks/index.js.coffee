@@ -30,7 +30,7 @@ class App.Views.StorybookIndex extends Backbone.View
     @hideLoader()
 
     if App.Config.environment == 'development' && @collection.length > 0
-      @selectStorybook @collection.at(0)
+      @selectStorybook @collection.at(@collection.length - 1)
       @openStorybook()
 
     @
