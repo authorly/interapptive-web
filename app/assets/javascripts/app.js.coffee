@@ -136,6 +136,7 @@ window.App =
     @currentWidgets.changeKeyframe(keyframe)
     if keyframe?
       App.vent.trigger 'can_add:text', keyframe.canAddText()
+      @saveCanvasAsPreview() if keyframe.preview.isNew()
 
 
   _changeKeyframeWidgets: (keyframe) ->
