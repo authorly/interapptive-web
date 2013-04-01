@@ -83,8 +83,9 @@ window.App =
 
     @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
 
-    @currentSelection.on 'change:storybook', @_openStorybook, @
-    @currentSelection.on 'change:scene',     @_changeScene,   @
+    @currentSelection.on 'change:storybook', @_openStorybook,  @
+    @currentSelection.on 'change:scene',     @_changeScene,    @
+    @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
 
 
   saveCanvasAsPreview: (keyframe) ->
@@ -131,8 +132,9 @@ window.App =
 
 
   _changeKeyframe: (__, keyframe) ->
-    App.vent.trigger 'can_add:text', keyframe.canAddText() if keyframe?
     @currentWidgets.changeKeyframe(keyframe)
+    if keyframe?
+      App.vent.trigger 'can_add:text', keyframe.canAddText()
 
 
   _changeKeyframeWidgets: (keyframe) ->
