@@ -100,7 +100,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   @updateKeyframePreview: (keyframe) ->
     canvas = document.getElementById CANVAS_ID
-    image = Canvas2Image.saveAsPNG canvas, true, 168, 164
+    image = Canvas2Image.saveAsPNG canvas, true, 235, 230
 
     keyframe.setPreviewDataUrl image.src
 
