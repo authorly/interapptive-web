@@ -40,7 +40,7 @@ class ImagesController < ApplicationController
     image.update_attribute(:data_encoded_image, data)
 
     respond_to do |format|
-      format.json { render :json => [image.as_jquery_upload_response] }
+      format.json { render :json => image.as_jquery_upload_response }
     end
   end
 

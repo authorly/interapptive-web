@@ -24,13 +24,15 @@ class App.Collections.ImagesCollection extends Backbone.Collection
 
 class App.Models.Preview extends App.Models.Image
 
+  SAVE_TIMER: null
+
   # id, url -> from the server
   # data_url -> from the app
   initialize: (attributes, options) ->
     @storybook = options.storybook
 
     @set 'preview', true
-    @on 'change:data_url', => @save()
+    @on 'change:data_url', @save, @
 
 
   url: ->
@@ -48,21 +50,14 @@ class App.Models.Preview extends App.Models.Image
   # - debounce calls to `save` so we don't save too often
   # This does not take into account any parameters. Use `set` to change the
   # attributes, followed by a call to `save` without parameters.
-  save: () ->
-    if @isNew()
-      if !@_firstSave?
-        @_firstSave = @_actualSave(success: => @trigger('change:id', @))
-      else
-        # `@_firstSave` is a deferred; wait until it resolves
-        # TODO error handling
-        $.when(@_firstSave).done => @_debouncedSave().apply(@)
+  save: ->
+    if @isNew() and !@_duringFirstSave
+        @_duringFirstSave = true
+        @_actualSave()
     else
-      @_debouncedSave().apply @
+      window.clearTimeout @SAVE_TIMER
+      @SAVE_TIMER = window.setTimeout(@_actualSave, 500)
 
 
-  _debouncedSave: ->
-    @deboucedSaveMemoized ||= _.debounce @_actualSave, 500
-
-
-  _actualSave: (options={}) =>
-    Backbone.Model.prototype.save.apply @, {}, options
+  _actualSave: =>
+    Backbone.Model.prototype.save.apply @

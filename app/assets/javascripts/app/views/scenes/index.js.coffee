@@ -15,7 +15,8 @@ class App.Views.SceneIndex extends Backbone.View
   initialize: ->
     @collection.on 'add'             , @appendSceneElement, @
     @collection.on 'reset'           , @render            , @
-    @collection.on 'change:positions', @render            , @
+    @collection.on 'remove'          , @sceneRemoved      , @
+    @collection.on 'change:positions', @_updatePositions  , @
     App.vent.on    'window:resize'   , @adjustSize        , @
     App.currentSelection.on 'change:scene', @sceneChanged, @
 
@@ -56,10 +57,15 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   sceneChanged: (__, scene) ->
-    $('li', @el).
-    removeClass('active')
+    $('li', @el)
+      .removeClass('active')
       .find("span.scene-frame[data-id=#{scene.get('id')}]")
       .parent().addClass 'active'
+
+
+  sceneRemoved: (scene, __, options) ->
+    if App.currentSelection.get('scene') == scene
+      @switchScene(@collection.at(options.index) || @collection.at(options.index - 1))
 
 
   initSortable: =>
@@ -77,7 +83,7 @@ class App.Views.SceneIndex extends Backbone.View
 
   _removeScene: (scene) =>
     @collection.remove(scene)
-    @render()
+
 
   _numberScenes: =>
     @$('li[data-is_main_menu!="1"]').each (index, element) =>
@@ -91,3 +97,11 @@ class App.Views.SceneIndex extends Backbone.View
       @collection.sort silent: true
       @collection.savePositions()
     ), 0
+
+
+  _updatePositions: =>
+    @$('li[data-is_main_menu!="1"]').each (__, element) =>
+      element = $(element)
+
+      if (id = element.data('id'))? && (scene = @collection.get(id))?
+        element.find('.page-number').text(scene.get('position') + 1)
