@@ -57,16 +57,15 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   sceneChanged: (__, scene) ->
-    $('li', @el).
-    removeClass('active')
+    $('li', @el)
+      .removeClass('active')
       .find("span.scene-frame[data-id=#{scene.get('id')}]")
       .parent().addClass 'active'
 
 
   sceneRemoved: (scene, __, options) ->
     if App.currentSelection.get('scene') == scene
-      newScene = @collection.at(options.index) || @collection.at(options.index - 1)
-      App.currentSelection.set scene: newScene
+      @switchScene(@collection.at(options.index) || @collection.at(options.index - 1))
 
 
   initSortable: =>
