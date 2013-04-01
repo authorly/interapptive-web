@@ -88,8 +88,9 @@ window.App =
     @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
 
 
-  saveCanvasAsPreview: (keyframe) ->
+  saveCanvasAsPreview: ->
     window.setTimeout ( ->
+      keyframe = App.currentSelection.get('keyframe')
       App.Builder.Widgets.WidgetLayer.updateKeyframePreview(keyframe)
     ), 200 # wait for the changes to be shown in the canvas
 
@@ -110,7 +111,7 @@ window.App =
 
     storybook.scenes.on 'change:widgets', =>
       keyframe = App.currentSelection.get('keyframe')
-      @saveCanvasAsPreview(keyframe)
+      @saveCanvasAsPreview()
 
     storybook.fetchCollections()
 
@@ -138,13 +139,11 @@ window.App =
 
 
   _changeKeyframeWidgets: (keyframe) ->
-    return unless App.currentSelection.get('keyframe') == keyframe
-    @saveCanvasAsPreview(keyframe)
+    @saveCanvasAsPreview() if App.currentSelection.get('keyframe') == keyframe
 
 
   _changeSceneWidgets: ->
-    keyframe = App.currentSelection.get('keyframe')
-    @saveCanvasAsPreview(keyframe)
+    @saveCanvasAsPreview()
 
 
   _addNewScene: ->
