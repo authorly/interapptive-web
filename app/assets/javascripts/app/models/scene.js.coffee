@@ -37,7 +37,7 @@ class App.Models.Scene extends Backbone.Model
     @initializeWidgets()
     @initializeKeyframes()
 
-    @on 'change:preview_image_id change:preview_image_url change:font_color change:font_size change:font_face change:widgets', @save
+    @on 'change:preview_image_id change:font_color change:font_size change:font_face change:widgets', @save
 
 
   initializeWidgets: ->
