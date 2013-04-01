@@ -58,8 +58,14 @@
 
 #sprite-library-palette {
   top: 442px;
-  max-height: 150px;
+  height: 150px;
+  min-height: 150px;
+  max-height: 350px;
   overflow: hidden;
+
+  .palette-content-wrapper {
+    max-height: 335px;
+  }
 
   ul.sprites {
     margin: 3px 3px 0px 3px;
