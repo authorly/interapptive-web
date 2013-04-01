@@ -48,7 +48,7 @@ describe "App.Collections.CurrentWidgetsCollection", ->
         widgets: [@t2_1]
       }, parse: true
 
-      @widgets.changeKeyframe(null, @keyframe1)
+      @widgets.changeKeyframe(@keyframe1)
 
     it 'adds keyframe & scene widgets', ->
       expect(@widgets).toContainWidgets [@h1, @h2, @s1, @t1, @o1]
@@ -73,13 +73,13 @@ describe "App.Collections.CurrentWidgetsCollection", ->
 
     describe 'moving to the same scene', ->
       it 'removes old keyframe widgets and adds new keyframe widgets', ->
-        @widgets.changeKeyframe(null, @keyframe2)
+        @widgets.changeKeyframe(@keyframe2)
         expect(@widgets).toContainWidgets [@o2, @h1, @h2, @s1]
 
       describe 'moving to another scene', ->
         beforeEach ->
-          @widgets.changeKeyframe(null, @keyframe1)
-          @widgets.changeKeyframe(null, @keyframe2_1)
+          @widgets.changeKeyframe(@keyframe1)
+          @widgets.changeKeyframe(@keyframe2_1)
           @expectedWidgets = [@h2_1, @t2_1]
 
         it 'removes old keyframe & scene widgets and adds new scene & keyframe widgets', ->

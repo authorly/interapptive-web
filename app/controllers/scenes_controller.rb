@@ -49,9 +49,9 @@ class ScenesController < ApplicationController
     respond_to do |format|
       format.json {
         if scene.destroyed?
-          render :json => {:status => :unprocessable_entity}
-        else
           render :json => {:status => :ok}
+        else
+          render :json => {:status => :unprocessable_entity}
         end
       }
     end

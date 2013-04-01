@@ -72,7 +72,7 @@ class App.Models.Keyframe extends Backbone.Model
   initializePreview: ->
     attributes = App.Lib.AttributesHelper.filterByPrefix @attributes, 'preview_image_'
     @preview = new App.Models.Preview(attributes, storybook: @scene.storybook)
-    @preview.on 'change:data_url', => @trigger 'change:preview', @
+    @preview.on 'change:data_url change:url', => @trigger 'change:preview', @
     @preview.on 'change:id', =>
       @save preview_image_id: @preview.id
 
