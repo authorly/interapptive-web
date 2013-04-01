@@ -15,6 +15,7 @@ class App.Views.SceneIndex extends Backbone.View
   initialize: ->
     @collection.on 'add'             , @appendSceneElement, @
     @collection.on 'reset'           , @render            , @
+    @collection.on 'remove'          , @sceneRemoved      , @
     @collection.on 'change:positions', @_updatePositions  , @
     App.vent.on    'window:resize'   , @adjustSize        , @
     App.currentSelection.on 'change:scene', @sceneChanged, @
@@ -62,6 +63,12 @@ class App.Views.SceneIndex extends Backbone.View
       .parent().addClass 'active'
 
 
+  sceneRemoved: (scene, __, options) ->
+    if App.currentSelection.get('scene') == scene
+      newScene = @collection.at(options.index) || @collection.at(options.index - 1)
+      App.currentSelection.set scene: newScene
+
+
   initSortable: =>
     @$el.sortable
       containment : '.sidebar'
@@ -77,7 +84,6 @@ class App.Views.SceneIndex extends Backbone.View
 
   _removeScene: (scene) =>
     @collection.remove(scene)
-    @render()
 
 
   _numberScenes: =>
