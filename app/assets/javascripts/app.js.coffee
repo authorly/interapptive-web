@@ -68,14 +68,18 @@ window.App =
       height: canvas.height()
       offset: canvas.offset()
       scale:  canvas.attr('height') / canvas.height()
+      margins:
+        top: 200
+        left: 125
     canvas.droppable
       accept: '.sprite-image'
       drop: (__, ui) ->
+        offset = canvas.offset()
         App.vent.trigger 'create:image', null,
           id: ui.draggable.data('id')
           position:
-            x: (ui.position.left - canvasAttributes.offset.left) * canvasAttributes.scale
-            y: (canvasAttributes.height - (ui.position.top - canvasAttributes.offset.top)) * canvasAttributes.scale
+            x: (ui.position.left - offset.left - canvasAttributes.margins.left + ui.helper.width() * 0.5) * canvasAttributes.scale
+            y: canvasAttributes.height - ((ui.position.top - offset.top - canvasAttributes.margins.top) + ui.helper.height() * 0.5) * canvasAttributes.scale
 
     @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
 
