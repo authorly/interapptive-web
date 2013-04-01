@@ -37,7 +37,7 @@ class App.Models.Scene extends Backbone.Model
     @initializeWidgets()
     @initializeKeyframes()
 
-    @on 'change:preview_image_id change:font_color change:font_size change:font_face change:widgets', @save
+    @on 'change:preview_image_id change:preview_image_url change:font_color change:font_size change:font_face change:widgets', @save
 
 
   initializeWidgets: ->
@@ -53,7 +53,7 @@ class App.Models.Scene extends Backbone.Model
     @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
     @keyframes.on 'add', @addOrientations, @
-    @keyframes.on 'reset add remove change:positions change:preview', @updatePreview, @
+    @keyframes.on 'reset add remove change:positions', @updatePreview, @
 
 
   fetchKeyframes: ->
@@ -99,6 +99,7 @@ class App.Models.Scene extends Backbone.Model
     !@isMainMenu()
 
 
+  # If a change affected which is the preview of the current scene, update
   updatePreview: ->
     preview = @keyframes.at(0).preview
     return if preview? && @preview? && preview.cid == @preview.cid
@@ -107,29 +108,28 @@ class App.Models.Scene extends Backbone.Model
     @preview = preview
     @addPreviewListeners()
 
-    @previewIdChanged()
-    @previewUrlChanged()
+    @previewChanged()
 
 
   addPreviewListeners: ->
-    @preview.on  'change:id',       @previewIdChanged,  @
-    @preview.on  'change:data_url', @previewUrlChanged, @
+    @preview.on  'change:id change:url', @previewChanged,        @
+    @preview.on  'change:data_url',      @previewDataUrlChanged, @
 
 
   removePreviewListeners: ->
     return unless @preview?
 
-    @preview.off 'change:id',       @previewIdChanged,  @
-    @preview.off 'change:data_url', @previewUrlChanged, @
+    @preview.off 'change:id change:url', @previewChanged,        @
+    @preview.off 'change:data_url',      @previewDataUrlChanged, @
 
 
-  previewIdChanged: ->
+  previewChanged: ->
     @set
       preview_image_id:  @preview.id
-      preview_image_url: @preview.src()
+      preview_image_url: @preview.get('url')
 
 
-  previewUrlChanged: ->
+  previewDataUrlChanged: ->
     @trigger 'change:preview', @
 
 
