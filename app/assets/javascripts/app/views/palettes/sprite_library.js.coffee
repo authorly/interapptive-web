@@ -35,9 +35,14 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
 
   _renderSpriteLibraryElements: ->
     if @collection.length > 0
-      @_renderSpriteLibraryElement(sprite) for sprite in @collection.models
+      sprites = _.sortBy(@collection.models, @_spriteFilenameComparator, @)
+      @_renderSpriteLibraryElement(sprite) for sprite in sprites
     else
       @_addImageAbsenceMessage()
+
+
+  _spriteFilenameComparator: (sprite) ->
+    sprite.get('name')
 
 
   _renderSpriteLibraryElement: (sprite) ->
