@@ -22,7 +22,7 @@ class App.Views.PaletteContainer extends Backbone.View
   initDraggable: ->
     @$el.draggable
       containment: $('#main')
-      snap:        true
+      snap:        false
       handle:     '.handler'
       drag: (event, ui) ->
         yBoundary = $('header').innerHeight()
