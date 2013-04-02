@@ -120,3 +120,9 @@ Widgets are represented by two classes - a Backbone Model (that stores and manag
 #### What is cc?
 
 `cc` is the Cocos2d namespace.
+
+## Simulator
+
+Refresh the simulator in the browser, without re-loading the entire website:
+
+    $('.simulator iframe')[0].src = '/simulator?t=' + (new Date).getTime()
