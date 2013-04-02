@@ -232,8 +232,8 @@ window.App =
 
   showSimulator: ->
     storybook = App.currentSelection.get('storybook')
-    json = new App.JSON(storybook)
-    @simulator ||= new App.Views.Simulator(json: JSON.stringify(json.app))
+    json = (new App.JSON(storybook)).app
+    @simulator = new App.Views.Simulator(json: JSON.stringify(json))
     @modalWithView(view: @simulator, modalClassName: 'large-modal').show()
 
 
