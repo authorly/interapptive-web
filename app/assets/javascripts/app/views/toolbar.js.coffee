@@ -58,7 +58,9 @@ class App.Views.ToolbarView extends Backbone.View
     App.vent.trigger('show:sceneform')
 
 
-  showPreview: -> App.vent.trigger 'show:simulator'
+  showPreview: (event) ->
+    event.stopPropagation()
+    App.vent.trigger 'show:simulator'
 
 
   showActionLibrary: ->
