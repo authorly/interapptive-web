@@ -11,6 +11,15 @@ class App.Lib.StringHelper
     return str.charAt(0).toUpperCase() + str.slice(1)
 
 
+  @decapitalize: (str) ->
+    return str.charAt(0).toLowerCase() + str.slice(1)
+
+
+  @camelize: (str) ->
+    str.replace /(?:^|[-_])(\w)/g, (_, c) ->
+      if c? then c.toUpperCase() else ''
+
+
   @truncate: (str, take = 6, trail_with = '...') ->
     return str if str.length <= take
     str.substr(0, take) + trail_with

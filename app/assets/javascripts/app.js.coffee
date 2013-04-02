@@ -31,6 +31,8 @@ window.App =
 
     @vent.on 'play:video', @_playVideo, @
 
+    @vent.on 'show:simulator', @showSimulator
+
     @currentSelection = new Backbone.Model
       storybook: null
       scene: null
@@ -112,6 +114,12 @@ window.App =
     storybook.scenes.on 'change:widgets', =>
       keyframe = App.currentSelection.get('keyframe')
       @saveCanvasAsPreview()
+
+
+    storybook.scenes.on 'reset', (scenes) ->
+      # The simulator needs all the information upfront
+      scenes.each (scene) ->
+        scene.fetchKeyframes()
 
     storybook.fetchCollections()
 
@@ -219,6 +227,13 @@ window.App =
 
   _showImageLibrary: ->
     @file_menu.showImageLibrary()
+
+
+  showSimulator: =>
+    storybook = App.currentSelection.get('storybook')
+    json = new App.JSON(storybook).app
+    console.log JSON.stringify(json)
+    # @simulator ||= new App.Views.Simulator(json: App.storybookJSON.toString())
 
 
   start: ->

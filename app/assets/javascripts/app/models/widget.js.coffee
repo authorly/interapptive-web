@@ -103,7 +103,7 @@ class App.Models.ButtonWidget extends App.Models.SpriteWidget
 # Text widgets belong to keyframe
 #
 class App.Models.TextWidget extends App.Models.Widget
- # # attributes: string
+ # attributes: string, font, size
 
   defaults: ->
     _.extend super, {

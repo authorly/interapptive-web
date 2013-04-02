@@ -50,6 +50,7 @@ group :development do
   gem 'debugger'
   gem 'growl'
   gem 'zencoder-fetcher'
+  gem 'yaml_db'
 end
 
 group :test do

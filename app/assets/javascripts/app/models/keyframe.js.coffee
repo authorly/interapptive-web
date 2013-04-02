@@ -121,6 +121,7 @@ class App.Models.Keyframe extends Backbone.Model
     (text_widget_with_max_sync_order?.sync_order || 0) + 1
 
 
+
   textWidgets: ->
     @widgetsByClass(App.Models.TextWidget)
 
