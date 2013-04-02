@@ -1,0 +1,6 @@
+#list-view-toggle
+  %span.toggle-view.active
+    thumb view
+  or
+  %span.toggle-view
+    list view
