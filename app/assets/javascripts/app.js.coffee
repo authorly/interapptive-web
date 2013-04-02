@@ -31,7 +31,7 @@ window.App =
 
     @vent.on 'play:video', @_playVideo, @
 
-    @vent.on 'show:simulator', @showSimulator
+    @vent.on 'show:simulator', @showSimulator, @
 
     @currentSelection = new Backbone.Model
       storybook: null
@@ -195,6 +195,7 @@ window.App =
 
   initModals: ->
     $('.content-modal').modal(backdrop: true).modal('hide')
+    $('.large-modal').modal(backdrop: true).modal('hide')
     $('.lightbox-modal').modal().modal('hide')
 
     # RFCTR: Should use generic modal view
@@ -204,9 +205,9 @@ window.App =
       keyboard : false
 
 
-  modalWithView: (view) ->
-    if view?
-      @view = new App.Views.Modal view, className: 'content-modal'
+  modalWithView: (options) ->
+    if options?
+      @view = new App.Views.Modal(options)
 
     @view
 
@@ -229,11 +230,11 @@ window.App =
     @file_menu.showImageLibrary()
 
 
-  showSimulator: =>
+  showSimulator: ->
     storybook = App.currentSelection.get('storybook')
-    json = new App.JSON(storybook).app
-    console.log JSON.stringify(json)
-    # @simulator ||= new App.Views.Simulator(json: App.storybookJSON.toString())
+    json = new App.JSON(storybook)
+    @simulator ||= new App.Views.Simulator(json: JSON.stringify(json.app))
+    @modalWithView(view: @simulator, modalClassName: 'large-modal').show()
 
 
   start: ->

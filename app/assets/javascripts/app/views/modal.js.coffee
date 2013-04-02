@@ -1,6 +1,8 @@
 class App.Views.Modal extends Backbone.View
+  modalClassName: 'content-modal'
+
   initialize: ->
-    @modal = $('.content-modal')
+    @modal = $(".#{@options.modalClassName || @modalClassName}")
 
 
   render: =>
