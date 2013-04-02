@@ -20,8 +20,8 @@ class Sim.MainMenuLayer extends Sim.PageLayer
       if typeof this[menuItemInfo.storyMode] is "function"
         menuItem = new cc.MenuItemImage
         menuItem.initFromNormalImage(
-          "/resources/#{menuItemInfo.normalStateImage}"
-          "/resources/#{menuItemInfo.tappedStateImage}"
+          "#{menuItemInfo.normalStateImage}"
+          "#{menuItemInfo.tappedStateImage}"
           false
           this
           menuItemInfo.storyMode
@@ -29,8 +29,8 @@ class Sim.MainMenuLayer extends Sim.PageLayer
       else
         menuItem = new cc.MenuItemImage
         menuItem.initFromNormalImage(
-          "/resources/#{menuItemInfo.normalStateImage}"
-          "/resources/#{menuItemInfo.tappedStateImage}"
+          "#{menuItemInfo.normalStateImage}"
+          "#{menuItemInfo.tappedStateImage}"
           false
         )
 
