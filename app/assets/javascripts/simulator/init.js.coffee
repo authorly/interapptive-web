@@ -17,7 +17,7 @@ window.Sim.run = (json) ->
 
   if Sim._initalized
     initSimulator()
-    return 
+    return
 
   preloader = cc.Loader.shareLoader()
 
@@ -33,11 +33,11 @@ window.Sim.run = (json) ->
   # Preload our assets
   preloader.preload([
     # FIXME need to dynamically preload our assets from the JSON
-    {type: 'image', src: '/assets/simulator/logo.png'}
-    {type: 'image', src: '/resources/home-button.png'}
-    {type: 'image', src: '/resources/autoplay.png'}
-    {type: 'image', src: '/resources/read-it-myself.png'}
-    {type: 'image', src: '/resources/read-to-me.png'}
+    # {type: 'image', src: '/assets/simulator/logo.png'}
+    # {type: 'image', src: '/resources/home-button.png'}
+    # {type: 'image', src: '/resources/autoplay.png'}
+    # {type: 'image', src: '/resources/read-it-myself.png'}
+    # {type: 'image', src: '/resources/read-to-me.png'}
 
       # FIXME Fonts not supported?
       #{type: 'font',  src: '/resources/PoeticaChanceryIII.ttf'},
