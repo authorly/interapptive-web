@@ -3,4 +3,5 @@
 %span
   - unless @scene.isMainMenu()
     %a{:href=>"#","class" => "delete", "data-id" => "#{@scene.get('id')}"}
-%span.page-number= "#{if @scene.get('position') == null then '' else @scene.get('position') + 1 }"
+%span.title{"data-id" => "#{@scene.get('id')}"}= "#{if @scene.get('position') == null then 'Main Menu' else 'Scene' }"
+%span.page-number{"data-id" => "#{@scene.get('id')}"}= "#{if @scene.get('position') == null then '' else @scene.get('position') + 1 }"
