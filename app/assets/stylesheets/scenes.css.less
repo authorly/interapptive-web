@@ -44,6 +44,10 @@
       }
     }
 
+    span.title {
+      display:none
+    }
+
     span.page-number {
       position: absolute;
       bottom: 10px;
@@ -110,5 +114,78 @@
   li.active a.delete:hover {
     opacity: 0.9;
     cursor: pointer;
+  }
+}
+
+.scene-list.list-view {
+  li {
+    height: 12px;
+    background-image: none;
+    padding: 0;
+
+    img {
+      display: none;
+    }
+
+    span {
+      height: inherit;
+    }
+
+    span.title {
+      position: relative;
+      z-index:100;
+      display: inline;
+      font-weight: 100;
+      font-family: Arial;
+      color: black;
+    }
+
+    span.page-number {
+      position: relative;
+      font-family: Arial;
+      font-size: 14px;
+      bottom: 0;
+      left: 0;
+      color: black;
+    }
+
+    span.scene-frame {
+      background-color: #aeb0b6;
+    }
+  }
+
+  li.active {
+    a.delete {
+      top: -7px;
+      right: -26px;
+      background-size: 50%;
+    }
+
+    span.page-number {
+      color: blue;
+    }
+
+    span.title {
+      color: blue;
+    }
+  }
+}
+
+#list-view-toggle {
+  position: relative;
+  top: 131px;
+  left: 72px;
+  font-size: 11px;
+
+  span:hover {
+    cursor: pointer;
+  }
+
+  span.active {
+    font-weight: bold;
+  }
+
+  span.active:hover {
+    cursor: default;
   }
 }

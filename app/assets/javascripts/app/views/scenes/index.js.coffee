@@ -1,12 +1,13 @@
 class App.Views.SceneIndex extends Backbone.View
+  listViewToggleTemplate: JST['app/templates/scenes/list_view_toggle']
 
   className: 'scene-list'
 
   tagName:   'ul'
 
   events:
-    'click  span'   : 'onSceneClick'
-    'click .delete' : 'deleteScene'
+    'click  span':       'onSceneClick'
+    'click .delete':     'deleteScene'
 
 
   DELETE_SCENE_MSG: '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
@@ -20,17 +21,25 @@ class App.Views.SceneIndex extends Backbone.View
     App.vent.on    'window:resize'   , @adjustSize        , @
     App.currentSelection.on 'change:scene', @sceneChanged, @
 
+    $('.toggle-view').live 'click', (event) => @toggleListView(event)
+
 
   render: ->
     @$el.empty()
     @collection.each @appendSceneElement
     @switchScene(@collection.at(0)) if @collection.length > 0
 
+    @renderListViewToggle()
+
     @initSortable()
 
     @adjustSize()
 
     @
+
+
+  renderListViewToggle: ->
+    @$el.parent().prepend(@listViewToggleTemplate())
 
 
   appendSceneElement: (scene) =>
@@ -79,6 +88,14 @@ class App.Views.SceneIndex extends Backbone.View
 
   adjustSize: ->
     $('#scene-list, .scene-list').css height: "#{$(window).height()}px"
+
+
+  toggleListView: (event) ->
+    toggleEl = $(event.currentTarget)
+    return if toggleEl.hasClass('active')
+    toggleEl.addClass('active').siblings().removeClass('active')
+
+    @$el.toggleClass('list-view')
 
 
   _removeScene: (scene) =>
