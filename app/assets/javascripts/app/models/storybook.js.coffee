@@ -87,7 +87,7 @@ class App.Models.Storybook extends Backbone.Model
 
   compile: ->
     $.post('/compiler',
-      storybook_json: App.storybookJSON.toString()
+      storybook_json: JSON.stringify(new App.JSON(@).app)
       storybook_id: @get('id')
       ->
         console.log('enqueued for compilation')
