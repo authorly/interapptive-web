@@ -8,7 +8,8 @@ GIT
 
 GIT
   remote: git://github.com/waseem/betabuilder.git
-  revision: c0950ba98be94eed0d80e1e78694bd68f5654f72
+  revision: 1125dab2d903fb24aabef758d0f1feb22940ed6a
+  ref: 1125dab2d903fb24aabef758d0f1feb22940ed6a
   branch: no_deploy
   specs:
     betabuilder (0.7.4.1)
@@ -184,7 +185,7 @@ GEM
     libv8 (3.3.10.4)
     libwebsocket (0.1.5)
       addressable
-    libxml-ruby (2.3.3)
+    libxml-ruby (2.6.0)
     listen (0.4.7)
       rb-fchange (~> 0.0.5)
       rb-fsevent (~> 0.9.1)
@@ -333,7 +334,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    uuid (2.3.6)
+    uuid (2.3.7)
       macaddr (~> 1.0)
     vegas (0.1.11)
       rack (>= 1.0.0)
