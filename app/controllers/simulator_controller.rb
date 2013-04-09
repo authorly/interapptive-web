@@ -1,6 +1,6 @@
 class SimulatorController < ApplicationController
   layout false
 
-  def index
+  def show
   end
 end
