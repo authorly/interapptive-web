@@ -26,6 +26,7 @@
 #= require jquery.tablesorter
 #= require jquery.selecttext
 #= require jquery.contextmenu
+#= require toastr-1.0.2
 
 #= require app
 #= require config

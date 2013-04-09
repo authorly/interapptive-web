@@ -18,6 +18,7 @@ window.App =
     @vent.on 'initialize:hotspotWidget', @_openHotspotModal, @
     @vent.on 'hide:modal',               @_hideModal,        @
     @vent.on 'show:imageLibrary',        @_showImageLibrary, @
+    @vent.on 'show:message',             @_showToast,        @
 
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:keyframe', @_addNewKeyframe, @
@@ -227,6 +228,10 @@ window.App =
 
   _showImageLibrary: ->
     @file_menu.showImageLibrary()
+
+
+  _showToast: (type, message) ->
+    window.toastr[type](message)
 
 
   showSimulator: =>
