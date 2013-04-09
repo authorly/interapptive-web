@@ -97,6 +97,7 @@ class Sim.PageLayer extends cc.Scene
 
 
   showParagraph: (index) ->
+    console.log 'paragraph', index, @paragraphs
     return if @_busyWithAction
 
     show = =>

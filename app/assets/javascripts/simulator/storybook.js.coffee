@@ -271,6 +271,7 @@ class Sim.Storybook
 
 
   showPage: (pageNumber) ->
+    console.log 'page', pageNumber
     director = cc.Director.sharedDirector()
     scene = @createPageScene(pageNumber)
 

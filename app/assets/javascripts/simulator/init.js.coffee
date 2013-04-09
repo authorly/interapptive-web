@@ -1,6 +1,6 @@
 window.Sim = {}
 
-initSimulator = (json) ->
+Sim.initSimulator = (json) ->
   Sim._initalized = true
   storybook = new Sim.Storybook(json)
 
@@ -11,12 +11,13 @@ initSimulator = (json) ->
   pp.on('click', -> storybook.showPreviousPage())
 
 
+
 window.Sim.run = (json) ->
   cc.AppDelegate = Sim.AppDelegate
   cc.setup("simulator-canvas")
 
   if Sim._initalized
-    initSimulator()
+    Sim.initSimulator()
     return
 
   preloader = cc.Loader.shareLoader()
@@ -28,7 +29,7 @@ window.Sim.run = (json) ->
   # Initialise when all assets have loaded
   preloader.onload = ->
       cc.AppController.shareAppController().didFinishLaunchingWithOptions()
-      initSimulator(json)
+      Sim.initSimulator(json)
 
   # Preload our assets
   preloader.preload([
