@@ -1,0 +1,24 @@
+!!!
+
+%html
+  %head
+    = javascript_include_tag 'application'
+
+    :coffeescript
+      $ ->
+        $('#json-form').submit (ev) ->
+          ev.preventDefault()
+          jsonText = $('.json', ev.currentTarget).text()
+          $('.simulator-frame').data 'json', jsonText
+          $('.simulator-frame iframe').attr 'src', '/simulator?t=' + new Date().getTime()
+
+          false
+
+  %body
+    %form#json-form{ style: 'float: left; margin-right: 20px;' }
+      %textarea.json{ style: 'width: 500px; height: 300px; display: block;' }
+        = File.read(File.join(Rails.root, 'spec', 'javascripts', 'fixtures', 'json', 'storybook_json', 'ipad.json'))
+      %button#run Run
+
+    .simulator-frame{"data-json" => ''}
+      %iframe{ style: 'width: 800px; height: 660px; padding: 10px' }

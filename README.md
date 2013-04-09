@@ -126,3 +126,8 @@ Widgets are represented by two classes - a Backbone Model (that stores and manag
 Refresh the simulator in the browser, without re-loading the entire website:
 
     $('.simulator iframe')[0].src = '/simulator?t=' + (new Date).getTime()
+
+
+Test the simulator with some JSON:
+
+    http://127.0.0.1:3000/simulator/test # development only

@@ -19,6 +19,7 @@ Interapptive::Application.routes.draw do
   post 'password_resets'     => 'password_resets#create'
 
   get 'simulator' => 'simulator#show', :as => 'simulator'
+  get 'simulator/test' => 'simulator#test' if Rails.env.development?
   resource :compiler
 
   resources :images
