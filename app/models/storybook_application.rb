@@ -16,7 +16,7 @@ class StorybookApplication
     @storybook = storybook
     @json = storybook_json
     @transient_files = []
-    @target = target
+    @target = 'testing'
   end
 
   def logger
