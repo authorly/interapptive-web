@@ -6,6 +6,7 @@ class Sim.PageLayer extends cc.Scene
     @storybook = storybook
     @page = page
     @paragraphs = []
+    @currentParagraphNumber = 0
 
     @createSprites()
     @createParagraphs()

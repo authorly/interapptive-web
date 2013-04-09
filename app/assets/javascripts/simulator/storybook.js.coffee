@@ -17,7 +17,7 @@ class Sim.Storybook
 
     @createConfig(struct.Configurations)
     @createMainMenu(struct.MainMenu)
-    struct.Pages.forEach(@createPage.bind(this))
+    struct.Pages.forEach @createPage
 
     @showMainMenu()
 
@@ -96,7 +96,7 @@ class Sim.Storybook
         page.menuItems.push menuItemInfo
 
 
-  createPage: (pageSrc) ->
+  createPage: (pageSrc) =>
     page = new Sim.Page
 
     pageElement = pageSrc.Page
