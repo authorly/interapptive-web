@@ -36,7 +36,7 @@ end
 
 group :development, :test do
   gem 'guard'
-  gem 'jasminerice'
+  gem 'jasminerice', git: 'git://github.com/bradphelan/jasminerice.git'
   gem 'guard-jasmine'
   gem 'capybara'
   gem 'guard-rspec'
