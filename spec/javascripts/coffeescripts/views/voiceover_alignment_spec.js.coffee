@@ -28,9 +28,11 @@ describe "App.Views.VoiceoverIndex", ->
 
     @voiceover_index = new App.Views.VoiceoverIndex(@keyframe)
     sinon.spy App.vent, 'trigger'
+    @server = sinon.fakeServer.create()
 
   afterEach ->
     App.vent.trigger.restore()
+    @server.restore()
 
   describe "Instantiation", ->
     it "should have a keyframe property", ->
