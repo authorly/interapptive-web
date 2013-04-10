@@ -131,7 +131,8 @@ class Sim.PageLayer extends cc.Scene
 
         if actionToRun.actionTags.length > 1
           actions = actionToRun.actionTags.map(@page.getActionByTag.bind(@page))
-          action = cc.Spawn.actionsWithArray(actions)
+          # XXX assuming 2 actions - scale & position
+          action = cc.Spawn.create(actions[0], actions[1], null)
         else
           action = @page.getActionByTag(actionToRun.actionTags[0])
 
