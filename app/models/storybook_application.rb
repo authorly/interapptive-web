@@ -113,6 +113,7 @@ class StorybookApplication
 
   def send_notification
     #Resque.enqueue(MailerQueue, @storybook.user.email, index_url, ipa_url)
+    logger.info "Sending notificatoin email to user"
     UserMailer.compilation_completion_notification(@storybook.user.email, index_url, ipa_url).deliver
   end
 
