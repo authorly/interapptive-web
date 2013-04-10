@@ -17,6 +17,8 @@ class StorybookApplication
     @json = storybook_json
     @transient_files = []
     @target = 'testing'
+    @deploy_to_url = "https://interapptive.s3.amazonaws.com/compiled_applications/#{@storybook.id}"
+    @download_url_base = "https://s3.amazonaws.com/interapptive/compiled_applications/#{@storybook.id}/"
   end
 
   def logger
@@ -101,6 +103,18 @@ class StorybookApplication
     file
   end
 
+  def index_url
+    @download_url_base + 'index.html'
+  end
+
+  def ipa_url
+    @download_url_base + @target + '.ipa'
+  end
+
+  def send_notification
+    Resque.enqueue(MailerQueue, @storybook.user.email, index_url, ipa_url)
+  end
+
   # Change this method to include any new uploaders to take care that
   # introduce new type of files in the application
   def self.downloadable_file_extension_regex
@@ -139,7 +153,7 @@ class StorybookApplication
         config.app_name = '#{@target}'
 
         config.deploy_using(:web) do |web|
-          web.deploy_to = 'https://interapptive.s3.amazonaws.com/compiled_applications/#{@storybook.id}'
+          web.deploy_to = '#{@deploy_to_url}'
           web.remote_host = 'fake_path'
           web.remote_directory = 'fake_directory'
         end

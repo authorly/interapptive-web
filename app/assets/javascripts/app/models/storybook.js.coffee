@@ -90,7 +90,7 @@ class App.Models.Storybook extends Backbone.Model
       storybook_json: JSON.stringify(new App.JSON(@).app)
       storybook_id: @get('id')
       ->
-        console.log('enqueued for compilation')
+        App.vent.trigger('show:message', 'success', "Your application is under compilation. You will shortly receive a link to download your compiled application via email.")
     'json')
 
 
