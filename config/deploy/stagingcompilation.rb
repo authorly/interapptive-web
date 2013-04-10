@@ -32,7 +32,7 @@ namespace :deploy do
   end
 
   desc "Copies ActionMailer configuration file to config"
-  task :copy_keychain_password, :rolses => :stagingcompilation do
+  task :copy_action_mailer_options, :rolses => :stagingcompilation do
     run "cp #{shared_path}/config/action_mailer.yml #{release_path}/config"
   end
 end
