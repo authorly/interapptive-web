@@ -112,7 +112,8 @@ class StorybookApplication
   end
 
   def send_notification
-    Resque.enqueue(MailerQueue, @storybook.user.email, index_url, ipa_url)
+    #Resque.enqueue(MailerQueue, @storybook.user.email, index_url, ipa_url)
+    UserMailer.compilation_completion_notification(@storybook.user.email, index_url, ipa_url).deliver
   end
 
   # Change this method to include any new uploaders to take care that
