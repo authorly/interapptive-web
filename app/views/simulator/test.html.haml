@@ -8,7 +8,7 @@
       $ ->
         $('#json-form').submit (ev) ->
           ev.preventDefault()
-          jsonText = $('.json', ev.currentTarget).text()
+          jsonText = $('.json', ev.currentTarget).val()
           $('.simulator-frame').data 'json', jsonText
           $('.simulator-frame iframe').attr 'src', '/simulator?t=' + new Date().getTime()
 
