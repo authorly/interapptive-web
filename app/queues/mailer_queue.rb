@@ -1,4 +1,5 @@
 class MailerQueue < GenericQueue
+  @queue = :mailer
 
   # TODO: WA: This should be a generic mailer queue that
   # takes the actionmailer class, method that'd be used
