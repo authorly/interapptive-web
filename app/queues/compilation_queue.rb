@@ -13,6 +13,7 @@ class CompilationQueue < GenericQueue
     storybook_application.compile
     storybook_application.upload_compiled_application
     storybook_application.cleanup
+    logger.ingo "Preparing to send notification email for #{storybook_id}"
     storybook_application.send_notification
     storybook_application
   end
