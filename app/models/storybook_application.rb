@@ -59,7 +59,12 @@ class StorybookApplication
   end
 
   def cleanup
-    File.delete(*@transient_files)
+    begin
+      File.delete(*@transient_files)
+    rescue => e
+      logger.info "Cleanup failed for #{@storybook.id}"
+      logger.info e.message + "\n" + e.backtrace.join("\n")
+    end
   end
 
   def upload_compiled_application
@@ -112,9 +117,8 @@ class StorybookApplication
   end
 
   def send_notification
-    #Resque.enqueue(MailerQueue, @storybook.user.email, index_url, ipa_url)
-    logger.info "Sending notificatoin email to user"
-    UserMailer.compilation_completion_notification(@storybook.user.email, index_url, ipa_url).deliver
+    logger.info "Enqueuing notificatoin email for storybook #{@storybook.id}"
+    Resque.enqueue(MailerQueue, @storybook.user.email, index_url, ipa_url)
   end
 
   # Change this method to include any new uploaders to take care that
@@ -135,6 +139,8 @@ class StorybookApplication
 
   def xbuild_application
     f = IO.popen("cd #{CRUCIBLE_IOS_DIR} && security unlock-keychain -p '#{Rails.application.config.crucible_keychain_password}' /Users/Xcloud/Library/Keychains/login.keychain && bundle exec rake beta:deploy --trace")
+    # TODO: WA: Following blocks the worker process till log is
+    # written. Fork it to child process.
     logger.info f.readlines.join
     f.close
   end
