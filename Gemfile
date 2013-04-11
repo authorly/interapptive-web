@@ -21,6 +21,7 @@ gem 'ttfunk'
 gem 'resque'
 gem 'resque-loner'
 gem 'god'
+gem 'yaml_db'
 
 group :osx do
   gem 'betabuilder', :git => 'git://github.com/waseem/betabuilder.git', :branch => 'no_deploy', :ref => '1125dab2d903fb24aabef758d0f1feb22940ed6a'
@@ -50,7 +51,6 @@ group :development do
   gem 'debugger'
   gem 'growl'
   gem 'zencoder-fetcher'
-  gem 'yaml_db'
 end
 
 group :test do
