@@ -16,9 +16,9 @@ class Sim.PageLayer extends cc.Scene
   createMainMenuItem: ->
     menuItem = new cc.MenuItemImage
     menuItem.initFromNormalImage(
-      "/resources/#{@storybook.config.homeButtonNormalStateImage}"
-      "/resources/#{@storybook.config.homeButtonTappedStateImage}"
-      "/resources/#{@storybook.config.homeButtonTappedStateImage}"
+      "/assets/#{@storybook.config.homeButtonNormalStateImage}"
+      "/assets/#{@storybook.config.homeButtonTappedStateImage}"
+      "/assets/#{@storybook.config.homeButtonTappedStateImage}"
       @storybook
       'showMainMenu'
     )
@@ -40,7 +40,7 @@ class Sim.PageLayer extends cc.Scene
       if /^https?:\/\//.test(spriteInfo.image)
         spriteFile = spriteInfo.image
       else
-        spriteFile = "/resources/#{spriteInfo.image}"
+        spriteFile = "/assets/#{spriteInfo.image}"
 
       cc.TextureCache.sharedTextureCache().addImage(spriteFile)
 
