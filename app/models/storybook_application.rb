@@ -95,15 +95,19 @@ class StorybookApplication
     return file unless file.is_a?(String)
     file_ext = File.extname(file)
 
-    if file.match(/^http/) && file_ext.match(self.class.downloadable_file_extension_regex)
-      new_file_name = SecureRandom.hex
-      tf = Tempfile.new([new_file_name, file_ext], CRUCIBLE_RESOURCES_DIR)
-      tf.binmode
-      open(file, 'rb') do |read_file|
-        tf.write(read_file.read)
+    if file_ext.match(self.class.downloadable_file_extension_regex)
+      if file.match(/^http/)
+        new_file_name = SecureRandom.hex
+        tf = Tempfile.new([new_file_name, file_ext], CRUCIBLE_RESOURCES_DIR)
+        tf.binmode
+        open(file, 'rb') do |read_file|
+          tf.write(read_file.read)
+        end
+        @transient_files << tf.path
+        return File.basename(tf.path)
+      elsif file.match(/^\/assets/)
+        return File.basename(file)
       end
-      @transient_files << tf.path
-      return File.basename(tf.path)
     end
     file
   end
