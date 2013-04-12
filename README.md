@@ -120,3 +120,29 @@ Widgets are represented by two classes - a Backbone Model (that stores and manag
 #### What is cc?
 
 `cc` is the Cocos2d namespace.
+
+
+### Fixtures
+
+Reside in /spec/fixtures
+
+Loading:
+
+    > cp spec/fixtures/stranger-in-the-woods.yml db/data.yml
+    > bundle exec rake db:data:load
+
+
+Grab the JSON - in the web inspector console:
+
+    > storybook = App.currentSelection.get('storybook')
+    > json = (new App.JSON(storybook)).app
+    > JSON.stringify(json)
+
+Run the iOS simulator:
+
+* copy the json from the web inspector console (without the encompassing quotes)
+* paste it over `HelloWorld/Resources/structure-ipad.json` (in the `interapptive` project)
+* fix the asset paths by running
+
+    > sed -i '' 's/read_it_myself/read-it-myself/g;s/auto_play/autoplay/g;s/read_to_me/read-to-me/g;s/\/assets\/sprites\///g;s/https:\/\/interapptive.s3.amazonaws.com\/[a-z_]*\/[0-9]*\///g' HelloWorld/Resources/structure-ipad.json
+* run the iOS project ( `HelloWorld/ios` in the interraptive repo)
