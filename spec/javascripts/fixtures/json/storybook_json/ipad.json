@@ -53,8 +53,8 @@
                                      ]
                         },
                         {
-                        "normalStateImage": "http://localhost:3000/assets/read-it-myself.png",
-                        "tappedStateImage": "http://localhost:3000/assets/read-it-myself-over.png",
+                        "normalStateImage": "http://127.0.0.1:3000/assets/read-it-myself.png",
+                        "tappedStateImage": "http://127.0.0.1:3000/assets/read-it-myself-over.png",
                         "storyMode": "readItMyself",
                         "position": [
                                      400,
