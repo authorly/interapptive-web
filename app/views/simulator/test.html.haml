@@ -14,10 +14,12 @@
 
           false
 
+        $('#json-form').submit()
+
   %body
     %form#json-form{ style: 'float: left; margin-right: 20px;' }
       %textarea.json{ style: 'width: 500px; height: 300px; display: block;' }
-        = File.read(File.join(Rails.root, 'spec', 'javascripts', 'fixtures', 'json', 'storybook_json', 'ipad.json'))
+        = File.read(File.join(Rails.root, 'spec', 'javascripts', 'fixtures', 'json', 'storybook_json', 'siw_first_scenes.json'))
       %button#run Run
 
     .simulator-frame{"data-json" => ''}
