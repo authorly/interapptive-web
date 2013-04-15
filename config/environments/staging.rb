@@ -23,6 +23,9 @@ Interapptive::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = false
 
+  # Expands the lines which load the assets
+  config.assets.debug = true
+
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
 
