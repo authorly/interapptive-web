@@ -125,9 +125,9 @@ class App.Models.Scene extends Backbone.Model
 
 
   previewChanged: ->
-    # @set
-      # preview_image_id:  @preview.id
-      # preview_image_url: @preview.get('url')
+    @set
+      preview_image_id:  @preview.id
+      preview_image_url: @preview.get('url')
 
 
   previewDataUrlChanged: ->
