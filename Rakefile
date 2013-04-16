@@ -6,10 +6,14 @@ require File.expand_path('../config/application', __FILE__)
 
 Interapptive::Application.load_tasks
 
-if %w(test development).include?(ENV['RAILS_ENV'])
-  require 'guard/jasmine/task'
-  Guard::JasmineTask.new
-  require 'rspec/core/rake_task'
-  RSpec::Core::RakeTask.new(:spec)
-  task 'default' => ['guard:jasmine', 'spec']
-end
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
+
+require 'guard/jasmine/task'
+Guard::JasmineTask.new
+
+desc 'Default: run specs.'
+task :default => :spec
+# if %w(test development).include?(ENV['RAILS_ENV'])
+  # task default: ['guard:jasmine', 'spec']
+# end

@@ -15,37 +15,33 @@
 
 ## Tests
 
-### Set up the test environment
+### Rails tests
+
+    `bundle exec rake`
+
+### Javascript tests
 
 1. Install [PhantomJS](https://github.com/netzpirat/guard-jasmine#phantomjs)
-
-### Run all the test cases
-
-`bundle exec rake`
-
-### Run only the javascript tests
 
 Continuous testing:
 
     `bundle exec guard`
 
+The output contains the URL where it mounted the jasmine runner (something like http://localhost:[port]/jasmine).
+That URL works in the browser and you have the full UI (i.e. you can click on a test and it will only run that test)
+
+
+In the browser:
+
+    `bundle exec guard`
+
 Command line:
 
-    `bundle exec guard-jasmine`
+    `guard-jasmine`
 
     or
 
     `bundle exec rake guard:jasmine`
-
-In the browser:
-
-Run guard:
-
-    `bundle exec guard`
-
-
-The output contains the URL where it mounted the jasmine runner (something like http://localhost:[port]/jasmine).
-That URL works in the browser and you have the full UI (i.e. you can click on a test and it will only run that test)
 
 
 ### Write Javascript tests
