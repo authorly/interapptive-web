@@ -1,5 +1,142 @@
 
 ---
+action_definitions:
+  columns:
+  - id
+  - description
+  - created_at
+  - updated_at
+  - name
+  - enabled
+  records: 
+  - - 1
+    - Move an object along a curve
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCBezierBy
+    - false
+  - - 2
+    - Move an object along a curve
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCBezierTo
+    - false
+  - - 3
+    - Bounce an object in
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCEaseBounceIn
+    - false
+  - - 4
+    - Bounce an object out
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCEaseBounceOut
+    - false
+  - - 5
+    - Ease an object in
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCEaseIn
+    - false
+  - - 6
+    - Ease an object out
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCEaseOut
+    - false
+  - - 7
+    - Fade in an object
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCFadeIn
+    - true
+  - - 8
+    - Fade an object to a specified opacity
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCFadeTo
+    - true
+  - - 9
+    - Flip object along the X-axis (up-down)
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCFlipX
+    - false
+  - - 10
+    - Flip object along the Y-axis (up-down)
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCFlipY
+    - false
+  - - 11
+    - Flip an object over X-axis with a 3D effect
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCFlipX3D
+    - false
+  - - 12
+    - Flip an object over Y-axis with a 3D effect
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCFlipY3D
+    - false
+  - - 13
+    - Jump an object to a specified coordinate
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCJumpTo
+    - true
+  - - 14
+    - Jump an object by a given amount
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCJumpBy
+    - true
+  - - 15
+    - Rotate an object a certain number of degrees
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCRotateBy
+    - true
+  - - 16
+    - Rotate an object to a given angle
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCRotateTo
+    - true
+  - - 17
+    - Skew object by specified amount
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCSkewBy
+    - false
+  - - 18
+    - Scale an object to a given percentage
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCScaleTo
+    - true
+  - - 19
+    - Fade an object out
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCFadeOut
+    - true
+  - - 20
+    - Move an object to a point
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCMoveTo
+    - true
+  - - 21
+    - Move an object by defining the distance for an object to travel
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - CCMoveBy
+    - true
+
+---
 assets:
   columns:
   - id
@@ -14,333 +151,568 @@ assets:
   - generated
   - meta_info
   records: 
-  - - 8
+  - - 72
     - Image
-    - background0010.jpg
+    - image20130412-43483-1gjuaax.png
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-06 15:33:23.000000000Z
-    - 2013-03-06 15:33:23.000000000Z
-    - 3
-    - false
-    - !!null 
-  - - 9
-    - Image
-    - background0020.jpg
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-06 15:33:27.000000000Z
-    - 2013-03-06 15:33:27.000000000Z
-    - 3
-    - false
-    - !!null 
-  - - 37
-    - Image
-    - image20130402-1147-1168s6e.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-08 22:56:35.000000000Z
-    - 2013-04-02 17:10:13.000000000Z
+    - 2013-04-12 12:30:01.000000000Z
+    - 2013-04-12 12:54:24.000000000Z
     - 3
     - true
     - ! '--- {}
 
 '
-  - - 38
+  - - 73
     - Image
-    - image20130402-1147-1fujv13.png
+    - image20130412-43483-oawlip.png
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-08 23:10:23.000000000Z
-    - 2013-04-02 17:03:26.000000000Z
+    - 2013-04-12 12:32:12.000000000Z
+    - 2013-04-12 12:32:12.000000000Z
+    - 3
+    - true
+    - !!null 
+  - - 74
+    - Image
+    - image20130412-43483-2jgxi.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-04-12 12:32:50.000000000Z
+    - 2013-04-12 12:46:44.000000000Z
     - 3
     - true
     - ! '--- {}
 
 '
-  - - 39
+  - - 75
     - Image
-    - image20130402-1147-1tmcgbe.png
+    - image20130412-43483-1nxd6kr.png
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-08 23:10:34.000000000Z
-    - 2013-04-02 17:03:35.000000000Z
+    - 2013-04-12 12:34:11.000000000Z
+    - 2013-04-12 12:40:19.000000000Z
     - 3
     - true
     - ! '--- {}
 
 '
-  - - 40
-    - Image
-    - image20130402-1147-8zoqcl.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-08 23:10:37.000000000Z
-    - 2013-04-02 17:03:07.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
-  - - 41
-    - Image
-    - image20130311-83470-188sgju.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-09 13:53:26.000000000Z
-    - 2013-03-10 22:29:06.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
-  - - 42
-    - Image
-    - image20130318-2498-1lcjsia.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-18 21:05:06.000000000Z
-    - 2013-03-18 21:27:53.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
-  - - 43
-    - Image
-    - background0030.jpg
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-18 21:33:01.000000000Z
-    - 2013-03-18 21:33:01.000000000Z
-    - 3
-    - false
-    - !!null 
-  - - 44
-    - Image
-    - image20130402-1147-1l9tpmy.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-18 21:33:12.000000000Z
-    - 2013-04-02 17:03:48.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
-  - - 45
-    - Sound
-    - !!null 
-    - !!null 
-    - effect-bluejay-caw.mp3
-    - !!null 
-    - 2013-03-18 21:34:02.000000000Z
-    - 2013-03-18 21:34:02.000000000Z
-    - 3
-    - false
-    - !!null 
-  - - 46
+  - - 76
     - Image
     - arrow-pointing-left.png
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-18 21:34:56.000000000Z
-    - 2013-03-18 21:34:56.000000000Z
+    - 2013-04-12 12:35:06.000000000Z
+    - 2013-04-12 12:35:06.000000000Z
     - 3
     - false
     - !!null 
-  - - 47
+  - - 77
+    - Image
+    - background0030.jpg
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-04-12 12:35:34.000000000Z
+    - 2013-04-12 12:35:34.000000000Z
+    - 3
+    - false
+    - !!null 
+  - - 78
     - Image
     - background0040.jpg
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-18 21:37:20.000000000Z
-    - 2013-03-18 21:37:20.000000000Z
+    - 2013-04-12 12:37:58.000000000Z
+    - 2013-04-12 12:37:58.000000000Z
     - 3
     - false
     - !!null 
-  - - 48
+  - - 79
+    - Image
+    - image20130412-43483-1y5ihvv.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-04-12 12:38:39.000000000Z
+    - 2013-04-12 12:38:39.000000000Z
+    - 3
+    - true
+    - !!null 
+  - - 80
     - Image
     - background0050.jpg
     - !!null 
     - !!null 
     - !!null 
-    - 2013-03-18 21:37:24.000000000Z
-    - 2013-03-18 21:37:24.000000000Z
+    - 2013-04-12 12:39:04.000000000Z
+    - 2013-04-12 12:39:04.000000000Z
     - 3
     - false
     - !!null 
+  - - 81
+    - Image
+    - image20130412-43483-mm8ls9.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-04-12 12:41:13.000000000Z
+    - 2013-04-12 12:50:37.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+  - - 82
+    - Image
+    - image20130412-43483-gb87th.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-04-12 12:43:27.000000000Z
+    - 2013-04-12 12:43:27.000000000Z
+    - 3
+    - true
+    - !!null 
+  - - 83
+    - Image
+    - image20130412-43483-1tn9162.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-04-12 12:47:43.000000000Z
+    - 2013-04-12 12:54:37.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+  - - 84
+    - Image
+    - image20130412-43483-avgpbs.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-04-12 12:50:48.000000000Z
+    - 2013-04-12 12:50:48.000000000Z
+    - 3
+    - true
+    - !!null 
+  - - 85
+    - Image
+    - image20130412-43483-1gvaoib.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-04-12 12:51:00.000000000Z
+    - 2013-04-12 12:55:13.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+  - - 86
+    - Image
+    - image20130412-43483-1tvnl4q.png
+    - !!null 
+    - !!null 
+    - !!null 
+    - 2013-04-12 12:52:46.000000000Z
+    - 2013-04-12 12:55:19.000000000Z
+    - 3
+    - true
+    - ! '--- {}
+
+'
+
+---
+attribute_definitions:
+  columns:
+  - id
+  - action_definition_id
+  - type
+  - created_at
+  - updated_at
+  - name
+  records: 
+  - - 1
+    - 2
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 2
+    - 2
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - endPositionX
+  - - 3
+    - 2
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - endPositionY
+  - - 4
+    - 2
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - controlPoint1X
+  - - 5
+    - 2
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - controlPoint1Y
+  - - 6
+    - 2
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - controlPoint2X
+  - - 7
+    - 2
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - controlPoint2Y
+  - - 8
+    - 1
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 9
+    - 1
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - endPositionX
+  - - 10
+    - 1
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - endPositionY
+  - - 11
+    - 1
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - controlPoint1X
+  - - 12
+    - 1
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - controlPoint1Y
+  - - 13
+    - 1
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - controlPoint2X
+  - - 14
+    - 3
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - controlPoint2Y
+  - - 15
+    - 3
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - internalActionTag
+  - - 16
+    - 4
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - !!null 
+  - - 17
+    - 4
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - internalActionTag
+  - - 18
+    - !!null 
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - internalActionTag
+  - - 19
+    - !!null 
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - rate
+  - - 20
+    - 7
+    - text
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
+  - - 21
+    - 7
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 22
+    - 8
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
+  - - 23
+    - 8
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 24
+    - 8
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Opacity
+  - - 25
+    - 19
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
+  - - 26
+    - 19
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 27
+    - 6
+    - boolean
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - flip
+  - - 28
+    - 17
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - flip
+  - - 29
+    - 10
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 30
+    - 11
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 31
+    - 13
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
+  - - 32
+    - 13
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - X
+  - - 33
+    - 13
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Y
+  - - 34
+    - 13
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 35
+    - 13
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - height of jumps
+  - - 36
+    - 13
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Number of jumps
+  - - 37
+    - 14
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
+  - - 38
+    - 14
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Distance X
+  - - 39
+    - 14
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Distance Y
+  - - 40
+    - 14
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 41
+    - 14
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - height of jumps
+  - - 42
+    - 14
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Number of jumps
+  - - 43
+    - 15
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
+  - - 44
+    - 15
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Degrees
+  - - 45
+    - 15
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 46
+    - 16
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
+  - - 47
+    - 16
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 48
+    - 16
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Degrees
   - - 49
-    - Image
-    - image20130402-1147-ws7rit.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-18 21:37:36.000000000Z
-    - 2013-04-02 17:04:03.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
+    - 9
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
   - - 50
-    - Sound
-    - !!null 
-    - !!null 
-    - effect-woods.mp3
-    - !!null 
-    - 2013-03-18 21:40:33.000000000Z
-    - 2013-03-18 21:40:33.000000000Z
-    - 3
-    - false
-    - !!null 
+    - 9
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - deltaSkewX
   - - 51
-    - Image
-    - image20130402-1147-5vocsr.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-18 21:42:17.000000000Z
-    - 2013-04-02 17:03:56.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
+    - 9
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - deltaSkewY
   - - 52
-    - Sound
-    - !!null 
-    - !!null 
-    - effect-stranger-in-woods.mp3
-    - !!null 
-    - 2013-03-18 21:45:15.000000000Z
-    - 2013-03-18 21:45:15.000000000Z
-    - 3
-    - false
-    - !!null 
+    - 20
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
   - - 53
-    - Image
-    - image20130402-1147-19yq5x2.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-18 21:45:58.000000000Z
-    - 2013-04-02 17:04:20.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
+    - 20
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - X
   - - 54
-    - Image
-    - image20130402-1147-1evmnkm.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-18 21:48:34.000000000Z
-    - 2013-04-02 17:04:35.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
+    - 20
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Y
   - - 55
-    - Video
-    - !!null 
-    - video_owl.mp4
-    - !!null 
-    - !!null 
-    - 2013-03-18 21:52:57.000000000Z
-    - 2013-03-18 21:52:57.000000000Z
-    - 3
-    - false
-    - "---\n:request:\n  test: true\n  outputs:\n  - label: webmp4\n    url: http://interapptive.s3.amazonaws.com/videos/55/mp4_video_owl.mp4\n
-      \   id: 83125702\n  - label: webwebm\n    url: http://interapptive.s3.amazonaws.com/videos/55/webm_video_owl.webm\n
-      \   id: 83125703\n  - label: webogv\n    url: http://interapptive.s3.amazonaws.com/videos/55/ogv_video_owl.ogv\n
-      \   id: 83125704\n  - label: !!null \n    url: https://zencoder-temp-storage-us-east-1.s3.amazonaws.com/o/20130318/5840938ef86406a54eec9fd627e327a0/17490215392fa880a3be4b0fa638e0ea.mp4?AWSAccessKeyId=AKIAI456JQ76GBU7FECA&Signature=lbW6Uiyf%2FFNHSrpA8iPPwzp55vQ%3D&Expires=1363730000\n
-      \   id: 83125705\n  id: 41261820\n"
+    - 20
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
   - - 56
-    - Image
-    - background0000.jpg
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-19 21:17:18.000000000Z
-    - 2013-03-19 21:17:18.000000000Z
-    - 3
-    - false
-    - !!null 
+    - 21
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
   - - 57
-    - Image
-    - read-it-myself-over.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-20 00:00:30.000000000Z
-    - 2013-03-20 00:00:30.000000000Z
-    - 3
-    - false
-    - !!null 
+    - 21
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
   - - 58
-    - Image
-    - read-it-myself.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-20 00:00:32.000000000Z
-    - 2013-03-20 00:00:32.000000000Z
-    - 3
-    - false
-    - !!null 
-  - - 69
-    - Image
-    - image20130327-76514-9779ne.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-27 17:23:20.000000000Z
-    - 2013-03-27 17:23:20.000000000Z
-    - 3
-    - true
-    - !!null 
-  - - 70
-    - Image
-    - image20130327-76514-1ht0z2n.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-27 17:24:11.000000000Z
-    - 2013-03-27 17:26:31.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
-  - - 71
-    - Image
-    - image20130402-1147-na0685.png
-    - !!null 
-    - !!null 
-    - !!null 
-    - 2013-03-27 17:26:59.000000000Z
-    - 2013-04-02 17:04:26.000000000Z
-    - 3
-    - true
-    - ! '--- {}
-
-'
+    - 21
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Distance X
+  - - 59
+    - 21
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Distance Y
+  - - 60
+    - 18
+    - integer
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - sprite_widget_id
+  - - 61
+    - 18
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Duration (seconds)
+  - - 62
+    - 18
+    - decimal
+    - 2013-04-12 12:13:50.000000000Z
+    - 2013-04-12 12:13:50.000000000Z
+    - Intensity
 
 ---
 keyframes:
@@ -359,8 +731,8 @@ keyframes:
   - - 8
     - 5
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-04-02 17:10:11.000000000Z
-    - 37
+    - 2013-04-12 12:30:37.000000000Z
+    - 72
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 1\n
       \ position:\n    x: 197.27814569536395\n    y: 85.1324503311253\n  scale: 1\n-
       type: SpriteOrientation\n  keyframe_id: 8\n  sprite_widget_id: 2\n  position:\n
@@ -375,10 +747,10 @@ keyframes:
   - - 9
     - 6
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-03-27 00:43:24.000000000Z
-    - 40
+    - 2013-04-12 12:46:42.000000000Z
+    - 74
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 9\n  sprite_widget_id: 4\n
-      \ position:\n    x: 508.7499253429819\n    y: 406.8123532360601\n  scale: 1\n-
+      \ position:\n    x: 516.5324187116823\n    y: 409.83297179276013\n  scale: 1\n-
       position:\n    x: 528.9867549668886\n    y: 253.03973509933752\n  type: TextWidget\n
       \ string: For those who protect wild places\n  font: Arial\n  size: 24\n  z_order:
       6000\n  id: 6\n- position:\n    x: 545.0927152317877\n    y: 190.15894039735053\n
@@ -427,14 +799,14 @@ keyframes:
   - - 12
     - 7
     - 2013-03-06 15:40:45.000000000Z
-    - 2013-04-02 17:03:32.000000000Z
-    - 39
+    - 2013-04-12 12:40:14.000000000Z
+    - 75
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 12\n  sprite_widget_id: 5\n
-      \ position:\n    x: 563.625994694957\n    y: 397.1704385208217\n  scale: 1\n-
+      \ position:\n    x: 571.1273209549038\n    y: 387.92301584040877\n  scale: 1\n-
       position:\n    x: 185.5165914241044\n    y: 156.39874057852447\n  type: TextWidget\n
       \ string: The snowflakes were\n  font: Arial\n  size: 24\n  z_order: 6000\n
       \ id: 9\n- position:\n    x: 257.3311258278146\n    y: 121.67549668874166\n
-      \ type: TextWidget\n  string:  resting after their twisting,\n  font: Arial\n
+      \ type: TextWidget\n  string:  resting after their twisting,\n  font: Arial\n
       \ size: 24\n  z_order: 6000\n  id: 10\n- position:\n    x: 272.4834437086091\n
       \   y: 75.29801324503312\n  type: TextWidget\n  string: twirling dance through\n
       \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 11\n- position:\n    x: 286.28476821192066\n
@@ -444,7 +816,7 @@ keyframes:
       \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 13\n- position:\n    x: 795.7875524794906\n
       \   y: 85.85720693385389\n  type: TextWidget\n  string: wore a new coat\n  font:
       Arial\n  size: 24\n  z_order: 6000\n  id: 14\n- position:\n    x: 847.7019867549665\n
-      \   y: 46.894039735099376\n  type: TextWidget\n  string:  of glimmering white.\n
+      \   y: 46.894039735099376\n  type: TextWidget\n  string:  of glimmering white.\n
       \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 15\n"
     - 0
     - page-2-paragraph-1.mp3
@@ -505,8 +877,8 @@ keyframes:
   - - 26
     - 7
     - 2013-03-07 19:02:47.000000000Z
-    - 2013-04-02 17:03:20.000000000Z
-    - 38
+    - 2013-04-12 12:50:13.000000000Z
+    - 83
     - ! "---\n- type: SpriteOrientation\n  keyframe_id: 26\n  sprite_widget_id: 5\n
       \ position:\n    x: -45.66209355842608\n    y: 641.3495422284309\n  scale: 1.5\n-
       position:\n    x: 127.89403973509923\n    y: 188.49668874172187\n  type: TextWidget\n
@@ -569,23 +941,23 @@ keyframes:
   - - 28
     - 8
     - 2013-03-18 21:32:17.000000000Z
-    - 2013-03-27 00:44:04.000000000Z
-    - 44
-    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 28\n  sprite_widget_id: 23\n
-      \ position:\n    x: 527.1125827814569\n    y: 376.0000000000001\n  scale: 1\n-
-      type: SpriteOrientation\n  keyframe_id: 28\n  sprite_widget_id: 25\n  position:\n
-      \   x: 540.748344370861\n    y: 608.2052980132444\n  scale: 1\n- position:\n
-      \   x: 887.1133732675175\n    y: 238.53702189036366\n  type: TextWidget\n  string:
-      ! '\"Take care!'\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 26\n- position:\n
-      \   x: 917.2715231788078\n    y: 198.3841059602647\n  type: TextWidget\n  string:
-      Take care!\"\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 27\n- position:\n
-      \   x: 892.5364238410594\n    y: 151.45695364238406\n  type: TextWidget\n  string:
-      The blue jays cawed\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 28\n-
-      position:\n    x: 847.9337748344371\n    y: 116.1192052980132\n  type: TextWidget\n
-      \ string: a warning from high in the\n  font: Arial\n  size: 24\n  z_order:
-      6000\n  id: 29\n- position:\n    x: 889.0794701986754\n    y: 78.04635761589405\n
-      \ type: TextWidget\n  string: tops of the tall oaks.\n  font: Arial\n  size:
-      24\n  z_order: 6000\n  id: 30\n"
+    - 2013-04-12 12:41:16.000000000Z
+    - 81
+    - ! "---\n- position:\n    x: 887.1133732675175\n    y: 238.53702189036366\n  type:
+      TextWidget\n  string: ! '\"Take care!'\n  font: Arial\n  size: 24\n  z_order:
+      6000\n  id: 26\n- position:\n    x: 917.2715231788078\n    y: 198.3841059602647\n
+      \ type: TextWidget\n  string: Take care!\"\n  font: Arial\n  size: 24\n  z_order:
+      6000\n  id: 27\n- position:\n    x: 892.5364238410594\n    y: 151.45695364238406\n
+      \ type: TextWidget\n  string: The blue jays cawed\n  font: Arial\n  size: 24\n
+      \ z_order: 6000\n  id: 28\n- position:\n    x: 847.9337748344371\n    y: 116.1192052980132\n
+      \ type: TextWidget\n  string: a warning from high in the\n  font: Arial\n  size:
+      24\n  z_order: 6000\n  id: 29\n- position:\n    x: 889.0794701986754\n    y:
+      78.04635761589405\n  type: TextWidget\n  string: tops of the tall oaks.\n  font:
+      Arial\n  size: 24\n  z_order: 6000\n  id: 30\n- type: SpriteOrientation\n  keyframe_id:
+      28\n  sprite_widget_id: 49\n  position:\n    x: 632.730564139022\n    y: 302.34020618556406\n
+      \ scale: 1.2\n- type: SpriteOrientation\n  keyframe_id: 28\n  sprite_widget_id:
+      50\n  position:\n    x: 689.1478574749099\n    y: 530.969072164947\n  scale:
+      1\n"
     - 0
     - page-3-paragraph-1.mp3
     - ! '---
@@ -633,18 +1005,19 @@ keyframes:
   - - 29
     - 9
     - 2013-03-18 21:37:03.000000000Z
-    - 2013-04-02 17:03:58.000000000Z
-    - 49
-    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 29\n  sprite_widget_id: 31\n
-      \ position:\n    x: 510\n    y: 380\n  scale: 1\n- position:\n    x: 254.1523178807946\n
-      \   y: 581.5827814569533\n  type: TextWidget\n  string: ! '\"Do you hear the
-      jays calling?\"'\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 32\n- position:\n
-      \   x: 253.86092715231803\n    y: 526.7152317880799\n  type: TextWidget\n  string:
-      Mother Doe spoke softly\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 33\n-
-      position:\n    x: 285.4703392063519\n    y: 483.8975899501603\n  type: TextWidget\n
-      \ string: to her fawn.\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 34\n-
-      position:\n    x: 512\n    y: 384\n  type: TextWidget\n  string: ''\n  font:
-      Arial\n  size: 24\n  z_order: 6000\n  id: 35\n"
+    - 2013-04-12 12:38:42.000000000Z
+    - 79
+    - ! "---\n- position:\n    x: 254.1523178807946\n    y: 581.5827814569533\n  type:
+      TextWidget\n  string: ! '\"Do you hear the jays calling?\"'\n  font: Arial\n
+      \ size: 24\n  z_order: 6000\n  id: 32\n- position:\n    x: 253.86092715231803\n
+      \   y: 526.7152317880799\n  type: TextWidget\n  string: Mother Doe spoke softly\n
+      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 33\n- position:\n    x: 285.4703392063519\n
+      \   y: 483.8975899501603\n  type: TextWidget\n  string: to her fawn.\n  font:
+      Arial\n  size: 24\n  z_order: 6000\n  id: 34\n- position:\n    x: 512\n    y:
+      384\n  type: TextWidget\n  string: ''\n  font: Arial\n  size: 24\n  z_order:
+      6000\n  id: 35\n- type: SpriteOrientation\n  keyframe_id: 29\n  sprite_widget_id:
+      51\n  position:\n    x: 518.7543547813705\n    y: 417.824742268039\n  scale:
+      1\n"
     - 0
     - page-4-paragraph-1.mp3
     - ! '---
@@ -680,21 +1053,21 @@ keyframes:
   - - 30
     - 9
     - 2013-03-18 21:42:14.000000000Z
-    - 2013-03-27 00:44:21.000000000Z
-    - 51
-    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 30\n  sprite_widget_id: 31\n
-      \ position:\n    x: 510\n    y: 380\n  scale: 1\n- position:\n    x: 186.10596026490057\n
-      \   y: 567.430463576159\n  type: TextWidget\n  string: ! '\"Yes,\" he whispered.'\n
-      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 36\n- position:\n    x: 265.6225165562913\n
-      \   y: 516.847682119205\n  type: TextWidget\n  string: ! '\"I always listen
-      to the birds,'\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 37\n- position:\n
-      \   x: 339.60927152317896\n    y: 481.09933774834457\n  type: TextWidget\n  string:
-      the wind blowing through the trees,\n  font: Arial\n  size: 24\n  z_order: 6000\n
-      \ id: 38\n- position:\n    x: 282.25827814569533\n    y: 445.52980132450307\n
-      \ type: TextWidget\n  string: the rustling of the leaves\n  font: Arial\n  size:
-      24\n  z_order: 6000\n  id: 39\n- position:\n    x: 361.3973509933775\n    y:
-      407.1721854304635\n  type: TextWidget\n  string: and all the sounds of the woods.\"\n
-      \ font: Arial\n  size: 24\n  z_order: 6000\n  id: 40\n"
+    - 2013-04-12 12:55:11.000000000Z
+    - 85
+    - ! "---\n- position:\n    x: 186.10596026490057\n    y: 567.430463576159\n  type:
+      TextWidget\n  string: ! '\"Yes,\" he whispered.'\n  font: Arial\n  size: 24\n
+      \ z_order: 6000\n  id: 36\n- position:\n    x: 265.6225165562913\n    y: 516.847682119205\n
+      \ type: TextWidget\n  string: ! '\"I always listen to the birds,'\n  font: Arial\n
+      \ size: 24\n  z_order: 6000\n  id: 37\n- position:\n    x: 339.60927152317896\n
+      \   y: 481.09933774834457\n  type: TextWidget\n  string: the wind blowing through
+      the trees,\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 38\n- position:\n
+      \   x: 282.25827814569533\n    y: 445.52980132450307\n  type: TextWidget\n  string:
+      the rustling of the leaves\n  font: Arial\n  size: 24\n  z_order: 6000\n  id:
+      39\n- position:\n    x: 361.3973509933775\n    y: 407.1721854304635\n  type:
+      TextWidget\n  string: and all the sounds of the woods.\"\n  font: Arial\n  size:
+      24\n  z_order: 6000\n  id: 40\n- type: SpriteOrientation\n  keyframe_id: 30\n
+      \ sprite_widget_id: 51\n  position:\n    x: 518\n    y: 417\n  scale: 1\n"
     - 1
     - page-4-paragraph-2.mp3
     - ! '---
@@ -758,20 +1131,20 @@ keyframes:
   - - 31
     - 10
     - 2013-03-18 21:44:41.000000000Z
-    - 2013-03-27 00:44:48.000000000Z
-    - 54
-    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 31\n  sprite_widget_id: 41\n
-      \ position:\n    x: -417.34633829290425\n    y: 406.4074298831108\n  scale:
-      1.45\n- position:\n    x: 187.82781456953643\n    y: 184.29801324503325\n  type:
-      TextWidget\n  string: ! '\"Who-hoo''s in the woods?'\n  font: Arial\n  size:
-      24\n  z_order: 6000\n  id: 44\n- position:\n    x: 253.30463576158942\n    y:
-      145.23841059602643\n  type: TextWidget\n  string: Where? Where did the jays
-      say?\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 45\n- position:\n    x:
-      227.7814569536424\n    y: 114.07284768211917\n  type: TextWidget\n  string:
+    - 2013-04-12 12:53:32.000000000Z
+    - 86
+    - ! "---\n- position:\n    x: 187.82781456953643\n    y: 184.29801324503325\n
+      \ type: TextWidget\n  string: ! '\"Who-hoo''s in the woods?'\n  font: Arial\n
+      \ size: 24\n  z_order: 6000\n  id: 44\n- position:\n    x: 253.30463576158942\n
+      \   y: 145.23841059602643\n  type: TextWidget\n  string: Where? Where did the
+      jays say?\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 45\n- position:\n
+      \   x: 227.7814569536424\n    y: 114.07284768211917\n  type: TextWidget\n  string:
       Where is he?\"\n  font: Arial\n  size: 24\n  z_order: 6000\n  id: 46\n- position:\n
       \   x: 281.96026490066237\n    y: 72.40397350993382\n  type: TextWidget\n  string:
       asked the Owl of Many Questions.\n  font: Arial\n  size: 24\n  z_order: 6000\n
-      \ id: 47\n"
+      \ id: 47\n- type: SpriteOrientation\n  keyframe_id: 31\n  sprite_widget_id:
+      52\n  position:\n    x: -292.85381060461697\n    y: 397.7216494845269\n  scale:
+      1.5\n"
     - 0
     - page-5-paragraph-1.mp3
     - ! '---
@@ -819,10 +1192,10 @@ keyframes:
   - - 32
     - 10
     - 2013-03-18 21:45:46.000000000Z
-    - 2013-04-02 17:04:18.000000000Z
-    - 53
-    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 32\n  sprite_widget_id: 41\n
-      \ position:\n    x: 973.8599785690418\n    y: 453.72571705394853\n  scale: 1\n"
+    - 2013-04-12 12:43:32.000000000Z
+    - 82
+    - ! "---\n- type: SpriteOrientation\n  keyframe_id: 32\n  sprite_widget_id: 52\n
+      \ position:\n    x: 878.6554732150113\n    y: 403.1958762886554\n  scale: 1\n"
     - !!null 
     - !!null 
     - ! "--- !!null \n...\n"
@@ -850,8 +1223,8 @@ scenes:
     - !!null 
     - !!null 
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-04-02 17:04:32.000000000Z
-    - 37
+    - 2013-04-12 12:27:46.000000000Z
+    - 72
     - 0
     - ! "---\n- position:\n    y: 100\n    x: 200\n  type: ButtonWidget\n  scale:
       1\n  id: 1\n  name: read_it_myself\n  z_order: 2\n  filename: read_it_myself.png\n
@@ -859,9 +1232,9 @@ scenes:
       \ selectedUrl: https://interapptive.s3.amazonaws.com/images/57/read-it-myself-over.png\n
       \ selected_url: https://interapptive.s3.amazonaws.com/images/57/read-it-myself-over.png\n-
       position:\n    y: 200\n    x: 200\n  type: ButtonWidget\n  scale: 1\n  id: 2\n
-      \ name: read_to_me\n  z_order: 3\n  filename: read_to_me.png\n  url: /assets/sprites/read_to_me.png\n-
+      \ name: read_to_me\n  z_order: 4\n  filename: read_to_me.png\n  url: /assets/sprites/read_to_me.png\n-
       position:\n    y: 300\n    x: 200\n  type: ButtonWidget\n  scale: 1\n  id: 3\n
-      \ name: auto_play\n  z_order: 4\n  filename: auto_play.png\n  url: /assets/sprites/auto_play.png\n-
+      \ name: auto_play\n  z_order: 3\n  filename: auto_play.png\n  url: /assets/sprites/auto_play.png\n-
       position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale: 1\n  url:
       https://interapptive.s3.amazonaws.com/images/56/background0000.jpg\n  filename:
       background0000.jpg\n  id: 48\n  z_order: 1\n"
@@ -882,8 +1255,8 @@ scenes:
     - !!null 
     - 0
     - 2013-03-06 15:25:37.000000000Z
-    - 2013-04-02 17:04:32.000000000Z
-    - 40
+    - 2013-04-12 12:32:15.000000000Z
+    - 74
     - 0
     - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
       1\n  url: https://interapptive.s3.amazonaws.com/images/8/background0010.jpg\n
@@ -905,8 +1278,8 @@ scenes:
     - !!null 
     - 1
     - 2013-03-06 15:40:45.000000000Z
-    - 2013-04-02 17:04:32.000000000Z
-    - 39
+    - 2013-04-12 12:27:46.000000000Z
+    - 75
     - 0
     - ! "---\n- position:\n    x: 256\n    y: 192\n  type: SpriteWidget\n  scale:
       1\n  url: https://interapptive.s3.amazonaws.com/images/9/background0020.jpg\n
@@ -928,17 +1301,18 @@ scenes:
     - !!null 
     - 2
     - 2013-03-18 21:32:17.000000000Z
-    - 2013-04-02 17:04:32.000000000Z
-    - 44
+    - 2013-04-12 12:34:41.000000000Z
+    - 81
     - 0
-    - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
-      1\n  url: https://interapptive.s3.amazonaws.com/images/43/background0030.jpg\n
-      \ filename: background0030.jpg\n  id: 23\n  z_order: 1\n- position:\n    x:
-      462.82781456953603\n    y: 407.88741721854296\n  type: HotspotWidget\n  radius:
-      81.88300373675547\n  control_radius: 28\n  z_order: 5000\n  sound_id: https://interapptive.s3.amazonaws.com/sounds/45/effect-bluejay-caw.mp3\n
-      \ id: 24\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
-      1\n  url: https://interapptive.s3.amazonaws.com/images/46/arrow-pointing-left.png\n
-      \ filename: arrow-pointing-left.png\n  id: 25\n  z_order: 2\n"
+    - ! "---\n- position:\n    x: 462.82781456953603\n    y: 407.88741721854296\n
+      \ type: HotspotWidget\n  radius: 81.88300373675547\n  control_radius: 28\n  z_order:
+      5000\n  sound_id: https://interapptive.s3.amazonaws.com/sounds/45/effect-bluejay-caw.mp3\n
+      \ id: 24\n- position:\n    x: 646.5979381443299\n    y: 286\n  type: SpriteWidget\n
+      \ scale: 1\n  url: https://interapptive.s3.amazonaws.com/images/77/background0030.jpg\n
+      \ filename: background0030.jpg\n  id: 49\n  z_order: 1\n- position:\n    x:
+      652.659793814433\n    y: 490.08247422680415\n  type: SpriteWidget\n  scale:
+      1\n  url: https://interapptive.s3.amazonaws.com/images/76/arrow-pointing-left.png\n
+      \ filename: arrow-pointing-left.png\n  id: 50\n  z_order: 2\n"
     - Arial
     - '25'
     - ! '---
@@ -956,12 +1330,12 @@ scenes:
     - 50
     - 3
     - 2013-03-18 21:37:03.000000000Z
-    - 2013-04-02 17:04:32.000000000Z
-    - 49
+    - 2013-04-12 12:37:56.000000000Z
+    - 79
     - 0
-    - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
-      1\n  url: https://interapptive.s3.amazonaws.com/images/47/background0040.jpg\n
-      \ filename: background0040.jpg\n  id: 31\n  z_order: 1\n"
+    - ! "---\n- position:\n    x: 513.2371134020618\n    y: 455.7319587628866\n  type:
+      SpriteWidget\n  scale: 1\n  url: https://interapptive.s3.amazonaws.com/images/78/background0040.jpg\n
+      \ filename: background0040.jpg\n  id: 51\n  z_order: 1\n"
     - Arial
     - '25'
     - ! '---
@@ -979,15 +1353,15 @@ scenes:
     - 52
     - 4
     - 2013-03-18 21:44:41.000000000Z
-    - 2013-04-02 17:04:32.000000000Z
-    - 53
+    - 2013-04-12 12:38:53.000000000Z
+    - 82
     - 1
-    - ! "---\n- position:\n    x: 512\n    y: 384\n  type: SpriteWidget\n  scale:
-      1\n  url: https://interapptive.s3.amazonaws.com/images/48/background0050.jpg\n
-      \ filename: background0050.jpg\n  id: 41\n  z_order: 1\n- position:\n    x:
-      698.9364449206877\n    y: 315.0790040720124\n  type: HotspotWidget\n  radius:
-      90.74957651891769\n  control_radius: 28\n  z_order: 5000\n  video_id: https://interapptive.s3.amazonaws.com/videos/55/video_owl.mp4\n
-      \ id: 43\n"
+    - ! "---\n- position:\n    x: 698.9364449206877\n    y: 315.0790040720124\n  type:
+      HotspotWidget\n  radius: 90.74957651891769\n  control_radius: 28\n  z_order:
+      5000\n  video_id: https://interapptive.s3.amazonaws.com/videos/55/video_owl.mp4\n
+      \ id: 43\n- position:\n    x: 684.9896907216495\n    y: 140.51546391752584\n
+      \ type: SpriteWidget\n  scale: 1\n  url: https://interapptive.s3.amazonaws.com/images/80/background0050.jpg\n
+      \ filename: background0050.jpg\n  id: 52\n  z_order: 1\n"
     - Arial
     - '25'
     - ! '---
@@ -1044,12 +1418,12 @@ users:
   - updated_at
   records: 
   - - 1
-    - talk.to.waseem@gmail.com
+    - irina.dumitrascu@gmail.com
     - !!null 
     - user
     - !!null 
-    - $2a$10$3W0wMj6TQcquU1DDU/unHOQSM7KLsB4GvN0C7oACO8SYpgkZHc4Lq
-    - buxGqe9xXaeyaer_O9EB5g
+    - $2a$10$5K1nSA0Yo4omVZnBW1XqDOi80.6JnG6nizuH07ZTYKSOjly68mSta
+    - TJDV_mEYnNzhCtWHWdEvAQ
     - !!null 
     - !!null 
     - 2013-02-18 22:28:49.000000000Z
