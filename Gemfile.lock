@@ -337,7 +337,6 @@ DEPENDENCIES
   betabuilder!
   cancan
   capistrano
-  capybara
   carrierwave
   coffee-rails (~> 3.2.1)
   connection_pool

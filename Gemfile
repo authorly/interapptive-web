@@ -39,7 +39,6 @@ group :development, :test do
   gem 'guard'
   gem 'jasminerice'
   gem 'guard-jasmine'
-  gem 'capybara'
   gem 'guard-rspec'
 end
 
