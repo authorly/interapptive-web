@@ -240,6 +240,7 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.10.0)
     rake (10.0.4)
+    rb-fsevent (0.9.1)
     rdoc (3.12.2)
       json (~> 1.4)
     redis (3.0.3)
@@ -369,6 +370,7 @@ DEPENDENCIES
   pry-rails
   rails (= 3.2.12)
   rails-backbone
+  rb-fsevent (~> 0.9)
   resque
   resque-loner
   rspec-rails

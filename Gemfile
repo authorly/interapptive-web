@@ -36,10 +36,12 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'guard'
   gem 'jasminerice'
+
+  gem 'guard'
   gem 'guard-jasmine'
   gem 'guard-rspec'
+  gem 'rb-fsevent', '~> 0.9'
 end
 
 group :development do
