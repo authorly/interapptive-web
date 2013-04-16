@@ -64,7 +64,6 @@ group :test do
   gem 'forgery'
   gem 'launchy'
   gem 'connection_pool'
-  gem 'jasmine-rails'
 end
 
 group :deployment do
