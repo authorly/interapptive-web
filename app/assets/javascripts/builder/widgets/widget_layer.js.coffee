@@ -111,6 +111,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       if widget.getIsVisible() and widget.isPointInside(point)
         widgets.push widget
 
+    return null if widgets.length == 0
     _.max widgets, (widget) -> widget.model.get('z_order')
 
 
