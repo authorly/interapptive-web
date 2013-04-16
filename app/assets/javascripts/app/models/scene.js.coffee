@@ -109,7 +109,7 @@ class App.Models.Scene extends Backbone.Model
     @preview = preview
     @addPreviewListeners()
 
-    @previewChanged()
+    # @previewChanged()
 
 
   addPreviewListeners: ->
