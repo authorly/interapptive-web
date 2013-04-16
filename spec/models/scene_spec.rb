@@ -12,19 +12,19 @@ describe Scene do
 
       response = {
           'created_at'          => scene.created_at,
-          'font_color'          => 'rgb(0, 0, 0)',
+          'font_color'          => {r:255,g:0,b:0},
           'font_face'           => 'Arial',
           'font_size'           => '25',
           'id'                  => scene.id,
           'is_main_menu'        => scene.is_main_menu,
           'position'            => scene.position,
-          'preview_image_id'    => scene.preview_image_id,
+          'preview_image_id'    => scene.preview_image.id,
           'sound_id'            => scene.sound_id,
           'sound_repeat_count'  => 0,
           'storybook_id'        => scene.storybook_id,
           'updated_at'          => scene.updated_at,
           'widgets'             => nil,
-          'preview_image_url'   => nil,
+          'preview_image_url'   => scene.preview_image.image.url,
           'sound_url'           => scene.sound.sound.url
       }.to_json
 

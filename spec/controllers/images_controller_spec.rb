@@ -78,7 +78,7 @@ describe ImagesController do
       put :update, :id => @image.id, :image => { :files => [@image_file] }, :format => :json
 
       response.should be_success
-      response.body.should eql([{ :id => @image.id, :image => @image.image }].to_json)
+      response.body.should eql({ :id => @image.id, :image => @image.image }.to_json)
     end
   end
 
