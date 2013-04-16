@@ -5,9 +5,9 @@ class App.Views.AssetLibrary extends Backbone.View
     'click .video-thumbnail' : 'playVideo'
 
 
-  initialize: (assetType, assets) ->
-    @assetType = assetType
-    @assets = assets
+  initialize: ->
+    @assetType = @options.assetType
+    @assets = @options.assets
     @acceptedFileTypes = @acceptedFileTypes(@assetType)
     @assets.on 'reset', @render, @
 
