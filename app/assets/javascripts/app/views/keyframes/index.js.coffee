@@ -8,8 +8,8 @@ class App.Views.KeyframeIndex extends Backbone.View
   className: 'keyframe-list'
 
   events:
-    'click  .keyframe-list li div' : 'keyframeClicked'
-    'click  .delete-keyframe'      : 'destroyKeyframeClicked'
+    'click  li div': 'keyframeClicked'
+    'click  .delete-keyframe': 'destroyKeyframeClicked'
 
   DELETE_KEYFRAME_MSG:
     '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
