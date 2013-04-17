@@ -85,6 +85,7 @@ class App.Models.Scene extends Backbone.Model
 
 
   toJSON: ->
+    return if @widgets instanceof Array
     _.extend super, widgets: @widgets.toJSON()
 
 
