@@ -11,9 +11,9 @@ gem 'less-rails-bootstrap'
 gem 'carrierwave'
 gem 'zencoder'
 gem 'fog', '~> 1.3.1'
-gem 'mini_magick'
+gem 'mini_magick', '3.4'
 gem 'param_protected', '~> 4.0.0'
-gem 'jquery-fileupload-rails', :git => 'git://github.com/cswhitman/jquery-fileupload-rails.git'
+gem 'jquery-fileupload-rails', :git => 'git://github.com/cswhitman/jquery-fileupload-rails.git', :ref => 'e07e8fdff79922b8c72fc78c28933961ea1a370e'
 gem 'unicorn'
 gem 'therubyracer', '~> 0.10.2'
 gem 'barista'
@@ -36,11 +36,12 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'guard'
   gem 'jasminerice'
+
+  gem 'guard'
   gem 'guard-jasmine'
-  gem 'capybara'
   gem 'guard-rspec'
+  gem 'rb-fsevent', '~> 0.9'
 end
 
 group :development do

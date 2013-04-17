@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Keyframe do
   let!(:keyframe) { Factory(:keyframe) }
 
-  it { Factory(:keyframe).should be_valid }
+  it { keyframe.should be_valid }
 
   context "#to_json" do
     it 'should be valid response' do
@@ -21,7 +21,7 @@ describe Keyframe do
           'scene_id'           => keyframe.scene_id,
           'updated_at'         => keyframe.updated_at,
           'widgets'            => keyframe.widgets,
-          'preview_image_url'  => nil,
+          'preview_image_url'  => keyframe.preview_image.image.url,
           'url'                => nil
       }.to_json
 

@@ -34,7 +34,6 @@ class ImagesController < ApplicationController
   def update
     image = Image.find params[:id]
     raise ActiveRecord::RecordNotFound unless image.storybook.owned_by?(current_user)
-    image.remove_image!
 
     data = params[:base64] ? file : params[:data_url]
     image.update_attribute(:data_encoded_image, data)

@@ -14,7 +14,7 @@ Factory.define :storybook do |f|
   f.price 20.00
 end
 
-Factory.define :sound, class: Asset do |f|
+Factory.define :sound do |f|
   f.type 'Sound'
   f.sound 'audio-file.mp3'
 end
@@ -25,61 +25,59 @@ Factory.define :image do |f|
   f.image 'image.jpg'
 end
 
-Factory.define :video, class: Asset do |f|
+Factory.define :video do |f|
   f.type 'Video'
   f.video 'movie.mp4'
 end
 
-Factory.define :font, class: Asset do |f|
+Factory.define :font do |f|
   f.type 'Font'
   f.video 'custom-font.ttf'
 end
 
 Factory.define :scene do |f|
-  f.preview_image_id Factory.create(:image).id
-  f.sound_id Factory.create(:sound).id
-  f.storybook Factory.create(:storybook)
+  f.preview_image Factory(:image)
+  f.sound Factory(:sound)
+  f.storybook Factory(:storybook)
 end
 
 Factory.define :main_menu_scene, class: Scene do |f|
-  f.preview_image_id Factory.create(:image).id
-  f.sound_id Factory.create(:sound).id
-  f.storybook Factory.create(:storybook)
+  f.preview_image Factory(:image)
+  f.sound Factory(:sound)
+  f.storybook Factory(:storybook)
   f.is_main_menu true
   f.position nil
 end
 
 Factory.define :keyframe do |f|
-  f.scene_id Factory.create(:scene).id
-  f.preview_image_id Factory.create(:image).id
+  f.scene Factory(:scene)
+  f.preview_image Factory(:image)
 end
 
 Factory.define :animation_keyframe, class: Keyframe do |f|
-  f.scene_id Factory.create(:scene).id
-  f.preview_image_id Factory.create(:image).id
+  f.scene Factory(:scene)
+  f.preview_image Factory(:image)
   f.is_animation true
   f.position nil
 end
 
 Factory.define :actions do |f|
-  f.scene Factory.create(:scene)
+  f.scene Factory(:scene)
 end
 
 Factory.define :settings do |f|
   f.type "font.ttf"
-  f.scene_id Factory.create(:scene).id
-  f.storybook_id Factory.create(:storybook).id
-  font = Factory.create(:font)
-  f.font_id font.id
+  f.scene Factory(:scene)
+  f.storybook Factory(:storybook)
+  f.font Factory(:font)
   f.font_size 14
 end
 
 Factory.define :storybook_settings do |f|
   f.type "font.ttf"
-  f.scene_id Factory.create(:scene).id
-  f.storybook_id Factory.create(:storybook).id
-  font = Factory.create(:font)
-  f.font_id font.id
+  f.scene Factory(:scene)
+  f.storybook Factory(:storybook)
+  f.font Factory(:font)
   f.font_size 14
 end
 

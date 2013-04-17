@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe ImagesController do
   before(:each) do
-    @storybook = Factory(:storybook)
+    @user = Factory(:user)
+    @storybook = Factory(:storybook, user: @user)
     @image = mock_model(Image, :image => "image.png")
     @image.stub!(:as_jquery_upload_response).and_return({ :id => @image.id, :image => @image.image })
-    @user = Factory(:user)
     test_sign_in(@user)
   end
 
@@ -65,20 +65,15 @@ describe ImagesController do
 
   context "#update" do
     before(:each) do
-      @image_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/factories/images/350x350.png'), 'image/png')
+      @image = Factory(:image, storybook: @storybook)
+      @data = Base64.encode64 File.read(Rails.root.join('spec/factories/images/350x350.png'))
     end
 
     it 'should update image' do
-      Image.should_receive(:find).with(@image.id.to_s).and_return(@image)
-      @image.stub(:storybook).and_return(@storybook)
-      @storybook.stub(:owned_by?).and_return(true)
-      @image.should_receive(:remove_image!).and_return(true)
-      @image.should_receive(:update_attribute).and_return(@image)
-
-      put :update, :id => @image.id, :image => { :files => [@image_file] }, :format => :json
+      put :update, :id => @image.id, :data_url => @data, :format => :json
 
       response.should be_success
-      response.body.should eql([{ :id => @image.id, :image => @image.image }].to_json)
+      JSON.parse(response.body)["url"].should be
     end
   end
 

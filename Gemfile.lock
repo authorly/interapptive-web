@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/cswhitman/jquery-fileupload-rails.git
-  revision: 3cd1e2dccd9476f0847c343b206df4e0dbe6c0b9
+  revision: e07e8fdff79922b8c72fc78c28933961ea1a370e
+  ref: e07e8fdff79922b8c72fc78c28933961ea1a370e
   specs:
     jquery-fileupload-rails (0.3.0)
       actionpack (>= 3.1)
@@ -181,7 +182,7 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.1)
     mime-types (1.22)
-    mini_magick (3.5.0)
+    mini_magick (3.4)
       subexec (~> 0.2.1)
     miniskirt (1.2.1)
       activesupport
@@ -240,6 +241,7 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.10.0)
     rake (10.0.4)
+    rb-fsevent (0.9.1)
     rdoc (3.12.2)
       json (~> 1.4)
     redis (3.0.3)
@@ -337,7 +339,6 @@ DEPENDENCIES
   betabuilder!
   cancan
   capistrano
-  capybara
   carrierwave
   coffee-rails (~> 3.2.1)
   connection_pool
@@ -361,7 +362,7 @@ DEPENDENCIES
   launchy
   less-rails
   less-rails-bootstrap
-  mini_magick
+  mini_magick (= 3.4)
   miniskirt
   mysql2
   param_protected (~> 4.0.0)
@@ -370,6 +371,7 @@ DEPENDENCIES
   pry-rails
   rails (= 3.2.12)
   rails-backbone
+  rb-fsevent (~> 0.9)
   resque
   resque-loner
   rspec-rails

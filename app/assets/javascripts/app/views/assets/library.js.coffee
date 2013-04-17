@@ -47,8 +47,7 @@ class App.Views.AssetLibrary extends Backbone.View
     fileData._adjustMaxNumberOfFiles(files.length)
 
     template = fileData._renderDownload(files).prependTo @$('#fileupload .files')
-    fileData._reflow = fileData._transition and template.length and
-      template[0].offsetWidth
+    fileData._reflow = fileData?._transition and template.length and template[0].offsetWidth
 
     template.addClass 'in'
 
