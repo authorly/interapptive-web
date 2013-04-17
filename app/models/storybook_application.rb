@@ -52,6 +52,8 @@ class StorybookApplication
   def compile
     @transient_files = []
     @json_hash = download_files_and_sanitize_json(ActiveSupport::JSON.decode(@json))
+    logger.info "Going to compile application with json:\n\n"
+    logger.info @json_hash.inspect
     write_json_file
     write_rake_file
     xbuild_application
