@@ -102,7 +102,7 @@ class App.Models.Scene extends Backbone.Model
 
 
   announceAnimation: ->
-    App.vent.trigger 'can_add:sceneAnimation',
+    App.vent.trigger 'can_add:animationKeyframe',
       @canAddKeyframes() && !@keyframes.animationPresent()
 
 

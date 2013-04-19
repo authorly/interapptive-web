@@ -12,7 +12,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   initialize: ->
-    @_enableOnEvent 'can_add:sceneAnimation', '.animation-keyframe'
+    @_enableOnEvent 'can_add:animationKeyframe', '.animation-keyframe'
     @_enableOnEvent 'can_add:text', '.edit-text'
 
     App.vent.on 'activate:scene', (scene) =>
