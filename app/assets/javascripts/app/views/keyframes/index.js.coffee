@@ -45,7 +45,6 @@ class App.Views.KeyframeIndex extends Backbone.View
     if @collection.length > 0
       @collection.each (keyframe) =>
         @renderKeyframe(keyframe)
-        @_disableIntroButtonIfAnimation(keyframe)
       @_updateDeleteButtons()
 
     @initSortable()
@@ -83,7 +82,6 @@ class App.Views.KeyframeIndex extends Backbone.View
   keyframeClicked: (event) ->
     keyframe = @collection.get $(event.currentTarget).attr('data-id')
     @switchKeyframe(keyframe)
-
 
 
   switchKeyframe: (newKeyframe) ->
@@ -139,11 +137,6 @@ class App.Views.KeyframeIndex extends Backbone.View
       update      : @_numberKeyframes
 
 
-  _disableIntroButtonIfAnimation: (keyframe) ->
-    return unless keyfame.isAnimation()
-    App.vent.trigger 'can_add:sceneAnimation', keyframe.isAnimation()
-
-
   _numberKeyframes: =>
     @$('li[data-is_animation!="1"]').each (index, element) =>
       element = $(element)
@@ -158,7 +151,8 @@ class App.Views.KeyframeIndex extends Backbone.View
     ), 0
 
 
-  _updateDeleteButtons: =>
+
+  _updateDeleteButtons: ->
     show_delete = @collection.length > 1
 
     buttons = @$('li .delete-keyframe')
