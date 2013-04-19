@@ -115,7 +115,6 @@ class App.Models.Keyframe extends Backbone.Model
     @get('is_animation')
 
 
-
   nextTextSyncOrder: ->
     text_widget_with_max_sync_order = _.max(@text_widgets(), (w) -> w.sync_order)
     (text_widget_with_max_sync_order?.sync_order || 0) + 1

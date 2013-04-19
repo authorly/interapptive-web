@@ -43,8 +43,10 @@ class App.Views.KeyframeIndex extends Backbone.View
     @$el.empty()
 
     if @collection.length > 0
-      @collection.each (keyframe) => @renderKeyframe(keyframe)
+      @collection.each (keyframe) =>
+        @renderKeyframe(keyframe)
       @_updateDeleteButtons()
+
     @initSortable()
 
     @switchKeyframe @lastKeyframe()
@@ -80,7 +82,6 @@ class App.Views.KeyframeIndex extends Backbone.View
   keyframeClicked: (event) ->
     keyframe = @collection.get $(event.currentTarget).attr('data-id')
     @switchKeyframe(keyframe)
-
 
 
   switchKeyframe: (newKeyframe) ->
@@ -150,7 +151,8 @@ class App.Views.KeyframeIndex extends Backbone.View
     ), 0
 
 
-  _updateDeleteButtons: =>
+
+  _updateDeleteButtons: ->
     show_delete = @collection.length > 1
 
     buttons = @$('li .delete-keyframe')
