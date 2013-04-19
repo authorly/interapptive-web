@@ -101,6 +101,11 @@ class App.Models.Scene extends Backbone.Model
     !@isMainMenu()
 
 
+  announceAnimation: ->
+    App.vent.trigger 'can_add:sceneAnimation',
+      @canAddKeyframes() && !@keyframes.animationPresent()
+
+
   # If a change affected which is the preview of the current scene, update
   updatePreview: ->
     preview = @keyframes.at(0).preview

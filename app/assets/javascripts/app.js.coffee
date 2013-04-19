@@ -133,12 +133,31 @@ window.App =
     App.modalWithView(view: view).show()
 
 
-  _changeScene: (__, scene) ->
+  _changeScene: (selection, scene) ->
+    previousScene = selection.previous('scene')
+    @_removeSceneListeners(previousScene)
+    @_addSceneListeners(scene)
+
     App.vent.trigger 'activate:scene', scene
+    scene.announceAnimation()
+
     @keyframesView.remove() if @keyframesView?
     @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
     $('#keyframe-list').html @keyframesView.render().el
     scene.fetchKeyframes()
+
+
+  _addSceneListeners: (scene) ->
+    if scene?
+      scene.keyframes.on  'reset add remove', scene.announceAnimation, scene
+
+
+  _removeSceneListeners: (scene) ->
+    if scene?
+      scene.keyframes.off 'reset add remove', scene.announceAnimation, scene
+
+
+  _announceAnimation: (scene) ->
 
 
   _changeKeyframe: (__, keyframe) ->

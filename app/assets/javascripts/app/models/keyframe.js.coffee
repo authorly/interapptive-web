@@ -148,12 +148,8 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     @scene = options.scene
 
     @on 'reset', =>
-      @announceAnimation()
       # TODO move cache to a separate class
       @_savePositionsCache(@_positionsJSON())
-
-    @on 'add remove', (model, _collection, options) =>
-      @announceAnimation()
 
     @on 'remove', (model, collection) ->
       collection._recalculatePositionsAfterDelete(model)
@@ -180,11 +176,6 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
   animationPresent: ->
     @any (keyframe) -> keyframe.isAnimation()
-
-
-  announceAnimation: ->
-    App.vent.trigger 'can_add:sceneAnimation',
-      !@animationPresent() && @scene.canAddKeyframes()
 
 
   addNewKeyframe: (attributes={}) ->
