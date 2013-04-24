@@ -18,7 +18,7 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
     @storybook = storybook
     @collection = @storybook.images
     @_renderSpriteLibraryElements()
-    @collection.on('reset', @_reRenderSpriteLibraryElements, @)
+    @collection.on('reset add remove', @_reRenderSpriteLibraryElements, @)
 
 
   _reRenderSpriteLibraryElements: ->
