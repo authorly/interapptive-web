@@ -33,7 +33,6 @@ class App.Views.AssetLibrary extends Backbone.View
       @assets.remove @assets.get(id)
     ).bind 'fileuploadcompleted', (event, data) =>
       @assets.add data.result
-      App.vent.trigger('uploaded:fonts', data.result)  if @assetType is 'font'
 
 
   loadAndShowFileData: ->
