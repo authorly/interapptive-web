@@ -16,7 +16,6 @@ class App.Views.TextEditorPalette extends Backbone.View
 
   initialize: (options={}) ->
     App.vent.on 'select:font_color', @fontColorSelected, @
-    App.vent.on 'uploaded:fonts',    @fontsUploaded, @
     App.vent.on 'activate:scene',    @changeScene,   @
     App.vent.on 'done_editing:text', @enable
 
@@ -76,9 +75,24 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   openStorybook: (storybook) ->
+    @_removeFontsListeners(@storybook)
+    @_addFontsListeners(storybook)
+
     @storybook = storybook
     @cacheExistingFonts()
     @addExistingFontOptions()
+
+
+  _addFontsListeners: (storybook) ->
+    return unless storybook?
+
+    storybook.fonts.on 'add', @fontAdded, @
+
+
+  _removeFontsListeners: (storybook) ->
+    return unless storybook?
+
+    storybook.fonts.off 'add', @fontAdded, @
 
 
   cacheExistingFonts: ->
@@ -112,9 +126,9 @@ class App.Views.TextEditorPalette extends Backbone.View
     @addFontOption(font.get('name')) for font in @fonts
 
 
-  fontsUploaded: (fonts) ->
-    @addFontToCache(font.name, font.url) for font in fonts
-    @addFontOption(font.name) for font in fonts
+  fontAdded: (font) ->
+    @addFontToCache font.get('name'), font.get('url')
+    @addFontOption  font.get('name')
 
 
   disable: =>
