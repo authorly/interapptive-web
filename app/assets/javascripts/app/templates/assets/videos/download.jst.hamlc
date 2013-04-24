@@ -4,7 +4,7 @@
       %td.name
         %span file.name
       %td.created_at
-        %span file.created_at 
+        %span file.created_at
       %td.error{:colspan => "5"}
         %span.label.label-important= locale.fileupload.error
           = file.error
@@ -22,7 +22,7 @@
         %span= App.Lib.DateTimeHelper.timeToHuman(file.created_at)
       %td{:colspan => "6"}
       %td.delete
-        %button.btn.btn-danger.delete-asset{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}"}
+        %button.btn.btn-danger.delete-asset{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}", "data-id" => "#{file.id}"}
           %i.icon-trash.icon-white
           %span= locale.fileupload.destroy
     - else

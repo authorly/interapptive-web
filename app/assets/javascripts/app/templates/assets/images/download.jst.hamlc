@@ -23,6 +23,6 @@
         %span= App.Lib.DateTimeHelper.timeToHuman(file.created_at)
       %td{:colspan => "7"}
       %td.delete
-        %button.btn.btn-danger.delete-asset{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}"}
+        %button.btn.btn-danger.delete-asset{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}", "data-id" => "#{file.id}"}
           %i.icon-trash.icon-white
           %span= locale.fileupload.destroy
