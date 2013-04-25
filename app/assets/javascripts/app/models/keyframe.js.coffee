@@ -36,21 +36,33 @@ class App.Models.Keyframe extends Backbone.Model
   initialize: (attributes) ->
     @parse(attributes)
 
-    @initializeScenes(attributes)
+    @initializeScene(attributes)
     @initializeWidgets(attributes)
     @initializePreview()
 
 
   initializeWidgets: (attributes) ->
-    @widgets.on 'reset add remove change', =>
-      App.vent.trigger 'change:keyframeWidgets', @
-      @save()
+    @widgets.on  'reset add remove change', @widgetsChanged, @
 
     @scene.widgets.on 'add',    @sceneWidgetAdded,   @
     @scene.widgets.on 'remove', @sceneWidgetRemoved, @
 
 
-  initializeScenes: (attributes) ->
+  destroy: ->
+    super
+
+    @widgets.off 'reset add remove change', @widgetsChanged, @
+
+    @scene.widgets.off 'add',    @sceneWidgetAdded,   @
+    @scene.widgets.off 'remove', @sceneWidgetRemoved, @
+
+
+  widgetsChanged: ->
+    App.vent.trigger 'change:keyframeWidgets', @
+    @save()
+
+
+  initializeScene: (attributes) ->
     @scene = attributes?.scene || @collection?.scene
     delete @attributes.scene
 
