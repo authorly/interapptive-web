@@ -160,11 +160,27 @@ window.App =
   _announceAnimation: (scene) ->
 
 
-  _changeKeyframe: (__, keyframe) ->
+  _changeKeyframe: (selection, keyframe) ->
+    previousKeyframe = selection.previous('keyframe')
+    @_removeKeyframeListeners(previousKeyframe)
+    @_addKeyframeListeners(keyframe)
+
     @currentWidgets.changeKeyframe(keyframe)
+
     if keyframe?
       App.vent.trigger 'can_add:text', keyframe.canAddText()
+      keyframe.announceVoiceover()
       @saveCanvasAsPreview() if keyframe.preview.isNew()
+
+
+  _addKeyframeListeners: (keyframe) ->
+    if keyframe?
+      keyframe.widgets.on  'reset add remove', keyframe.announceVoiceover, keyframe
+
+
+  _removeKeyframeListeners: (keyframe) ->
+    if keyframe?
+      keyframe.widgets.off 'reset add remove', keyframe.announceVoiceover, keyframe
 
 
   _changeKeyframeWidgets: (keyframe) ->
