@@ -123,8 +123,16 @@ class App.Models.Keyframe extends Backbone.Model
     !@isAnimation() && @scene.canAddText()
 
 
+  hasText: ->
+    @textWidgets().length > 0
+
+
   isAnimation: ->
     @get('is_animation')
+
+
+  announceVoiceover: ->
+    App.vent.trigger 'can_add:voiceover', @hasText()
 
 
   nextTextSyncOrder: ->
