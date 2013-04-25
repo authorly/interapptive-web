@@ -68,47 +68,41 @@ describe "App.Models.Scene", ->
         expect(@widgets.at(2).get('z_order')).toEqual 2
 
 
-  describe "#save", ->
-    beforeEach ->
-      @server = sinon.fakeServer.create()
+  describe 'abilities', ->
 
-    afterEach ->
-      @server.restore()
+    describe 'add text', ->
+      it 'can if normal scene', ->
+        expect(@scene.canAddText()).toEqual true
 
-    it "sends valid data to the server", ->
-      @scene.save page_number: 2
-      request = @server.requests[0]
-      scene_response = JSON.parse(request.requestBody)
-      expect(scene_response).toBeDefined()
-      expect(scene_response.page_number).toEqual 2
+      it 'can not if main menu', ->
+        @scene.set is_main_menu: true
+        expect(@scene.canAddText()).toEqual false
 
-    describe "request", ->
-      describe "on create", ->
-        beforeEach ->
+    describe 'add keyframes', ->
+      it 'can if normal scene', ->
+        expect(@scene.canAddKeyframes()).toEqual true
 
-          @scene.save()
-          @request = @server.requests[0]
+      it 'can not if main menu', ->
+        @scene.set is_main_menu: true
+        expect(@scene.canAddKeyframes()).toEqual false
 
-        it "should be POST", ->
-          expect(@request).toBePOST()
+    describe 'add an animation keyframe', ->
+      it 'can if normal scene without animation', ->
+        stub = sinon.stub()
+        stub.returns(false)
 
-        it "should be async", ->
-          expect(@request).toBeAsync()
+        @scene.keyframes = {animationPresent: stub }
+        expect(@scene.canAddAnimationKeyframe()).toEqual true
 
-        it "should have valid url", ->
-          expect(@request).toHaveUrl('/storybooks/1/scenes.json')
+      it 'can not if normal scene with animation', ->
+        stub = sinon.stub()
+        stub.returns(true)
 
-      describe "on update", ->
-        beforeEach ->
-          @scene.set("id", 3)
-          @scene.save()
-          @request = @server.requests[0]
+        @scene.keyframes = {animationPresent: stub }
+        expect(@scene.canAddAnimationKeyframe()).toEqual false
 
-        it "should be PUT", ->
-          expect(@request).toBePUT()
+      it 'can not if main menu', ->
+        @scene.set is_main_menu: true
+        expect(@scene.canAddAnimationKeyframe()).toEqual false
 
-        it "should be async", ->
-          expect(@request).toBeAsync()
 
-        it "should have valid url", ->
-          expect("/storybooks/#{@storybook.get("id")}/scenes/#{@scene.get("id")}.json").toEqual "/storybooks/1/scenes/3.json"

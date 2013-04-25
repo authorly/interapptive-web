@@ -11,7 +11,6 @@ describe "App.Collections.KeyframesCollection", ->
   describe 'next available position', ->
     beforeEach ->
       @collection = new App.Collections.KeyframesCollection([], scene: @scene)
-      sinon.stub(@collection, 'announceAnimation')
       @keyframe = new App.Models.Keyframe(scene: @scene)
 
     it 'should be null for an animationkeyframe', ->
@@ -41,7 +40,6 @@ describe "App.Collections.KeyframesCollection", ->
         scene = new App.Models.Scene({ id: 1 }, { collection: storybook.scenes })
 
         @collection = new App.Collections.KeyframesCollection [], scene: scene
-        sinon.stub(@collection, 'announceAnimation')
         @collection.add { title: '0', position: 0 }
         @collection.add { title: '1', position: 1 }
         @collection.add { title: '2', position: 2 }
