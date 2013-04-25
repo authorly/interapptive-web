@@ -71,10 +71,15 @@ class App.Models.Scene extends Backbone.Model
 
 
   addOrientations: (keyframe) ->
-    previousKeyframe = @keyframes.at(@keyframes.indexOf(keyframe) - 1)
+    sourceKeyframe = if keyframe.isAnimation()
+      # TODO change to findWhere from Backbone 1.4.4
+      @keyframes.find (k) -> k.get('position') == 0
+    else
+      @keyframes.at(@keyframes.indexOf(keyframe) - 1)
+
 
     orientations = @spriteWidgets().map (spriteWidget) ->
-      source = previousKeyframe?.getOrientationFor(spriteWidget) || spriteWidget
+      source = sourceKeyframe?.getOrientationFor(spriteWidget) || spriteWidget
       new App.Models.SpriteOrientation
         keyframe_id:      keyframe.id
         sprite_widget_id: spriteWidget.id
