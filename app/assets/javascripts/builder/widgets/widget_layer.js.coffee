@@ -40,7 +40,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @addClickOutsideCanvasEventListener()
     @addCanvasMouseLeaveListener()
 
-    @initializeContextMenu()
+    @initializeContextMenus()
     @addContextMenuEventListener()
 
     @widgets.on 'add',    @addWidget,    @
@@ -236,23 +236,37 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       point = @_getTouchCoordinates(touch)
 
       widget = @widgetAtPoint(point)
-      if widget? and widget.isSpriteWidget()
-        event.preventDefault()
+      return unless widget?
 
-        $el = $('#context-menu')
-        $el.contextMenu x: event.clientX, y: event.clientY
+      event.preventDefault()
+      selector = ''
+      if widget.isSpriteWidget()
+        selector = '.sprite'
+      else if widget.isTextWidget()
+        selector = '.text'
+      else
+        return
 
-        $('header').on 'click', -> $el.contextMenu 'hide'
+
+      $el = $('#context-menu ' + selector)
+      console.log event
+      $el.contextMenu x: event.clientX, y: event.clientY
+
+      $('header').on 'click.contextMenuHandler', -> $el.contextMenu('hide')
+
+  hideContextMenuEventListener: =>
+    $('header').off 'click.contextMenuHandler'
+    @_capturedWidget = null
 
 
-  initializeContextMenu: ->
-    options =
-      selector: '#context-menu'
+  initializeContextMenus: ->
+    $.contextMenu
+      selector: '#context-menu .sprite'
 
       zIndex: 100
 
       events:
-        hide: => @_capturedWidget = null
+        hide: @hideContextMenuEventListener
 
       items:
         edit_image:
@@ -275,7 +289,19 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
           name:     'Put in Back'
           callback: @putSpriteInBack
 
-    $.contextMenu(options)
+    $.contextMenu
+      selector: '#context-menu .text'
+
+      zIndex: 100
+
+      events:
+        hide: @hideContextMenuEventListener
+
+      items:
+        remove_text:
+          name:     'Remove Text'
+          icon:     'delete'
+          callback: @removeSpriteWithContextMenu
 
 
   bringSpriteToFront: =>
