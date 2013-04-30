@@ -1,3 +1,5 @@
+require 'cfpropertylist'
+
 class StorybookApplication
   CRUCIBLE_RESOURCES_DIR = File.join(Rails.root, '../../Crucible/HelloWorld/Resources')
   CRUCIBLE_IOS_DIR       = File.join(Rails.root, '../../Crucible/HelloWorld/ios/')
