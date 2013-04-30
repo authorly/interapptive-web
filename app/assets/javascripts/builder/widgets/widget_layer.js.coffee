@@ -215,7 +215,10 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   addClickOutsideCanvasEventListener: =>
     $('body').click (event) =>
-      unless $(event.target).closest('#' + @CANVAS_ID).length
+      # the context menu should stop propagation on clicking on its elements
+      # but it doesn't
+      if !$(event.target).closest('#' + @CANVAS_ID).length and
+         !$(event.target).closest('.context-menu-list').length
         App.currentSelection.set widget: null
 
 
@@ -249,7 +252,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
       $el = $('#context-menu ' + selector)
-      console.log event
       $el.contextMenu x: event.clientX, y: event.clientY
 
       $('header').on 'click.contextMenuHandler', -> $el.contextMenu('hide')
