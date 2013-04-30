@@ -78,10 +78,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   select: ->
+    @selected = true
     @showBorder()
 
 
   deselect: ->
+    @selected = false
     @hideBorder()
 
 
@@ -92,7 +94,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   mouseOut: ->
     @parent.setCursor('default')
-    @hideBorder()
+    @hideBorder() unless @selected
 
 
   showBorder: =>
