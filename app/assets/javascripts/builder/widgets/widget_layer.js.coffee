@@ -215,7 +215,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   addClickOutsideCanvasEventListener: =>
     $('body').click (event) =>
-      unless $(event.target).closest('#' + @CANVAS_ID).length
+      unless $(event.target).closest('#' + @CANVAS_ID).length > 0 or $(event.target).id == @CANVAS_ID
         App.currentSelection.set widget: null
 
 
