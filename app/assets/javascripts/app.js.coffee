@@ -149,15 +149,19 @@ window.App =
 
   _addSceneListeners: (scene) ->
     if scene?
+      scene.widgets.on 'remove', @_checkCurrentWidgetRemoved, @
       scene.keyframes.on  'reset add remove', scene.announceAnimation, scene
 
 
   _removeSceneListeners: (scene) ->
     if scene?
+      scene.widgets.off 'remove', @_checkCurrentWidgetRemoved, @
       scene.keyframes.off 'reset add remove', scene.announceAnimation, scene
 
 
-  _announceAnimation: (scene) ->
+  _checkCurrentWidgetRemoved: (widget) ->
+    if App.currentSelection.get('widget') == widget
+      App.currentSelection.set widget: null
 
 
   _changeKeyframe: (selection, keyframe) ->
@@ -175,11 +179,13 @@ window.App =
 
   _addKeyframeListeners: (keyframe) ->
     if keyframe?
+      keyframe.widgets.on  'remove', @_checkCurrentWidgetRemoved, @
       keyframe.widgets.on  'reset add remove', keyframe.announceVoiceover, keyframe
 
 
   _removeKeyframeListeners: (keyframe) ->
     if keyframe?
+      keyframe.widgets.off 'remove', @_checkCurrentWidgetRemoved, @
       keyframe.widgets.off 'reset add remove', keyframe.announceVoiceover, keyframe
 
 
