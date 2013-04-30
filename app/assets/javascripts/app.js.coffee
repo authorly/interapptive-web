@@ -221,7 +221,7 @@ window.App =
 
 
   _openHotspotModal: (widget) ->
-    view = new App.Views.HotspotsIndex(widget: widget, storybook: @currentSelection.get('storybook'))
+    view = new App.Views.Hotspot(widget: widget, storybook: @currentSelection.get('storybook'))
     @modalWithView(view: view).show()
 
 

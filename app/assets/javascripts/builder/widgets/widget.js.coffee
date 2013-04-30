@@ -133,3 +133,6 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   isTextWidget: ->
     @model instanceof App.Models.TextWidget
+
+  isHotspotWidget: ->
+    @model instanceof App.Models.HotspotWidget

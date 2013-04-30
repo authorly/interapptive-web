@@ -1,5 +1,6 @@
-class App.Views.HotspotsIndex extends App.Views.AbstractFormView
-  template: JST['app/templates/touch_zones/index']
+# Create/edit hotspot
+class App.Views.Hotspot extends App.Views.AbstractFormView
+  template: JST['app/templates/hotspots/edit']
 
   initialize: (options) ->
     @widget = options.widget if options?.widget
@@ -13,7 +14,7 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
 
   render: ->
     @$el.html(@template(widget: @widget))
-    @$el.find('#touch_zones.modal-body').append(@form.el)
+    @$el.find('.modal-body').append(@form.el)
     @_selectOption()
     @_showUploadAssetMessage()
     @attachDeleteButton() if @widget?.id
@@ -90,7 +91,7 @@ class App.Views.HotspotsIndex extends App.Views.AbstractFormView
   _showUploadAssetMessage: ->
     if @collections.videos.length is 0 and @collections.sounds.length is 0
       @form.$el.hide()
-      @$('#touch_zones').html("<center>There are no uploaded videos or sounds.</center>")
+      @$('.modal-body').html("<center>There are no uploaded videos or sounds.</center>")
 
 
   _selectOption: ->
