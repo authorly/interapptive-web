@@ -128,4 +128,8 @@ class App.Builder.Widgets.Widget extends cc.Node
 
 
   isSpriteWidget: ->
-    @ instanceof App.Builder.Widgets.SpriteWidget
+    @model instanceof App.Models.SpriteWidget
+
+
+  isTextWidget: ->
+    @model instanceof App.Models.TextWidget
