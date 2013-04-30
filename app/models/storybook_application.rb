@@ -1,4 +1,7 @@
-autoload :CFPropertyList, 'cfpropertylist'
+begin
+  require 'cfpropertylist'
+rescue LoadError
+end
 
 class StorybookApplication
   CRUCIBLE_RESOURCES_DIR = File.join(Rails.root, '../../Crucible/HelloWorld/Resources')
