@@ -291,7 +291,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   removeSpriteWithContextMenu: =>
     @_capturedWidget.model.collection.remove(@_capturedWidget.model)
     @_capturedWidget = null
-    App.vent.trigger 'remove:widget'
 
 
   editSpriteWithContextMenu: =>
