@@ -9,7 +9,7 @@
         %span.label.label-important= locale.fileupload.error
           = file.error
     - else if file.transcode_complete
-      %td.preview
+      %td.preview{ "data-id" => "#{file.id}" }
         - if file.thumbnail_url
           %a.video-thumbnail{:href => '#', :rel => "gallery", :title => "#{file.name}", 'data-video' => "#{JSON.stringify(file)}"}
             %img{:src => "#{file.thumbnail_url}"}
@@ -22,7 +22,7 @@
         %span= App.Lib.DateTimeHelper.timeToHuman(file.created_at)
       %td{:colspan => "6"}
       %td.delete
-        %button.btn.btn-danger.delete-asset{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}", "data-id" => "#{file.id}"}
+        %button.btn.btn-danger.delete-asset{"data-type" => "#{file.delete_type}", "data-url" => "#{file.delete_url}"}
           %i.icon-trash.icon-white
           %span= locale.fileupload.destroy
     - else
