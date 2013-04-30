@@ -46,7 +46,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   setActiveSprite: (__, sprite) ->
-    return unless sprite instanceof App.Models.SpriteWidget
+    return unless sprite == null or sprite instanceof App.Models.SpriteWidget
 
     if sprite
       @widget = sprite
@@ -103,6 +103,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   _moveSpriteWithArrows: (event) =>
+    return unless @widget?
     return unless @$('li.half').find('input').attr('disabled') is 'disabled'
 
     switch event.keyCode
