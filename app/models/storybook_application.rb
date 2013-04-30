@@ -193,7 +193,7 @@ class StorybookApplication
   def rewrite_manifest_pl
     plist = CFPropertyList::List.new(:file => File.join(CRUCIBLE_IOS_DIR, "pkg", "Payload", "#{@target}.app", "Info.plist"))
     plist_data = CFPropertyList.native_types(plist.value)
-    File.open(File.join(CRUCIBLE_IOS_DIR, "pkg", "dist", "manifest.plist", "w")) do |io|
+    File.open(File.join(CRUCIBLE_IOS_DIR, "pkg", "dist", "manifest.plist"), "w") do |io|
       io << %{
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -231,7 +231,7 @@ class StorybookApplication
   end
 
   def rewrite_index_html(manifest_pl)
-    File.open(CRUCIBLE_IOS_DIR, "pkg", "dist" "index.html", "w") do |io|
+    File.open(File.join(CRUCIBLE_IOS_DIR, "pkg", "dist", "index.html"), "w") do |io|
       io << %{
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml">
