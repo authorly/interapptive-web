@@ -95,7 +95,7 @@ class StorybookApplication
     )
     f.save
     logger.info 'Uploading of ipa file index.html completed!'
-    @index_html_url = f.url(compiled_application_url_expires)
+    @index_html_url = CGI.unescape(f.url(compiled_application_url_expires))
 
     true
   end
@@ -122,7 +122,7 @@ class StorybookApplication
   end
 
   def compiled_application_url
-    @compiled_application_url ||= @storybook.compiled_application.url
+    @compiled_application_url ||= CGI.unescape(@storybook.compiled_application.url)
   end
 
   def compiled_application_url_expires
