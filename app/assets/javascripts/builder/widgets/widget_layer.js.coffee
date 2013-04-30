@@ -251,6 +251,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         selector = '.sprite'
       else if widget.isTextWidget()
         selector = '.text'
+      else if widget.isHotspotWidget()
+        selector = '.hotspot'
       else
         return
 
@@ -306,6 +308,25 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       items:
         remove_text:
           name:     'Remove Text'
+          icon:     'delete'
+          callback: @removeSpriteWithContextMenu
+
+    $.contextMenu
+      selector: '#context-menu .hotspot'
+
+      zIndex: 100
+
+      events:
+        hide: @hideContextMenuEventListener
+
+      items:
+        edit_text:
+          name:     'Edit Hotspot...'
+          icon:     'edit'
+          callback: @editSpriteWithContextMenu
+
+        remove_text:
+          name:     'Remove Hotspot'
           icon:     'delete'
           callback: @removeSpriteWithContextMenu
 
