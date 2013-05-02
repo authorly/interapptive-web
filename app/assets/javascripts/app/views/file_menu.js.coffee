@@ -38,8 +38,8 @@ class App.Views.FileMenuView extends Backbone.View
     App.modalWithView(view: view).show()
 
 
-  compileStorybook: ->
-    App.currentSelection.get('storybook').compile()
+  compileStorybook: (event) ->
+    App.currentSelection.get('storybook').compile($(event.currentTarget).data('platform'))
 
 
   toggleImageEditorPalette: ->
