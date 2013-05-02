@@ -6,8 +6,8 @@ class AndroidStorybookApplication
     logger.info "Going to compile application with json:\n\n"
     logger.info @json_hash.inspect
     write_json_file
-    @json_hash
     build_application
+    @json_hash
   end
 
   def upload_compiled_application
