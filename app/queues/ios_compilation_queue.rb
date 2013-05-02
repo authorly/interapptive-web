@@ -1,14 +1,14 @@
 require 'resque-loner'
 
-class CompilationQueue < GenericQueue
+class IosCompilationQueue < GenericQueue
   include Resque::Plugins::UniqueJob
 
-  @queue = :compilation
+  @queue = :ios_compilation
 
   def self.perform(storybook_id, storybook_json)
-    logger.info "Compiling storybook #{storybook_id} with #{storybook_json}"
+    logger.info "Compiling ios storybook #{storybook_id} with #{storybook_json}"
     storybook = Storybook.find(storybook_id)
-    storybook_application = StorybookApplication.new(storybook, storybook_json, 'interapptive')
+    storybook_application = IosStorybookApplication.new(storybook, storybook_json, 'testing')
 
     storybook_application.compile
     storybook_application.upload_compiled_application
