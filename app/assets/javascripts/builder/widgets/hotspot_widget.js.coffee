@@ -24,6 +24,8 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   INNER_STROKE_WIDTH: 2
   INNER_STROKE_FILL:   'rgba(255, 255, 255, 1)'
 
+  CONTROL_RADIUS: 28
+
 
   constructor: (options) ->
     super
@@ -31,7 +33,6 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
     @model.on 'change:radius', @updateRadius, @
     @updateRadius()
-    @controlRadius = @model.get 'control_radius'
 
 
   updateRadius: ->
@@ -46,7 +47,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
   draw: (ctx) ->
     r = @radius
-    cr = @controlRadius
+    cr = @CONTROL_RADIUS
 
     # FIXME We should monkey patch cocos2d-html5 to support opacity
     ctx.save()
@@ -80,8 +81,8 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
   getControlCenter: ->
     return new cc.Point(
-      (@radius - @controlRadius) *  Math.sin(cc.DEGREES_TO_RADIANS(135))
-      (@radius - @controlRadius) * -Math.cos(cc.DEGREES_TO_RADIANS(135))
+      (@radius - @CONTROL_RADIUS) *  Math.sin(cc.DEGREES_TO_RADIANS(135))
+      (@radius - @CONTROL_RADIUS) * -Math.cos(cc.DEGREES_TO_RADIANS(135))
     )
 
 
@@ -169,7 +170,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     yLen = center.y + local.y # Y axis is inverted
     dist = Math.sqrt((xLen * xLen) + (yLen * yLen))
 
-    dist < @controlRadius
+    dist < @CONTROL_RADIUS
 
 
   _startResize: (e) ->
