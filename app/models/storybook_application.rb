@@ -83,7 +83,7 @@ class StorybookApplication
     f = FOG_DIRECTORY.files.new(
       :key          => "compiled_applications/#{@storybook.id}/manifest.plist",
       :content_type => 'text/xml',
-      :public       => true,
+      :public       => false,
       :body         => File.open(File.join(CRUCIBLE_IOS_DIR, 'pkg', 'dist', 'manifest.plist'))
     )
     f.save
