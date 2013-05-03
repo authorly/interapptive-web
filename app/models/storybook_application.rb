@@ -129,7 +129,7 @@ class StorybookApplication
   end
 
   def compiled_application_url_expires
-    @compiled_application_url_expires ||= Rack::Utils.parse_nested_query(URI.parse(compiled_application_url).query)['Expires']
+    @compiled_application_url_expires ||= Rack::Utils.parse_nested_query(URI.parse(compiled_application_url).query)['Expires'] || 3600
   end
 
   def send_notification
