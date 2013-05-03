@@ -1,5 +1,3 @@
-# TODO: WA: Following tests should be enabled only when
-# App.Models.Scene#spriteWidgets() function is working
 describe "App.Models.Keyframe", ->
 
   beforeEach ->
@@ -71,7 +69,6 @@ describe "App.Models.Keyframe", ->
       @keyframe.widgets.add [type: 'SpriteWidget']
 
       expect(@keyframe.widgets.length).toEqual(2)
-      console.log @keyframe.widgets
       expect(@keyframe.widgetsByClass(App.Models.SpriteWidget).length).toEqual(2)
       expect(@keyframe.widgetsByClass(App.Models.ButtonWidget).length).toEqual(1)
       expect(@keyframe.widgetsByClass(App.Models.HotspotWidget).length).toEqual(0)

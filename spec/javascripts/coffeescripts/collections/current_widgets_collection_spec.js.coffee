@@ -1,4 +1,10 @@
 describe "App.Collections.CurrentWidgetsCollection", ->
+  beforeEach ->
+    @server = sinon.fakeServer.create()
+
+  afterEach ->
+    @server.restore()
+
   it 'should be sorted correctly: first SpriteWidgets sorted by z_order, then Hotspots sorted by their id', ->
     widgets = new App.Collections.CurrentWidgets([
       new App.Models.SpriteWidget(name: 'sprite_1', z_order: 3),

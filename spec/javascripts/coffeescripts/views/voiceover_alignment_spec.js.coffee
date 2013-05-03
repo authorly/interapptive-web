@@ -1,6 +1,7 @@
 describe "App.Views.VoiceoverIndex", ->
 
   beforeEach ->
+    @server = sinon.fakeServer.create()
     @storybook = new App.Models.Storybook(id: 1)
 
     @scene = new App.Models.Scene({
@@ -30,6 +31,7 @@ describe "App.Views.VoiceoverIndex", ->
     sinon.spy App.vent, 'trigger'
 
   afterEach ->
+    @server.restore()
     App.vent.trigger.restore()
 
   describe "Instantiation", ->
