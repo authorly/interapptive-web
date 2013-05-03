@@ -83,7 +83,7 @@ class StorybookApplication
     f = FOG_DIRECTORY.files.new(
       :key          => "compiled_applications/#{@storybook.id}/manifest.plist",
       :content_type => 'text/xml',
-      :public       => false,
+      :public       => true,
       :body         => File.open(File.join(CRUCIBLE_IOS_DIR, 'pkg', 'dist', 'manifest.plist'))
     )
     f.save
@@ -254,7 +254,7 @@ class StorybookApplication
         </head>
         <body>
         <div id="container">
-        <div class="link"><a href="itms-services://?action=download-manifest&url=#{manifest_pl.url(compiled_application_url_expires)}">Tap Here to Install<br />#{@target}<br />On Your Device</a></div>
+        <div class="link"><a href="itms-services://?action=download-manifest&url=#{manifest_pl.url}">Tap Here to Install<br />#{@target}<br />On Your Device</a></div>
         <p><strong>Link didn't work?</strong><br />
         Make sure you're visiting this page on your device, not your computer.</p>
         </body>
