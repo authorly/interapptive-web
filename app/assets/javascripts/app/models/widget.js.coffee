@@ -38,13 +38,13 @@ class App.Models.HotspotWidget extends App.Models.Widget
 # It can have a different position or scale in each of the keyframes of the scene.
 # @see App.Models.SpriteOrientation
 class App.Models.SpriteWidget extends App.Models.Widget
-  # attributes: url scale
+  # attributes: image_id
 
   defaults:
     type: 'SpriteWidget'
 
 
-  parse: (attributes) ->
+  parse: (attributes={}) ->
     @position = attributes.position
     delete attributes.position
 
@@ -53,9 +53,17 @@ class App.Models.SpriteWidget extends App.Models.Widget
 
     attributes
 
-      # url:  image.get('url')
-      # filename: image.get('name')
 
+  image: ->
+    @_image ||= @collection.scene.storybook.images.get(@get('image_id'))
+
+
+  url: ->
+    @image().get('url')
+
+
+  filename: ->
+    @image().get('name')
 
 
   getOrientationFor: (keyframe) ->
@@ -99,11 +107,22 @@ class App.Models.ButtonWidget extends App.Models.SpriteWidget
     type: 'ButtonWidget'
 
 
-  initialize: ->
-    super
+  filename: ->
+    if @get('image_id')?
+      super
+    else
+      @_defaultFilename()
 
-    @set filename: "#{@get('name')}.png"                 unless @get('filename')?
-    @set url:      "/assets/sprites/#{@get('filename')}" unless @get('url')?
+
+  url: ->
+    if @get('image_id')?
+      super
+    else
+      '/assets/sprites/' + @_defaultFilename()
+
+
+  _defaultFilename: ->
+    @get('name') + '.png'
 
 
 ##
@@ -131,7 +150,7 @@ class App.Models.TextWidget extends App.Models.Widget
 class App.Collections.Widgets extends Backbone.Collection
 
   model: (attrs, options) ->
-    new App.Models[attrs.type](attrs, options)
+    new App.Models[attrs.type](attrs, $.extend({}, options, parse: true))
 
   remove: (widget) ->
     super unless widget instanceof App.Models.ButtonWidget

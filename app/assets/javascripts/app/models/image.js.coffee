@@ -1,3 +1,4 @@
+ # name size url thumbnail_url delete_url delete_type created_at
 class App.Models.Image extends Backbone.Model
 
   toString: ->

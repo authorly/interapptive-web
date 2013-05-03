@@ -1,6 +1,6 @@
-- _style =    "background-image: url(#{@widget.get('url')})"
+- _style =    "background-image: url(#{@widget.url()})"
 %div.sprite-image{:style => _style, :data-widget-id => @widget.id}
 %span
-  = @widget.get('filename')
+  = @widget.filename()
 - unless @widget.get('type') == 'ButtonWidget'
   %div.delete

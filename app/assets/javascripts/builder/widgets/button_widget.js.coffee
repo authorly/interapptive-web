@@ -19,6 +19,7 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
 
 
   imagesSelected: (values) =>
+    console.log values
     if values.baseUrl?
       @model.set url: values.baseUrl
     if values.tappedUrl?
