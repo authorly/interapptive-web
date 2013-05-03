@@ -2,8 +2,9 @@ class App.Models.Widget extends Backbone.Model
   # attributes: position(attributes: x, y) z_order
   @idGenerator = new App.Lib.Counter
 
-  defaults: ->
-    position: { x: 1024/2, y: 768/2 }
+  defaultPosition: ->
+    x: 1024/2
+    y: 768/2
 
 
   initialize: ->
@@ -23,27 +24,39 @@ class App.Models.HotspotWidget extends App.Models.Widget
   MIN_RADIUS: 16
 
   defaults: ->
-    _.extend super, {
-      type: 'HotspotWidget'
-      radius: 48
-      z_order: 5000
-    }
+    type: 'HotspotWidget'
+    radius: 48
+    z_order: 5000
+    position: @defaultPosition()
 
 
 ##
 # A widget that has an associated image.
 #
-# It belongs to a scene, and it can have a different position or scale in
-# each of the keyframes of that scene. SpriteOrientation is the association
-# between a SpriteWidget and a Keyframe; it stores the position and scale of the
-# SpriteWidget in that Keyframe.
+# It belongs to a scene.
+#
+# It can have a different position or scale in each of the keyframes of the scene.
+# @see App.Models.SpriteOrientation
 class App.Models.SpriteWidget extends App.Models.Widget
   # attributes: url scale
-  defaults: ->
-    _.extend super, {
-      type: 'SpriteWidget'
-      scale: 1
-    }
+
+  defaults:
+    type: 'SpriteWidget'
+
+
+  parse: (attributes) ->
+    @position = attributes.position
+    delete attributes.position
+
+    @scale = attributes.scale
+    delete attributes.scale
+
+    attributes
+
+      # url:  image.get('url')
+      # filename: image.get('name')
+
+
 
   getOrientationFor: (keyframe) ->
     keyframe.getOrientationFor(@)
@@ -56,6 +69,8 @@ class App.Models.SpriteWidget extends App.Models.Widget
       position: orientation.position
 
 
+# The association between a SpriteWidget and a Keyframe; it stores the position
+# and scale of the SpriteWidget in that Keyframe.
 class App.Models.SpriteOrientation extends Backbone.Model
   # attributes: keyframe_id sprite_widget_id position scale
   defaults:
@@ -66,7 +81,6 @@ class App.Models.SpriteOrientation extends Backbone.Model
     sceneWidgets = @collection.keyframe.scene.widgets
     spriteWidgetId = @get('sprite_widget_id')
     sceneWidgets.find (widget) => widget.id == spriteWidgetId
-
 
 
 ##
@@ -81,10 +95,8 @@ class App.Models.SpriteOrientation extends Backbone.Model
 class App.Models.ButtonWidget extends App.Models.SpriteWidget
   # attributes: name selected_url
 
-  defaults: ->
-    _.extend super, {
-      type: 'ButtonWidget'
-    }
+  defaults:
+    type: 'ButtonWidget'
 
 
   initialize: ->
@@ -105,13 +117,10 @@ class App.Models.TextWidget extends App.Models.Widget
  # attributes: string, font, size
 
   defaults: ->
-    _.extend super, {
-      type:    'TextWidget'
-      string:  'Enter some text...'
-      font:    'Arial'
-      size:    24
-      z_order: 6000
-    }
+    type:    'TextWidget'
+    string:  'Enter some text...'
+    z_order: 6000
+    position: @defaultPosition()
 
 
 ##
