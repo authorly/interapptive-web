@@ -129,7 +129,7 @@ class StorybookApplication
   end
 
   def compiled_application_url_expires
-    @compiled_application_url_expires ||= Rack::Utils.parse_nested_query(URI.parse(compiled_application_url).query)['Expires'] || 3600
+    @compiled_application_url_expires ||= Rack::Utils.parse_nested_query(URI.parse(compiled_application_url).query)['Expires'] || 1.hour.from_now.to_i
   end
 
   def send_notification
@@ -254,7 +254,7 @@ class StorybookApplication
         </head>
         <body>
         <div id="container">
-        <div class="link"><a href="itms-services://?action=download-manifest&url=#{manifest_pl.url}">Tap Here to Install<br />#{@target}<br />On Your Device</a></div>
+        <div class="link"><a href="itms-services://?action=download-manifest&url=#{manifest_pl.url(compiled_application_url_expires)}">Tap Here to Install<br />#{@target}<br />On Your Device</a></div>
         <p><strong>Link didn't work?</strong><br />
         Make sure you're visiting this page on your device, not your computer.</p>
         </body>
