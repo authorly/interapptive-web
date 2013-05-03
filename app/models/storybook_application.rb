@@ -83,7 +83,7 @@ class StorybookApplication
     f = FOG_DIRECTORY.files.new(
       :key          => "compiled_applications/#{@storybook.id}/manifest.plist",
       :content_type => 'text/xml',
-      :public       => false,
+      :public       => true,
       :body         => File.open(File.join(CRUCIBLE_IOS_DIR, 'pkg', 'dist', 'manifest.plist'))
     )
     f.save
@@ -197,8 +197,7 @@ class StorybookApplication
     plist = CFPropertyList::List.new(:file => File.join(CRUCIBLE_IOS_DIR, "pkg", "Payload", "#{@target}.app", "Info.plist"))
     plist_data = CFPropertyList.native_types(plist.value)
     File.open(File.join(CRUCIBLE_IOS_DIR, "pkg", "dist", "manifest.plist"), "w") do |io|
-      io << %{
-        <?xml version="1.0" encoding="UTF-8"?>
+      io << %{<?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
         <plist version="1.0">
         <dict>
@@ -211,7 +210,9 @@ class StorybookApplication
                   <key>kind</key>
                   <string>software-package</string>
                   <key>url</key>
-                  <string>#{compiled_application_url}</string>
+                  <string>
+                    #{compiled_application_url}
+                  </string>
                 </dict>
               </array>
               <key>metadata</key>
