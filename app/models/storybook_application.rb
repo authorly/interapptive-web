@@ -89,7 +89,9 @@ class StorybookApplication
     f.save
     logger.info 'Uploading of ipa file manifest.plist completed!'
 
-    rewrite_index_html(f)
+    # FIXME: WA: Rewrite index html once we figure out why tapping
+    # on install link in index html does not work.
+    # rewrite_index_html(f)
     f = FOG_DIRECTORY.files.new(
       :key          => "compiled_applications/#{@storybook.id}/index.html",
       :content_type => 'text/html',

@@ -33,6 +33,12 @@ class CompiledApplicationUploader < CarrierWave::Uploader::Base
   end
 
   def manifest_plist_url
-    StorybookApplication::FOG_DIRECTORY.files.get(store_dir + '/' + 'manifest.plist').url(1.hour.from_now.to_i)
+    base_url + '/' + 'manifest.plist'
+  end
+
+  private
+
+  def base_url
+    @base_url ||= File.dirname(@model.compiled_application.url)
   end
 end
