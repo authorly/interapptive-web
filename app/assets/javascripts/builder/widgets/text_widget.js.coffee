@@ -32,7 +32,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   TEXT_PAD_TOP:   6
   BORDER_WIDTH:   4
   BORDER_COLOR:   'rgba(15, 79, 168, 0.8)'
-  SCALE:          0.59
+  SCALE:          0.49
 
 
   constructor: (options) ->
@@ -173,10 +173,10 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   reorientateTextWidgetElement: ->
     $el = $('.text-widget')
-    elWidth = $el.width()
+    elWidth = $el.width() * @SCALE
     elWidth += parseInt($el.css("padding-left"), 10) + parseInt($el.css("padding-right"), 10)
     r = @rect()
-    $el.css('left',r.origin.x * @SCALE - (elWidth/2) + $(cc.canvas).position().left)
+    $el.css('left',r.origin.x * @SCALE + $(cc.canvas).position().left - (@label.getContentSize().width / 2) * @SCALE - 50)
 
 
   convertLabelToEditableText: =>
@@ -199,12 +199,12 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   _leftOffset: ->
     r = @rect()
-    r.origin.x * @SCALE - (@getContentSize().width / 2) + $(cc.canvas).position().left - 22
+    r.origin.x * @SCALE - (@getContentSize().width / 2) + $(cc.canvas).position().left + 120
 
 
   _topOffset: ->
     r = @rect()
-    $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - (@getContentSize().height / 2) - @BORDER_WIDTH*2
+    $(cc.canvas).position().top + $(cc.canvas).height() - r.origin.y * @SCALE - (@getContentSize().height / 2) - @BORDER_WIDTH*2 - 190
 
 
   _editing: ->
