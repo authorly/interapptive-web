@@ -121,6 +121,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     fontColor = @scene.get('font_color')
     @label.setColor(new cc.Color3B(fontColor.r, fontColor.g, fontColor.b))
+    @setAnchorPoint(new cc.Point(-0.5, 0.5))
     @addChild(@label)
     @setContentSize(@label.getContentSize())
 
