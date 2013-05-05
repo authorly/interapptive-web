@@ -30,9 +30,10 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   TEXT_PADDING:   14
   TEXT_PAD_BTM:   16
   TEXT_PAD_TOP:   6
+  SCALE:          0.49
   BORDER_WIDTH:   4
   BORDER_COLOR:   'rgba(15, 79, 168, 0.8)'
-  SCALE:          0.49
+  DEFAULT_TEXT:   'Enter some text...'
 
 
   constructor: (options) ->
@@ -41,6 +42,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @scene = options.model.collection.keyframe.scene
 
     @createLabel()
+
+    @makeEditableForDefaultText()
 
     @on 'double_click', @doubleClick
 
@@ -51,6 +54,10 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     App.vent.on 'change:font_size',  @fontSizeChanged,   @
     App.vent.on 'change:font_color', @fontColorChanged,  @
     App.vent.on 'select:font_color', @fontColorSelected, @
+
+
+  makeEditableForDefaultText: ->
+    if @model.get('string') is @DEFAULT_TEXT then @doubleClick()
 
 
   fontColorChanged: (rgb) ->
