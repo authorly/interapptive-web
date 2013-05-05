@@ -142,6 +142,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   mouseOut: ->
     super
     @label.setOpacity(255)
+    @parent.setCursor('default')
 
 
   drawSelection: ->
