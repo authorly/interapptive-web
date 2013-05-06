@@ -12,7 +12,7 @@ describe "App.Models.ButtonWidget", ->
 
     describe 'filename', ->
       it 'gets the filename based on the name, if image is not present', ->
-        @widget = new App.Models.ButtonWidget(name: 'kind')
+        @widget = new App.Models.ButtonWidget({name: 'kind'}, collection: @collection)
         expect(@widget.filename()).toEqual 'kind.png'
 
       it 'gets the filename from the image, if provided', ->
@@ -21,7 +21,7 @@ describe "App.Models.ButtonWidget", ->
 
     describe 'url', ->
       it 'gets the url based on the name, if image is not present', ->
-        @widget = new App.Models.ButtonWidget(name: 'kind')
+        @widget = new App.Models.ButtonWidget({name: 'kind'}, collection: @collection)
         expect(@widget.url()).toEqual '/assets/sprites/kind.png'
 
       it 'gets the url based on the image, if provided', ->

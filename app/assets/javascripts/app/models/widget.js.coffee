@@ -56,12 +56,16 @@ class App.Models.SpriteWidget extends App.Models.Widget
     attributes
 
 
+  images: ->
+    @collection.scene.storybook.images
+
+
   image: ->
-    @collection.scene.storybook.images.get(@get('image_id'))
+    @images().get(@get('image_id'))
 
 
   url: ->
-    @image().get('url')
+    @image()?.get('url')
 
 
   filename: ->
@@ -117,17 +121,16 @@ class App.Models.ButtonWidget extends App.Models.SpriteWidget
 
 
   url: ->
-    if @get('image_id')?
-      super
-    else
-      '/assets/sprites/' + @_defaultFilename()
+    url = super
+    url || '/assets/sprites/' + @_defaultFilename()
+
+
+  selected_image: ->
+    @images().get(@get('selected_image_id'))
 
 
   selected_url: ->
-    if @get('selected_image_id')?
-      @images.get(@get('selected_image_id'))
-    else
-      @url()
+    @selected_image()?.get('url') || @url()
 
 
   _defaultFilename: ->
