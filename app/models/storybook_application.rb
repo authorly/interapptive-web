@@ -115,7 +115,7 @@ class StorybookApplication
 
   def send_notification
     logger.info "Enqueuing notificatoin email for storybook #{@storybook.id}"
-    Resque.enqueue(MailerQueue, @storybook.user.email, @storybook.index_html_url, @storybook.compiled_application.url)
+    Resque.enqueue(MailerQueue, @storybook.user.email, @storybook.compiled_application.index_html_url, @storybook.compiled_application.url)
   end
 
   # Change this method to include any new uploaders to take care that
