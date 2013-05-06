@@ -40,6 +40,9 @@ class App.Models.Scene extends Backbone.Model
     @on 'change:preview_image_id change:font_color change:font_size change:font_face change:widgets', @save
 
 
+    @storybook.images.on 'remove', @imageRemoved, @
+
+
   initializeWidgets: ->
     @widgets.on 'add', (widget) =>
       if widget instanceof App.Models.SpriteWidget
@@ -164,6 +167,10 @@ class App.Models.Scene extends Backbone.Model
       _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
     else
       return 1
+
+
+  imageRemoved: (image) ->
+    @widgets.imageRemoved(image)
 
 
 ##

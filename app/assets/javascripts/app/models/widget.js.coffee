@@ -166,6 +166,16 @@ class App.Collections.Widgets extends Backbone.Collection
     super unless widget instanceof App.Models.ButtonWidget
 
 
+  imageRemoved: (image) ->
+    @each (widget) =>
+      if widget instanceof App.Models.SpriteWidget
+        @remove widget if widget.get('image_id') == image.id
+      if widget instanceof App.Models.ButtonWidget
+        widget.set(image_id: null) if widget.get('image_id') == image.id
+        widget.set(selected_image_id: null) if widget.get('selected_image_id') == image.id
+
+
+
   byClass: (klass) ->
     @filter (w) -> w instanceof klass
 
