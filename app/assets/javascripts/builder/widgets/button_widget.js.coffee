@@ -5,7 +5,7 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
   constructor: (options) ->
     super
 
-    @model.on 'change:url', @refresh, @
+    @model.on 'change:image_id', @refresh, @
 
     view = new App.Views.ButtonWidgetImagesSelector
       widget:     @model
@@ -19,11 +19,9 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
 
 
   imagesSelected: (values) =>
-    console.log values
-    if values.baseUrl?
-      @model.set url: values.baseUrl
-    if values.tappedUrl?
-      @model.set selected_url: values.tappedUrl
+    @model.set
+      image_id:          values.baseImage?.id
+      selected_image_id: values.tappedImage?.id
 
     @selector.hide()
 

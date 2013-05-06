@@ -45,17 +45,19 @@ class App.Models.SpriteWidget extends App.Models.Widget
 
 
   parse: (attributes={}) ->
-    @position = attributes.position
-    delete attributes.position
+    if attributes.position?
+      @position = attributes.position
+      delete attributes.position
 
-    @scale = attributes.scale
-    delete attributes.scale
+    if attributes.scale?
+      @scale = attributes.scale
+      delete attributes.scale
 
     attributes
 
 
   image: ->
-    @_image ||= @collection.scene.storybook.images.get(@get('image_id'))
+    @collection.scene.storybook.images.get(@get('image_id'))
 
 
   url: ->
@@ -101,7 +103,7 @@ class App.Models.SpriteOrientation extends Backbone.Model
 # the UI.
 #
 class App.Models.ButtonWidget extends App.Models.SpriteWidget
-  # attributes: name selected_url
+  # attributes: name selected_image_id
 
   defaults:
     type: 'ButtonWidget'
@@ -119,6 +121,13 @@ class App.Models.ButtonWidget extends App.Models.SpriteWidget
       super
     else
       '/assets/sprites/' + @_defaultFilename()
+
+
+  selected_url: ->
+    if @get('selected_image_id')?
+      @images.get(@get('selected_image_id'))
+    else
+      @url()
 
 
   _defaultFilename: ->
