@@ -161,8 +161,13 @@ class App.Collections.Widgets extends Backbone.Collection
   model: (attrs, options) ->
     new App.Models[attrs.type](attrs, $.extend({}, options, parse: true))
 
+
   remove: (widget) ->
     super unless widget instanceof App.Models.ButtonWidget
+
+
+  byClass: (klass) ->
+    @filter (w) -> w instanceof klass
 
 
   @containers:

@@ -142,12 +142,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   textWidgets: ->
-    @widgetsByClass(App.Models.TextWidget)
-
-
-  widgetsByClass: (klass) ->
-    return [] unless klass?
-    @widgets.filter (w) -> w instanceof klass
+    @widgets.byClass(App.Models.TextWidget)
 
 
   updateContentHighlightTimes: (times, options={}) ->

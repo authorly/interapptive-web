@@ -148,18 +148,14 @@ class App.Models.Scene extends Backbone.Model
 
 
   hotspotWidgets: ->
-    @widgetsByClass(App.Models.HotspotWidget)
+    @widgets.byClass(App.Models.HotspotWidget)
 
   spriteWidgets: ->
-    @widgetsByClass(App.Models.SpriteWidget)
+    @widgets.byClass(App.Models.SpriteWidget)
 
 
   buttonWidgets: ->
-    @widgetsByClass(App.Models.ButtonWidget)
-
-
-  widgetsByClass: (klass) ->
-    @widgets.filter (w) -> w instanceof klass
+    @widgets.byClass(App.Models.ButtonWidget)
 
 
   nextSpriteZOrder: (widget) ->
