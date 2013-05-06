@@ -40,22 +40,44 @@ describe Scene do
       scene.keyframes.first.widgets.should == []
     end
 
-    it 'should create a keyframe with 3 static widgets, in a main menu scene' do
+    it 'should add 3 button widgets, and a keyframe, for a main menu scene' do
       scene = Scene.create(is_main_menu: true)
       scene.keyframes.count.should == 1
-
-      keyframe = scene.keyframes.first
-      keyframe.position.should == 0
 
       scene.widgets.should be
       scene.widgets.count.should == 3
       scene.widgets.all?{|w| w[:type] == 'ButtonWidget'}.should be
-      scene.widgets.detect{|w| w[:name] == 'read_it_myself' }.should be
-      scene.widgets.detect{|w| w[:name] == 'auto_play' }.should be
-      scene.widgets.detect{|w| w[:name] == 'read_to_me'}.should be
+      read_it_myself = scene.widgets.detect{|w| w[:name] == 'read_it_myself' }
+      read_it_myself.should be
+      read_to_me = scene.widgets.detect{|w| w[:name] == 'read_to_me'}
+      read_to_me.should be
+      auto_play = scene.widgets.detect{|w| w[:name] == 'auto_play' }
+      auto_play.should be
       scene.widgets.detect{|w| w[:z_order] == 1}.should be
       scene.widgets.detect{|w| w[:z_order] == 2}.should be
       scene.widgets.detect{|w| w[:z_order] == 3}.should be
+
+      keyframe = scene.keyframes.first
+      keyframe.position.should == 0
+
+      keyframe.widgets.should be
+      keyframe.widgets.count.should == 3
+      keyframe.widgets.all?{|w| w[:type] == 'SpriteOrientation'}.should be
+
+      rimo = keyframe.widgets.detect{|w| w[:sprite_widget_id] == read_it_myself[:id] }
+      rimo.should be
+      rimo[:position].should == {y: 100, x: 200}
+      rimo[:scale].should == 1
+
+      rtm = keyframe.widgets.detect{|w| w[:sprite_widget_id] == read_to_me[:id] }
+      rtm.should be
+      rtm[:position].should == {y: 200, x: 200}
+      rtm[:scale].should == 1
+
+      ap = keyframe.widgets.detect{|w| w[:sprite_widget_id] == auto_play[:id] }
+      ap.should be
+      ap[:position].should == {y: 300, x: 200}
+      ap[:scale].should == 1
     end
 
   end

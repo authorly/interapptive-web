@@ -23,7 +23,6 @@ window.App =
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:keyframe', @_addNewKeyframe, @
     @vent.on 'create:widget',   @_addNewWidget,   @
-    @vent.on 'create:image',    @_addNewImage,    @
 
     @vent.on 'show:sceneform',  @_showSceneForm,  @
 
@@ -76,10 +75,10 @@ window.App =
         left: 125
     canvas.droppable
       accept: '.sprite-image'
-      drop: (__, ui) ->
+      drop: (__, ui) =>
         offset = canvas.offset()
-        App.vent.trigger 'create:image', null,
-          id: ui.draggable.data('id')
+        @_addNewImage
+          image_id: ui.draggable.data('id')
           position:
             x: (ui.position.left - offset.left - canvasAttributes.margins.left + ui.helper.width() * 0.5) * canvasAttributes.scale
             y: canvasAttributes.height - ((ui.position.top - offset.top - canvasAttributes.margins.top) + ui.helper.height() * 0.5) * canvasAttributes.scale
@@ -210,20 +209,17 @@ window.App =
     App.currentSelection.get(container).widgets.add(attributes)
 
 
-  _addNewImage: (image, options={}) ->
+  # @param [Object] attributes
+  # @option attributes [Integer] image_id
+  # @option attributes [Object] position {x, y}
+  _addNewImage: (attributes={}) ->
     scene = App.currentSelection.get('scene')
 
-    spriteOptions = {}
-    unless image
-      image = scene.storybook.images.get(options.id)
-      spriteOptions.position = options.position
-
-    $.extend spriteOptions,
+    scene.widgets.add
       type: 'SpriteWidget'
-      url:  image.get('url')
-      filename: image.get('name')
-
-    scene.widgets.add spriteOptions
+      image_id: attributes.image_id
+      position: $.extend {}, attributes.position
+      scale: 1
 
 
   _openHotspotModal: (widget) ->
