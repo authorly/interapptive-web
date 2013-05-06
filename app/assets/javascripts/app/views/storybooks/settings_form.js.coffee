@@ -1,16 +1,9 @@
 App.Views.Storybooks ?= {}
 
 class App.Views.Storybooks.SettingsForm extends App.Views.AbstractFormView
-  events: ->
-    _.extend({}, super, {})
-
 
   formOptions: =>
-    model: @getModel()
-
-
-  getModel: ->
-    @model = App.currentSelection.get('storybook')
+    model: @model
 
 
   deleteMessage: ->
