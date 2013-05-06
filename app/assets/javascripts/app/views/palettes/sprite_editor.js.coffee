@@ -79,7 +79,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   displayFilename: ->
-    filename = @widget.get('filename')
+    filename = @widget.filename()
     @$('#sprite-filename')
      .text(filename)
      .attr('title', filename)
