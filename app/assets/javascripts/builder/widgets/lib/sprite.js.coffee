@@ -4,8 +4,8 @@ class App.Builder.Widgets.Lib.Sprite extends cc.Sprite
     super
 
     @model = options.model
-    @url      = @model.get('url')
-    @filename = @model.get('filename')
+    @url      = @model.url()
+    @filename = @model.filename()
     @zOrder   = @model.get('z_order')
     @border   = false
 

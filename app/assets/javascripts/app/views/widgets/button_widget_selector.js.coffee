@@ -4,13 +4,14 @@ class App.Views.ButtonWidgetImagesSelector extends Backbone.View
   events:
     'click .use-images': 'useSelectedImages'
 
+  # @param collection the Backbone collection of available images
   initialize: (options={}) ->
     super
 
     @widget = options.widget
 
-    @baseImageUrl = @widget.get('url')
-    @tappedImageUrl = @widget.get('selected_url')
+    @baseImage = @collection.get(@widget.get('image_id'))
+    @tappedImageId = @widget.get('selected_image_id')
 
 
   render: ->
@@ -31,33 +32,31 @@ class App.Views.ButtonWidgetImagesSelector extends Backbone.View
 
 
   baseImageChosen: (image) =>
-    newUrl = image.get('url')
-    if newUrl != @baseImageUrl
-      @baseImageUrl = image.get('url')
-      @baseImageView.setUrl @baseImageUrl
+    if image != @baseImage
+      @baseImage = image
+      @baseImageView.setImage image
 
 
   tappedImageChosen: (image) =>
-    newUrl = image.get('url')
-    if newUrl != @tappedImageUrl
-      @tappedImageUrl = image.get('url')
-      @tappedImageView.setUrl @tappedImageUrl
+    if image != @tappedImage
+      @tappedImage = image
+      @tappedImageView.setImage image
 
 
   useSelectedImages: ->
-    @trigger 'selected', baseUrl: @baseImageUrl, tappedUrl: @tappedImageUrl
+    @trigger 'selected', baseImage: @baseImage, tappedImage: @tappedImage
 
 
   _ensureSubviewsCreated: ->
     unless @baseImageView?
-      @baseImageView = new App.Views.SelectedImage(url: @baseImageUrl)
+      @baseImageView = new App.Views.SelectedImage(@baseImage)
       @baseImageChooser = new App.Views.SpriteIndex
         collection: @collection
         select: 'Select'
       @baseImageChooser.on 'select', @baseImageChosen
 
     unless @tappedImageView?
-      @tappedImageView = new App.Views.SelectedImage(url: @tappedImageUrl)
+      @tappedImageView = new App.Views.SelectedImage(@tappedImage)
       @tappedImageChooser = new App.Views.SpriteIndex
         collection: @collection
         select: 'Select'

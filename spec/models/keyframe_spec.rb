@@ -47,32 +47,40 @@ describe Keyframe do
     end
   end
 
-  describe 'a keyframe from a scene with sprite widgets' do
-    before(:each) do
-      @position = {x: 100, y: 200}
-      @scale = 3
-    end
+  describe 'create widgets' do
 
-    it 'should create an orientation widget for each of the sprite widgets from the scene' do
-      scene = Factory.create(:scene, widgets: [{id: 1, type: 'SpriteWidget', position: @position, scale: @scale}])
+    it 'should create an orientation widget for read it myself' do
+      scene = Factory.create :scene, widgets: [ {type: 'ButtonWidget', id: 1, name: 'read_it_myself'}]
       keyframe = Factory.create(:keyframe, scene: scene)
 
       keyframe.widgets.count.should == 1
-      keyframe.widgets[0][:position].should == @position
-      keyframe.widgets[0][:scale].should == @scale
+      keyframe.widgets[0][:position].should == {y: 100, x: 200}
+      keyframe.widgets[0][:scale].should == 1
     end
 
-    it 'should create an orientation widget for each of the button widgets from the scene' do
-      scene = Factory.create(:scene, widgets: [{type: 'ButtonWidget', position: @position, scale: @scale}])
+    it 'should create an orientation widget for read to me' do
+      scene = Factory.create :scene, widgets: [ {type: 'ButtonWidget', id: 1, name: 'read_to_me'}]
       keyframe = Factory.create(:keyframe, scene: scene)
 
       keyframe.widgets.count.should == 1
-      keyframe.widgets[0][:position].should == @position
-      keyframe.widgets[0][:scale].should == @scale
+      keyframe.widgets[0][:position].should == {y: 200, x: 200}
+      keyframe.widgets[0][:scale].should == 1
+    end
+
+    it 'should create an orientation widget for auto_play' do
+      scene = Factory.create :scene, widgets: [ {type: 'ButtonWidget', id: 1, name: 'auto_play'}]
+      keyframe = Factory.create(:keyframe, scene: scene)
+
+      keyframe.widgets.count.should == 1
+      keyframe.widgets[0][:position].should == {y: 300, x: 200}
+      keyframe.widgets[0][:scale].should == 1
     end
 
     it 'should not create orientation widgets for other widgets from the scene' do
-      scene = Factory.create(:scene, widgets: [{type: 'HotspotWidget', position: @position, scale: @scale}])
+      scene = Factory.create(:scene, widgets: [
+         {type: 'HotspotWidget'},
+         {type: 'SpriteWidget'}
+      ])
       keyframe = Factory.create(:keyframe, scene: scene)
 
       keyframe.widgets.count.should == 0

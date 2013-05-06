@@ -49,7 +49,8 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   updatePosition: ->
     position = @model.get('position')
-    @setPosition new cc.Point(position.x, position.y)
+    if position?
+      @setPosition new cc.Point(position.x, position.y)
 
 
   updateZOrder: ->

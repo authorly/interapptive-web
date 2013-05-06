@@ -40,6 +40,9 @@ class App.Models.Scene extends Backbone.Model
     @on 'change:preview_image_id change:font_color change:font_size change:font_face change:widgets', @save
 
 
+    @storybook.images.on 'remove', @imageRemoved, @
+
+
   initializeWidgets: ->
     @widgets.on 'add', (widget) =>
       if widget instanceof App.Models.SpriteWidget
@@ -148,18 +151,14 @@ class App.Models.Scene extends Backbone.Model
 
 
   hotspotWidgets: ->
-    @widgetsByClass(App.Models.HotspotWidget)
+    @widgets.byClass(App.Models.HotspotWidget)
 
   spriteWidgets: ->
-    @widgetsByClass(App.Models.SpriteWidget)
+    @widgets.byClass(App.Models.SpriteWidget)
 
 
   buttonWidgets: ->
-    @widgetsByClass(App.Models.ButtonWidget)
-
-
-  widgetsByClass: (klass) ->
-    @widgets.filter (w) -> w instanceof klass
+    @widgets.byClass(App.Models.ButtonWidget)
 
 
   nextSpriteZOrder: (widget) ->
@@ -168,6 +167,10 @@ class App.Models.Scene extends Backbone.Model
       _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
     else
       return 1
+
+
+  imageRemoved: (image) ->
+    @widgets.imageRemoved(image)
 
 
 ##

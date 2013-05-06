@@ -7,15 +7,16 @@ class App.Views.SelectedImage extends Backbone.View
   tagName:  'div'
 
 
-  initialize: (options) ->
-    @url = options.url
+  initialize: (image) ->
+    @image = image
 
 
   render: ->
-    @$el.html(@template(url: @url))
+    @$el.html(@template(url: @image?.get('url')))
     @
 
 
-  setUrl: (url) ->
-    @url = url
-    @render()
+  setImage: (image) ->
+    if image != @image
+      @image = image
+      @render()
