@@ -24,7 +24,8 @@ class App.Views.FileMenuView extends Backbone.View
 
 
   showSettings: ->
-    view = new App.Views.Storybooks.SettingsForm()
+    view = new App.Views.Storybooks.SettingsForm
+      model: App.currentSelection.get('storybook')
     App.modalWithView(view: view).show()
 
 
