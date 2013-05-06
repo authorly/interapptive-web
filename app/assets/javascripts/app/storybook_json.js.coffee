@@ -25,6 +25,8 @@ class App.JSON
     @initializeScenes()
     @resetScenes()
 
+    console.log "@app", @app
+
     @app
 
 
@@ -79,8 +81,8 @@ class App.JSON
         text: widget.get('string'),
         xOffset: Math.round(widget.get('position').x),
         yOffset: Math.round(widget.get('position').y),
-        fontType: scene.get('font_face')
-        fontColor: [fontColor.r, fontColor.g, fontColor.b]
+        fontType: scene.get('font_face'),
+        fontColor: [fontColor.r, fontColor.g, fontColor.b],
         fontHighlightColor: [255, 0, 0],
         fontSize: Number(scene.get('font_size'))
       highlightingTimes: keyframe.get('content_highlight_times')
