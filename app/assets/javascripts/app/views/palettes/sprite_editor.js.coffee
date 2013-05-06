@@ -46,16 +46,13 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   setActiveSprite: (__, sprite) ->
-    return unless sprite == null or sprite instanceof App.Models.SpriteWidget
-
-    if sprite
+    if sprite && sprite instanceof App.Models.SpriteWidget
       @widget = sprite
       @enablePalette()
       @displayFilename()
       @enableFields()
       $('body').on('keyup', @_moveSpriteWithArrows)
       @widget.on('move', @changeCoordinates, @)
-
     else
       @widget.off('move', @changeCoordinates, @) if @widget?
       $('body').off('keyup', @_moveSpriteWithArrows)
