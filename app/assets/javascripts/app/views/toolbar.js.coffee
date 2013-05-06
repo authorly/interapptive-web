@@ -48,7 +48,9 @@ class App.Views.ToolbarView extends Backbone.View
     App.vent.trigger('initialize:hotspotWidget')
 
 
-  alignAudio: ->
+  alignAudio: (event) ->
+    return if $(event.currentTarget).hasClass('disabled')
+
     view = new App.Views.VoiceoverIndex App.currentSelection.get('keyframe')
     App.modalWithView(view: view).show()
 

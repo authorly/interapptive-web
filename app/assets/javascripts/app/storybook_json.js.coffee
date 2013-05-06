@@ -220,7 +220,10 @@ class App.JSON
         else
           currentActions = _.without [scaleId, moveId], null
           if currentActions.length > 0
-            if keyframeIndex > 0 or keyframeIndex == 0 and index == 0
+            if keyframeIndex == 0 and index == 0
+              spriteNode.actions = currentActions
+
+            else if keyframeIndex > 0
               actions.push
                 runAfterSwipeNumber: index
                 spriteTag: spriteId
