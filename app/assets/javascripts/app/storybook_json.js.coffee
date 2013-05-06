@@ -90,7 +90,11 @@ class App.JSON
 
     if widgets.length == 0
       paragraph.linesOfText = [{
-        text: ''
+        text: '',
+        fontType: scene.get('font_face'),
+        fontColor: [fontColor.r, fontColor.g, fontColor.b],
+        fontHighlightColor: [255, 0, 0],
+        fontSize: Number(scene.get('font_size'))
       }]
 
     page.Page.text.paragraphs.push(paragraph)
