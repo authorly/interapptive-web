@@ -17,6 +17,15 @@ class Storybook < ActiveRecord::Base
 
   validates_presence_of :title
 
+  def enqueue_for_compilation(platform, json)
+    case platform
+    when 'ios'
+      enqueue_for_ios_compilation(json)
+    when 'android'
+      enqueue_for_android_compilation(json)
+    end
+  end
+
   def enqueue_for_ios_compilation(json)
     # WA: TODO: Implement a storybook application JSON
     # verifier. Enqueue it for compilation only after
