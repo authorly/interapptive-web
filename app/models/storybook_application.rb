@@ -79,7 +79,7 @@ class StorybookApplication
       :content_type => 'text/xml',
       :public       => true,
       :body         => File.open(File.join(CRUCIBLE_IOS_DIR, 'pkg', 'dist', 'manifest.plist'))
-    )
+    ).save
     logger.info 'Uploading of ipa file manifest.plist completed!'
 
     FOG_DIRECTORY.files.new(
@@ -87,7 +87,7 @@ class StorybookApplication
       :content_type => 'text/html',
       :public       => true,
       :body         => File.open(File.join(CRUCIBLE_IOS_DIR, 'pkg', 'dist', 'index.html'))
-    )
+    ).save
     logger.info 'Uploading of ipa file index.html completed!'
     true
   end
