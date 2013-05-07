@@ -21,10 +21,11 @@ class App.Views.AssetLibrary extends Backbone.View
 
   initAssetLib: ->
     $('.content-modal').addClass 'asset-library-modal'
-    @$('#fileupload').fileupload(
+    @fileUpload = @$('#fileupload').fileupload(
       acceptFileTypes: @fileTypePattern(@assetType)
       downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
+      destroy: @_confirmDestroyAsset
     ).bind('fileuploaddestroyed',  (event, data) =>
       destroy = $(data.context.context)
       # For uploaded assets, the context is the TR row. For new ones, it is the button
@@ -38,7 +39,7 @@ class App.Views.AssetLibrary extends Backbone.View
   loadAndShowFileData: ->
     files = @assets.map (asset) -> asset.attributes
 
-    fileData = @$('#fileupload').data 'fileupload'
+    fileData = @fileUpload.data 'fileupload'
     fileData._adjustMaxNumberOfFiles(files.length)
 
     template = fileData._renderDownload(files).prependTo @$('#fileupload .files')
@@ -60,7 +61,7 @@ class App.Views.AssetLibrary extends Backbone.View
 
 
   closeAssetLib: ->
-    @$('#fileupload').fileupload 'disable'
+    @fileUpload.fileupload 'disable'
     $('.content-modal').removeClass 'asset-library-modal'
     @assets.off 'reset', @render, @
 
@@ -101,3 +102,15 @@ class App.Views.AssetLibrary extends Backbone.View
 
   hideRow: (event) ->
     $(event.target).closest('tr').hide()
+
+
+  _confirmDestroyAsset: (e, data) =>
+    if @assetType == 'image'
+      if confirm("Are you sure you want to delete this image and corresponding sprites from all the scenes?")
+        @_destroyAsset(e, data)
+    else
+      @_destroyAsset(e, data)
+
+
+  _destroyAsset: (e, data) ->
+    $.blueimpUI.fileupload.prototype.options.destroy.call(@fileUpload, e, data)
