@@ -38,6 +38,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
   render: ->
     @$el.html(@template(keyframe: @keyframe))
     @initUploader()
+    @initSorting()
     @pulsateArrowIcon()
     @findExistingVoiceover()
     @
@@ -53,6 +54,8 @@ class App.Views.VoiceoverIndex extends Backbone.View
     return if @$(event.currentTarget).hasClass('disabled')
 
     @keyframe.updateContentHighlightTimes @_collectTimeIntervals(),
+      # TODO replace this with a 'done' event that the parent listens to
+      # 2013-05-07 @dira
       success: -> App.vent.trigger 'hide:modal'
 
 
@@ -306,6 +309,35 @@ class App.Views.VoiceoverIndex extends Backbone.View
         .addClass('icon-exclamation-sign')
 
       @_canManuallyAlign = false
+
+
+  initSorting: ->
+    @$('#words').sortable
+      update:   @updateOrder
+      disabled: true
+
+    @enableSorting()
+
+
+  enableSorting: ->
+    @$('#words').sortable "option", "disabled", false
+    @$('#words li').addClass('grab')
+
+
+  disableSorting: ->
+    @$('#words').sortable "option", "disabled", true
+    @$('#words li').removeClass('grab')
+
+
+  updateOrder: =>
+    zero = (new App.Models.TextWidget).get('z_order') || 0
+    @$('#words li').each (index, element) =>
+      element = $(element)
+
+      if (id = element.data('id'))? && (text = @keyframe.widgets.get(id))?
+        text.set {z_order: zero + index}, silent: true
+
+    @keyframe.widgets.trigger 'change'
 
 
   previewingEnded: ->

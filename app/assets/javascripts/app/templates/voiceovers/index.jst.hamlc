@@ -24,9 +24,8 @@
   .modal-body
     %i.icon-arrow-right.icon-black.disabled
     %ul#words
-      - for widget in @keyframe.widgets.models
-        - continue unless widget.get('type') is 'TextWidget'
-        %li
+      - for widget in _.sortBy(@keyframe.textWidgets(), (w) -> w.get('z_order'))
+        %li{ data-id: widget.id }
           - words = widget.get('string').split(' ')
           - for word, index in words
             %span.word
