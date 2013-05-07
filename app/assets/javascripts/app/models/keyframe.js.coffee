@@ -42,6 +42,10 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   initializeWidgets: (attributes) ->
+    @widgets.on 'add', (widget) =>
+      if widget instanceof App.Models.TextWidget
+        widget.set z_order: @nextTextZOrder(widget)
+
     @widgets.on  'reset add remove change', @widgetsChanged, @
 
     @scene.widgets.on 'add',    @sceneWidgetAdded,   @
@@ -142,6 +146,13 @@ class App.Models.Keyframe extends Backbone.Model
   updateContentHighlightTimes: (times, options={}) ->
     @save { content_highlight_times: times }, options
 
+
+  nextTextZOrder: (widget) ->
+    widgets = _.reject @textWidgets(), (text) -> text == widget
+    if widgets.length > 0
+      _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
+    else
+      (new App.Models.TextWidget).get('z_order')
 
 ##
 # Relations:
