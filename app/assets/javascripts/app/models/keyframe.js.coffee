@@ -135,12 +135,6 @@ class App.Models.Keyframe extends Backbone.Model
     App.vent.trigger 'can_add:voiceover', @hasText()
 
 
-  nextTextSyncOrder: ->
-    text_widget_with_max_sync_order = _.max(@text_widgets(), (w) -> w.sync_order)
-    (text_widget_with_max_sync_order?.sync_order || 0) + 1
-
-
-
   textWidgets: ->
     @widgets.byClass(App.Models.TextWidget)
 
