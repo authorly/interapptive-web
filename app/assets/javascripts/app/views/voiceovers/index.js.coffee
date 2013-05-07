@@ -19,6 +19,8 @@ class App.Views.VoiceoverIndex extends Backbone.View
     'click #begin-alignment':   'clickBeginAlignment'
     'click #preview-alignment': 'clickPreviewAlignment'
     'click #accept-alignment':  'acceptAlignment'
+    'click #reorder-text .reorder': 'enableSorting'
+    'click #reorder-text .done':    'disableSorting'
 
   COUNTDOWN_LENGTH_IN_SECONDS: 5
 
@@ -217,8 +219,8 @@ class App.Views.VoiceoverIndex extends Backbone.View
     $.each $words, (index, word) =>
       @$(word).attr("data-start", "#{intervals[index]}")
 
-    @$('#preview-alignment').removeClass('disabled')
-    @$('#accept-alignment').removeClass('disabled')
+    @enablePreview()
+    @enableAcceptAlignment()
 
 
   # RFCTR: Move to a Voiceover model
@@ -238,7 +240,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @$('.filename').css('display', 'inline-block')
       .addClass('uploaded')
     @$('.filename span').text(file.name)
-    @$('#begin-alignment').removeClass('disabled')
     @setAudioPlayerSrc(file.url)
     @enableHighlighting()
 
@@ -297,7 +298,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
       if @_previewingAlignment
         @previewingEnded()
       else
-
         @enableAcceptAlignment()
         @enablePreview()
 
@@ -316,17 +316,21 @@ class App.Views.VoiceoverIndex extends Backbone.View
       update:   @updateOrder
       disabled: true
 
-    @enableSorting()
-
 
   enableSorting: ->
     @$('#words').sortable "option", "disabled", false
     @$('#words li').addClass('grab')
+    @$('#reorder-text .reorder').hide()
+    @$('#reorder-text .done').show()
+    @hideControls()
 
 
   disableSorting: ->
     @$('#words').sortable "option", "disabled", true
     @$('#words li').removeClass('grab')
+    @$('#reorder-text .reorder').show()
+    @$('#reorder-text .done').hide()
+    @showControls()
 
 
   updateOrder: =>
@@ -342,7 +346,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   previewingEnded: ->
     @_previewingAlignment = false
-    @$('#begin-alignment').removeClass('disabled')
+    @enableHighlighting()
     @$('#preview-alignment').find('span')
       .text('Preview')
       .parent().find('i')
@@ -376,6 +380,14 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   setAudioPlayerSrc: (voiceoverUrl) ->
     @$('audio').attr('src', voiceoverUrl)
+
+
+  showControls: ->
+    @$('#controls').css('visibility', 'visible')
+
+
+  hideControls: ->
+    @$('#controls').css('visibility', 'hidden')
 
 
   _playerCurrentTimeInSeconds: ->

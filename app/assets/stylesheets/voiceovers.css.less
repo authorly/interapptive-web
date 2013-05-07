@@ -117,10 +117,18 @@
 
       li {
         display: inline;
+        padding: 8px 4px 4px;
+        border: 1px solid rgba(0, 0, 0, 0);
 
         span.disabled {
           color: #c6c6c6;
         }
+
+        &.grab:hover {
+          cursor: move;
+          border-color: #999;
+        }
+
       }
 
       li:not(:first-child) {
@@ -149,15 +157,6 @@
 
     #sortable-keyframe-texts.ui-sortable li:active {
       cursor: url(https://mail.google.com/mail/images/2/closedhand.cur) 8 8, move;
-    }
-
-    .grab {
-      padding: 8px 4px 4px;
-      border: 1px solid rgba(0, 0, 0, 0);
-    }
-    .grab:hover {
-      cursor: move;
-      border-color: #999;
     }
 
     #controls {

@@ -30,8 +30,9 @@
           - for word, index in words
             %span.word
               = word + " "
-    / #reorder-text
-    /  %a{:href => "#"} Text not in correct order?
+    #reorder-text
+      %a.reorder{href: '#'} Text not in correct order?
+      %a.done{href: '#', style: 'display: none' } Done reordering
     #controls
       %button#begin-alignment.btn.disabled
         %i.icon-exclamation-sign.icon-black
