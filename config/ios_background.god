@@ -10,7 +10,7 @@ NUM_WORKERS.times do |num|
     w.group           = 'resque'
     w.interval        = 30.seconds
     w.log             = "#{SHARED_PATH}/log/#{RAILS_ENV}_authorly_resque_god.log"
-    w.env             = { "QUEUE" => "mailer,ios_compilation,android_compilation", "RAILS_ENV" => RAILS_ENV, 'VERBOSE' => 'true', "PIDFILE" => "#{SHARED_PATH}/pids/#{w.name}.pid" }
+    w.env             = { "QUEUE" => "ios_compilation", "RAILS_ENV" => RAILS_ENV, 'VERBOSE' => 'true', "PIDFILE" => "#{SHARED_PATH}/pids/#{w.name}.pid" }
     w.start           = "cd #{RAILS_ROOT} && bundle exec rake -f #{RAILS_ROOT}/Rakefile environment resque:work --trace"
     w.stop_timeout    = 20.seconds
 
