@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 class AndroidApplicationUploader < CarrierWave::Uploader::Base
-  @fog_public = false
-  @fog_authenticated_url_expiration = 3600 # One hour
+  #@fog_public = false
+  #@fog_authenticated_url_expiration = 3600 # One hour
 
   # Choose what kind of storage to use for this uploader:
   if Rails.env.development?
