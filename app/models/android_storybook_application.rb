@@ -30,6 +30,7 @@ class AndroidStorybookApplication < AbstractStorybookApplication
   def build_application
     Open3.popen3('./build_native.sh', :chdir => CRUCIBLE_ANDROID_DIR) do |i, o, e, t|
       logger.info o.read.chomp
+      logger.info e.read.chomp
     end
   end
 end
