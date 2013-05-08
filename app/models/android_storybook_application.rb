@@ -1,4 +1,4 @@
-class AndroidStorybookApplication
+class AndroidStorybookApplication < AbstractStorybookApplication
   CRUCIBLE_ANDROID_DIR = File.join(Rails.root, '../../Crucible/HelloWorld/android/')
 
   def compile
