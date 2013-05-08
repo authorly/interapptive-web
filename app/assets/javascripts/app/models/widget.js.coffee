@@ -204,6 +204,8 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
       return widget.get('z_order')
     else if widget instanceof App.Models.HotspotWidget
       return widget.get('z_order') - 1/widget.id
+    else if widget instanceof App.Models.TextWidget
+      return widget.get('z_order')
 
 
   changeKeyframe: (keyframe) ->
