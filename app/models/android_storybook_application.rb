@@ -1,3 +1,5 @@
+require 'open3'
+
 class AndroidStorybookApplication < AbstractStorybookApplication
   CRUCIBLE_ANDROID_DIR = File.join(Rails.root, '../../Crucible/HelloWorld/android/')
 
