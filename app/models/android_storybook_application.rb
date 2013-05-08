@@ -26,10 +26,8 @@ class AndroidStorybookApplication < AbstractStorybookApplication
   private
 
   def build_application
-    f = IO.popen("cd #{CRUCIBLE_ANDROID_DIR} && . build_native.sh")
-    # TODO: WA: Following blocks the worker process till log is
-    # written. Fork it to child process.
-    logger.info f.readlines.join
-    f.close
+    Open3.popen3('. build_native.sh', :chdir => CRUCIBLE_ANDROID_DIR) do |i, o, e, t|
+      logger.info o.read.chomp
+    end
   end
 end
