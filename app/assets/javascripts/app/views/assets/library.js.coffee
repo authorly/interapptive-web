@@ -39,6 +39,7 @@ class App.Views.AssetLibrary extends Backbone.View
     $('.content-modal').addClass 'asset-library-modal'
     @fileUpload = @$('#fileupload').fileupload(
       acceptFileTypes: @fileTypePattern(@assetType)
+      singleFileUploads: false
       downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
       destroy: @_confirmDestroyAsset
