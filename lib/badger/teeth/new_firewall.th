@@ -10,7 +10,8 @@ new_firewall() {
     iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT 
     iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT 
     iptables -A INPUT -i eth0 -p tcp -m tcp --dport 3306 -j ACCEPT
-    iptables -A INPUT -i eth0 -p tcp -m tcp --dport 6379 -j ACCEPT
+    iptables -A INPUT -s 173.255.214.98 -i eth0 -p tcp -m tcp --dport 6379 -j ACCEPT
+    iptables -A INPUT -s 80.74.134.138 -i eth0 -p tcp -m tcp --dport 6379 -j ACCEPT
     iptables -A INPUT -j REJECT --reject-with icmp-host-prohibited
     echo 'New firewall up'
 }
