@@ -136,13 +136,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   from_proxy: (message) =>
-    if message.action == 'loaded' && message.path == @model.get('url')
+    if message.action == 'loaded' && message.path == @model.url()
       App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
       @constructorContinuation(message.bits)
 
 
   _getImage: ->
-    url = @model.get('url')
+    url = @model.url()
     if url.indexOf('/') == 0
       @constructorContinuation(url)
     else

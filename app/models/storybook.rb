@@ -1,6 +1,7 @@
 class Storybook < ActiveRecord::Base
   mount_uploader :icon, AppIconUploader
-  mount_uploader :compiled_application, CompiledApplicationUploader
+  mount_uploader :compiled_application, IosApplicationUploader
+  mount_uploader :android_application,  AndroidApplicationUploader
 
   belongs_to :user
   has_many :scenes, :dependent => :destroy
@@ -16,11 +17,24 @@ class Storybook < ActiveRecord::Base
 
   validates_presence_of :title
 
-  def enqueue_for_compilation(json)
+  def enqueue_for_compilation(platform, json)
+    case platform
+    when 'ios'
+      enqueue_for_ios_compilation(json)
+    when 'android'
+      enqueue_for_android_compilation(json)
+    end
+  end
+
+  def enqueue_for_ios_compilation(json)
     # WA: TODO: Implement a storybook application JSON
     # verifier. Enqueue it for compilation only after
     # it is verified.
-    Resque.enqueue(CompilationQueue, self.id, json)
+    Resque.enqueue(IosCompilationQueue, self.id, json)
+  end
+
+  def enqueue_for_android_compilation(json)
+    Resque.enqueue(AndroidCompilationQueue, self.id, json)
   end
 
   def owned_by?(other_user)

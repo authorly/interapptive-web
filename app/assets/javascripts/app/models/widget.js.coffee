@@ -2,8 +2,9 @@ class App.Models.Widget extends Backbone.Model
   # attributes: position(attributes: x, y) z_order
   @idGenerator = new App.Lib.Counter
 
-  defaults: ->
-    position: { x: 1024/2, y: 768/2 }
+  defaultPosition: ->
+    x: 1024/2
+    y: 768/2
 
 
   initialize: ->
@@ -23,27 +24,53 @@ class App.Models.HotspotWidget extends App.Models.Widget
   MIN_RADIUS: 16
 
   defaults: ->
-    _.extend super, {
-      type: 'HotspotWidget'
-      radius: 48
-      z_order: 5000
-    }
+    type: 'HotspotWidget'
+    radius: 48
+    z_order: 5000
+    position: @defaultPosition()
 
 
 ##
 # A widget that has an associated image.
 #
-# It belongs to a scene, and it can have a different position or scale in
-# each of the keyframes of that scene. SpriteOrientation is the association
-# between a SpriteWidget and a Keyframe; it stores the position and scale of the
-# SpriteWidget in that Keyframe.
+# It belongs to a scene.
+#
+# It can have a different position or scale in each of the keyframes of the scene.
+# @see App.Models.SpriteOrientation
 class App.Models.SpriteWidget extends App.Models.Widget
-  # attributes: url scale
-  defaults: ->
-    _.extend super, {
-      type: 'SpriteWidget'
-      scale: 1
-    }
+  # attributes: image_id
+
+  defaults:
+    type: 'SpriteWidget'
+
+
+  parse: (attributes={}) ->
+    if attributes.position?
+      @position = attributes.position
+      delete attributes.position
+
+    if attributes.scale?
+      @scale = attributes.scale
+      delete attributes.scale
+
+    attributes
+
+
+  images: ->
+    @collection.scene.storybook.images
+
+
+  image: ->
+    @images().get(@get('image_id'))
+
+
+  url: ->
+    @image()?.get('url')
+
+
+  filename: ->
+    @image().get('name')
+
 
   getOrientationFor: (keyframe) ->
     keyframe.getOrientationFor(@)
@@ -56,6 +83,8 @@ class App.Models.SpriteWidget extends App.Models.Widget
       position: orientation.position
 
 
+# The association between a SpriteWidget and a Keyframe; it stores the position
+# and scale of the SpriteWidget in that Keyframe.
 class App.Models.SpriteOrientation extends Backbone.Model
   # attributes: keyframe_id sprite_widget_id position scale
   defaults:
@@ -68,7 +97,6 @@ class App.Models.SpriteOrientation extends Backbone.Model
     sceneWidgets.find (widget) => widget.id == spriteWidgetId
 
 
-
 ##
 # A button that has two associated images: one for its default state,
 # and one for its tapped/clicked state
@@ -79,19 +107,34 @@ class App.Models.SpriteOrientation extends Backbone.Model
 # the UI.
 #
 class App.Models.ButtonWidget extends App.Models.SpriteWidget
-  # attributes: name selected_url
+  # attributes: name selected_image_id
 
-  defaults: ->
-    _.extend super, {
-      type: 'ButtonWidget'
-    }
+  defaults:
+    type: 'ButtonWidget'
 
 
-  initialize: ->
-    super
+  filename: ->
+    if @get('image_id')?
+      super
+    else
+      @_defaultFilename()
 
-    @set filename: "#{@get('name')}.png"                 unless @get('filename')?
-    @set url:      "/assets/sprites/#{@get('filename')}" unless @get('url')?
+
+  url: ->
+    url = super
+    url || '/assets/sprites/' + @_defaultFilename()
+
+
+  selected_image: ->
+    @images().get(@get('selected_image_id'))
+
+
+  selected_url: ->
+    @selected_image()?.get('url') || @url()
+
+
+  _defaultFilename: ->
+    @get('name') + '.png'
 
 
 ##
@@ -105,13 +148,10 @@ class App.Models.TextWidget extends App.Models.Widget
  # attributes: string, font, size
 
   defaults: ->
-    _.extend super, {
-      type:    'TextWidget'
-      string:  'Enter some text...'
-      font:    'Arial'
-      size:    24
-      z_order: 6000
-    }
+    type:    'TextWidget'
+    string:  'Enter some text...'
+    z_order: 6000
+    position: @defaultPosition()
 
 
 ##
@@ -122,10 +162,25 @@ class App.Models.TextWidget extends App.Models.Widget
 class App.Collections.Widgets extends Backbone.Collection
 
   model: (attrs, options) ->
-    new App.Models[attrs.type](attrs, options)
+    new App.Models[attrs.type](attrs, $.extend({}, options, parse: true))
+
 
   remove: (widget) ->
     super unless widget instanceof App.Models.ButtonWidget
+
+
+  imageRemoved: (image) ->
+    @each (widget) =>
+      if widget instanceof App.Models.SpriteWidget
+        @remove widget if widget.get('image_id') == image.id
+      if widget instanceof App.Models.ButtonWidget
+        widget.set(image_id: null) if widget.get('image_id') == image.id
+        widget.set(selected_image_id: null) if widget.get('selected_image_id') == image.id
+
+
+
+  byClass: (klass) ->
+    @filter (w) -> w instanceof klass
 
 
   @containers:
@@ -149,6 +204,8 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
       return widget.get('z_order')
     else if widget instanceof App.Models.HotspotWidget
       return widget.get('z_order') - 1/widget.id
+    else if widget instanceof App.Models.TextWidget
+      return widget.get('z_order')
 
 
   changeKeyframe: (keyframe) ->

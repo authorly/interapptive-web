@@ -92,19 +92,26 @@ class Keyframe < ActiveRecord::Base
   private
 
   def create_orientation_widgets
-    scene_widgets = (scene.try(:widgets) || []).select{|w| ['ButtonWidget', 'SpriteWidget'].include?(w[:type])}
-    widgets = scene_widgets.map do |w|
-      {
-        type: 'SpriteOrientation',
-        keyframe_id:      id,
-        sprite_widget_id: w[:id],
-        position:         w[:position],
-        scale:            w[:scale],
-      }
-    end
-
     self.widgets ||= []
-    self.widgets += widgets
+
+    scene_widgets = scene.try(:widgets) || []
+    if scene_widgets.present?
+      { read_it_myself: {y: 100, x: 200},
+        read_to_me:     {y: 200, x: 200},
+        auto_play:      {y: 300, x: 200}
+      }.each do |name, position|
+        button = scene_widgets.detect{|w| w[:type] == 'ButtonWidget' && w[:name] == name.to_s}
+        if button.present?
+          self.widgets << {
+            type: 'SpriteOrientation',
+            keyframe_id:      id,
+            sprite_widget_id: button[:id],
+            position:         position,
+            scale:            1,
+          }
+        end
+      end
+    end
     save
   end
 

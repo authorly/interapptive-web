@@ -20,7 +20,7 @@ class App.Views.SpriteListPalette extends Backbone.View
   initialize: ->
     @collection.on 'add', @widgetAdded, @
     @collection.on 'remove', @widgetRemoved, @
-    @collection.on 'change:url', @widgetUrlChanged, @
+    @collection.on 'change:image_id', @widgetChanged, @
 
     App.currentSelection.on 'change:widget', @spriteSelected, @
 
@@ -46,7 +46,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     @views.splice(@views.indexOf(view), 1)
 
 
-  widgetUrlChanged: (widget) ->
+  widgetChanged: (widget) ->
     return unless @_isSprite(widget)
 
     view = @_getView(widget)

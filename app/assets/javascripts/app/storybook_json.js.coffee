@@ -178,7 +178,7 @@ class App.JSON
       position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
       spriteId = @spriteIdCounter.next()
       spriteNode =
-        image:     spriteWidget.get 'url'
+        image:     spriteWidget.url()
         spriteTag: spriteId
         # TODO does the app require this? because we have a Move action for the first
         # keyframe anyway
@@ -296,8 +296,8 @@ class App.JSON
           position = scene.keyframes.at(0).getOrientationFor(button).get('position')
           str = App.Lib.StringHelper
           {
-            normalStateImage: button.get('url')
-            tappedStateImage: button.get('selected_url') || button.get('url')
+            normalStateImage: button.url()
+            tappedStateImage: button.selected_url() || button.url()
             storyMode: str.decapitalize(str.camelize(button.get('name')))
             position: [Math.round(position.x), Math.round(position.y)]
           }
@@ -308,7 +308,7 @@ class App.JSON
       position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
       spriteId = @spriteIdCounter.next()
       spriteNode =
-        image:     spriteWidget.get 'url'
+        image:     spriteWidget.url()
         spriteTag: spriteId
         # TODO does the app require this? because we have a Move action for the first
         # keyframe anyway

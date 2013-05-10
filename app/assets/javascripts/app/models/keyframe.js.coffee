@@ -42,6 +42,10 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   initializeWidgets: (attributes) ->
+    @widgets.on 'add', (widget) =>
+      if widget instanceof App.Models.TextWidget
+        widget.set z_order: @nextTextZOrder(widget)
+
     @widgets.on  'reset add remove change', @widgetsChanged, @
 
     @scene.widgets.on 'add',    @sceneWidgetAdded,   @
@@ -108,8 +112,8 @@ class App.Models.Keyframe extends Backbone.Model
     @widgets.add new App.Models.SpriteOrientation
       keyframe_id:      @id
       sprite_widget_id: spriteWidget.id
-      position:         $.extend {}, spriteWidget.get('position')
-      scale:            spriteWidget.get('scale')
+      position:         $.extend {}, spriteWidget.position
+      scale:            spriteWidget.scale
 
 
   getOrientationFor: (widget) ->
@@ -135,24 +139,20 @@ class App.Models.Keyframe extends Backbone.Model
     App.vent.trigger 'can_add:voiceover', @hasText()
 
 
-  nextTextSyncOrder: ->
-    text_widget_with_max_sync_order = _.max(@text_widgets(), (w) -> w.sync_order)
-    (text_widget_with_max_sync_order?.sync_order || 0) + 1
-
-
-
   textWidgets: ->
-    @widgetsByClass(App.Models.TextWidget)
-
-
-  widgetsByClass: (klass) ->
-    return [] unless klass?
-    @widgets.filter (w) -> w instanceof klass
+    @widgets.byClass(App.Models.TextWidget)
 
 
   updateContentHighlightTimes: (times, options={}) ->
     @save { content_highlight_times: times }, options
 
+
+  nextTextZOrder: (widget) ->
+    widgets = _.reject @textWidgets(), (text) -> text == widget
+    if widgets.length > 0
+      _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
+    else
+      (new App.Models.TextWidget).get('z_order')
 
 ##
 # Relations:

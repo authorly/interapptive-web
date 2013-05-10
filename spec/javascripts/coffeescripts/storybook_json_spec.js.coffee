@@ -8,15 +8,21 @@ describe "App.JSON", ->
 
   beforeEach ->
     @storybook = new App.Models.Storybook
+
+    @rim_selected_image = new App.Models.Image
+      id:  1
+      url: 'http://authorly.dev/read_it_myself-over.png'
+    @storybook.images.add @rim_selected_image
+
     # storybooks come with a main menu scene
     @mainMenu = new App.Models.Scene {
       id: 2
       storybook: @storybook
       is_main_menu: true
       widgets: [
-        {'type':'ButtonWidget','id':1,'name':'read_it_myself','filename':'read_it_myself.png','url':'/assets/sprites/read_it_myself.png', 'selected_url': 'http://authorly.dev/read_it_myself-over.png'},
-        {'type':'ButtonWidget','id':2,'name':'read_to_me','filename':'read_to_me.png','url':'/assets/sprites/read_to_me.png'},
-        {'type':'ButtonWidget','id':3,'name':'auto_play','filename':'auto_play.png','url':'/assets/sprites/auto_play.png'}
+        {'type':'ButtonWidget', image_id: null,'id':1,'name':'read_it_myself', selected_image_id: @rim_selected_image.id},
+        {'type':'ButtonWidget', image_id: null,'id':2,'name':'read_to_me'},
+        {'type':'ButtonWidget', image_id: null,'id':3,'name':'auto_play'}
       ]
     }, parse: true
     @storybook.scenes.add @mainMenu
@@ -82,6 +88,11 @@ describe "App.JSON", ->
   describe "scenes", ->
 
     beforeEach ->
+      @sprite_image = new App.Models.Image
+        id:  10
+        url: 'https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg'
+      @storybook.images.add @sprite_image
+
       @scene1 = new App.Models.Scene {
         id: 3
         position: 0
@@ -95,7 +106,7 @@ describe "App.JSON", ->
           },
           { 'type': 'HotspotWidget', 'id': 8, 'position': {'x': 410, 'y': 210}, 'radius': 20, 'video_id': "https://interapptive.s3.amazonaws.com/videos/8/voicemail_received.mov"
           },
-          { 'type': 'SpriteWidget', 'id': 9, 'url': 'https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg'},
+          { 'type': 'SpriteWidget', 'id': 9, 'image_id': @sprite_image.id},
         ]
       }, parse: true
 

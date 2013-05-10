@@ -46,16 +46,13 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   setActiveSprite: (__, sprite) ->
-    return unless sprite == null or sprite instanceof App.Models.SpriteWidget
-
-    if sprite
+    if sprite && sprite instanceof App.Models.SpriteWidget
       @widget = sprite
       @enablePalette()
       @displayFilename()
       @enableFields()
       $('body').on('keyup', @_moveSpriteWithArrows)
       @widget.on('move', @changeCoordinates, @)
-
     else
       @widget.off('move', @changeCoordinates, @) if @widget?
       $('body').off('keyup', @_moveSpriteWithArrows)
@@ -82,7 +79,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   displayFilename: ->
-    filename = @widget.get('filename')
+    filename = @widget.filename()
     @$('#sprite-filename')
      .text(filename)
      .attr('title', filename)
@@ -154,10 +151,16 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   _addNumericInputListener: ->
     @$('#x-coord, #y-coord, #scale-amount').keypress (event) => # Numeric keyboard inputs only
-      if not event.which or (48 <= event.which <= 57) or (48 is event.which and $(this).attr('value')) or @CONTROL_KEYS.indexOf(event.which) > -1
-        return
-      else
-        event.preventDefault()
+      # 45: -
+      # 48: 0
+      # 57: 9
+      ok = not event.which or (48 <= event.which <= 57) or @CONTROL_KEYS.indexOf(event.which) > -1
+
+      switch event.currentTarget.id
+        when 'x-coord', 'y-coord'
+          ok = true if event.which == 45
+
+      event.preventDefault() unless ok
 
 
   _addUpDownArrowListeners: ->
