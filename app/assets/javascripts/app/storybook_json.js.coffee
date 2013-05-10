@@ -25,7 +25,7 @@ class App.JSON
     @initializeScenes()
     @resetScenes()
 
-    console.log "@app", @app
+    console.log @app
 
     @app
 
@@ -74,6 +74,9 @@ class App.JSON
     fontColor = scene.get('font_color')
     widgets = keyframe.textWidgets()
 
+    keyframeHighlightTimes = keyframe.get('content_highlight_times')
+    if keyframeHighlightTimes.length < 1 then keyframeHighlightTimes.push(0)
+
     paragraph =
       # delayForPanning: true
       # highlightingTimes: [0.3, 1.3, #_.map(keyframe.get('content_highlight_times'), (num) -> Number(num))
@@ -85,7 +88,7 @@ class App.JSON
         fontColor: [fontColor.r, fontColor.g, fontColor.b],
         fontHighlightColor: [255, 0, 0],
         fontSize: Number(scene.get('font_size'))
-      highlightingTimes: keyframe.get('content_highlight_times')
+      highlightingTimes: keyframeHighlightTimes
       voiceAudioFile: keyframe.get('url')
 
     if widgets.length == 0
