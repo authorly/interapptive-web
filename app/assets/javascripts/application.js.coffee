@@ -8,6 +8,7 @@
 #= require underscore
 #= require backbone
 #= require jquery-fileupload
+#= require jquery.dataTables.min
 #= require jquery.voiceover-uploader
 
 #= require popcorn-complete.min
