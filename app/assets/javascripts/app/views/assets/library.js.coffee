@@ -3,6 +3,7 @@ class App.Views.AssetLibrary extends Backbone.View
 
   events:
     'click .video-thumbnail' : 'playVideo'
+    'click .delete':           'destroyAsset'
 
 
   initialize: ->
@@ -14,7 +15,7 @@ class App.Views.AssetLibrary extends Backbone.View
 
   _addListeners: ->
     @assets.on 'add',    @_assetAdded,    @
-
+    @assets.on 'remove', @_assetRemoved,    @
 
   # _removeListeners: ->
 
@@ -46,15 +47,10 @@ class App.Views.AssetLibrary extends Backbone.View
       acceptFileTypes: @fileTypePattern(@assetType)
       singleFileUploads: false
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
-      destroy: @_confirmDestroyAsset
     ).bind('fileuploadchange', (event, data) =>
       @_toggleUploadedAssetsHeader(data.files.length)
     ).bind('fileuploadfail', (event, data) =>
       @_toggleUploadedAssetsHeader(-data.files.length)
-    # ).bind('fileuploaddestroyed',  (event, data) =>
-      # deleteButton = $(data.context.context)
-      # id = deleteButton.closest('tr').find('.preview').data('id')
-      # @assets.remove @assets.get(id)
     ).bind('fileuploadcompleted', (event, data) =>
       @_toggleUploadedAssetsHeader(-data.files.length)
       @assets.add data.result
@@ -87,7 +83,16 @@ class App.Views.AssetLibrary extends Backbone.View
           else
             data
       }
-      { sTitle: '', bVisible: false },
+      {
+        sTitle: ''
+        bSearchable: false
+        bSortable: false
+        mRender: (data, operation, row) =>
+          if operation == 'display'
+            "<button class='delete btn btn-warning' data-id='#{data}'>Delete</button>"
+          else
+            data
+      },
     ]
     if @assetType == 'image'
       columns = [{
@@ -111,6 +116,12 @@ class App.Views.AssetLibrary extends Backbone.View
   _assetAdded:  (asset) ->
     data = _.map @_assetsFields(), (field) -> asset.get(field)
     @assetsView.fnAddData data
+
+
+  _assetRemoved:  (asset) ->
+    id = asset.id
+    row = @assetsView.find(".delete[data-id=#{id}]").closest('tr')[0]
+    @assetsView.fnDeleteRow row
 
 
   _assetsFields: ->
@@ -160,16 +171,21 @@ class App.Views.AssetLibrary extends Backbone.View
     $(event.target).closest('tr').hide()
 
 
-  _confirmDestroyAsset: (e, data) =>
+  destroyAsset: (e) =>
+    e.preventDefault()
+    e.stopPropagation()
+
     if @assetType == 'image'
-      if confirm("Are you sure you want to delete this image and corresponding sprites from all the scenes?")
-        @_destroyAsset(e, data)
-    else
-      @_destroyAsset(e, data)
+      return unless confirm("Are you sure you want to delete this image and corresponding sprites from all the scenes?")
+
+    @_destroyAsset(e)
 
 
-  _destroyAsset: (e, data) ->
-    $.blueimpUI.fileupload.prototype.options.destroy.call(@fileUpload, e, data)
+  _destroyAsset: (e) ->
+    id = $(e.currentTarget).data('id')
+    asset = @assets.get(id)
+    asset.destroy
+      url: asset.get('delete_url')
 
 
   _toggleUploadedAssetsHeader: (delta=0)=>
