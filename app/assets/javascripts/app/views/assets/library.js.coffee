@@ -17,13 +17,14 @@ class App.Views.AssetLibrary extends Backbone.View
 
 
   _removeListeners: ->
-    @assets.off 'reset add remove', @loadAndShowFileData, @
+    # @assets.off 'reset add remove', @loadAndShowFileData, @
 
 
   render: ->
     @$el.html @template(assetType: @assetType, acceptedFileTypes: @acceptedFileTypes, assets: @assets)
     @initUploader()
-    @loadAndShowFileData()
+    @formatFileSize = @fileUpload.data('fileupload')._formatFileSize
+    @initAssetsIndex()
     @
 
 
@@ -32,6 +33,10 @@ class App.Views.AssetLibrary extends Backbone.View
     # @$('#fileupload').fileupload 'disable'
     # $('.content-modal').removeClass 'asset-library-modal'
     # @_removeListeners()
+  # closeAssetLib: ->
+    # @fileUpload.fileupload 'disable'
+    # $('.content-modal').removeClass 'asset-library-modal'
+    # @assets.off 'reset', @render, @
 
 
   initUploader: ->
@@ -44,49 +49,64 @@ class App.Views.AssetLibrary extends Backbone.View
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
       destroy: @_confirmDestroyAsset
     ).bind('fileuploadchange', (event, data) =>
-      @toggleUploadedAssetsHeader(data.files.length)
+      @_toggleUploadedAssetsHeader(data.files.length)
     ).bind('fileuploadfail', (event, data) =>
-      @toggleUploadedAssetsHeader(-data.files.length)
+      @_toggleUploadedAssetsHeader(-data.files.length)
     ).bind('fileuploaddestroyed',  (event, data) =>
       deleteButton = $(data.context.context)
       id = deleteButton.closest('tr').find('.preview').data('id')
-      @assets.remove @assets.get(id), from_upload: true
+      @assets.remove @assets.get(id)
     ).bind('fileuploadcompleted', (event, data) =>
-      @assets.add data.result, from_upload: true
+      @assets.add data.result
     )
-    @toggleUploadedAssetsHeader()
+    @_toggleUploadedAssetsHeader()
 
 
-  toggleUploadedAssetsHeader: (delta=0)=>
-    nr = @fileUpload.data('fileupload').options.filesContainer.children().length + delta
-    uploadableAssets = @fileUpload.find('.filesToUpload thead')
-    if nr > 0
-      uploadableAssets.show()
-    else
-      uploadableAssets.hide()
+  initAssetsIndex: ->
+    fields = if @assetType == 'image' then ['thumbnail_url'] else []
+    fields = fields.concat ['name', 'size', 'created_at']
+    data = @assets.map (asset) ->
+      _.map fields, (field) -> asset.get(field)
 
+    columns = [
+      { sTitle: 'Name', sClass: 'center' },
+      {
+        sTitle: 'Size'
+        bSearchable: false
+        mRender: (data, operation, row) =>
+          if operation == 'display'
+            @formatFileSize(data)
+          else
+            data
+        sClass: 'center'
+      },
+      {
+        sTitle: 'Date'
+        bSearchable: false
+        mRender: (data, operation, row) =>
+          if operation == 'display'
+            App.Lib.DateTimeHelper.timeToHuman(data)
+          else
+            data
+        sClass: 'center'
+      }
+    ]
+    if @assetType == 'image'
+      columns = [{
+        sTitle: ''
+        bSearchable: false
+        bSortable: false
+        mRender: (data, operation, row) =>
+          if operation == 'display' && @assetType == 'image'
+            "<img src='#{data}'/>"
+          else
+            data
+      }].concat(columns)
 
-  loadAndShowFileData: ->
-    downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
-    return if arguments[2]?.from_upload
-
-    files = @assets.map (asset) -> asset.attributes
-
-    fileData = @fileUpload.data 'fileupload'
-    fileData._adjustMaxNumberOfFiles(files.length)
-
-    template = fileData._renderDownload(files)
-    template.addClass 'in'
-    @$('#fileupload .files').html('').append(template)
-    fileData._reflow = fileData?._transition and template.length and template[0].offsetWidth
-
-    @$('#loading').remove()
-
-
-  closeAssetLib: ->
-    @fileUpload.fileupload 'disable'
-    $('.content-modal').removeClass 'asset-library-modal'
-    @assets.off 'reset', @render, @
+    @$('.uploaded').dataTable
+      aaData: data
+      aoColumns: columns
+      bLengthChange: false
 
 
   fileTypePattern: () ->
@@ -137,3 +157,14 @@ class App.Views.AssetLibrary extends Backbone.View
 
   _destroyAsset: (e, data) ->
     $.blueimpUI.fileupload.prototype.options.destroy.call(@fileUpload, e, data)
+
+
+  _toggleUploadedAssetsHeader: (delta=0)=>
+    nr = @fileUpload.data('fileupload').options.filesContainer.children().length + delta
+    uploadableAssets = @fileUpload.find('.toUpload thead')
+    if nr > 0
+      uploadableAssets.show()
+    else
+      uploadableAssets.hide()
+
+
