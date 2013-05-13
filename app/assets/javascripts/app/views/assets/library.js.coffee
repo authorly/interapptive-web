@@ -13,11 +13,10 @@ class App.Views.AssetLibrary extends Backbone.View
 
 
   _addListeners: ->
-    @assets.on 'reset add remove', @loadAndShowFileData, @
+    @assets.on 'add',    @_assetAdded,    @
 
 
-  _removeListeners: ->
-    # @assets.off 'reset add remove', @loadAndShowFileData, @
+  # _removeListeners: ->
 
 
   render: ->
@@ -52,19 +51,19 @@ class App.Views.AssetLibrary extends Backbone.View
       @_toggleUploadedAssetsHeader(data.files.length)
     ).bind('fileuploadfail', (event, data) =>
       @_toggleUploadedAssetsHeader(-data.files.length)
-    ).bind('fileuploaddestroyed',  (event, data) =>
-      deleteButton = $(data.context.context)
-      id = deleteButton.closest('tr').find('.preview').data('id')
-      @assets.remove @assets.get(id)
+    # ).bind('fileuploaddestroyed',  (event, data) =>
+      # deleteButton = $(data.context.context)
+      # id = deleteButton.closest('tr').find('.preview').data('id')
+      # @assets.remove @assets.get(id)
     ).bind('fileuploadcompleted', (event, data) =>
+      @_toggleUploadedAssetsHeader(-data.files.length)
       @assets.add data.result
     )
     @_toggleUploadedAssetsHeader()
 
 
   initAssetsIndex: ->
-    fields = if @assetType == 'image' then ['thumbnail_url'] else []
-    fields = fields.concat ['name', 'size', 'created_at']
+    fields = @_assetsFields()
     data = @assets.map (asset) ->
       _.map fields, (field) -> asset.get(field)
 
@@ -103,10 +102,22 @@ class App.Views.AssetLibrary extends Backbone.View
             data
       }].concat(columns)
 
-    @$('.uploaded').dataTable
+    @assetsView = @$('.uploaded').dataTable
       aaData: data
       aoColumns: columns
       bLengthChange: false
+
+
+  _assetAdded:  (asset) ->
+    data = _.map @_assetsFields(), (field) -> asset.get(field)
+    @assetsView.fnAddData data
+
+
+  _assetsFields: ->
+    unless @_fields?
+      @_fields = if @assetType == 'image' then ['thumbnail_url'] else []
+      @_fields = @_fields.concat ['name', 'size', 'created_at']
+    @_fields
 
 
   fileTypePattern: () ->
