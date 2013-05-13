@@ -86,13 +86,15 @@ class App.Views.TextEditorPalette extends Backbone.View
   _addFontsListeners: (storybook) ->
     return unless storybook?
 
-    storybook.fonts.on 'add', @fontAdded, @
+    storybook.fonts.on 'add',    @fontAdded, @
+    storybook.fonts.on 'remove', @fontRemoved, @
 
 
   _removeFontsListeners: (storybook) ->
     return unless storybook?
 
-    storybook.fonts.off 'add', @fontAdded, @
+    storybook.fonts.off 'add',    @fontAdded, @
+    storybook.fonts.off 'remove', @fontRemoved, @
 
 
   cacheExistingFonts: ->
@@ -110,12 +112,17 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   addFontOption: (name) ->
-    @removeNoUploadedFontText()
+    @noFontsElement().hide()
 
     $('<option/>',
       value: name
       text:  name
     ).appendTo('#uploaded-fonts')
+
+
+  removeFontOption: (name) ->
+    @noFontsElement().show() if @storybook.fonts.length == 0
+    @$("#uploaded-fonts option[value='#{name}']").remove()
 
 
   addExistingFontOptions: ->
@@ -129,6 +136,10 @@ class App.Views.TextEditorPalette extends Backbone.View
   fontAdded: (font) ->
     @addFontToCache font.get('name'), font.get('url')
     @addFontOption  font.get('name')
+
+
+  fontRemoved: (font) ->
+    @removeFontOption font.get('name')
 
 
   disable: =>
@@ -148,7 +159,5 @@ class App.Views.TextEditorPalette extends Backbone.View
     @$('#colorpicker span i').css("background-color", "rgb(#{color.r}, #{color.g}, #{color.b})")
 
 
-  removeNoUploadedFontText: ->
-    $firstUploadedFontEl = @$('#no-fonts-uploaded').first()
-    if $.trim($firstUploadedFontEl.text()) is 'no fonts uploaded..'
-      $firstUploadedFontEl.remove()
+  noFontsElement: ->
+    @$('#no-fonts-uploaded')

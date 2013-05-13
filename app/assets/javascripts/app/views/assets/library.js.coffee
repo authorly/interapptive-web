@@ -135,6 +135,9 @@ class App.Views.AssetLibrary extends Backbone.View
     if @assetType == 'image'
       if confirm("Are you sure you want to delete this image and corresponding sprites from all the scenes?")
         @_destroyAsset(e, data)
+    else if @assetType == 'font'
+      if confirm("Are you sure you want to delete this font and replace it with the default font in all the scenes that use it?")
+        @_destroyAsset(e, data)
     else
       @_destroyAsset(e, data)
 
