@@ -3,32 +3,30 @@
     %td.preview
       %span.fade
         %td.name #{file.name}
-    %td.created_at
-      %span
     %td.size
       %span
-        = @formatFileSize(file.created)
+        = @formatFileSize(file.size)
 
     - if file.error
-      %td
       %td.error{:colspan => "5"}
         %span.label.label-important
           = locale.fileupload.error
         = locale.fileupload.errors[file.error] || file.error
+      %td
 
     - else if @files.valid and not index
       %td
         .progress.progress-success.progress-striped.active
           .bar{:style => "width:0%;"}
-      %td.start{:colspan => "4"}
+      %td.start
         %button.btn.btn-primary
           %i.icon-upload.icon-white
           %span Start
 
     - else
-      %td{:colspan => "3"}
+      %td{:colspan => "2"}
 
-    %td.cancel{:colspan => "3"}
+    %td.cancel
       - if not index
         %button.btn.btn-warning
           %i.icon-ban-circle.icon-white

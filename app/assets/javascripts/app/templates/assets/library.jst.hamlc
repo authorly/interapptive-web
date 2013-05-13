@@ -13,15 +13,16 @@
       %button.btn.btn-primary.start{:type => "submit"}
         %i.icon-upload.icon-white
         %span Start upload
-    %table.table.table-striped
+    %table.filesToUpload
       %thead
         %tr
           %th &nbsp;
           %th Name
           %th Size
-          %th Date
           %th
-      %tbody.files{"data-target" => "#modal-gallery", "data-toggle" => "modal-gallery"}
+          %th
+          %th
+      %tbody.files
 
 .modal-footer
   .search
