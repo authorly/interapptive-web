@@ -67,25 +67,6 @@ class App.Views.AssetLibrary extends Backbone.View
 
     @$('#loading').remove()
 
-    # 2013-04-30 @dira
-    # Advanced table removes all information from the tr - classes, data
-    # which interferes with the expectations of the jqueryupload plugin.
-    # Before re-enabling this make sure the following scenario works:
-    # * upload 2 assets; delete one of them;
-    # * refresh the page; delete the remaining asset
-    #
-    # At all times the collection should have the correct number of elements
-    # and there is no JS error.
-    #
-    # @$('#searchtable').show()
-    # @$('.table-striped').advancedtable
-      # searchCaseSensitive : false
-      # afterRedrawThis     : @
-      # afterRedraw         : @attachDeleteEvent
-      # searchField         : '#search'
-      # loadElement         : '#loader'
-      # descImage           : '/assets/advancedtable/down.png'
-      # ascImage            : '/assets/advancedtable/up.png'
 
   closeAssetLib: ->
     @fileUpload.fileupload 'disable'
