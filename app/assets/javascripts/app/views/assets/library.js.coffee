@@ -68,7 +68,7 @@ class App.Views.AssetLibrary extends Backbone.View
       _.map fields, (field) -> asset.get(field)
 
     columns = [
-      { sTitle: 'Name', sClass: 'center' },
+      { sTitle: 'Name' },
       {
         sTitle: 'Size'
         bSearchable: false
@@ -77,7 +77,6 @@ class App.Views.AssetLibrary extends Backbone.View
             @formatFileSize(data)
           else
             data
-        sClass: 'center'
       },
       {
         sTitle: 'Date'
@@ -87,8 +86,8 @@ class App.Views.AssetLibrary extends Backbone.View
             App.Lib.DateTimeHelper.timeToHuman(data)
           else
             data
-        sClass: 'center'
       }
+      { sTitle: '', bVisible: false },
     ]
     if @assetType == 'image'
       columns = [{
@@ -105,6 +104,7 @@ class App.Views.AssetLibrary extends Backbone.View
     @assetsView = @$('.uploaded').dataTable
       aaData: data
       aoColumns: columns
+      aaSorting: [[@_assetsFields().indexOf('created_at'), 'asc']]
       bLengthChange: false
 
 
@@ -115,8 +115,10 @@ class App.Views.AssetLibrary extends Backbone.View
 
   _assetsFields: ->
     unless @_fields?
-      @_fields = if @assetType == 'image' then ['thumbnail_url'] else []
+      @_fields = []
+      @_fields.push('thumbnail_url') if @assetType == 'image'
       @_fields = @_fields.concat ['name', 'size', 'created_at']
+      @_fields.push 'id'
     @_fields
 
 
