@@ -22,7 +22,7 @@ class App.Views.AssetLibrary extends Backbone.View
 
   render: ->
     @$el.html @template(assetType: @assetType, acceptedFileTypes: @acceptedFileTypes, assets: @assets)
-    @initAssetLib()
+    @initUploader()
     @loadAndShowFileData()
     @
 
@@ -34,15 +34,19 @@ class App.Views.AssetLibrary extends Backbone.View
     # @_removeListeners()
 
 
-
-  initAssetLib: ->
+  initUploader: ->
+    # TODO this concern belongs to the parent of the class
     $('.content-modal').addClass 'asset-library-modal'
+
     @fileUpload = @$('#fileupload').fileupload(
       acceptFileTypes: @fileTypePattern(@assetType)
       singleFileUploads: false
-      downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
       uploadTemplate   : JST["app/templates/assets/#{@assetType}s/upload"]
       destroy: @_confirmDestroyAsset
+    ).bind('fileuploadchange', (event, data) =>
+      @toggleUploadedAssetsHeader(data.files.length)
+    ).bind('fileuploadfail', (event, data) =>
+      @toggleUploadedAssetsHeader(-data.files.length)
     ).bind('fileuploaddestroyed',  (event, data) =>
       deleteButton = $(data.context.context)
       id = deleteButton.closest('tr').find('.preview').data('id')
@@ -50,9 +54,20 @@ class App.Views.AssetLibrary extends Backbone.View
     ).bind('fileuploadcompleted', (event, data) =>
       @assets.add data.result, from_upload: true
     )
+    @toggleUploadedAssetsHeader()
+
+
+  toggleUploadedAssetsHeader: (delta=0)=>
+    nr = @fileUpload.data('fileupload').options.filesContainer.children().length + delta
+    uploadableAssets = @fileUpload.find('.filesToUpload thead')
+    if nr > 0
+      uploadableAssets.show()
+    else
+      uploadableAssets.hide()
 
 
   loadAndShowFileData: ->
+    downloadTemplate : JST["app/templates/assets/#{@assetType}s/download"]
     return if arguments[2]?.from_upload
 
     files = @assets.map (asset) -> asset.attributes
