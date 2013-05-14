@@ -25,8 +25,6 @@ class App.JSON
     @initializeScenes()
     @resetScenes()
 
-    console.log @app
-
     @app
 
 
