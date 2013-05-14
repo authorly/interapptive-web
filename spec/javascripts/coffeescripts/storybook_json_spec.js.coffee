@@ -196,11 +196,11 @@ describe "App.JSON", ->
       expect(keyframe.voiceAudioFile).toEqual 'https://interapptive.s3.amazonaws.com/sounds/29/page2.mp3'
 
       keyframe = keyframes[1]
-      # one fake entry. TODO the iphone app should work with an empty array
+      # one fake entry
       expect(keyframe.linesOfText.length).toEqual(1)
-      # TODO check that this is true
       expect(keyframe.voiceAudioFile).toBeUndefined()
-      expect(keyframe.highlightingTimes).toBeUndefined()
+      # with a default `0` value, so the iphone app does not crash
+      expect(keyframe.highlightingTimes).toEqual [0]
       text = keyframe.linesOfText[0]
       expect(text.text).toEqual ''
 
