@@ -19,24 +19,6 @@ describe "App.Models.Scene", ->
     @server.restore()
 
 
-  it "should be defined", ->
-    expect(App.Models.Scene).toBeDefined()
-
-
-  describe "when instantiated", ->
-    it "should expose the background image id attribute", ->
-      expect(@scene.get("image_id")).toEqual 1
-
-    it "should expose the sound_id attribute", ->
-      expect(@scene.get("sound_id")).toEqual 2
-
-    it "should expose the preview_image_id attribute", ->
-      expect(@scene.get("preview_image_id")).toEqual 3
-
-    it "should expose the page number attribute", ->
-      expect(@scene.get("page_number")).toEqual 1
-
-
   describe 'widgets', ->
     beforeEach ->
       @widgets = @scene.widgets

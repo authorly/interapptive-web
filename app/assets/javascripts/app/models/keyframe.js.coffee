@@ -20,7 +20,6 @@
 # animation. Once the animation is done, text from the first keyframe would be
 # shown.
 class App.Models.Keyframe extends Backbone.Model
-  paramRoot: 'keyframe'
 
   parse: (attributes) ->
     widgets = attributes.widgets; delete attributes.widgets
@@ -160,9 +159,6 @@ class App.Models.Keyframe extends Backbone.Model
 
 class App.Collections.KeyframesCollection extends Backbone.Collection
   model: App.Models.Keyframe
-
-  paramRoot: 'keyframe'
-
 
   initialize: (models, options) ->
     @scene = options.scene

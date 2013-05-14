@@ -74,7 +74,7 @@ class App.JSON
     fontColor = scene.get('font_color')
     widgets = keyframe.textWidgets()
 
-    keyframeHighlightTimes = keyframe.get('content_highlight_times')
+    keyframeHighlightTimes = keyframe.get('content_highlight_times') || []
     if keyframeHighlightTimes.length < 1 then keyframeHighlightTimes.push(0)
 
     paragraph =

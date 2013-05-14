@@ -4,8 +4,6 @@
 # * @keyframes. It has many keyframes. A Backbone collection.
 # * @widgets. It has many widgets. A Backbone collection.
 class App.Models.Scene extends Backbone.Model
-  paramRoot: 'scene'
-
 
   url: ->
     "/storybooks/#{@storybook.id}/" +
