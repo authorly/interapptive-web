@@ -18,4 +18,10 @@ beforeEach ->
 
   @addMatchers matchers
 
+afterEach ->
+  # clear all timeouts - a hack based on the assumption that timeouts are given
+  # consecutive ids
+  distantTimeout = setTimeout('alert("x");',100000)
+  clearTimeout(i) for i in [0..distantTimeout]
+
 App.start()

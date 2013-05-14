@@ -4,6 +4,7 @@
 # * @keyframes. It has many keyframes. A Backbone collection.
 # * @widgets. It has many widgets. A Backbone collection.
 class App.Models.Scene extends Backbone.Model
+  SAVE_TIMER: null
 
   url: ->
     "/storybooks/#{@storybook.id}/" +
@@ -169,6 +170,24 @@ class App.Models.Scene extends Backbone.Model
 
   imageRemoved: (image) ->
     @widgets.imageRemoved(image)
+
+  # Override save to
+  # - prevent `save` being called once to create the record, and then again before
+  # the ajax request returns (which would create two records instead of one)
+  # - debounce calls to `save` so we don't save too often
+  # This does not take into account any parameters. Use `set` to change the
+  # attributes, followed by a call to `save` without parameters.
+  save: ->
+    if @isNew() and !@_duringFirstSave
+        @_duringFirstSave = true
+        @_actualSave()
+    else
+      window.clearTimeout @SAVE_TIMER
+      @SAVE_TIMER = window.setTimeout(@_actualSave, 500)
+
+
+  _actualSave: =>
+    Backbone.Model.prototype.save.apply @
 
 
 ##
