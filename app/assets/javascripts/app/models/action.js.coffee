@@ -1,5 +1,4 @@
 class App.Models.Action extends Backbone.DeepModel
-  paramRoot: 'action'
 
   validationTypeForAttribute: (attribute) ->
     validationType = switch attribute.type

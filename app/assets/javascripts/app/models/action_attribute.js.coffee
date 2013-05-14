@@ -1,5 +1,4 @@
 class App.Models.ActionAttribute extends Backbone.Model
-  paramRoot: 'action_attribute'
 
 
 class App.Collections.ActionAttributesCollection extends Backbone.Collection
