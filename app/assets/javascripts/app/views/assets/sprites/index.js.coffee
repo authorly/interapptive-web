@@ -44,22 +44,6 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
 
 
   allowSortingSearching: ->
-    #
-    # RFCTR:
-    #     advancedtable is stupid plugin. It removes classes
-    #     and ids from $(tbody.files > tr). We are using restoreMetaData
-    #     function to restore all the information. Use something like
-    #     http://www.datatables.net/
-    #                                   WA
-    #
-    @$('.table-striped').advancedtable
-      searchCaseSensitive : false
-      afterRedrawThis     : @
-      afterRedraw         : @restoreMetaData
-      searchField         : '#search'
-      loadElement         : '#loader'
-      ascImage            : '/assets/advancedtable/up.png'
-      descImage           : '/assets/advancedtable/down.png'
 
 
   restoreMetaData: ->

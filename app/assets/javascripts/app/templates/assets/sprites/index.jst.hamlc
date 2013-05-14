@@ -14,10 +14,6 @@
       %tbody.files{"data-target" => "#modal-gallery", "data-toggle" => "modal-gallery"}
 
   .modal-footer
-    .search
-      %input{:name => "search", :type => "text", :id => "search", :placeholder => "Search for an image"}
-      %span#loader{:style => "display: none"}
-        %img{:src => "/assets/advancedtable/loader.gif", :alt => "Loader"}
 
     %a.btn.btn-primary.use-image.disabled
       - if @options.select?
