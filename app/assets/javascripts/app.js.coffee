@@ -5,6 +5,7 @@ window.App =
   Collections: {}
   Routers:     {}
   Lib:         {}
+  Mixins:      {}
   Config:      {}
 
   init: ->
