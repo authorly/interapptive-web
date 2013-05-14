@@ -53,13 +53,13 @@ class AbstractStorybookApplication
     if file_ext.match(self.class.downloadable_file_extension_regex)
       if file.match(/^http/)
         new_file_name = SecureRandom.hex
-        tf = Tempfile.new([new_file_name, file_ext], CRUCIBLE_RESOURCES_DIR)
-        tf.binmode
-        open(file, 'rb') do |read_file|
-          tf.write(read_file.read)
+        File.open(File.join(CRUCIBLE_RESOURCES_DIR, new_file_name + file_ext), 'wb+') do |asset|
+          open(file, 'rb') do |read_file|
+            asset << read_file.read
+            @transient_files << asset.path
+          end
         end
-        @transient_files << tf.path
-        return File.basename(tf.path)
+        return File.basename(@transient_files.last)
       elsif file.match(/^\/assets/)
         return File.basename(file)
       end
