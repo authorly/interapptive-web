@@ -1,11 +1,10 @@
-#= require ../images/index
 ##
 # A view that allows to selecting an `Image` from an `ImagesCollection`.
 # It displays the images in a table. It allows sorting and searching through the
 # collection of images.
 #
 
-class App.Views.SpriteIndex extends App.Views.ImageIndex
+class App.Views.SpriteIndex extends Backbone.View
   template: JST['app/templates/assets/sprites/index']
 
   events:
@@ -23,7 +22,10 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
 
 
   render: =>
-    super
+    @$el.html @template(options: @options)
+    @delegateEvents() # patch for re-delegating events when the view is lost
+
+    @collection.each @appendImage
 
     if @collection.length > 0
       @allowSortingSearching()
@@ -37,6 +39,13 @@ class App.Views.SpriteIndex extends App.Views.ImageIndex
   appendImage: (image) =>
     view = new App.Views.Sprite(model: image)
     @$('tbody.files').append(view.render().el)
+
+
+  setActiveImage: (event) ->
+    @$(event.currentTarget).addClass('selected').siblings().removeClass 'selected'
+    @$('.use-image').removeClass('disabled')
+
+    @image = @collection.get @$(event.currentTarget).data('id')
 
 
   selectImage: ->
