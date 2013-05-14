@@ -84,7 +84,7 @@ class App.JSON
         text: widget.get('string'),
         xOffset: Math.round(widget.get('position').x),
         yOffset: Math.round(widget.get('position').y),
-        fontType: scene.get('font_face'),
+        fontType: 'arial.ttf',
         fontColor: [fontColor.r, fontColor.g, fontColor.b],
         fontHighlightColor: [255, 0, 0],
         fontSize: Number(scene.get('font_size'))
@@ -131,7 +131,7 @@ class App.JSON
       Page:
         settings:
           number: scene.get('position') + 1,
-          fontType: scene.get('font_face'),
+          fontType: 'arial.ttf',
           fontColor: [fontColor.r, fontColor.g, fontColor.b]
           fontHighlightColor: [255, 0, 0],
           fontSize: Number(scene.get('font_size'))
