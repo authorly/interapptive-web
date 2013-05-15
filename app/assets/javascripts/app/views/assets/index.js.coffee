@@ -1,3 +1,7 @@
+##
+# A view that displays a collection of assets as a table.
+# It allows sorting and searching through the collection.
+#
 class App.Views.AssetIndex extends Backbone.View
   events:
     'click .delete': 'destroyAsset'
@@ -36,7 +40,10 @@ class App.Views.AssetIndex extends Backbone.View
   _getData: ->
     fields = @_getFields()
     @collection.map (asset) ->
-      _.map fields, (field) -> asset.get(field)
+      row = DT_RowId: 'asset_' + asset.id
+      _.each fields, (field, index) ->
+        row[index] = asset.get(field)
+      row
 
 
   _getColumns: ->
@@ -84,6 +91,11 @@ class App.Views.AssetIndex extends Backbone.View
       }].concat(columns)
 
     columns
+
+
+  getId: (row) ->
+    id = row.attr('id') # asset_<id>
+    id.substr(id.indexOf('_') + 1)
 
 
   destroyAsset: (e) =>

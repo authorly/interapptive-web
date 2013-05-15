@@ -1,3 +1,6 @@
+##
+# Show the current assets, allow deleting them, and uploading new ones.
+#
 class App.Views.AssetLibrary extends Backbone.View
   template: JST['app/templates/assets/library']
 
