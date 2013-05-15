@@ -2,7 +2,6 @@
 # A view that allows to selecting an image from a collection.
 #
 class App.Views.ImageSelector extends App.Views.AssetIndex
-  template: JST['app/templates/assets/sprites/index']
 
   events:
     'click tbody tr' : 'setActiveImage'

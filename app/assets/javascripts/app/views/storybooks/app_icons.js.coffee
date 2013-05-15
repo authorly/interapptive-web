@@ -1,5 +1,3 @@
-#= require ../assets/sprites/index
-
 App.Views.Storybooks ?= {}
 
 class App.Views.Storybooks.AppIcons extends Backbone.View
