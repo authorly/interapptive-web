@@ -21,6 +21,7 @@ class App.Views.AssetLibrary extends Backbone.View
     @assetsView = new App.Views.AssetIndex
       collection: @assets
       assetType:  @assetType
+      allowDelete: true
       el: @$('.uploaded')
     @assetsView.render()
 

@@ -8,6 +8,7 @@ class App.Views.AssetIndex extends Backbone.View
 
   initialize: ->
     @assetType = @options.assetType # infer from collection type
+    @allowDelete = @options.allowDelete
     @_addListeners()
 
 
@@ -67,7 +68,10 @@ class App.Views.AssetIndex extends Backbone.View
           else
             data
       }
-      {
+    ]
+
+    if @allowDelete
+      columns.push
         sTitle: ''
         bSearchable: false
         bSortable: false
@@ -76,8 +80,7 @@ class App.Views.AssetIndex extends Backbone.View
             "<button class='delete btn btn-warning'>Delete</button>"
           else
             data
-      },
-    ]
+
     if @assetType == 'image'
       columns = [{
         sTitle: ''
@@ -133,6 +136,6 @@ class App.Views.AssetIndex extends Backbone.View
       @_fields = []
       @_fields.push('thumbnail_url') if @assetType == 'image'
       @_fields = @_fields.concat ['name', 'size', 'created_at']
-      @_fields.push 'id'
+      @_fields.push('id') if @allowDelete
     @_fields
 
