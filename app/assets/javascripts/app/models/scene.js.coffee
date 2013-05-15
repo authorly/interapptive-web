@@ -35,8 +35,7 @@ class App.Models.Scene extends Backbone.Model
     @initializeWidgets()
     @initializeKeyframes()
 
-    @on 'change:preview_image_id change:font_color change:font_size change:font_face change:widgets', @save
-
+    @on 'change:preview_image_id change:font_color change:font_size change:font_face change:widgets', @deferredSave
 
     @storybook.images.on 'remove', @imageRemoved, @
 
@@ -169,6 +168,9 @@ class App.Models.Scene extends Backbone.Model
 
   imageRemoved: (image) ->
     @widgets.imageRemoved(image)
+
+
+_.extend App.Models.Scene::, App.Mixins.DeferredSave
 
 
 ##

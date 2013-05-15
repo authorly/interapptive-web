@@ -49,6 +49,20 @@ describe "App.Models.Scene", ->
         @widgets.add [type: 'SpriteWidget']
         expect(@widgets.at(2).get('z_order')).toEqual 2
 
+    describe 'reordering', ->
+      it 'should determine only one save of the scene', ->
+        @widgets.add [
+          { z_index: 1, id: 1, type: 'SpriteWidget' },
+          { z_index: 2, id: 2, type: 'SpriteWidget' }
+          { z_index: 3, id: 3, type: 'SpriteWidget' }
+        ], {silent: true}
+        @widgets.get(1).set z_index: 2
+        @widgets.get(2).set z_index: 3
+        @widgets.get(3).set z_index: 1
+        saves = _.filter @server.requests, (r) => r.url == @scene.url()
+        console.log @server.requests
+        expect(saves.length).toEqual 1
+
 
   describe 'abilities', ->
 
