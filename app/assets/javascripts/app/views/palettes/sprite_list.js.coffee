@@ -1,5 +1,3 @@
-#= require ../assets/sprites/sprite
-
 #
 # Used for the menu for managing the sprites of the current keyframe.
 #

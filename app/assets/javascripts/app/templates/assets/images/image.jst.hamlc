@@ -1,2 +1,0 @@
-%a{"data-id" => "#{@image.get('id')}", :class => "thumbnail", :href => "#"}
-  %img{:src => "#{@image.get('thumbnail_url')}"}

@@ -1,0 +1,20 @@
+.image-selector {
+  .selected-image {
+    clear: both;
+    padding: 15px;
+  }
+
+  tr.selected {
+    border: 2px solid;
+    border-color: lighten(@blue, 25%);
+  }
+
+  tr.image-row {
+    cursor: pointer;
+
+    td.name {
+      overflow: auto;
+    }
+  }
+
+}
