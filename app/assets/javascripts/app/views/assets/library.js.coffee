@@ -45,7 +45,6 @@ class App.Views.AssetLibrary extends Backbone.View
 
     @fileUpload = @$('#fileupload').fileupload(
       acceptFileTypes: @fileTypePattern(@assetType)
-      singleFileUploads: false
       uploadTemplate   : JST["app/templates/assets/upload"]
     ).bind('fileuploadchange', (event, data) =>
       @_toggleUploadedAssetsHeader(data.files.length)
