@@ -1,2 +1,3 @@
-%table.table.table-striped.table-fixed.images
-.selected-image
+.image-selector
+  %table.table.table-striped.table-fixed.images
+  .selected-image
