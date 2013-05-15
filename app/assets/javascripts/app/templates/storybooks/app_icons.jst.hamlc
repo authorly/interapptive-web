@@ -6,9 +6,9 @@
     %a{ :href => "http://developer.apple.com/library/ios/#documentation/userexperience/conceptual/mobilehig/IconsImages/IconsImages.html"} Apple Guidlines
 
   .modal-body
-    %table.table.table-striped.table-fixed.images
+    .image-selector
 
   .modal-footer
     %a.btn.btn-primary.use-image.disabled
       %i.icon-plus.icon-white
-      Add
+      Select

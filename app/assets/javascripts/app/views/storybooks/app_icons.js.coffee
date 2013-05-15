@@ -16,7 +16,8 @@ class App.Views.Storybooks.AppIcons extends Backbone.View
 
     @view = new App.Views.ImageSelector
       collection: @storybook.images
-      el: @$('.images')
+      el: @$('.image-selector')
+      image: null
     @view.on 'select', @imageSelected, @
     @view.render()
 
