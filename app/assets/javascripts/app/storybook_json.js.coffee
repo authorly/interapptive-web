@@ -128,11 +128,7 @@ class App.JSON
             hash
       Page:
         settings:
-          number: scene.get('position') + 1,
-          fontType: 'arial.ttf',
-          fontColor: [fontColor.r, fontColor.g, fontColor.b]
-          fontHighlightColor: [255, 0, 0],
-          fontSize: Number(scene.get('font_size'))
+          number: scene.get('position') + 1
         text:
           paragraphs: []
     if scene.get('sound_url')?
