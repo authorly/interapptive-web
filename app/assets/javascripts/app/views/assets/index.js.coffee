@@ -73,7 +73,7 @@ class App.Views.AssetIndex extends Backbone.View
         bSortable: false
         mRender: (data, operation, row) =>
           if operation == 'display'
-            "<button class='delete btn btn-warning' data-id='#{data}'>Delete</button>"
+            "<button class='delete btn btn-warning'>Delete</button>"
           else
             data
       },
@@ -109,7 +109,8 @@ class App.Views.AssetIndex extends Backbone.View
 
 
   _destroyAsset: (e) ->
-    id = $(e.currentTarget).data('id')
+    row = $(e.currentTarget).closest('tr')
+    id = @getId(row)
     asset = @collection.get(id)
     asset.destroy
       url: asset.get('delete_url')
@@ -123,7 +124,7 @@ class App.Views.AssetIndex extends Backbone.View
   _assetRemoved:  (asset) ->
     id = asset.id
     # TODO add a hidden column just with the ids
-    row = @table.find(".delete[data-id=#{id}]").closest('tr')[0]
+    row = @table.find("tr#asset_#{id}")[0]
     @table.fnDeleteRow row
 
 
