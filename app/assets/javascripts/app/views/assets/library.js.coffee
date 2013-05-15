@@ -110,6 +110,8 @@ class App.Views.AssetLibrary extends Backbone.View
       aoColumns: columns
       aaSorting: [[@_assetsFields().indexOf('created_at'), 'asc']]
       bLengthChange: false
+      oLanguage:
+        sEmptyTable: "No #{@assetType}s."
 
 
   _assetAdded:  (asset) ->
