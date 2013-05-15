@@ -3,28 +3,24 @@ class App.Views.AssetLibrary extends Backbone.View
 
   events:
     'click .video-thumbnail' : 'playVideo'
-    'click .delete':           'destroyAsset'
 
 
   initialize: ->
     @assetType = @options.assetType
     @assets = @options.assets
     @acceptedFileTypes = @acceptedFileTypes(@assetType)
-    @_addListeners()
-
-
-  _addListeners: ->
-    @assets.on 'add',    @_assetAdded,    @
-    @assets.on 'remove', @_assetRemoved,    @
-
-  # _removeListeners: ->
 
 
   render: ->
     @$el.html @template(assetType: @assetType, acceptedFileTypes: @acceptedFileTypes, assets: @assets)
     @initUploader()
-    @formatFileSize = @fileUpload.data('fileupload')._formatFileSize
-    @initAssetsIndex()
+
+    @assetsView = new App.Views.AssetIndex
+      collection: @assets
+      assetType:  @assetType
+      el: @$('.uploaded')
+    @assetsView.render()
+
     @
 
 
@@ -57,83 +53,6 @@ class App.Views.AssetLibrary extends Backbone.View
     @_toggleUploadedAssetsHeader()
 
 
-  initAssetsIndex: ->
-    fields = @_assetsFields()
-    data = @assets.map (asset) ->
-      _.map fields, (field) -> asset.get(field)
-
-    columns = [
-      { sTitle: 'Name' },
-      {
-        sTitle: 'Size'
-        bSearchable: false
-        mRender: (data, operation, row) =>
-          if operation == 'display'
-            @formatFileSize(data)
-          else
-            data
-      },
-      {
-        sTitle: 'Date'
-        bSearchable: false
-        mRender: (data, operation, row) =>
-          if operation == 'display'
-            App.Lib.DateTimeHelper.timeToHuman(data)
-          else
-            data
-      }
-      {
-        sTitle: ''
-        bSearchable: false
-        bSortable: false
-        mRender: (data, operation, row) =>
-          if operation == 'display'
-            "<button class='delete btn btn-warning' data-id='#{data}'>Delete</button>"
-          else
-            data
-      },
-    ]
-    if @assetType == 'image'
-      columns = [{
-        sTitle: ''
-        bSearchable: false
-        bSortable: false
-        mRender: (data, operation, row) =>
-          if operation == 'display' && @assetType == 'image'
-            "<img src='#{data}'/>"
-          else
-            data
-      }].concat(columns)
-
-    @assetsView = @$('.uploaded').dataTable
-      aaData: data
-      aoColumns: columns
-      aaSorting: [[@_assetsFields().indexOf('created_at'), 'asc']]
-      bLengthChange: false
-      oLanguage:
-        sEmptyTable: "No #{@assetType}s."
-
-
-  _assetAdded:  (asset) ->
-    data = _.map @_assetsFields(), (field) -> asset.get(field)
-    @assetsView.fnAddData data
-
-
-  _assetRemoved:  (asset) ->
-    id = asset.id
-    row = @assetsView.find(".delete[data-id=#{id}]").closest('tr')[0]
-    @assetsView.fnDeleteRow row
-
-
-  _assetsFields: ->
-    unless @_fields?
-      @_fields = []
-      @_fields.push('thumbnail_url') if @assetType == 'image'
-      @_fields = @_fields.concat ['name', 'size', 'created_at']
-      @_fields.push 'id'
-    @_fields
-
-
   fileTypePattern: () ->
     file_types = @acceptedFileTypes
     up_file_types = file_types.map (type) ->
@@ -164,31 +83,6 @@ class App.Views.AssetLibrary extends Backbone.View
     App.vent.trigger('play:video', view)
 
 
-  attachDeleteEvent: ->
-    $('.delete-asset').click(@hideRow)
-
-
-  hideRow: (event) ->
-    $(event.target).closest('tr').hide()
-
-
-  destroyAsset: (e) =>
-    e.preventDefault()
-    e.stopPropagation()
-
-    if @assetType == 'image'
-      return unless confirm("Are you sure you want to delete this image and corresponding sprites from all the scenes?")
-
-    @_destroyAsset(e)
-
-
-  _destroyAsset: (e) ->
-    id = $(e.currentTarget).data('id')
-    asset = @assets.get(id)
-    asset.destroy
-      url: asset.get('delete_url')
-
-
   _toggleUploadedAssetsHeader: (delta=0)=>
     nr = @fileUpload.data('fileupload').options.filesContainer.children().length + delta
     uploadableAssets = @fileUpload.find('.toUpload thead')
@@ -196,5 +90,3 @@ class App.Views.AssetLibrary extends Backbone.View
       uploadableAssets.show()
     else
       uploadableAssets.hide()
-
-
