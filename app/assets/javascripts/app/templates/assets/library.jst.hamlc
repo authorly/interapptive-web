@@ -23,6 +23,7 @@
           %th
           %th
       %tbody.files
+
     %table.table.uploaded
 
 .modal-footer
