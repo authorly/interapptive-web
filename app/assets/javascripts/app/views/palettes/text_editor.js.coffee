@@ -15,9 +15,8 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   initialize: (options={}) ->
-    App.vent.on 'select:font_color', @fontColorSelected, @
-    App.vent.on 'activate:scene',    @changeScene,   @
-    App.vent.on 'done_editing:text', @enable
+    App.vent.on 'activate:TextWidget',   @changeTextWidget,  @
+    App.vent.on 'done_editing:text',     @disable,           @
 
 
   render: ->
@@ -35,43 +34,43 @@ class App.Views.TextEditorPalette extends Backbone.View
         colorPickerEl.colorpicker('hide')
     ).on('changeColor', (event) =>
       @rgb = event.color.toRGB()
-      App.vent.trigger 'change:font_color', @rgb
+      @widget.trigger('change:visual_font_color', @rgb)
     ).on 'hide', =>
-      App.vent.trigger 'select:font_color', @rgb
+      @fontColorSelected(@rgb)
 
 
-
-  changeScene: (model) ->
-    @scene = model
-    if @scene.isMainMenu() then @disable() else @enable()
-
-    @setDefaultValsForScene()
+  changeTextWidget: (widget) ->
+    @widget = widget
+    @setDefaultValsForTextWidget()
+    @enable()
 
 
-  setDefaultValsForScene: ->
-    color = @scene.get('font_color')
+  setDefaultValsForTextWidget: ->
+    color = @widget.get('font_color')
     @$('#colorpicker span i').css('background-color', "rgb(#{color.r}, #{color.g}, #{color.b})")
-    @$('#font-face').val @scene.get('font_face')
-    @$('#font-size').val @scene.get('font_size')
+    @$('#font-face').val @widget.font_value()
+    @$('#font-size').val @widget.get('font_size')
 
 
   fontFaceChanged: (event) ->
-    selectedFontFace = $(event.currentTarget).val()
-    @scene.set('font_face', selectedFontFace)
-
-    App.vent.trigger 'change:font_face', selectedFontFace
+    $selectedFontFace = $(event.currentTarget)
+    if $selectedFontFace.find('option:selected').data('type') is 'system'
+      @widget.set
+        font_id: null
+        font_face: $selectedFontFace.val()
+    else
+      @widget.set
+        font_id: $selectedFontFace.val()
+        font_face: null
 
 
   fontSizeChanged: (event) ->
     selectedFontSize = $(event.currentTarget).val()
-    @scene.set('font_size', selectedFontSize)
-
-    App.vent.trigger 'change:font_size', selectedFontSize
+    @widget.set('font_size', selectedFontSize)
 
 
   fontColorSelected: (color) ->
-    @scene = App.currentSelection.get('scene')
-    @scene.set 'font_color', {r: color.r, g: color.g, b: color.b}
+    @widget.set 'font_color', {r: color.r, g: color.g, b: color.b}
 
 
   openStorybook: (storybook) ->
@@ -111,11 +110,11 @@ class App.Views.TextEditorPalette extends Backbone.View
     @$('#font-cache').append($fontFaceImportEl)
 
 
-  addFontOption: (name) ->
+  addFontOption: (name, id) ->
     @noFontsElement().hide()
 
     $('<option/>',
-      value: name
+      value: id
       text:  name
     ).appendTo('#uploaded-fonts')
 
@@ -130,12 +129,12 @@ class App.Views.TextEditorPalette extends Backbone.View
 
     $fontOptionGroupEl = '#uploaded-fonts'
     @$($fontOptionGroupEl).empty()
-    @addFontOption(font.get('name')) for font in @fonts
+    @addFontOption(font.get('name'), font.get('id')) for font in @fonts
 
 
   fontAdded: (font) ->
-    @addFontToCache font.get('name'), font.get('url')
-    @addFontOption  font.get('name')
+    @addFontToCache(font.get('name'), font.get('url'))
+    @addFontOption(font.get('name'), font.get('id'))
 
 
   fontRemoved: (font) ->
@@ -143,6 +142,7 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   disable: =>
+    @_unsetCurrentWidget()
     @$('select').attr('readonly', 'readonly')
       .attr('disabled','true')
       .addClass('disabled')
@@ -152,7 +152,7 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   enable: =>
-    color = @scene.get('font_color')
+    color = @widget.get('font_color')
     @$('select').removeAttr('readonly disabled')
       .removeClass('disabled')
     @$('#colorpicker').removeClass('disabled')
@@ -161,3 +161,11 @@ class App.Views.TextEditorPalette extends Backbone.View
 
   noFontsElement: ->
     @$('#no-fonts-uploaded')
+
+
+  # Manually unsetting the text widget so that next time when
+  # App.currentSelection.set('widget', <a-text-widget>) fires 
+  # 'change:widget' event (that is translated to 'activate:TextWidget')
+  # if same text widget is selected, unselected and selected again.
+  _unsetCurrentWidget: ->
+    App.currentSelection.set('widget', null)

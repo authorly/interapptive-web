@@ -89,6 +89,7 @@ window.App =
     @currentSelection.on 'change:storybook', @_openStorybook,  @
     @currentSelection.on 'change:scene',     @_changeScene,    @
     @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
+    @currentSelection.on 'change:widget',    @_triggerCurrentWidgetChangeEvent, @
 
 
   saveCanvasAsPreview: ->
@@ -270,6 +271,28 @@ window.App =
 
   _showToast: (type, message) ->
     window.toastr[type](message)
+
+
+  # Translates an App.currentSelection.on(widget:change) event
+  # to a widget specific event on App.vent.
+  #
+  # e.g. When user selects a TextWidget, it translates
+  # 'widget:change' to 'activate:TextWidget' which other views
+  # can listen to and take action. This has advantage that
+  # views listening to change:widget event wont have to have
+  # code that checks the type of widget that was changed.
+  # activate event receives the current widget that was set.
+  #
+  # In case of widget is change to null, corresponding 'deactivate'
+  # event is triggered e.g. 'deactivate:TextWidget'. deactivate
+  # receives previous widget that was set.
+  _triggerCurrentWidgetChangeEvent: (selection, widget) ->
+    if widget is null
+      previous_widget = selection.previous('widget')
+      if previous_widget?
+        @vent.trigger('deactivate:' + previous_widget.get('type'), previous_widget)
+    else
+      @vent.trigger('activate:' + widget.get('type'), widget)
 
 
   showSimulator: =>

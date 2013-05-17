@@ -68,8 +68,6 @@ class App.JSON
   addTextNodeFor: (keyframe, page) =>
     return if keyframe.isAnimation()
 
-    scene = keyframe.scene
-    fontColor = scene.get('font_color')
     widgets = keyframe.textWidgets()
 
     keyframeHighlightTimes = keyframe.get('content_highlight_times') || []
@@ -82,20 +80,20 @@ class App.JSON
         text: widget.get('string'),
         xOffset: Math.round(widget.get('position').x),
         yOffset: Math.round(widget.get('position').y),
-        fontType: 'arial.ttf',
-        fontColor: [fontColor.r, fontColor.g, fontColor.b],
+        fontType: widget.font_file_name(),
+        fontColor: [widget.get('font_color').r, widget.get('font_color').g, widget.get('font_color').b],
         fontHighlightColor: [255, 0, 0],
-        fontSize: Number(scene.get('font_size'))
+        fontSize: Number(widget.get('font_size'))
       highlightingTimes: keyframeHighlightTimes
       voiceAudioFile: keyframe.get('url')
 
     if widgets.length == 0
       paragraph.linesOfText = [{
         text: '',
-        fontType: scene.get('font_face'),
-        fontColor: [fontColor.r, fontColor.g, fontColor.b],
+        fontType: 'Arial.ttf',
+        fontColor: [255, 0, 0],
         fontHighlightColor: [255, 0, 0],
-        fontSize: Number(scene.get('font_size'))
+        fontSize: 25
       }]
 
     page.Page.text.paragraphs.push(paragraph)

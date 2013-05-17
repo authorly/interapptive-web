@@ -152,6 +152,40 @@ class App.Models.TextWidget extends App.Models.Widget
     string:  'Enter some text...'
     z_order: 6000
     position: @defaultPosition()
+    font_id: null
+    font_face: 'Arial'
+    font_size: 25
+    font_color: { 'r': 255, 'g': 0, 'b': 0 }
+
+
+  # Used to retrieve font face name for the widget that should
+  # be put in CSS/HTML for correct rendering.
+  font_name: ->
+    if @get('font_id')
+      font = @collection.keyframe.scene.storybook.fonts.get(@get('font_id'))
+      return font.get('name')
+    else
+      return @get('font_face')
+
+
+  # Used to set correct font value in the font select dropdown
+  font_value: ->
+    if @get('font_id')
+      font = @collection.keyframe.scene.storybook.fonts.get(@get('font_id'))
+      return font.get('id')
+    else
+      return @get('font_face')
+
+
+  # Used to put filename of the font being used for a widget
+  # in Storybook JSON.
+  font_file_name: ->
+    if @get('font_id')
+      font = @collection.keyframe.scene.storybook.fonts.get(@get('font_id'))
+      return font.get('url')
+    else
+      # Following assumes that all system fonts are TTF.
+      return @get('font_face').replace(/\ /g, '') + '.ttf'
 
 
 ##
