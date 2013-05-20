@@ -149,10 +149,6 @@ describe "App.JSON", ->
       expect(page.settings).toBeDefined()
       settings = page.settings
       expect(settings.number).toEqual 1
-      expect(settings.fontType).toEqual "Verdana"
-      expect(settings.fontColor).toEqual [232, 148, 175]
-      expect(settings.fontHighlightColor).toEqual [255, 0, 0] # TODO get the font color from the attributes when we add it
-      expect(settings.fontSize).toEqual 36
 
       api = page_node.API
       expect(api).toBeDefined()
