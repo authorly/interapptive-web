@@ -2,8 +2,9 @@
   .modal-header
     %h3.modal-title
       Choose an Icon...
-    Use an image of dimension 1024x1024 for best results. Also see
-    %a{ :href => "http://developer.apple.com/library/ios/#documentation/userexperience/conceptual/mobilehig/IconsImages/IconsImages.html"} Apple Guidlines
+    For best results, use a 1024x1024 image (see the&nbsp;
+    %a{ :href => "http://developer.apple.com/library/ios/#documentation/userexperience/conceptual/mobilehig/IconsImages/IconsImages.html"}> Apple Guidelines
+    )
 
   .modal-body
     %table.table.table-striped.table-fixed
