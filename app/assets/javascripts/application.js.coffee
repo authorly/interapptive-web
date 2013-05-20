@@ -8,6 +8,7 @@
 #= require underscore
 #= require backbone
 #= require jquery-fileupload
+#= require jquery.dataTables.min
 #= require jquery.voiceover-uploader
 
 #= require popcorn-complete.min
@@ -22,7 +23,6 @@
 #= require form-editors/jquery.ui
 #= require backbone-deepmodel
 #= require bootstrap-colorpicker
-#= require advancedtable
 #= require jquery.tablesorter
 #= require jquery.selecttext
 #= require jquery.contextmenu

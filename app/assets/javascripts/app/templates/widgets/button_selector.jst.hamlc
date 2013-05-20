@@ -1,12 +1,15 @@
-%div
-  %h3 The image to show on the button:
-  .baseImage
-  .baseImageChooser
+.modal-header
+  %h3.modal-title Choose images for the button:
 
-%div
-  %h3 The image to show when the button is pressed:
-  .tappedImage
-  .tappedImageChooser
+.modal-body
+  %div
+    %h3 The main image:
+    .base-image-selector
 
-%a.btn.btn-primary.use-images
-  Ok
+  %div
+    %h3 The image to show when the button is pressed:
+    .tapped-image-selector
+
+.modal-footer
+  %a.btn.btn-primary.use-images
+    Ok

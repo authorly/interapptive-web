@@ -4,11 +4,8 @@
 class App.Views.SelectedImage extends Backbone.View
   template: JST['app/templates/assets/images/selected_image']
 
-  tagName:  'div'
-
-
-  initialize: (image) ->
-    @image = image
+  initialize: (options) ->
+    @image = options.image
 
 
   render: ->

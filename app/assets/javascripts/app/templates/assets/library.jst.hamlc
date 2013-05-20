@@ -13,20 +13,18 @@
       %button.btn.btn-primary.start{:type => "submit"}
         %i.icon-upload.icon-white
         %span Start upload
-    %table.table.table-striped
+    %table.table.toUpload
       %thead
         %tr
           %th &nbsp;
           %th Name
           %th Size
-          %th Date
           %th
-      %tbody.files{"data-target" => "#modal-gallery", "data-toggle" => "modal-gallery"}
+          %th
+          %th
+      %tbody.files
+
+    %table.table.uploaded
 
 .modal-footer
-  .search
-    %input{:name => "search", :type => "text", :id => "search", :placeholder => "Search for a #{assetTitle.toLowerCase()}"}
-    %span#loader{:style => "display: none"}
-      %img{:src => "/assets/advancedtable/loader.gif", :alt => "Loader"}
-
   %a.btn{ :href => "#", :data => { :dismiss => 'modal' }} Close

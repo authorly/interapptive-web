@@ -70,19 +70,6 @@
     }
   }
 
-  tr.selected {
-    border: 2px solid;
-    border-color: lighten(@blue, 25%);
-  }
-
-  tr.image-row {
-    cursor: pointer;
-
-    td.name {
-      overflow: auto;
-    }
-  }
-
   .btn-primary, .btn-success {
     padding: 12px;
   }
@@ -92,23 +79,14 @@
     text-shadow: none;
   }
 
-  .btn {
-    text-shadow: 1px 1px 1px @white;
-  }
-
   .use-image, .btn-success {
     text-shadow: 1px 1px 1px @black;
-  }
-
-  .btn-success {
-    text-shadow: 1px 1px 1px @grayDark;
   }
 
   .table-fixed {
     table-layout: fixed;
   }
 
-  text-align: center;
 }
 
 .content-modal {
@@ -149,8 +127,7 @@
   }
 
   .table {
-    position: relative;
-    top: 0px;
+    width: 100% !important;
   }
 
   td {
