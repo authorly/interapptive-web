@@ -13,10 +13,6 @@
       Georgia
     %option{:value => "Impact", 'data-type' => 'system'}
       Impact
-    %option{:value => "Lucida Console", 'data-type' => 'system'}
-      Lucida Console
-    %option{:value => "Lucida Sans Unicode", 'data-type' => 'system'}
-      Lucida Sans Unicode
     %option{:value => "Tahoma", 'data-type' => 'system'}
       Tahoma
     %option{:value => "Times New Roman", :selected => "", 'data-type' => 'system'}
