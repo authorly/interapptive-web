@@ -6,7 +6,7 @@ require File.expand_path('../config/application', __FILE__)
 
 Interapptive::Application.load_tasks
 
-if %w(test development).include?(ENV['RAILS_ENV'])
+if %w(test development).include?(Rails.env)
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new(:spec)
 
