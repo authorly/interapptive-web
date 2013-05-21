@@ -12,9 +12,6 @@ describe Scene do
 
       response = {
           'created_at'          => scene.created_at,
-          'font_color'          => {r:255,g:0,b:0},
-          'font_face'           => 'Arial',
-          'font_size'           => '25',
           'id'                  => scene.id,
           'is_main_menu'        => scene.is_main_menu,
           'position'            => scene.position,

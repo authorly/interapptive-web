@@ -15,6 +15,7 @@ describe Font do
         'name'        => f.meta_info[:font_name],
         'size'        => f.font.size,
         'url'         => f.font.url,
+        'file_name'   => f.font.filename,
         'created_at'  => f.created_at.strftime("%Y %d %_m %l%p"),
         'delete_url'  => "/fonts/#{f.id}",
         'delete_type' => 'DELETE',
