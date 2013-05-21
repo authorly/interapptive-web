@@ -10,7 +10,13 @@ class App.Lib.StringHelper
   @capitalize: (str) ->
     return str.charAt(0).toUpperCase() + str.slice(1)
 
-
+  # De-capitalize first character of the passed string.
+  #
+  #   > App.Lib.StringHelper.capitalize('string')
+  #   => 'string'
+  #
+  #   > App.Lib.StringHelper.capitalize('String')
+  #   => 'string'
   @decapitalize: (str) ->
     return str.charAt(0).toLowerCase() + str.slice(1)
 
