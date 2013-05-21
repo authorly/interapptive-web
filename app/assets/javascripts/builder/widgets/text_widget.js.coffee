@@ -222,4 +222,4 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
      !@getIsVisible()
 
   _textWidgetElement: ->
-    $("[data-text-widget-id='#{@model.get('id')}']")
+    @_text_widget_element ||= $("[data-text-widget-id='#{@model.get('id')}']")
