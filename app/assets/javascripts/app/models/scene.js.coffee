@@ -186,7 +186,7 @@ class App.Collections.ScenesCollection extends Backbone.Collection
     @on 'reset', =>
       @_savePositionsCache(@_positionsJSON())
 
-    @on 'remove', (model, collection) ->
+    @on 'destroy', (model, collection) ->
       collection._recalculatePositionsAfterDelete(model)
 
 

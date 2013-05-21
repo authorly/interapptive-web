@@ -52,7 +52,7 @@ class App.Views.SceneIndex extends Backbone.View
 
     if confirm(@DELETE_SCENE_MSG)
       scene = @collection.get $(event.currentTarget).attr('data-id')
-      scene.destroy success: @_removeScene
+      scene.destroy()
 
 
   onSceneClick: (event) =>
@@ -98,10 +98,6 @@ class App.Views.SceneIndex extends Backbone.View
     toggleEl.addClass('active').siblings().removeClass('active')
 
     @$el.toggleClass('list-view')
-
-
-  _removeScene: (scene) =>
-    @collection.remove(scene)
 
 
   _numberScenes: =>
