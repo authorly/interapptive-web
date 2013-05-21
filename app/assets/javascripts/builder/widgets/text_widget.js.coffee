@@ -39,21 +39,22 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   constructor: (options) ->
     super
 
-    @scene = options.model.collection.keyframe.scene
-
     @createLabel()
 
     @makeEditableForDefaultText()
 
     @on 'double_click', @doubleClick
 
-    @model.on 'change:string', @stringChanged, @
-
-    App.vent.on 'activate:scene edit:text_widget', @disableEditing, @
-    App.vent.on 'change:font_face',  @fontFaceChanged,   @
-    App.vent.on 'change:font_size',  @fontSizeChanged,   @
-    App.vent.on 'change:font_color', @fontColorChanged,  @
-    App.vent.on 'select:font_color', @fontColorSelected, @
+    @model.on 'change:string',                   @stringChanged,    @
+    @model.on 'change:font_face change:font_id', @fontFaceChanged,  @
+    @model.on 'change:font_size',                @fontSizeChanged,  @
+    # change:visual_font_color signals a temporary change of
+    # the color. This color is not persisted in the widget's
+    # attributes unless the change is confirmed by the user.
+    # This event is used only to communicate in between views
+    # that alter / display the widget.
+    @model.on 'change:visual_font_color',        @fontColorChanged, @
+    App.vent.on 'edit:text_widget', @disableEditing, @
 
 
   makeEditableForDefaultText: ->
@@ -65,14 +66,14 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @setHtmlTextColor(rgb) if @_editing()
 
 
-  fontFaceChanged: (fontFace) ->
+  fontFaceChanged: ->
     @recreateLabel()
-    @setHtmlTextFontFace(fontFace) if @_editing()
+    @setHtmlTextFontFace() if @_editing()
 
 
-  fontSizeChanged: (fontSize) ->
+  fontSizeChanged: (__, size) ->
     @recreateLabel()
-    @setHtmlTextSize(fontSize) if @_editing()
+    @setHtmlTextSize(size) if @_editing()
 
 
   recreateLabel: ->
@@ -80,29 +81,26 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @createLabel()
 
 
-  setHtmlTextSize: (fontSize) ->
-    $('.text-widget').css("font-size", "#{fontSize}px")
-      .css('min-height', "#{fontSize}px")
+  setHtmlTextSize: (size) ->
+    @_textWidgetElement().css("font-size", "#{size}px")
+      .css('min-height', "#{size}px")
       .css('top', @_topOffset())
       .css('left', @_leftOffset())
 
 
   setHtmlTextColor: (rgb) ->
-    $('.text-widget').css('color',"rgb(#{rgb.r}, #{rgb.g}, #{rgb.b})")
+    @_textWidgetElement().css('color',"rgb(#{rgb.r}, #{rgb.g}, #{rgb.b})")
 
 
   setHtmlTextFontFace: ->
-    $('.text-widget').css('font-family', @scene.get('font_face'))
+    @_textWidgetElement().css('font-family', @model.fontName())
 
 
-  disableEditing: (activatedScene) =>
+  disableEditing: =>
     return if @getIsVisible()
     @setIsVisible(true)
 
     @_editing(false)
-
-    if activatedScene?
-      @scene = activatedScene
 
     @model.set 'string', @input.text()
     @input.remove()
@@ -124,9 +122,9 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   createLabel: ->
-    @label = cc.LabelTTF.create @model.get('string'), @scene.get('font_face'), @scene.get('font_size')
+    @label = cc.LabelTTF.create @model.get('string'), @model.fontName(), @model.get('font_size')
 
-    fontColor = @scene.get('font_color')
+    fontColor = @model.get('font_color')
     @label.setColor(new cc.Color3B(fontColor.r, fontColor.g, fontColor.b))
     @setAnchorPoint(new cc.Point(-0.5, 0.5))
     @addChild(@label)
@@ -188,17 +186,22 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   convertLabelToEditableText: =>
-    color = @scene.get('font_color')
+    # REFACTOR: Following is way too much logic here.
+    # Probably extract out TextWidget element on canvas
+    # in its own view.
+    color = @model.get('font_color')
     @input = $('<div contenteditable="true">')
-    @input.appendTo(cc.canvas.parentNode).css(
-      'position': 'absolute'
-      'color':    'red'
-      'top':      @_topOffset()
-      'left':     @_leftOffset()
-    ).addClass('text-widget')
-      .css('font-family', @scene.get('font_face'))
+    @input.appendTo(cc.canvas.parentNode)
+      .attr('data-text-widget-id', @model.get('id'))
+      .css(
+        'position': 'absolute'
+        'color':    'red'
+        'top':      @_topOffset()
+        'left':     @_leftOffset())
+      .addClass('text-widget')
+      .css('font-family', @model.fontName())
       .css('color',      "rgb(#{color.r}, #{color.g}, #{color.b})")
-      .css('font-size',  "#{@scene.get('font_size')}px")
+      .css('font-size',  "#{@model.get('font_size')}px")
       .css('min-width',  "#{@getContentSize().width}px")
       .css('min-height', "#{@getContentSize().height}px")
       .text(@model.get('string'))
@@ -217,3 +220,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   _editing: ->
      !@getIsVisible()
+
+  _textWidgetElement: ->
+    @_text_widget_element ||= $("[data-text-widget-id='#{@model.get('id')}']")

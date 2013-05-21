@@ -35,7 +35,7 @@ class App.Models.Scene extends Backbone.Model
     @initializeWidgets()
     @initializeKeyframes()
 
-    @on 'change:preview_image_id change:font_color change:font_size change:font_face change:widgets', @deferredSave
+    @on 'change:preview_image_id change:widgets', @deferredSave
 
     @storybook.images.on 'remove', @imageRemoved, @
 

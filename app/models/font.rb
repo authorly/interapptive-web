@@ -6,6 +6,7 @@ class Font < Asset
     {
         'id'               =>   id,
         'name'             =>   meta_info[:font_name],
+        'file_name'        =>   read_attribute(:font),
         'size'             =>   font.size,
         'url'              =>   font.url,
         'delete_url'       =>   "/fonts/#{self.id}",
