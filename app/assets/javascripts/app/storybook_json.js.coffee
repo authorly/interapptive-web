@@ -77,11 +77,13 @@ class App.JSON
       # delayForPanning: true
       # highlightingTimes: [0.3, 1.3, #_.map(keyframe.get('content_highlight_times'), (num) -> Number(num))
       linesOfText: widgets.map (widget) ->
+        color = widget.get('font_color')
+
         text: widget.get('string'),
         xOffset: Math.round(widget.get('position').x),
         yOffset: Math.round(widget.get('position').y),
-        fontType: widget.font_file_name(),
-        fontColor: [widget.get('font_color').r, widget.get('font_color').g, widget.get('font_color').b],
+        fontType: widget.fontFileName(),
+        fontColor: [color.r, color.g, color.b],
         fontHighlightColor: [255, 0, 0],
         fontSize: Number(widget.get('font_size'))
       highlightingTimes: keyframeHighlightTimes
@@ -91,7 +93,7 @@ class App.JSON
       paragraph.linesOfText = [{
         text: '',
         fontType: 'Arial.ttf',
-        fontColor: [255, 0, 0],
+        fontColor: [255, 183, 213],
         fontHighlightColor: [255, 0, 0],
         fontSize: 25
       }]

@@ -48,10 +48,11 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @model.on 'change:string',                   @stringChanged,    @
     @model.on 'change:font_face change:font_id', @fontFaceChanged,  @
     @model.on 'change:font_size',                @fontSizeChanged,  @
-    # 'change:visual_font_color' is used to change the color of the
-    # text widget only in the canvas. It should not be changed with
-    # 'change:font_color'. That will have buggy behavior when saving
-    # font_color in a text widget.
+    # change:visual_font_color signals a temporary change of
+    # the color. This color is not persisted in the widget's
+    # attributes unless the change is confirmed by the user.
+    # This event is used only to communicate in between views
+    # that alter / display the widget.
     @model.on 'change:visual_font_color',        @fontColorChanged, @
     App.vent.on 'edit:text_widget', @disableEditing, @
 
@@ -92,7 +93,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   setHtmlTextFontFace: ->
-    @_textWidgetElement().css('font-family', @model.font_name())
+    @_textWidgetElement().css('font-family', @model.fontName())
 
 
   disableEditing: =>
@@ -121,7 +122,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   createLabel: ->
-    @label = cc.LabelTTF.create @model.get('string'), @model.font_name(), @model.get('font_size')
+    @label = cc.LabelTTF.create @model.get('string'), @model.fontName(), @model.get('font_size')
 
     fontColor = @model.get('font_color')
     @label.setColor(new cc.Color3B(fontColor.r, fontColor.g, fontColor.b))
@@ -198,7 +199,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
         'top':      @_topOffset()
         'left':     @_leftOffset())
       .addClass('text-widget')
-      .css('font-family', @model.font_name())
+      .css('font-family', @model.fontName())
       .css('color',      "rgb(#{color.r}, #{color.g}, #{color.b})")
       .css('font-size',  "#{@model.get('font_size')}px")
       .css('min-width',  "#{@getContentSize().width}px")

@@ -160,7 +160,7 @@ class App.Models.TextWidget extends App.Models.Widget
 
   # Used to retrieve font face name for the widget that should
   # be put in CSS/HTML for correct rendering.
-  font_name: ->
+  fontName: ->
     if @get('font_id')
       font = @collection.keyframe.scene.storybook.fonts.get(@get('font_id'))
       return font.get('name')
@@ -169,7 +169,7 @@ class App.Models.TextWidget extends App.Models.Widget
 
 
   # Used to set correct font value in the font select dropdown
-  font_value: ->
+  fontValue: ->
     if @get('font_id')
       font = @collection.keyframe.scene.storybook.fonts.get(@get('font_id'))
       return font.get('id')
@@ -179,7 +179,7 @@ class App.Models.TextWidget extends App.Models.Widget
 
   # Used to put filename of the font being used for a widget
   # in Storybook JSON.
-  font_file_name: ->
+  fontFileName: ->
     if @get('font_id')
       font = @collection.keyframe.scene.storybook.fonts.get(@get('font_id'))
       return font.get('url')

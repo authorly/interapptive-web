@@ -15,7 +15,7 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   initialize: (options={}) ->
-    App.vent.on 'activate:TextWidget',   @changeTextWidget,  @
+    App.vent.on 'activate:textWidget',   @changeTextWidget,  @
     App.vent.on 'done_editing:text',     @disable,           @
 
 
@@ -48,7 +48,7 @@ class App.Views.TextEditorPalette extends Backbone.View
   setDefaultValsForTextWidget: ->
     color = @widget.get('font_color')
     @$('#colorpicker span i').css('background-color', "rgb(#{color.r}, #{color.g}, #{color.b})")
-    @$('#font-face').val @widget.font_value()
+    @$('#font-face').val @widget.fontValue()
     @$('#font-size').val @widget.get('font_size')
 
 
@@ -165,7 +165,9 @@ class App.Views.TextEditorPalette extends Backbone.View
 
   # Manually unsetting the text widget so that next time when
   # App.currentSelection.set('widget', <a-text-widget>) fires 
-  # 'change:widget' event (that is translated to 'activate:TextWidget')
+  # 'change:widget' event (that is translated to 'activate:textWidget')
   # if same text widget is selected, unselected and selected again.
+  #
+  # This should be removed once #513 is fixed.
   _unsetCurrentWidget: ->
     App.currentSelection.set('widget', null)

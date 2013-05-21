@@ -277,22 +277,22 @@ window.App =
   # to a widget specific event on App.vent.
   #
   # e.g. When user selects a TextWidget, it translates
-  # 'widget:change' to 'activate:TextWidget' which other views
+  # 'widget:change' to 'activate:textWidget' which other views
   # can listen to and take action. This has advantage that
   # views listening to change:widget event wont have to have
   # code that checks the type of widget that was changed.
   # activate event receives the current widget that was set.
   #
   # In case of widget is change to null, corresponding 'deactivate'
-  # event is triggered e.g. 'deactivate:TextWidget'. deactivate
+  # event is triggered e.g. 'deactivate:textWidget'. deactivate
   # receives previous widget that was set.
   _triggerCurrentWidgetChangeEvent: (selection, widget) ->
     if widget is null
       previous_widget = selection.previous('widget')
       if previous_widget?
-        @vent.trigger('deactivate:' + previous_widget.get('type'), previous_widget)
+        @vent.trigger('deactivate:' + App.Lib.StringHelper.decapitalize(previous_widget.get('type')), previous_widget)
     else
-      @vent.trigger('activate:' + widget.get('type'), widget)
+      @vent.trigger('activate:' + App.Lib.StringHelper.decapitalize(widget.get('type')), widget)
 
 
   showSimulator: =>
