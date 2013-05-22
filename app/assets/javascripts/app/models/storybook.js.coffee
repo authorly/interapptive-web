@@ -62,11 +62,13 @@ class App.Models.Storybook extends Backbone.Model
     @fonts  = new App.Collections.FontsCollection([], storybook: @)
 
 
+  baseUrl: ->
+    url = '/storybooks'
+    url += "/#{@id}" unless @isNew()
+
+
   url: ->
-    if @isNew()
-      '/storybooks.json'
-    else
-      "/storybooks/#{@id}.json"
+    @baseUrl() + '.json'
 
 
   toJSON: ->

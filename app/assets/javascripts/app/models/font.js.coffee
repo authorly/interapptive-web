@@ -13,22 +13,11 @@ class App.Collections.FontsCollection extends Backbone.Collection
 
 
   baseUrl: ->
-    "/storybooks/" + @storybook.id + "/fonts"
+    @storybook.baseUrl() + "/fonts"
 
 
   url: ->
     @baseUrl() + '.json'
-
-
-  toSelectOptionGroup: (callback) =>
-    onSuccess = (collection) ->
-      callback(
-        clx = collection.map (model) -> model.toSelectOption()
-        clx.unshift {val: '', label: ''}
-        clx
-      )
-
-    @fetch {success: (collection, response) -> onSuccess(collection) }
 
 
   comparator: (model) ->

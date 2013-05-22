@@ -5,8 +5,5 @@ describe "App.Collections.SoundsCollection", ->
 
     @collection = new App.Collections.SoundsCollection([], { storybook: storybook })
 
-  it "should have url based on current storybook", ->
+  it "should have url based on its storybook", ->
     expect(@collection.url()).toEqual("/storybooks/" + @collection.storybook.get('id') + "/sounds.json")
-
-  describe "#toSelectOptionGroup", ->
-    xit "should call the callback function with model toSelectOption"
