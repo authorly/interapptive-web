@@ -118,6 +118,9 @@ class App.JSON
           nodes: scene.hotspotWidgets().map (widget) ->
             position = widget.get('position')
             hash =
+              glitterIndicator: true
+              stopEffectIndicator: false
+              touchFlag: 1
               position: [Math.round(position.x), Math.round(position.y)]
               radius:   Math.round(widget.get('radius'))
             if (sound = widget.get('sound_id'))?
