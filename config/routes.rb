@@ -60,12 +60,7 @@ Interapptive::Application.routes.draw do
   end
 
   resources :keyframes do
-    resources :texts, :controller => :keyframe_texts
     resource  :audio, :controller => :keyframe_audios
-  end
-
-  resources :texts, :controller => :keyframe_texts do
-    collection { post :reorder }
   end
 
   resource :zencoder, :controller => :zencoder, :only => :create
