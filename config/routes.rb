@@ -34,11 +34,6 @@ Interapptive::Application.routes.draw do
 
   resources :storybooks do
     resources :scenes do
-      resources :images
-      resources :videos
-      resources :sounds
-      resources :fonts
-
       collection { post :sort }
     end
 
@@ -53,7 +48,6 @@ Interapptive::Application.routes.draw do
   resources :scenes do
     #resources :actions
 
-    member { get :images }
     resources :keyframes do
       collection { post :sort }
     end
