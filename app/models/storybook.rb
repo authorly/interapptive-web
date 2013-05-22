@@ -41,6 +41,11 @@ class Storybook < ActiveRecord::Base
     other_user == user
   end
 
+  def image_id=(image_id)
+    image = images.find(image_id)
+    self.remote_icon_url = image.image.url
+  end
+
   private
 
   def create_default_scene
