@@ -120,14 +120,6 @@ class App.Views.KeyframeIndex extends Backbone.View
       @$("div[data-id=#{keyframe.id}]").html("<img src='#{src}'/>")
 
 
-  placeText: ->
-    if App.currentKeyframe()?
-      scene = cc.Director.sharedDirector().getRunningScene()
-      App.builder.widgetLayer.removeAllChildrenWithCleanup()
-      App.keyframesTextCollection.fetch
-        success: (collection, response) =>
-
-
   initSortable: =>
     $(@el).sortable
       cancel      : ''

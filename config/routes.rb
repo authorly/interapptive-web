@@ -34,11 +34,6 @@ Interapptive::Application.routes.draw do
 
   resources :storybooks do
     resources :scenes do
-      resources :images
-      resources :videos
-      resources :sounds
-      resources :fonts
-
       collection { post :sort }
     end
 
@@ -53,19 +48,13 @@ Interapptive::Application.routes.draw do
   resources :scenes do
     #resources :actions
 
-    member { get :images }
     resources :keyframes do
       collection { post :sort }
     end
   end
 
   resources :keyframes do
-    resources :texts, :controller => :keyframe_texts
     resource  :audio, :controller => :keyframe_audios
-  end
-
-  resources :texts, :controller => :keyframe_texts do
-    collection { post :reorder }
   end
 
   resource :zencoder, :controller => :zencoder, :only => :create
