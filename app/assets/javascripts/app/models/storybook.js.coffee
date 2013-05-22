@@ -76,6 +76,7 @@ class App.Models.Storybook extends Backbone.Model
 
 
   fetchCollections: ->
+    # TODO use deferreds to load assets in parallel and load scenes afterwards
     @images.fetch(async: false)
     @sounds.fetch(async: false)
     @videos.fetch(async: false)

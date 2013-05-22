@@ -6,7 +6,7 @@ class App.Views.ToolbarView extends Backbone.View
     'click .edit-text'          : 'addText'
     'click .add-hotspot'        : 'addHotspot'
     'click .sync-audio'         : 'alignAudio'
-    'click .actions'            : 'showActionLibrary'
+    # 'click .actions'            : 'showActionLibrary'
     'click .scene-options'      : 'showSceneOptions'
     'click .preview'            : 'showPreview'
 
@@ -64,13 +64,13 @@ class App.Views.ToolbarView extends Backbone.View
   showPreview: -> App.vent.trigger 'show:simulator'
 
 
-  showActionLibrary: ->
-    @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
-    @actionDefinitions.fetch
-      success: =>
-        activeDefinition = @actionDefinitions.first
-        view = new App.Views.ActionFormContainer actionDefinitions: @actionDefinitions
-        App.modalWithView(view: view).show()
+  # showActionLibrary: ->
+    # @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
+    # @actionDefinitions.fetch
+      # success: =>
+        # activeDefinition = @actionDefinitions.first
+        # view = new App.Views.ActionFormContainer actionDefinitions: @actionDefinitions
+        # App.modalWithView(view: view).show()
 
 
   _enableOnEvent: (event, selector) ->
