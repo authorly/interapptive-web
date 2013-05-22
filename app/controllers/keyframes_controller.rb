@@ -51,7 +51,7 @@ class KeyframesController < ApplicationController
 
   def sort
     params[:keyframes].each_with_index do |keyframe, index|
-      _keyframe = Keyframe.find(keyframe['id'])
+      _keyframe = @scene.keyframes.find(keyframe['id'])
       _keyframe.position = keyframe['position']
       _keyframe.save(:validate => false)
     end

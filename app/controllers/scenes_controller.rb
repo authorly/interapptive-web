@@ -69,7 +69,7 @@ class ScenesController < ApplicationController
 
   def sort
     params[:scenes].each do |scene|
-      _scene = Scene.find(scene['id'])
+      _scene = @storybook.scenes.find(scene['id'])
       _scene.position = scene['position']
       _scene.save(:validate => false)
     end
