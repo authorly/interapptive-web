@@ -41,7 +41,7 @@ class App.Views.StorybookIndex extends Backbone.View
   createStorybook: (event) ->
     event.preventDefault()
 
-    @collection.create { title   : @$('.storybook-title').val() },
+    @collection.create { title: @$('.storybook-title').val() },
       wait:    true
       error:    -> alert 'Please properly fill in fields!'
       success: @closeStorybookForm
