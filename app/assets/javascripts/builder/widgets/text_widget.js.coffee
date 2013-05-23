@@ -129,6 +129,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     # Position text to match mobile
     @setAnchorPoint(new cc.Point(0.5, 0.5))
+    @label.setAnchorPoint(new cc.Point(0, 0))
 
     @addChild(@label)
     @setContentSize(@label.getContentSize())
