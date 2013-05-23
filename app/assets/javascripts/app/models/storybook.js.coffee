@@ -65,6 +65,7 @@ class App.Models.Storybook extends Backbone.Model
   baseUrl: ->
     url = '/storybooks'
     url += "/#{@id}" unless @isNew()
+    url
 
 
   url: ->
