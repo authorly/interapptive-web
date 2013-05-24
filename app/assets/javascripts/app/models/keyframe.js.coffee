@@ -21,6 +21,9 @@
 # shown.
 class App.Models.Keyframe extends Backbone.Model
 
+  defaults:
+    animation_duration: 3
+
   parse: (attributes) ->
     widgets = attributes.widgets; delete attributes.widgets
     if @widgets?
