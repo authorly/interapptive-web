@@ -22,6 +22,7 @@ class Scene < ActiveRecord::Base
   belongs_to :preview_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound'
 
+  validates_presence_of :storybook, :storybook_id
   validates :position, inclusion: { in: [nil] }, if: :is_main_menu
   validates :is_main_menu, uniqueness: { scope: :storybook_id }, if: :is_main_menu
 

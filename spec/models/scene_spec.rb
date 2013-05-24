@@ -1,14 +1,12 @@
 require 'spec_helper'
 
 describe Scene do
-  let!(:scene) { Factory(:scene) }
 
-  it { Factory(:scene).should be_valid }
+  it { Factory.build(:scene).should be_valid }
 
   context "#to_json" do
     it 'should be valid response' do
-      scene.sound_id = Factory.create(:sound).id
-      scene.save
+      scene = Factory(:scene, sound: Factory.create(:sound))
 
       response = {
           'created_at'          => scene.created_at,
@@ -31,14 +29,14 @@ describe Scene do
 
   context "creation" do
     it 'should create a keyframe in the scene' do
-      scene = Scene.create
+      scene = Scene.create!(storybook: Factory(:storybook))
       scene.keyframes.count.should == 1
       scene.keyframes.first.position.should == 0
       scene.keyframes.first.widgets.should == []
     end
 
     it 'should add 3 button widgets, and a keyframe, for a main menu scene' do
-      scene = Scene.create(is_main_menu: true)
+      scene = Factory.create(:main_menu_scene)
       scene.keyframes.count.should == 1
 
       scene.widgets.should be
@@ -80,21 +78,32 @@ describe Scene do
   end
 
   describe 'validation for is_main_menu' do
-    it 'should allow one main menu scene' do
-      scene = Factory.create(:scene)
-      Factory.build(:main_menu_scene, storybook_id: scene.storybook_id).should be_valid
+    before(:each) do
+      @storybook = Factory(:storybook)
+      @storybook.scenes.destroy_all
     end
 
-    it "should not allow a main menu scene unless its position is nil" do
-      Factory.build(:main_menu_scene, position: 0).should_not be_valid
-      Factory.build(:main_menu_scene, position: 1).should_not be_valid
-      Factory.build(:main_menu_scene, position: nil).should be_valid
+    it 'should allow one main menu scene' do
+      scene = Factory(:scene, storybook: @storybook)
+      Factory.build(:main_menu_scene, storybook: @storybook).should be_valid
+    end
+
+    it "should not allow a main menu scene with position 0" do
+      Factory.build(:main_menu_scene, storybook: @storybook, position: 0).should_not be_valid
+    end
+
+    it "should not allow a main menu scene with position 1" do
+      Factory.build(:main_menu_scene, storybook: @storybook, position: 1).should_not be_valid
+    end
+
+    it "should allow a main menu scene with position nil" do
+      Factory.build(:main_menu_scene, storybook: @storybook, position: nil).should be_valid
     end
 
     it 'should not allow two main menu scenes in the same story' do
-      main_menu = Factory.create(:main_menu_scene)
-      Factory.build(:main_menu_scene, storybook_id: main_menu.storybook_id).should_not be_valid
-     end
+      main_menu = Factory.create(:main_menu_scene, storybook: @storybook)
+      Factory.build(:main_menu_scene, storybook: @storybook).should_not be_valid
+    end
   end
 
 end

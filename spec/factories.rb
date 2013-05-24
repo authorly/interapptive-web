@@ -44,7 +44,7 @@ end
 Factory.define :main_menu_scene, class: Scene do |f|
   f.preview_image Factory(:image)
   f.sound Factory(:sound)
-  f.storybook Factory(:storybook)
+  f.storybook { Factory(:storybook).tap{|s| s.scenes.destroy_all } }
   f.is_main_menu true
   f.position nil
 end
@@ -63,22 +63,6 @@ end
 
 Factory.define :actions do |f|
   f.scene Factory(:scene)
-end
-
-Factory.define :settings do |f|
-  f.type "font.ttf"
-  f.scene Factory(:scene)
-  f.storybook Factory(:storybook)
-  f.font Factory(:font)
-  f.font_size 14
-end
-
-Factory.define :storybook_settings do |f|
-  f.type "font.ttf"
-  f.scene Factory(:scene)
-  f.storybook Factory(:storybook)
-  f.font Factory(:font)
-  f.font_size 14
 end
 
 Factory.define :keyframe_text do |f|
