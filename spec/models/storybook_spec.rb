@@ -34,6 +34,14 @@ describe Storybook do
       story.scenes.where(is_main_menu: true, position: nil).count.should == 1
       story.scenes.where(is_main_menu: false, position: 0).count.should == 1
     end
+
+    it 'has the default settings' do
+      story = Factory(:storybook)
+      story.pageFlipTransitionDuration.should == 0.6
+      story.paragraphTextFadeDuration.should == 0.4
+      story.autoplayPageTurnDelay.should == 0.2
+      story.autoplayParagraphDelay.should == 0.1
+    end
   end
 
   describe '#owned_by?' do

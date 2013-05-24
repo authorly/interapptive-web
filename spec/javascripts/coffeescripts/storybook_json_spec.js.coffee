@@ -8,6 +8,10 @@ describe "App.JSON", ->
 
   beforeEach ->
     @storybook = new App.Models.Storybook
+      pageFlipTransitionDuration: 1
+      paragraphTextFadeDuration: 2
+      autoplayPageTurnDelay: 3
+      autoplayParagraphDelay: 4
 
     @rim_selected_image = new App.Models.Image
       id:  1
@@ -38,6 +42,21 @@ describe "App.JSON", ->
       ]
     }, parse: true
     @mainMenu.keyframes.add @mainMenuKeyframe
+
+
+  describe "configuration", ->
+    beforeEach ->
+      @json = new App.JSON(@storybook)
+      @configuration = @json.app.Configurations
+
+    it 'is generated correctly', ->
+      expect(@configuration).toBeDefined()
+
+    it 'has the necesasry settings', ->
+      expect(@configuration.pageFlipTransitionDuration).toEqual 1
+      expect(@configuration.paragraphTextFadeDuration).toEqual 2
+      expect(@configuration.autoplayPageTurnDelay).toEqual 3
+      expect(@configuration.autoplayParagraphDelay).toEqual 4
 
 
   describe "the main menu", ->

@@ -11,6 +11,18 @@ class Storybook < ActiveRecord::Base
   has_many :videos, :dependent => :destroy
   has_many :fonts,  :dependent => :destroy
 
+  SETTINGS = {
+    pageFlipTransitionDuration: 0.6,
+    paragraphTextFadeDuration: 0.4,
+    autoplayPageTurnDelay: 0.2,
+    autoplayParagraphDelay: 0.1,
+  }
+  serialize :settings, Hash
+
+  attr_accessible :title, :author, :description
+  attr_accessible :pageFlipTransitionDuration, :paragraphTextFadeDuration, :autoplayParagraphDelay, :autoplayPageTurnDelay
+
+  before_validation :set_default_settings, on: :create
   after_create :create_default_scene
 
   validates_presence_of :title
@@ -44,11 +56,31 @@ class Storybook < ActiveRecord::Base
     self.remote_icon_url = image.image.url
   end
 
+  SETTINGS.each do |setting, _|
+    define_method(setting) do
+      settings[setting]
+    end
+
+    define_method("#{setting}=") do |value|
+      settings[setting] = value
+    end
+  end
+
+  def as_json(options)
+    super({except: :settings, methods: SETTINGS.keys}.merge(options))
+  end
+
   private
 
   def create_default_scene
     scenes.create(is_main_menu: true)
     scenes.create(position: 0)
+  end
+
+  def set_default_settings
+    SETTINGS.each do |setting, default|
+      self.send("#{setting}=", self.send(setting) || default)
+    end
   end
 
 end
