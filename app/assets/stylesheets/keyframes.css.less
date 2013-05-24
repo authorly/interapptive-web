@@ -9,14 +9,13 @@
     display: inline;
     float: left;
     margin-left: 12px;
+    margin-right: 60px;
     z-index: 1000 !important;
     position: relative;
-    font-size: 14px;
-    font-family: 'Arial Black';
     background-color: #76767a;
     border: 1px solid #666;
 
-    div {
+    .main {
       .round-corners();
       .opacity(0.3);
 
@@ -37,22 +36,41 @@
       position: absolute;
       bottom: 2px;
       left: 5px;
+      font-size: 14px;
+      font-family: 'Arial Black';
     }
+
+    .transition {
+      position: absolute;
+      width: 60px;
+      left: -67px;
+      top: 15px;
+      text-align: center;
+
+      input[name='animation-duration'] {
+        width: 35px;
+        margin-bottom: 5px;
+        background-color: lightgrey;
+      }
+
+      img {
+        display: block;
+        width: 80%;
+        height: 10px;
+        margin: 0 auto;
+      }
+    }
+
+    &.animation, &:first-child {
+      .transition {
+        display: none;
+      }
+    }
+
   }
 
   li.animation {
     border-color: #231;
-    margin-right: 18px;
-
-    &:after {
-      position: absolute;
-      top: 0;
-      right: -16px;
-      width: 1px;
-      height: 100%;
-      border-right: 1px solid #666;
-      content: '';
-    }
 
     div {
       cursor: default;
@@ -69,8 +87,11 @@
 
   li.active {
     border: 1px solid @slidePreviewActiveBgBegin;
-    color: #ffcc33;
     opacity: 1.0;
+
+    .main {
+      color: #ffcc33;
+    }
 
     a.delete-keyframe {
       opacity: 0;

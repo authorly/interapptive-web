@@ -13,6 +13,7 @@ class Keyframe < ActiveRecord::Base
 
   validates :position, inclusion: { in: [nil] }, if: :is_animation
   validates :is_animation, uniqueness: { scope: :scene_id }, if: :is_animation
+  validates :animation_duration, numericality: { greater_than_or_equal_to: 0 }
 
   after_create :create_orientation_widgets
 

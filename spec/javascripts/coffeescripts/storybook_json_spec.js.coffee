@@ -34,7 +34,7 @@ describe "App.JSON", ->
     @mainMenuKeyframe = new App.Models.Keyframe {
       id: 101,
       scene: @mainMenu,
-      position: 0,
+      position: null,
       widgets: [
         { 'type': 'SpriteOrientation', 'id': 4, keyframe_id: 101, sprite_widget_id: 1, position: { x: 200, y: 100}, scale: 1 }
         { 'type': 'SpriteOrientation', 'id': 5, keyframe_id: 101, sprite_widget_id: 2, position: { x: 200, y: 200}, scale: 1 }
@@ -132,7 +132,8 @@ describe "App.JSON", ->
       @keyframe1 = new App.Models.Keyframe {
         id: 1,
         scene: @scene1,
-        position: 1,
+        position: 0,
+        animation_duration: 3,
         widgets: [
           { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 9, position: { x: 400, y: 200}, scale: 1.5 }
           { 'type': 'TextWidget', 'id': 12, 'position': {'x': 120, 'y': 330}, 'string': 'Some text' },
@@ -147,7 +148,8 @@ describe "App.JSON", ->
       @keyframe2 = new App.Models.Keyframe {
         id: 2,
         scene: @scene1,
-        position: 2,
+        position: 1,
+        animation_duration: 2.7,
         widgets: [
           { 'type': 'SpriteOrientation', 'id': 14, keyframe_id: 2, sprite_widget_id: 9, position: { x: 500, y: 300}, scale: 1 }
         ]
@@ -232,24 +234,24 @@ describe "App.JSON", ->
       expect(api.CCMoveTo.length).toEqual 2
       move = api.CCMoveTo[0]
       expect(move.position).toEqual [400, 200]
-      expect(move.duration).toEqual 3
+      expect(move.duration).toEqual 0
       k1MoveId = move.actionTag
 
       move = api.CCMoveTo[1]
       expect(move.position).toEqual [500, 300]
-      expect(move.duration).toEqual 3
+      expect(move.duration).toEqual 2.7
       k2MoveId = move.actionTag
 
       expect(api.CCScaleTo).toBeDefined()
       expect(api.CCScaleTo.length).toEqual 2
       scale = api.CCScaleTo[0]
       expect(scale.intensity).toEqual 1.5
-      expect(scale.duration).toEqual 3
+      expect(scale.duration).toEqual 0
       k1ScaleId = scale.actionTag
 
       scale = api.CCScaleTo[1]
       expect(scale.intensity).toEqual 1
-      expect(scale.duration).toEqual 3
+      expect(scale.duration).toEqual 2.7
       k2ScaleId = scale.actionTag
 
       expect(api.CCStorySwipeEnded).toBeDefined()
@@ -257,15 +259,15 @@ describe "App.JSON", ->
       expect(actions).toBeDefined()
 
 
-      # scale & position for the first keyframe
-      action = actions[0]
-      expect(action).toBeDefined()
-      expect(action.runAfterSwipeNumber).toEqual 0
-      expect(action.spriteTag).toEqual 1
-      expect(action.actionTags).toEqual [ k1ScaleId, k1MoveId ]
+      # scale & position for the first keyframe - not needed
+      # action = actions[0]
+      # expect(action).toBeDefined()
+      # expect(action.runAfterSwipeNumber).toEqual 0
+      # expect(action.spriteTag).toEqual 1
+      # expect(action.actionTags).toEqual [ k1ScaleId, k1MoveId ]
 
       # scale & position for the second keyframe
-      action = actions[1]
+      action = actions[0]
       expect(action).toBeDefined()
       expect(action.runAfterSwipeNumber).toEqual 1
       expect(action.spriteTag).toEqual 1
