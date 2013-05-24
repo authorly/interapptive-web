@@ -133,6 +133,7 @@ describe "App.JSON", ->
         id: 1,
         scene: @scene1,
         position: 1,
+        animation_duration: 2.7,
         widgets: [
           { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 9, position: { x: 400, y: 200}, scale: 1.5 }
           { 'type': 'TextWidget', 'id': 12, 'position': {'x': 120, 'y': 330}, 'string': 'Some text' },
