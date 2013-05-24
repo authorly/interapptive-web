@@ -59,8 +59,8 @@ class App.Views.KeyframeIndex extends Backbone.View
     @
 
 
-  appendKeyframe: (keyframe, _collection, options) =>
-    @renderKeyframe(keyframe, options.index)
+  appendKeyframe: (keyframe) =>
+    @renderKeyframe(keyframe, @collection.indexOf(keyframe))
     @_updateDeleteButtons()
 
     @switchKeyframe(keyframe)
