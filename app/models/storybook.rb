@@ -19,13 +19,13 @@ class Storybook < ActiveRecord::Base
   }
   serialize :settings, Hash
 
-  attr_accessible :title, :author, :description
-  attr_accessible :pageFlipTransitionDuration, :paragraphTextFadeDuration, :autoplayParagraphDelay, :autoplayPageTurnDelay
-
   before_validation :set_default_settings, on: :create
   after_create :create_default_scene
 
   validates_presence_of :title
+  SETTINGS.each do |setting, _|
+    validates setting, numericality: { greater_than_or_equal_to: 0 }
+  end
 
   def enqueue_for_compilation(platform, json)
     case platform
