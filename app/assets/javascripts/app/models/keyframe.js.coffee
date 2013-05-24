@@ -43,6 +43,18 @@ class App.Models.Keyframe extends Backbone.Model
     @initializePreview()
 
 
+  destroy: ->
+    super
+
+    @uninitializeWidgets()
+    @uninitializePreview()
+
+
+  initializeScene: (attributes) ->
+    @scene = attributes?.scene || @collection?.scene
+    delete @attributes.scene
+
+
   initializeWidgets: (attributes) ->
     @widgets.on 'add', (widget) =>
       if widget instanceof App.Models.TextWidget
@@ -54,9 +66,7 @@ class App.Models.Keyframe extends Backbone.Model
     @scene.widgets.on 'remove', @sceneWidgetRemoved, @
 
 
-  destroy: ->
-    super
-
+  uninitializeWidgets: ->
     @widgets.off 'reset add remove change', @widgetsChanged, @
 
     @scene.widgets.off 'add',    @sceneWidgetAdded,   @
@@ -66,11 +76,6 @@ class App.Models.Keyframe extends Backbone.Model
   widgetsChanged: ->
     App.vent.trigger 'change:keyframeWidgets', @
     @save()
-
-
-  initializeScene: (attributes) ->
-    @scene = attributes?.scene || @collection?.scene
-    delete @attributes.scene
 
 
   toJSON: ->
@@ -90,9 +95,21 @@ class App.Models.Keyframe extends Backbone.Model
   initializePreview: ->
     attributes = App.Lib.AttributesHelper.filterByPrefix @attributes, 'preview_image_'
     @preview = new App.Models.Preview(attributes, storybook: @scene.storybook)
-    @preview.on 'change:data_url change:url', => @trigger 'change:preview', @
-    @preview.on 'change:id', =>
-      @save preview_image_id: @preview.id
+    @preview.on 'change:data_url change:url', @_previewChanged, @
+    @preview.on 'change:id', @_previewIdChanged, @
+
+
+  uninitializePreview: ->
+    @preview.off 'change:data_url change:url', @_previewChanged, @
+    @preview.off 'change:id', @_previewIdChanged, @
+
+
+  _previewChanged: ->
+    @trigger 'change:preview', @
+
+
+  _previewIdChanged: ->
+    @save preview_image_id: @preview.id
 
 
   setPreviewDataUrl: (dataUrl) ->
