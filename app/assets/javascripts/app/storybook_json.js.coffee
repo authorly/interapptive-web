@@ -188,10 +188,10 @@ class App.JSON
       scene.keyframes.each (keyframe, index) =>
         orientation = keyframe.getOrientationFor(spriteWidget)
         keyframeIndex = keyframe.get('position')
-        if keyframe.get('is_animation') || keyframeIndex == 0 and index == 0
+        if keyframe.isAnimation() || keyframeIndex == 0 and index == 0
           duration = 0
         else
-          duration = 3
+          duration = keyframe.get('animation_duration')
 
         # TODO optimization: reuse actions if they are available already
         scaleId = null
