@@ -38,6 +38,7 @@ class App.Models.Keyframe extends Backbone.Model
   initialize: (attributes) ->
     @parse(attributes)
 
+    @on 'change:animation_duration', @animationDurationChanged, @
     @initializeScene(attributes)
     @initializeWidgets(attributes)
     @initializePreview()
@@ -46,6 +47,7 @@ class App.Models.Keyframe extends Backbone.Model
   destroy: ->
     super
 
+    @off 'change:animation_duration', @animationDurationChanged, @
     @uninitializeWidgets()
     @uninitializePreview()
 
@@ -77,6 +79,9 @@ class App.Models.Keyframe extends Backbone.Model
     App.vent.trigger 'change:keyframeWidgets', @
     @save()
 
+
+  animationDurationChanged: ->
+    @save()
 
   toJSON: ->
     _.extend super, widgets: @widgets.toJSON()
