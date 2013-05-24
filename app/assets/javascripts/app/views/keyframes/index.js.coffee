@@ -8,7 +8,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   className: 'keyframe-list'
 
   events:
-    'click  li div': 'keyframeClicked'
+    'click  .main': 'keyframeClicked'
     'click  .delete-keyframe': 'destroyKeyframeClicked'
 
   DELETE_KEYFRAME_MSG:
@@ -125,6 +125,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       cancel      : ''
       containment : 'footer'
       items       : 'li[data-is_animation!="1"]'
+      handle      : '.main'
       opacity     : 0.6
       update      : @_numberKeyframes
 

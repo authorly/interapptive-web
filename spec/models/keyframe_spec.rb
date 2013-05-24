@@ -8,6 +8,7 @@ describe Keyframe do
   context "#to_json" do
     it 'should be valid response' do
       response = {
+          'animation_duration' => keyframe.animation_duration,
           'audio'              => {
             'url'              => nil,
             'sphinx_audio'     => { 'url' => nil },
