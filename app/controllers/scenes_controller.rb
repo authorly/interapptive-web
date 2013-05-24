@@ -1,5 +1,5 @@
 class ScenesController < ApplicationController
-  before_filter :authorize_storybook_ownership, :except => [:images, :sort]
+  before_filter :authorize_storybook_ownership, :except => [:images]
 
   def index
     scenes = @storybook.scenes
