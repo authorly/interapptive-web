@@ -123,11 +123,20 @@ describe ScenesController do
 
     context '#sort' do
       it 'should update the position of scenes' do
-        Scene.should_receive(:find).with(@scene.id).exactly(2).times.and_return(@scene)
-        @scene.should_receive(:position=).with(1).exactly(2).times
-        @scene.should_receive(:save).with(:validate => false).exactly(2).times.and_return(true)
+        @scene2 = mock_model(Scene, id: 2)
 
-        post :sort, :storybook_id => @storybook.id, :scenes => [{ :id => @scene.id, :position => 1}, { :id => @scene.id, :position => 1}], :format => :json
+        scenes = mock()
+        scenes.should_receive(:find).with(@scene.id).once.and_return(@scene)
+        scenes.should_receive(:find).with(@scene2.id).once.and_return(@scene2)
+
+        @storybook.should_receive(:scenes).twice.and_return(scenes)
+
+        @scene.should_receive(:position=).with(1).once
+        @scene2.should_receive(:position=).with(2).once
+        @scene.should_receive(:save).with(:validate => false).once.and_return(true)
+        @scene2.should_receive(:save).with(:validate => false).once.and_return(true)
+
+        post :sort, :storybook_id => @storybook.id, :scenes => [{ :id => @scene.id, :position => 1}, { :id => @scene2.id, :position => 2}], :format => :json
 
         response.should be_success
       end

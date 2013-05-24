@@ -111,11 +111,20 @@ describe KeyframesController do
 
   context '#sort' do
     it 'should update the position of keyframes' do
-      Keyframe.should_receive(:find).with(@keyframe.id).exactly(2).times.and_return(@keyframe)
-      @keyframe.should_receive(:position=).with(1).exactly(2).times
-      @keyframe.should_receive(:save).with(:validate => false).exactly(2).times.and_return(true)
+      @keyframe2 = mock_model(Keyframe, :id => 2)
 
-      post :sort, :scene_id => @scene.id, :keyframes => [{ :id => @keyframe.id, :position => 1}, { :id => @keyframe.id, :position => 1}], :format => :json
+      keyframes = mock()
+      keyframes.should_receive(:find).with(@keyframe.id).once.and_return(@keyframe)
+      keyframes.should_receive(:find).with(@keyframe2.id).once.and_return(@keyframe2)
+
+      @scene.should_receive(:keyframes).twice.and_return(keyframes)
+
+      @keyframe.should_receive(:position=).with(1).once
+      @keyframe2.should_receive(:position=).with(2).once
+      @keyframe.should_receive(:save).with(:validate => false).once.and_return(true)
+      @keyframe2.should_receive(:save).with(:validate => false).once.and_return(true)
+
+      post :sort, :scene_id => @scene.id, :keyframes => [{ :id => @keyframe.id, :position => 1}, { :id => @keyframe2.id, :position => 2}], :format => :json
 
       response.should be_success
     end
