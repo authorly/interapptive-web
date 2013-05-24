@@ -143,19 +143,4 @@ describe ScenesController do
     end
   end
 
-  context '#images' do
-    it 'should return all the images of a scene' do
-      @image = mock_model(Image)
-      Scene.should_receive(:find).with(@scene.id.to_s).and_return(@scene)
-      @scene.should_receive(:storybook).and_return(@storybook)
-      @storybook.stub(:owned_by?).with(@user).and_return(true)
-      @scene.stub(:images).and_return([@image])
-      @image.stub(:as_json).and_return(:id => @image.id)
-
-      get :images, :id => @scene.id, :format => :json
-
-      response.should be_success
-      response.body.should eql([{:id => @image.id}].to_json)
-    end
-  end
 end

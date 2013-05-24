@@ -57,15 +57,6 @@ class ScenesController < ApplicationController
     end
   end
 
-  def images
-    scene = Scene.find params[:id]
-    raise ActiveRecord::RecordNotFound unless scene.storybook.owned_by?(current_user)
-    images = scene.images
-
-    respond_to do |format|
-      format.json { render :json => images }
-    end
-  end
 
   def sort
     params[:scenes].each do |scene|
