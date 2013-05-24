@@ -27,6 +27,7 @@
 #= require jquery.selecttext
 #= require jquery.contextmenu
 #= require toastr-1.0.2
+#= require backbone-rails-fixes
 
 #= require app
 #= require config
