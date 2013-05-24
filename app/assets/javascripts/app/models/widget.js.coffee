@@ -185,6 +185,7 @@ class App.Models.TextWidget extends App.Models.Widget
       return font.get('url')
     else
       # Following assumes that all system fonts are TTF.
+      return 'arial.ttf' if @get('font_face') == 'Arial'
       return @get('font_face').replace(/\ /g, '') + '.ttf'
 
 
