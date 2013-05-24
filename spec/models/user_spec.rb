@@ -50,28 +50,28 @@ describe User do
       user.should be_valid
     end
 
-    it "is invalid without password"
+    # it "is invalid without password"
 
     it { should have_many(:storybooks) }
 
-    it do
-      pending
-      should have_many(:actions)
-    end
+    # it do
+      # pending
+      # should have_many(:actions)
+    # end
   end
 
-  context "developer user should" do
-    it "be invalid without username"
-  end
+  # context "developer user should" do
+    # it "be invalid without username"
+  # end
 
   context "password reset" do
     it "generates token" do
       user.send_password_reset.should
     end
 
-    it "saves password reset date"
-    it "sends password reset email"
-    it "fails if email doesn't exist"
+    # it "saves password reset date"
+    # it "sends password reset email"
+    # it "fails if email doesn't exist"
   end
 
 end
