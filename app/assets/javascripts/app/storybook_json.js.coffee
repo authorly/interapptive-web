@@ -18,7 +18,7 @@ class App.JSON
     @actionIdCounter = new App.Lib.Counter
 
     @app =
-      Configurations : @configurationNode()
+      Configurations : @configurationNode(storybook)
 
     @storybook = storybook
 
@@ -249,15 +249,15 @@ class App.JSON
           previousOrientation = orientation
 
 
-  configurationNode: ->
+  configurationNode: (storybook) ->
     node =
       pageFlipSound:
         forward  : 'page-flip-sound.mp3'
         backward : 'page-flip-sound.mp3'
-      pageFlipTransitionDuration : 0.6
-      paragraphTextFadeDuration  : 0.4
-      autoplayPageTurnDelay      : 0.2
-      autoplayParagraphDelay     : 0.1
+      pageFlipTransitionDuration: storybook.get('pageFlipTransitionDuration')
+      paragraphTextFadeDuration:  storybook.get('paragraphTextFadeDuration')
+      autoplayPageTurnDelay:      storybook.get('autoplayPageTurnDelay')
+      autoplayParagraphDelay:     storybook.get('autoplayParagraphDelay')
       homeMenuForPages:
         normalStateImage : 'home-button.png'
         tappedStateImage : 'home-button-over.png'
