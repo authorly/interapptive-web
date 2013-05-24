@@ -17,9 +17,6 @@ class Scene < ActiveRecord::Base
 
   has_many :actions, :dependent => :destroy
 
-  has_one :scene_settings
-  has_many :fonts, :through => :scene_settings
-
   # has_many :attributes, :through => :actions
 
   belongs_to :preview_image, :class_name => 'Image'

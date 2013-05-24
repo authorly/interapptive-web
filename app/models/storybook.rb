@@ -11,8 +11,6 @@ class Storybook < ActiveRecord::Base
   has_many :videos, :dependent => :destroy
   has_many :fonts,  :dependent => :destroy
 
-  has_one  :default_font, :through => :storybook_settings, :source => :font
-
   after_create :create_default_scene
 
   validates_presence_of :title
