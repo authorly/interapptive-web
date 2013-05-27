@@ -9,7 +9,7 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
     schema:
       sound_id:
         type: "Select"
-        options: @model.storybook.sounds
+        options: [{ val: null, label: "None" }].concat(_.map(@model.storybook.sounds.models, (s) -> { val: s.id, label: s.toString() } ))
         title: "Background Sound"
 
       sound_repeat_count:
