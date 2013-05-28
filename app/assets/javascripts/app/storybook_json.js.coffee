@@ -292,7 +292,7 @@ class App.JSON
 
       MenuItems:
         scene.buttonWidgets().map (button) ->
-          position = scene.keyframes.at(0).getOrientationFor(button).get('position')
+          position = button.get('position')
           str = App.Lib.StringHelper
           {
             normalStateImage: button.url()
@@ -303,7 +303,7 @@ class App.JSON
 
       API: {}
 
-    _.each _.difference(scene.spriteWidgets(), scene.buttonWidgets()), (spriteWidget) =>
+    _.each scene.spriteWidgets(), (spriteWidget) =>
       position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
       spriteId = @spriteIdCounter.next()
       spriteNode =

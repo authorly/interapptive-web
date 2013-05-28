@@ -31,13 +31,31 @@ class App.Models.HotspotWidget extends App.Models.Widget
 
 
 ##
-# A widget that has an associated image.
-#
-# It belongs to a scene.
+# A generic widget that has an associated image.
+class App.Models.ImageWidget extends App.Models.Widget
+
+  url: ->
+    @image()?.get('url')
+
+
+  filename: ->
+    @image().get('name')
+
+
+  image: ->
+    @images().get(@get('image_id'))
+
+
+  images: ->
+    @collection.storybook.images
+
+
+##
+# A sprite widget that belongs to a scene.
 #
 # It can have a different position or scale in each of the keyframes of the scene.
 # @see App.Models.SpriteOrientation
-class App.Models.SpriteWidget extends App.Models.Widget
+class App.Models.SpriteWidget extends App.Models.ImageWidget
   # attributes: image_id
 
   defaults:
@@ -54,22 +72,6 @@ class App.Models.SpriteWidget extends App.Models.Widget
       delete attributes.scale
 
     attributes
-
-
-  images: ->
-    @collection.scene.storybook.images
-
-
-  image: ->
-    @images().get(@get('image_id'))
-
-
-  url: ->
-    @image()?.get('url')
-
-
-  filename: ->
-    @image().get('name')
 
 
   getOrientationFor: (keyframe) ->
@@ -106,7 +108,7 @@ class App.Models.SpriteOrientation extends Backbone.Model
 # It is added automatically to the main menu scene. It cannot be added from
 # the UI.
 #
-class App.Models.ButtonWidget extends App.Models.SpriteWidget
+class App.Models.ButtonWidget extends App.Models.ImageWidget
   # attributes: name selected_image_id
 
   defaults:
@@ -235,7 +237,7 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
 
 
   comparator: (widget) ->
-    if widget instanceof App.Models.SpriteWidget
+    if widget instanceof App.Models.ImageWidget
       return widget.get('z_order')
     else if widget instanceof App.Models.HotspotWidget
       return widget.get('z_order') - 1/widget.id

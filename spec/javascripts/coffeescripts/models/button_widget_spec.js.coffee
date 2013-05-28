@@ -4,7 +4,7 @@ describe "App.Models.ButtonWidget", ->
     beforeEach ->
       @imageId = 13
       image = new Backbone.Model(id: @imageId, name: 'image.png', url: 'image.url')
-      @collection = {scene: { storybook: {images: new Backbone.Collection(image)}}}
+      @collection = {storybook: {images: new Backbone.Collection(image)}}
 
     it 'has the right defaults', ->
       @widget = new App.Models.ButtonWidget

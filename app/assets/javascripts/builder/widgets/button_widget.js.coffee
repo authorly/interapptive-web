@@ -9,7 +9,7 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
 
     view = new App.Views.ButtonWidgetImagesSelector
       widget:     @model
-      collection: @model.collection.scene.storybook.images
+      collection: @model.collection.storybook.images
     view.on 'selected', @imagesSelected
     @selector = new App.Views.Modal(view: view)
 

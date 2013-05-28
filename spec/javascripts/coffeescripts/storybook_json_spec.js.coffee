@@ -24,9 +24,9 @@ describe "App.JSON", ->
       storybook: @storybook
       is_main_menu: true
       widgets: [
-        {'type':'ButtonWidget', image_id: null,'id':1,'name':'read_it_myself', selected_image_id: @rim_selected_image.id},
-        {'type':'ButtonWidget', image_id: null,'id':2,'name':'read_to_me'},
-        {'type':'ButtonWidget', image_id: null,'id':3,'name':'auto_play'}
+        {'type':'ButtonWidget', image_id: null,'id':1,'name':'read_it_myself', selected_image_id: @rim_selected_image.id, position: {x: 200, y: 100}, scale: 1},
+        {'type':'ButtonWidget', image_id: null,'id':2,'name':'read_to_me', position: {x: 200, y: 200}, scale: 1},
+        {'type':'ButtonWidget', image_id: null,'id':3,'name':'auto_play', position: {x: 200, y: 300}, scale: 1}
       ]
     }, parse: true
     @storybook.scenes.add @mainMenu
@@ -35,11 +35,6 @@ describe "App.JSON", ->
       id: 101,
       scene: @mainMenu,
       position: null,
-      widgets: [
-        { 'type': 'SpriteOrientation', 'id': 4, keyframe_id: 101, sprite_widget_id: 1, position: { x: 200, y: 100}, scale: 1 }
-        { 'type': 'SpriteOrientation', 'id': 5, keyframe_id: 101, sprite_widget_id: 2, position: { x: 200, y: 200}, scale: 1 }
-        { 'type': 'SpriteOrientation', 'id': 6, keyframe_id: 101, sprite_widget_id: 3, position: { x: 200, y: 300}, scale: 1 }
-      ]
     }, parse: true
     @mainMenu.keyframes.add @mainMenuKeyframe
 
