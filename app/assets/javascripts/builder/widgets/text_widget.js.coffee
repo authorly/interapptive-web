@@ -127,6 +127,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     fontColor = @model.get('font_color')
     @label.setColor(new cc.Color3B(fontColor.r, fontColor.g, fontColor.b))
 
+    @label.setAnchorPoint(new cc.Point(0, 0))
+
     @addChild(@label)
     @setContentSize(@label.getContentSize())
 
