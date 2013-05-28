@@ -11,7 +11,7 @@ describe "App.JSON", ->
       pageFlipTransitionDuration: 1
       paragraphTextFadeDuration: 2
       autoplayPageTurnDelay: 3
-      autoplayParagraphDelay: 4
+      autoplayKeyframeDelay: 4
 
     @rim_selected_image = new App.Models.Image
       id:  1
@@ -56,7 +56,7 @@ describe "App.JSON", ->
       expect(@configuration.pageFlipTransitionDuration).toEqual 1
       expect(@configuration.paragraphTextFadeDuration).toEqual 2
       expect(@configuration.autoplayPageTurnDelay).toEqual 3
-      expect(@configuration.autoplayParagraphDelay).toEqual 4
+      expect(@configuration.autoplayKeyframeDelay).toEqual 4
 
 
   describe "the main menu", ->

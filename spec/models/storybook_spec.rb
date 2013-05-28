@@ -40,7 +40,7 @@ describe Storybook do
       story.pageFlipTransitionDuration.should == 0.6
       story.paragraphTextFadeDuration.should == 0.4
       story.autoplayPageTurnDelay.should == 0.2
-      story.autoplayParagraphDelay.should == 0.1
+      story.autoplayKeyframeDelay.should == 0.1
     end
   end
 

@@ -95,7 +95,7 @@ class App.Models.Storybook extends Backbone.Model
           err if (Number(value) + "" != value + "") or value < 0
       ]
 
-    autoplayParagraphDelay:
+    autoplayKeyframeDelay:
       title: ''
       title: 'Additional delay before going to the next keyframe in autoplay mode'
       help: 'seconds'
@@ -103,7 +103,7 @@ class App.Models.Storybook extends Backbone.Model
       validators:    ["required",
         mustBeNumber = (value, formValues) ->
           err =
-            type: "autoplayParagraphDelay"
+            type: "autoplayKeyframeDelay"
             message: "Must be a positive number"
 
           err if (Number(value) + "" != value + "") or value < 0
