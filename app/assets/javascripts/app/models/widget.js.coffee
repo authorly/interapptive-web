@@ -131,13 +131,13 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
     url || @_defaultImageUrl()
 
 
-  selected_image: ->
+  selectedImage: ->
     @images().get(@get('selected_image_id')) ||
       new App.Models.Image(url: @_defaultSelectedImageUrl())
 
 
-  selected_url: ->
-    @selected_image()?.get('url') || @url()
+  selectedUrl: ->
+    @selectedImage()?.get('url') || @url()
 
 
   _defaultImageUrl: ->

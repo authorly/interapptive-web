@@ -7,11 +7,15 @@ describe "App.JSON", ->
     @server.restore()
 
   beforeEach ->
-    @storybook = new App.Models.Storybook
+    @storybook = new App.Models.Storybook {
       pageFlipTransitionDuration: 1
       paragraphTextFadeDuration: 2
       autoplayPageTurnDelay: 3
       autoplayParagraphDelay: 4
+      widgets: [
+        {'type':'ButtonWidget', image_id: null,'id':4,'name':'home', position: {x: 200, y: 400}, scale: 1},
+      ]
+    }
 
     @rim_selected_image = new App.Models.Image
       id:  1
@@ -47,11 +51,18 @@ describe "App.JSON", ->
     it 'is generated correctly', ->
       expect(@configuration).toBeDefined()
 
-    it 'has the necesasry settings', ->
+    it 'has the necessary settings', ->
       expect(@configuration.pageFlipTransitionDuration).toEqual 1
       expect(@configuration.paragraphTextFadeDuration).toEqual 2
       expect(@configuration.autoplayPageTurnDelay).toEqual 3
       expect(@configuration.autoplayParagraphDelay).toEqual 4
+
+    it 'has the home menu', ->
+      menu = @configuration.homeMenuForPages
+      expect(menu).toBeDefined()
+      expect(menu.position).toEqual {x: 200, y: 400}
+      expect(menu.normalStateImage).toEqual '/assets/sprites/home.png'
+      expect(menu.tappedStateImage).toEqual '/assets/sprites/home-over.png'
 
 
   describe "the main menu", ->

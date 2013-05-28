@@ -252,6 +252,8 @@ class App.JSON
 
 
   configurationNode: (storybook) ->
+    home = storybook.widgets.at(0)
+    homeButtonPosition = home.get('position')
     node =
       pageFlipSound:
         forward  : 'page-flip-sound.mp3'
@@ -261,9 +263,9 @@ class App.JSON
       autoplayPageTurnDelay:      storybook.get('autoplayPageTurnDelay')
       autoplayParagraphDelay:     storybook.get('autoplayParagraphDelay')
       homeMenuForPages:
-        normalStateImage : 'home-button.png'
-        tappedStateImage : 'home-button-over.png'
-        position         : [20, 20]
+        normalStateImage : home.url()
+        tappedStateImage : home.selectedUrl()
+        position         : { x: homeButtonPosition.x, y: homeButtonPosition.y }
 
     node
 
@@ -296,7 +298,7 @@ class App.JSON
           str = App.Lib.StringHelper
           {
             normalStateImage: button.url()
-            tappedStateImage: button.selected_url() || button.url()
+            tappedStateImage: button.selectedUrl() || button.url()
             storyMode: str.decapitalize(str.camelize(button.get('name')))
             position: [Math.round(position.x), Math.round(position.y)]
           }
