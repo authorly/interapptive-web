@@ -265,7 +265,7 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
 
 
   changeKeyframe: (keyframe) ->
-    @addStorybookWidgets(keyframe)
+    @updateStorybookWidgets(keyframe)
     @updateSceneWidgets(keyframe)
     @updateKeyframeWidgets(keyframe)
 
@@ -274,9 +274,16 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
     @_addListeners(@currentKeyframe)
 
 
-  addStorybookWidgets: (keyframe) ->
-    widgets = keyframe?.scene.storybook.widgets
-    @add(widgets.models) if widgets?
+  updateStorybookWidgets: (keyframe) ->
+    return unless @currentKeyframe?.scene != keyframe?.scene
+
+    if @currentKeyframe?.scene.isMainMenu()
+      widgets = @currentKeyframe.scene.storybook.widgets
+      @add(widgets.models) if widgets?
+
+    if keyframe?.scene.isMainMenu()
+      widgets = keyframe.scene.storybook.widgets
+      @remove(widgets.models) if widgets?
 
 
   updateSceneWidgets: (keyframe) ->
