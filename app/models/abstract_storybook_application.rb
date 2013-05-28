@@ -15,7 +15,7 @@ class AbstractStorybookApplication
     @storybook         = storybook
     @json              = storybook_json
     @transient_files   = []
-    @unused_file_names = []
+    @used_file_names = []
     @target            = target
   end
 
@@ -90,7 +90,7 @@ class AbstractStorybookApplication
 
   def stage_for_move(file_name)
     if self.class.system_font_names.include?(file_name)
-      @unused_file_names << file_name if @unused_file_names.exclude?(file_name)
+      @used_file_names << file_name if @used_file_names.exclude?(file_name)
     end
   end
 
@@ -149,6 +149,6 @@ class AbstractStorybookApplication
   end
 
   def unused_files_movement_paths(modifier = '')
-    @unused_file_names.map { |ufn| File.join(CRUCIBLE_RESOURCES_DIR, modifier, ufn) }
+    (self.class.system_font_names - @used_file_names).map { |ufn| File.join(CRUCIBLE_RESOURCES_DIR, modifier, ufn) }
   end
 end
