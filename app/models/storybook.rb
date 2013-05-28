@@ -11,6 +11,8 @@ class Storybook < ActiveRecord::Base
   has_many :videos, :dependent => :destroy
   has_many :fonts,  :dependent => :destroy
 
+  serialize :widgets
+
   SETTINGS = {
     pageFlipTransitionDuration: 0.6,
     paragraphTextFadeDuration: 0.4,
@@ -20,6 +22,7 @@ class Storybook < ActiveRecord::Base
   serialize :settings, Hash
 
   before_validation :set_default_settings, on: :create
+  before_create :create_widgets
   after_create :create_default_scene
 
   validates_presence_of :title
@@ -82,5 +85,14 @@ class Storybook < ActiveRecord::Base
       self.send("#{setting}=", self.send(setting) || default)
     end
   end
+
+  def create_widgets
+    self.widgets = [
+      {type: 'ButtonWidget', id: 4, name: 'home', z_order: 1, scale: 1, position: {y: 400, x: 200} },
+    ]
+  end
+
+
+
 
 end

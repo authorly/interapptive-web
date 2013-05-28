@@ -139,6 +139,7 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
     @get('name') + '.png'
 
 
+
 ##
 # A text object which is displayed on the canvas.
 #
@@ -246,12 +247,18 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
 
 
   changeKeyframe: (keyframe) ->
+    @addStorybookWidgets(keyframe)
     @updateSceneWidgets(keyframe)
     @updateKeyframeWidgets(keyframe)
 
     @_removeListeners(@currentKeyframe)
     @currentKeyframe = keyframe
     @_addListeners(@currentKeyframe)
+
+
+  addStorybookWidgets: (keyframe) ->
+    widgets = keyframe?.scene.storybook.widgets
+    @add(widgets.models) if widgets?
 
 
   updateSceneWidgets: (keyframe) ->
