@@ -12,12 +12,17 @@ class IosStorybookApplication < AbstractStorybookApplication
   end
 
   def compile
-    @json_hash = download_files_and_sanitize_json(ActiveSupport::JSON.decode(@json))
+    download_files_and_sanitize_json(ActiveSupport::JSON.decode(@json))
     logger.info "Going to compile application with json:\n\n"
     logger.info @json_hash.inspect
     write_json_file
     write_rake_file
-    xbuild_application
+    move_unused_files_out_of_compilation
+    begin
+      xbuild_application
+    ensure
+      move_unused_files_to_resources
+    end
     @json_hash
   end
 
