@@ -32,8 +32,16 @@ class App.Views.SpriteListPalette extends Backbone.View
     return unless @_isSprite(widget)
 
     view = new App.Views.SpriteWidget(model: widget)
+    rendered = view.render().el
+
     @views.push view
-    @$el.prepend(view.render().el)
+    @views.sort((v1, v2) -> v2.model.get('z_order') - v1.model.get('z_order'))
+
+    index = @views.indexOf(view)
+    if index == 0
+      @$el.prepend(rendered)
+    else
+      @$el.children().eq(index-1).after(rendered)
 
 
   widgetRemoved: (widget) ->
