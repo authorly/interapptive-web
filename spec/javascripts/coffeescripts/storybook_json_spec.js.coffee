@@ -79,14 +79,14 @@ describe "App.JSON", ->
       # read to me
       item = items[1]
       expect(item.normalStateImage).toEqual '/assets/sprites/read_to_me.png'
-      expect(item.tappedStateImage).toEqual '/assets/sprites/read_to_me.png'
+      expect(item.tappedStateImage).toEqual '/assets/sprites/read_to_me-over.png'
       expect(item.position).toEqual [200, 200]
       expect(item.storyMode).toEqual 'readToMe'
 
       # autoplay
       item = items[2]
       expect(item.normalStateImage).toEqual '/assets/sprites/auto_play.png'
-      expect(item.tappedStateImage).toEqual '/assets/sprites/auto_play.png'
+      expect(item.tappedStateImage).toEqual '/assets/sprites/auto_play-over.png'
       expect(item.position).toEqual [200, 300]
       expect(item.storyMode).toEqual 'autoPlay'
 

@@ -122,23 +122,38 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
       @_defaultFilename()
 
 
+  image: ->
+    super || new App.Models.Image(url: @_defaultImageUrl())
+
+
   url: ->
     url = super
-    url || '/assets/sprites/' + @_defaultFilename()
+    url || @_defaultImageUrl()
 
 
   selected_image: ->
-    @images().get(@get('selected_image_id'))
+    @images().get(@get('selected_image_id')) ||
+      new App.Models.Image(url: @_defaultSelectedImageUrl())
 
 
   selected_url: ->
     @selected_image()?.get('url') || @url()
 
 
+  _defaultImageUrl: ->
+    '/assets/sprites/' + @_defaultFilename()
+
+
   _defaultFilename: ->
     @get('name') + '.png'
 
 
+  _defaultSelectedImageUrl: ->
+    '/assets/sprites/' + @_defaultSelectedFilename()
+
+
+  _defaultSelectedFilename: ->
+    @get('name') + '-over.png'
 
 ##
 # A text object which is displayed on the canvas.
