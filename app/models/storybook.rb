@@ -88,7 +88,7 @@ class Storybook < ActiveRecord::Base
 
   def create_widgets
     self.widgets = [
-      {type: 'ButtonWidget', id: 4, name: 'home', z_order: 1, scale: 1, position: {y: 400, x: 200} },
+      {type: 'ButtonWidget', id: 4, name: 'home', z_order: 4004, scale: 1, position: {y: 400, x: 200} },
     ]
   end
 

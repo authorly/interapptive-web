@@ -56,9 +56,9 @@ class Scene < ActiveRecord::Base
 
   def create_main_menu_widgets
     self.widgets = [
-      {type: 'ButtonWidget', id: 1, scale: 1, position: {x:200, y:100}, name: 'read_it_myself', z_order: 1 },
-      {type: 'ButtonWidget', id: 2, scale: 1, position: {x:200, y:200}, name: 'read_to_me',     z_order: 2 },
-      {type: 'ButtonWidget', id: 3, scale: 1, position: {x:200, y:300}, name: 'auto_play',      z_order: 3 },
+      {type: 'ButtonWidget', id: 1, scale: 1, position: {x:200, y:100}, name: 'read_it_myself', z_order: 4001 },
+      {type: 'ButtonWidget', id: 2, scale: 1, position: {x:200, y:200}, name: 'read_to_me',     z_order: 4002 },
+      {type: 'ButtonWidget', id: 3, scale: 1, position: {x:200, y:300}, name: 'auto_play',      z_order: 4003 },
     ]
   end
 

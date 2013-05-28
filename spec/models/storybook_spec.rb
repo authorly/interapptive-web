@@ -37,7 +37,7 @@ describe Storybook do
       home[:id].should == 4 # 3 main menu widgets and one home
       home[:type].should == 'ButtonWidget'
       home[:name].should == 'home'
-      home[:z_order].should == 1
+      home[:z_order].should == 4004
       home[:scale].should == 1
       home[:position].should == {y: 400, x: 200}
     end
