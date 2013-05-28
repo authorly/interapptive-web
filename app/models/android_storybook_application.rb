@@ -4,11 +4,13 @@ class AndroidStorybookApplication < AbstractStorybookApplication
   CRUCIBLE_ANDROID_DIR = File.join(Rails.root, '../../Crucible/HelloWorld/android/')
 
   def compile
-    @json_hash = download_files_and_sanitize_json(ActiveSupport::JSON.decode(@json))
+    download_files_and_sanitize_json(ActiveSupport::JSON.decode(@json))
     logger.info "Going to compile application with json:\n\n"
     logger.info @json_hash.inspect
     write_json_file
+    move_unused_files_out_of_compilation
     build_application
+    move_unused_files_to_resources
     @json_hash
   end
 
