@@ -128,7 +128,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @label.setColor(new cc.Color3B(fontColor.r, fontColor.g, fontColor.b))
 
     # Position text to match mobile
-    @label.setAnchorPoint(new cc.Point(0, 1.5))
+    @label.setAnchorPoint(new cc.Point(0.5, 1.5))
 
     @addChild(@label)
     @setContentSize(@label.getContentSize())
