@@ -167,7 +167,7 @@ class App.Models.TextWidget extends App.Models.Widget
 
   defaults: ->
     type:    'TextWidget'
-    string:  'Enter some text...'
+    string:  'Double click to edit or drag to move'
     z_order: 6000
     position: @defaultPosition()
     font_id: null

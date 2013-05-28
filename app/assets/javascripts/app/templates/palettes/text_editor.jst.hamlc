@@ -23,7 +23,7 @@
       Verdana
 
 %select#font-size{:readonly => "", :disabled => ""}
-  - fontSizes = [24..46]
+  - fontSizes = [24..60]
   - for fontSize in fontSizes
     %option{:value => "#{fontSize}"}
       = fontSize
