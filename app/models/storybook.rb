@@ -15,7 +15,7 @@ class Storybook < ActiveRecord::Base
     pageFlipTransitionDuration: 0.6,
     paragraphTextFadeDuration: 0.4,
     autoplayPageTurnDelay: 0.2,
-    autoplayParagraphDelay: 0.1,
+    autoplayKeyframeDelay: 0.1,
   }
   serialize :settings, Hash
 
