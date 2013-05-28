@@ -114,7 +114,7 @@ class App.Models.Storybook extends Backbone.Model
   parse: (attributes={}) ->
     widgets = attributes.widgets; delete attributes.widgets
     if @widgets?
-      @widgets.update(widgets)
+      @widgets.update(widgets) if widgets?
     else
       @widgets = new App.Collections.Widgets(widgets)
       @widgets.storybook = @
