@@ -20,10 +20,10 @@ describe AbstractStorybookApplication do
 
   context '#move_unused_files_out_of_compilation' do
     it 'moves system files out of compilation' do
-      AbstractStorybookApplication.stub(:system_font_names).and_return(['arial.ttf', 'ComicSansMS.ttf'])
+      AbstractStorybookApplication.stub(:system_font_names).and_return(['arial.ttf', 'ComicSansMS.ttf', 'Verdana.ttf', 'CourierNew.ttf'])
       removal_paths = [
-        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, 'arial.ttf'),
-        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, 'ComicSansMS.ttf')
+        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, 'Verdana.ttf'),
+        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, 'CourierNew.ttf')
       ]
 
       FileUtils.should_receive(:mv).with(removal_paths, File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, '..')).and_return(true)
@@ -34,14 +34,14 @@ describe AbstractStorybookApplication do
 
   context "#move_unused_files_to_resources" do
     it 'moves system files to resources' do
-      AbstractStorybookApplication.stub(:system_font_names).and_return(['arial.ttf', 'ComicSansMS.ttf'])
+      AbstractStorybookApplication.stub(:system_font_names).and_return(['arial.ttf', 'ComicSansMS.ttf', 'Verdana.ttf', 'CourierNew.ttf'])
       removal_paths = [
-        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, 'arial.ttf'),
-        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, 'ComicSansMS.ttf')
+        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, 'Verdana.ttf'),
+        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, 'CourierNew.ttf')
       ]
       resources_paths = [
-        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, '..', 'arial.ttf'),
-        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, '..', 'ComicSansMS.ttf')
+        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, '..', 'Verdana.ttf'),
+        File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, '..', 'CourierNew.ttf')
       ]
       FileUtils.should_receive(:mv).with(removal_paths, File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR, '..')).and_return(true)
       FileUtils.should_receive(:mv).with(resources_paths, File.join(AbstractStorybookApplication::CRUCIBLE_RESOURCES_DIR)).and_return(true)
