@@ -29,7 +29,7 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   widgetAdded: (widget) ->
-    return unless @_isSprite(widget)
+    return if !@_isSprite(widget) or @_isHomeButton(widget)
 
     view = new App.Views.SpriteWidget(model: widget)
     rendered = view.render().el
@@ -105,6 +105,10 @@ class App.Views.SpriteListPalette extends Backbone.View
 
   _isSprite: (widget) ->
     widget instanceof App.Models.ImageWidget
+
+
+  _isHomeButton: (widget) ->
+    widget instanceof App.Models.ButtonWidget and widget.get('name') == 'home'
 
 
   _getView: (widget) ->

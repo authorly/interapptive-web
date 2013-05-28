@@ -236,6 +236,9 @@ class App.Collections.Widgets extends Backbone.Collection
     @filter (w) -> w instanceof klass
 
 
+  isHomeButton: ->
+    @get('name') == 'home'
+
   @containers:
     'HotspotWidget': 'scene'
     'SpriteWidget':  'scene'
