@@ -92,6 +92,8 @@ class App.JSON
     if widgets.length == 0
       paragraph.linesOfText = [{
         text: '',
+        xOffset: 0,
+        yOffset: 0,
         fontType: 'Arial.ttf',
         fontColor: [255, 183, 213],
         fontHighlightColor: [255, 0, 0],
