@@ -113,6 +113,10 @@ window.App =
     scenesIndex = new App.Views.SceneIndex(collection: storybook.scenes)
     $('#scene-list').html(scenesIndex.render().el)
 
+    storybook.widgets.on 'change', =>
+      keyframe = App.currentSelection.get('keyframe')
+      @saveCanvasAsPreview()
+
     storybook.scenes.on 'change:widgets', =>
       keyframe = App.currentSelection.get('keyframe')
       @saveCanvasAsPreview()

@@ -32,7 +32,6 @@ describe Scene do
       scene = Scene.create!(storybook: Factory(:storybook))
       scene.keyframes.count.should == 1
       scene.keyframes.first.position.should == 0
-      scene.keyframes.first.widgets.should == []
     end
 
     it 'should add 3 button widgets, and a keyframe, for a main menu scene' do
@@ -44,35 +43,21 @@ describe Scene do
       scene.widgets.all?{|w| w[:type] == 'ButtonWidget'}.should be
       read_it_myself = scene.widgets.detect{|w| w[:name] == 'read_it_myself' }
       read_it_myself.should be
+      read_it_myself[:z_order].should == 4001
+      read_it_myself[:position].should == {y: 100, x: 200}
+      read_it_myself[:scale].should == 1
+
       read_to_me = scene.widgets.detect{|w| w[:name] == 'read_to_me'}
       read_to_me.should be
+      read_to_me[:z_order].should == 4002
+      read_to_me[:position].should == {y: 200, x: 200}
+      read_to_me[:scale].should == 1
+
       auto_play = scene.widgets.detect{|w| w[:name] == 'auto_play' }
       auto_play.should be
-      scene.widgets.detect{|w| w[:z_order] == 1}.should be
-      scene.widgets.detect{|w| w[:z_order] == 2}.should be
-      scene.widgets.detect{|w| w[:z_order] == 3}.should be
-
-      keyframe = scene.keyframes.first
-      keyframe.position.should == 0
-
-      keyframe.widgets.should be
-      keyframe.widgets.count.should == 3
-      keyframe.widgets.all?{|w| w[:type] == 'SpriteOrientation'}.should be
-
-      rimo = keyframe.widgets.detect{|w| w[:sprite_widget_id] == read_it_myself[:id] }
-      rimo.should be
-      rimo[:position].should == {y: 100, x: 200}
-      rimo[:scale].should == 1
-
-      rtm = keyframe.widgets.detect{|w| w[:sprite_widget_id] == read_to_me[:id] }
-      rtm.should be
-      rtm[:position].should == {y: 200, x: 200}
-      rtm[:scale].should == 1
-
-      ap = keyframe.widgets.detect{|w| w[:sprite_widget_id] == auto_play[:id] }
-      ap.should be
-      ap[:position].should == {y: 300, x: 200}
-      ap[:scale].should == 1
+      auto_play[:z_order].should == 4003
+      auto_play[:position].should == {y: 300, x: 200}
+      auto_play[:scale].should == 1
     end
 
   end

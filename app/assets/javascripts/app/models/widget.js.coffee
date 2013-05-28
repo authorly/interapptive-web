@@ -31,13 +31,31 @@ class App.Models.HotspotWidget extends App.Models.Widget
 
 
 ##
-# A widget that has an associated image.
-#
-# It belongs to a scene.
+# A generic widget that has an associated image.
+class App.Models.ImageWidget extends App.Models.Widget
+
+  url: ->
+    @image()?.get('url')
+
+
+  filename: ->
+    @image().get('name')
+
+
+  image: ->
+    @images().get(@get('image_id'))
+
+
+  images: ->
+    @collection.storybook.images
+
+
+##
+# A sprite widget that belongs to a scene.
 #
 # It can have a different position or scale in each of the keyframes of the scene.
 # @see App.Models.SpriteOrientation
-class App.Models.SpriteWidget extends App.Models.Widget
+class App.Models.SpriteWidget extends App.Models.ImageWidget
   # attributes: image_id
 
   defaults:
@@ -54,22 +72,6 @@ class App.Models.SpriteWidget extends App.Models.Widget
       delete attributes.scale
 
     attributes
-
-
-  images: ->
-    @collection.scene.storybook.images
-
-
-  image: ->
-    @images().get(@get('image_id'))
-
-
-  url: ->
-    @image()?.get('url')
-
-
-  filename: ->
-    @image().get('name')
 
 
   getOrientationFor: (keyframe) ->
@@ -106,7 +108,7 @@ class App.Models.SpriteOrientation extends Backbone.Model
 # It is added automatically to the main menu scene. It cannot be added from
 # the UI.
 #
-class App.Models.ButtonWidget extends App.Models.SpriteWidget
+class App.Models.ButtonWidget extends App.Models.ImageWidget
   # attributes: name selected_image_id
 
   defaults:
@@ -120,22 +122,38 @@ class App.Models.ButtonWidget extends App.Models.SpriteWidget
       @_defaultFilename()
 
 
+  image: ->
+    super || new App.Models.Image(url: @_defaultImageUrl())
+
+
   url: ->
     url = super
-    url || '/assets/sprites/' + @_defaultFilename()
+    url || @_defaultImageUrl()
 
 
   selected_image: ->
-    @images().get(@get('selected_image_id'))
+    @images().get(@get('selected_image_id')) ||
+      new App.Models.Image(url: @_defaultSelectedImageUrl())
 
 
   selected_url: ->
     @selected_image()?.get('url') || @url()
 
 
+  _defaultImageUrl: ->
+    '/assets/sprites/' + @_defaultFilename()
+
+
   _defaultFilename: ->
     @get('name') + '.png'
 
+
+  _defaultSelectedImageUrl: ->
+    '/assets/sprites/' + @_defaultSelectedFilename()
+
+
+  _defaultSelectedFilename: ->
+    @get('name') + '-over.png'
 
 ##
 # A text object which is displayed on the canvas.
@@ -218,6 +236,9 @@ class App.Collections.Widgets extends Backbone.Collection
     @filter (w) -> w instanceof klass
 
 
+  isHomeButton: ->
+    @get('name') == 'home'
+
   @containers:
     'HotspotWidget': 'scene'
     'SpriteWidget':  'scene'
@@ -235,7 +256,7 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
 
 
   comparator: (widget) ->
-    if widget instanceof App.Models.SpriteWidget
+    if widget instanceof App.Models.ImageWidget
       return widget.get('z_order')
     else if widget instanceof App.Models.HotspotWidget
       return widget.get('z_order') - 1/widget.id
@@ -244,12 +265,18 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
 
 
   changeKeyframe: (keyframe) ->
+    @addStorybookWidgets(keyframe)
     @updateSceneWidgets(keyframe)
     @updateKeyframeWidgets(keyframe)
 
     @_removeListeners(@currentKeyframe)
     @currentKeyframe = keyframe
     @_addListeners(@currentKeyframe)
+
+
+  addStorybookWidgets: (keyframe) ->
+    widgets = keyframe?.scene.storybook.widgets
+    @add(widgets.models) if widgets?
 
 
   updateSceneWidgets: (keyframe) ->

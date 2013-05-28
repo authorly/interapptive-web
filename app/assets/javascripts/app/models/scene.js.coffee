@@ -41,6 +41,8 @@ class App.Models.Scene extends Backbone.Model
 
 
   initializeWidgets: ->
+    @widgets.storybook ||= @storybook
+
     @widgets.on 'add', (widget) =>
       if widget instanceof App.Models.SpriteWidget
         widget.set z_order: @nextSpriteZOrder(widget)

@@ -27,6 +27,21 @@ describe Storybook do
       # expect { Factory(:storybook) }.to validate_uniqueness_of(:title)
     # end
 
+    it 'should add a home button widget' do
+      storybook = Factory.create(:storybook)
+
+      storybook.widgets.should be
+      storybook.widgets.count.should == 1
+
+      home =  storybook.widgets[0]
+      home[:id].should == 4 # 3 main menu widgets and one home
+      home[:type].should == 'ButtonWidget'
+      home[:name].should == 'home'
+      home[:z_order].should == 4004
+      home[:scale].should == 1
+      home[:position].should == {y: 400, x: 200}
+    end
+
     it 'should create a default scene and a main menu scene in the storybook' do
       story = Factory(:storybook)
       story.scenes.count.should == 2
