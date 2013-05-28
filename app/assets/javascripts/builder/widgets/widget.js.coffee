@@ -128,8 +128,8 @@ class App.Builder.Widgets.Widget extends cc.Node
     cc.Rect.CCRectContainsPoint(r, local)
 
 
-  isSpriteWidget: ->
-    @model instanceof App.Models.SpriteWidget
+  isImageWidget: ->
+    @model instanceof App.Models.ImageWidget
 
 
   isTextWidget: ->
