@@ -96,7 +96,7 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   _isSprite: (widget) ->
-    widget instanceof App.Models.SpriteWidget
+    widget instanceof App.Models.ImageWidget
 
 
   _getView: (widget) ->
