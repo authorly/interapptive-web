@@ -11,7 +11,7 @@
 #= require jquery.dataTables.min
 #= require jquery.voiceover-uploader
 
-#= require popcorn-complete.min
+#= require popcorn-complete
 #= require jquery.countdown
 #= require backbone-forms.js
 #= require backbone-forms-list.min
