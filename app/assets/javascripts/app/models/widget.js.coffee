@@ -240,9 +240,9 @@ class App.Collections.Widgets extends Backbone.Collection
     @get('name') == 'home'
 
   @containers:
-    'HotspotWidget': 'scene'
     'SpriteWidget':  'scene'
     'TextWidget':    'keyframe'
+    'HotspotWidget': 'keyframe'
 
 
 ##

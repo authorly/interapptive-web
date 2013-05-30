@@ -16,6 +16,6 @@ describe "App.Collections.Widgets", ->
   it 'has the right containers for each widget type', ->
     containers = App.Collections.Widgets.containers
 
-    expect(containers['HotspotWidget']).toEqual 'scene'
+    expect(containers['HotspotWidget']).toEqual 'keyframe'
     expect(containers['SpriteWidget']).toEqual  'scene'
     expect(containers['TextWidget']).toEqual    'keyframe'

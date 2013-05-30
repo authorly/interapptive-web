@@ -39,15 +39,11 @@ describe "App.Models.Scene", ->
         @widgets.add [type: 'SpriteWidget']
         expect(@widgets.at(0).get('z_order')).toEqual 1
 
-      it 'should be the default for HotspotWidgets', ->
-        @widgets.add [type: 'HotspotWidget']
-        expect(@widgets.at(0).get('z_order')).toEqual (new App.Models.HotspotWidget).get('z_order')
-
       it 'should be equal with the number of sprites when adding subsequent SpriteWidgets', ->
-        @widgets.add [type: 'HotspotWidget']
         @widgets.add [type: 'SpriteWidget']
         @widgets.add [type: 'SpriteWidget']
-        expect(@widgets.at(2).get('z_order')).toEqual 2
+        @widgets.add [type: 'SpriteWidget']
+        expect(@widgets.at(2).get('z_order')).toEqual 3
 
     describe 'reordering', ->
       it 'should determine only one save of the scene', ->
@@ -60,7 +56,6 @@ describe "App.Models.Scene", ->
         @widgets.get(2).set z_index: 3
         @widgets.get(3).set z_index: 1
         saves = _.filter @server.requests, (r) => r.url == @scene.url()
-        console.log @server.requests
         expect(saves.length).toEqual 1
 
 
