@@ -12,3 +12,10 @@ describe "App.Collections.Widgets", ->
     expect(@widgets.byClass(App.Models.SpriteWidget).length).toEqual(1)
     expect(@widgets.byClass(App.Models.ButtonWidget).length).toEqual(1)
     expect(@widgets.byClass(App.Models.HotspotWidget).length).toEqual(0)
+
+  it 'has the right containers for each widget type', ->
+    containers = App.Collections.Widgets.containers
+
+    expect(containers['HotspotWidget']).toEqual 'scene'
+    expect(containers['SpriteWidget']).toEqual  'scene'
+    expect(containers['TextWidget']).toEqual    'keyframe'
