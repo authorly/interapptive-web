@@ -1,7 +1,6 @@
 #voiceovers
   .modal-header
-    %h3.modal-title
-      Voiceovers and highlighting...
+    %h3.modal-title Voiceovers and highlighting...
     #sync-player
       %audio{:id => "media-player", :controls => "controls", :class => "disabled"}
         Your browser does not support the audio element.
@@ -20,6 +19,7 @@
       %button#upload.btn.btn-primary.disabled
         %i.icon-arrow-up.icon-white
         Start Upload
+    %div Only mp3, wav, aac, ogg and m4a file types are accepted
 
   .modal-body
     %i.icon-arrow-right.icon-black.disabled
