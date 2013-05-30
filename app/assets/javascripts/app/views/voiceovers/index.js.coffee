@@ -371,6 +371,10 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @$('#controls').css('visibility', 'hidden')
 
 
+  stopVoiceover: =>
+    @player.pause()
+
+
   _playerCurrentTimeInSeconds: ->
     Math.round(1000 * @player.currentTime()) / 1000
 

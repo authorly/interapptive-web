@@ -52,7 +52,7 @@ class App.Views.ToolbarView extends Backbone.View
     return if $(event.currentTarget).hasClass('disabled')
 
     view = new App.Views.VoiceoverIndex App.currentSelection.get('keyframe')
-    App.modalWithView(view: view).show()
+    App.modalWithView(view: view).show().modal.on('hide', view.stopVoiceover)
 
 
   showSceneOptions: ->
