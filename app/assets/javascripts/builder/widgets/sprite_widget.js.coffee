@@ -31,8 +31,11 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     cc.TextureCache.sharedTextureCache().addImageAsync @model.dataUrl, @, =>
       @sprite.initWithFile @model.dataUrl
 
-      currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
-      @applyOrientation(currentOrientation)
+      if @model instanceof App.Models.SpriteWidget
+        currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
+        @applyOrientation(currentOrientation)
+      else
+        @applyOrientation(@model)
 
       @addChild @sprite
 
@@ -57,14 +60,15 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   applyOrientation: (orientation) ->
-    @currentOrientation?.off('change:scale', @_changeScale, @)
-    @currentOrientation = orientation
-    @currentOrientation.on('change:scale', @_changeScale, @)
-    @currentOrientation.on('change:position', @_changePosition, @)
+    if @currentOrientation != orientation
+      @currentOrientation?.off('change:scale', @_changeScale, @)
+      @currentOrientation = orientation
+      @currentOrientation.on('change:scale', @_changeScale, @)
+      @currentOrientation.on('change:position', @_changePosition, @)
 
     position = orientation.get('position')
-
     @setPosition(new cc.Point(position.x, position.y))
+
     scale = parseFloat(orientation.get('scale'))
     @setScale scale
 

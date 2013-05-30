@@ -29,15 +29,23 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   widgetAdded: (widget) ->
-    return unless @_isSprite(widget)
+    return unless @_isShown(widget)
 
     view = new App.Views.SpriteWidget(model: widget)
+    rendered = view.render().el
+
     @views.push view
-    @$el.prepend(view.render().el)
+    @views.sort((v1, v2) -> v2.model.get('z_order') - v1.model.get('z_order'))
+
+    index = @views.indexOf(view)
+    if index == 0
+      @$el.prepend(rendered)
+    else
+      @$el.children().eq(index-1).after(rendered)
 
 
   widgetRemoved: (widget) ->
-    return unless @_isSprite(widget)
+    return unless @_isShown(widget)
 
     view = @_getView(widget)
     view.$el.remove()
@@ -45,7 +53,7 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   widgetChanged: (widget) ->
-    return unless @_isSprite(widget)
+    return unless @_isShown(widget)
 
     view = @_getView(widget)
     view.render()
@@ -95,8 +103,16 @@ class App.Views.SpriteListPalette extends Backbone.View
     @$("div[data-widget-id=#{widget.id}]").length
 
 
+  _isShown: (widget) ->
+    @_isSprite(widget) and !@_isHomeButton(widget)
+
+
   _isSprite: (widget) ->
-    widget instanceof App.Models.SpriteWidget
+    widget instanceof App.Models.ImageWidget
+
+
+  _isHomeButton: (widget) ->
+    widget instanceof App.Models.ButtonWidget and widget.get('name') == 'home'
 
 
   _getView: (widget) ->

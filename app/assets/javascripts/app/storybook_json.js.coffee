@@ -252,6 +252,8 @@ class App.JSON
 
 
   configurationNode: (storybook) ->
+    home = storybook.widgets.at(0)
+    homeButtonPosition = home.get('position')
     node =
       pageFlipSound:
         forward  : 'page-flip-sound.mp3'
@@ -261,9 +263,9 @@ class App.JSON
       autoplayPageTurnDelay:      storybook.get('autoplayPageTurnDelay')
       autoplayKeyframeDelay:     storybook.get('autoplayKeyframeDelay')
       homeMenuForPages:
-        normalStateImage : 'home-button.png'
-        tappedStateImage : 'home-button-over.png'
-        position         : [20, 20]
+        normalStateImage : home.url()
+        tappedStateImage : home.selectedUrl()
+        position         : { x: homeButtonPosition.x, y: homeButtonPosition.y }
 
     node
 
@@ -292,18 +294,18 @@ class App.JSON
 
       MenuItems:
         scene.buttonWidgets().map (button) ->
-          position = scene.keyframes.at(0).getOrientationFor(button).get('position')
+          position = button.get('position')
           str = App.Lib.StringHelper
           {
             normalStateImage: button.url()
-            tappedStateImage: button.selected_url() || button.url()
+            tappedStateImage: button.selectedUrl() || button.url()
             storyMode: str.decapitalize(str.camelize(button.get('name')))
             position: [Math.round(position.x), Math.round(position.y)]
           }
 
       API: {}
 
-    _.each _.difference(scene.spriteWidgets(), scene.buttonWidgets()), (spriteWidget) =>
+    _.each scene.spriteWidgets(), (spriteWidget) =>
       position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
       spriteId = @spriteIdCounter.next()
       spriteNode =

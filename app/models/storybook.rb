@@ -11,6 +11,8 @@ class Storybook < ActiveRecord::Base
   has_many :videos, :dependent => :destroy
   has_many :fonts,  :dependent => :destroy
 
+  serialize :widgets
+
   SETTINGS = {
     pageFlipTransitionDuration: 0.6,
     paragraphTextFadeDuration: 0.4,
@@ -20,6 +22,7 @@ class Storybook < ActiveRecord::Base
   serialize :settings, Hash
 
   before_validation :set_default_settings, on: :create
+  before_create :create_widgets
   after_create :create_default_scene
 
   validates_presence_of :title
@@ -82,5 +85,19 @@ class Storybook < ActiveRecord::Base
       self.send("#{setting}=", self.send(setting) || default)
     end
   end
+
+  def create_widgets
+    # On the client side we need widgets to have unique id's.
+    # The home button has id 1. The main menu buttons have id's 2, 3 & 4.
+    # `z_order` is in the 4000+ range to leave [1..4000) for sprites,
+    # [5000..6000) for hotspots and [6000...) for texts. Main menu buttons have
+    # z_order wihtin [4000..4010)
+    self.widgets = [
+      {type: 'ButtonWidget', id: 1, name: 'home', z_order: 4010, scale: 1, position: {y: 400, x: 200} },
+    ]
+  end
+
+
+
 
 end

@@ -194,7 +194,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   _deselectSpriteWidgets: =>
-    widget.deselect() for widget in @views when widget.isSpriteWidget()
+    widget.deselect() for widget in @views when widget.isImageWidget()
 
 
   addCanvasMouseLeaveListener: ->
@@ -247,7 +247,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       event.preventDefault()
       selector = ''
-      if widget.isSpriteWidget()
+      if widget.isImageWidget()
         selector = '.sprite'
       else if widget.isTextWidget()
         selector = '.text'

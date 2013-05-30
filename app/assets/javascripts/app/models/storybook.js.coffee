@@ -5,6 +5,7 @@
 # * `@sounds`. It has many sounds. A Backbone collection.
 # * `@videos`. It has many videos. A Backbone collection.
 # * `@fonts`.  It has many fonts.  A Backbone collection.
+# * @widgets. It has many widgets. A Backbone collection.
 class App.Models.Storybook extends Backbone.Model
   schema:
     title:
@@ -110,12 +111,27 @@ class App.Models.Storybook extends Backbone.Model
       ]
 
 
-  initialize: ->
+  parse: (attributes={}) ->
+    widgets = attributes.widgets; delete attributes.widgets
+    if @widgets?
+      @widgets.update(widgets) if widgets?
+    else
+      @widgets = new App.Collections.Widgets(widgets)
+      @widgets.storybook = @
+
+    attributes
+
+
+  initialize: (attributes) ->
+    @parse(attributes)
+
     @scenes = new App.Collections.ScenesCollection([], storybook: @)
     @images = new App.Collections.ImagesCollection([], storybook: @)
     @sounds = new App.Collections.SoundsCollection([], storybook: @)
     @videos = new App.Collections.VideosCollection([], storybook: @)
     @fonts  = new App.Collections.FontsCollection( [], storybook: @)
+
+    @widgets.on 'change', => @save()
 
 
   baseUrl: ->
@@ -129,7 +145,7 @@ class App.Models.Storybook extends Backbone.Model
 
 
   toJSON: ->
-    @attributes
+    _.extend super, widgets: @widgets.toJSON()
 
 
   fetchCollections: ->
