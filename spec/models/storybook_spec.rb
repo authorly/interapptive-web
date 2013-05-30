@@ -34,10 +34,10 @@ describe Storybook do
       storybook.widgets.count.should == 1
 
       home =  storybook.widgets[0]
-      home[:id].should == 4 # 3 main menu widgets and one home
+      home[:id].should == 1
       home[:type].should == 'ButtonWidget'
       home[:name].should == 'home'
-      home[:z_order].should == 4004
+      home[:z_order].should == 4010
       home[:scale].should == 1
       home[:position].should == {y: 400, x: 200}
     end
