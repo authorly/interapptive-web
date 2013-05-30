@@ -54,8 +54,6 @@ class App.Views.ToolbarView extends Backbone.View
     view = new App.Views.VoiceoverIndex App.currentSelection.get('keyframe')
     App.modalWithView(view: view).show()
 
-    App.vent.trigger 'align:audio'
-
 
   showSceneOptions: ->
     App.vent.trigger('show:sceneform')
