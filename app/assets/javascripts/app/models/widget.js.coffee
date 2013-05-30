@@ -30,6 +30,53 @@ class App.Models.HotspotWidget extends App.Models.Widget
     position: @defaultPosition()
 
 
+  sounds: ->
+    @collection.scene.storybook.sounds
+
+
+  videos: ->
+    @collection.scene.storybook.videos
+
+
+  asset: ->
+    if @get('sound_id')
+      @sounds().get(@get('sound_id'))
+    else if @get('video_id')
+      @videos().get(@get('video_id'))
+    else
+      null
+
+
+  assetKey: ->
+    if @get('sound_id')
+      'sound_id'
+    else if @get('video_id')
+      'video_id'
+    else
+      null
+
+
+  assetKeyForJSON: ->
+    if @get('sound_id')
+      'soundToPlay'
+    else if @get('video_id')
+      'videoToPlay'
+    else
+      null
+
+
+  assetId: ->
+    @asset()?.get('id')
+
+
+  assetUrl: ->
+    @asset()?.get('url')
+
+
+  assetFilename: ->
+    @asset()?.get('name')
+
+
 ##
 # A generic widget that has an associated image.
 class App.Models.ImageWidget extends App.Models.Widget
@@ -72,6 +119,22 @@ class App.Models.SpriteWidget extends App.Models.ImageWidget
       delete attributes.scale
 
     attributes
+
+
+  images: ->
+    @collection.scene.storybook.images
+
+
+  image: ->
+    @images().get(@get('image_id'))
+
+
+  url: ->
+    @image()?.get('url')
+
+
+  filename: ->
+    @image()?.get('name')
 
 
   getOrientationFor: (keyframe) ->
