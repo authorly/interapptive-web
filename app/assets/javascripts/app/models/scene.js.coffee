@@ -173,6 +173,7 @@ class App.Models.Scene extends Backbone.Model
 
 
 _.extend App.Models.Scene::, App.Mixins.DeferredSave
+_.extend App.Models.Scene::, App.Mixins.QueuedSync
 
 
 ##
