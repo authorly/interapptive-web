@@ -13,7 +13,6 @@ window.App =
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
-    @syncVent = new App.Lib.SynchronizationVent
 
     @vent.on 'reset:palettes',           @_resetPalettes,    @
     @vent.on 'toggle:palette',           @_togglePalette,    @
@@ -91,6 +90,8 @@ window.App =
     @currentSelection.on 'change:scene',     @_changeScene,    @
     @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
     @currentSelection.on 'change:widget',    @_triggerCurrentWidgetChangeEvent, @
+
+    @initializeGlobalSync()
 
 
   saveCanvasAsPreview: ->
@@ -307,14 +308,29 @@ window.App =
     # @simulator ||= new App.Views.Simulator(json: App.storybookJSON.toString())
 
 
+  initializeGlobalSync: ->
+    # A global vent for synchronization events
+    @syncVent = new App.Lib.SynchronizationVent
+    syncMixin =
+      # By default, all models (that have synchronization enabled) trigger
+      # synchronization events both on the object itself and on the global vent
+      syncVents: ->
+        [App.syncVent, @]
+
+    _.extend Backbone.Model::,      syncMixin
+    _.extend Backbone.Collection::, syncMixin
+
+    @syncIndicator = $('#global-sync-indicator')
+    @syncVent.on 'start', (-> @syncIndicator.show()), @
+    @syncVent.on 'end',   (-> @syncIndicator.hide()), @
+
+
   start: ->
     App.version =
       environment: $('#rails-environment').data('rails-environment'),
       git_head:    $('#rails-environment').data('git-head')
 
     App.init()
-    _.extend Backbone.Model::, syncVents: -> [App.syncVent, @]
-    _.extend Backbone.Collection::, syncVents: -> [App.syncVent, @]
 
     window.initBuilder()
 
