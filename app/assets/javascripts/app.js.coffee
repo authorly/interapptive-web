@@ -13,6 +13,7 @@ window.App =
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
+    @syncVent = _.extend {}, Backbone.Events
 
     @vent.on 'reset:palettes',           @_resetPalettes,    @
     @vent.on 'toggle:palette',           @_togglePalette,    @
@@ -312,6 +313,9 @@ window.App =
       git_head:    $('#rails-environment').data('git-head')
 
     App.init()
+    _.extend Backbone.Model::, syncVents: -> [App.syncVent, @]
+    _.extend Backbone.Collection::, syncVents: -> [App.syncVent, @]
+
     window.initBuilder()
 
     $(window).resize -> App.vent.trigger('window:resize')
