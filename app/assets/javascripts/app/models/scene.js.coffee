@@ -244,11 +244,15 @@ class App.Collections.ScenesCollection extends Backbone.Collection
     @_syncQueue ||= $({})
     deferred = $.Deferred()
 
-    @_syncQueue.queue (dequeueCallback) ->
+    @trigger 'synchronization:start' if @_syncQueue.queue().length == 0
+
+    @_syncQueue.queue  =>
       Backbone.sync(method, model, options)
         .done(deferred.resolve)
         .fail(deferred.reject)
-        .always(dequeueCallback)
+        .always =>
+          @_syncQueue.dequeue()
+          @trigger 'synchronization:end' if @_syncQueue.queue().length == 0
 
     deferred.promise()
 
