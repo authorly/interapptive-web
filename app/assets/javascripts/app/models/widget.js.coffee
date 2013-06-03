@@ -56,13 +56,12 @@ class App.Models.HotspotWidget extends App.Models.Widget
       null
 
 
-  assetKeyForJSON: ->
-    if @get('sound_id')
-      'soundToPlay'
-    else if @get('video_id')
-      'videoToPlay'
-    else
-      null
+  hasSound: ->
+    @asset() instanceof App.Models.Sound
+
+
+  hasVideo: ->
+    @asset() instanceof App.Models.Video
 
 
   assetId: ->
@@ -119,22 +118,6 @@ class App.Models.SpriteWidget extends App.Models.ImageWidget
       delete attributes.scale
 
     attributes
-
-
-  images: ->
-    @collection.scene.storybook.images
-
-
-  image: ->
-    @images().get(@get('image_id'))
-
-
-  url: ->
-    @image()?.get('url')
-
-
-  filename: ->
-    @image()?.get('name')
 
 
   getOrientationFor: (keyframe) ->

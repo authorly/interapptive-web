@@ -125,8 +125,10 @@ class App.JSON
               touchFlag: 1
               position: [Math.round(position.x), Math.round(position.y)]
               radius:   Math.round(widget.get('radius'))
-            if (asset = widget.asset())?
-              hash[widget.assetKeyForJSON()] = widget.assetUrl()
+            if widget.hasSound()
+              hash.soundToPlay = widget.assetUrl()
+            else if widget.hasVideo()
+              hash.videoToPlay = widget.assetUrl()
 
             hash
       Page:
