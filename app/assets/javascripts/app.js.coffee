@@ -13,7 +13,7 @@ window.App =
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
-    @syncVent = _.extend {}, Backbone.Events
+    @syncVent = new App.Lib.SynchronizationVent
 
     @vent.on 'reset:palettes',           @_resetPalettes,    @
     @vent.on 'toggle:palette',           @_togglePalette,    @
