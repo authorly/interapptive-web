@@ -212,14 +212,14 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
 
   addNewScene: ->
-    scene = new App.Models.Scene {
+    @create {
       storybook: @storybook
       storybook_id: @storybook.id
       position: @nextPosition()
-    }, parse: true
-    scene.save [],
-      success: => @add scene
-
+    }, {
+      wait: true
+      parse: true
+    }
 
   nextPosition: (scene=null) ->
     return null if scene?.isMainMenu()
