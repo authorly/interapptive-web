@@ -231,14 +231,26 @@ class App.Collections.ScenesCollection extends Backbone.Collection
     return unless @_positionsJSONIsDifferent(positions)
 
     @_savePositionsCache(positions)
-    $.ajax
-      contentType:"application/json"
-      dataType: 'json'
-      type: 'PUT'
-      data: JSON.stringify positions
+
+    @sync 'patch', Backbone,
       url: @ordinalUpdateUrl()
+      data: JSON.stringify positions
+      contentType:"application/json"
       success: =>
         @trigger 'change:positions'
+
+
+  sync: (method, model, options) ->
+    @_syncQueue ||= $({})
+    deferred = $.Deferred()
+
+    @_syncQueue.queue (dequeueCallback) ->
+      Backbone.sync(method, model, options)
+        .done(deferred.resolve)
+        .fail(deferred.reject)
+        .always(dequeueCallback)
+
+    deferred.promise()
 
 
   _savePositionsCache: (positions) ->
