@@ -20,4 +20,4 @@ App.Mixins.QueuedSync =
   syncQueue: ->
     @_syncQueue ||= new App.Lib.SyncQueue
       name: "#{@.constructor.name} #{if @cid? then "##{@cid}" else ''}"
-      vents: @syncVents()
+      vents: if @syncVents? then @syncVents() else [@]
