@@ -246,7 +246,7 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     $.ajax
       contentType:"application/json"
       dataType: 'json'
-      type: 'POST'
+      type: 'PUT'
       data: JSON.stringify positions
       url: @ordinalUpdateUrl()
       success: =>

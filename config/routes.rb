@@ -34,7 +34,7 @@ Interapptive::Application.routes.draw do
 
   resources :storybooks do
     resources :scenes do
-      collection { post :sort }
+      collection { put :sort }
     end
 
     resources :fonts
@@ -47,7 +47,7 @@ Interapptive::Application.routes.draw do
     #resources :actions
 
     resources :keyframes do
-      collection { post :sort }
+      collection { put :sort }
     end
   end
 
