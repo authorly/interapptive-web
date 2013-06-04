@@ -3,17 +3,6 @@ class Scene < ActiveRecord::Base
   belongs_to :sound
 
   has_many :keyframes, :dependent => :destroy
-  has_many :asset_maps, :as => :assetable,
-           :dependent => :destroy
-  has_many :images, :through => :asset_maps, :source => :asset,
-                    :conditions => { :type => 'Image' },
-                    :dependent => :destroy
-  has_many :sounds, :through => :asset_maps, :source => :asset,
-                    :conditions => { :type => 'Sound' },
-                    :dependent => :destroy
-  has_many :videos, :through => :asset_maps, :source => :asset,
-                    :conditions => { :type => 'Video' },
-                    :dependent => :destroy
 
   has_many :actions, :dependent => :destroy
 
