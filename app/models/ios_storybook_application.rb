@@ -32,6 +32,15 @@ class IosStorybookApplication < AbstractStorybookApplication
     @storybook.save!
     logger.info 'Uploading of ipa file completed!'
 
+    # Following should live outside of the codebase. So that
+    # configurations could be changed without redeploying
+    # the application.
+    FOG_DIRECTORY          = Fog::Storage.new(
+      :provider               => 'AWS',
+      :aws_access_key_id      => 'AKIAJ3N4AG2EGQRMHXRQ',
+      :aws_secret_access_key  => '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'
+    ).directories.get('interapptive')
+
     FOG_DIRECTORY.files.new(
       :key          => "compiled_applications/#{@storybook.id}/manifest.plist",
       :content_type => 'text/xml',
