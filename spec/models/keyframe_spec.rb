@@ -59,6 +59,7 @@ describe Keyframe do
 
       keyframe.widgets.should_not be
     end
+
   end
 
 end

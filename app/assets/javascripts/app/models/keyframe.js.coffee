@@ -61,6 +61,8 @@ class App.Models.Keyframe extends Backbone.Model
     @widgets.on 'add', (widget) =>
       if widget instanceof App.Models.TextWidget
         widget.set z_order: @nextTextZOrder(widget)
+      else if widget instanceof App.Models.HotspotWidget
+        widget.set z_order: @nextHotspotZOrder(widget)
 
     @widgets.on  'reset add remove change', @widgetsChanged, @
 
@@ -167,6 +169,10 @@ class App.Models.Keyframe extends Backbone.Model
     @widgets.byClass(App.Models.TextWidget)
 
 
+  hotspotWidgets: ->
+    @widgets.byClass(App.Models.HotspotWidget)
+
+
   updateContentHighlightTimes: (times, options={}) ->
     @save { content_highlight_times: times }, options
 
@@ -177,6 +183,14 @@ class App.Models.Keyframe extends Backbone.Model
       _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
     else
       (new App.Models.TextWidget).get('z_order')
+
+  nextHotspotZOrder: (widget) ->
+    widgets = _.reject @hotspotWidgets(), (hotspot) -> hotspot == widget
+    if widgets.length > 0
+      _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
+    else
+      (new App.Models.HotspotWidget).get('z_order')
+
 
 ##
 # Relations:
