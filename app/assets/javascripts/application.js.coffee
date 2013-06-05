@@ -15,6 +15,7 @@
 #= require jquery.countdown
 #= require backbone-forms.js
 #= require backbone-forms-list.min
+#= require backbone.collectionsubset
 #= require base64.js
 #= require canvas2image.js
 #= require form-templates/bootstrap

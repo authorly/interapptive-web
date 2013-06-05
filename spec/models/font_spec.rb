@@ -19,6 +19,7 @@ describe Font do
         'created_at'  => f.created_at.strftime("%Y %d %_m %l%p"),
         'delete_url'  => "/fonts/#{f.id}",
         'delete_type' => 'DELETE',
+        'asset_type'  => 'custom',
         'created_at'  => f.created_at
       }
 

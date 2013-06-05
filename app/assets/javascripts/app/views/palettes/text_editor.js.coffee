@@ -48,20 +48,14 @@ class App.Views.TextEditorPalette extends Backbone.View
   setDefaultValsForTextWidget: ->
     color = @widget.get('font_color')
     @$('#colorpicker span i').css('background-color', "rgb(#{color.r}, #{color.g}, #{color.b})")
-    @$('#font-face').val @widget.fontValue()
+    @$('#font-face').val @widget.font()?.get('id')
     @$('#font-size').val @widget.get('font_size')
 
 
   fontFaceChanged: (event) ->
     $selectedFontFace = $(event.currentTarget)
-    if $selectedFontFace.find('option:selected').data('type') is 'system'
-      @widget.set
-        font_id: null
-        font_face: $selectedFontFace.val()
-    else
-      @widget.set
-        font_id: $selectedFontFace.val()
-        font_face: null
+    @widget.set
+      font_id: $selectedFontFace.val()
 
 
   fontSizeChanged: (event) ->
@@ -86,59 +80,55 @@ class App.Views.TextEditorPalette extends Backbone.View
     return unless storybook?
 
     storybook.fonts.on 'add',    @fontAdded, @
-    storybook.fonts.on 'remove', @fontRemoved, @
+    storybook.fonts.on 'remove', @removeFontOption, @
 
 
   _removeFontsListeners: (storybook) ->
     return unless storybook?
 
     storybook.fonts.off 'add',    @fontAdded, @
-    storybook.fonts.off 'remove', @fontRemoved, @
+    storybook.fonts.off 'remove', @removeFontOption, @
 
 
   cacheExistingFonts: ->
-    $fontCacheEl = @$('#font-cache')
-    $fontCacheEl.empty()
-
+    @$('#font-cache').empty()
     @fonts = @storybook.fonts.models
-    _.each @fonts, (f) =>
-      @addFontToCache f.get('name'), f.get('url')
+    @addFontToCache(font) for font in @fonts
 
 
-  addFontToCache: (name, url) ->
-    $fontFaceImportEl = "@font-face { font-family: '#{name}'; src: url('#{url}'); }"
+  addFontToCache: (font) ->
+    return if font.isSystem()
+
+    $fontFaceImportEl = "@font-face { font-family: '#{font.get('name')}'; src: url('#{font.get('url')}'); }"
     @$('#font-cache').append($fontFaceImportEl)
 
 
-  addFontOption: (name, id) ->
-    @noFontsElement().hide()
+  addFontOption: (font) ->
+    $fontEl = $('<option/>',
+      value: font.get('id')
+      text:  font.get('name')
+    )
 
-    $('<option/>',
-      value: id
-      text:  name
-    ).appendTo('#uploaded-fonts')
+    if font.isSystem()
+      @$('#system-fonts').append($fontEl)
+    else
+      @noFontsElement().hide()
+      @$('#uploaded-fonts').append($fontEl)
 
 
-  removeFontOption: (name) ->
-    @noFontsElement().show() if @storybook.fonts.length == 0
-    @$("#uploaded-fonts option[value='#{name}']").remove()
+  removeFontOption: (font) ->
+    @noFontsElement().show() unless @storybook.hasCustomFonts()
+    @$("#uploaded-fonts option[value='#{font.get('name')}']").remove()
 
 
   addExistingFontOptions: ->
-    return if @fonts.length < 1
-
-    $fontOptionGroupEl = '#uploaded-fonts'
-    @$($fontOptionGroupEl).empty()
-    @addFontOption(font.get('name'), font.get('id')) for font in @fonts
+    @$('#uploaded-fonts').empty() if @storybook.hasCustomFonts()
+    @addFontOption(font) for font in @fonts
 
 
   fontAdded: (font) ->
-    @addFontToCache(font.get('name'), font.get('url'))
-    @addFontOption(font.get('name'), font.get('id'))
-
-
-  fontRemoved: (font) ->
-    @removeFontOption font.get('name')
+    @addFontToCache(font)
+    @addFontOption(font)
 
 
   disable: =>

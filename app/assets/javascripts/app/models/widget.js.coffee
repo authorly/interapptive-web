@@ -170,41 +170,29 @@ class App.Models.TextWidget extends App.Models.Widget
     string:  'Enter some text...'
     z_order: 6000
     position: @defaultPosition()
-    font_id: null
-    font_face: 'Arial'
+    font_id: @defaultFontId()
     font_size: 25
     font_color: { 'r': 255, 'g': 0, 'b': 0 }
-
-
-  # Used to retrieve font face name for the widget that should
-  # be put in CSS/HTML for correct rendering.
-  fontName: ->
-    if @get('font_id')
-      font = @collection.keyframe.scene.storybook.fonts.get(@get('font_id'))
-      return font.get('name')
-    else
-      return @get('font_face')
-
-
-  # Used to set correct font value in the font select dropdown
-  fontValue: ->
-    if @get('font_id')
-      font = @collection.keyframe.scene.storybook.fonts.get(@get('font_id'))
-      return font.get('id')
-    else
-      return @get('font_face')
 
 
   # Used to put filename of the font being used for a widget
   # in Storybook JSON.
   fontFileName: ->
-    if @get('font_id')
-      font = @collection.keyframe.scene.storybook.fonts.get(@get('font_id'))
-      return font.get('url')
-    else
-      # Following assumes that all system fonts are TTF.
-      return 'arial.ttf' if @get('font_face') == 'Arial'
-      return @get('font_face').replace(/\ /g, '') + '.ttf'
+    return 'arial.ttf' if (font = @font()).get('url') == 'Arial.ttf'
+    font.get('url')
+
+
+  font: ->
+    @fonts().get(@get('font_id'))
+
+
+  fonts: ->
+    return null unless @collection?.keyframe
+    @collection.keyframe.scene.storybook.fonts
+
+
+  defaultFontId: ->
+    @_defaultFontId ?= @fonts()?.where({ asset_type: 'system', name: 'Arial' })[0]?.get('id')
 
 
 ##

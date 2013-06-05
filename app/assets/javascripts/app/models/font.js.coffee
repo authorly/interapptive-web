@@ -4,6 +4,10 @@ class App.Models.Font extends Backbone.Model
     @get('name')
 
 
+  isSystem: ->
+    @get('asset_type') is 'system'
+
+
 class App.Collections.FontsCollection extends Backbone.Collection
   model: App.Models.Font
 
