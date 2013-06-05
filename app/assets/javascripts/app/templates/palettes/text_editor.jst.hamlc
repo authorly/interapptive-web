@@ -2,25 +2,7 @@
   %optgroup{:id => "uploaded-fonts", :label => "Uploaded Fonts"}
     %option#no-fonts-uploaded{:value => "", :disabled => ""}
       no fonts uploaded..
-  %optgroup{:label => "Standard Fonts"}
-    %option{:value => "Arial", 'data-type' => 'system'}
-      Arial
-    %option{:value => "Comic Sans MS", 'data-type' => 'system'}
-      Comic Sans MS
-    %option{:value => "Courier New", 'data-type' => 'system'}
-      Courier New
-    %option{:value => "Georgia", 'data-type' => 'system'}
-      Georgia
-    %option{:value => "Impact", 'data-type' => 'system'}
-      Impact
-    %option{:value => "Tahoma", 'data-type' => 'system'}
-      Tahoma
-    %option{:value => "Times New Roman", :selected => "", 'data-type' => 'system'}
-      Times New Roman
-    %option{:value => "Trebuchet MS", 'data-type' => 'system'}
-      Trebuchet MS
-    %option{:value => "Verdana", 'data-type' => 'system'}
-      Verdana
+  %optgroup{:id => "system-fonts", :label => "Standard Fonts"}
 
 %select#font-size{:readonly => "", :disabled => ""}
   - fontSizes = [24..46]

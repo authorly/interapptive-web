@@ -38,7 +38,7 @@ describe FontsController do
 
   context "#destroy" do
     it 'should destroy font' do
-      Font.should_receive(:find).with(@font.id.to_s).and_return(@font)
+      Font.should_receive(:where).with(:id => @font.id.to_s, :asset_type => 'custom').and_return([@font])
       @font.stub(:storybook).and_return(@storybook)
       @storybook.stub(:owned_by?).with(@user).and_return(true)
       @font.should_receive(:destroy).and_return(true)
