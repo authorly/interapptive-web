@@ -118,6 +118,16 @@ describe "App.JSON", ->
         url: 'https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg'
       @storybook.images.add @sprite_image
 
+      @sound = new App.Models.Sound
+        id: 11
+        url: "https://interapptive.s3.amazonaws.com/sounds/11/voicemail_received.wav"
+      @storybook.sounds.add @sound
+
+      @video = new App.Models.Video
+        id: 12
+        url: "https://interapptive.s3.amazonaws.com/videos/12/voicemail_received.mov"
+      @storybook.videos.add @video
+
       @scene1 = new App.Models.Scene {
         id: 3
         position: 0
@@ -127,10 +137,8 @@ describe "App.JSON", ->
         font_face: "Verdana"
         # TODO XXX why do we have the full path in the sound_id and video_id attributes?
         widgets: [
-          { 'type': 'HotspotWidget', 'id': 7, 'position': {'x': 510, 'y': 310}, 'radius': 60, 'sound_id': "https://interapptive.s3.amazonaws.com/sounds/6/voicemail_received.wav"
-          },
-          { 'type': 'HotspotWidget', 'id': 8, 'position': {'x': 410, 'y': 210}, 'radius': 20, 'video_id': "https://interapptive.s3.amazonaws.com/videos/8/voicemail_received.mov"
-          },
+          { 'type': 'HotspotWidget', 'id': 7, 'position': {'x': 510, 'y': 310}, 'radius': 60, 'sound_id': @sound.id },
+          { 'type': 'HotspotWidget', 'id': 8, 'position': {'x': 410, 'y': 210}, 'radius': 20, 'video_id': @video.id },
           { 'type': 'SpriteWidget', 'id': 9, 'image_id': @sprite_image.id},
         ]
       }, parse: true
@@ -188,12 +196,12 @@ describe "App.JSON", ->
       hotspot = hotspots[0]
       expect(hotspot.radius).toEqual 60
       expect(hotspot.position).toEqual [510, 310]
-      expect(hotspot.soundToPlay).toEqual "https://interapptive.s3.amazonaws.com/sounds/6/voicemail_received.wav"
+      expect(hotspot.soundToPlay).toEqual "https://interapptive.s3.amazonaws.com/sounds/11/voicemail_received.wav"
       expect(hotspot.videoToPlay).toBeUndefined()
 
       hotspot = hotspots[1]
       expect(hotspot.soundToPlay).toBeUndefined()
-      expect(hotspot.videoToPlay).toEqual "https://interapptive.s3.amazonaws.com/videos/8/voicemail_received.mov"
+      expect(hotspot.videoToPlay).toEqual "https://interapptive.s3.amazonaws.com/videos/12/voicemail_received.mov"
 
       keyframes = page.text.paragraphs
       expect(keyframes).toBeDefined()

@@ -18,7 +18,7 @@ class App.Views.Hotspot extends App.Views.AbstractFormView
     @_selectOption()
     @_showUploadAssetMessage()
     @attachDeleteButton() if @widget?.id
-    this
+    @
 
 
   attachDeleteButton: ->
@@ -42,7 +42,7 @@ class App.Views.Hotspot extends App.Views.AbstractFormView
   formOptions: ->
     data: @widget
     schema:
-      asset_url:
+      asset_id:
         type: "Select"
         title: "On touch"
         options: [
@@ -68,24 +68,26 @@ class App.Views.Hotspot extends App.Views.AbstractFormView
   prepareHashForWidget: (form_value) ->
     hash = {}
     try
-      hash[@keyForSelect(form_value.asset_url)] = form_value.asset_url
+      hash[@keyForSelect(form_value.asset_id)] = form_value.asset_id
     catch e
       hash = null
     hash
 
 
-  keyForSelect: (asset_url) ->
-    return 'video_id' if _.map(@collections.videos.models, (m) -> m.get('url')).indexOf(asset_url) > -1
-    return 'sound_id' if _.map(@collections.sounds.models, (m) -> m.get('url')).indexOf(asset_url) > -1
+  # Returns correct key name to be used for the asset that is being
+  # attached with a Hotspot. This leverages the fact that no two
+  # Storybook#sounds or Storybook#videos have same id. This is
+  # because Sound and Video, in Rails, inherit from Asset and have
+  # same table in the database i.e. 'assets'.
+  keyForSelect: (asset_id) ->
+    return 'video_id' if @collections.videos.get(asset_id)
+    return 'sound_id' if @collections.sounds.get(asset_id)
     throw new Error("Asset was not found in collection")
 
 
   populateAssetsFor: (asset_type) ->
     return "<option disabled='true'>There are no uploaded #{asset_type}.</option>" if @collections[asset_type].length is 0
-
-    _.map @collections[asset_type].models, (m) =>
-      "<option value='#{m.get('url')}'>" + m.get('name') + "</option>"
-    .join('')
+    @collections[asset_type]
 
 
   _showUploadAssetMessage: ->
@@ -96,10 +98,7 @@ class App.Views.Hotspot extends App.Views.AbstractFormView
 
   _selectOption: ->
     return unless @widget?
-    if @widget.get('video_id')?
-      @$("option[value='#{@widget.get('video_id')}']").attr('selected', 'selected')
-    else
-      @$("option[value='#{@widget.get('sound_id')}']").attr('selected', 'selected')
+    @$("option[value='#{@widget.assetId()}']").attr('selected', 'selected')
 
 
   _setAssetIdToWidget: (options) ->
