@@ -265,8 +265,7 @@ class App.JSON
       homeMenuForPages:
         normalStateImage : home.url()
         tappedStateImage : home.selectedUrl()
-        position         : { x: homeButtonPosition.x, y: homeButtonPosition.y }
-
+        position: [Math.round(homeButtonPosition.x), Math.round(homeButtonPosition.y)]
     node
 
 
