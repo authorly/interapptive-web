@@ -1,15 +1,8 @@
 class AbstractStorybookApplication
   CRUCIBLE_RESOURCES_DIR = File.join(Rails.root, '../../Crucible/HelloWorld/Resources')
-  # Following should live outside of the codebase. So that
-  # configurations could be changed without redeploying
-  # the application.
-  FOG_DIRECTORY          = Fog::Storage.new(
-    :provider               => 'AWS',
-    :aws_access_key_id      => 'AKIAJ3N4AG2EGQRMHXRQ',
-    :aws_secret_access_key  => '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'
-  ).directories.get('interapptive')
 
   @downloadable_file_extension_regex = nil
+  @fog_directory                     = nil
 
   def initialize(storybook, storybook_json, target)
     @storybook         = storybook
@@ -76,6 +69,10 @@ class AbstractStorybookApplication
     downloadable_extensions.uniq!
     @downloadable_file_extension_regex = Regexp.new(downloadable_extensions.join('|'), true) # true means case insensitive
     @downloadable_file_extension_regex
+  end
+
+  def self.fog_directory
+    @fog_directory ||= Fog::Storage.new(Rails.application.config.s3_credentials).directories.get('interapptive')
   end
 
   # System font names that could be moved out Resource directory
