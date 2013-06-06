@@ -1,0 +1,35 @@
+Arial:
+  font: 'Arial.ttf'
+  asset_type: 'system'
+
+ComicSansMS:
+  font: 'ComicSansMS.ttf'
+  asset_type: 'system'
+
+CourierNew:
+  font: 'CourierNew.ttf'
+  asset_type: 'system'
+
+Georgia:
+  font: 'Georgia.ttf'
+  asset_type: 'system'
+
+Impact:
+  font: 'Impact.ttf'
+  asset_type: 'system'
+
+Tahoma:
+  font: 'Tahoma.ttf'
+  asset_type: 'system'
+
+TimesNewRoman:
+  font: 'TimesNewRoman.ttf'
+  asset_type: 'system'
+
+TrebuchetMS:
+  font: 'TrebuchetMS.ttf'
+  asset_type: 'system'
+
+Verdana:
+  font: 'Verdana.ttf'
+  asset_type: 'system'

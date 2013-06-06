@@ -93,7 +93,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   setHtmlTextFontFace: ->
-    @_textWidgetElement().css('font-family', @model.fontName())
+    @_textWidgetElement().css('font-family', @model.font()?.get('name'))
 
 
   disableEditing: =>
@@ -122,7 +122,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   createLabel: ->
-    @label = cc.LabelTTF.create @model.get('string'), @model.fontName(), @model.get('font_size')
+    @label = cc.LabelTTF.create @model.get('string'), @model.font()?.get('name'), @model.get('font_size')
 
     fontColor = @model.get('font_color')
     @label.setColor(new cc.Color3B(fontColor.r, fontColor.g, fontColor.b))
@@ -201,7 +201,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
         'top':      @_topOffset()
         'left':     @_leftOffset())
       .addClass('text-widget')
-      .css('font-family', @model.fontName())
+      .css('font-family', @model.font()?.get('name'))
       .css('color',      "rgb(#{color.r}, #{color.g}, #{color.b})")
       .css('font-size',  "#{@model.get('font_size')}px")
       .css('min-width',  "#{@getContentSize().width}px")

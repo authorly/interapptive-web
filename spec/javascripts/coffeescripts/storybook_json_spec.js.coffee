@@ -128,6 +128,18 @@ describe "App.JSON", ->
         url: "https://interapptive.s3.amazonaws.com/videos/12/voicemail_received.mov"
       @storybook.videos.add @video
 
+      @custom_font = new App.Models.Font
+        id: 13
+        url: 'https://interapptive.s3.amazonaws.com/fonts/13/Russo_One.ttf'
+        asset_type: 'custom'
+      @storybook.fonts.add @custom_font
+
+      @system_font = new App.Models.Font
+        id: 14
+        url: 'Arial.ttf'
+        asset_type: 'system'
+      @storybook.fonts.add @system_font
+
       @scene1 = new App.Models.Scene {
         id: 3
         position: 0
@@ -150,8 +162,8 @@ describe "App.JSON", ->
         animation_duration: 3,
         widgets: [
           { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 9, position: { x: 400, y: 200}, scale: 1.5 }
-          { 'type': 'TextWidget', 'id': 12, 'position': {'x': 120, 'y': 330}, 'string': 'Some text' },
-          { 'type': 'TextWidget', 'id': 13, 'position': {'x': 150, 'y': 370}, 'string': 'Some other text' },
+          { 'type': 'TextWidget', 'id': 12, 'font_id': 13, 'position': {'x': 120, 'y': 330}, 'string': 'Some text' },
+          { 'type': 'TextWidget', 'id': 13, 'font_id': 14, 'position': {'x': 150, 'y': 370}, 'string': 'Some other text' },
         ],
         content_highlight_times: [1, 2, 4, 5, 20]
         url: 'https://interapptive.s3.amazonaws.com/sounds/29/page2.mp3'

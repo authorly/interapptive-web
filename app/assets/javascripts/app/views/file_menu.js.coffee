@@ -73,6 +73,9 @@ class App.Views.FileMenuView extends Backbone.View
 
   loadDataFor: (assetType) ->
     storybook = App.currentSelection.get('storybook')
-    view = new App.Views.AssetLibrary(assetType: assetType, assets: storybook[assetType + 's'])
+    if assetType is 'font'
+      view = new App.Views.AssetLibrary(assetType: assetType, assets: storybook.customFonts())
+    else
+      view = new App.Views.AssetLibrary(assetType: assetType, assets: storybook[assetType + 's'])
 
     App.modalWithView(view: view).show()

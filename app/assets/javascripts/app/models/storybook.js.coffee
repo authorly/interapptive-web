@@ -161,6 +161,18 @@ class App.Models.Storybook extends Backbone.Model
     @scenes.addNewScene()
 
 
+  hasCustomFonts: ->
+    @customFonts().length > 0
+
+
+  customFonts: ->
+    @_customFonts ||= @fonts.subcollection
+      filter: (font) -> !font.isSystem()
+      childOptions:
+        models: []
+        storybook: @
+
+
   compile: (platform) ->
     $.post('/compiler',
       storybook_json: JSON.stringify(new App.JSON(@).app)
