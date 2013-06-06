@@ -91,6 +91,8 @@ window.App =
     @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
     @currentSelection.on 'change:widget',    @_triggerCurrentWidgetChangeEvent, @
 
+    @initializeGlobalSync()
+
 
   saveCanvasAsPreview: ->
     window.setTimeout ( ->
@@ -306,12 +308,30 @@ window.App =
     # @simulator ||= new App.Views.Simulator(json: App.storybookJSON.toString())
 
 
+  initializeGlobalSync: ->
+    # A global vent for synchronization events
+    @syncVent = new App.Lib.SynchronizationVent
+    syncMixin =
+      # By default, all models (that have synchronization enabled) trigger
+      # synchronization events both on the object itself and on the global vent
+      syncVents: ->
+        [App.syncVent, @]
+
+    _.extend Backbone.Model::,      syncMixin
+    _.extend Backbone.Collection::, syncMixin
+
+    @syncDone = $('#global-sync-indicator .done')
+    @syncVent.on 'start', (-> @syncDone.css('visibility', 'hidden')), @
+    @syncVent.on 'end',   (-> @syncDone.css('visibility', 'visible')), @
+
+
   start: ->
     App.version =
       environment: $('#rails-environment').data('rails-environment'),
       git_head:    $('#rails-environment').data('git-head')
 
     App.init()
+
     window.initBuilder()
 
     $(window).resize -> App.vent.trigger('window:resize')

@@ -38,6 +38,9 @@
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
                   %a.close{"data-dismiss" => "alert"}
                   = msg
+              #global-sync-indicator
+                Synchronizing...
+                %span.done done.
               %canvas{id: 'builder-canvas', width: 1524, height: 1568}
                 %p Your browser doesn't support the technology required to run this application.
               #context-menu
