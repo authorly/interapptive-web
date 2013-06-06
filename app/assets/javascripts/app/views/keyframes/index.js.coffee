@@ -20,6 +20,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on 'change:preview'        , @keyframePreviewChanged, @
     @collection.on 'add'   , @appendKeyframe
     @collection.on 'remove', @removeKeyframe
+    @collection.on 'synchronization-start synchronization-end', @_toggleEnabled, @
 
     App.currentSelection.on 'change:keyframe', @keyframeChanged, @
     @keyframe_views = []
@@ -100,6 +101,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   destroyKeyframeClicked: (event) =>
     event.stopPropagation()
+    return if @$el.hasClass('disabled')
 
     if confirm(@DELETE_KEYFRAME_MSG)
       keyframe = @collection.get $(event.currentTarget).attr('data-id')
@@ -121,7 +123,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   initSortable: =>
-    $(@el).sortable
+    @$el.sortable
       cancel      : ''
       containment : 'footer'
       items       : 'li[data-is_animation!="1"]'
@@ -155,3 +157,10 @@ class App.Views.KeyframeIndex extends Backbone.View
   _removeKeyframeViews: ->
     _.each(@keyframe_views, (kv) -> kv.remove())
     @keyframe_views.length = 0
+
+
+  _toggleEnabled: (__, synchronizing) ->
+    if synchronizing
+      @$el.addClass(   'disabled').sortable('option', 'disabled', true)
+    else
+      @$el.removeClass('disabled').sortable('option', 'disabled', false)
