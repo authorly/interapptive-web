@@ -32,7 +32,7 @@ class IosStorybookApplication < AbstractStorybookApplication
     @storybook.save!
     logger.info 'Uploading of ipa file completed!'
 
-    FOG_DIRECTORY.files.new(
+    self.class.fog_directory.files.new(
       :key          => "compiled_applications/#{@storybook.id}/manifest.plist",
       :content_type => 'text/xml',
       :public       => true,
@@ -40,7 +40,7 @@ class IosStorybookApplication < AbstractStorybookApplication
     ).save
     logger.info 'Uploading of ipa file manifest.plist completed!'
 
-    FOG_DIRECTORY.files.new(
+    self.class.fog_directory.files.new(
       :key          => "compiled_applications/#{@storybook.id}/index.html",
       :content_type => 'text/html',
       :public       => true,
