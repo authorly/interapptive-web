@@ -48,3 +48,4 @@ class App.Models.Preview extends App.Models.Image
 
 
 _.extend App.Models.Preview::, App.Mixins.DeferredSave
+_.extend App.Models.Preview::, App.Mixins.QueuedSync

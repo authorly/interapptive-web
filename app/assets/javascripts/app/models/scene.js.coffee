@@ -170,6 +170,7 @@ class App.Models.Scene extends Backbone.Model
 
 
 _.extend App.Models.Scene::, App.Mixins.DeferredSave
+_.extend App.Models.Scene::, App.Mixins.QueuedSync
 
 
 ##
@@ -208,14 +209,13 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
 
   addNewScene: ->
-    scene = new App.Models.Scene {
+    @create {
       storybook: @storybook
       storybook_id: @storybook.id
       position: @nextPosition()
-    }, parse: true
-    scene.save [],
-      success: => @add scene
-
+    }, {
+      wait: true
+    }
 
   nextPosition: (scene=null) ->
     return null if scene?.isMainMenu()
@@ -228,12 +228,11 @@ class App.Collections.ScenesCollection extends Backbone.Collection
     return unless @_positionsJSONIsDifferent(positions)
 
     @_savePositionsCache(positions)
-    $.ajax
-      contentType:"application/json"
-      dataType: 'json'
-      type: 'PUT'
-      data: JSON.stringify positions
+
+    @sync 'patch', Backbone,
       url: @ordinalUpdateUrl()
+      data: JSON.stringify positions
+      contentType:"application/json"
       success: =>
         @trigger 'change:positions'
 
@@ -269,3 +268,5 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
     @sort silent: true
     @savePositions()
+
+_.extend App.Collections.ScenesCollection::, App.Mixins.QueuedSync
