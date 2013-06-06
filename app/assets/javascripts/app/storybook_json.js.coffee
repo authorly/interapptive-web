@@ -1,16 +1,9 @@
 ##
-#  This class is responsible for providing a structured JSON object
-#  to the Simulator as well as the Authorly mobile software.
+# This class is responsible for providing a structured JSON object
+# to the Simulator as well as the Authorly mobile software.
 #
-#  Most work is done by listening for various Backbone collections'
-#  events and modifying the JSON object accordingly.
+# It creates the JSON structure from scratch each time it is created.
 #
-#  Pointers are used for tracking nodes by associated scene (scene._page)
-#
-# It doesn't have any CRUD stuff related to widgets.
-# But it has CRUD support for scenes/keyframes and will add sprites to each
-# scene, but not update/remove.
-# Hotspots and text widgets are non-existant in the new implementation
 class App.JSON
 
   constructor: (storybook) ->
@@ -68,7 +61,7 @@ class App.JSON
   addTextNodeFor: (keyframe, page) =>
     return if keyframe.isAnimation()
 
-    widgets = keyframe.textWidgets()
+    textWidgets = keyframe.textWidgets()
 
     keyframeHighlightTimes = keyframe.get('content_highlight_times') || []
     if keyframeHighlightTimes.length < 1 then keyframeHighlightTimes.push(0)
@@ -76,7 +69,7 @@ class App.JSON
     paragraph =
       # delayForPanning: true
       # highlightingTimes: [0.3, 1.3, #_.map(keyframe.get('content_highlight_times'), (num) -> Number(num))
-      linesOfText: widgets.map (widget) ->
+      linesOfText: textWidgets.map (widget) ->
         color = widget.get('font_color')
 
         text: widget.get('string'),
@@ -86,10 +79,22 @@ class App.JSON
         fontColor: [color.r, color.g, color.b],
         fontHighlightColor: [255, 0, 0],
         fontSize: Number(widget.get('font_size'))
+      hotspots: keyframe.hotspotWidgets().map (widget) ->
+        position = widget.get('position')
+        hash =
+          glitterIndicator: true
+          stopEffectIndicator: false
+          touchFlag: 1
+          position: [Math.round(position.x), Math.round(position.y)]
+          radius:   Math.round(widget.get('radius'))
+        assetKey = if widget.hasSound() then 'soundToPlay' else 'videoToPlay'
+        hash[assetKey] = widget.assetUrl()
+        hash
+
       highlightingTimes: keyframeHighlightTimes
       voiceAudioFile: keyframe.get('url')
 
-    if widgets.length == 0
+    if textWidgets.length == 0
       paragraph.linesOfText = [{
         text: '',
         xOffset: 0,
@@ -99,6 +104,7 @@ class App.JSON
         fontHighlightColor: [255, 0, 0],
         fontSize: 25
       }]
+
 
     page.Page.text.paragraphs.push(paragraph)
     # keyframe._paragraph = paragraph
@@ -116,21 +122,6 @@ class App.JSON
         CCSpawn:     []
         CCStorySwipeEnded:
           runAction: []
-        CCStoryTouchableNode:
-          nodes: scene.hotspotWidgets().map (widget) ->
-            position = widget.get('position')
-            hash =
-              glitterIndicator: true
-              stopEffectIndicator: false
-              touchFlag: 1
-              position: [Math.round(position.x), Math.round(position.y)]
-              radius:   Math.round(widget.get('radius'))
-            if widget.hasSound()
-              hash.soundToPlay = widget.assetUrl()
-            else if widget.hasVideo()
-              hash.videoToPlay = widget.assetUrl()
-
-            hash
       Page:
         settings:
           number: scene.get('position') + 1
@@ -149,7 +140,6 @@ class App.JSON
     # @createParagraphListenersFor(scene)
 
     @addSpriteNodesFor(scene, page)
-
 
   # addSceneListeners: (scene) ->
     # @scene.on 'change', @updateSceneNode, @

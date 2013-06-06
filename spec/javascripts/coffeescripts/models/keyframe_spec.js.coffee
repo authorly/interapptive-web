@@ -25,6 +25,34 @@ describe "App.Models.Keyframe", ->
 
   it 'knows its text widgets', ->
     @keyframe.widgets.add [type: 'TextWidget']
-    @keyframe.widgets.add [type: 'SpriteWidget']
+    @keyframe.widgets.add [type: 'HotspotWidget']
 
     expect(@keyframe.textWidgets().length).toEqual(1)
+
+
+  describe 'widgets', ->
+    beforeEach ->
+      @widgets = @keyframe.widgets
+
+    describe 'z_order', ->
+      it 'should be the default for texts', ->
+        @widgets.add [type: 'TextWidget']
+        expect(@widgets.at(0).get('z_order')).toEqual (new App.Models.TextWidget).get('z_order')
+
+      it 'should be equal with the number of texts when adding subsequent texts', ->
+        @widgets.add [type: 'SpriteOrientation']
+        @widgets.add [type: 'TextWidget']
+        @widgets.add [type: 'TextWidget']
+        @widgets.add [type: 'TextWidget']
+        expect(@widgets.at(3).get('z_order')).toEqual (new App.Models.TextWidget).get('z_order') + 2
+
+      it 'should be the default for HotspotWidgets', ->
+        @widgets.add [type: 'HotspotWidget']
+        expect(@widgets.at(0).get('z_order')).toEqual (new App.Models.HotspotWidget).get('z_order')
+
+      it 'should be equal with the number of hotspots when adding subsequent hotspots', ->
+        @widgets.add [type: 'HotspotWidget']
+        @widgets.add [type: 'TextWidget']
+        @widgets.add [type: 'SpriteOrientation']
+        @widgets.add [type: 'HotspotWidget']
+        expect(@widgets.at(3).get('z_order')).toEqual (new App.Models.HotspotWidget).get('z_order') + 1

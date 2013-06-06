@@ -149,9 +149,6 @@ class App.Models.Scene extends Backbone.Model
     @trigger 'change:preview', @
 
 
-  hotspotWidgets: ->
-    @widgets.byClass(App.Models.HotspotWidget)
-
   spriteWidgets: ->
     @widgets.byClass(App.Models.SpriteWidget)
 

@@ -30,19 +30,11 @@ class App.Models.HotspotWidget extends App.Models.Widget
     position: @defaultPosition()
 
 
-  sounds: ->
-    @collection.scene.storybook.sounds
-
-
-  videos: ->
-    @collection.scene.storybook.videos
-
-
   asset: ->
     if @get('sound_id')
-      @sounds().get(@get('sound_id'))
+      @_storybook().sounds.get(@get('sound_id'))
     else if @get('video_id')
-      @videos().get(@get('video_id'))
+      @_storybook().videos.get(@get('video_id'))
     else
       null
 
@@ -74,6 +66,10 @@ class App.Models.HotspotWidget extends App.Models.Widget
 
   assetFilename: ->
     @asset()?.get('name')
+
+
+  _storybook: ->
+    @collection.keyframe.scene.storybook
 
 
 ##
@@ -274,9 +270,9 @@ class App.Collections.Widgets extends Backbone.Collection
     @get('name') == 'home'
 
   @containers:
-    'HotspotWidget': 'scene'
     'SpriteWidget':  'scene'
     'TextWidget':    'keyframe'
+    'HotspotWidget': 'keyframe'
 
 
 ##
