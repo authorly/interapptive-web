@@ -123,6 +123,9 @@ window.App =
       keyframe = App.currentSelection.get('keyframe')
       @saveCanvasAsPreview()
 
+    storybook.scenes.on 'synchronization:start', => @vent.trigger 'can_add:scene', false
+    storybook.scenes.on 'synchronization:end',   => @vent.trigger 'can_add:scene', true
+
 
     storybook.scenes.on 'reset', (scenes) ->
       # The simulator needs all the information upfront
