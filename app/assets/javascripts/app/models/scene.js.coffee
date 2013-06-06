@@ -218,7 +218,6 @@ class App.Collections.ScenesCollection extends Backbone.Collection
       position: @nextPosition()
     }, {
       wait: true
-      parse: true
     }
 
   nextPosition: (scene=null) ->

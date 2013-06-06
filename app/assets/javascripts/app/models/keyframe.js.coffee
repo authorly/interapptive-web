@@ -178,6 +178,8 @@ class App.Models.Keyframe extends Backbone.Model
     else
       (new App.Models.TextWidget).get('z_order')
 
+_.extend App.Models.Keyframe::, App.Mixins.QueuedSync
+
 ##
 # Relations:
 # @scene - it belongs to a scene.
@@ -220,17 +222,12 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   addNewKeyframe: (attributes={}) ->
-    # add the object to the collection after it was saved
-    # so we have only valid objects in the collection
-    # so the views don't need to deal with `id` changes
-    keyframe = new App.Models.Keyframe(
-      _.extend(attributes, {
-        scene: @scene
-        position: @nextPosition(attributes)
-      })
-    )
-    keyframe.save [],
-      success: => @add keyframe
+    @create _.extend(attributes, {
+      scene: @scene
+      position: @nextPosition(attributes)
+    }), {
+      wait: true
+    }
 
 
   nextPosition: (options) ->
@@ -243,12 +240,11 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     return unless @_positionsJSONIsDifferent(positions)
 
     @_savePositionsCache(positions)
-    $.ajax
-      contentType:"application/json"
-      dataType: 'json'
-      type: 'PUT'
-      data: JSON.stringify positions
+
+    @sync 'patch', Backbone,
       url: @ordinalUpdateUrl()
+      data: JSON.stringify positions
+      contentType:"application/json"
       success: =>
         @trigger 'change:positions'
 
@@ -283,3 +279,5 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
     @sort silent: true
     @savePositions()
+
+_.extend App.Collections.KeyframesCollection::, App.Mixins.QueuedSync
