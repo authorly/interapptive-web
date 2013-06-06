@@ -12,14 +12,16 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   initialize: ->
+    @_enableOnEvent 'can_add:keyframe', '.keyframe'
     @_enableOnEvent 'can_add:animationKeyframe', '.animation-keyframe'
     @_enableOnEvent 'can_add:text', '.edit-text'
     @_enableOnEvent 'can_add:voiceover', '.sync-audio'
+    @_enableOnEvent 'can_add:scene', '.scene'
 
     App.vent.on 'activate:scene', (scene) =>
       @$('li').removeClass 'disabled'
       if scene.isMainMenu()
-        @$('.edit-text,.touch-zones,.animation-keyframe,.keyframe,.sync-audio,.add-hotspot').addClass 'disabled'
+        @$('.edit-text,.touch-zones,.sync-audio,.add-hotspot').addClass 'disabled'
 
 
   addScene: ->
