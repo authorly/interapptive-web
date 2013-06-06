@@ -18,8 +18,7 @@ class App.Views.SceneIndex extends Backbone.View
     @collection.on 'reset'           , @render            , @
     @collection.on 'remove'          , @sceneRemoved      , @
     @collection.on 'change:positions', @_updatePositions  , @
-    @collection.on 'synchronization:start', => @_enableDeleteButtons(false)
-    @collection.on 'synchronization:end',   => @_enableDeleteButtons(true)
+    @collection.on 'synchronization-start synchronization-end', @_enableDeleteButtons, @
     App.vent.on    'window:resize'   , @adjustSize        , @
     App.currentSelection.on 'change:scene', @sceneChanged, @
 
@@ -125,9 +124,9 @@ class App.Views.SceneIndex extends Backbone.View
         element.find('.page-number').text(scene.get('position') + 1)
 
 
-  _enableDeleteButtons: (enable) ->
+  _enableDeleteButtons: (__, synchronizing) ->
     buttons = @$('.delete')
-    if enable
-      buttons.removeClass 'disabled'
-    else
+    if synchronizing
       buttons.addClass    'disabled'
+    else
+      buttons.removeClass 'disabled'

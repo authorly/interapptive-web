@@ -9,8 +9,8 @@ class App.Lib.SynchronizationVent
 
   constructor: ->
     @queue = []
-    @on 'synchronization:start', @enqueue, @
-    @on 'synchronization:end',   @dequeue, @
+    @on 'synchronization-start', @enqueue, @
+    @on 'synchronization-end',   @dequeue, @
 
 
   empty: ->
