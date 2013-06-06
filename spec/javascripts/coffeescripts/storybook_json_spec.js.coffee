@@ -60,7 +60,7 @@ describe "App.JSON", ->
     it 'has the home menu', ->
       menu = @configuration.homeMenuForPages
       expect(menu).toBeDefined()
-      expect(menu.position).toEqual {x: 200, y: 400}
+      expect(menu.position).toEqual [200, 400]
       expect(menu.normalStateImage).toEqual '/assets/sprites/home.png'
       expect(menu.tappedStateImage).toEqual '/assets/sprites/home-over.png'
 
