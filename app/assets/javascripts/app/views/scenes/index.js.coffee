@@ -50,7 +50,7 @@ class App.Views.SceneIndex extends Backbone.View
 
   deleteScene: (event) =>
     event.stopPropagation()
-    return if $(event.currentTarget).hasClass('disabled')
+    return if @$el.hasClass('disabled')
 
     if confirm(@DELETE_SCENE_MSG)
       scene = @collection.get $(event.currentTarget).attr('data-id')
@@ -125,8 +125,8 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   _enableDeleteButtons: (__, synchronizing) ->
-    buttons = @$('.delete')
     if synchronizing
-      buttons.addClass    'disabled'
+      @$el.addClass(   'disabled').sortable('option', 'disabled', true)
     else
-      buttons.removeClass 'disabled'
+      @$el.removeClass('disabled').sortable('option', 'disabled', false)
+
