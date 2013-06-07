@@ -16,9 +16,10 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   initialize: ->
-    @collection.on 'change:positions reset', @render                , @
-    @collection.on 'change:preview'        , @keyframePreviewChanged, @
-    @collection.on 'add'   , @appendKeyframe
+    @collection.on 'reset',            @render,                 @
+    @collection.on 'change:positions', @_updatePositions,       @
+    @collection.on 'change:preview',   @keyframePreviewChanged, @
+    @collection.on 'add',    @appendKeyframe
     @collection.on 'remove', @removeKeyframe
 
     App.currentSelection.on 'change:keyframe', @keyframeChanged, @
@@ -143,6 +144,13 @@ class App.Views.KeyframeIndex extends Backbone.View
       @collection.savePositions()
     ), 0
 
+
+  _updatePositions: =>
+    @$('li[data-is_animation!="1"]').each (__, element) =>
+      element = $(element)
+
+      if (id = element.data('id'))? && (keyframe = @collection.get(id))?
+        element.find('.keyframe-number').text(keyframe.get('position') + 1)
 
 
   _updateDeleteButtons: ->
