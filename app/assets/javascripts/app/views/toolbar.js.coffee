@@ -25,33 +25,43 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addScene: ->
+    event.preventDefault()
+    return if $(event.target).hasClass('disabled')
+
     App.vent.trigger 'create:scene'
 
 
   addKeyframe: ->
+    event.preventDefault()
+    return if $(event.target).hasClass('disabled')
+
     App.vent.trigger 'create:keyframe'
 
 
   addAnimationKeyframe: ->
+    event.preventDefault()
+    return if $(event.target).hasClass('disabled')
+
     App.vent.trigger 'create:keyframe', is_animation: true
 
 
   addText: (event) ->
     event.preventDefault()
-    return if $(event.currentTarget).hasClass('disabled')
+    return if $(event.target).hasClass('disabled')
 
     App.vent.trigger 'create:widget', type: 'TextWidget'
 
 
   addHotspot: (event) ->
     event.preventDefault()
-    return if $(event.currentTarget).hasClass('disabled')
+    return if $(event.target).hasClass('disabled')
 
     App.vent.trigger('initialize:hotspotWidget')
 
 
   alignAudio: (event) ->
-    return if $(event.currentTarget).hasClass('disabled')
+    event.preventDefault()
+    return if $(event.target).hasClass('disabled')
 
     view = new App.Views.VoiceoverIndex App.currentSelection.get('keyframe')
     App.modalWithView(view: view).show().modal.on('hide', view.stopVoiceover)
