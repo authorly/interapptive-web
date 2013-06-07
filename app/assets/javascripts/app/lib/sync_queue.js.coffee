@@ -13,14 +13,14 @@ class App.Lib.SyncQueue
 
 
   enqueue: (func) ->
-    @_trigger('synchronization:start') if @empty()
+    @_trigger('synchronization-start') if @empty()
 
     @_queue.queue(func)
 
 
   dequeue: ->
     @_queue.dequeue()
-    @_trigger('synchronization:end') if @empty()
+    @_trigger('synchronization-end') if @empty()
 
 
   empty: ->
@@ -28,4 +28,4 @@ class App.Lib.SyncQueue
 
 
   _trigger: (event) ->
-    vent.trigger(event, @) for vent in @vents
+    vent.trigger(event, @, event == 'synchronization-start') for vent in @vents

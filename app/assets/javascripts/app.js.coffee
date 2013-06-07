@@ -123,6 +123,8 @@ window.App =
       keyframe = App.currentSelection.get('keyframe')
       @saveCanvasAsPreview()
 
+    storybook.scenes.on 'synchronization-start synchronization-end', (__, synchronizing) =>
+      @vent.trigger 'can_add:scene', !synchronizing
 
     storybook.scenes.on 'reset', (scenes) ->
       # The simulator needs all the information upfront
@@ -146,7 +148,8 @@ window.App =
     @_addSceneListeners(scene)
 
     App.vent.trigger 'activate:scene', scene
-    scene.announceAnimation()
+    @vent.trigger 'can_add:keyframe', scene.canAddKeyframes()
+    @vent.trigger 'can_add:animationKeyframe', scene.canAddAnimationKeyframe()
 
     @keyframesView.remove() if @keyframesView?
     @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
@@ -156,14 +159,26 @@ window.App =
 
   _addSceneListeners: (scene) ->
     if scene?
-      scene.widgets.on 'remove', @_checkCurrentWidgetRemoved, @
-      scene.keyframes.on  'reset add remove', scene.announceAnimation, scene
+      scene.widgets.on    'remove', @_checkCurrentWidgetRemoved, @
+      scene.keyframes.on  'reset add remove', @_announceSceneAnimation, @
+      scene.keyframes.on  'synchronization-start synchronization-end', @_keyframesSynchronization, @
 
 
   _removeSceneListeners: (scene) ->
     if scene?
-      scene.widgets.off 'remove', @_checkCurrentWidgetRemoved, @
-      scene.keyframes.off 'reset add remove', scene.announceAnimation, scene
+      scene.widgets.off   'remove', @_checkCurrentWidgetRemoved, @
+      scene.keyframes.off 'reset add remove', @_announceSceneAnimation, @
+      scene.keyframes.off 'synchronization-start synchronization-end', @_keyframesSynchronization, @
+
+
+  _keyframesSynchronization: (__, synchronizing) ->
+    scene = App.currentSelection.get('scene')
+    @vent.trigger 'can_add:keyframe', !synchronizing && scene.canAddKeyframes()
+    @vent.trigger 'can_add:animationKeyframe', !synchronizing && scene.canAddAnimationKeyframe()
+
+
+  _announceSceneAnimation: (keyframes) ->
+    App.vent.trigger 'can_add:animationKeyframe', keyframes.scene.canAddAnimationKeyframe()
 
 
   _checkCurrentWidgetRemoved: (widget) ->

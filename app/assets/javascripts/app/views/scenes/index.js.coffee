@@ -18,6 +18,7 @@ class App.Views.SceneIndex extends Backbone.View
     @collection.on 'reset'           , @render            , @
     @collection.on 'remove'          , @sceneRemoved      , @
     @collection.on 'change:positions', @_updatePositions  , @
+    @collection.on 'synchronization-start synchronization-end', @_enableDeleteButtons, @
     App.vent.on    'window:resize'   , @adjustSize        , @
     App.currentSelection.on 'change:scene', @sceneChanged, @
 
@@ -49,6 +50,7 @@ class App.Views.SceneIndex extends Backbone.View
 
   deleteScene: (event) =>
     event.stopPropagation()
+    return if @$el.hasClass('disabled')
 
     if confirm(@DELETE_SCENE_MSG)
       scene = @collection.get $(event.currentTarget).attr('data-id')
@@ -120,3 +122,11 @@ class App.Views.SceneIndex extends Backbone.View
 
       if (id = element.data('id'))? && (scene = @collection.get(id))?
         element.find('.page-number').text(scene.get('position') + 1)
+
+
+  _enableDeleteButtons: (__, synchronizing) ->
+    if synchronizing
+      @$el.addClass(   'disabled').sortable('option', 'disabled', true)
+    else
+      @$el.removeClass('disabled').sortable('option', 'disabled', false)
+
