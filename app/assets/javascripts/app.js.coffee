@@ -315,7 +315,8 @@ window.App =
       if previous_widget?
         @vent.trigger('deactivate:' + App.Lib.StringHelper.decapitalize(previous_widget.get('type')), previous_widget)
     else
-      @vent.trigger('activate:' + App.Lib.StringHelper.decapitalize(widget.get('type')), widget)
+      if widget?
+        @vent.trigger('activate:' + App.Lib.StringHelper.decapitalize(widget.get('type')), widget)
 
 
   showSimulator: =>
