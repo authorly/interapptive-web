@@ -102,6 +102,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @model.set 'string', @input.text()
     @input.remove()
 
+    @trigger 'deselect', @
     App.vent.trigger 'done_editing:text'
 
 
@@ -116,6 +117,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @setIsVisible(true)
     @input.remove()
 
+    @trigger 'deselect', @
     App.vent.trigger 'done_editing:text'
 
 

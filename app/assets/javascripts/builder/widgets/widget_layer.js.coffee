@@ -60,6 +60,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       view.parent = @
       @addChild(view)
       @views.push view
+      view.on 'deselect', @_viewDeselected, @
 
       currentWidget = App.currentSelection.get('widget')
       if view.shouldBeEditable?() and (currentWidget == widget or not currentWidget?)
@@ -72,6 +73,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     view = @_getView(widget)
     @removeChild(view)
     @views.splice(@views.indexOf(view), 1)
+    view.off 'deselect', @_viewDeselected, @
 
     if App.currentSelection.get('widget') == widget
       App.currentSelection.set widget: null
@@ -198,6 +200,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     view = @_getView(widget)
     @_selectedWidget = view
     view?.select()
+
+
+  _viewDeselected: (view) ->
+    if @_selectedWidget == view
+      @_selectedWidget == null
+      App.currentSelection.set widget: null
 
 
   addCanvasMouseLeaveListener: ->
