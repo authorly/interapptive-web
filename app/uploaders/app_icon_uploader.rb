@@ -12,7 +12,7 @@ class AppIconUploader < CarrierWave::Uploader::Base
 
   # Choose what kind of storage to use for this uploader:
   if Rails.env.development?
-    storage :fog
+    storage :file
   else
     # In test environment, we have mocked fog storage
     storage :fog

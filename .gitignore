@@ -46,6 +46,13 @@ db/schema.rb
 /public/img/*
 /public/img
 public/uploads
+public/images
+public/fonts
+public/sounds
+public/android_applications
+public/app_icons
+public/compiled_applications
+public/keyframe_audios
 /spec/tmp/*
 /cache
 /capybara*
