@@ -71,21 +71,22 @@ class App.JSON
       # highlightingTimes: [0.3, 1.3, #_.map(keyframe.get('content_highlight_times'), (num) -> Number(num))
       linesOfText: textWidgets.map (widget) ->
         color = widget.get('font_color')
+        position = widget.get('position')
 
         text: widget.get('string'),
-        xOffset: Math.round(widget.get('position').x),
-        yOffset: Math.round(widget.get('position').y),
+        xOffset: Math.round(position.x),
+        yOffset: Math.round(position.y),
         fontType: widget.fontFileName(),
         fontColor: [color.r, color.g, color.b],
         fontHighlightColor: [255, 0, 0],
         fontSize: Number(widget.get('font_size'))
-      hotspots: keyframe.hotspotWidgets().map (widget) ->
+      hotspots: keyframe.hotspotWidgets().map (widget) =>
         position = widget.get('position')
         hash =
           glitterIndicator: true
           stopEffectIndicator: false
           touchFlag: 1
-          position: [Math.round(position.x), Math.round(position.y)]
+          position: @_getPosition(position)
           radius:   Math.round(widget.get('radius'))
         assetKey = if widget.hasSound() then 'soundToPlay' else 'videoToPlay'
         hash[assetKey] = widget.assetUrl()
@@ -171,7 +172,7 @@ class App.JSON
         spriteTag: spriteId
         # TODO does the app require this? because we have a Move action for the first
         # keyframe anyway
-        position:  [position.x, position.y]
+        position: @_getPosition(position)
       page.API.CCSprites.push(spriteNode)
 
       actions = page.API.CCStorySwipeEnded.runAction
@@ -202,7 +203,7 @@ class App.JSON
           page.API.CCMoveTo.push
             actionTag: moveId
             duration: duration
-            position: [Math.round(position.x), Math.round(position.y)]
+            position: @_getPosition(position)
 
         if keyframe.get('is_animation')
           delayId = @actionIdCounter.next()
@@ -255,7 +256,7 @@ class App.JSON
       homeMenuForPages:
         normalStateImage : home.url()
         tappedStateImage : home.selectedUrl()
-        position: [Math.round(homeButtonPosition.x), Math.round(homeButtonPosition.y)]
+        position: @_getPosition(homeButtonPosition)
     node
 
 
@@ -282,31 +283,35 @@ class App.JSON
         plistfilename     : 'snowflake-main-menu.plist'
 
       MenuItems:
-        scene.buttonWidgets().map (button) ->
-          position = button.get('position')
+        scene.buttonWidgets().map (button) =>
           str = App.Lib.StringHelper
           {
             normalStateImage: button.url()
             tappedStateImage: button.selectedUrl() || button.url()
             storyMode: str.decapitalize(str.camelize(button.get('name')))
-            position: [Math.round(position.x), Math.round(position.y)]
+            position: @_getPosition(button.get('position'))
           }
 
       API: {}
 
     _.each scene.spriteWidgets(), (spriteWidget) =>
-      position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
       spriteId = @spriteIdCounter.next()
+      position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
       spriteNode =
         image:     spriteWidget.url()
         spriteTag: spriteId
         # TODO does the app require this? because we have a Move action for the first
         # keyframe anyway
-        position:  [position.x, position.y]
+        position:  @_getPosition(position)
         visible: true
       node.CCSprites.push(spriteNode)
 
     node
+
+
+  _getPosition: (position) ->
+    [Math.round(position.x), Math.round(position.y)]
+
 
 
 

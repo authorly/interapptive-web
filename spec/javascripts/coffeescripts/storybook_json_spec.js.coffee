@@ -13,7 +13,7 @@ describe "App.JSON", ->
       autoplayPageTurnDelay: 3
       autoplayKeyframeDelay: 4
       widgets: [
-        {'type':'ButtonWidget', image_id: null,'id':4,'name':'home', position: {x: 200, y: 400}, scale: 1},
+        {'type':'ButtonWidget', image_id: null,'id':40,'name':'home', position: {x: 200, y: 400}, scale: 1},
       ]
     }
 
@@ -21,6 +21,12 @@ describe "App.JSON", ->
       id:  1
       url: 'http://authorly.dev/read_it_myself-over.png'
     @storybook.images.add @rim_selected_image
+
+    @main_menu_image = new App.Models.Image
+      id:  5
+      url: 'http://authorly.dev/main-menu-image.png'
+    @storybook.images.add @main_menu_image
+
 
     # storybooks come with a main menu scene
     @mainMenu = new App.Models.Scene {
@@ -30,7 +36,8 @@ describe "App.JSON", ->
       widgets: [
         {'type':'ButtonWidget', image_id: null,'id':1,'name':'read_it_myself', selected_image_id: @rim_selected_image.id, position: {x: 200, y: 100}, scale: 1},
         {'type':'ButtonWidget', image_id: null,'id':2,'name':'read_to_me', position: {x: 200, y: 200}, scale: 1},
-        {'type':'ButtonWidget', image_id: null,'id':3,'name':'auto_play', position: {x: 200, y: 300}, scale: 1}
+        {'type':'ButtonWidget', image_id: null,'id':3,'name':'auto_play', position: {x: 200, y: 300}, scale: 1},
+        {'type':'SpriteWidget', image_id: @main_menu_image.id,'id':4 }
       ]
     }, parse: true
     @storybook.scenes.add @mainMenu
@@ -39,6 +46,9 @@ describe "App.JSON", ->
       id: 101,
       scene: @mainMenu,
       position: null,
+      widgets: [
+        {type: 'SpriteOrientation', sprite_widget_id: 4, position: {x:200, y:10}, scale: 1.2}
+      ]
     }, parse: true
     @mainMenu.keyframes.add @mainMenuKeyframe
 
@@ -70,14 +80,23 @@ describe "App.JSON", ->
       @json = new App.JSON(@storybook)
 
     it 'is generated correctly', ->
-      expect(@json.app.MainMenu).toBeDefined()
+      menu = @json.app.MainMenu
+      expect(menu).toBeDefined()
 
-      expect(@json.app.MainMenu.CCSprites.length).toEqual 0
-      expect(@json.app.MainMenu.fallingPhysicsSettings).toBeDefined()
+      sprites = menu.CCSprites
+      expect(sprites.length).toEqual 1
+      sprite = sprites[0]
+      expect(sprite.spriteTag).toEqual 1
+      expect(sprite.image).toEqual @main_menu_image.get('url')
+      expect(sprite.position).toEqual [200, 10]
+      expect(sprite.visible).toEqual true
+      # scale is not taken into account by the mobile app
+
+      expect(menu.fallingPhysicsSettings).toBeDefined()
       # a fake entry as the IOS app needs something
-      expect(@json.app.MainMenu.fallingPhysicsSettings.plistfilename).toEqual 'snowflake-main-menu.plist'
+      expect(menu.fallingPhysicsSettings.plistfilename).toEqual 'snowflake-main-menu.plist'
 
-      items = @json.app.MainMenu.MenuItems
+      items = menu.MenuItems
       expect(items.length).toEqual 3
 
       # read it myself
@@ -248,10 +267,11 @@ describe "App.JSON", ->
       sprites = api.CCSprites
       expect(sprites).toBeDefined()
       expect(sprites.length).toEqual 1
+      console.log sprites
 
       sprite = sprites[0]
       expect(sprite.image).toEqual "https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg"
-      expect(sprite.spriteTag).toEqual 1
+      expect(sprite.spriteTag).toEqual 2
       expect(sprite.position).toEqual [400, 200]
 
       expect(api.CCMoveTo).toBeDefined()
@@ -294,7 +314,7 @@ describe "App.JSON", ->
       action = actions[0]
       expect(action).toBeDefined()
       expect(action.runAfterSwipeNumber).toEqual 1
-      expect(action.spriteTag).toEqual 1
+      expect(action.spriteTag).toEqual 2
       expect(action.actionTags).toEqual [ k2ScaleId, k2MoveId ]
 
 
