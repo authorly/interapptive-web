@@ -112,6 +112,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @setIsVisible(true)
     @input.remove()
 
+    App.vent.trigger 'done_editing:text'
+
 
   stringChanged: (model) ->
     @label.setString(model.get('string'))
