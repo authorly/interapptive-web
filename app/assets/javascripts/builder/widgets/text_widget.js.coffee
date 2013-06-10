@@ -105,6 +105,10 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     App.vent.trigger 'done_editing:text'
 
 
+  deselect: ->
+    @cancelEditing()
+
+
   cancelEditing: ->
     return if @getIsVisible()
 
