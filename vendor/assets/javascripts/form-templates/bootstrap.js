@@ -25,6 +25,7 @@
         <div class="controls">\
           {{editor}}\
           <div class="help-inline">{{help}}</div>\
+          <div class="help-inline"><div class="bbf-tmp-error" data-error></div></div>\
         </div>\
       </div>\
     ',
@@ -35,6 +36,7 @@
         <div class="controls">\
           <div class="input-prepend input-append"><span class="add-on">$</span>{{editor}}</div>\
           <div class="help-inline">{{help}}</div>\
+          <div class="help-inline"><div class="bbf-tmp-error" data-error></div></div>\
         </div>\
       </div>\
     '
