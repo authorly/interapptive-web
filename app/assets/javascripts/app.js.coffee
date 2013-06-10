@@ -229,7 +229,9 @@ window.App =
 
   _addNewWidget: (attributes) ->
     container = App.Collections.Widgets.containers[attributes.type]
-    App.currentSelection.get(container).widgets.add(attributes)
+    widget = new App.Models[attributes.type](attributes, parse: true)
+    App.currentSelection.get(container).widgets.add widget
+    App.currentSelection.set widget: widget
 
 
   # @param [Object] attributes
