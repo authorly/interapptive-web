@@ -229,7 +229,9 @@ window.App =
 
   _addNewWidget: (attributes) ->
     container = App.Collections.Widgets.containers[attributes.type]
-    App.currentSelection.get(container).widgets.add(attributes)
+    widget = new App.Models[attributes.type](attributes, parse: true)
+    App.currentSelection.get(container).widgets.add widget
+    App.currentSelection.set widget: widget
 
 
   # @param [Object] attributes
@@ -313,7 +315,8 @@ window.App =
       if previous_widget?
         @vent.trigger('deactivate:' + App.Lib.StringHelper.decapitalize(previous_widget.get('type')), previous_widget)
     else
-      @vent.trigger('activate:' + App.Lib.StringHelper.decapitalize(widget.get('type')), widget)
+      if widget?
+        @vent.trigger('activate:' + App.Lib.StringHelper.decapitalize(widget.get('type')), widget)
 
 
   showSimulator: =>

@@ -60,8 +60,10 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       view.parent = @
       @addChild(view)
       @views.push view
+      view.on 'deselect', @_viewDeselected, @
 
-      if view.shouldBeEditable?() and not App.currentSelection.get('widget')?
+      currentWidget = App.currentSelection.get('widget')
+      if view.shouldBeEditable?() and (currentWidget == widget or not currentWidget?)
         @_widgetDoubleClicked(view)
 
 
@@ -71,6 +73,10 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     view = @_getView(widget)
     @removeChild(view)
     @views.splice(@views.indexOf(view), 1)
+    view.off 'deselect', @_viewDeselected, @
+
+    if App.currentSelection.get('widget') == widget
+      App.currentSelection.set widget: null
 
 
   updateWidget: (widget) ->
@@ -189,15 +195,17 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   widgetSelected: (__, widget) ->
-    @_deselectSpriteWidgets()
+    view.deselect() for view in @views
 
-    widget = @_getView(widget)
-    @_selectedWidget = widget
-    widget?.select()
+    view = @_getView(widget)
+    @_selectedWidget = view
+    view?.select()
 
 
-  _deselectSpriteWidgets: =>
-    widget.deselect() for widget in @views when widget.isImageWidget()
+  _viewDeselected: (view) ->
+    if @_selectedWidget == view
+      @_selectedWidget == null
+      App.currentSelection.set widget: null
 
 
   addCanvasMouseLeaveListener: ->
@@ -239,10 +247,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   _widgetDoubleClicked: (widget, options={}) ->
+    App.currentSelection.set widget: widget?.model
+
     if widget?
       widget.doubleClick options
 
-    App.currentSelection.set widget: widget?.model
 
 
   addContextMenuEventListener: ->
