@@ -194,9 +194,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   widgetSelected: (__, widget) ->
     @_deselectSpriteWidgets()
 
-    widget = @_getView(widget)
-    @_selectedWidget = widget
-    widget?.select()
+    view = @_getView(widget)
+    @_selectedWidget = view
+    view?.select()
 
 
   _deselectSpriteWidgets: =>
