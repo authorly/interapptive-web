@@ -192,15 +192,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   widgetSelected: (__, widget) ->
-    @_deselectSpriteWidgets()
+    view.deselect() for view in @views
 
     view = @_getView(widget)
     @_selectedWidget = view
     view?.select()
-
-
-  _deselectSpriteWidgets: =>
-    widget.deselect() for widget in @views when widget.isImageWidget()
 
 
   addCanvasMouseLeaveListener: ->
@@ -242,10 +238,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   _widgetDoubleClicked: (widget, options={}) ->
+    App.currentSelection.set widget: widget?.model
+
     if widget?
       widget.doubleClick options
 
-    App.currentSelection.set widget: widget?.model
 
 
   addContextMenuEventListener: ->
