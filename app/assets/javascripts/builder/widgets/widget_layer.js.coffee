@@ -61,7 +61,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       @addChild(view)
       @views.push view
 
-      if view.shouldBeEditable?() and not App.currentSelection.get('widget')?
+      currentWidget = App.currentSelection.get('widget')
+      if view.shouldBeEditable?() and (currentWidget == widget or not currentWidget?)
         @_widgetDoubleClicked(view)
 
 
