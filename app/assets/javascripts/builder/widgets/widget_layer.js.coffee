@@ -61,6 +61,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       @addChild(view)
       @views.push view
 
+      if view.shouldBeEditable?() and not App.currentSelection.get('widget')?
+        @_widgetDoubleClicked(view)
+
 
   removeWidget: (widget) ->
     return if widget instanceof App.Models.SpriteOrientation
@@ -232,9 +235,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       point = @_getTouchCoordinates(touch)
 
       widget = @widgetAtPoint(point)
-      if widget?
-        widget.doubleClick touch: touch, point: point
-        App.currentSelection.set widget: widget.model
+      @_widgetDoubleClicked(widget, touch: touch, point: point)
+
+
+  _widgetDoubleClicked: (widget, options={}) ->
+    if widget?
+      widget.doubleClick options
+
+    App.currentSelection.set widget: widget?.model
 
 
   addContextMenuEventListener: ->

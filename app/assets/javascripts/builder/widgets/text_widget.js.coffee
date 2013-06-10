@@ -41,8 +41,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     @createLabel()
 
-    @makeEditableForDefaultText()
-
     @on 'double_click', @doubleClick
 
     @model.on 'change:string',                   @stringChanged,    @
@@ -54,11 +52,10 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     # This event is used only to communicate in between views
     # that alter / display the widget.
     @model.on 'change:visual_font_color',        @fontColorChanged, @
-    App.vent.on 'edit:text_widget', @disableEditing, @
 
 
-  makeEditableForDefaultText: ->
-    if @model.get('string') is @DEFAULT_TEXT then @doubleClick()
+  shouldBeEditable : ->
+    @model.get('string') is @DEFAULT_TEXT
 
 
   fontColorChanged: (rgb) ->
@@ -158,7 +155,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   doubleClick: (touch, event) =>
-    App.vent.trigger 'edit:text_widget'
+    @disableEditing()
 
     @setIsVisible(false)
     @convertLabelToEditableText()
