@@ -132,7 +132,6 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   disable: =>
-    @_unsetCurrentWidget()
     @$('select').attr('readonly', 'readonly')
       .attr('disabled','true')
       .addClass('disabled')
@@ -152,12 +151,3 @@ class App.Views.TextEditorPalette extends Backbone.View
   noFontsElement: ->
     @$('#no-fonts-uploaded')
 
-
-  # Manually unsetting the text widget so that next time when
-  # App.currentSelection.set('widget', <a-text-widget>) fires 
-  # 'change:widget' event (that is translated to 'activate:textWidget')
-  # if same text widget is selected, unselected and selected again.
-  #
-  # This should be removed once #513 is fixed.
-  _unsetCurrentWidget: ->
-    App.currentSelection.set('widget', null)
