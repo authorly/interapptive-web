@@ -72,6 +72,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @removeChild(view)
     @views.splice(@views.indexOf(view), 1)
 
+    if App.currentSelection.get('widget') == widget
+      App.currentSelection.set widget: null
+
 
   updateWidget: (widget) ->
     if widget instanceof App.Models.SpriteOrientation
