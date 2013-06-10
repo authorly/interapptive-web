@@ -142,18 +142,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @parent.setCursor('default')
 
 
-  drawSelection: ->
-    cc.renderContext.strokeStyle = @BORDER_COLOR
-    cc.renderContext.lineWidth = @BORDER_WIDTH
-
-    lSize = @label.getContentSize()
-    a = cc.ccp(0 - lSize.width / 2 - @TEXT_PADDING, lSize.height / 2 + @TEXT_PAD_TOP)     # top left
-    b = cc.ccp(lSize.width / 2 + @TEXT_PADDING, lSize.height / 2 + @TEXT_PAD_TOP)         # top right
-    c = cc.ccp(lSize.width / 2 + @TEXT_PADDING, 0 - lSize.height / 2 - @TEXT_PAD_BTM)     # bottom right
-    d = cc.ccp(0 - lSize.width / 2 - @TEXT_PADDING, 0 - lSize.height / 2 - @TEXT_PAD_BTM) # bottom left
-    cc.drawingUtil.drawPoly([a, b, c, d], 4, true)
-
-
   doubleClick: (touch, event) =>
     @disableEditing()
 
