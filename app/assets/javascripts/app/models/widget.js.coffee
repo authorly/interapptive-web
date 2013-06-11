@@ -337,18 +337,26 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
   _addListeners: (keyframe) ->
     return unless keyframe?
 
-    keyframe.widgets.on       'add',    @add,    @
-    keyframe.widgets.on       'remove', @remove, @
-    keyframe.scene.widgets.on 'add',    @add,    @
-    keyframe.scene.widgets.on 'remove', @remove, @
+    keyframe.widgets.on       'add',    @_addWidget,    @
+    keyframe.widgets.on       'remove', @_removeWidget, @
+    keyframe.scene.widgets.on 'add',    @_addWidget,    @
+    keyframe.scene.widgets.on 'remove', @_removeWidget, @
 
 
   _removeListeners: (keyframe) ->
     return unless keyframe?
 
-    keyframe.widgets.off       'add',    @add,    @
-    keyframe.scene.widgets.off 'add',    @add,    @
+    keyframe.widgets.off       'add',   @_addWidget,    @
+    keyframe.scene.widgets.off 'add',   @_addWidget,    @
     # not sure why these are not needed, but tests show that they aren't
     # @dira 2013-03-27
     # keyframe.widgets.off       'remove', @remove, @
     # keyframe.scene.widgets.off 'remove', @remove, @
+
+
+  _addWidget: (widget) ->
+    @add(widget)
+
+
+  _removeWidget: (widget) ->
+    @remove(widget)
