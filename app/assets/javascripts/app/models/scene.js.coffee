@@ -18,10 +18,7 @@ class App.Models.Scene extends Backbone.Model
     delete attributes.storybook
 
     widgets = attributes.widgets; delete attributes.widgets
-    if @widgets?
-      # RFCTR enable this when upgrading to Backbone 0.9.9
-      # @widgets.update(widgets)
-    else
+    unless @widgets?
       @widgets = new App.Collections.Widgets(widgets)
       @widgets.scene = @
 
