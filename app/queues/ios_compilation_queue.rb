@@ -15,7 +15,7 @@ class IosCompilationQueue < GenericQueue
       storybook_application.upload_compiled_application
       storybook_application.send_notification
     ensure
-      storybook_application.cleanup
+      #storybook_application.cleanup
     end
     storybook_application
   end
