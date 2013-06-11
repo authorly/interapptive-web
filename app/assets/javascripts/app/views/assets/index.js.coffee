@@ -19,7 +19,7 @@ class App.Views.AssetIndex extends Backbone.View
 
   render: ->
     @table = @$el.dataTable
-      aaData:    @_getData()
+      aaData:    @collection.map(@_getData)
       aoColumns: @_getColumns()
       aaSorting: [[@_getFields().indexOf('created_at'), 'asc']]
       bLengthChange: false
@@ -38,13 +38,12 @@ class App.Views.AssetIndex extends Backbone.View
     @collection.off 'remove', @_assetRemoved, @
 
 
-  _getData: ->
+  _getData: (asset, fields) =>
     fields = @_getFields()
-    @collection.map (asset) ->
-      row = DT_RowId: 'asset_' + asset.id
-      _.each fields, (field, index) ->
-        row[index] = asset.get(field)
-      row
+    row = DT_RowId: 'asset_' + asset.id
+    _.each fields, (field, index) ->
+      row[index] = asset.get(field)
+    row
 
 
   _getColumns: ->
@@ -120,7 +119,7 @@ class App.Views.AssetIndex extends Backbone.View
 
 
   _assetAdded:  (asset) ->
-    data = _.map @_getFields(), (field) -> asset.get(field)
+    data = @_getData(asset)
     @table.fnAddData data
 
 
