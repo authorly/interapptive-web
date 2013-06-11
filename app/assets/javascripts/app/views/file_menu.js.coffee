@@ -15,8 +15,8 @@ class App.Views.FileMenuView extends Backbone.View
     'click .sounds':                  'showSoundLibrary'
 
 
-  render: ->
-    @
+  initialize: ->
+    App.vent.on 'show:imageLibrary', @showImageLibrary, @
 
 
   switchStorybook: ->

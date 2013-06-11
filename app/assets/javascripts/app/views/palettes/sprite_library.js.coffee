@@ -3,16 +3,23 @@
 # active scene.
 #
 class App.Views.SpriteLibraryPalette extends Backbone.View
+  template: JST['app/templates/palettes/sprite_library']
   className: 'sprites'
   tagName: 'ul'
   events:
     'click #sprite-message-library-link': '_openUploadModal'
     'click li': '_highlightSpriteElement'
+    'click .icon-plus': '_addImage'
 
 
   initialize: ->
     @views = []
 
+
+  render: ->
+    @$el.html(@template())
+    @_enableAddTooltip()
+    @
 
   openStorybook: (storybook) ->
     @storybook = storybook
@@ -70,3 +77,13 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
 
   _highlightSpriteElement: (event) ->
     @$(event.currentTarget).toggleClass('selected').siblings().removeClass('selected')
+
+
+  _enableAddTooltip: ->
+    @$('.icon-plus').tooltip
+      title: "Add Images..."
+      placement: 'right'
+
+
+  _addImage: ->
+    App.vent.trigger('show:imageLibrary')
