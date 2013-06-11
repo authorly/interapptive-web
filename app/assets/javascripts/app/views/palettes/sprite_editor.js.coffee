@@ -36,7 +36,10 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   getCurrentOrientation: ->
-    @widget.getOrientationFor(App.currentSelection.get('keyframe'))
+    if @widget instanceof App.Models.SpriteWidget
+      @widget.getOrientationFor(App.currentSelection.get('keyframe'))
+    else
+      @widget
 
 
   resetForm: =>
@@ -46,7 +49,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
 
   setActiveSprite: (__, sprite) ->
-    if sprite && sprite instanceof App.Models.SpriteWidget
+    if sprite && sprite instanceof App.Models.ImageWidget
       @widget = sprite
       @enablePalette()
       @displayFilename()
