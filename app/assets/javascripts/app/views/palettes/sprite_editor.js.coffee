@@ -9,12 +9,7 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   SCALE_STEP:    1
 
-  ENTER_KEYCODE: 13
-  LEFT_KEYCODE:  37
-  UP_KEYCODE:    38
-  RIGHT_KEYCODE: 39
-  DOWN_KEYCODE:  40
-  CONTROL_KEYS: [8, 9, @ENTER_KEYCODE, 35, 36, @LEFT_KEYCODE, @RIGHT_KEYCODE]
+  CONTROL_KEYS: _.map ['backspace', 'tab', 'enter', 'home', 'end', 'left', 'right'], (name) -> App.Lib.Keycodes[name]
 
 
   initialize: ->
@@ -107,10 +102,10 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     return unless @$('li.half').find('input').attr('disabled') is 'disabled'
 
     switch event.keyCode
-      when @LEFT_KEYCODE  then @_moveSprite('left',  1)
-      when @UP_KEYCODE    then @_moveSprite('up',    1)
-      when @RIGHT_KEYCODE then @_moveSprite('right', 1)
-      when @DOWN_KEYCODE  then @_moveSprite('down',  1)
+      when App.Lib.Keycodes.left  then @_moveSprite('left',  1)
+      when App.Lib.Keycodes.up    then @_moveSprite('up',    1)
+      when App.Lib.Keycodes.right then @_moveSprite('right', 1)
+      when App.Lib.Keycodes.down  then @_moveSprite('down',  1)
 
 
   _moveSprite: (direction, pixels) ->
@@ -146,22 +141,20 @@ class App.Views.SpriteEditorPalette extends Backbone.View
 
   _addEnterKeyInputListener: ->
     @$('#x-coord, #y-coord').keydown (e) =>
-      @_delayedSavePosition(@_position()) if e.keyCode is @ENTER_KEYCODE
+      @_delayedSavePosition(@_position()) if e.keyCode is App.Lib.Keycodes.enter
 
     @$('#scale-amount').keydown (e) =>
-      @_setScale() if e.keyCode is @ENTER_KEYCODE
+      @_setScale() if e.keyCode is App.Lib.Keycodes.enter
 
 
   _addNumericInputListener: ->
     @$('#x-coord, #y-coord, #scale-amount').keypress (event) => # Numeric keyboard inputs only
-      # 45: -
-      # 48: 0
-      # 57: 9
-      ok = not event.which or (48 <= event.which <= 57) or @CONTROL_KEYS.indexOf(event.which) > -1
+      number = App.Lib.Keycodes[0] <= event.which <= App.Lib.Keycodes[9]
+      ok = not event.which or number or @CONTROL_KEYS.indexOf(event.which) > -1
 
       switch event.currentTarget.id
         when 'x-coord', 'y-coord'
-          ok = true if event.which == 45
+          ok = true if event.which == App.Lib.Keycodes.minus
 
       event.preventDefault() unless ok
 
@@ -170,19 +163,19 @@ class App.Views.SpriteEditorPalette extends Backbone.View
     @$('#x-coord').keyup (event) =>
       _kc = event.keyCode
 
-      if _kc is @UP_KEYCODE
+      if _kc is App.Lib.Keycodes.up
         @_moveSprite('right', 1)
 
-      if _kc is @DOWN_KEYCODE
+      if _kc is App.Lib.Keycodes.down
         @_moveSprite('left', 1)
 
     @$('#y-coord').keyup (event) =>
       _kc = event.keyCode
 
-      if _kc is @UP_KEYCODE
+      if _kc is App.Lib.Keycodes.up
         @_moveSprite('up', 1)
 
-      if _kc is @DOWN_KEYCODE
+      if _kc is App.Lib.Keycodes.down
         @_moveSprite('down', 1)
 
 

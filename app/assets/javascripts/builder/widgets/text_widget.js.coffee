@@ -25,8 +25,6 @@
 #
 
 class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
-  ESCAPE_KEYCODE: 27
-  ENTER_KEYCODE:  13
   TEXT_PADDING:   14
   TEXT_PAD_BTM:   16
   TEXT_PAD_TOP:   6
@@ -168,8 +166,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
     $contentEditableEl.keydown (event) =>
       @reorientateTextWidgetElement()
-      if event.keyCode is @ENTER_KEYCODE then @disableEditing()
-      if event.keyCode is @ESCAPE_KEYCODE then @cancelEditing()
+      if event.keyCode is App.Lib.Keycodes.enter  then @disableEditing()
+      if event.keyCode is App.Lib.Keycodes.escape then @cancelEditing()
 
 
   reorientateTextWidgetElement: ->
