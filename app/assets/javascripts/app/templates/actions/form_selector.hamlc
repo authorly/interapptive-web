@@ -1,4 +1,0 @@
-%select#action-list{:disabled => @disabled}
-  - for action in @actionDefinitions
-    %option{:value => action.id, :selected => (@activeDefinition.id == action.id) }
-      = action.get('name')

@@ -72,7 +72,7 @@ class AbstractStorybookApplication
   end
 
   def self.fog_directory
-    @fog_directory ||= Fog::Storage.new(Rails.application.config.s3_credentials).directories.get('interapptive')
+    @fog_directory ||= Fog::Storage.new(Rails.application.config.s3_credentials).directories.get(Rails.application.config.s3_bucket)
   end
 
   # System font names that could be moved out Resource directory

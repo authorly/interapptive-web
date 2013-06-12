@@ -4,4 +4,4 @@ Fog.credentials = {
   :aws_secret_access_key  => 'zonFFwsM1qY1tueduERgYgubfE9yU46KKgju6p78'
 }
 connection = Fog::Storage.new(:provider => 'AWS')
-connection.directories.create(:key => 'interapptive')
+connection.directories.create(:key => 'authorly-test')
