@@ -100,14 +100,25 @@ class App.Views.AssetIndex extends Backbone.View
     id.substr(id.indexOf('_') + 1)
 
 
+  # Corresponding widgets are destroyed when an asset is destroyed.
+  # Look for imageRemoved, soundRemoved and other functions under
+  # App.Collections.Widgets
   destroyAsset: (e) =>
     e.preventDefault()
     e.stopPropagation()
 
-    if @assetType == 'image'
-      return unless confirm("Are you sure you want to delete this image and corresponding sprites from all the scenes?")
+    if @assetType is not 'font'
+      return unless confirm("Are you sure you want to delete this #{@assetType} and corresponding #{@_assetTypeToWidgetType()} from all the scenes?")
 
     @_destroyAsset(e)
+
+
+  _assetTypeToWidgetType: ->
+    switch @assetType
+      when 'image' then 'sprites'
+      when 'sound' then 'hotspots'
+      when 'video' then 'hotspots'
+      when 'font'  then 'texts'
 
 
   _destroyAsset: (e) ->

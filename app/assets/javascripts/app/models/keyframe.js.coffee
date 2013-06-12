@@ -69,6 +69,10 @@ class App.Models.Keyframe extends Backbone.Model
     @scene.widgets.on 'add',    @sceneWidgetAdded,   @
     @scene.widgets.on 'remove', @sceneWidgetRemoved, @
 
+    @scene.storybook.sounds.on 'remove', @soundRemoved, @
+    @scene.storybook.videos.on 'remove', @videoRemoved, @
+    @scene.storybook.fonts.on  'remove', @fontRemoved, @
+
 
   uninitializeWidgets: ->
     @widgets.off 'reset add remove change', @widgetsChanged, @
@@ -109,6 +113,18 @@ class App.Models.Keyframe extends Backbone.Model
   uninitializePreview: ->
     @preview.off 'change:data_url change:url', @_previewChanged, @
     @preview.off 'change:id', @_previewIdChanged, @
+
+
+  soundRemoved: (sound) ->
+    @widgets.soundRemoved(sound)
+
+
+  videoRemoved: (video) ->
+    @widgets.videoRemoved(video)
+
+
+  fontRemoved: (font) ->
+    @widgets.fontRemoved(font)
 
 
   _previewChanged: ->
