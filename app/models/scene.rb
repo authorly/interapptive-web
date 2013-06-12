@@ -4,10 +4,6 @@ class Scene < ActiveRecord::Base
 
   has_many :keyframes, :dependent => :destroy
 
-  has_many :actions, :dependent => :destroy
-
-  # has_many :attributes, :through => :actions
-
   belongs_to :preview_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound'
 

@@ -8,7 +8,7 @@ class IosStorybookApplication < AbstractStorybookApplication
 
   def initialize(*args)
     super
-    @deploy_to_url = "https://interapptive.s3.amazonaws.com/compiled_applications/#{@storybook.id}"
+    @deploy_to_url = "https://#{Rails.application.config.s3_bucket}.s3.amazonaws.com/compiled_applications/#{@storybook.id}"
   end
 
   def compile

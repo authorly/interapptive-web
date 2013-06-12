@@ -16,7 +16,7 @@ class FontUploader < CarrierWave::Uploader::Base
   # In test environment, we have mocked fog storage.
   # In development, it is :file. See carrierwave.rb initializer
   if Rails.env.development?
-    storage :fog
+    storage :file
   else
     # In test environment, we have mocked fog storage
     storage :fog
