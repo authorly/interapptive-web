@@ -7,4 +7,4 @@ class App.Routers.StorybooksRouter extends Backbone.Router
       collection: new App.Collections.StorybooksCollection()
       el: '#storybooks'
 
-    view.collection.fetch()
+    view.collection.fetch(reset: true)
