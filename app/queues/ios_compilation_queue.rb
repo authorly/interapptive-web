@@ -8,7 +8,7 @@ class IosCompilationQueue < GenericQueue
   def self.perform(storybook_id, storybook_json)
     logger.info "Compiling ios storybook #{storybook_id} with #{storybook_json}"
     storybook = Storybook.find(storybook_id)
-    storybook_application = IosStorybookApplication.new(storybook, storybook_json, storybook.title)
+    storybook_application = IosStorybookApplication.new(storybook, storybook_json, 'Authorly')
 
     begin
       storybook_application.compile
