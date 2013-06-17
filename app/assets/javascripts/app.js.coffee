@@ -132,6 +132,7 @@ window.App =
         scene.fetchKeyframes()
 
     storybook.fetchCollections()
+    App.Config.text_widget_default_font_id = storybook.fonts.where({ asset_type: 'system', name: 'Arial' })[0].get('id')
 
     @textEditorPalette.view.openStorybook(storybook)
     @spriteLibraryPalette.view.openStorybook(storybook)
