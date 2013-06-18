@@ -89,8 +89,8 @@ describe "App.JSON", ->
       expect(sprite.spriteTag).toEqual 1
       expect(sprite.image).toEqual @main_menu_image.get('url')
       expect(sprite.position).toEqual [200, 10]
+      expect(sprite.scale).toEqual 1.2
       expect(sprite.visible).toEqual true
-      # scale is not taken into account by the mobile app
 
       expect(menu.fallingPhysicsSettings).toBeDefined()
       # a fake entry as the IOS app needs something

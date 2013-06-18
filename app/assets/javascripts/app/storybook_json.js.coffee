@@ -296,13 +296,12 @@ class App.JSON
 
     _.each scene.spriteWidgets(), (spriteWidget) =>
       spriteId = @spriteIdCounter.next()
-      position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
+      orientation = scene.keyframes.at(0).getOrientationFor(spriteWidget)
       spriteNode =
         image:     spriteWidget.url()
         spriteTag: spriteId
-        # TODO does the app require this? because we have a Move action for the first
-        # keyframe anyway
-        position:  @_getPosition(position)
+        scale:     orientation.get('scale')
+        position:  @_getPosition(orientation.get('position'))
         visible: true
       node.CCSprites.push(spriteNode)
 
