@@ -76,7 +76,6 @@ class App.Views.TextWidget extends Backbone.View
     @canvas = @$el.parent().find('canvas')
     @$el.css
       'position': 'absolute'
-      'color':    'red'
       'top':      @_bottomOffset()
       'left':     @_leftOffset
 
