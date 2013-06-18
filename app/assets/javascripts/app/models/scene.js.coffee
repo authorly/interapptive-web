@@ -57,10 +57,10 @@ class App.Models.Scene extends Backbone.Model
 
 
   fetchKeyframes: ->
-    return if @isNew() || @_keyframesFetched
+    return if @isNew() || @_keyframesFetchStarted
+    @_keyframesFetchStarted = true
 
-    @keyframes.fetch
-      success: => @_keyframesFetched = true
+    @keyframes.fetch()
 
 
   addNewKeyframe: (attributes) ->
