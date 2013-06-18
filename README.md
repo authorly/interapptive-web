@@ -6,12 +6,14 @@
 1. Install [sox](http://sox.sourceforge.net/) version 14.4.0
 
 	If you don't want to install `sox`, or you cannot get `libmad` &amp; `sox` to play together): comment out `process :convert_audio => args` in `lib/interapptive/carrier_wave/sphinx_audio_converter.rb`
+1. Install [redis](http://redis.io/)
 1. Create a suitable `config/database.yml` (production will likely run on MySQL)
 1. `bundle install`
 1. `bundle exec rake db:create:all`
 1. `bundle exec rake db:migrate`
 1. `bundle exec rake db:seed`
 1. `bundle exec rails server` starts the server
+1. `redis-server` starts redis
 
 ## Tests
 
