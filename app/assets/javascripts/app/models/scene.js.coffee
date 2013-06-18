@@ -37,6 +37,10 @@ class App.Models.Scene extends Backbone.Model
     @storybook.images.on 'remove', @imageRemoved, @
 
 
+  sound: ->
+    @storybook.sounds.get(@get('sound_id'))
+
+
   initializeWidgets: ->
     @widgets.storybook ||= @storybook
 
@@ -210,6 +214,7 @@ class App.Collections.ScenesCollection extends Backbone.Collection
     }, {
       wait: true
     }
+
 
   nextPosition: (scene=null) ->
     return null if scene?.isMainMenu()

@@ -128,10 +128,10 @@ class App.JSON
           number: scene.get('position') + 1
         text:
           paragraphs: []
-    if scene.get('sound_url')?
+    if (sound = scene.sound())?
       page.Page.settings.backgroundMusicFile =
         loop: scene.get('sound_repeat_count') == 0
-        audioFilePath: scene.get('sound_url')
+        audioFilePath: sound.get('url')
     # @scenesToJSON[scene.id] = page
     scene.keyframes.each (k) => @addTextNodeFor(k, page)
 
