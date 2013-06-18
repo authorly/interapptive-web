@@ -1,5 +1,7 @@
 class AbstractStorybookApplication
-  CRUCIBLE_RESOURCES_DIR = File.join(Rails.root, '../../Crucible/HelloWorld/Resources')
+  CRUCIBLE_RESOURCES_DIR = File.join(Rails.root,
+                                     Rails.env.test? ? 'tmp' : '../..',
+                                     '/Crucible/HelloWorld/Resources')
 
   @downloadable_file_extension_regex = nil
   @fog_directory                     = nil
@@ -10,6 +12,8 @@ class AbstractStorybookApplication
     @transient_files   = []
     @used_file_names = []
     @target            = target
+
+    FileUtils.mkdir_p(CRUCIBLE_RESOURCES_DIR) if Rails.env.test?
   end
 
   def logger
