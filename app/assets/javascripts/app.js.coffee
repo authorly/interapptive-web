@@ -176,8 +176,6 @@ window.App =
 
     @currentWidgets.changeKeyframe(keyframe)
 
-    App.vent.trigger 'activate:keyframe'
-
     if keyframe?
       App.vent.trigger 'can_add:text', keyframe.canAddText()
       keyframe.announceVoiceover()

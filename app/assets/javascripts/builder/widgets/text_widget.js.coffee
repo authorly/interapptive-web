@@ -12,8 +12,6 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   constructor: (options) ->
     super
 
-    @model.view = @
-
     @on 'double_click', @doubleClick
 
     @createLabel()
@@ -22,7 +20,10 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   doubleClick: ->
     @setIsVisible(false)
 
-    view = new App.Views.TextWidget(model: @model)
+    view = new App.Views.TextWidget
+      widget: @,
+      workspaceOrigin: @getParent().workspaceOriginAbsolutePosition()
+
     $(view.el).appendTo(cc.canvas.parentNode)
     view.initializeEditing()
 
@@ -30,6 +31,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   resetCocos2dLabel: ->
     @label.removeFromParentAndCleanup()
     @createLabel()
+    @setIsVisible(true)
 
 
   stringChanged: (model) ->

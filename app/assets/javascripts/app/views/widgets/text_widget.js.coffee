@@ -9,19 +9,20 @@ class App.Views.TextWidget extends Backbone.View
     'input': 'input'
     'keydown': 'keydown'
 
-  ESCAPE_KEYCODE: 27
+  ESCAPE_KEYCODE = 27
 
-  ENTER_KEYCODE: 13
+  ENTER_KEYCODE = 13
 
-  SCALE: 0.49
+  SCALE = 0.494
 
 
   initialize: ->
+    @model = @options.widget.model
     @model.on 'change:font_color', @setFontColor
     @model.on 'change:font_size', @setFontSize
     @model.on 'change:font_face', @setFontFamily
 
-    App.vent.on 'activate:scene activate:keyframe', @stopEditingWithTextSaved, false
+    App.vent.on 'activate:scene activate:keyframe', @cancelEditing
 
 
   render: ->
@@ -34,25 +35,32 @@ class App.Views.TextWidget extends Backbone.View
 
   keydown: (event) ->
     switch event.keyCode
-      when @ENTER_KEYCODE then @stopEditingWithTextSaved(true)
-      when @ESCAPE_KEYCODE then @stopEditingWithTextSaved(false)
+      when ENTER_KEYCODE then @stopEditingAndSave()
+      when ESCAPE_KEYCODE then @cancelEditing(false)
 
 
   initializeEditing: ->
     @enableContentEditable()
     @setFontFamily()
-    @setPositionFromCanvasCoords()
     @setFontSize()
     @setElementString()
     @setFontColor()
+    @setPosition()
     @selectText()
 
 
-  stopEditingWithTextSaved: (textShouldBeSaved) =>
-    @model.set('string', @$el.text()) if textShouldBeSaved
-    @model.view.resetCocos2dLabel()
-    @model.view.setIsVisible(true)
+  cancelEditing: (switchingKeyframeOrScene = true) =>
     @remove()
+
+    unless switchingKeyframeOrScene
+      App.vent.trigger 'reset_label:text_widget', @model
+
+
+  stopEditingAndSave: (textShouldBeSaved) =>
+    @model.set('string', @$el.text())
+    @remove()
+
+    App.vent.trigger 'reset_label:text_widget', @model
 
 
   setElementString: ->
@@ -61,7 +69,7 @@ class App.Views.TextWidget extends Backbone.View
 
   setFontColor: =>
     rgb = @model.get('font_color')
-    @$el.css("color", "rgb(#{rgb.r}, #{rgb.g}, #{rgb.b})")
+    @$el.css "color", "rgb(#{rgb.r}, #{rgb.g}, #{rgb.b})"
 
 
   setFontFamily: =>
@@ -72,16 +80,14 @@ class App.Views.TextWidget extends Backbone.View
     @$el.css("font-size",  "#{@model.get('font_size')}px")
 
 
-  setPositionFromCanvasCoords: ->
-    @canvas = @$el.parent().find('canvas')
+  setPosition: ->
     @$el.css
-      'position': 'absolute'
-      'top':      @_bottomOffset()
-      'left':     @_leftOffset
+      'left': @_absolutePositionFromWidgetCoords().left
+      'top': @_absolutePositionFromWidgetCoords().top
 
 
   enableContentEditable: ->
-    @$el.attr 'contentEditable', 'true'
+    @$el.attr('contentEditable', 'true')
 
 
   selectText: ->
@@ -89,14 +95,17 @@ class App.Views.TextWidget extends Backbone.View
     @$el.focus()
 
 
-  _leftOffset: =>
-    offset = @canvas.position().left
-    offset += @model.get('position').x * @SCALE
-    offset += 120
+  _absolutePositionFromWidgetCoords: =>
+    origin = @options.workspaceOrigin
 
+    padding =
+      left: @$el.outerWidth() - @$el.width() + 6
+      bottom: @$el.outerHeight() - @$el.innerHeight() + 1
 
-  _bottomOffset: =>
-    offset = @canvas.position().top
-    offset += @canvas.height()
-    offset -= @model.get('position').y * @SCALE
-    offset -= 219
+    position =
+      top:
+        origin.top - @model.get('position').y * SCALE + padding.bottom - @$el.height()
+      left:
+        origin.left + @model.get('position').x * SCALE - padding.left
+
+    position
