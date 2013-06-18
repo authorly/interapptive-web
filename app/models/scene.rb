@@ -19,7 +19,6 @@ class Scene < ActiveRecord::Base
   def as_json(options)
     super.merge({
       :preview_image_url => preview_image.try(:image).try(:url),
-      :sound_id         => sound.try(:id)
     })
   end
 
