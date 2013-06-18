@@ -60,7 +60,7 @@ class App.Models.Scene extends Backbone.Model
     return if @isNew() || @_keyframesFetchStarted
     @_keyframesFetchStarted = true
 
-    @keyframes.fetch()
+    @keyframes.fetch reset: true
 
 
   addNewKeyframe: (attributes) ->
