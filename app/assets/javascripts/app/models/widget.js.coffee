@@ -261,6 +261,28 @@ class App.Collections.Widgets extends Backbone.Collection
         widget.set(selected_image_id: null) if widget.get('selected_image_id') == image.id
 
 
+  soundRemoved: (sound) ->
+    @each (widget) =>
+      if widget instanceof App.Models.HotspotWidget
+        @remove widget if widget.get('sound_id').toString() is sound.get('id').toString()
+
+
+  videoRemoved: (video) ->
+    @each (widget) =>
+      if widget instanceof App.Models.HotspotWidget
+        @remove widget if widget.get('video_id').toString() is video.get('id').toString()
+
+
+  fontRemoved: (font) ->
+    default_font_id = widget.defaultFontId()
+    @each (widget) =>
+      if widget instanceof App.Models.TextWidget
+        if widget.get('font_id').toString() is font.get('id').toString()
+          if default_font_id?
+            widget.set(font_id: default_font_id)
+          else
+            @remove widget
+
 
   byClass: (klass) ->
     @filter (w) -> w instanceof klass
