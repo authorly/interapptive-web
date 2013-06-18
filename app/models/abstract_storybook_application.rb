@@ -22,6 +22,8 @@ class AbstractStorybookApplication
       transient_hash_or_array[key] = file_name
       transient_hash_or_array
     end
+    write_transient_file_names_for_deletion
+    @json_hash
   end
 
   def move_unused_files_out_of_compilation
@@ -36,9 +38,17 @@ class AbstractStorybookApplication
     FileUtils.mv(unused_files_movement_paths('..'), CRUCIBLE_RESOURCES_DIR)
   end
 
+  def write_transient_file_names_for_deletion
+    File.open(File.join(CRUCIBLE_RESOURCES_DIR, '..', 'transient_assets.txt'), 'w') do |f|
+      f.puts(@transient_files)
+    end
+  end
+
   def cleanup
     begin
-      File.delete(*@transient_files)
+      names = File.readlines(File.join(CRUCIBLE_RESOURCES_DIR, '..', 'transient_assets.txt'))
+      names.map! { |f| f.chomp }
+      File.delete(*names)
     rescue => e
       logger.info "Cleanup failed for #{@storybook.id}"
       logger.info e.message + "\n" + e.backtrace.join("\n")
