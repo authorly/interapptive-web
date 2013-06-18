@@ -338,9 +338,9 @@ window.App =
     _.extend Backbone.Model::,      syncMixin
     _.extend Backbone.Collection::, syncMixin
 
-    @syncDone = $('#global-sync-indicator .done')
-    @syncVent.on 'start', (-> @syncDone.css('visibility', 'hidden')), @
-    @syncVent.on 'end',   (-> @syncDone.css('visibility', 'visible')), @
+    @syncing = $('#global-sync-indicator img')
+    @syncVent.on 'start', (-> @syncing.css('visibility', 'visible')), @
+    @syncVent.on 'end',   (-> @syncing.css('visibility', 'hidden' )), @
 
 
   start: ->
