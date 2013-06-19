@@ -3,24 +3,29 @@
 */
 
 .text-widget {
-  .scale(0.48);
+  .scale(0.494);
 
-  outline: none; /* fix for weird border from contentEditable */
-  padding: 20px 20px 4px 20px;
-  border: 2px dashed #0c3f86;
+  /* keep text left when typing in scaled element */
+  -webkit-transform-origin:0 0;
+
+  /* fix for weird border from contentEditable in some browsers */
+  outline: none;
+
+  color: red;
+  padding: 10px;
+  position:absolute;
+  border: 2px dashed #b6b6b6;
   min-width: 40px;
   text-align: left;
-  white-space: nowrap;
-  overflow-x: scroll;
 }
 
+/* Helps prevent line breaks when editing text widgets */
 [contenteditable="true"].text-widget br {
   display: none;
 }
 
 [contenteditable="true"].text-widget * {
   display: inline;
-  white-space: nowrap;
 }
 
 .text-widget:hover {

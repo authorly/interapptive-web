@@ -1,8 +1,10 @@
 # Displays the widgets on the main canvas, and handles user interaction (mouse
 # and touch events).
 #
+#
 # Properties:
 #   @_capturedWidget - the widget on which mouse down was triggered (before other UI events)
+#
 #
 # Methods:
 #   _calculateTouchFrom(event)  - Calculates the touch point relative to the canvas
@@ -10,12 +12,20 @@
 #   addClickOutsideCanvasEventListener - Listens for a click off of the selected sprite,
 #                                        but only within the canvas
 #
-#
+
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   DEFAULT_CURSOR = 'default'
 
   CANVAS_ID = 'builder-canvas'
+
+  OVERFLOW_SIDE_PANEL_WIDTH = 300
+
+  OVERFLOW_TOP_PANEL_HEIGHT = 400
+
+  SCALE = 0.494
+
+  WORKSPACE_HEIGHT = 768
 
 
   constructor: (widgetsCollection) ->
@@ -49,6 +59,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.on 'change:z_order', @reorderWidget, @
 
     App.vent.on 'scale:sprite_widget', @scaleSpriteWidgetFromModel, @
+    App.vent.on 'done_editing:text_widget', @resetCocos2dLabel, @
+
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
 
@@ -405,3 +417,20 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     cc.TouchDispatcher.preTouchPoint.y = mouseY
 
     touch
+
+
+  resetCocos2dLabel: (textWidgetModel) ->
+    view = @_getView(textWidgetModel)
+    return if view is undefined
+    view.resetCocos2dLabel()
+
+
+  workspaceOriginAbsolutePosition: =>
+    canvas = $(cc.canvas)
+
+    origin =
+      left: canvas.position().left + OVERFLOW_SIDE_PANEL_WIDTH * SCALE
+      top: canvas.position().top + OVERFLOW_TOP_PANEL_HEIGHT * SCALE + WORKSPACE_HEIGHT * SCALE
+
+    origin
+

@@ -15,8 +15,9 @@ class App.Views.TextEditorPalette extends Backbone.View
 
 
   initialize: (options={}) ->
-    App.vent.on 'activate:textWidget',   @changeTextWidget,  @
-    App.vent.on 'done_editing:text',     @disable,           @
+    App.vent.on 'activate:textWidget', @changeTextWidget, @
+    App.vent.on 'done_editing:text_widget', @disable
+    App.currentSelection.on 'change:keyframe', @disable
 
 
   render: ->
