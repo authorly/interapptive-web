@@ -402,7 +402,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     touch
 
 
-  resetCocos2dLabel: ->
+  resetCocos2dLabel: (textWidgetModel) ->
     view = @_getView(textWidgetModel)
     view.resetCocos2dLabel()
 
