@@ -212,7 +212,7 @@ class App.Models.TextWidget extends App.Models.Widget
     string:  'Double click to edit or drag to move'
     z_order: 6000
     position: @defaultPosition()
-    font_id: @defaultFontId()
+    font_id: App.Config.text_widget_default_font_id
     font_size: 25
     font_color: { 'r': 255, 'g': 0, 'b': 0 }
 
@@ -229,12 +229,8 @@ class App.Models.TextWidget extends App.Models.Widget
 
 
   fonts: ->
-    return null unless @collection?.keyframe
     @collection.keyframe.scene.storybook.fonts
 
-
-  defaultFontId: ->
-    @_defaultFontId ?= @fonts()?.where({ asset_type: 'system', name: 'Arial' })[0]?.get('id')
 
 
 ##
