@@ -120,14 +120,6 @@ describe "App.JSON", ->
       expect(item.position).toEqual [200, 300]
       expect(item.storyMode).toEqual 'autoPlay'
 
-    # it 'is updated if its entries change', ->
-      # @storybook.scenes.at(0).widgets.at(0).set
-        # position:
-          # x: 150
-          # y: 120
-      # items = @json.app.MainMenu.MenuItems
-      # item = items[0]
-      # expect(item.position).toEqual [150, 120]
 
   describe "scenes", ->
 
@@ -316,59 +308,4 @@ describe "App.JSON", ->
       expect(action.runAfterSwipeNumber).toEqual 1
       expect(action.spriteTag).toEqual 2
       expect(action.actionTags).toEqual [ k2ScaleId, k2MoveId ]
-
-
-    # it 'addition', ->
-      # @scene2 = new App.Models.Scene {
-        # id: 4
-        # storybook: @storybook
-        # font_color: [r:0, g:0, b:0]
-      # }, parse: true
-      # @storybook.scenes.add @scene2
-
-      # expect(@json.app.Pages).toBeDefined()
-      # expect(@json.app.Pages.length).toEqual 2
-
-
-    # it 'removal', ->
-      # @storybook.scenes.remove @storybook.scenes.at(1)
-      # expect(@json.app.Pages.length).toEqual 0
-
-
-    # describe 'change', ->
-      # it 'is updated when attributes change', ->
-        # # the following attributes can change: sound_id, sound_repeat_count, position,
-        # # font_face, font_size, font_color
-        # @scene1.set
-          # position: 3
-          # font_face: 'Arial'
-          # font_color: {r: 255, g: 0, b: 120 }
-          # font_size: '48'
-
-        # settings = @json.app.Pages[0].Page.settings
-        # expect(settings.number).toEqual 3
-        # expect(settings.fontType).toEqual "Arial"
-        # expect(settings.fontColor).toEqual [255, 0, 120]
-        # expect(settings.fontSize).toEqual 48
-
-    # describe 'change hotspots', ->
-
-      # it 'is updated if a hotspot changes', ->
-        # @storybook.scenes.at(1).widgets.at(0).set
-          # position:
-            # x: 150
-            # y: 120
-        # hotspot = @json.app.Pages[0].API.CCStoryTouchableNode.nodes[0]
-        # expect(hotspot.position).toEqual [150, 120]
-
-      # it 'is updated if a hotspot is removed', ->
-        # widgets = @storybook.scenes.at(1).widgets
-        # widgets.remove widgets.at(0)
-        # expect(@json.app.Pages[0].API.CCStoryTouchableNode.nodes.length).toEqual(1)
-
-    # describe 'keyframes', ->
-       # describe 'addition', ->
-       # describe 'removal', ->
-       # describe 'change', ->
-
 
