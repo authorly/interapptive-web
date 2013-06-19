@@ -6,6 +6,7 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
     super
 
     @model.on 'change:image_id', @refresh, @
+    @model.on 'change:disabled', @_disabledChanged, @
 
     view = new App.Views.ButtonWidgetImagesSelector
       widget:     @model
@@ -28,3 +29,7 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
 
   refresh: ->
     @_getImage()
+
+
+  _disabledChanged: (__, disabled) ->
+    @setOpacity(if disabled then 0 else 255)

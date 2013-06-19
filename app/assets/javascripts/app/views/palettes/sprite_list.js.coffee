@@ -12,13 +12,15 @@ class App.Views.SpriteListPalette extends Backbone.View
 
   events:
     'click .delete':    'removeSprite'
+    'click .disable':   'disableSprite'
+    'click .enable':    'enableSprite'
     'click li':         'selectSprite'
 
 
   initialize: ->
     @collection.on 'add', @widgetAdded, @
     @collection.on 'remove', @widgetRemoved, @
-    @collection.on 'change:image_id', @widgetChanged, @
+    @collection.on 'change:image_id change:disabled', @widgetChanged, @
 
     App.currentSelection.on 'change:widget', @spriteSelected, @
 
@@ -60,9 +62,31 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   removeSprite: (e) ->
-    id = $(e.currentTarget).siblings('.sprite-image').data 'widget-id'
-    widget = @collection.get(id)
+    e.stopPropagation()
+
+    widget = @_getWidget(e)
     widget.collection.scene.widgets.remove(widget)
+
+
+  disableSprite: (e) ->
+    e.stopPropagation()
+
+    widget = @_getWidget(e)
+    return unless widget.canBeDisabled()
+    widget.disable()
+
+
+  enableSprite: (e) ->
+    e.stopPropagation()
+
+    widget = @_getWidget(e)
+    return unless widget.canBeDisabled()
+    widget.enable()
+
+
+  _getWidget: (e) ->
+    id = $(e.currentTarget).siblings('.sprite-image').data 'widget-id'
+    @collection.get(id)
 
 
   selectSprite: (e) ->
