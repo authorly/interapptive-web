@@ -22,7 +22,8 @@ class App.Views.TextWidget extends Backbone.View
     @model.on 'change:font_size', @setFontSize
     @model.on 'change:font_face', @setFontFamily
 
-    App.vent.on 'activate:scene change:keyframe', @cancelEditing, @
+    App.vent.on 'activate:scene', @cancelEditing
+    App.currentSelection.on 'change:keyframe', @cancelEditing
 
 
   render: ->
