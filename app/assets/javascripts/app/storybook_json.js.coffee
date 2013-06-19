@@ -41,7 +41,9 @@ class App.JSON
 
     textWidgets = keyframe.textWidgets()
 
-    keyframeHighlightTimes = keyframe.get('content_highlight_times') || []
+    voiceoverNeeded = keyframe.scene.storybook.voiceoverNeeded()
+    keyframeHighlightTimes = keyframe.get('content_highlight_times') if voiceoverNeeded
+    keyframeHighlightTimes ||= []
     if keyframeHighlightTimes.length < 1 then keyframeHighlightTimes.push(0)
 
     paragraph =
@@ -70,7 +72,8 @@ class App.JSON
         hash
 
       highlightingTimes: keyframeHighlightTimes
-      voiceAudioFile: keyframe.get('url')
+
+    paragraph.voiceAudioFile = keyframe.get('url') if voiceoverNeeded
 
     if textWidgets.length == 0
       paragraph.linesOfText = [{

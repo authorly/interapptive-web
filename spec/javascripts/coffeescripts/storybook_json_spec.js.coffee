@@ -197,10 +197,10 @@ describe "App.JSON", ->
       @scene1.keyframes.add @keyframe2
 
       @storybook.scenes.add @scene1
-      @json = new App.JSON(@storybook)
 
 
     it 'are generated correctly', ->
+      @json = new App.JSON(@storybook)
       expect(@json.app.Pages).toBeDefined()
       expect(@json.app.Pages.length).toEqual 1
 
@@ -263,7 +263,6 @@ describe "App.JSON", ->
       sprites = api.CCSprites
       expect(sprites).toBeDefined()
       expect(sprites.length).toEqual 1
-      console.log sprites
 
       sprite = sprites[0]
       expect(sprite.image).toEqual "https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg"
@@ -313,3 +312,23 @@ describe "App.JSON", ->
       expect(action.spriteTag).toEqual 2
       expect(action.actionTags).toEqual [ k2ScaleId, k2MoveId ]
 
+    it 'do not contain entries for sound and highlightingTimes if both autoplay and readToMe are disabled', ->
+      @rtm.set  disabled: true
+      @auto.set disabled: true
+
+      @json = new App.JSON(@storybook)
+      expect(@json.app.Pages).toBeDefined()
+      expect(@json.app.Pages.length).toEqual 1
+
+      page = @json.app.Pages[0].Page
+      keyframes = page.text.paragraphs
+      expect(keyframes).toBeDefined()
+      expect(keyframes.length).toEqual(2)
+
+      keyframe = keyframes[0]
+      expect(keyframe.highlightingTimes).toEqual [0]
+      expect(keyframe.voiceAudioFile).toBeUndefined()
+
+      keyframe = keyframes[1]
+      expect(keyframe.highlightingTimes).toEqual [0]
+      expect(keyframe.voiceAudioFile).toBeUndefined()

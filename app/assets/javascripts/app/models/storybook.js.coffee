@@ -173,6 +173,13 @@ class App.Models.Storybook extends Backbone.Model
         storybook: @
 
 
+  voiceoverNeeded: ->
+    menu = @scenes.detect (scene) -> scene.isMainMenu()
+    rtm  = menu.widgets.detect (w) -> w.get('name') == 'read_to_me'
+    auto = menu.widgets.detect (w) -> w.get('name') == 'auto_play'
+    !(rtm.get('disabled')? and auto.get('disabled')?)
+
+
   compile: (platform) ->
     $.post('/compiler',
       storybook_json: JSON.stringify(new App.JSON(@).app)
