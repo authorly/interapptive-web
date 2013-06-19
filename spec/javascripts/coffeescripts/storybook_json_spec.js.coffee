@@ -203,10 +203,10 @@ describe "App.JSON", ->
       @scene1.keyframes.add @keyframe2
 
       @storybook.scenes.add @scene1
-      @json = new App.JSON(@storybook)
 
 
     it 'are generated correctly', ->
+      @json = new App.JSON(@storybook)
       expect(@json.app.Pages).toBeDefined()
       expect(@json.app.Pages.length).toEqual 1
 
@@ -371,3 +371,23 @@ describe "App.JSON", ->
 
 
 
+    it 'do not contain entries for sound and highlightingTimes if both autoplay and readToMe are disabled', ->
+      @rtm.set  disabled: true
+      @auto.set disabled: true
+
+      @json = new App.JSON(@storybook)
+      expect(@json.app.Pages).toBeDefined()
+      expect(@json.app.Pages.length).toEqual 1
+
+      page = @json.app.Pages[0].Page
+      keyframes = page.text.paragraphs
+      expect(keyframes).toBeDefined()
+      expect(keyframes.length).toEqual(2)
+
+      keyframe = keyframes[0]
+      expect(keyframe.highlightingTimes).toEqual [0]
+      expect(keyframe.voiceAudioFile).toBeUndefined()
+
+      keyframe = keyframes[1]
+      expect(keyframe.highlightingTimes).toEqual [0]
+      expect(keyframe.voiceAudioFile).toBeUndefined()
