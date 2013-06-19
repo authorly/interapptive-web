@@ -15,6 +15,28 @@ class App.Models.Widget extends Backbone.Model
       @set id: generator.next()
 
 
+  canBeDeleted: ->
+    @get('type') != 'ButtonWidget'
+
+
+  canBeDisabled: ->
+    return false unless @get('type') == 'ButtonWidget'
+    name = @get('name')
+    name == 'read_to_me' or name == 'auto_play'
+
+
+  disabled: ->
+    @get('disabled')
+
+
+  disable: ->
+    @set disabled: true
+
+
+  enable: ->
+    @set disabled: false
+
+
 ##
 # A 'hotspot' widget, previously named touch zone. It has an associated
 # video or sound (which will play when the hotspot is triggered).
