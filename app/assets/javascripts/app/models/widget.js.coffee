@@ -212,7 +212,6 @@ class App.Models.TextWidget extends App.Models.Widget
     string:  'Enter some text...'
     z_order: 6000
     position: @defaultPosition()
-    font_id: @defaultFontId()
     font_size: 25
     font_color: { 'r': 255, 'g': 0, 'b': 0 }
 
@@ -224,17 +223,16 @@ class App.Models.TextWidget extends App.Models.Widget
     font.get('url')
 
 
+  storybook: ->
+    @collection.keyframe.scene.storybook
+
+
   font: ->
-    @fonts().get(@get('font_id'))
+    @storybook().fonts.get(@get('font_id')) || @defaultFont()
 
 
-  fonts: ->
-    return null unless @collection?.keyframe
-    @collection.keyframe.scene.storybook.fonts
-
-
-  defaultFontId: ->
-    @_defaultFontId ?= @fonts()?.where({ asset_type: 'system', name: 'Arial' })[0]?.get('id')
+  defaultFont: ->
+    @_defaultFont ||= @storybook().defaultFont()
 
 
 ##
