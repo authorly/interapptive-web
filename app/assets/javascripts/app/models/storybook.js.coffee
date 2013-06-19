@@ -173,11 +173,6 @@ class App.Models.Storybook extends Backbone.Model
         storybook: @
 
 
-  defaultFont: ->
-    # TODO replace with findWhere from Backbone 1.0
-    @_defaultFont ||= @fonts.where(asset_type: 'system', name: 'Arial')[0]
-
-
   compile: (platform) ->
     $.post('/compiler',
       storybook_json: JSON.stringify(new App.JSON(@).app)

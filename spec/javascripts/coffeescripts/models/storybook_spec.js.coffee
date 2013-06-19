@@ -48,15 +48,3 @@ describe "App.Models.Storybook", ->
       expect(@scene.widgets.length).toEqual 1
       expect(@scene.widgets.at(0).get('selected_image_id')).toEqual null
 
-  describe 'fonts', ->
-    beforeEach ->
-      @arial_custom = new App.Models.Font(name: 'Arial')
-      @arial_system = new App.Models.Font(name: 'Arial', asset_type: 'system')
-      @verdana_custom = new App.Models.Font(name: 'Verdana')
-      @verdana_system = new App.Models.Font(name: 'Verdana', asset_type: 'system')
-      @storybook.fonts = new App.Collections.FontsCollection [
-        @arial_custom, @verdana_custom, @arial_system, @verdana_system
-      ], storybook: @storybook
-
-    it 'picks system Arial as default', ->
-      expect(@storybook.defaultFont()).toEqual @arial_system
