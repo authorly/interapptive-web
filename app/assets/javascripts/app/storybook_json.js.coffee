@@ -224,6 +224,7 @@ class App.JSON
 
 
   mainMenuNode: (scene) ->
+    str = App.Lib.StringHelper
     node =
       # audio:
         # backgroundMusic      : 'main-menu-title-sound.mp3'
@@ -246,8 +247,7 @@ class App.JSON
         plistfilename     : 'snowflake-main-menu.plist'
 
       MenuItems:
-        scene.buttonWidgets().map (button) =>
-          str = App.Lib.StringHelper
+        _.select(scene.buttonWidgets(), (w) -> !w.disabled()).map (button) =>
           {
             normalStateImage: button.url()
             tappedStateImage: button.selectedUrl() || button.url()

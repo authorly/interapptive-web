@@ -35,10 +35,7 @@ describe "App.JSON", ->
       id: 2
       storybook: @storybook
       is_main_menu: true
-      widgets: [
-        {'type':'ButtonWidget', image_id: null,'id':1,'name':'read_it_myself', selected_image_id: @rim_selected_image.id, position: {x: 200, y: 100}, scale: 1},
-        {'type':'ButtonWidget', image_id: null,'id':2,'name':'read_to_me', position: {x: 200, y: 200}, scale: 1},
-        {'type':'ButtonWidget', image_id: null,'id':3,'name':'auto_play', position: {x: 200, y: 300}, scale: 1},
+      widgets: [@rim, @rtm, @auto,
         {'type':'SpriteWidget', image_id: @main_menu_image.id,'id':4 }
       ]
     }, parse: true
@@ -79,10 +76,9 @@ describe "App.JSON", ->
 
 
   describe "the main menu", ->
-    beforeEach ->
-      @json = new App.JSON(@storybook)
 
     it 'is generated correctly', ->
+      @json = new App.JSON(@storybook)
       menu = @json.app.MainMenu
       expect(menu).toBeDefined()
 
@@ -125,6 +121,12 @@ describe "App.JSON", ->
       expect(item.position).toEqual [200, 300]
       expect(item.scale).toEqual 1
       expect(item.storyMode).toEqual 'autoPlay'
+
+    it 'does not include entries for disabled main menu entries', ->
+      @rtm.set disabled: true
+      @json = new App.JSON(@storybook)
+      items = @json.app.MainMenu.MenuItems
+      expect(_.pluck(items, 'storyMode')).toEqual ['readItMyself', 'autoPlay']
 
 
   describe "scenes", ->
