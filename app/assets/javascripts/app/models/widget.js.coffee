@@ -232,6 +232,10 @@ class App.Models.TextWidget extends App.Models.Widget
     @collection.keyframe.scene.storybook.fonts
 
 
+  wordCount: ->
+    App.Lib.StringHelper.wordCount @get('string')
+
+
 
 ##
 # A collection of widgets.

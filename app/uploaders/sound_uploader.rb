@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 class SoundUploader < CarrierWave::Uploader::Base
+  include Interapptive::CarrierWave::SoundDuration
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -38,6 +39,7 @@ class SoundUploader < CarrierWave::Uploader::Base
   # def scale(width, height)
   #   # do something
   # end
+  process :store_duration => []
 
   # Create different versions of your uploaded files:
   # version :thumb do
