@@ -232,6 +232,7 @@ window.App =
     container = App.Collections.Widgets.containers[attributes.type]
     widget = new App.Models[attributes.type](attributes, parse: true)
     App.currentSelection.get(container).widgets.add widget
+    return if attributes.type is "TextWidget"
     App.currentSelection.set widget: widget
 
 
