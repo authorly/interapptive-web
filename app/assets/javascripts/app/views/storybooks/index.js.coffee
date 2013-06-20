@@ -29,9 +29,9 @@ class App.Views.StorybookIndex extends Backbone.View
     @collection.each (storybook) => @appendStorybook(storybook)
     @hideLoader()
 
-    #if App.Config.environment == 'development' && @collection.length > 0
-    #  @selectStorybook @collection.at(@collection.length - 1)
-    #  @openStorybook()
+    if App.Config.environment == 'development' && @collection.length > 0
+      @selectStorybook @collection.at(@collection.length - 1)
+      @openStorybook()
 
     @
 
