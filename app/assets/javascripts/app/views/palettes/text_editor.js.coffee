@@ -13,6 +13,8 @@ class App.Views.TextEditorPalette extends Backbone.View
     'change #font-face':  'fontFaceChanged'
     'change #font-size ': 'fontSizeChanged'
 
+  DEFAULT_FONT_NAME = 'Arial'
+
 
   initialize: (options={}) ->
     App.vent.on 'activate:textWidget', @changeTextWidget, @
@@ -109,6 +111,9 @@ class App.Views.TextEditorPalette extends Backbone.View
       value: font.get('id')
       text:  font.get('name')
     )
+
+    if font.get('name') is DEFAULT_FONT_NAME
+      $fontEl.attr('selected', true)
 
     if font.isSystem()
       @$('#system-fonts').append($fontEl)
