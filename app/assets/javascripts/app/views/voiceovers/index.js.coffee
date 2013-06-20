@@ -10,9 +10,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
   template: JST['app/templates/voiceovers/index']
 
   events:
-    'change input[type=file]':  'fileChanged'
-    'click #upload':            'uploadAudio'
-    'click .icon-edit':         'showUploadForm'
     'mousedown .word':          'mouseDownOnWord'
     'mouseover .word':          'mouseOverWord'
     'selectstart':              'cancelNativeHighlighting'
@@ -23,8 +20,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
     'click #reorder-text .done':    'disableSorting'
 
   COUNTDOWN_LENGTH_IN_SECONDS: 5
-
-  VOICEOVER_UPLOAD_ERROR: 'There was a problem uploading your file. Please try again.'
 
 
   initialize: (keyframe) ->
@@ -39,10 +34,11 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   render: ->
     @$el.html(@template(keyframe: @keyframe))
-    @initUploader()
-    @initSorting()
+    @_initVoiceoverSelector()
+    @_initSorting()
+    @_attachKeyframEvents()
     @pulsateArrowIcon()
-    @findExistingVoiceover()
+    @_findExistingVoiceover()
     @
 
 
@@ -115,7 +111,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
     countdownEnded = false
     endTime = (new Date()).getTime() + @COUNTDOWN_LENGTH_IN_SECONDS * 1000
     @player.destroy()
-    @initMediaPlayer()
+    @enableMediaPlayer()
     @$('#countdown').jcountdown
       timestamp: endTime
       callback: (days, hours, minutes, seconds) =>
@@ -212,75 +208,18 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @enableAcceptAlignment()
 
 
-  # RFCTR: Move to a Voiceover model
-  findExistingVoiceover: ->
-    $.getJSON @keyframe.voiceoverUrl(), (file) =>
-      @initMediaPlayer()
-      @player.play()
-
-      if file.url? and file.name?
-        @setExistingVoiceover(file)
-        @findExistingHighlightTimes()
-      else
-        @noVoiceoverFound()
-
-
-  setExistingVoiceover: (file) ->
-    @$('.loading').hide()
-    @$('.filename').css('display', 'inline-block')
-      .addClass('uploaded')
-    @$('.filename span').text(file.name)
-    @setAudioPlayerSrc(file.url)
+  setExistingVoiceover: (voiceover) ->
+    @setAudioPlayerSrc(voiceover.get('url'))
     @enableHighlighting()
 
 
   noVoiceoverFound: ->
-    @$('.loading').hide()
-    @$('.fileinput-button').removeClass('disabled')
+    @setAudioPlayerSrc('')
+    @disablePreview()
+    @disableBeginAlignment()
 
 
-  showUploadForm: ->
-    @$('.filename').hide()
-    @$('.fileinput-button').removeClass('disabled')
-
-
-  fileChanged: (event) ->
-    @$('#upload').show()
-    @$('#voiceover-file button').removeClass('disabled')
-    @$('.fileinput-button').addClass('disabled')
-
-    path = @$(event.currentTarget).val()
-    filename =  @_pathToFilename(path)
-    @$('.filename span').text(filename)
-      .parent().css('display', 'inline-block')
-
-
-  uploadAudio: (event) ->
-    return if @$(event.currentTarget).hasClass('disabled')
-    event.preventDefault()
-
-    @$('.loading').show()
-    @$('#upload, .filename').hide()
-
-    @voiceoverUploader.send()
-
-
-  initUploader: ->
-    @voiceoverUploader = new voiceoverUploader @$('#audio-file').get(0),
-      url: @keyframe.voiceoverUrl()
-      error: (event) =>
-        alert @VOICEOVER_UPLOAD_ERROR
-      success: (file)  =>
-        @$('.loading').hide()
-        @$('.filename').css('display', 'inline-block').addClass('uploaded')
-        @$('.success').css('display', 'inline-block').delay(1300).fadeOut(700)
-
-        _file = JSON.parse(file)
-        @setAudioPlayerSrc(_file.url)
-        @enableHighlighting()
-
-
-  initMediaPlayer: =>
+  enableMediaPlayer: =>
     @player = Popcorn('audio')
     @player.on 'ended', =>
       @disableHelperArrow()
@@ -294,12 +233,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
       @$('.word.highlighted').removeClass('highlighted')
       @_showBeginHighlightingButton()
       @_alignmentInProgress = false
-
-
-  initSorting: ->
-    @$('#words').sortable
-      update:   @updateOrder
-      disabled: true
 
 
   enableSorting: ->
@@ -372,15 +305,43 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   stopVoiceover: =>
+    @_detachKeyframeEvents()
     @player.pause()
+
+
+  _findExistingVoiceover: ->
+    if (voiceover = @keyframe.voiceover())?
+      @setExistingVoiceover(voiceover)
+      @findExistingHighlightTimes()
+    else
+      @noVoiceoverFound()
+
+
+  _initVoiceoverSelector: ->
+    @voiceoverSelector = new App.Views.VoiceoverSelector
+      keyframe: @keyframe
+      collection: @keyframe.scene.storybook.sounds
+      el: @$('#voiceover-selector-container')
+
+    @voiceoverSelector.render()
+
+
+  _attachKeyframEvents: ->
+    @keyframe.on('change:voiceover_id', @_findExistingVoiceover, @)
+
+
+  _detachKeyframeEvents: ->
+    @keyframe.off('change:voiceover_id', @_findExistingVoiceover, @)
+
+
+  _initSorting: ->
+    @$('#words').sortable
+      update:   @updateOrder
+      disabled: true
 
 
   _playerCurrentTimeInSeconds: ->
     Math.round(1000 * @player.currentTime()) / 1000
-
-
-  _pathToFilename: (path) ->
-    path.split('\\').pop()
 
 
   _collectTimeIntervals: ->

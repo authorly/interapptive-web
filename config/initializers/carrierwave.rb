@@ -8,3 +8,9 @@ CarrierWave.configure do |config|
 
   config.fog_directory  = Rails.application.config.s3_bucket
 end
+
+if Rails.env.test?
+  CarrierWave.configure do |config|
+    config.enable_processing = false
+  end
+end

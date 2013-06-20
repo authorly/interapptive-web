@@ -44,19 +44,19 @@ describe Scene do
       read_it_myself = scene.widgets.detect{|w| w[:name] == 'read_it_myself' }
       read_it_myself.should be
       read_it_myself[:z_order].should == 4001
-      read_it_myself[:position].should == {y: 100, x: 200}
+      read_it_myself[:position].should == {y: 200, x: 512}
       read_it_myself[:scale].should == 1
 
       read_to_me = scene.widgets.detect{|w| w[:name] == 'read_to_me'}
       read_to_me.should be
       read_to_me[:z_order].should == 4002
-      read_to_me[:position].should == {y: 200, x: 200}
+      read_to_me[:position].should == {y: 200, x: 177}
       read_to_me[:scale].should == 1
 
       auto_play = scene.widgets.detect{|w| w[:name] == 'auto_play' }
       auto_play.should be
       auto_play[:z_order].should == 4003
-      auto_play[:position].should == {y: 300, x: 200}
+      auto_play[:position].should == {y: 200, x: 844}
       auto_play[:scale].should == 1
     end
 
