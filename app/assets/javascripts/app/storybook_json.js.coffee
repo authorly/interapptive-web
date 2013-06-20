@@ -74,6 +74,7 @@ class App.JSON
 
       highlightingTimes: keyframeHighlightTimes
       voiceAudioFile: keyframeVoiceoverUrl
+      autoplayDuration: keyframe.autoplayDuration()
 
     if textWidgets.length == 0
       paragraph.linesOfText = [{
