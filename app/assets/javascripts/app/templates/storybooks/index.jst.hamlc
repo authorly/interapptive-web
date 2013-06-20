@@ -1,9 +1,11 @@
+#storybook-loading
+  %img{src: '/assets/loading.gif'}
 .modal-header
   %h3.modal-title
     %i.icon-book.icon-black.icon-large
     Create or Open Existing Storybook
-#storybooks.modal-body.loading-book
-  %ul#storybook-list
+#storybooks.modal-body
+  %ul#storybook-list.disabled
 .modal-footer
   %span.btn.btn-success.fileinput-button.new-storybook-btn.left
     %i.icon-plus.icon-white

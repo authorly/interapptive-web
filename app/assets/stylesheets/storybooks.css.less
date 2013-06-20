@@ -1,10 +1,17 @@
 #storybooks-modal {
-  width: 870px;
-  margin-left: -435px !important;
+  width: 570px;
+  margin-left: -285px !important;
   margin-top: 0px;
+  top: 15% !important;
+
+  #storybook-loading {
+    position: absolute;
+    top: 160px;
+    left: 273px;
+  }
 
   .modal-body {
-    height: 245px;
+    height: 222px;
   }
 
   .bbf-date i {
@@ -61,7 +68,7 @@
   a.storybook {
     padding: 0 20px;
     display: block;
-    width: 810px;
+    width: 508px;
     height: 48px;
     padding-bottom: 6px;
   }
@@ -105,7 +112,7 @@
   }
 
   .delete-storybook {
-    opacity: 0.5;
+    opacity: 0.0;
     width: 30px;
     height: 30px;
     background: asset-url('red-minus.png') no-repeat bottom center;
@@ -119,19 +126,24 @@
     display:inline-block;
   }
 
-  .delete-storybook:hover {
-    opacity: 1.0;
-    background-color: transparent;
-  }
-
   li:hover .storybook {
     color: @black;
     cursor: pointer;
     background-color: #eef8fd;
     text-decoration: none;
   }
+
   li:hover a.active {
     background-color: #c6e4f3;
+  }
+
+  li:hover .delete-storybook{
+    opacity: 0.3;
+  }
+
+  .delete-storybook:hover {
+    opacity: 1.0 !important;
+    background-color: transparent;
   }
 }
 

@@ -29,9 +29,9 @@ class App.Views.StorybookIndex extends Backbone.View
     @collection.each (storybook) => @appendStorybook(storybook)
     @hideLoader()
 
-    if App.Config.environment == 'development' && @collection.length > 0
-      @selectStorybook @collection.at(@collection.length - 1)
-      @openStorybook()
+    #if App.Config.environment == 'development' && @collection.length > 0
+    #  @selectStorybook @collection.at(@collection.length - 1)
+    #  @openStorybook()
 
     @
 
@@ -49,7 +49,7 @@ class App.Views.StorybookIndex extends Backbone.View
 
   appendStorybook: (storybook) ->
     view = new App.Views.Storybook(model: storybook)
-    @$('#storybook-list').prepend view.render().el
+    @$('#storybook-list').prepend(view.render().el)
 
     @selectStorybook storybook
 
@@ -64,7 +64,7 @@ class App.Views.StorybookIndex extends Backbone.View
 
   removeStorybook: (storybook) =>
     @$(".storybook[data-id=#{storybook.id}]").parent().remove()
-    @toggleOpenStorybookButton()
+    @enableOpenStorybookButton(false)
 
 
   storybookSelected: (event) ->
@@ -78,15 +78,25 @@ class App.Views.StorybookIndex extends Backbone.View
     @$('.storybook').removeClass('active alert alert-info').
       filter("[data-id=#{storybook.id}]").addClass('active alert alert-info')
 
-    @toggleOpenStorybookButton()
+    @enableOpenStorybookButton()
 
 
   openStorybook: ->
-    App.currentSelection.set storybook: @selectedStorybook if @selectedStorybook?
+    @showLoader()
+    @enableOpenStorybookButton(false)
+
+    window.setTimeout =>
+      if @selectedStorybook?
+        App.currentSelection.set(storybook: @selectedStorybook)
+    , 650
 
 
-  toggleOpenStorybookButton: ->
-    @$('.btn-primary.open-storybook').toggleClass('disabled')
+  enableOpenStorybookButton: (enabling = true) ->
+   el = @$('.btn-primary.open-storybook')
+   if enabling
+     el.removeClass('disabled')
+   else
+     el.addClass('disabled')
 
 
   # storybook form
@@ -106,7 +116,12 @@ class App.Views.StorybookIndex extends Backbone.View
   # others
 
   hideLoader: ->
-    $('#storybooks-modal .modal-body').removeClass 'loading-book'
+    @$('#storybook-loading').hide()
+
+
+  showLoader: ->
+    $('.modal-header, .modal-body, .modal-footer').fadeTo(155, 0.175)
+    @$('#storybook-loading').show()
 
 
   hide: ->

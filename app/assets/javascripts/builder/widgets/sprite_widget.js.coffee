@@ -9,11 +9,11 @@
 class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   COLOR_OUTER_STROKE = 'rgba(15, 79, 168, 0.8)'
 
-  COLOR_OUTER_FILL ='rgba(174, 204, 246, 0.66)'
+  COLOR_OUTER_FILL = 'rgba(174, 204, 246, 0.66)'
 
   COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
 
-  LINE_WIDTH_OUTER = 4
+  LINE_WIDTH_OUTER = 2
 
 
   constructor: (options) ->
@@ -130,6 +130,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     ctx.rect(x, y, width, height)
 
     ctx.strokeStyle = COLOR_OUTER_STROKE
+    ctx.lineWidth = Math.round(LINE_WIDTH_OUTER * @sprite.getScale())
     ctx.stroke()
 
     ctx.beginPath()
