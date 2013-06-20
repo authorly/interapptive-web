@@ -175,7 +175,7 @@ describe "App.JSON", ->
           { 'type': 'HotspotWidget', 'id': 7, 'position': {'x': 510, 'y': 310}, 'radius': 60, 'sound_id': @sound.id },
         ],
         content_highlight_times: [1, 2, 4, 5, 20]
-        url: 'https://interapptive.s3.amazonaws.com/sounds/29/page2.mp3'
+        voiceover_id: 11
       }, parse: true
       @scene1.keyframes.add @keyframe1
 
@@ -228,7 +228,7 @@ describe "App.JSON", ->
       expect(text.yOffset).toEqual 370
 
       expect(keyframe.highlightingTimes).toEqual [1, 2, 4, 5, 20]
-      expect(keyframe.voiceAudioFile).toEqual 'https://interapptive.s3.amazonaws.com/sounds/29/page2.mp3'
+      expect(keyframe.voiceAudioFile).toEqual "https://interapptive.s3.amazonaws.com/sounds/11/voicemail_received.wav"
 
       hotspots = keyframe.hotspots
       expect(hotspots.length).toEqual 1

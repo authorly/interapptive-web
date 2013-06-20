@@ -65,6 +65,10 @@ class App.JSON
 
     keyframeHighlightTimes = keyframe.get('content_highlight_times') || []
     if keyframeHighlightTimes.length < 1 then keyframeHighlightTimes.push(0)
+    if (voiceover = keyframe.voiceover())?
+      keyframeVoiceoverUrl = voiceover.get('url')
+    else
+      keyframeVoiceoverUrl = undefined
 
     paragraph =
       # delayForPanning: true
@@ -93,7 +97,7 @@ class App.JSON
         hash
 
       highlightingTimes: keyframeHighlightTimes
-      voiceAudioFile: keyframe.get('url')
+      voiceAudioFile: keyframeVoiceoverUrl
 
     if textWidgets.length == 0
       paragraph.linesOfText = [{

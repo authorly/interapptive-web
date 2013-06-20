@@ -64,14 +64,3 @@ end
 Factory.define :actions do |f|
   f.scene Factory(:scene)
 end
-
-Factory.define :keyframe_text do |f|
-  f.keyframe_id 1 # hack alert
-  f.content "This is some content"
-  f.content_highlight_times "Don't know what this is"
-  f.x_coord 200
-  f.y_coord 200
-  f.face "Arial"
-  f.size 14
-  f.color "FFFFFF"
-end
