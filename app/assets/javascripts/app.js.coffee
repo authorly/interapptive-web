@@ -47,7 +47,7 @@ window.App =
     @spritesListPalette = new App.Views.PaletteContainer
       view       : new App.Views.SpriteListPalette(collection: @currentWidgets)
       el         : $('#sprite-list-palette')
-      title      : 'Scene Images'
+      title      : 'Active Scene Images'
       alsoResize : '#sprite-list-palette ul li span'
 
     @textEditorPalette = new App.Views.PaletteContainer
@@ -61,7 +61,7 @@ window.App =
       resizable : false
 
     @spriteLibraryPalette = new App.Views.PaletteContainer
-      title:     'Image Library'
+      title:     'Uploaded Images'
       view:      new App.Views.SpriteLibraryPalette
       el:        $('#sprite-library-palette')
       resizable: true
