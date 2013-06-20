@@ -65,6 +65,7 @@ class App.Views.ToolbarView extends Backbone.View
 
     view = new App.Views.VoiceoverIndex App.currentSelection.get('keyframe')
     App.modalWithView(view: view).show().modal.on('hide', view.stopVoiceover)
+    view.enableMediaPlayer()
 
 
   showSceneOptions: ->

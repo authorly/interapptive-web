@@ -1,0 +1,9 @@
+- if @sounds.length > 0
+  %select#voiceover-selector
+    %option{:value => 'none'}
+      None
+    - for sound in @sounds.models
+      %option{:value => "#{sound.get('id')}"}
+        = sound.get('name')
+- else
+  Please upload some sounds first.
