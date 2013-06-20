@@ -130,7 +130,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     ctx.rect(x, y, width, height)
 
     ctx.strokeStyle = COLOR_OUTER_STROKE
-    ctx.lineWidth = Math.round(LINE_WIDTH_OUTER * @sprite.getScale())
     ctx.stroke()
 
     ctx.beginPath()
