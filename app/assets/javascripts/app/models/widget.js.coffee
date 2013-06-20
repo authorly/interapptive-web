@@ -233,10 +233,7 @@ class App.Models.TextWidget extends App.Models.Widget
 
 
   wordCount: ->
-    string = @get('string')
-    string = string.replace(/^(\s|\n)*/, '').replace(/(\s|\n)*$/, '') # trim
-    return 0 if string == ''
-    string.split(/\s+/).length
+    App.Lib.StringHelper.wordCount @get('string')
 
 
 
