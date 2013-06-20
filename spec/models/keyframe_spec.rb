@@ -9,10 +9,6 @@ describe Keyframe do
     it 'should be valid response' do
       response = {
           'animation_duration' => keyframe.animation_duration,
-          'audio'              => {
-            'url'              => nil,
-            'sphinx_audio'     => { 'url' => nil },
-          },
           'content_highlight_times' => [],
           'created_at'         => keyframe.created_at,
           'id'                 => keyframe.id,
@@ -21,9 +17,9 @@ describe Keyframe do
           'preview_image_id'   => keyframe.preview_image_id,
           'scene_id'           => keyframe.scene_id,
           'updated_at'         => keyframe.updated_at,
+          'voiceover_id'       => nil,
           'widgets'            => keyframe.widgets,
           'preview_image_url'  => keyframe.preview_image.image.url,
-          'url'                => nil
       }.to_json
 
       keyframe.to_json.should eql(response)

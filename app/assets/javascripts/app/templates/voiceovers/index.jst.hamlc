@@ -6,20 +6,7 @@
         Your browser does not support the audio element.
       %span
         %a{:href => '#'}
-    #voiceover-file
-      %span.fileinput-button.btn.btn-success.disabled
-        %i.icon-plus-sign.icon-white
-        %span Select a Voiceover
-        %input#audio-file{:accept => "audio/vnd.wave", :name => "file", :type => "file"}
-      %div.success
-      %div.filename
-        %i.icon-edit.icon-black
-        %span
-      %div.loading
-      %button#upload.btn.btn-primary.disabled
-        %i.icon-arrow-up.icon-white
-        Start Upload
-    %div Only mp3, wav, aac, ogg and m4a file types are accepted
+    #voiceover-selector-container
 
   .modal-body
     %i.icon-arrow-right.icon-black.disabled

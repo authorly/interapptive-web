@@ -51,9 +51,7 @@ Interapptive::Application.routes.draw do
     end
   end
 
-  resources :keyframes do
-    resource  :audio, :controller => :keyframe_audios
-  end
+  resources :keyframes
 
   resource :zencoder, :controller => :zencoder, :only => :create
 end
