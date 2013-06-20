@@ -177,6 +177,7 @@ describe "App.JSON", ->
         content_highlight_times: [1, 2, 4, 5, 20]
         voiceover_id: 11
       }, parse: true
+      sinon.stub(@keyframe1, 'autoplayDuration').returns(20.7)
       @scene1.keyframes.add @keyframe1
 
       # with no text
@@ -190,6 +191,7 @@ describe "App.JSON", ->
           { 'type': 'HotspotWidget', 'id': 8, 'position': {'x': 410, 'y': 210}, 'radius': 20, 'video_id': @video.id }
         ]
       }, parse: true
+      sinon.stub(@keyframe2, 'autoplayDuration').returns(8)
       @scene1.keyframes.add @keyframe2
 
       @storybook.scenes.add @scene1
@@ -227,8 +229,9 @@ describe "App.JSON", ->
       expect(text.xOffset).toEqual 150
       expect(text.yOffset).toEqual 370
 
-      expect(keyframe.highlightingTimes).toEqual [1, 2, 4, 5, 20]
       expect(keyframe.voiceAudioFile).toEqual "https://interapptive.s3.amazonaws.com/sounds/11/voicemail_received.wav"
+      expect(keyframe.highlightingTimes).toEqual [1, 2, 4, 5, 20]
+      expect(keyframe.autoplayDuration).toEqual 20.7
 
       hotspots = keyframe.hotspots
       expect(hotspots.length).toEqual 1
@@ -246,6 +249,7 @@ describe "App.JSON", ->
       expect(keyframe.voiceAudioFile).toBeUndefined()
       # with a default `0` value, so the iphone app does not crash
       expect(keyframe.highlightingTimes).toEqual [0]
+      expect(keyframe.autoplayDuration).toEqual 8
 
       text = keyframe.linesOfText[0]
       expect(text.text).toEqual ''
@@ -259,7 +263,6 @@ describe "App.JSON", ->
       sprites = api.CCSprites
       expect(sprites).toBeDefined()
       expect(sprites.length).toEqual 1
-      console.log sprites
 
       sprite = sprites[0]
       expect(sprite.image).toEqual "https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg"

@@ -29,3 +29,10 @@ class App.Lib.StringHelper
   @truncate: (str, take = 6, trail_with = '...') ->
     return str if str.length <= take
     str.substr(0, take) + trail_with
+
+
+  @wordCount: (str) ->
+    str = $.trim(str)
+    return 0 if str == ''
+    str.split(/\s+/).length
+

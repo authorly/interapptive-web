@@ -6,10 +6,6 @@ describe "App.Models.Keyframe", ->
 
     @scene = new App.Models.Scene({
       id: 1,
-      image_id: 1,
-      sound_id: 2,
-      preview_image_id: 3,
-      position: 1,
       content_highlight_times: [1, 2, 3, 4],
     },
     {
@@ -56,3 +52,30 @@ describe "App.Models.Keyframe", ->
         @widgets.add [type: 'SpriteOrientation']
         @widgets.add [type: 'HotspotWidget']
         expect(@widgets.at(3).get('z_order')).toEqual (new App.Models.HotspotWidget).get('z_order') + 1
+
+  describe 'autoplay duration', ->
+
+    it 'is 8 seconds if there is no text', ->
+      expect(@keyframe.autoplayDuration()).toEqual 8
+
+    describe 'when there is text', ->
+
+      it 'is computed from the text widgets, at 45 words/minute reading speed, if there is no voiceover', ->
+        @keyframe.widgets.add [
+          {type: 'TextWidget'},
+          {type: 'TextWidget'},
+          {type: 'TextWidget'}
+        ]
+        sinon.stub(@keyframe.widgets.at(0), 'wordCount').returns(2)
+        sinon.stub(@keyframe.widgets.at(1), 'wordCount').returns(9)
+        sinon.stub(@keyframe.widgets.at(2), 'wordCount').returns(5)
+        expect(@keyframe.autoplayDuration()).toEqual 21
+
+
+      it 'is the duration of the voiceover sound, if it exists', ->
+        @storybook.sounds.add(voiceover = new App.Models.Sound(duration: 17.2, id: 1981))
+        @keyframe.widgets.add type: 'TextWidget'
+        @keyframe.set voiceover_id: voiceover.id
+
+        expect(@keyframe.autoplayDuration()).toEqual 17.2
+
