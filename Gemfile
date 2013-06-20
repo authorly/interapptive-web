@@ -23,7 +23,7 @@ gem 'god'
 gem 'yaml_db'
 
 group :osx do
-  gem 'betabuilder', :git => 'git://github.com/waseem/betabuilder.git', :branch => 'derived_build_dir', :ref => '8a81f196cc7e615c7190bebd6301e7fb949083bb'
+  gem 'betabuilder', :git => 'git://github.com/waseem/betabuilder.git', :branch => 'no_deploy', :ref => '1125dab2d903fb24aabef758d0f1feb22940ed6a'
 end
 
 group :assets do
