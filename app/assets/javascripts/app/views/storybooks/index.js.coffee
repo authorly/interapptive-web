@@ -62,8 +62,9 @@ class App.Views.StorybookIndex extends Backbone.View
       storybook.destroy()
 
 
-  removeStorybook: (storybook) ->
+  removeStorybook: (storybook) =>
     @$(".storybook[data-id=#{storybook.id}]").parent().remove()
+    @toggleOpenStorybookButton()
 
 
   storybookSelected: (event) ->
@@ -76,11 +77,16 @@ class App.Views.StorybookIndex extends Backbone.View
 
     @$('.storybook').removeClass('active alert alert-info').
       filter("[data-id=#{storybook.id}]").addClass('active alert alert-info')
-    @$('.btn-primary.open-storybook').removeClass 'disabled'
+
+    @toggleOpenStorybookButton()
 
 
   openStorybook: ->
     App.currentSelection.set storybook: @selectedStorybook if @selectedStorybook?
+
+
+  toggleOpenStorybookButton: ->
+    @$('.btn-primary.open-storybook').toggleClass('disabled')
 
 
   # storybook form
