@@ -232,6 +232,13 @@ class App.Models.TextWidget extends App.Models.Widget
     @collection.keyframe.scene.storybook.fonts
 
 
+  wordCount: ->
+    string = @get('string')
+    string = string.replace(/^(\s|\n)*/, '').replace(/(\s|\n)*$/, '') # trim
+    return 0 if string == ''
+    string.split(/\s+/).length
+
+
 
 ##
 # A collection of widgets.
