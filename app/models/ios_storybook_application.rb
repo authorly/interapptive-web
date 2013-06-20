@@ -74,6 +74,7 @@ class IosStorybookApplication < AbstractStorybookApplication
         config.app_name = '#{@target}'
         config.workspace_path = 'project.xcworkspace'
         config.scheme = '#{@target}'
+        config.build_dir = :derived
 
         config.deploy_using(:web) do |web|
           web.deploy_to = '#{@deploy_to_url}'
