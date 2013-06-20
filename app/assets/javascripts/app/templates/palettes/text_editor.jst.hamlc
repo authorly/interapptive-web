@@ -1,8 +1,8 @@
 %select#font-face{:readonly => "", :disabled => ""}
   %optgroup{:id => "uploaded-fonts", :label => "Uploaded Fonts"}
-  %optgroup{:id => "system-fonts", :label => "Standard Fonts"}
     %option#no-fonts-uploaded{:value => "", :disabled => ""}
       no fonts uploaded
+  %optgroup{:id => "system-fonts", :label => "Standard Fonts"}
 
 %select#font-size{:readonly => "", :disabled => ""}
   - fontSizes = [24..60]

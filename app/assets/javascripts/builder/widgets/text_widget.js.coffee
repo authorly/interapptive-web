@@ -40,7 +40,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   createLabel: =>
-    @label = cc.LabelTTF.create(@model.get('string'), @model.get('name'), @model.get('font_size'))
+    @label = cc.LabelTTF.create(@model.get('string'), @model.font(), @model.get('font_size'))
 
     rgb = @model.get('font_color')
     @label.setColor(new cc.Color3B(rgb.r, rgb.g, rgb.b))
