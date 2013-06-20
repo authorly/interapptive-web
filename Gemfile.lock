@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/waseem/betabuilder.git
-  revision: 1125dab2d903fb24aabef758d0f1feb22940ed6a
-  ref: 1125dab2d903fb24aabef758d0f1feb22940ed6a
-  branch: no_deploy
+  revision: 8a81f196cc7e615c7190bebd6301e7fb949083bb
+  ref: 8a81f196cc7e615c7190bebd6301e7fb949083bb
+  branch: derived_build_dir
   specs:
     betabuilder (0.7.4.1)
       CFPropertyList (~> 2.0.0)
