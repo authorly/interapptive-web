@@ -165,6 +165,10 @@ class App.Models.Storybook extends Backbone.Model
     @customFonts().length > 0
 
 
+  defaultFont: ->
+    @_defaultFont ||= @fonts.where(asset_type: 'system', name: 'Arial')[0]
+
+
   customFonts: ->
     @_customFonts ||= @fonts.subcollection
       filter: (font) -> !font.isSystem()
