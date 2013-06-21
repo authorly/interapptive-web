@@ -209,7 +209,7 @@ class App.Models.Keyframe extends Backbone.Model
     if widgets.length > 0
       _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
     else
-      (new App.Models.TextWidget).get('z_order')
+      App.Models.TextWidget.prototype.defaults().z_order
 
 
   nextHotspotZOrder: (widget) ->
@@ -217,7 +217,7 @@ class App.Models.Keyframe extends Backbone.Model
     if widgets.length > 0
       _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
     else
-      (new App.Models.HotspotWidget).get('z_order')
+      App.Models.HotspotWidget.prototype.defaults().z_order
 
 
 _.extend App.Models.Keyframe::, App.Mixins.QueuedSync
