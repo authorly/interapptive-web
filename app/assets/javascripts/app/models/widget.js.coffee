@@ -218,7 +218,9 @@ class App.Models.TextWidget extends App.Models.Widget
 
   initialize: ->
     super
-    @set(font_id: @storybook().defaultFont().get('id')) unless @get('font_id')
+    try
+      @set(font_id: @storybook().defaultFont().get('id')) unless @get('font_id')
+    catch error
 
 
   # Used to put filename of the font being used for a widget
@@ -233,7 +235,7 @@ class App.Models.TextWidget extends App.Models.Widget
 
 
   storybook: ->
-    @collection.keyframe.scene.storybook
+    @collection?.keyframe.scene.storybook
 
 
   wordCount: ->
@@ -248,7 +250,7 @@ class App.Models.TextWidget extends App.Models.Widget
 class App.Collections.Widgets extends Backbone.Collection
 
   model: (attrs, options) ->
-    new App.Models[attrs.type](attrs, $.extend({}, options, parse: true))
+    new App.Models[attrs.type](attrs, $.extend({collection: @, parse: true}, options))
 
 
   remove: (widget) ->

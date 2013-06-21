@@ -229,10 +229,12 @@ window.App =
 
   _addNewWidget: (attributes) ->
     container = App.Collections.Widgets.containers[attributes.type]
-    widget = new App.Models[attributes.type](attributes, parse: true)
-    App.currentSelection.get(container).widgets.add widget
-    return if attributes.type is "TextWidget"
-    App.currentSelection.set widget: widget
+    collection = App.currentSelection.get(container).widgets
+    widget = collection.model(attributes)
+    collection.add widget
+
+    unless widget instanceof App.Models.TextWidget
+      App.currentSelection.set widget: widget
 
 
   # @param [Object] attributes
