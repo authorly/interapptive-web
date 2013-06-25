@@ -214,7 +214,7 @@ class App.Models.TextWidget extends App.Models.Widget
     position: @defaultPosition()
     font_id: App.Config.text_widget_default_font_id
     font_size: 25
-    font_color: { 'r': 255, 'g': 0, 'b': 0 }
+    font_color: { 'r': 0, 'g': 0, 'b': 0 }
 
 
   # Used to put filename of the font being used for a widget
