@@ -212,9 +212,15 @@ class App.Models.TextWidget extends App.Models.Widget
     string:  'Double click to edit or drag to move'
     z_order: 6000
     position: @defaultPosition()
-    font_id: App.Config.text_widget_default_font_id
     font_size: 25
     font_color: { 'r': 0, 'g': 0, 'b': 0 }
+
+
+  initialize: ->
+    super
+    try
+      @set(font_id: @storybook().defaultFont().get('id')) unless @get('font_id')
+    catch error
 
 
   # Used to put filename of the font being used for a widget
@@ -225,12 +231,15 @@ class App.Models.TextWidget extends App.Models.Widget
 
 
   font: ->
-    @fonts().get(@get('font_id'))
+    @storybook().fonts.get(@get('font_id'))
 
 
-  fonts: ->
-    @collection.keyframe.scene.storybook.fonts
+  storybook: ->
+    @collection?.keyframe.scene.storybook
 
+
+  wordCount: ->
+    App.Lib.StringHelper.wordCount @get('string')
 
 
 ##
@@ -241,7 +250,7 @@ class App.Models.TextWidget extends App.Models.Widget
 class App.Collections.Widgets extends Backbone.Collection
 
   model: (attrs, options) ->
-    new App.Models[attrs.type](attrs, $.extend({}, options, parse: true))
+    new App.Models[attrs.type](attrs, $.extend({collection: @, parse: true}, options))
 
 
   remove: (widget) ->

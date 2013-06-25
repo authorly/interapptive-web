@@ -17,7 +17,8 @@ describe Sound do
         'url'         => s.sound.url,
         'delete_url'  => "/sounds/#{s.id}",
         'delete_type' => 'DELETE',
-        'created_at'  => s.created_at
+        'created_at'  => s.created_at,
+        'duration'    => nil,
       }
 
       s.as_jquery_upload_response.should eql(response)

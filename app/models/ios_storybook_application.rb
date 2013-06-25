@@ -72,8 +72,6 @@ class IosStorybookApplication < AbstractStorybookApplication
         config.target = '#{@target}'
         config.configuration = 'Adhoc'
         config.app_name = '#{@target}'
-        config.workspace_path = 'project.xcworkspace'
-        config.scheme = '#{@target}'
 
         config.deploy_using(:web) do |web|
           web.deploy_to = '#{@deploy_to_url}'

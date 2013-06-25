@@ -99,6 +99,21 @@ class App.Models.Keyframe extends Backbone.Model
   voiceover: ->
     @scene.storybook.sounds.get(@get('voiceover_id'))
 
+
+  autoplayDuration: ->
+    texts = @textWidgets()
+    voiceover = @voiceover()
+    if texts.length == 0
+      8
+    else if voiceover?
+      voiceover.get('duration')
+    else
+      wordCount = _.map texts, (widget) -> widget.wordCount()
+      nrWords = _.reduce wordCount, ((sum, count) -> sum + count), 0
+      speed = 45/60
+      Math.round(nrWords / speed)
+
+
   initializePreview: ->
     attributes = App.Lib.AttributesHelper.filterByPrefix @attributes, 'preview_image_'
     @preview = new App.Models.Preview(attributes, storybook: @scene.storybook)
@@ -194,7 +209,7 @@ class App.Models.Keyframe extends Backbone.Model
     if widgets.length > 0
       _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
     else
-      (new App.Models.TextWidget).get('z_order')
+      App.Models.TextWidget.prototype.defaults().z_order
 
 
   nextHotspotZOrder: (widget) ->
@@ -202,7 +217,7 @@ class App.Models.Keyframe extends Backbone.Model
     if widgets.length > 0
       _.max(widgets.map( (widget) -> widget.get('z_order'))) + 1
     else
-      (new App.Models.HotspotWidget).get('z_order')
+      App.Models.HotspotWidget.prototype.defaults().z_order
 
 
 _.extend App.Models.Keyframe::, App.Mixins.QueuedSync
