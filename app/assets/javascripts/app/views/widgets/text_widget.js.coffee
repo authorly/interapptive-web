@@ -73,7 +73,7 @@ class App.Views.TextWidget extends Backbone.View
 
 
   setFontFamily: =>
-    @$el.css('font-family', @model.get('name'))
+    @$el.css('font-family', @model.font())
 
 
   setFontSize: =>
