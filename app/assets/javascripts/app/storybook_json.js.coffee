@@ -123,7 +123,7 @@ class App.JSON
 
     _.each scene.spriteWidgets(), (spriteWidget) =>
       position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
-      spriteId = @spriteIdCounter.next()
+      spriteId = @spriteIdCounter.next() * 10
       spriteNode =
         image:     spriteWidget.url()
         spriteTag: spriteId
