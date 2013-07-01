@@ -138,7 +138,9 @@ class App.JSON
       scene.keyframes.each (keyframe, index) =>
         orientation = keyframe.getOrientationFor(spriteWidget)
         keyframeIndex = keyframe.get('position')
-        if keyframe.isAnimation() || keyframeIndex == 0 and index == 0
+
+        keyframeIsAnimation = keyframe.isAnimation() || keyframeIndex == 0 and index == 0
+        if keyframeIsAnimation
           duration = 0
         else
           duration = keyframe.get('animation_duration')
@@ -151,6 +153,9 @@ class App.JSON
             actionTag: scaleId
             duration: duration
             intensity: orientation.get('scale')
+
+          if keyframeIsAnimation and duration == 0
+            initialScaleActionId = scaleId
 
         moveId = null
         previousPosition = previousOrientation?.get('position')
@@ -179,7 +184,7 @@ class App.JSON
             actionTag: sequenceId
             actions: [delayId, spawnId]
 
-          spriteNode.actions = [sequenceId]
+          spriteNode.actions = [initialScaleActionId, sequenceId]
         else
           currentActions = _.without [scaleId, moveId], null
           if currentActions.length > 0
