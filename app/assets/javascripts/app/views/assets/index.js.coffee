@@ -107,7 +107,7 @@ class App.Views.AssetIndex extends Backbone.View
     e.preventDefault()
     e.stopPropagation()
 
-    if @assetType is not 'font'
+    if @assetType isnt 'font'
       return unless confirm("Are you sure you want to delete this #{@assetType} and corresponding #{@_assetTypeToWidgetType()} from all the scenes?")
 
     @_destroyAsset(e)
