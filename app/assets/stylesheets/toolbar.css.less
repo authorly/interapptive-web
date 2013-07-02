@@ -1,21 +1,33 @@
 nav.toolbar {
-  height: @toolbarHeight;
   .gradient(@fileMenuBgStart, @fileMenuBgEnd);
+
+  height: 71px;
+  text-align: center;
 
   ul, ul li ul {
     margin-right: 20px;
-    margin-left: 20px;
+    margin-left: 10px;
+  }
+
+  ul#toolbar {
+    width: 100%;
+    margin: 0px auto;
   }
 
   ul li {
     .horizontal-menu;
 
     ul li {
-      width: 73px;
+      .scale(0.76);
+
+      width: 63px;
       height: 92px;
       position: relative;
+      top: -14px;
       background-image: asset-url('toolbar.png');
-      .horizontal-menu;
+
+      list-style-type:none;
+      display:inline;
     }
 
     ul {
@@ -54,11 +66,6 @@ nav.toolbar {
       li.scene-options {
         background-position: @toolbarItemWidth*-10 0;
         white-space: nowrap;
-      }
-
-      li.preview {
-        background-position: @toolbarItemWidth*-11 0;
-        /*margin-left: 15px*/
       }
 
       li.scene.active {
@@ -111,10 +118,6 @@ nav.toolbar {
 
       li.options.active {
         background-position: @toolbarItemWidth*-10 @toolbarHeight*2;
-      }
-
-      li.preview.active {
-        background-position: @toolbarItemWidth*-11 @toolbarHeight*2;
       }
 
       li.scene.disabled {
@@ -173,10 +176,6 @@ nav.toolbar {
         background-position: @toolbarItemWidth*-10 (@toolbarHeight - 2);
       }
 
-      li.preview.disabled {
-        background-position: @toolbarItemWidth*-11 (@toolbarHeight - 2);
-      }
-
       li.disabled a {
         color: #888;
       }
@@ -215,28 +214,29 @@ nav.toolbar {
     }
   }
 
-  ul li.toolbar-group {
-    background-image: asset-url('toolbar-separator.png');
-    background-repeat: no-repeat;
-    background-position: right center;
+  ul li.toolbar-group.centered {
+    float: none !important;
+    margin: 0px auto;
+    display: inline-block;
   }
 
-  ul li.toolbar-group.last, ul li.toolbar-group.preview {
+  ul li.toolbar-group.last {
     background-image: none;
   }
 
-  ul li.toolbar-group.last ul li a{
+  ul li.toolbar-group.last.right {
+    float: right;
+    margin-left: 140px;
+    margin-right: 15px;
+  }
+
+  .sync-audio a{
     line-height: 12px;
     position: relative;
     top: -5px;
     left: -1px;
-  }
-
-  ul li.toolbar-group.preview {
-    float: right;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
-nav ul#toolbar, ul.first-toolbar-group, li.first-toolbar-group {
-  margin-left: 0 !important;
-}
