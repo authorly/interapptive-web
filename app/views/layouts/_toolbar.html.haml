@@ -1,36 +1,29 @@
-%ul#toolbar
-  %li.toolbar-group
-    %ul.first-toolbar-group
-      %li.scene.add-scene.disabled
-        %a{:href => '#'} Scene
-      %li.animation-keyframe.disabled
-        %a.add-animation-keyframe{:href => '#'} Animation intro
-      %li.keyframe.disabled
-        %a.add-keyframe{:href => '#'} Keyframe
+%nav.toolbar
+  .container
+    %ul#toolbar
+      %li.toolbar-group.first
+        %ul
+          %li.scene.add-scene.disabled
+            %a{:href => '#'} Scene
+          %li.animation-keyframe.disabled
+            %a.add-animation-keyframe{:href => '#'} Animation intro
+          %li.keyframe.disabled
+            %a.add-keyframe{:href => '#'} Keyframe
 
-  -#%li.toolbar-group
-    -#%ul
-      -#%li.actions
-        -#= link_to "Create Action", '#'
+      %li.toolbar-group.centered
+        %ul
+          %li.edit-text.disabled
+            %a.add-text{:href => '#'} Add Text
+          %li.sync-audio.disabled
+            = link_to "Text Voiceover", "#"
+          %li.add-hotspot.disabled
+            %a{:href => '#'} Add Hotspot
 
-  %li.toolbar-group
-    %ul
-      %li.edit-text.disabled
-        %a.add-text{:href => '#'} Add Text
-      %li.add-hotspot.disabled
-        %a{:href => '#'} Add Hotspot
 
-  %li.toolbar-group
-    %ul
-      %li.scene-options.disabled
-        = link_to "Scene Options", "#"
+      %li.toolbar-group.last.right
+        %ul
+          %li.scene-options.disabled
+            = link_to "Scene Options", "#"
 
-  %li.toolbar-group.last
-    %ul
-      %li.sync-audio.disabled
-        = link_to "Keyframe Voiceover", "#"
-
-  %li.toolbar-group.preview
-    %ul
-      %li.preview.disabled
-        %a.show-preview{:href => '#'} Preview
+%nav.bottom-bar
+  %div#font-menu-buttons.container
