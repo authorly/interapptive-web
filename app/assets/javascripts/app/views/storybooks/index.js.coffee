@@ -88,7 +88,7 @@ class App.Views.StorybookIndex extends Backbone.View
     window.setTimeout =>
       if @selectedStorybook?
         App.currentSelection.set(storybook: @selectedStorybook)
-    , 650
+    ,  650
 
 
   enableOpenStorybookButton: (enabling = true) ->
