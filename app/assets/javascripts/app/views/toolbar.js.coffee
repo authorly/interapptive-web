@@ -6,7 +6,6 @@ class App.Views.ToolbarView extends Backbone.View
     'click .edit-text'          : 'addText'
     'click .add-hotspot'        : 'addHotspot'
     'click .sync-audio'         : 'alignAudio'
-    # 'click .actions'            : 'showActionLibrary'
     'click .scene-options'      : 'showSceneOptions'
     'click .preview'            : 'showPreview'
 
@@ -60,8 +59,8 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   alignAudio: (event) ->
-    event.preventDefault()
-    return if $(event.target).hasClass('disabled')
+    el = $(event.target)
+    return if el.hasClass('disabled') or el.parent().hasClass('disabled')
 
     view = new App.Views.VoiceoverIndex App.currentSelection.get('keyframe')
     App.modalWithView(view: view).show().modal.on('hide', view.stopVoiceover)

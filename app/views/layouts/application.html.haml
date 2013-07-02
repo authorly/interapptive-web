@@ -15,18 +15,10 @@
     = csrf_meta_tags
     = yield(:head)
 
-
   %body
     %header.navbar.navbar-fixed-top
-      %nav.file-menu
-        #file-menu.container.left
-          = render 'layouts/file_menu'
-      %nav.toolbar
-        .container.left
-          = render 'layouts/toolbar'
-      %nav.font-menu
-        %div#font-menu-buttons.container
-          = render 'layouts/font_menu'
+      = render 'layouts/file_menu'
+      = render 'layouts/toolbar'
       #global-sync-indicator= image_tag 'loading.gif'
     #main{:role => "main"}
       .container
@@ -50,7 +42,6 @@
             #sprite-editor-palette.palette.span2
             #text-editor-palette.palette.span2
             #sprite-library-palette.palette.span2
-            -##active-actions-window.widget-window.span2
             #action-form-container
 
     %footer.navbar.navbar-fixed-bottom
