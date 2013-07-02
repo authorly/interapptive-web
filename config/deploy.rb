@@ -1,6 +1,5 @@
 require "bundler/capistrano"
 require 'capistrano/ext/multistage'
-require 'rvm/capistrano'
 
 set :application,     'authorly'
 set :scm,             :git

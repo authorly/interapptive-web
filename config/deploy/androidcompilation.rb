@@ -1,3 +1,5 @@
+require 'rvm/capistrano'
+
 set :user,            "rails"
 set :deploy_to,       "/home/#{user}/apps/#{application}"
 set :bundle_flags,    '--deployment'
