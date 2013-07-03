@@ -5,7 +5,13 @@ set :deploy_to,       "/home/#{user}/apps/#{application}"
 set :bundle_flags,    '--deployment'
 set :bundle_without,  [:development, :test, :osx]
 set :rails_env,       "production"
-set :branch,          "production"
+set :branch do
+  default_tag = `git tag`.split("\n").last
+
+  tag = Capistrano::CLI.ui.ask "Tag to deploy (make sure to push the tag first): [#{default_tag}] "
+  tag = default_tag if tag.empty?
+  tag
+end
 
 # Use chruby to change ruby version for capistrano
 default_run_options[:shell] = '/bin/bash'
