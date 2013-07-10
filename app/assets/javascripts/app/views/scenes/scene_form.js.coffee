@@ -15,7 +15,7 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
 
       sound_repeat_count:
         type: "Number"
-        title: "Repetition count"
+        title: "Loop sound?"
         help: "Enter \"0\" to play once or \"1\" to loop continuously."
         validators:    [
           checkRepetation = (value, formValues) ->
@@ -23,5 +23,5 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
               type: "sound_repeat_count"
               message: "Must use 0 or 1."
 
-            err  if value != 0 || value != 1
+            err if value < 0 or value > 1
           ]
