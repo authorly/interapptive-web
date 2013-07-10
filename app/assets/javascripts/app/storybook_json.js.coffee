@@ -108,7 +108,6 @@ class App.JSON
         text:
           paragraphs: []
     if (sound = scene.sound())?
-      console.log "scene.get('sound_repeat_count')", scene.get('sound_repeat_count')
       page.Page.settings.backgroundMusicFile =
         loop: scene.get('sound_repeat_count')
         audioFilePath: sound.get('url')
