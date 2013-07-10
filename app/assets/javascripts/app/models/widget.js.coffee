@@ -1,4 +1,4 @@
-class App.Models.Widget extends Backbone.Model
+  class App.Models.Widget extends Backbone.Model
   # attributes: position(attributes: x, y) z_order
   @idGenerator = new App.Lib.Counter
 

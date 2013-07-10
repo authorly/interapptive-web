@@ -109,7 +109,7 @@ class App.JSON
           paragraphs: []
     if (sound = scene.sound())?
       page.Page.settings.backgroundMusicFile =
-        loop: scene.get('sound_repeat_count') == 0
+        loop: (scene.get('sound_repeat_count') == 0) ? false : true
         audioFilePath: sound.get('url')
     scene.keyframes.each (k) => @addTextNodeFor(k, page)
 
