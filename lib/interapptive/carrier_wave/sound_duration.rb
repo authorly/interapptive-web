@@ -13,7 +13,11 @@ module Interapptive
       def store_duration(*args)
         IO.popen("sox #{current_path} -n stat 2>&1") do |output|
           length = output.readlines.detect{|line| line.start_with?('Length')}
-          model.meta_info[:duration] = length.match(/:\s*(.*)/)[1].to_f
+          if length.present?
+            model.meta_info[:duration] = length.match(/:\s*(.*)/)[1].to_f
+          else
+            model.meta_info[:duration] = 8000.00
+          end
         end
       end
     end
