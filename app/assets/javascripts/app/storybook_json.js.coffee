@@ -11,7 +11,7 @@ class App.JSON
     @actionIdCounter = new App.Lib.Counter
 
     @app =
-      Configurations : @configurationNode(storybook)
+      Configurations: @configurationNode(storybook)
 
     @storybook = storybook
 
@@ -252,6 +252,7 @@ class App.JSON
             tappedStateImage: button.selectedUrl() || button.url()
             storyMode: str.decapitalize(str.camelize(button.get('name')))
             position: @_getPosition(button.get('position'))
+            zOrder: button.get('z_order')
           }
 
       API: {}
@@ -264,7 +265,8 @@ class App.JSON
         spriteTag: spriteId
         scale:     orientation.get('scale')
         position:  @_getPosition(orientation.get('position'))
-        visible: true
+        visible:   true
+        zOrder:   spriteWidget.get('z_order')
       node.CCSprites.push(spriteNode)
 
     node
