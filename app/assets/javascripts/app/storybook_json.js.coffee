@@ -219,6 +219,7 @@ class App.JSON
         normalStateImage : home.url()
         tappedStateImage : home.selectedUrl()
         position: @_getPosition(homeButtonPosition)
+        scale: home.get('scale')
     node
 
 
@@ -252,6 +253,7 @@ class App.JSON
             tappedStateImage: button.selectedUrl() || button.url()
             storyMode: str.decapitalize(str.camelize(button.get('name')))
             position: @_getPosition(button.get('position'))
+            scale: button.get('scale')
             zOrder: button.get('z_order')
           }
 

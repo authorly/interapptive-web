@@ -96,7 +96,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       # `SpriteWidget`s are modified indirectly, by changing their
       # current orientation. So we deal separately with changes in
       # orientations
-      @updateFromOrientation(widget)
+      sprite = widget.spriteWidget()
+    else if widget instanceof App.Models.ButtonWidget
+      sprite = widget
+
+    @_getView(sprite).applyOrientation(widget)
 
 
   reorderWidget: (widget) ->

@@ -151,7 +151,7 @@ class App.Models.SpriteOrientation extends Backbone.Model
 # the UI.
 #
 class App.Models.ButtonWidget extends App.Models.ImageWidget
-  # attributes: name selected_image_id
+  # attributes: name selected_image_id position scale
 
   defaults:
     type: 'ButtonWidget'

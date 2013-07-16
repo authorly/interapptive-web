@@ -13,7 +13,7 @@ describe "App.JSON", ->
       autoplayPageTurnDelay: 3
       autoplayKeyframeDelay: 4
       widgets: [
-        {'type':'ButtonWidget', image_id: null,'id':40,'name':'home', position: {x: 200, y: 400}, scale: 1},
+        {'type':'ButtonWidget', image_id: null,'id':40,'name':'home', position: {x: 200, y: 400}, scale: 2.7},
       ]
     }
 
@@ -28,7 +28,9 @@ describe "App.JSON", ->
     @storybook.images.add @main_menu_image
 
 
-    # storybooks come with a main menu scene
+    @rim = new App.Models.ButtonWidget {'type':'ButtonWidget', image_id: null,'id':1,'name':'read_it_myself', selected_image_id: @rim_selected_image.id, position: {x: 200, y: 100}, scale: 1.7}
+    @rtm = new App.Models.ButtonWidget {'type':'ButtonWidget', image_id: null,'id':2,'name':'read_to_me', position: {x: 200, y: 200}, scale: 1.2}
+    @auto = new App.Models.ButtonWidget {'type':'ButtonWidget', image_id: null,'id':3,'name':'auto_play', position: {x: 200, y: 300}, scale: 1}
     @mainMenu = new App.Models.Scene {
       id: 2
       storybook: @storybook
@@ -70,6 +72,7 @@ describe "App.JSON", ->
     it 'has the home menu', ->
       menu = @configuration.homeMenuForPages
       expect(menu).toBeDefined()
+      expect(menu.scale).toEqual 2.7
       expect(menu.position).toEqual [200, 400]
       expect(menu.normalStateImage).toEqual '/assets/sprites/home.png'
       expect(menu.tappedStateImage).toEqual '/assets/sprites/home-over.png'
@@ -103,6 +106,7 @@ describe "App.JSON", ->
       item = items[0]
       expect(item.normalStateImage).toEqual '/assets/sprites/read_it_myself.png'
       expect(item.tappedStateImage).toEqual 'http://authorly.dev/read_it_myself-over.png'
+      expect(item.scale).toEqual 1.7
       expect(item.position).toEqual [200, 100]
       expect(item.storyMode).toEqual 'readItMyself'
 
@@ -110,6 +114,7 @@ describe "App.JSON", ->
       item = items[1]
       expect(item.normalStateImage).toEqual '/assets/sprites/read_to_me.png'
       expect(item.tappedStateImage).toEqual '/assets/sprites/read_to_me-over.png'
+      expect(item.scale).toEqual 1.2
       expect(item.position).toEqual [200, 200]
       expect(item.storyMode).toEqual 'readToMe'
 
@@ -118,6 +123,7 @@ describe "App.JSON", ->
       expect(item.normalStateImage).toEqual '/assets/sprites/auto_play.png'
       expect(item.tappedStateImage).toEqual '/assets/sprites/auto_play-over.png'
       expect(item.position).toEqual [200, 300]
+      expect(item.scale).toEqual 1
       expect(item.storyMode).toEqual 'autoPlay'
 
 
