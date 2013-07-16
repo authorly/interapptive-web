@@ -123,6 +123,15 @@ class App.JSON
 
     _.each scene.spriteWidgets(), (spriteWidget) =>
       position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
+      # fix bug on mobile
+      #
+      # XXX @spriteIdCounter must not be used in other contexts, to avoid overlaps
+      # e.g. the current value is 1, the next sprite is assigned 20, the next one 3
+      # but the current value is 3, and will go to 4, 5... 10 (overlap)
+      #
+      # for now it is ok since it used for the main menu buttons, before this method
+      # is invoked. but this code is fragile.
+      # @dira 2013-07-16
       spriteId = @spriteIdCounter.next() * 10
       spriteNode =
         image:     spriteWidget.url()
