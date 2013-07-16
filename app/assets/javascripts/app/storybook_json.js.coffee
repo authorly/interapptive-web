@@ -41,7 +41,9 @@ class App.JSON
 
     textWidgets = keyframe.textWidgets()
 
-    keyframeHighlightTimes = keyframe.get('content_highlight_times') || []
+    voiceoverNeeded = keyframe.scene.storybook.voiceoverNeeded()
+    keyframeHighlightTimes = keyframe.get('content_highlight_times') if voiceoverNeeded
+    keyframeHighlightTimes ||= []
     if keyframeHighlightTimes.length < 1 then keyframeHighlightTimes.push(0)
     if (voiceover = keyframe.voiceover())?
       keyframeVoiceoverUrl = voiceover.get('url')
@@ -73,8 +75,9 @@ class App.JSON
         hash
 
       highlightingTimes: keyframeHighlightTimes
-      voiceAudioFile: keyframeVoiceoverUrl
       autoplayDuration: keyframe.autoplayDuration()
+
+    paragraph.voiceAudioFile = keyframeVoiceoverUrl if voiceoverNeeded
 
     if textWidgets.length == 0
       paragraph.linesOfText = [{
@@ -232,6 +235,7 @@ class App.JSON
 
 
   mainMenuNode: (scene) ->
+    str = App.Lib.StringHelper
     node =
       # audio:
         # backgroundMusic      : 'main-menu-title-sound.mp3'
@@ -254,8 +258,7 @@ class App.JSON
         plistfilename     : 'snowflake-main-menu.plist'
 
       MenuItems:
-        scene.buttonWidgets().map (button) =>
-          str = App.Lib.StringHelper
+        _.select(scene.buttonWidgets(), (w) -> !w.disabled()).map (button) =>
           {
             normalStateImage: button.url()
             tappedStateImage: button.selectedUrl() || button.url()
@@ -283,4 +286,3 @@ class App.JSON
 
   _getPosition: (position) ->
     [Math.round(position.x), Math.round(position.y)]
-

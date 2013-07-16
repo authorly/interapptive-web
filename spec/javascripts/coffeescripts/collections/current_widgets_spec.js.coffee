@@ -22,7 +22,28 @@ describe "App.Collections.CurrentWidgetsCollection", ->
       @widgets = new App.Collections.CurrentWidgets
       expect(@widgets.length).toEqual 0
 
-      @storybook = new App.Models.Storybook
+      @home = new App.Models.ButtonWidget(name: 'home')
+      @storybook = new App.Models.Storybook {
+        widgets: [@home]
+      }, parse: true
+
+      @rim  = new App.Models.ButtonWidget(name: 'read_it_myself')
+      @rtm  = new App.Models.ButtonWidget(name: 'read_to_me')
+      @auto = new App.Models.ButtonWidget(name: 'auto_play')
+      @s0 = new App.Models.SpriteWidget
+      @main_menu = new App.Models.Scene {
+        is_main_menu: true
+        widgets: [@rtm, @rim, @auto, @s0]
+        storybook: @storybook
+      }, parse: true
+
+      @o0 = new App.Models.SpriteOrientation
+      @main_menu_keyframe = new App.Models.Keyframe {
+        scene: @main_menu
+        widgets: [@o0]
+      }, parse: true
+
+
       @h1 = new App.Models.HotspotWidget
       @h2 = new App.Models.HotspotWidget
       @s1 = new App.Models.SpriteWidget
@@ -57,55 +78,72 @@ describe "App.Collections.CurrentWidgetsCollection", ->
         widgets: [@t2_1]
       }, parse: true
 
-      @widgets.changeKeyframe(@keyframe1)
+    describe 'change to the main menu keyframe', ->
+      beforeEach ->
+        @widgets.changeKeyframe(@main_menu_keyframe)
 
-    it 'adds keyframe & scene widgets', ->
-      expect(@widgets).toContainWidgets [@h1, @h2, @s1, @t1, @o1]
+      it 'adds scene and keyframe widgets', ->
+        expect(@widgets).toContainWidgets [@rtm, @rim, @auto, @s0, @o0]
 
-    it 'adds widgets if they are added to the keyframe', ->
-      w = new App.Models.TextWidget
-      @keyframe1.widgets.add w
-      expect(@widgets).toContainWidgets [@h1, @h2, @s1, @t1, @o1, w]
 
-    it 'removes widgets if they are removed from the keyframe', ->
-      @keyframe1.widgets.remove @t1
-      expect(@widgets).toContainWidgets [@h1, @h2, @s1, @o1]
+      describe 'change to a keyframe from a scene', ->
 
-    it 'adds widgets if they are added to the scene', ->
-      w = new App.Models.HotspotWidget
-      @keyframe1.scene.widgets.add w
-      expect(@widgets).toContainWidgets [@h1, @h2, @s1, @t1, @o1, w]
-
-    it 'removes widgets if they are removed from the scene', ->
-      @keyframe1.scene.widgets.remove @h1
-      expect(@widgets).toContainWidgets [@h2, @s1, @t1, @o1]
-
-    describe 'moving to the same scene', ->
-      it 'removes old keyframe widgets and adds new keyframe widgets', ->
-        @widgets.changeKeyframe(@keyframe2)
-        expect(@widgets).toContainWidgets [@o2, @h1, @h2, @s1]
-
-      describe 'moving to another scene', ->
         beforeEach ->
           @widgets.changeKeyframe(@keyframe1)
-          @widgets.changeKeyframe(@keyframe2_1)
-          @expectedWidgets = [@h2_1, @t2_1]
 
-        it 'removes old keyframe & scene widgets and adds new scene & keyframe widgets', ->
-          expect(@widgets).toContainWidgets @expectedWidgets
+        it 'removes old widgets and adds keyframe, scene and storybook widgets', ->
+          expect(@widgets).toContainWidgets [@home, @h1, @h2, @s1, @t1, @o1]
 
-        it 'does not add widgets if they are added to the old keyframe', ->
-          @keyframe1.widgets.add(new App.Models.TextWidget)
-          expect(@widgets).toContainWidgets @expectedWidgets
+        it 'adds widgets if they are added to the keyframe', ->
+          w = new App.Models.TextWidget
+          @keyframe1.widgets.add w
+          expect(@widgets).toContainWidgets [@home, @h1, @h2, @s1, @t1, @o1, w]
 
-        it 'does not remove widgets if they are removed from the old keyframe', ->
-          @keyframe1.widgets.remove @keyframe1.widgets.at(0)
-          expect(@widgets).toContainWidgets @expectedWidgets
+        it 'removes widgets if they are removed from the keyframe', ->
+          @keyframe1.widgets.remove @t1
+          expect(@widgets).toContainWidgets [@home, @h1, @h2, @s1, @o1]
 
-        it 'does not add widgets if they are added to the old scene', ->
-          @keyframe1.scene.widgets.add(new App.Models.HotspotWidget)
-          expect(@widgets).toContainWidgets @expectedWidgets
+        it 'adds widgets if they are added to the scene', ->
+          w = new App.Models.HotspotWidget
+          @keyframe1.scene.widgets.add w
+          expect(@widgets).toContainWidgets [@home, @h1, @h2, @s1, @t1, @o1, w]
 
-        it 'does not remove widgets if they are removed from the old scene', ->
-          @keyframe1.scene.widgets.remove @keyframe1.scene.widgets.at(0)
-          expect(@widgets).toContainWidgets @expectedWidgets
+        it 'removes widgets if they are removed from the scene', ->
+          @keyframe1.scene.widgets.remove @h1
+          expect(@widgets).toContainWidgets [@home, @h2, @s1, @t1, @o1]
+
+        describe 'moving to the same scene', ->
+          it 'removes old keyframe widgets and adds new keyframe widgets', ->
+            @widgets.changeKeyframe(@keyframe2)
+            expect(@widgets).toContainWidgets [@home, @o2, @h1, @h2, @s1]
+
+        describe 'moving to another scene', ->
+          beforeEach ->
+            @widgets.changeKeyframe(@keyframe2_1)
+            @expectedWidgets = [@home, @h2_1, @t2_1]
+
+          it 'removes old keyframe & scene widgets and adds new scene & keyframe widgets', ->
+            expect(@widgets).toContainWidgets @expectedWidgets
+
+          it 'does not add widgets if they are added to the old keyframe', ->
+            @keyframe1.widgets.add(new App.Models.TextWidget)
+            expect(@widgets).toContainWidgets @expectedWidgets
+
+          it 'does not remove widgets if they are removed from the old keyframe', ->
+            @keyframe1.widgets.remove @keyframe1.widgets.at(0)
+            expect(@widgets).toContainWidgets @expectedWidgets
+
+          it 'does not add widgets if they are added to the old scene', ->
+            @keyframe1.scene.widgets.add(new App.Models.HotspotWidget)
+            expect(@widgets).toContainWidgets @expectedWidgets
+
+          it 'does not remove widgets if they are removed from the old scene', ->
+            @keyframe1.scene.widgets.remove @keyframe1.scene.widgets.at(0)
+            expect(@widgets).toContainWidgets @expectedWidgets
+
+        describe 'moving to the main menu scene', ->
+          beforeEach ->
+            @widgets.changeKeyframe(@main_menu_keyframe)
+
+          it 'removes old keyframe, scene and storybook widgets and adds new scene & keyframe widgets', ->
+            expect(@widgets).toContainWidgets [@rtm, @rim, @auto, @s0, @o0]

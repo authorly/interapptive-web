@@ -114,12 +114,18 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_border
 
 
+  setOpacity: (opacity) ->
+    super
+    @sprite?.setOpacity(opacity)
+
+
   draw: (ctx) ->
     return unless @hasBorder()
 
     # FIXME We should monkey patch cocos2d-html5 to support opacity
+    # checkout https://github.com/cocos2d/cocos2d-html5/blob/Cocos2d-html5-v0.5.0-alpha2/tests/Classes/tests/SpriteTest/SpriteTest.js#L745
     ctx.save()
-    ctx.globalAlpha = 255 / 255.0
+    ctx.globalAlpha = @getOpacity() / 255.0
 
     ctx.beginPath()
 
