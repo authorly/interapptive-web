@@ -193,7 +193,7 @@ class App.JSON
 
             else if keyframeIndex > 0
               actions.push
-                runAfterSwipeNumber: index
+                runAfterSwipeNumber: keyframe.get('position')
                 spriteTag: spriteId
                 actionTags: currentActions
             # e
