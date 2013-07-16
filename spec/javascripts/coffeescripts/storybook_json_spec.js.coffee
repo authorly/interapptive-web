@@ -268,57 +268,85 @@ describe "App.JSON", ->
       expect(hotspot.soundToPlay).toBeUndefined()
       expect(hotspot.videoToPlay).toEqual @video.get('url')
 
-      sprites = api.CCSprites
-      expect(sprites).toBeDefined()
-      expect(sprites.length).toEqual 1
+    describe 'swipes', ->
+      it 'are generated correctly', ->
+        json = new App.JSON(@storybook)
+        api = json.app.Pages[0].API
+        sprites = api.CCSprites
 
-      sprite = sprites[0]
-      expect(sprite.image).toEqual "https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg"
-      expect(sprite.spriteTag).toEqual 2 * 10 # multiplied to avoid mobile bug
-      expect(sprite.position).toEqual [400, 200]
+        expect(sprites).toBeDefined()
+        expect(sprites.length).toEqual 1
 
-      expect(api.CCMoveTo).toBeDefined()
-      expect(api.CCMoveTo.length).toEqual 2
-      move = api.CCMoveTo[0]
-      expect(move.position).toEqual [400, 200]
-      expect(move.duration).toEqual 0
-      k1MoveId = move.actionTag
+        sprite = sprites[0]
+        expect(sprite.image).toEqual "https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg"
+        expect(sprite.spriteTag).toEqual 2 * 10 # multiplied to avoid mobile bug
+        expect(sprite.position).toEqual [400, 200]
 
-      move = api.CCMoveTo[1]
-      expect(move.position).toEqual [500, 300]
-      expect(move.duration).toEqual 2.7
-      k2MoveId = move.actionTag
+        expect(api.CCMoveTo).toBeDefined()
+        expect(api.CCMoveTo.length).toEqual 2
+        move = api.CCMoveTo[0]
+        expect(move.position).toEqual [400, 200]
+        expect(move.duration).toEqual 0
+        k1MoveId = move.actionTag
 
-      expect(api.CCScaleTo).toBeDefined()
-      expect(api.CCScaleTo.length).toEqual 2
-      scale = api.CCScaleTo[0]
-      expect(scale.intensity).toEqual 1.5
-      expect(scale.duration).toEqual 0
-      k1ScaleId = scale.actionTag
+        move = api.CCMoveTo[1]
+        expect(move.position).toEqual [500, 300]
+        expect(move.duration).toEqual 2.7
+        k2MoveId = move.actionTag
 
-      scale = api.CCScaleTo[1]
-      expect(scale.intensity).toEqual 1
-      expect(scale.duration).toEqual 2.7
-      k2ScaleId = scale.actionTag
+        expect(api.CCScaleTo).toBeDefined()
+        expect(api.CCScaleTo.length).toEqual 2
+        scale = api.CCScaleTo[0]
+        expect(scale.intensity).toEqual 1.5
+        expect(scale.duration).toEqual 0
+        k1ScaleId = scale.actionTag
 
-      expect(api.CCStorySwipeEnded).toBeDefined()
-      actions = api.CCStorySwipeEnded.runAction
-      expect(actions).toBeDefined()
+        scale = api.CCScaleTo[1]
+        expect(scale.intensity).toEqual 1
+        expect(scale.duration).toEqual 2.7
+        k2ScaleId = scale.actionTag
 
 
-      # scale & position for the first keyframe - not needed
-      # action = actions[0]
-      # expect(action).toBeDefined()
-      # expect(action.runAfterSwipeNumber).toEqual 0
-      # expect(action.spriteTag).toEqual 1
-      # expect(action.actionTags).toEqual [ k1ScaleId, k1MoveId ]
+        expect(api.CCStorySwipeEnded).toBeDefined()
+        actions = api.CCStorySwipeEnded.runAction
+        expect(actions).toBeDefined()
+        expect(actions.length).toEqual(1)
 
-      # scale & position for the second keyframe
-      action = actions[0]
-      expect(action).toBeDefined()
-      expect(action.runAfterSwipeNumber).toEqual 1
-      expect(action.spriteTag).toEqual 2 * 10 # multiplied to avoid mobile bug
-      expect(action.actionTags).toEqual [ k2ScaleId, k2MoveId ]
+        # scale & position for the first keyframe - not needed
+        # action = actions[0]
+        # expect(action).toBeDefined()
+        # expect(action.runAfterSwipeNumber).toEqual 0
+        # expect(action.spriteTag).toEqual 1
+        # expect(action.actionTags).toEqual [ k1ScaleId, k1MoveId ]
+
+        # scale & position for the second keyframe
+        action = actions[0]
+        expect(action).toBeDefined()
+        expect(action.runAfterSwipeNumber).toEqual 1
+        expect(action.spriteTag).toEqual 2 * 10 # multiplied to avoid mobile bug
+        expect(action.actionTags).toEqual [ k2ScaleId, k2MoveId ]
+
+
+      describe 'with an animation keyframe', ->
+        beforeEach ->
+          @animationKeyframe = new App.Models.Keyframe {
+            scene: @scene1,
+            id: 1000,
+            is_animation: true,
+            position: null,
+          }, parse: true
+          @scene1.keyframes.add @animationKeyframe
+
+          json = new App.JSON(@storybook)
+          api = json.app.Pages[0].API
+          actions = api.CCStorySwipeEnded.runAction
+          @action = actions[0]
+          expect(@action).toBeDefined()
+
+        it 'does not count an animation keyframe as a swipe', ->
+          # scale & position for the second keyframe
+          expect(@action.runAfterSwipeNumber).toEqual 1
+
 
     it 'do not contain entries for sound and highlightingTimes if both autoplay and readToMe are disabled', ->
       @rtm.set  disabled: true
@@ -340,3 +368,6 @@ describe "App.JSON", ->
       keyframe = keyframes[1]
       expect(keyframe.highlightingTimes).toEqual [0]
       expect(keyframe.voiceAudioFile).toBeUndefined()
+
+
+
