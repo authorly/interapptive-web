@@ -99,6 +99,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       sprite = widget.spriteWidget()
     else if widget instanceof App.Models.ButtonWidget
       sprite = widget
+    else
+      return
 
     @_getView(sprite).applyOrientation(widget)
 
