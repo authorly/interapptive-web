@@ -24,7 +24,7 @@ namespace :deploy do
 
   desc "Copy Gemfile and Gemfile.lock to CRUCIBLE_IOS_DIR"
   task :copy_gemfile_to_crucible, :roles => :production_staging_compilation do
-    run "cp #{release_path}/.bundle/config #{shared_path}/../Crucible/HelloWorld/ios/.bundle"
+    run "cp #{release_path}/.bundle/config #{shared_path}/../Crucible/HelloWorld/ios/.bundle/config"
     run "cp #{release_path}/Gemfile #{release_path}/Gemfile.lock #{shared_path}/../Crucible/HelloWorld/ios"
   end
 
