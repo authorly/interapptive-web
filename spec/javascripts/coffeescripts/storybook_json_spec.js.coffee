@@ -279,7 +279,7 @@ describe "App.JSON", ->
 
         sprite = sprites[0]
         expect(sprite.image).toEqual "https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg"
-        expect(sprite.spriteTag).toEqual 2 * 10 # multiplied to avoid mobile bug
+        expect(sprite.spriteTag).toEqual 2 + 10 # avoid mobile bug
         expect(sprite.position).toEqual [400, 200]
 
         expect(api.CCMoveTo).toBeDefined()
@@ -323,7 +323,7 @@ describe "App.JSON", ->
         action = actions[0]
         expect(action).toBeDefined()
         expect(action.runAfterSwipeNumber).toEqual 1
-        expect(action.spriteTag).toEqual 2 * 10 # multiplied to avoid mobile bug
+        expect(action.spriteTag).toEqual 2 + 10 # avoid mobile bug
         expect(action.actionTags).toEqual [ k2ScaleId, k2MoveId ]
 
 
