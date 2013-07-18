@@ -45,7 +45,7 @@ window.App =
     @file_menu = new App.Views.FileMenuView el: $('#file-menu')
 
     @spritesListPalette = new App.Views.PaletteContainer
-      view       : new App.Views.SpriteListPalette(collection: @currentWidgets)
+      view       : new App.Views.SpriteListPalette()
       el         : $('#sprite-list-palette')
       title      : 'Active Scene Images'
       alsoResize : '#sprite-list-palette ul li span'
@@ -89,7 +89,7 @@ window.App =
     @currentSelection.on 'change:storybook', @_openStorybook,  @
     @currentSelection.on 'change:scene',     @_changeScene,    @
     @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
-    @currentSelection.on 'change:widget',    @_triggerCurrentWidgetChangeEvent, @
+    @currentSelection.on 'change:widget',    @_changeWidget,   @
 
     @initializeGlobalSync()
 
@@ -155,6 +155,8 @@ window.App =
     @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
     $('#keyframe-list').html @keyframesView.render().el
     scene.fetchKeyframes()
+
+    @spritesListPalette.view.setCollection(scene.widgets)
 
 
   _addSceneListeners: (scene) ->
@@ -297,6 +299,12 @@ window.App =
 
   _showToast: (type, message) ->
     window.toastr[type](message)
+
+
+  _changeWidget: (selection, widget) ->
+    @triggerCurrentWidgetChangeEvent(selection, widget)
+
+    @spritesListPalette.view.spriteSelected(widget)
 
 
   # Translates an App.currentSelection.on(widget:change) event

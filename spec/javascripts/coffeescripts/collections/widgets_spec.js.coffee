@@ -19,3 +19,44 @@ describe "App.Collections.Widgets", ->
     expect(containers['HotspotWidget']).toEqual 'keyframe'
     expect(containers['SpriteWidget']).toEqual  'scene'
     expect(containers['TextWidget']).toEqual    'keyframe'
+
+  describe 'z_order validation', ->
+
+    it 'does not allow button widgets before sprite widgets', ->
+      order =
+        1: new App.Models.ButtonWidget
+        2: new App.Models.SpriteWidget
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual false
+
+
+    it 'allows a bunch of sprite widgets, followed by a bunch of button widgets', ->
+      order =
+        1: new App.Models.SpriteWidget
+        2: new App.Models.SpriteWidget
+        3: new App.Models.SpriteWidget
+        4: new App.Models.ButtonWidget
+        5: new App.Models.ButtonWidget
+
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual true
+
+
+    it 'allows a bunch of sprite widgets', ->
+      order =
+        1: new App.Models.SpriteWidget
+        2: new App.Models.SpriteWidget
+
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual true
+
+
+    it 'allows a bunch of button widgets', ->
+      order =
+        1: new App.Models.ButtonWidget
+        2: new App.Models.ButtonWidget
+
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual true
+
+
+    it 'allows an empty collection', ->
+      order = {}
+
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual true
