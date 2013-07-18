@@ -6,7 +6,8 @@ class App.Views.ToolbarView extends Backbone.View
     'click .edit-text'          : 'addText'
     'click .add-hotspot'        : 'addHotspot'
     'click .sync-audio'         : 'alignAudio'
-    'click .scene-options'      : 'showSceneOptions'
+    'click .scene-options'      : 'showSettings'
+    'click .background-sound'   : 'showSceneBackgroundMusic'
     'click .preview'            : 'showPreview'
 
 
@@ -16,6 +17,8 @@ class App.Views.ToolbarView extends Backbone.View
     @_enableOnEvent 'can_add:text', '.edit-text'
     @_enableOnEvent 'can_add:voiceover', '.sync-audio'
     @_enableOnEvent 'can_add:scene', '.scene'
+
+    App.vent.on 'has_background_sound:scene', @_changeBackgroundSoundIcon
 
     App.vent.on 'activate:scene', (scene) =>
       @$('li').removeClass 'disabled'
@@ -67,20 +70,12 @@ class App.Views.ToolbarView extends Backbone.View
     view.enableMediaPlayer()
 
 
-  showSceneOptions: ->
-    App.vent.trigger('show:sceneform')
+  showSettings: ->
+    App.vent.trigger('show:settingsform')
 
 
-  showPreview: -> App.vent.trigger 'show:simulator'
-
-
-  # showActionLibrary: ->
-    # @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
-    # @actionDefinitions.fetch
-      # success: =>
-        # activeDefinition = @actionDefinitions.first
-        # view = new App.Views.ActionFormContainer actionDefinitions: @actionDefinitions
-        # App.modalWithView(view: view).show()
+  showSceneBackgroundMusic: ->
+    App.vent.trigger('show:scenebackgroundsoundform')
 
 
   _enableOnEvent: (event, selector) ->
@@ -90,3 +85,12 @@ class App.Views.ToolbarView extends Backbone.View
         element.removeClass 'disabled'
       else
         element.addClass 'disabled'
+
+
+  _changeBackgroundSoundIcon: (hasBackgroundSound) =>
+    el = @$('.background-sound')
+    if hasBackgroundSound
+
+      el.addClass('has-sound')
+    else
+      el.removeClass('has-sound')

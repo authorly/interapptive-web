@@ -1,6 +1,18 @@
-class App.Views.SceneForm extends App.Views.AbstractFormView
+class App.Views.BackgroundSoundForm extends App.Views.AbstractFormView
   events: ->
     _.extend({}, super, {})
+
+
+  updateAttributes: (event) ->
+    event.preventDefault()
+
+    errors = @form.commit()
+    return if errors
+
+    @model.save {},
+      success: =>
+        App.vent.trigger 'has_background_sound:scene', @model.hasBackgroundSound()
+        App.vent.trigger 'hide:modal'
 
 
   formOptions: ->
@@ -24,4 +36,4 @@ class App.Views.SceneForm extends App.Views.AbstractFormView
               message: "Must use 0 or 1."
 
             err if value < 0 or value > 1
-          ]
+        ]

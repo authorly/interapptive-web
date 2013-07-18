@@ -25,7 +25,8 @@ window.App =
     @vent.on 'create:keyframe', @_addNewKeyframe, @
     @vent.on 'create:widget',   @_addNewWidget,   @
 
-    @vent.on 'show:sceneform',  @_showSceneForm,  @
+    @vent.on 'show:settingsform',  @_showSettings, @
+    @vent.on 'show:scenebackgroundsoundform', @_showBackgroundSoundForm, @
 
     @vent.on 'change:keyframeWidgets', @_changeKeyframeWidgets, @
     @vent.on 'load:sprite',            @_changeSceneWidgets,    @
@@ -137,8 +138,13 @@ window.App =
     @spriteLibraryPalette.view.openStorybook(storybook)
 
 
-  _showSceneForm: ->
-    view = new App.Views.SceneForm(model: App.currentSelection.get('scene'))
+  _showSettings: ->
+    view = new App.Views.SettingsContainer(model: App.currentSelection.get('scene'))
+    App.modalWithView(view: view).show()
+
+
+  _showBackgroundSoundForm: ->
+    view = new App.Views.BackgroundSoundForm(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
 
 
@@ -150,6 +156,7 @@ window.App =
     App.vent.trigger 'activate:scene', scene
     @vent.trigger 'can_add:keyframe', scene.canAddKeyframes()
     @vent.trigger 'can_add:animationKeyframe', scene.canAddAnimationKeyframe()
+    @vent.trigger 'has_background_sound:scene', scene.hasBackgroundSound()
 
     @keyframesView.remove() if @keyframesView?
     @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)

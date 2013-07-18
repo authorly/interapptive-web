@@ -1,6 +1,6 @@
 App.Views.Storybooks ?= {}
 
-class App.Views.Storybooks.SettingsForm extends App.Views.AbstractFormView
+class App.Views.Storybooks.GeneralSettingsForm extends App.Views.AbstractFormView
 
   formOptions: =>
     model: @model
