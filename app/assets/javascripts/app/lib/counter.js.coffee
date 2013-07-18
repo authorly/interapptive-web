@@ -1,7 +1,7 @@
 class App.Lib.Counter
 
   constructor: ->
-    @current = 1
+    @current = 3
 
 
   next: ->
