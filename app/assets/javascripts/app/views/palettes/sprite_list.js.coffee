@@ -130,20 +130,26 @@ class App.Views.SpriteListPalette extends Backbone.View
   bringToFront: (widget) =>
     el = @$("[data-widget-id='#{widget.get('id')}']").parent()
     @$el.prepend(el)
-    @updateZOrder()
+    unless @updateZOrder()
+      @widgetRemoved(widget)
+      @widgetAdded(widget)
 
 
   putInBack: (widget) =>
     el = @$("[data-widget-id='#{widget.get('id')}']").parent()
     @$el.append(el)
-    @updateZOrder()
+    unless @updateZOrder()
+      @widgetRemoved(widget)
+      @widgetAdded(widget)
 
 
   makeSortable: ->
     @$el.sortable
       opacity : 0.6
       axis    : 'y'
-      update  : @updateZOrder
+      update  : =>
+        unless @updateZOrder()
+          @$el.sortable('cancel')
 
 
   hasWidget: (widget) =>
@@ -167,9 +173,15 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   updateZOrder: =>
+    order = {}
     nrSprites = @$('li').length
     for view in @views
       index = view.$el.closest('li').index()
-      view.model.set z_order: nrSprites - index
+      order[nrSprites - index ] = view.model
 
-    @collection.sort()
+    if @collection.validZOrder(order)
+      model.set(z_order: z_order) for z_order, model of order
+      true
+    else
+      alert('Please keep buttons above images')
+      false

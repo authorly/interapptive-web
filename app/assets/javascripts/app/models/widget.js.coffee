@@ -315,8 +315,20 @@ class App.Collections.Widgets extends Backbone.Collection
     @filter (w) -> w instanceof klass
 
 
-  isHomeButton: ->
-    @get('name') == 'home'
+  validZOrder: (order) ->
+    # is not valid if there is a button widget before a sprite widget
+    firstButtonIndex = null
+    lastSpriteIndex = null
+    for index, widget of order
+      if widget instanceof App.Models.SpriteWidget
+        if index > lastSpriteIndex || !lastSpriteIndex?
+          lastSpriteIndex = index
+      if widget instanceof App.Models.ButtonWidget
+        if index < firstButtonIndex || !firstButtonIndex?
+          firstButtonIndex = index
+
+    (!firstButtonIndex?) || (!lastSpriteIndex?) || (firstButtonIndex > lastSpriteIndex)
+
 
   @containers:
     'SpriteWidget':  'scene'
