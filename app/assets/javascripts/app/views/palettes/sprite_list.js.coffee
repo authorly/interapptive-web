@@ -18,16 +18,38 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   initialize: ->
-    @collection.on 'add', @widgetAdded, @
-    @collection.on 'remove', @widgetRemoved, @
-    @collection.on 'change:image_id change:disabled', @widgetChanged, @
-
-    App.currentSelection.on 'change:widget', @spriteSelected, @
+    @setCollection()
 
     App.vent.on 'bring_to_front:sprite', @bringToFront, @
     App.vent.on 'put_in_back:sprite', @putInBack, @
 
     @views = []
+
+
+  setCollection: (collection) ->
+    @_unsetCollection()
+    @collection = collection
+    @_setCollection()
+
+
+  _setCollection: ->
+    return unless @collection?
+
+    @collection.on 'add',    @widgetAdded, @
+    @collection.on 'remove', @widgetRemoved, @
+    @collection.on 'change:image_id change:disabled', @widgetChanged, @
+
+    @collection.each (widget) => @widgetAdded(widget)
+
+
+  _unsetCollection: ->
+    return unless @collection?
+
+    @collection.off 'add',    @widgetAdded, @
+    @collection.off 'remove', @widgetRemoved, @
+    @collection.off 'change:image_id change:disabled', @widgetChanged, @
+
+    @collection.each (widget) => @widgetRemoved(widget)
 
 
   widgetAdded: (widget) ->
@@ -65,7 +87,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     e.stopPropagation()
 
     widget = @_getWidget(e)
-    widget.collection.scene.widgets.remove(widget)
+    widget.collection.remove(widget)
 
 
   disableSprite: (e) ->
@@ -97,7 +119,8 @@ class App.Views.SpriteListPalette extends Backbone.View
     App.currentSelection.set widget: widget
 
 
-  spriteSelected: (__, sprite) ->
+  spriteSelected: (sprite) ->
+    return unless @_isShown(sprite)
     @$('li.active').removeClass('active')
 
     if (view = @_getView(sprite))?
