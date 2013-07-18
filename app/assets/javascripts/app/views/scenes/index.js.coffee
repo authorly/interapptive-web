@@ -22,7 +22,7 @@ class App.Views.SceneIndex extends Backbone.View
     App.vent.on    'window:resize'   , @adjustSize        , @
     App.currentSelection.on 'change:scene', @sceneChanged, @
 
-    $('.toggle-view').live 'click', (event) => @toggleListView(event)
+    $('.scene-view-toggle a').live 'click', (event) => @toggleListView(event)
 
 
   render: ->
@@ -96,8 +96,8 @@ class App.Views.SceneIndex extends Backbone.View
 
   toggleListView: (event) ->
     toggleEl = $(event.currentTarget)
-    return if toggleEl.hasClass('active')
-    toggleEl.addClass('active').siblings().removeClass('active')
+    return if toggleEl.hasClass('disabled')
+    toggleEl.addClass('disabled').siblings().removeClass('disabled')
 
     @$el.toggleClass('list-view')
 

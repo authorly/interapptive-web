@@ -1,6 +1,6 @@
 #list-view-toggle
-  %span.toggle-view.active
-    thumb view
-  or
-  %span.toggle-view
-    list view
+  .scene-view-toggle.btn-group
+    %a.btn.btn-mini{:href => "#", :title => 'List view'}
+      %i.icon-list.icon-black
+    %a.btn.btn-mini.disabled{:href => "#", :title => 'Thumbnail view'}
+      %i.icon-th-large.icon-black
