@@ -156,7 +156,7 @@ class App.Views.SpriteListPalette extends Backbone.View
       index = view.$el.closest('li').index()
       order[nrSprites - index ] = view.model
 
-    if @collection.validZOrder(order)
+    if @collection.constructor.validZOrder(order)
       model.set(z_order: z_order) for z_order, model of order
       true
     else

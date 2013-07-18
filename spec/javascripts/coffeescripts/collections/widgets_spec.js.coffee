@@ -26,7 +26,7 @@ describe "App.Collections.Widgets", ->
       order =
         1: new App.Models.ButtonWidget
         2: new App.Models.SpriteWidget
-      expect(@widgets.validZOrder(order)).toEqual false
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual false
 
 
     it 'allows a bunch of sprite widgets, followed by a bunch of button widgets', ->
@@ -37,7 +37,7 @@ describe "App.Collections.Widgets", ->
         4: new App.Models.ButtonWidget
         5: new App.Models.ButtonWidget
 
-      expect(@widgets.validZOrder(order)).toEqual true
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual true
 
 
     it 'allows a bunch of sprite widgets', ->
@@ -45,7 +45,7 @@ describe "App.Collections.Widgets", ->
         1: new App.Models.SpriteWidget
         2: new App.Models.SpriteWidget
 
-      expect(@widgets.validZOrder(order)).toEqual true
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual true
 
 
     it 'allows a bunch of button widgets', ->
@@ -53,4 +53,4 @@ describe "App.Collections.Widgets", ->
         1: new App.Models.ButtonWidget
         2: new App.Models.ButtonWidget
 
-      expect(@widgets.validZOrder(order)).toEqual true
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual true

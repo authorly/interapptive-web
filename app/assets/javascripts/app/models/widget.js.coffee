@@ -315,7 +315,7 @@ class App.Collections.Widgets extends Backbone.Collection
     @filter (w) -> w instanceof klass
 
 
-  validZOrder: (order) ->
+  @validZOrder: (order) ->
     # is not valid if there is a button widget before a sprite widget
     firstButtonIndex = null
     lastSpriteIndex = null
