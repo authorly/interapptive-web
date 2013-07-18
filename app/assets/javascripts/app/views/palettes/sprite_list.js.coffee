@@ -53,8 +53,6 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   widgetAdded: (widget) ->
-    return unless @_isShown(widget)
-
     view = new App.Views.SpriteWidget(model: widget)
     rendered = view.render().el
 
@@ -69,16 +67,12 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   widgetRemoved: (widget) ->
-    return unless @_isShown(widget)
-
     view = @_getView(widget)
     view.$el.remove()
     @views.splice(@views.indexOf(view), 1)
 
 
   widgetChanged: (widget) ->
-    return unless @_isShown(widget)
-
     view = @_getView(widget)
     view.render()
 
@@ -120,7 +114,6 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   spriteSelected: (sprite) ->
-    return unless @_isShown(sprite)
     @$('li.active').removeClass('active')
 
     if (view = @_getView(sprite))?
@@ -150,22 +143,6 @@ class App.Views.SpriteListPalette extends Backbone.View
       update  : =>
         unless @updateZOrder()
           @$el.sortable('cancel')
-
-
-  hasWidget: (widget) =>
-    @$("div[data-widget-id=#{widget.id}]").length
-
-
-  _isShown: (widget) ->
-    @_isSprite(widget) and !@_isHomeButton(widget)
-
-
-  _isSprite: (widget) ->
-    widget instanceof App.Models.ImageWidget
-
-
-  _isHomeButton: (widget) ->
-    widget instanceof App.Models.ButtonWidget and widget.get('name') == 'home'
 
 
   _getView: (widget) ->
