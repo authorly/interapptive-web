@@ -1,5 +1,6 @@
 #scene-list {
-  top: 113px;
+  top: 102px;
+  z-index: 1000 !important;
   position: relative;
 }
 
@@ -15,6 +16,7 @@
   background-repeat: no-repeat;
   background-position: 30px center;
   position: relative;
+  top: -8px;
 
   li {
     .round-corners();
@@ -181,7 +183,10 @@
 }
 
 #list-view-toggle {
-  margin-left: 72px;
+  .scale(0.7);
+
+  opacity: 0.7;
+  margin-left: 134px;
   font-size: 11px;
 
   span:hover {
