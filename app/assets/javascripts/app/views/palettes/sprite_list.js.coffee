@@ -18,11 +18,7 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   initialize: ->
-    @collection.on 'add', @widgetAdded, @
-    @collection.on 'remove', @widgetRemoved, @
-    @collection.on 'change:image_id change:disabled', @widgetChanged, @
-
-    App.currentSelection.on 'change:widget', @spriteSelected, @
+    @setCollection()
 
     App.vent.on 'bring_to_front:sprite', @bringToFront, @
     App.vent.on 'put_in_back:sprite', @putInBack, @
@@ -30,9 +26,33 @@ class App.Views.SpriteListPalette extends Backbone.View
     @views = []
 
 
-  widgetAdded: (widget) ->
-    return unless @_isShown(widget)
+  setCollection: (collection) ->
+    @_unsetCollection()
+    @collection = collection
+    @_setCollection()
 
+
+  _setCollection: ->
+    return unless @collection?
+
+    @collection.on 'add',    @widgetAdded, @
+    @collection.on 'remove', @widgetRemoved, @
+    @collection.on 'change:image_id change:disabled', @widgetChanged, @
+
+    @collection.each @widgetAdded
+
+
+  _unsetCollection: ->
+    return unless @collection?
+
+    @collection.off 'add',    @widgetAdded, @
+    @collection.off 'remove', @widgetRemoved, @
+    @collection.off 'change:image_id change:disabled', @widgetChanged, @
+
+    @collection.each @widgetRemoved
+
+
+  widgetAdded: (widget) =>
     view = new App.Views.SpriteWidget(model: widget)
     rendered = view.render().el
 
@@ -46,17 +66,13 @@ class App.Views.SpriteListPalette extends Backbone.View
       @$el.children().eq(index-1).after(rendered)
 
 
-  widgetRemoved: (widget) ->
-    return unless @_isShown(widget)
-
+  widgetRemoved: (widget) =>
     view = @_getView(widget)
     view.$el.remove()
     @views.splice(@views.indexOf(view), 1)
 
 
   widgetChanged: (widget) ->
-    return unless @_isShown(widget)
-
     view = @_getView(widget)
     view.render()
 
@@ -65,7 +81,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     e.stopPropagation()
 
     widget = @_getWidget(e)
-    widget.collection.scene.widgets.remove(widget)
+    widget.collection.remove(widget)
 
 
   disableSprite: (e) ->
@@ -97,7 +113,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     App.currentSelection.set widget: widget
 
 
-  spriteSelected: (__, sprite) ->
+  spriteSelected: (sprite) ->
     @$('li.active').removeClass('active')
 
     if (view = @_getView(sprite))?
@@ -105,38 +121,34 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   bringToFront: (widget) =>
-    el = @$("[data-widget-id='#{widget.get('id')}']").parent()
-    @$el.prepend(el)
-    @updateZOrder()
+    @$el.prepend @_getWidgetElement(widget)
+    @_updateZOrderOrRevert(widget)
 
 
   putInBack: (widget) =>
-    el = @$("[data-widget-id='#{widget.get('id')}']").parent()
-    @$el.append(el)
-    @updateZOrder()
+    @$el.append @_getWidgetElement(widget)
+    @_updateZOrderOrRevert(widget)
+
+
+  _getWidgetElement: (widget) ->
+    @$("[data-widget-id='#{widget.id}']").parent()
+
+
+  _updateZOrderOrRevert: (widget) ->
+    ok = @updateZOrder()
+    if !ok
+      # remove & add to the correct position
+      @widgetRemoved(widget)
+      @widgetAdded(widget)
 
 
   makeSortable: ->
     @$el.sortable
       opacity : 0.6
       axis    : 'y'
-      update  : @updateZOrder
-
-
-  hasWidget: (widget) =>
-    @$("div[data-widget-id=#{widget.id}]").length
-
-
-  _isShown: (widget) ->
-    @_isSprite(widget) and !@_isHomeButton(widget)
-
-
-  _isSprite: (widget) ->
-    widget instanceof App.Models.ImageWidget
-
-
-  _isHomeButton: (widget) ->
-    widget instanceof App.Models.ButtonWidget and widget.get('name') == 'home'
+      update  : =>
+        unless @updateZOrder()
+          @$el.sortable('cancel')
 
 
   _getView: (widget) ->
@@ -144,9 +156,15 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   updateZOrder: =>
+    order = {}
     nrSprites = @$('li').length
     for view in @views
       index = view.$el.closest('li').index()
-      view.model.set z_order: nrSprites - index
+      order[nrSprites - index ] = view.model
 
-    @collection.sort()
+    if @collection.constructor.validZOrder(order)
+      model.set(z_order: z_order) for z_order, model of order
+      true
+    else
+      alert('Please keep buttons above images')
+      false
