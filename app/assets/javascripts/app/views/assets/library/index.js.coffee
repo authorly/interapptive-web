@@ -3,9 +3,6 @@
 #
 class App.Views.AssetsLibrary extends Backbone.View
   template: JST['app/templates/assets/library/index']
-  events:
-    'click .no-assets a': 'uploadRequested'
-
 
   initialize: ->
     @views = []
@@ -76,10 +73,6 @@ class App.Views.AssetsLibrary extends Backbone.View
 
   _noAssetsMessage: ->
     @_message ||= @$el.find('.no-assets')
-
-
-  uploadRequested: ->
-    @trigger 'upload'
 
 
   _getView: (asset) ->
