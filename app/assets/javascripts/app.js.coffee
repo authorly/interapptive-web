@@ -302,7 +302,7 @@ window.App =
 
 
   _changeWidget: (selection, widget) ->
-    @triggerCurrentWidgetChangeEvent(selection, widget)
+    @_triggerCurrentWidgetChangeEvent(selection, widget)
 
     @spritesListPalette.view.spriteSelected(widget)
 
