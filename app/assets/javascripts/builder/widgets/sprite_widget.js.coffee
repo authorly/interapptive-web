@@ -29,7 +29,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   constructorContinuation: (dataUrl) =>
     @model.dataUrl = dataUrl
 
-    cc.TextureCache.sharedTextureCache().addImageAsync @model.dataUrl, @, =>
+    cc.TextureCache.sharedTextureCache().addImageAsync @model.dataUrl, @, ( ->
+      window.setTimeout @_imageLoadedInSprite, 0
+    )
+
+
+  _imageLoadedInSprite: =>
       @sprite.initWithFile @model.dataUrl
 
       if @model instanceof App.Models.SpriteWidget
