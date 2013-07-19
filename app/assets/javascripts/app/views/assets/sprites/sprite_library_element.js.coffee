@@ -1,6 +1,10 @@
 class App.Views.SpriteLibraryElement extends Backbone.View
-  template: JST['app/templates/assets/sprites/sprite_library_element']
   tagName:  'li'
+
+  template: (data) ->
+    type = data.sprite.constructor.name.toLowerCase()
+    JST["app/templates/assets/sprites/#{type}"](data)
+
 
   render: ->
     @$el.html(@template(sprite: @model))

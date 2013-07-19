@@ -1,8 +1,7 @@
 #
-# Used for showing sprites that could be added to currently
-# active scene.
+# The available assets.
 #
-class App.Views.SpriteLibraryPalette extends Backbone.View
+class App.Views.AssetsLibrary extends Backbone.View
   template: JST['app/templates/palettes/sprite_library']
   className: 'sprites'
   tagName: 'ul'
@@ -21,11 +20,12 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
     @_enableAddTooltip()
     @
 
-  openStorybook: (storybook) ->
-    @storybook = storybook
-    @collection = @storybook.images
+
+  setCollection: (collection) ->
+    @collection = collection
     @_renderSpriteLibraryElements()
-    @collection.on('reset add remove', @_reRenderSpriteLibraryElements, @)
+    # TODO just add and/remove the corresponding view
+    @collection.on('add remove', @_reRenderSpriteLibraryElements, @)
 
 
   _reRenderSpriteLibraryElements: ->
@@ -42,6 +42,7 @@ class App.Views.SpriteLibraryPalette extends Backbone.View
 
   _renderSpriteLibraryElements: ->
     if @collection.length > 0
+      # TODO keep the collection sorted
       sprites = _.sortBy(@collection.models, @_spriteFilenameComparator, @)
       @_renderSpriteLibraryElement(sprite) for sprite in sprites
     else

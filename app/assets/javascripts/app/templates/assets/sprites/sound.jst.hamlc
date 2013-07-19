@@ -1,0 +1,4 @@
+- _style = "background: url(/assets/toolbar.png) -586px -5px"
+%span.sprite-image{:style => _style, :alt => @sprite.get('name'), :title => @sprite.get('name'), :data-id => @sprite.id }
+  %span.sprite-filename= App.Lib.StringHelper.truncate(@sprite.get('name'))
+

@@ -62,7 +62,7 @@ window.App =
 
     @spriteLibraryPalette = new App.Views.PaletteContainer
       title:     'Uploaded Images'
-      view:      new App.Views.SpriteLibraryPalette
+      view:      new App.Views.AssetsLibrary
       el:        $('#sprite-library-palette')
       resizable: true
 
@@ -134,7 +134,9 @@ window.App =
     storybook.fetchCollections()
 
     @textEditorPalette.view.openStorybook(storybook)
-    @spriteLibraryPalette.view.openStorybook(storybook)
+
+    assets = new App.Lib.AggregateCollection([], collections: [storybook.images, storybook.videos, storybook.sounds])
+    @spriteLibraryPalette.view.setCollection assets
 
 
   _showSceneForm: ->
@@ -302,7 +304,7 @@ window.App =
 
 
   _changeWidget: (selection, widget) ->
-    @_triggerCurrentWidgetChangeEvent(selection, widget)
+    @triggerCurrentWidgetChangeEvent(selection, widget)
 
     @spritesListPalette.view.spriteSelected(widget)
 
