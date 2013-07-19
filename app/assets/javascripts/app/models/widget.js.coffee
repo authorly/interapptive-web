@@ -315,8 +315,22 @@ class App.Collections.Widgets extends Backbone.Collection
     @filter (w) -> w instanceof klass
 
 
-  isHomeButton: ->
-    @get('name') == 'home'
+  ## All Buttons must be after all the Sprites
+  @validZOrder: (order) ->
+    z_order_array = Object.keys(order)
+    return true if z_order_array.length == 0
+
+    firstButtonIndex = _.max(z_order_array) + 1
+    lastSpriteIndex  = _.min(z_order_array) - 1
+
+    for index, widget of order
+      if widget instanceof App.Models.SpriteWidget
+        lastSpriteIndex  = index if index > lastSpriteIndex
+      if widget instanceof App.Models.ButtonWidget
+        firstButtonIndex = index if index < firstButtonIndex
+
+    firstButtonIndex > lastSpriteIndex
+
 
   @containers:
     'SpriteWidget':  'scene'
