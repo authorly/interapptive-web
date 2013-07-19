@@ -54,3 +54,9 @@ describe "App.Collections.Widgets", ->
         2: new App.Models.ButtonWidget
 
       expect(App.Collections.Widgets.validZOrder(order)).toEqual true
+
+
+    it 'allows an empty collection', ->
+      order = {}
+
+      expect(App.Collections.Widgets.validZOrder(order)).toEqual true

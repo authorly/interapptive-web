@@ -315,19 +315,21 @@ class App.Collections.Widgets extends Backbone.Collection
     @filter (w) -> w instanceof klass
 
 
+  ## All Buttons must be after all the Sprites
   @validZOrder: (order) ->
-    # is not valid if there is a button widget before a sprite widget
-    firstButtonIndex = null
-    lastSpriteIndex = null
+    z_order_array = Object.keys(order)
+    return true if z_order_array.length == 0
+
+    firstButtonIndex = _.max(z_order_array) + 1
+    lastSpriteIndex  = _.min(z_order_array) - 1
+
     for index, widget of order
       if widget instanceof App.Models.SpriteWidget
-        if index > lastSpriteIndex || !lastSpriteIndex?
-          lastSpriteIndex = index
+        lastSpriteIndex  = index if index > lastSpriteIndex
       if widget instanceof App.Models.ButtonWidget
-        if index < firstButtonIndex || !firstButtonIndex?
-          firstButtonIndex = index
+        firstButtonIndex = index if index < firstButtonIndex
 
-    (!firstButtonIndex?) || (!lastSpriteIndex?) || (firstButtonIndex > lastSpriteIndex)
+    firstButtonIndex > lastSpriteIndex
 
 
   @containers:

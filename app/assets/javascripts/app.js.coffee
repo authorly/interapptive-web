@@ -89,9 +89,7 @@ window.App =
     @currentSelection.on 'change:storybook', @_openStorybook,  @
     @currentSelection.on 'change:scene',     @_changeScene,    @
     @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
-    @currentSelection.on 'change:widget',    @_triggerCurrentWidgetChangeEvent, @
-    @currentSelection.on 'change:widget',    (__, widget) =>
-      @spritesListPalette.view.spriteSelected(widget)
+    @currentSelection.on 'change:widget',    @_changeWidget,   @
 
     @initializeGlobalSync()
 
@@ -301,6 +299,12 @@ window.App =
 
   _showToast: (type, message) ->
     window.toastr[type](message)
+
+
+  _changeWidget: (selection, widget) ->
+    @triggerCurrentWidgetChangeEvent(selection, widget)
+
+    @spritesListPalette.view.spriteSelected(widget)
 
 
   # Translates an App.currentSelection.on(widget:change) event

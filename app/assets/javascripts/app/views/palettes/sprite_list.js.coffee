@@ -39,7 +39,7 @@ class App.Views.SpriteListPalette extends Backbone.View
     @collection.on 'remove', @widgetRemoved, @
     @collection.on 'change:image_id change:disabled', @widgetChanged, @
 
-    @collection.each (widget) => @widgetAdded(widget)
+    @collection.each @widgetAdded
 
 
   _unsetCollection: ->
@@ -49,10 +49,10 @@ class App.Views.SpriteListPalette extends Backbone.View
     @collection.off 'remove', @widgetRemoved, @
     @collection.off 'change:image_id change:disabled', @widgetChanged, @
 
-    @collection.each (widget) => @widgetRemoved(widget)
+    @collection.each @widgetRemoved
 
 
-  widgetAdded: (widget) ->
+  widgetAdded: (widget) =>
     view = new App.Views.SpriteWidget(model: widget)
     rendered = view.render().el
 
@@ -66,7 +66,7 @@ class App.Views.SpriteListPalette extends Backbone.View
       @$el.children().eq(index-1).after(rendered)
 
 
-  widgetRemoved: (widget) ->
+  widgetRemoved: (widget) =>
     view = @_getView(widget)
     view.$el.remove()
     @views.splice(@views.indexOf(view), 1)
@@ -121,17 +121,23 @@ class App.Views.SpriteListPalette extends Backbone.View
 
 
   bringToFront: (widget) =>
-    el = @$("[data-widget-id='#{widget.get('id')}']").parent()
-    @$el.prepend(el)
-    unless @updateZOrder()
-      @widgetRemoved(widget)
-      @widgetAdded(widget)
+    @$el.prepend @_getWidgetElement(widget)
+    @_updateZOrderOrRevert(widget)
 
 
   putInBack: (widget) =>
-    el = @$("[data-widget-id='#{widget.get('id')}']").parent()
-    @$el.append(el)
-    unless @updateZOrder()
+    @$el.append @_getWidgetElement(widget)
+    @_updateZOrderOrRevert(widget)
+
+
+  _getWidgetElement: (widget) ->
+    @$("[data-widget-id='#{widget.id}']").parent()
+
+
+  _updateZOrderOrRevert: (widget) ->
+    ok = @updateZOrder()
+    if !ok
+      # remove & add to the correct position
       @widgetRemoved(widget)
       @widgetAdded(widget)
 
