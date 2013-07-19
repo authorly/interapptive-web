@@ -66,6 +66,9 @@ window.App =
       el:        $('#sprite-library-palette')
       resizable: true
 
+    @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
+      el: $('#asset-library-sidebar')
+
     canvas = $('#builder-canvas')
     canvasAttributes =
       height: canvas.height()
