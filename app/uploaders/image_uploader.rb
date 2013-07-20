@@ -24,6 +24,12 @@ class ImageUploader < CarrierWave::Uploader::Base
     "images/#{model.id}"
   end
 
+  # Devices upto i4 crash if they are given images of
+  # height or width of greater than 2048. See #681
+  version :cocos2d do
+    process :resize_to_limit => [2048, 2048]
+  end
+
   # Create different versions of your uploaded files:
   version :mini do
     process :resize_to_fit => [50, 50]
