@@ -85,7 +85,7 @@ describe "App.JSON", ->
       sprites = menu.CCSprites
       expect(sprites.length).toEqual 1
       sprite = sprites[0]
-      expect(sprite.spriteTag).toEqual 1
+      expect(sprite.spriteTag).toEqual 14
       expect(sprite.image).toEqual @main_menu_image.get('url')
       expect(sprite.position).toEqual [200, 10]
       expect(sprite.scale).toEqual 1.2
@@ -279,7 +279,7 @@ describe "App.JSON", ->
 
         sprite = sprites[0]
         expect(sprite.image).toEqual "https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg"
-        expect(sprite.spriteTag).toEqual 2 + 10 # avoid mobile bug
+        expect(sprite.spriteTag).toEqual 2 + 23 # avoid mobile bug
         expect(sprite.position).toEqual [400, 200]
 
         expect(api.CCMoveTo).toBeDefined()
@@ -323,7 +323,7 @@ describe "App.JSON", ->
         action = actions[0]
         expect(action).toBeDefined()
         expect(action.runAfterSwipeNumber).toEqual 1
-        expect(action.spriteTag).toEqual 2 + 10 # avoid mobile bug
+        expect(action.spriteTag).toEqual 2 + 23 # avoid mobile bug
         expect(action.actionTags).toEqual [ k2ScaleId, k2MoveId ]
 
 
