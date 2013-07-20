@@ -261,7 +261,7 @@ class App.JSON
             storyMode: str.decapitalize(str.camelize(button.get('name')))
             position: @_getPosition(button.get('position'))
             scale: button.get('scale')
-            zOrder: button.get('z_order')
+            zOrder: parseInt(button.get('z_order'))
           }
 
       API: {}
@@ -275,7 +275,7 @@ class App.JSON
         scale:     orientation.get('scale')
         position:  @_getPosition(orientation.get('position'))
         visible:   true
-        zOrder:   spriteWidget.get('z_order')
+        zOrder:   parseInt(spriteWidget.get('z_order'))
       node.CCSprites.push(spriteNode)
 
     node
