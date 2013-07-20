@@ -15,7 +15,7 @@ class Image < Asset
       'id'            =>    id,
       'name'          =>    read_attribute(:image),
       'size'          =>    image.size,
-      'url'           =>    image.url,
+      'url'           =>    image.cocos2d.url,
       'thumbnail_url' =>    image.thumb.url,
       'delete_url'    =>    "/images/#{self.id}",
       'delete_type'   =>    'DELETE',
