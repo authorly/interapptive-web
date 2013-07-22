@@ -15,8 +15,6 @@
 
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
-  DEFAULT_CURSOR = 'default'
-
   CANVAS_ID = 'builder-canvas'
 
   OVERFLOW_SIDE_PANEL_WIDTH = 300
@@ -227,7 +225,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addCanvasMouseLeaveListener: ->
-    $('#' + @CANVAS_ID).bind 'mouseout', (event) =>
+    $('#' + CANVAS_ID).bind 'mouseout', (event) =>
       @setCursor 'default'
 
 
@@ -245,7 +243,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   addClickOutsideCanvasEventListener: =>
     $('body').click (event) =>
       target = $(event.target)
-      inCanvas = target.id == @CANVAS_ID or target.closest('#' + @CANVAS_ID).length > 0
+      inCanvas = target.id == CANVAS_ID or target.closest('#' + CANVAS_ID).length > 0
 
       # the context menu should stop propagation on clicking on its elements
       # but it doesn't
