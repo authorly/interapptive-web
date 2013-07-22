@@ -72,10 +72,18 @@ describe "App.Models.Keyframe", ->
         expect(@keyframe.autoplayDuration()).toEqual 21
 
 
-      it 'is the duration of the voiceover sound, if it exists', ->
+      it 'is the duration of the voiceover sound, if the sound exists', ->
         @storybook.sounds.add(voiceover = new App.Models.Sound(duration: 17.2, id: 1981))
         @keyframe.widgets.add type: 'TextWidget'
         @keyframe.set voiceover_id: voiceover.id
 
         expect(@keyframe.autoplayDuration()).toEqual 17.2
+
+      it "is is computed from the text widgets if the voiceover sound exists but its duration isn't available", ->
+        @storybook.sounds.add(voiceover = new App.Models.Sound(duration: null, id: 1981))
+        @keyframe.set voiceover_id: voiceover.id
+        @keyframe.widgets.add type: 'TextWidget'
+        sinon.stub(@keyframe.widgets.at(0), 'wordCount').returns(15)
+
+        expect(@keyframe.autoplayDuration()).toEqual 20
 
