@@ -175,9 +175,12 @@ class App.Models.Keyframe extends Backbone.Model
       w.get('sprite_widget_id') == widget.id
 
 
-
   canAddText: ->
     !@isAnimation() && @scene.canAddText()
+
+
+  canAddHotspot: ->
+    !@scene.isMainMenu()
 
 
   hasText: ->
