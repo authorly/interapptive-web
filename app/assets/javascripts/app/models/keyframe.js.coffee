@@ -107,8 +107,8 @@ class App.Models.Keyframe extends Backbone.Model
     voiceover = @voiceover()
     if texts.length == 0
       8
-    else if voiceover?
-      voiceover.get('duration')
+    else if voiceover? and (duration = voiceover.get('duration'))?
+      duration
     else
       wordCount = _.map texts, (widget) -> widget.wordCount()
       nrWords = _.reduce wordCount, ((sum, count) -> sum + count), 0
