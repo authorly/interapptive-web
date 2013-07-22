@@ -46,7 +46,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @setIsTouchEnabled(true)
     @isKeyboardEnabled = true
 
-    @addDblClickEventListener()
+    @addClickEventListener()
+    @addDoubleClickEventListener()
     @addClickOutsideCanvasEventListener()
     @addCanvasMouseLeaveListener()
 
@@ -255,20 +256,22 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         App.currentSelection.set widget: null
 
 
-  addDblClickEventListener: ->
+  addClickEventListener: ->
+    cc.canvas.addEventListener 'click', (event) =>
+      touch = @_calculateTouchFrom(event)
+      point = @_getTouchCoordinates(touch)
+
+      widget = @widgetAtPoint(point)
+      App.currentSelection.set widget: widget?.model
+
+
+  addDoubleClickEventListener: ->
     cc.canvas.addEventListener 'dblclick', (event) =>
       touch = @_calculateTouchFrom(event)
       point = @_getTouchCoordinates(touch)
 
       widget = @widgetAtPoint(point)
-      @_widgetDoubleClicked(widget, touch: touch, point: point)
-
-
-  _widgetDoubleClicked: (widget, options={}) ->
-    App.currentSelection.set widget: widget?.model
-
-    if widget?
-      widget.doubleClick options
+      widget.doubleClick(touch: touch, point: point) if widget?
 
 
 
