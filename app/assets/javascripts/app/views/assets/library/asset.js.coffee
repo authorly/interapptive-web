@@ -22,7 +22,15 @@ class App.Views.AssetLibraryElement extends Backbone.View
 
 
   title: ->
-    "#{@model.get('name')}\n#{App.Lib.NumberHelper.numberToHumanSize(@model.get('size'))}\nUploaded #{App.Lib.DateTimeHelper.timeToHuman(@model.get('created_at'))}"
+    specificData = null
+    if @model instanceof App.Models.Sound
+      specificData = "#{@model.get('duration').toFixed(2)} seconds"
+
+    """
+    #{@model.get('name')}#{if specificData? then "\n#{specificData}" else ""}
+    #{App.Lib.NumberHelper.numberToHumanSize(@model.get('size'))}
+    Uploaded #{App.Lib.DateTimeHelper.timeToHuman(@model.get('created_at'))}
+    """
 
 
   _createDraggable: ->
