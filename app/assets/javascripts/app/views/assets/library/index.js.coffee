@@ -22,26 +22,15 @@ class App.Views.AssetsLibrary extends Backbone.View
 
   setCollection: (collection) ->
     @collection = collection
+
     @collection.comparator = @_comparator
-    @_renderElements()
-    # TODO just add and/remove the corresponding view
-    @collection.on('add remove', @_reRender, @)
+    @collection.sort()
 
+    @collection.on 'add',    @_add,    @
+    @collection.on 'remove', @_remove, @
 
-  _reRender: ->
-    @_removElements()
-    @_renderElements()
-
-
-  _removeElements: ->
-    if @views.length > 0
-      view.remove() for view in @views
-      @views = []
-
-
-  _renderElements: ->
     if @collection.length > 0
-      @collection.each @_renderElement
+      @collection.each @_add
       @_noAssetsMessage().hide()
     else
       @_noAssetsMessage().show()
@@ -51,10 +40,21 @@ class App.Views.AssetsLibrary extends Backbone.View
     asset.get('name')
 
 
-  _renderElement: (asset) =>
+  _add: (asset) =>
     view = new App.Views.AssetLibraryElement(model: asset)
-    @views.push(view)
-    @$el.append(view.render().el)
+    viewElement = view.render().el
+    @views.push view
+
+    if (index=@collection.indexOf(asset)) == 0
+      @$el.prepend viewElement
+    else
+      @$el.children().eq(index-1).after(viewElement)
+
+
+  _remove: (asset) ->
+    view = _.find @views, (view) -> view.model == asset
+    view.remove()
+    @views.splice(@views.indexOf(view), 1)
 
 
   _openUploadModal: (e) ->
