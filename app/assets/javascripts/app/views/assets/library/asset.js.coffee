@@ -3,13 +3,25 @@ class App.Views.SpriteLibraryElement extends Backbone.View
 
   template: (data) ->
     type = data.sprite.constructor.name.toLowerCase()
-    JST["app/templates/assets/sprites/#{type}"](data)
+    JST["app/templates/assets/library/#{type}"](data)
 
 
   render: ->
     @$el.
       html(@template(sprite: @model)).
       prop('title', @title())
+
+    @_createDraggable()
+
+    @
+
+
+  title: ->
+    "#{@model.get('name')}\n#{App.Lib.NumberHelper.numberToHumanSize(@model.get('size'))}\nUploaded #{App.Lib.DateTimeHelper.timeToHuman(@model.get('created_at'))}"
+
+
+  # XXX remove draggable as well?
+  _createDraggable: ->
     @$('.sprite-image').draggable
       helper: 'clone'
       appendTo: 'body'
@@ -19,13 +31,9 @@ class App.Views.SpriteLibraryElement extends Backbone.View
       scroll: false
       start: @_highlightCanvas
       stop: @_removeCanvasHighlight
-    @
 
 
-  title: ->
-    "#{@model.get('name')}\n#{App.Lib.NumberHelper.numberToHumanSize(@model.get('size'))}\nUploaded #{App.Lib.DateTimeHelper.timeToHuman(@model.get('created_at'))}"
-
-
+  # XXX does not belong to this class
   _highlightCanvas: =>
     $('canvas#builder-canvas').css('border', '1px solid blue')
 

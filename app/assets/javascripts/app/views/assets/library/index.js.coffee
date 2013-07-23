@@ -2,7 +2,7 @@
 # The available assets.
 #
 class App.Views.AssetsLibrary extends Backbone.View
-  template: JST['app/templates/palettes/sprite_library']
+  template: JST['app/templates/assets/library/index']
   className: 'sprites'
   tagName: 'ul'
   events:
