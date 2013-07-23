@@ -235,8 +235,7 @@ window.App =
     widget = collection.model(attributes)
     collection.add widget
 
-    unless widget instanceof App.Models.TextWidget
-      App.currentSelection.set widget: widget
+    App.currentSelection.set widget: widget
 
 
   # @param [Object] attributes
