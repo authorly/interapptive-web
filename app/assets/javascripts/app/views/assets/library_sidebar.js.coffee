@@ -27,6 +27,5 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
 
   adjustSize: ->
-    $('#asset-library-sidebar').css height: "#{$(window).height() - 128}px"
     offset = @$el.offset()?.top || 128
     @$el.css height: "#{$(window).height() - offset}px"
