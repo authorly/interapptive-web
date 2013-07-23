@@ -10,7 +10,6 @@ class App.Views.AssetLibraryElement extends Backbone.View
     @$el.
       html(@template(asset: @model)).
       prop('title', @title())
-
     @_createDraggable()
 
     @
@@ -33,18 +32,9 @@ class App.Views.AssetLibraryElement extends Backbone.View
       zIndex: 10000
       opacity: 0.5
       scroll: false
-      start: @_highlightCanvas
-      stop: @_removeCanvasHighlight
+      start: (-> App.vent.trigger('assetDrag-start'))
+      stop:  (-> App.vent.trigger('assetDrag-stop'))
 
 
   _removeDraggable: ->
     @$('.asset').draggable('destroy')
-
-
-  # XXX does not belong to this class
-  _highlightCanvas: =>
-    $('canvas#builder-canvas').css('border', '1px solid blue')
-
-
-  _removeCanvasHighlight: =>
-    $('canvas#builder-canvas').css('border', '')

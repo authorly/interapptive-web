@@ -66,6 +66,19 @@ window.App =
       el:        $('#sprite-library-palette')
       resizable: true
 
+    @_makeCanvasDroppable()
+
+    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
+
+    @currentSelection.on 'change:storybook', @_openStorybook,  @
+    @currentSelection.on 'change:scene',     @_changeScene,    @
+    @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
+    @currentSelection.on 'change:widget',    @_changeWidget,   @
+
+    @initializeGlobalSync()
+
+
+  _makeCanvasDroppable: ->
     canvas = $('#builder-canvas')
     canvasAttributes =
       height: canvas.height()
@@ -85,15 +98,8 @@ window.App =
           id:   ui.draggable.data('id')
           type: ui.draggable.data('type')
           position: position
-
-    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
-
-    @currentSelection.on 'change:storybook', @_openStorybook,  @
-    @currentSelection.on 'change:scene',     @_changeScene,    @
-    @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
-    @currentSelection.on 'change:widget',    @_changeWidget,   @
-
-    @initializeGlobalSync()
+    @vent.on 'assetDrag-start', (-> canvas.addClass    'highlight')
+    @vent.on 'assetDrag-stop',  (-> canvas.removeClass 'highlight')
 
 
   saveCanvasAsPreview: ->
