@@ -1,15 +1,16 @@
 class App.Views.AssetLibraryElement extends Backbone.View
   tagName:  'li'
-
-  template: (data) ->
-    type = data.asset.constructor.name.toLowerCase()
-    JST["app/templates/assets/library/#{type}"](data)
+  template: JST['app/templates/assets/library/asset']
 
 
   render: ->
-    @$el.
-      html(@template(asset: @model)).
-      prop('title', @title())
+    @$el.html @template(
+      asset: @model
+      type: @model.constructor.name.toLowerCase()
+      title: @title()
+      background: @model.get('thumbnail_url')
+    )
+
     @_createDraggable()
 
     @

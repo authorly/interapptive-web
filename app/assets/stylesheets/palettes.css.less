@@ -47,18 +47,28 @@
 }
 
 .asset-library-image {
-  background-size: 100%;
-  background-repeat: no-repeat;
   display: inline-block;
+  float: left;
   width: 50px;
   height: 61px;
   margin: -1px 10px 10px;
-  float: left;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  &.sound {
+    background-image: url(/assets/toolbar.png);
+    background-size: auto;
+    background-position: -586px -5px;
+  }
 }
 
 // drag a sprite to the canvas
-.sprite-image.ui-draggable-dragging {
+.asset.ui-draggable-dragging {
   .asset-library-image;
+  .filename {
+    display: none;
+  }
 }
 
 #sprite-library-palette {
@@ -97,8 +107,8 @@
       .asset {
         .asset-library-image;
 
-        background-position: center center;
         margin-left: 16px;
+
       }
 
       .filename {

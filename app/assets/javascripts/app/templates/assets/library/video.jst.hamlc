@@ -1,3 +1,0 @@
-- _style = "background-image: url(#{@asset.get('thumbnail_url')})"
-%span.asset{:style => _style, :data-id => @asset.id, :data-type => 'video' }
-  %span.filename= App.Lib.StringHelper.truncate(@asset.get('name'))
