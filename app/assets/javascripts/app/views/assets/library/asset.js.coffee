@@ -16,11 +16,15 @@ class App.Views.AssetLibraryElement extends Backbone.View
     @
 
 
+  remove: ->
+    super
+    @_removeDraggable()
+
+
   title: ->
     "#{@model.get('name')}\n#{App.Lib.NumberHelper.numberToHumanSize(@model.get('size'))}\nUploaded #{App.Lib.DateTimeHelper.timeToHuman(@model.get('created_at'))}"
 
 
-  # XXX remove draggable as well?
   _createDraggable: ->
     @$('.asset').draggable
       helper: 'clone'
@@ -31,6 +35,10 @@ class App.Views.AssetLibraryElement extends Backbone.View
       scroll: false
       start: @_highlightCanvas
       stop: @_removeCanvasHighlight
+
+
+  _removeDraggable: ->
+    @$('.asset').draggable('destroy')
 
 
   # XXX does not belong to this class
