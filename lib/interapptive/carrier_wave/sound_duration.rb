@@ -16,8 +16,6 @@ module Interapptive
           length = output.readlines.detect{|line| line.start_with?('Length')}
           if length.present?
             model.meta_info[:duration] = length.match(/:\s*(.*)/)[1].to_f
-          else
-            model.meta_info[:duration] = 8000.00
           end
         end
       end
