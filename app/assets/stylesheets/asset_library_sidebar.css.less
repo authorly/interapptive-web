@@ -167,6 +167,12 @@
 
       &:hover {
         cursor: pointer;
+        .player {
+          display: block;
+        }
+        .asset.sound {
+          opacity: 0.4;
+        }
       }
 
       .asset {
@@ -177,6 +183,13 @@
       .filename {
         position: absolute;
         bottom: 0;
+      }
+
+      .player {
+        position: absolute;
+        top: 20px;
+        left: 35px;
+        display: none;
       }
 
       &.selected {
