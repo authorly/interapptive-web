@@ -17,6 +17,11 @@ describe "App.JSON", ->
       ]
     }
 
+    @sound = new App.Models.Sound
+      id: 11
+      url: "https://interapptive.s3.amazonaws.com/sounds/11/voicemail_received.wav"
+    @storybook.sounds.add @sound
+
     @rim_selected_image = new App.Models.Image
       id:  1
       url: 'http://authorly.dev/read_it_myself-over.png'
@@ -35,6 +40,8 @@ describe "App.JSON", ->
       id: 2
       storybook: @storybook
       is_main_menu: true
+      sound_id: @sound.id
+      loop_sound: true
       widgets: [@rim, @rtm, @auto,
         {'type':'SpriteWidget', image_id: @main_menu_image.id,'id':4 }
       ]
@@ -95,6 +102,10 @@ describe "App.JSON", ->
       # a fake entry as the IOS app needs something
       expect(menu.fallingPhysicsSettings.plistfilename).toEqual 'snowflake-main-menu.plist'
 
+      expect(menu.audio).toBeDefined()
+      expect(menu.audio.backgroundMusic).toEqual @sound.get('url')
+      expect(menu.audio.backgroundMusicLoops).toEqual 0
+
       items = menu.MenuItems
       expect(items.length).toEqual 3
 
@@ -137,11 +148,6 @@ describe "App.JSON", ->
         url: 'https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg'
       @storybook.images.add @sprite_image
 
-      @sound = new App.Models.Sound
-        id: 11
-        url: "https://interapptive.s3.amazonaws.com/sounds/11/voicemail_received.wav"
-      @storybook.sounds.add @sound
-
       @video = new App.Models.Video
         id: 12
         url: "https://interapptive.s3.amazonaws.com/videos/12/voicemail_received.mov"
@@ -163,6 +169,8 @@ describe "App.JSON", ->
         id: 3
         position: 0
         storybook: @storybook
+        sound_id: @sound.id
+        loop_sound: false
         font_color: {r: 232, g: 148, b: 175 }
         font_size: "36"
         font_face: "Verdana"
@@ -216,6 +224,10 @@ describe "App.JSON", ->
       expect(page.settings).toBeDefined()
       settings = page.settings
       expect(settings.number).toEqual 1
+
+      expect(settings.backgroundMusicFile).toBeDefined()
+      expect(settings.backgroundMusicFile.loop).toEqual 0
+      expect(settings.backgroundMusicFile.audioFilePath).toEqual @sound.get('url')
 
       api = page_node.API
       expect(api).toBeDefined()
