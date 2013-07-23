@@ -3,12 +3,11 @@
 #
 class App.Views.AssetsLibrary extends Backbone.View
   template: JST['app/templates/assets/library/index']
-  className: 'sprites'
   tagName: 'ul'
+  className: 'assets'
   events:
-    'click #sprite-message-library-link': '_openUploadModal'
-    'click li': '_highlightSpriteElement'
-    'click .icon-plus': '_addImage'
+    'click li': '_highlightElement'
+    'click .icon-plus': '_addClicked'
 
 
   initialize: ->
@@ -23,38 +22,37 @@ class App.Views.AssetsLibrary extends Backbone.View
 
   setCollection: (collection) ->
     @collection = collection
-    @_renderSpriteLibraryElements()
+    @collection.comparator = @_comparator
+    @_renderElements()
     # TODO just add and/remove the corresponding view
-    @collection.on('add remove', @_reRenderSpriteLibraryElements, @)
+    @collection.on('add remove', @_reRender, @)
 
 
-  _reRenderSpriteLibraryElements: ->
-    @_removeSpriteLibraryElements()
-    @_renderSpriteLibraryElements()
+  _reRender: ->
+    @_removElements()
+    @_renderElements()
 
 
-  _removeSpriteLibraryElements: ->
-    if @views.length is 0
-      @_removeImageAbsenceMessage()
-    view.remove() for view in @views
-    @views = []
+  _removeElements: ->
+    if @views.length > 0
+      view.remove() for view in @views
+      @views = []
 
 
-  _renderSpriteLibraryElements: ->
+  _renderElements: ->
     if @collection.length > 0
-      # TODO keep the collection sorted
-      sprites = _.sortBy(@collection.models, @_spriteFilenameComparator, @)
-      @_renderSpriteLibraryElement(sprite) for sprite in sprites
+      @collection.each @_renderElement
+      @_noAssetsMessage().hide()
     else
-      @_addImageAbsenceMessage()
+      @_noAssetsMessage().show()
 
 
-  _spriteFilenameComparator: (sprite) ->
-    sprite.get('name')
+  _comparator: (asset) ->
+    asset.get('name')
 
 
-  _renderSpriteLibraryElement: (sprite) ->
-    view = new App.Views.SpriteLibraryElement(model: sprite)
+  _renderElement: (asset) =>
+    view = new App.Views.AssetLibraryElement(model: asset)
     @views.push(view)
     @$el.append(view.render().el)
 
@@ -64,19 +62,11 @@ class App.Views.AssetsLibrary extends Backbone.View
     App.vent.trigger('show:imageLibrary')
 
 
-  _removeImageAbsenceMessage: ->
-    @$el.find('#sprite-library-message').remove()
+  _noAssetsMessage: ->
+    @_message ||= @$el.find('.no-assets')
 
 
-  _addImageAbsenceMessage: ->
-    $message = $('<div/>',
-      id: 'sprite-library-message'
-      html: 'No images have been uploaded, <a id="sprite-message-library-link" href="#">click here</a> to upload images to add to.'
-    )
-    @$el.append($message)
-
-
-  _highlightSpriteElement: (event) ->
+  _highlightElement: (event) ->
     @$(event.currentTarget).toggleClass('selected').siblings().removeClass('selected')
 
 
@@ -86,5 +76,5 @@ class App.Views.AssetsLibrary extends Backbone.View
       placement: 'right'
 
 
-  _addImage: ->
+  _addClicked: ->
     App.vent.trigger('show:imageLibrary')

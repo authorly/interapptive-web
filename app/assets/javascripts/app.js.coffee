@@ -75,7 +75,7 @@ window.App =
         top: 200
         left: 125
     canvas.droppable
-      accept: '.sprite-image'
+      accept: '.asset'
       drop: (__, ui) =>
         offset = canvas.offset()
         position =

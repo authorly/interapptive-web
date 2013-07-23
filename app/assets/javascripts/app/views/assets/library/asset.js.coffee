@@ -1,14 +1,14 @@
-class App.Views.SpriteLibraryElement extends Backbone.View
+class App.Views.AssetLibraryElement extends Backbone.View
   tagName:  'li'
 
   template: (data) ->
-    type = data.sprite.constructor.name.toLowerCase()
+    type = data.asset.constructor.name.toLowerCase()
     JST["app/templates/assets/library/#{type}"](data)
 
 
   render: ->
     @$el.
-      html(@template(sprite: @model)).
+      html(@template(asset: @model)).
       prop('title', @title())
 
     @_createDraggable()
@@ -22,7 +22,7 @@ class App.Views.SpriteLibraryElement extends Backbone.View
 
   # XXX remove draggable as well?
   _createDraggable: ->
-    @$('.sprite-image').draggable
+    @$('.asset').draggable
       helper: 'clone'
       appendTo: 'body'
       cursor: 'move'

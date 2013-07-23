@@ -46,7 +46,7 @@
   }
 }
 
-.sprite-library-image {
+.asset-library-image {
   background-size: 100%;
   background-repeat: no-repeat;
   display: inline-block;
@@ -58,7 +58,7 @@
 
 // drag a sprite to the canvas
 .sprite-image.ui-draggable-dragging {
-  .sprite-library-image;
+  .asset-library-image;
 }
 
 #sprite-library-palette {
@@ -76,7 +76,7 @@
     overflow-y: scroll;
   }
 
-  ul.sprites {
+  .assets {
     margin: 3px 3px 0px 3px;
     padding-bottom: 20px;
 
@@ -94,14 +94,14 @@
       display: inline-block;
       position: relative;
 
-      .sprite-image {
-        .sprite-library-image;
+      .asset {
+        .asset-library-image;
 
         background-position: center center;
         margin-left: 16px;
       }
 
-      .sprite-filename {
+      .filename {
         position: absolute;
         bottom: 0;
       }
