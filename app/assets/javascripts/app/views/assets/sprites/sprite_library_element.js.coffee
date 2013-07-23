@@ -7,7 +7,9 @@ class App.Views.SpriteLibraryElement extends Backbone.View
 
 
   render: ->
-    @$el.html(@template(sprite: @model))
+    @$el.
+      html(@template(sprite: @model)).
+      prop('title', @title())
     @$('.sprite-image').draggable
       helper: 'clone'
       appendTo: 'body'
@@ -18,6 +20,10 @@ class App.Views.SpriteLibraryElement extends Backbone.View
       start: @_highlightCanvas
       stop: @_removeCanvasHighlight
     @
+
+
+  title: ->
+    "#{@model.get('name')}\n#{App.Lib.NumberHelper.numberToHumanSize(@model.get('size'))}\nUploaded #{App.Lib.DateTimeHelper.timeToHuman(@model.get('created_at'))}"
 
 
   _highlightCanvas: =>
