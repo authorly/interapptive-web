@@ -1,0 +1,108 @@
+#asset-type-filter
+  %ul.nav.nav-pills
+    %li
+      %a{:href => "#"} Images
+    %li
+      %a{:href => "#"} Videos
+    %li
+      %a{:href => "#"} Sounds
+    %li.active
+      %a{:href => "#"} Show All
+
+
+#active-uploads
+  %ul
+    %li{:title => 'Uploading SomeCoolFile.png...'}
+      %table
+        %tr
+          %td{:class => 'thumb', :title => '1.2 MB'}
+            %img.asset-thumb{:src => 'http://upload.wikimedia.org/wikipedia/en/b/b2/The_Humane_Interface_book_cover.jpg'}
+          %td{:title => 'SomeCoolFile.png'}
+            .progress.progress-striped.active{:title => 'Uploading...'}
+              .bar{:style => 'width: 100%;'}
+          %td{:class => 'cancel-upload-col'}
+            %a.cancel-upload{:href => '#', :title => 'Cancel upload'}
+              %i{:class => 'icon-remove icon-black'}
+
+
+#asset-sorting
+  %span.dropdown-label Sort by:
+  .btn-group
+    %button.btn.btn-mini.selected Default
+    %button.btn.btn-mini.dropdown-toggle{"data-toggle" => "dropdown"}
+      %span.caret
+    %ul.dropdown-menu
+      %li
+        %a{:href => "#", :title => "Default sorting"}
+          Default
+      %li
+        %a{:href => "#", :title => "Default sorting"}
+          File type
+      %li
+        %a{:href => "#", :title => "Default sorting"}
+          Name: ascending
+      %li
+        %a{:href => "#", :title => "Default sorting"}
+          Name: descending
+      %li
+        %a{:href => "#", :title => "Default sorting"}
+          Size: high to low
+      %li
+        %a{:href => "#", :title => "Default sorting"}
+          Size: low to high
+
+
+#asset-list
+  %table.table
+    %tbody
+      /
+      / Image asset table row
+      /
+      %tr
+        %td.thumb
+          %a{:href => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAXmSZiiAgyhSdtRrFbD5CuvBgUqvAkkb6tWkDcjiW32LAg0NUlg',
+             :target => '_blank'}
+            %img{:src => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAXmSZiiAgyhSdtRrFbD5CuvBgUqvAkkb6tWkDcjiW32LAg0NUlg'}
+        %td ReallyCoolImage.png
+        %td.asset-size 396 KB
+        %td.delete-asset
+          %a{:href => '#',:title => 'Delete image'}
+            %i{:class => 'icon-remove icon-black'}
+
+      /
+      / Video asset table row
+      /
+      %tr
+        %td.preview-link
+          %a{:href => '#'}
+            %img{:src => '/assets/audio-icon.png'}
+        %td ExcitingMovie.mp4
+        %td.asset-size 1.4 MB
+        %td.delete-asset
+          %a{:href => '#',:title => 'Delete video'}
+            %i{:class => 'icon-remove icon-black'}
+
+      /
+      / Sound asset table row
+      /
+      %tr
+        %td.preview-link
+          %a{:href => '#'}
+            %img{:src => '/assets/video-icon.png'}
+        %td ExcitingMovie.mp3
+        %td.asset-size 1.4 MB
+        %td.delete-asset
+          %a{:href => '#',:title => 'Delete video'}
+            %i{:class => 'icon-remove icon-black'}
+
+
+#asset-sidebar-sticky-footer
+  %button.select-file.btn.btn-success{:type => "button"}
+    %i{:class => 'icon-plus icon-white'}
+    Add File
+  #asset-text-search
+    .input-append
+      %input#asset-search-field.input-small.span2{:type => 'text', :placeholder => 'Search media...'}
+      %button.btn{:type => 'button'}
+        %i{:class => 'icon-search icon-black'}
+

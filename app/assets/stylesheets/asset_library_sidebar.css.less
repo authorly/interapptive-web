@@ -1,0 +1,231 @@
+#asset-library-sidebar {
+  min-width: 320px;
+  width: 320px;
+  left: 0 !important;
+  margin-top: 105px;
+  padding: 0;
+  font-size: 11px;
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-vertical;
+
+  #asset-type-filter,
+  #active-uploads,
+  #asset-list,
+  #asset-sorting {
+    padding: 0 px 0 5px;
+  }
+
+  /*
+    Filter to show a single file type from list
+  */
+  #asset-type-filter {
+    ul.nav.nav-pills {
+      margin-bottom: 20px;
+      width: 100%;
+
+      li {
+        width: 25%;
+        text-align: center;
+
+        a {
+          font-size: 10px;
+          padding: 5px 10px 5px;
+        }
+      }
+    }
+  }
+
+  /*
+    List of active uploads (uploading in-progress)
+  */
+  #active-uploads {
+    clear:both;
+
+    ul {
+      margin: auto 0;
+
+      li {
+        .round-corners();
+
+        height: 60px;
+        list-style: none;
+        margin: 0 10px 8px 10px;
+        background-color: #BCF4B5;
+
+        table {
+          width: 100%;
+          height: 100%;
+
+          tr {
+            td.thumb {
+              width: 75px;
+            }
+
+            td.cancel-upload-col {
+              width: 30px;
+            }
+
+            td {
+              height: 40px;
+              vertical-align: middle;
+              text-align: center;
+
+              a {
+                margin-top: -2px;
+              }
+
+              a.cancel-upload {
+                position: relative;
+                top: -3px;
+              }
+
+              a.cancel-upload:hover {
+                opacity: 1;
+              }
+
+              .progress {
+                margin-top: 19px;
+              }
+
+              img.asset-thumb {
+                max-height:100%;
+                max-width:100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /*
+    Dropdown sorting options for assets
+  */
+  #asset-sorting {
+    margin: 10px 0 5px 0;
+    float: right;
+
+    .btn-mini.selected {
+      width: 110px;
+      text-align: left;
+    }
+
+    .dropdown-menu {
+      .scale(0.75);
+
+      -webkit-transform-origin: 1 1;
+      top: 5px;
+      left: -12px !important;
+    }
+
+    .dropdown-label {
+      position: relative;
+      bottom: -3px;
+    }
+  }
+
+  /*
+    List of media assets on sidebar
+  */
+  #asset-list {
+    table {
+
+      thead {
+        tr {
+          th {
+            padding-bottom: 1px;
+          }
+
+          th.asset-thumb {
+            width: 35px;
+            height: 40px;
+          }
+
+          th.asset-size {
+            width: 28px;
+          }
+        }
+      }
+
+      tbody {
+        tr:hover {
+          td.delete-asset {
+            a {
+              opacity: 0.6;
+              visibility: visible;
+            }
+
+            a:hover {
+              opacity: 1;
+            }
+          }
+        }
+
+        tr {
+          td {
+            vertical-align: middle;
+            height: 40px;
+            max-width: 40px !important;
+          }
+
+          td.thumb, td.preview-link {
+            text-align: center;
+          }
+
+          td.thumb {
+            width:40px;
+
+            img {
+              max-height: 100%;
+              max-width: 100%;
+            }
+          }
+
+          td.asset-size {
+            width: 40px;
+            padding-right: 0;
+            padding-left: 6px;
+          }
+
+          td.delete-asset {
+            width: 15px;
+            padding: 6px 0 0 4px;
+
+            a {
+              visibility: hidden;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /*
+    Footer area fixed to bottom of asset library sidebar.
+  */
+  #asset-sidebar-sticky-footer {
+    position: absolute;
+    bottom: 0 !important;
+    right: 0;
+    width: 320px;
+    padding-top: 5px;
+    background-color: #f0f0f0;
+
+    #asset-text-search {
+      display: inline-block;
+      float: right;
+      margin-right: 3px;
+
+      input {
+        height: 20px !important;
+      }
+    }
+
+    button.select-file.btn.btn-success {
+      float: left;
+      position: absolute;
+      left: 0;
+      margin: 0 0 0 3px;
+    }
+  }
+}
