@@ -28,11 +28,7 @@ class App.Views.AssetsLibrary extends Backbone.View
     @collection.on 'add',    @_add,    @
     @collection.on 'remove', @_remove, @
 
-    if @collection.length > 0
-      @collection.each @_add
-      @_noAssetsMessage().hide()
-    else
-      @_noAssetsMessage().show()
+    @collection.each @_add
 
 
   _comparator: (asset) ->
@@ -49,11 +45,14 @@ class App.Views.AssetsLibrary extends Backbone.View
     else
       @$el.children().eq(index-1).after(viewElement)
 
+    @_noAssetsMessage().hide()
+
 
   _remove: (asset) ->
     view = _.find @views, (view) -> view.model == asset
     view.remove()
     @views.splice(@views.indexOf(view), 1)
+    @_noAssetsMessage().show() if @collection.length == 0
 
 
   _openUploadModal: (e) ->
