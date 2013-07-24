@@ -112,7 +112,7 @@ class App.JSON
           paragraphs: []
     if (sound = scene.sound())?
       page.Page.settings.backgroundMusicFile =
-        loop: scene.get('sound_repeat_count')
+        loop: if scene.get('loop_sound') then 1 else 0
         audioFilePath: sound.get('url')
     scene.keyframes.each (k) => @addTextNodeFor(k, page)
 
@@ -234,8 +234,6 @@ class App.JSON
     str = App.Lib.StringHelper
     node =
       # audio:
-        # backgroundMusic      : 'main-menu-title-sound.mp3'
-        # backgroundMusicLoops : 1
         # soundEffect          : 'main-menu-title-sound.mp3'
         # soundEffectLoops     : 1
 
@@ -277,6 +275,11 @@ class App.JSON
         visible:   true
         zOrder:   parseInt(spriteWidget.get('z_order'))
       node.CCSprites.push(spriteNode)
+
+    if (sound = scene.sound())?
+      node.audio =
+        backgroundMusic      : sound.get('url')
+        backgroundMusicLoops : if scene.get('loop_sound') then 0 else 1
 
     node
 
