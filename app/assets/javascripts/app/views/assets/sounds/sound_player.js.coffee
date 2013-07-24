@@ -13,7 +13,7 @@ class App.Views.SoundPlayer extends Backbone.View
 
 
   render: ->
-    @$el.html @template(asset: @model)
+    @$el.html @template(sound: @model)
 
     @
 
