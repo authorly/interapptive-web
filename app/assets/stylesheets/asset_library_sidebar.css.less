@@ -1,5 +1,30 @@
+.asset-library-image {
+  display: inline-block;
+  float: left;
+  width: 50px;
+  height: 61px;
+  margin: -1px 10px 10px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  &.sound {
+    background-image: url(/assets/toolbar.png);
+    background-size: auto;
+    background-position: -586px -5px;
+  }
+}
+
+// drag a sprite to the canvas
+.asset.ui-draggable-dragging {
+  .asset-library-image;
+  .filename {
+    display: none;
+  }
+}
+
 #asset-library-sidebar {
-  min-width: 320px;
+  min-width: 330px;
   width: 320px;
   left: 0 !important;
   margin-top: 105px;
@@ -102,8 +127,8 @@
     Dropdown sorting options for assets
   */
   #asset-sorting {
-    margin: 10px 0 5px 0;
-    float: right;
+    margin: 10px 15px 5px 0;
+    text-align: right;
 
     .btn-mini.selected {
       width: 110px;
@@ -128,76 +153,42 @@
     List of media assets on sidebar
   */
   #asset-list {
-    table {
+    margin: auto;
 
-      thead {
-        tr {
-          th {
-            padding-bottom: 1px;
-          }
+    li {
+      .round-corners();
 
-          th.asset-thumb {
-            width: 35px;
-            height: 40px;
-          }
+      list-style: none;
+      font-family: 'Arial Black';
+      font-size: 10px;
+      width: 82px;
+      display: inline-block;
+      position: relative;
 
-          th.asset-size {
-            width: 28px;
-          }
+      &:hover {
+        cursor: pointer;
+      }
+
+      .asset {
+        .asset-library-image;
+        margin-left: 16px;
+      }
+
+      .filename {
+        position: absolute;
+        bottom: 0;
+      }
+
+      &.selected {
+        background-color: rgba(33, 143, 255, 0.54);
+
+        &:hover {
+          .grab()
         }
       }
 
-      tbody {
-        tr:hover {
-          td.delete-asset {
-            a {
-              opacity: 0.6;
-              visibility: visible;
-            }
-
-            a:hover {
-              opacity: 1;
-            }
-          }
-        }
-
-        tr {
-          td {
-            vertical-align: middle;
-            height: 40px;
-            max-width: 40px !important;
-          }
-
-          td.thumb, td.preview-link {
-            text-align: center;
-          }
-
-          td.thumb {
-            width:40px;
-
-            img {
-              max-height: 100%;
-              max-width: 100%;
-            }
-          }
-
-          td.asset-size {
-            width: 40px;
-            padding-right: 0;
-            padding-left: 6px;
-          }
-
-          td.delete-asset {
-            width: 15px;
-            padding: 6px 0 0 4px;
-
-            a {
-              visibility: hidden;
-            }
-          }
-        }
-      }
     }
+
   }
 
   /*
@@ -227,5 +218,15 @@
       left: 0;
       margin: 0 0 0 3px;
     }
+  }
+
+  /*
+    Hide elements which are not implemented yet.
+   */
+  #asset-type-filter,
+  #active-uploads,
+  #asset-sorting,
+  #asset-sidebar-sticky-footer {
+    display: none;
   }
 }
