@@ -24,8 +24,10 @@
       .container
         .content
           .row
-            .span2.navbar.sidebar
+            .span2.navbar.sidebar.left
               #scene-list
+            .span2.navbar.sidebar.right
+              #asset-library-sidebar
             .canvas-column
               - flash.each do |name, msg|
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
@@ -41,7 +43,6 @@
             #sprite-list-palette.palette.span2
             #sprite-editor-palette.palette.span2
             #text-editor-palette.palette.span2
-            #sprite-library-palette.palette.span2
             #action-form-container
 
     %footer.navbar.navbar-fixed-bottom

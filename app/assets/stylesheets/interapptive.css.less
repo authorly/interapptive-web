@@ -20,6 +20,7 @@
 @import 'voiceovers.css.less';
 
 @import 'assets.css.less';
+@import 'asset_library_sidebar.css.less';
 
 /* Widget related */
 @import 'palettes.css.less';
@@ -91,6 +92,10 @@ canvas#builder-canvas {
   overflow: hidden;
   position: relative;
   top: -20px;
+
+  &.highlight {
+    border: 1px solid blue;
+  }
 }
 
 .loading {
@@ -164,15 +169,26 @@ header {
 .sidebar {
   .drop-shadow(1px, 0, 13px, #666);
 
-  position: absolute;
-  left: 0;
-  top: 0;
+  cursor: default;
   background-color: @sidebarColor;
   margin-left: 0;
   margin-top: 0;
   height: 100%;
-  width: 200px;
   z-index: 2;
+  position: absolute;
+  top: 0;
+}
+
+.sidebar.left {
+  width: 200px;
+  left: 0;
+}
+
+.sidebar.right {
+  min-width: 320px;
+  width: 320px;
+  background: @assetLibSidebarBgColor;
+  right: 0;
 }
 
 .large-modal {
@@ -218,4 +234,8 @@ header {
 
   height: 682px;
   margin-top: -341px;
+}
+
+.ui-resizable-w {
+  cursor: col-resize;
 }
