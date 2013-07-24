@@ -1,0 +1,3 @@
+%audio{:id => @asset.cid}
+  %source{ :src => @asset.get('url') }
+%i.control.icon-play.icon-black
