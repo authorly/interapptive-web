@@ -20,12 +20,18 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   doubleClick: ->
     @setIsVisible(false)
 
-    view = new App.Views.TextWidget
+    @editView = new App.Views.TextWidget
       widget: @,
       workspaceOrigin: @getParent().workspaceOriginAbsolutePosition()
 
-    $(view.el).appendTo(cc.canvas.parentNode)
-    view.initializeEditing()
+    $(@editView.el).appendTo(cc.canvas.parentNode)
+    @editView.initializeEditing()
+
+
+  deselect: ->
+    if @editView?
+      @editView.shouldSave = true
+      @editView.deselect()
 
 
   resetCocos2dLabel: ->
