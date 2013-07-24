@@ -7,7 +7,6 @@ class App.Views.AssetsLibrary extends Backbone.View
   className: 'assets'
   events:
     'click li': '_highlightElement'
-    'click .icon-plus': '_addClicked'
 
 
   initialize: ->
@@ -74,7 +73,3 @@ class App.Views.AssetsLibrary extends Backbone.View
     @$('.icon-plus').tooltip
       title: "Add Images..."
       placement: 'right'
-
-
-  _addClicked: ->
-    App.vent.trigger('show:imageLibrary')

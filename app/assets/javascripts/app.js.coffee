@@ -60,18 +60,12 @@ window.App =
       el        : $('#sprite-editor-palette')
       resizable : false
 
-    @spriteLibraryPalette = new App.Views.PaletteContainer
-      title:     'Uploaded Images'
-      view:      new App.Views.AssetsLibrary
-      el:        $('#sprite-library-palette')
-      resizable: true
-
     @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
       el: $('#asset-library-sidebar')
 
     @_makeCanvasDroppable()
 
-    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
+    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette ]
 
     @currentSelection.on 'change:storybook', @_openStorybook,  @
     @currentSelection.on 'change:scene',     @_changeScene,    @
@@ -147,7 +141,7 @@ window.App =
     @textEditorPalette.view.openStorybook(storybook)
 
     assets = new App.Lib.AggregateCollection([], collections: [storybook.images, storybook.videos, storybook.sounds])
-    @spriteLibraryPalette.view.setCollection assets
+    @assetLibrarySidebar.setAssets assets
 
 
   _showSceneForm: ->
