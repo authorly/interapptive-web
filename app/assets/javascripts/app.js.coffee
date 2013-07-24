@@ -60,15 +60,22 @@ window.App =
       el        : $('#sprite-editor-palette')
       resizable : false
 
-    @spriteLibraryPalette = new App.Views.PaletteContainer
-      title:     'Uploaded Images'
-      view:      new App.Views.SpriteLibraryPalette
-      el:        $('#sprite-library-palette')
-      resizable: true
-
     @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
       el: $('#asset-library-sidebar')
 
+    @_makeCanvasDroppable()
+
+    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette ]
+
+    @currentSelection.on 'change:storybook', @_openStorybook,  @
+    @currentSelection.on 'change:scene',     @_changeScene,    @
+    @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
+    @currentSelection.on 'change:widget',    @_changeWidget,   @
+
+    @initializeGlobalSync()
+
+
+  _makeCanvasDroppable: ->
     canvas = $('#builder-canvas')
     canvasAttributes =
       height: canvas.height()
@@ -78,23 +85,18 @@ window.App =
         top: 200
         left: 125
     canvas.droppable
-      accept: '.sprite-image'
+      accept: '.asset'
       drop: (__, ui) =>
         offset = canvas.offset()
-        @_addNewImage
-          image_id: ui.draggable.data('id')
-          position:
-            x: (ui.position.left - offset.left - canvasAttributes.margins.left + ui.helper.width() * 0.5) * canvasAttributes.scale
-            y: canvasAttributes.height - ((ui.position.top - offset.top - canvasAttributes.margins.top) + ui.helper.height() * 0.5) * canvasAttributes.scale
-
-    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
-
-    @currentSelection.on 'change:storybook', @_openStorybook,  @
-    @currentSelection.on 'change:scene',     @_changeScene,    @
-    @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
-    @currentSelection.on 'change:widget',    @_changeWidget,   @
-
-    @initializeGlobalSync()
+        position =
+          x: (ui.position.left - offset.left - canvasAttributes.margins.left + ui.helper.width() * 0.5) * canvasAttributes.scale
+          y: canvasAttributes.height - ((ui.position.top - offset.top - canvasAttributes.margins.top) + ui.helper.height() * 0.5) * canvasAttributes.scale
+        @_assetDropped
+          id:   ui.draggable.data('id')
+          type: ui.draggable.data('type')
+          position: position
+    @vent.on 'assetDrag-start', (-> canvas.addClass    'highlight')
+    @vent.on 'assetDrag-stop',  (-> canvas.removeClass 'highlight')
 
 
   saveCanvasAsPreview: ->
@@ -137,7 +139,9 @@ window.App =
     storybook.fetchCollections()
 
     @textEditorPalette.view.openStorybook(storybook)
-    @spriteLibraryPalette.view.openStorybook(storybook)
+
+    assets = new App.Lib.AggregateCollection([], collections: [storybook.images, storybook.videos, storybook.sounds])
+    @assetLibrarySidebar.setAssets assets
 
 
   _showSceneForm: ->
@@ -233,26 +237,41 @@ window.App =
 
 
   _addNewWidget: (attributes) ->
-    container = App.Collections.Widgets.containers[attributes.type]
-    collection = App.currentSelection.get(container).widgets
+    containerType = App.Collections.Widgets.containers[attributes.type]
+    container = App.currentSelection.get(containerType)
+    collection = container.widgets
     widget = collection.model(attributes)
+
+    if widget instanceof App.Models.HotspotWidget and !container.canAddHotspot()
+      alert 'Cannot add Hotspots to this scene'
+      return
+
     collection.add widget
 
-    unless widget instanceof App.Models.TextWidget
-      App.currentSelection.set widget: widget
+    window.setTimeout (-> App.currentSelection.set widget: widget), 0
 
 
   # @param [Object] attributes
-  # @option attributes [Integer] image_id
+  # @option attributes [Integer] id
+  # @option attributes [String] type ('image', 'sound' or 'video')
   # @option attributes [Object] position {x, y}
-  _addNewImage: (attributes={}) ->
+  _assetDropped: (attributes={}) ->
     scene = App.currentSelection.get('scene')
 
-    scene.widgets.add
-      type: 'SpriteWidget'
-      image_id: attributes.image_id
+    widgetAttributes =
       position: $.extend {}, attributes.position
-      scale: 1
+    widgetAttributes[attributes.type + '_id'] = attributes.id
+
+    switch attributes.type
+      when 'image'
+        widgetAttributes.type = 'SpriteWidget'
+        widgetAttributes.scale = 1
+        break
+      when 'sound', 'video'
+        widgetAttributes.type = 'HotspotWidget'
+        break
+
+    @_addNewWidget(widgetAttributes)
 
 
   _openHotspotModal: (widget) ->

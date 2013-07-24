@@ -15,7 +15,15 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   render: ->
     @$el.html(@template())
+
+    @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list'))
+    @assetsView.render()
+
     @
+
+
+  setAssets: (assets) ->
+    @assetsView.setCollection assets
 
 
   initResizable: ->
