@@ -13,26 +13,17 @@ class App.Views.AssetLibraryElement extends Backbone.View
 
     @_createDraggable()
 
-    if @model instanceof App.Models.Sound
-      @player = new App.Views.SoundPlayer(model: @model, className: 'player')
-      @$el.append @player.render().el
-
     @
 
 
   remove: ->
     super
     @_removeDraggable()
-    @player.remove() if @player?
 
 
   title: ->
-    specificData = null
-    if @model instanceof App.Models.Sound
-      specificData = "#{@model.get('duration').toFixed(2)} seconds"
-
     """
-    #{@model.get('name')}#{if specificData? then "\n#{specificData}" else ""}
+    #{@model.get('name')}
     #{App.Lib.NumberHelper.numberToHumanSize(@model.get('size'))}
     Uploaded #{App.Lib.DateTimeHelper.timeToHuman(@model.get('created_at'))}
     """
