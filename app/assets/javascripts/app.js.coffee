@@ -252,17 +252,6 @@ window.App =
 
     @_addNewWidget(widgetAttributes)
 
-    switch attributes.type
-      when 'image'
-        widgetAttributes.type = 'SpriteWidget'
-        widgetAttributes.scale = 1
-        break
-      when 'sound', 'video'
-        widgetAttributes.type = 'HotspotWidget'
-        break
-
-    @_addNewWidget(widgetAttributes)
-
 
   initModals: ->
     $('.content-modal').modal(backdrop: true).modal('hide')
