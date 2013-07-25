@@ -63,6 +63,15 @@ nav.toolbar {
         background-position: @toolbarItemWidth*-5 0;
       }
 
+      li.background-sound {
+        line-height: 12px;
+        background-position: @toolbarItemWidth*-8 0;
+      }
+
+      li.background-sound.has-sound {
+        background-position: (@toolbarItemWidth*-8)-1 @toolbarHeight*2;
+      }
+
       li.scene-options {
         background-position: @toolbarItemWidth*-10 0;
         white-space: nowrap;
@@ -165,7 +174,7 @@ nav.toolbar {
       }
 
       li.sounds.disabled {
-        background-position: @toolbarItemWidth*-8 (@toolbarHeight - 2);
+        background-position: @toolbarItemWidth*-4 (@toolbarHeight - 1);
       }
 
       li.fonts.disabled {
@@ -231,9 +240,7 @@ nav.toolbar {
   }
 
   .sync-audio a{
-    line-height: 12px;
     position: relative;
-    top: -5px;
     left: -1px;
     margin-left: 0;
     margin-right: 0;

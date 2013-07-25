@@ -10,7 +10,7 @@ class App.Models.Storybook extends Backbone.Model
   schema:
     title:
       type:          "Text"
-      title:         "Story Title"
+      title:         "Storybook Title"
       validators:    ["required",
                        checkTitle = (value, formValues) ->
                          err =
@@ -20,45 +20,8 @@ class App.Models.Storybook extends Backbone.Model
                          err  if value.length < 2 or value.length > 25
                       ]
 
-    price:
-      title:         "Price"
-      type:          "Currency"
-      template:      "currencyField"
-      validators:    ["required",
-        checkPrice = (value, formValues) ->
-          err =
-            type: "price"
-            message: "Must be non-negative and less than $100.00"
-
-          err  if value < 0 or value > 100
-        ]
-
-    author:
-      title:         "Author"
-      type:           "Text"
-      validators:    ["required",
-        checkAuthor = (value, formValues) ->
-          err =
-            type: "author"
-            message: "Oops! Author field must be 2-25 characters."
-
-          err  if value.length < 3 or value.length > 50
-      ]
-
-    description:
-      title:         "Description"
-      type:           "Text"
-      validators:    ["required",
-        checkDesc = (value, formValues) ->
-          err =
-            type: "description"
-            message: "App description must be 10-25 characters."
-
-          err  if value.length < 3 or value.length > 25
-      ]
-
     pageFlipTransitionDuration:
-      title: 'Page flipping animation duration'
+      title: 'Page flip duration'
       help: 'seconds'
       type:  'Number'
       validators:    ["required",
@@ -71,7 +34,7 @@ class App.Models.Storybook extends Backbone.Model
       ]
 
     paragraphTextFadeDuration:
-      title: 'Fade in/out duration, when swiping to the next/previous keyframe'
+      title: 'Text fade duration'
       help: 'seconds'
       type:  'Number'
       validators:    ["required",
@@ -84,7 +47,7 @@ class App.Models.Storybook extends Backbone.Model
       ]
 
     autoplayPageTurnDelay:
-      title: 'Additional delay before going to the next scene in autoplay mode'
+      title: 'Extra delay before page turn in autoplay'
       help: 'seconds'
       type:  'Number'
       validators:    ["required",
@@ -98,7 +61,7 @@ class App.Models.Storybook extends Backbone.Model
 
     autoplayKeyframeDelay:
       title: ''
-      title: 'Additional delay before going to the next keyframe in autoplay mode'
+      title: 'Additional delay between text in autoplay'
       help: 'seconds'
       type:  'Number'
       validators:    ["required",

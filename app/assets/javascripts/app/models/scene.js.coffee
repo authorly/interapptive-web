@@ -167,6 +167,10 @@ class App.Models.Scene extends Backbone.Model
     @widgets.imageRemoved(image)
 
 
+  hasBackgroundSound: ->
+    @has('sound_id')
+
+
 _.extend App.Models.Scene::, App.Mixins.DeferredSave
 _.extend App.Models.Scene::, App.Mixins.QueuedSync
 

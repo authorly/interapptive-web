@@ -13,17 +13,17 @@
       %li.toolbar-group.centered
         %ul
           %li.edit-text.disabled
-            %a.add-text{:href => '#'} Add Text
+            = link_to "Add Text", "#"
           %li.sync-audio.disabled
-            = link_to "Text Voiceover", "#"
+            = link_to "Voiceover", "#"
           %li.add-hotspot.disabled
-            %a{:href => '#'} Add Hotspot
-
+            = link_to "Add Hotspot", "#"
+          %li.background-sound.disabled
+            = link_to "Background Sound", "#"
 
       %li.toolbar-group.last.right
         %ul
           %li.scene-options.disabled
-            = link_to "Scene Options", "#"
-
+            = link_to "App Settings", "#"
 %nav.bottom-bar
   %div#font-menu-buttons.container
