@@ -1,12 +1,12 @@
 class App.Views.AssetLibraryElement extends Backbone.View
   tagName:  'li'
   template: JST['app/templates/assets/library/asset']
+  className: -> @type()
 
   render: ->
-    type = @model.constructor.name.toLowerCase()
     @$el.html @template(
       asset: @model
-      type: type
+      type: @type()
       title: @title()
       background: @model.get('thumbnail_url')
     )
@@ -15,6 +15,9 @@ class App.Views.AssetLibraryElement extends Backbone.View
 
     @
 
+
+  type: ->
+    @model.constructor.name.toLowerCase()
 
   remove: ->
     super
