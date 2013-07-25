@@ -25,31 +25,11 @@
               %i{:class => 'icon-remove icon-black'}
 
 
-#asset-sorting
+#asset-sorting.form-inline
   %span.dropdown-label Sort by:
-  .btn-group
-    %button.btn.btn-mini.selected Default
-    %button.btn.btn-mini.dropdown-toggle{"data-toggle" => "dropdown"}
-      %span.caret
-    %ul.dropdown-menu
-      %li
-        %a{:href => "#", :title => "Default sorting"}
-          Default
-      %li
-        %a{:href => "#", :title => "Default sorting"}
-          File type
-      %li
-        %a{:href => "#", :title => "Default sorting"}
-          Name: ascending
-      %li
-        %a{:href => "#", :title => "Default sorting"}
-          Name: descending
-      %li
-        %a{:href => "#", :title => "Default sorting"}
-          Size: high to low
-      %li
-        %a{:href => "#", :title => "Default sorting"}
-          Size: low to high
+  %select
+    %option{:value=> "name-ascending", :selected => 'selected'} Name: ascending
+    %option{:value=> "name-descending"} Name: descending
 
 %ul.#asset-list.images.sounds.videos
 

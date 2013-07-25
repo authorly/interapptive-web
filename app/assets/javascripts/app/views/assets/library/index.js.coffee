@@ -19,21 +19,39 @@ class App.Views.AssetsLibrary extends Backbone.View
   setCollection: (collection) ->
     @collection = collection
 
-    @collection.comparator = @_comparator
-    @collection.sort()
+    @_setComparator(@comparator)
 
     @collection.on 'add',    @_add,    @
     @collection.on 'remove', @_remove, @
+    @collection.on 'sort',   @_sort,   @
 
     @collection.each @_add
+
+
+  setComparator: (name) ->
+    _s = App.Lib.StringHelper
+    comparatorName = _s.decapitalize(_s.camelize(name)) + 'Comparator'
+    @_setComparator(@[comparatorName])
+
+
+  _setComparator: (comparator) ->
+    @comparator = comparator
+
+    if @collection?
+      @collection.comparator = @comparator
+      @collection.sort() if @comparator?
 
 
   filterBy: (filter) ->
     @$el.removeClass('images videos sounds').addClass(filter)
 
 
-  _comparator: (asset) ->
-    asset.get('name')
+  nameAscendingComparator: (a1, a2) ->
+    if a1.get('name') > a2.get('name') then 1 else -1
+
+
+  nameDescendingComparator: (a1, a2) ->
+    if a1.get('name') < a2.get('name') then 1 else -1
 
 
   _add: (asset) =>
@@ -59,6 +77,12 @@ class App.Views.AssetsLibrary extends Backbone.View
     view.remove()
     @views.splice(@views.indexOf(view), 1)
     @_noAssetsMessage().show() if @collection.length == 0
+
+
+  _sort: ->
+    @collection.each (asset) =>
+      view = _.find @views, (view) -> view.model == asset
+      @$el.append view.el
 
 
   _noAssetsMessage: ->
