@@ -44,6 +44,8 @@ window.App =
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
     @file_menu = new App.Views.FileMenuView el: $('#file-menu')
 
+    @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
+
     @spritesListPalette = new App.Views.PaletteContainer
       view       : new App.Views.SpriteListPalette()
       el         : $('#sprite-list-palette')
@@ -55,17 +57,12 @@ window.App =
       view : new App.Views.TextEditorPalette
       el   : $('#text-editor-palette')
 
-    @spriteEditorPalette = new App.Views.PaletteContainer
-      view      : new App.Views.SpriteEditorPalette
-      el        : $('#sprite-editor-palette')
-      resizable : false
-
     @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
       el: $('#asset-library-sidebar')
 
     @_makeCanvasDroppable()
 
-    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette ]
+    @palettes = [ @textEditorPalette, @spritesListPalette ]
 
     @currentSelection.on 'change:storybook', @_openStorybook,  @
     @currentSelection.on 'change:scene',     @_changeScene,    @
@@ -111,7 +108,6 @@ window.App =
     # (to avoid coupling the names)
     palette = switch palette
       when 'sceneImages' then @spritesListPalette
-      when 'imageEditor' then @spriteEditorPalette
       when 'fontEditor'  then @textEditorPalette
     palette.$el.toggle() if palette?
 
@@ -343,7 +339,7 @@ window.App =
   # event is triggered e.g. 'deactivate:textWidget'. deactivate
   # receives previous widget that was set.
   _triggerCurrentWidgetChangeEvent: (selection, widget) ->
-    if widget is null
+    if widget is null or widget is undefined
       previous_widget = selection.previous('widget')
       if previous_widget?
         @vent.trigger('deactivate:' + App.Lib.StringHelper.decapitalize(previous_widget.get('type')), previous_widget)

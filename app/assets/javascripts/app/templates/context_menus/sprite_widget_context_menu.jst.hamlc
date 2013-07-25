@@ -1,0 +1,27 @@
+%li#sprite-filename
+  = @filename
+
+%li
+  %label{:for => 'x-coord'}
+    X:
+  %input#x-coord.small{:value => parseInt(@orientation.get('position').x)}
+
+%li
+  %label{:for => 'y-coord'}
+    Y:
+  %input#y-coord.small{:value => parseInt(@orientation.get('position').y)}
+
+%li
+  %label.scale-amount{:for => 'scale-amount'}
+    Scale:
+  %input#scale-amount.small{:value => @orientation.get('scale') * 100}
+  &#37;
+
+%li
+  %a.bring-to-front{:href => '#'} Bring to Front
+
+%li
+  %a.put-in-back{:href => '#'} Put in Back
+
+%li
+  %a.remove{:href => '#'} Remove
