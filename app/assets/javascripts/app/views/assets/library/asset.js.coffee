@@ -4,7 +4,6 @@ class App.Views.AssetLibraryElement extends Backbone.View
   template: (data) ->
     JST[@options.templateName || 'app/templates/assets/library/asset'](data)
 
-  className: -> @type()
 
   events: ->
     'click .delete': 'deleteClicked'
