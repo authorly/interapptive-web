@@ -7,6 +7,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   initialize: ->
     @render()
+
     @adjustSize()
     @initResizable()
 
@@ -18,6 +19,11 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
     @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list'))
     @assetsView.render()
+
+    @filter = new App.Views.AssetFilter
+      el: @$('#asset-type-filter')
+    @filter.on 'filter', (filter) => @assetsView.filterBy(filter)
+    @filter.setup()
 
     @
 
@@ -37,3 +43,4 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
   adjustSize: ->
     offset = @$el.offset()?.top || 128
     @$el.css height: "#{$(window).height() - offset}px"
+

@@ -1,12 +1,12 @@
 #asset-type-filter
   %ul.nav.nav-pills
-    %li
+    %li{:data-filter => 'images'}
       %a{:href => "#"} Images
-    %li
+    %li{:data-filter => 'videos'}
       %a{:href => "#"} Videos
-    %li
+    %li{:data-filter => 'sounds'}
       %a{:href => "#"} Sounds
-    %li.active
+    %li.active{:data-filter => 'images videos sounds'}
       %a{:href => "#"} Show All
 
 
@@ -51,8 +51,7 @@
         %a{:href => "#", :title => "Default sorting"}
           Size: low to high
 
-
-%ul.#asset-list
+%ul.#asset-list.images.sounds.videos
 
 #asset-sidebar-sticky-footer
   %button.select-file.btn.btn-success{:type => "button"}

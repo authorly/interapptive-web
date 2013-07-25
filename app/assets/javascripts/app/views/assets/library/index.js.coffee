@@ -28,6 +28,10 @@ class App.Views.AssetsLibrary extends Backbone.View
     @collection.each @_add
 
 
+  filterBy: (filter) ->
+    @$el.removeClass('images videos sounds').addClass(filter)
+
+
   _comparator: (asset) ->
     asset.get('name')
 

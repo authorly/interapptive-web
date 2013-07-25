@@ -160,7 +160,7 @@
       font-family: 'Arial Black';
       font-size: 10px;
       width: 82px;
-      display: inline-block;
+      display: none;
       position: relative;
 
       &:hover {
@@ -190,6 +190,10 @@
         display: none;
       }
 
+    }
+
+    &.images li.image, &.sounds li.sound, &.videos li.video {
+      display: inline-block;
     }
 
   }
@@ -226,7 +230,6 @@
   /*
     Hide elements which are not implemented yet.
    */
-  #asset-type-filter,
   #active-uploads,
   #asset-sorting,
   #asset-sidebar-sticky-footer {
