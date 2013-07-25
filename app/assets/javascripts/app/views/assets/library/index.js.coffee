@@ -33,7 +33,12 @@ class App.Views.AssetsLibrary extends Backbone.View
 
 
   _add: (asset) =>
-    view = new App.Views.AssetLibraryElement(model: asset)
+    klass = if asset instanceof App.Models.Sound
+      App.Views.AssetLibrarySound
+    else
+      App.Views.AssetLibraryElement
+
+    view = new klass(model: asset)
     viewElement = view.render().el
     @views.push view
 

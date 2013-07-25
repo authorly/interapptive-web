@@ -9,9 +9,7 @@
   background-position: center center;
 
   &.sound {
-    background-image: url(/assets/toolbar.png);
-    background-size: auto;
-    background-position: -586px -5px;
+    background-image: url(/assets/audio-icon.png);
   }
 }
 
@@ -166,7 +164,13 @@
       position: relative;
 
       &:hover {
-        .grab()
+        cursor: pointer;
+        .player {
+          display: block;
+        }
+        .asset.sound {
+          opacity: 0.4;
+        }
       }
 
       .asset {
@@ -177,6 +181,13 @@
       .filename {
         position: absolute;
         bottom: 0;
+      }
+
+      .player {
+        position: absolute;
+        top: 20px;
+        left: 35px;
+        display: none;
       }
 
     }
