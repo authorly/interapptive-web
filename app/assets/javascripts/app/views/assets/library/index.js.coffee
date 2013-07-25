@@ -5,8 +5,6 @@ class App.Views.AssetsLibrary extends Backbone.View
   template: JST['app/templates/assets/library/index']
   tagName: 'ul'
   className: 'assets'
-  events:
-    'click li': '_highlightElement'
 
 
   initialize: ->
@@ -15,7 +13,6 @@ class App.Views.AssetsLibrary extends Backbone.View
 
   render: ->
     @$el.html(@template())
-    @_enableAddTooltip()
     @
 
 
@@ -55,20 +52,6 @@ class App.Views.AssetsLibrary extends Backbone.View
     @_noAssetsMessage().show() if @collection.length == 0
 
 
-  _openUploadModal: (e) ->
-    e.preventDefault()
-    App.vent.trigger('show:imageLibrary')
-
-
   _noAssetsMessage: ->
     @_message ||= @$el.find('.no-assets')
 
-
-  _highlightElement: (event) ->
-    @$(event.currentTarget).toggleClass('selected').siblings().removeClass('selected')
-
-
-  _enableAddTooltip: ->
-    @$('.icon-plus').tooltip
-      title: "Add Images..."
-      placement: 'right'

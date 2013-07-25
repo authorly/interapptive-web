@@ -166,7 +166,7 @@
       position: relative;
 
       &:hover {
-        cursor: pointer;
+        .grab()
       }
 
       .asset {
@@ -177,14 +177,6 @@
       .filename {
         position: absolute;
         bottom: 0;
-      }
-
-      &.selected {
-        background-color: rgba(33, 143, 255, 0.54);
-
-        &:hover {
-          .grab()
-        }
       }
 
     }
