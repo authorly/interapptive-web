@@ -19,6 +19,7 @@ describe Sound do
         'delete_type' => 'DELETE',
         'created_at'  => s.created_at,
         'duration'    => nil,
+        'type'        => 'Sound',
       }
 
       s.as_jquery_upload_response.should eql(response)
