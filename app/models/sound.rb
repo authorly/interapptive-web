@@ -11,7 +11,8 @@ class Sound < Asset
       'delete_url'  => "/sounds/#{self.id}",
       'delete_type' => 'DELETE',
       'created_at'  => created_at,
-      'duration'    => meta_info[:duration]
+      'duration'    => meta_info[:duration],
+      'type'        => type
     }
   end
 

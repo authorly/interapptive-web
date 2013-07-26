@@ -31,6 +31,10 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
 
     @uploader = new App.Views.AssetUploader(el: @$('.file-upload'))
+    @uploader.on 'done', (files, assets) =>
+      _.each assets, (asset) =>
+        type = asset.type; delete asset.type
+        @storybook.addAsset new App.Models[type](asset)
     @uploader.render()
 
     @
@@ -38,7 +42,8 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   setAssets: (assets) ->
     @assetsView.setCollection assets
-    @uploader.setStorybook assets.storybook
+    @storybook = assets.storybook
+    @uploader.setStorybook @storybook
 
 
   initResizable: ->

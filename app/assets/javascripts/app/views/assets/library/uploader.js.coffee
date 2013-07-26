@@ -12,11 +12,13 @@ class App.Views.AssetUploader extends Backbone.View
         dataType: 'json'
         acceptFileTypes: @fileTypePattern(ACCEPTED_FILE_TYPES)
         singleFileUploads: false
-      ).bind('fileuploadadd', (e, data) ->
-        data.submit()
-      ).bind('fileuploaddone', (e, data) ->
-        console.log 'done', data
-      ).bind('fileuploadfail', (e, data) ->
+        autoUpload: true
+      ).bind('fileuploadadd',  (e, data) =>
+        @trigger 'add', data.files
+      ).bind('fileuploaddone', (e, data) =>
+        @trigger 'done', data.files, data.result
+      ).bind('fileuploadfail', (e, data) =>
+        @trigger 'fail', data.files
         failed = _.filter data.files, (file) -> file.error?
         alert "Cannot add media because these files can not be uploaded: #{_.pluck(failed, 'name').join(', ')}."
       )

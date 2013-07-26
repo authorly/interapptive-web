@@ -4,19 +4,20 @@ class Video < Asset
 
   def as_jquery_upload_response
     {
-        'id'                  =>  id,
-        'name'                =>  read_attribute(:video),
-        'size'                =>  video.size,
-        'duration'            =>  duration,
-        'url'                 =>  video.url,
-        'thumbnail_url'       =>  video.thumbnail_url,
-        'mp4url'              =>  video.mp4_url,
-        'webmurl'             =>  video.webm_url,
-        'ogvurl'              =>  video.ogv_url,
-        'delete_url'          =>  "/videos/#{self.id}",
-        'delete_type'         =>  'DELETE',
-        'created_at'          =>  created_at,
-        'transcode_complete'  =>  transcode_complete?
+        'id'                 => id,
+        'name'               => read_attribute(:video),
+        'size'               => video.size,
+        'duration'           => duration,
+        'url'                => video.url,
+        'thumbnail_url'      => video.thumbnail_url,
+        'mp4url'             => video.mp4_url,
+        'webmurl'            => video.webm_url,
+        'ogvurl'             => video.ogv_url,
+        'delete_url'         => "/videos/#{self.id}",
+        'delete_type'        => 'DELETE',
+        'created_at'         => created_at,
+        'transcode_complete' => transcode_complete?,
+        'type'               => type
     }
   end
 
