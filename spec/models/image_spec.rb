@@ -15,7 +15,7 @@ describe Image do
         'id'            => im.id,
         'name'          => im.read_attribute(:image),
         'size'          => im.image.size,
-        'url'           => im.image.url,
+        'url'           => im.image.cocos2d.url,
         'thumbnail_url' => im.image.thumb.url,
         'delete_url'    => "/images/#{im.id}",
         'delete_type'   => 'DELETE',
