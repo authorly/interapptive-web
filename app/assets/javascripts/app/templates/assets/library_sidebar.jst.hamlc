@@ -31,7 +31,7 @@
     %option{:value=> "name-ascending", :selected => 'selected'} Name: ascending
     %option{:value=> "name-descending"} Name: descending
 
-%ul.#asset-list.images.sounds.videos
+%ul#asset-list.images.sounds.videos
 
 #asset-sidebar-sticky-footer
   %button.select-file.btn.btn-success{:type => "button"}

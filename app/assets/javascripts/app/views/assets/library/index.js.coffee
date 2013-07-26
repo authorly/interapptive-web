@@ -3,8 +3,8 @@
 #
 class App.Views.AssetsLibrary extends Backbone.View
   template: JST['app/templates/assets/library/index']
-  tagName: 'ul'
-  className: 'assets'
+  events:
+    'click .no-assets a': 'uploadRequested'
 
 
   initialize: ->
