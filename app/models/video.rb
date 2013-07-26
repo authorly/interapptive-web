@@ -20,6 +20,11 @@ class Video < Asset
     }
   end
 
+  def self.valid_extension?(ext)
+    VideoUploader.new.extension_white_list.include? ext
+  end
+
+
   # To locally test the videos, aftetr zencoder has done
   # transcoding it, do following in rails console
   #

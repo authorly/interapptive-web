@@ -23,6 +23,10 @@ class Image < Asset
     }
   end
 
+  def self.valid_extension?(ext)
+    ImageUploader.new.extension_white_list.include? ext
+  end
+
   private
 
   def self.data_encoded_to_binary(encoded)

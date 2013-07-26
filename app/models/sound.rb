@@ -14,4 +14,9 @@ class Sound < Asset
       'duration'    => meta_info[:duration]
     }
   end
+
+  def self.valid_extension?(ext)
+    SoundUploader.new.extension_white_list.include? ext
+  end
+
 end

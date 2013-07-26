@@ -29,11 +29,16 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
     @sortingChanged()
 
+
+    @uploader = new App.Views.AssetUploader(el: @$('.file-upload'))
+    @uploader.render()
+
     @
 
 
   setAssets: (assets) ->
     @assetsView.setCollection assets
+    @uploader.setStorybook assets.storybook
 
 
   initResizable: ->
