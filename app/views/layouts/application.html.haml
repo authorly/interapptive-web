@@ -28,12 +28,12 @@
               #scene-list
             .span2.navbar.sidebar.right
               #asset-library-sidebar
-            .canvas-column
+            .canvas-wrapper
               - flash.each do |name, msg|
                 %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
                   %a.close{"data-dismiss" => "alert"}
                   = msg
-              %canvas{id: 'builder-canvas', width: 1524, height: 1568}
+              %canvas{id: 'builder', width: 3500, height: 2500}
                 %p Your browser doesn't support the technology required to run this application.
               #context-menu
                 .sprite

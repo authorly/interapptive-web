@@ -20,11 +20,10 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   doubleClick: ->
     @setIsVisible(false)
 
-    @editView = new App.Views.TextWidget
-      widget: @,
-      workspaceOrigin: @getParent().workspaceOriginAbsolutePosition()
+    @editView = new App.Views.TextWidget(widget: @)
 
-    $(@editView.el).appendTo(cc.canvas.parentNode)
+    canvas = $(cc.canvas)
+    $(@editView.el).appendTo(canvas.parent())
     @editView.initializeEditing()
 
 

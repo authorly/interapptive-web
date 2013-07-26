@@ -15,22 +15,16 @@
 
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
-  CANVAS_ID = 'builder-canvas'
-
-  OVERFLOW_SIDE_PANEL_WIDTH = 300
-
-  OVERFLOW_TOP_PANEL_HEIGHT = 400
-
-  SCALE = 0.494
-
-  WORKSPACE_HEIGHT = 768
+  CANVAS_ID = 'builder'
 
 
   constructor: (widgetsCollection) ->
     super
 
-    # For image overflow layer, reposition widget layer
-    @setPosition new cc.Point(250, 400)
+    # For overflow layer, reposition widget layer
+    horizontalPanelHeight = ($(cc.canvas).attr('height') - App.Config.dimensions.height) / 2
+    verticalPanelWidth = ($(cc.canvas).attr('width') - App.Config.dimensions.width) / 2
+    @setPosition new cc.Point(verticalPanelWidth, horizontalPanelHeight)
 
     # Collection (array) of Backbone models
     @widgets = widgetsCollection
@@ -126,7 +120,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   @updateKeyframePreview: (keyframe) ->
     canvas = document.getElementById CANVAS_ID
-    image = Canvas2Image.saveAsPNG canvas, true, 235, 230
+    image = Canvas2Image.saveAsPNG canvas, true, 525, 375
 
     keyframe.setPreviewDataUrl image.src
 
@@ -272,7 +266,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       widget.doubleClick(touch: touch, point: point) if widget?
 
 
-
   addContextMenuEventListener: ->
     cc.canvas.addEventListener 'contextmenu', (event) =>
       touch = @_calculateTouchFrom(event)
@@ -292,11 +285,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       else
         return
 
-
       $el = $('#context-menu ' + selector)
       $el.contextMenu x: event.clientX, y: event.clientY
 
       $('header').on 'click.contextMenuHandler', -> $el.contextMenu('hide')
+
 
   hideContextMenuEventListener: =>
     $('header').off 'click.contextMenuHandler'
@@ -430,14 +423,4 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     view = @_getView(textWidgetModel)
     return if view is undefined
     view.resetCocos2dLabel()
-
-
-  workspaceOriginAbsolutePosition: =>
-    canvas = $(cc.canvas)
-
-    origin =
-      left: canvas.position().left + OVERFLOW_SIDE_PANEL_WIDTH * SCALE
-      top: canvas.position().top + OVERFLOW_TOP_PANEL_HEIGHT * SCALE + WORKSPACE_HEIGHT * SCALE
-
-    origin
 
