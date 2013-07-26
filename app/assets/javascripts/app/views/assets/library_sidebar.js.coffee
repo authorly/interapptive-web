@@ -20,6 +20,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @$el.html(@template())
 
     @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list'))
+    @assetsView.on 'upload', (-> @uploader.showUploadUI()), @
     @assetsView.render()
 
     @filter = new App.Views.AssetFilter

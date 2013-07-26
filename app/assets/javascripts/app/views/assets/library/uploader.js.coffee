@@ -24,5 +24,9 @@ class App.Views.AssetUploader extends Backbone.View
       )
 
 
+  showUploadUI: ->
+    @$el.click()
+
+
   fileTypePattern: (types) ->
     new RegExp("\.(#{types.join('|')})$", 'i')
