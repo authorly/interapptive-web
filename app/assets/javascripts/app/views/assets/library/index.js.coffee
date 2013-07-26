@@ -25,7 +25,10 @@ class App.Views.AssetsLibrary extends Backbone.View
     @collection.on 'remove', @_remove, @
     @collection.on 'sort',   @_sort,   @
 
-    @collection.each @_add
+    if @collection.length > 0
+      @collection.each @_add
+    else
+      @_noAssetsMessage().show()
 
 
   setComparator: (name) ->
