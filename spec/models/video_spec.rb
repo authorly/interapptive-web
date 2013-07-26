@@ -25,7 +25,8 @@ describe Video do
         "thumbnail_url"      => @video.video.thumbnail_url,
         'duration'           => 0,
         'created_at'         => @video.created_at,
-        'transcode_complete' => @video.transcode_complete?
+        'transcode_complete' => @video.transcode_complete?,
+        'type'               => 'Video',
       }
 
       @video.as_jquery_upload_response.should eql(response)

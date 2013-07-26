@@ -91,3 +91,6 @@ class App.Views.AssetsLibrary extends Backbone.View
   _noAssetsMessage: ->
     @_message ||= @$el.find('.no-assets')
 
+
+  uploadRequested: ->
+    @trigger 'upload'

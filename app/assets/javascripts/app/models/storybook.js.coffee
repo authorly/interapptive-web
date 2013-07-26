@@ -120,6 +120,15 @@ class App.Models.Storybook extends Backbone.Model
     @scenes.fetch(reset: true)
 
 
+  addAsset: (asset) ->
+    if asset instanceof App.Models.Image
+      @images.add(asset)
+    else if asset instanceof App.Models.Sound
+      @sounds.add(asset)
+    if asset instanceof App.Models.Video
+      @videos.add(asset)
+
+
   addNewScene: ->
     @scenes.addNewScene()
 

@@ -138,6 +138,7 @@ window.App =
     @textEditorPalette.view.openStorybook(storybook)
 
     assets = new App.Lib.AggregateCollection([], collections: [storybook.images, storybook.videos, storybook.sounds])
+    assets.storybook = storybook
     @assetLibrarySidebar.setAssets assets
 
 

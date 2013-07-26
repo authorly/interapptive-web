@@ -11,6 +11,9 @@
   &.sound {
     background-image: url(/assets/audio-icon.png);
   }
+  &.video {
+    background-image: url(/assets/video-icon.png);
+  }
 }
 
 // drag a sprite to the canvas
@@ -72,53 +75,48 @@
       margin: auto 0;
 
       li {
-        .round-corners();
-
-        height: 60px;
         list-style: none;
-        margin: 0 10px 8px 10px;
-        background-color: #BCF4B5;
+        font-family: 'Arial Black';
+        font-size: 10px;
+        width: 82px;
+        position: relative;
+        display: inline-block;
 
-        table {
-          width: 100%;
-          height: 100%;
+        .asset {
+          .asset-library-image;
+          margin-left: 16px;
+          &.image {
+            background-image: url(/assets/toolbar.png);
+            background-position: -518px -9px;
+            background-size: auto;
+          }
+        }
+        .filename {
+          position: absolute;
+          bottom: 0;
+        }
+        .delete {
+         display: none;
+         position: absolute;
+         right: 4px;
+         top: 4px;
+         width: 17px;
+         height: 17px;
+         margin: 4px 3px 0;
+         opacity: 0.7;
+         background-size: 100%;
+         background-repeat: no-repeat;
+         background-image: asset-url('red-minus.png');
+         cursor: pointer;
 
-          tr {
-            td.thumb {
-              width: 75px;
-            }
+         &:hover {
+           opacity: 1;
+         }
+        }
 
-            td.cancel-upload-col {
-              width: 30px;
-            }
-
-            td {
-              height: 40px;
-              vertical-align: middle;
-              text-align: center;
-
-              a {
-                margin-top: -2px;
-              }
-
-              a.cancel-upload {
-                position: relative;
-                top: -3px;
-              }
-
-              a.cancel-upload:hover {
-                opacity: 1;
-              }
-
-              .progress {
-                margin-top: 19px;
-              }
-
-              img.asset-thumb {
-                max-height:100%;
-                max-width:100%;
-              }
-            }
+        &:hover {
+          .delete {
+            display: block;
           }
         }
       }
@@ -158,8 +156,6 @@
     margin: auto;
 
     li {
-      .round-corners();
-
       list-style: none;
       font-family: 'Arial Black';
       font-size: 10px;
@@ -245,19 +241,34 @@
       }
     }
 
-    button.select-file.btn.btn-success {
+    .select-file {
       float: left;
-      position: absolute;
-      left: 0;
+      position: relative;
       margin: 0 0 0 3px;
+
+      .btn {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+      }
+
+      input {
+        position: relative;
+        width: 75px;
+        text-align: right;
+        -moz-opacity: 0;
+        filter: 'alpha(opacity: 0)';
+        opacity: 0;
+        z-index: 2;
+      }
     }
   }
 
   /*
     Hide elements which are not implemented yet.
    */
-  #active-uploads,
-  #asset-sidebar-sticky-footer {
+  #asset-text-search {
     display: none;
   }
 }
