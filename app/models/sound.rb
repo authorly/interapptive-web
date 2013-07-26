@@ -11,7 +11,13 @@ class Sound < Asset
       'delete_url'  => "/sounds/#{self.id}",
       'delete_type' => 'DELETE',
       'created_at'  => created_at,
-      'duration'    => meta_info[:duration]
+      'duration'    => meta_info[:duration],
+      'type'        => type
     }
   end
+
+  def self.valid_extension?(ext)
+    SoundUploader.new.extension_white_list.include? ext
+  end
+
 end

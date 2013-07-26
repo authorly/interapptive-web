@@ -20,6 +20,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @$el.html(@template())
 
     @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list'))
+    @assetsView.on 'upload', (-> @uploader.showUploadUI()), @
     @assetsView.render()
 
     @filter = new App.Views.AssetFilter
@@ -29,11 +30,38 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
     @sortingChanged()
 
+    @currentUploads = new App.Views.UploadingAssets
+      el: @$('#active-uploads')
+      collection: new Backbone.Collection
+    @currentUploads.render()
+
+    @uploader = new App.Views.AssetUploader(el: @$('.file-upload'))
+    @uploader.on 'add', (data) =>
+      file = data.files[0]
+      unless file.error?
+        @currentUploads.collection.add
+          name: file.name
+          size: file.size
+          xhr: data.context.data('data').xhr
+          id: data.context.data('data').id
+    @uploader.on 'done', (data) =>
+      _.each data.result, (asset) =>
+        type = asset.type; delete asset.type
+        @storybook.addAsset new App.Models[type](asset)
+
+      @currentUploads.collection.remove data.context.data('data').id
+    @uploader.on 'fail', (data) =>
+      @currentUploads.collection.remove data.context.data('data').id
+
+    @uploader.render()
+
     @
 
 
   setAssets: (assets) ->
     @assetsView.setCollection assets
+    @storybook = assets.storybook
+    @uploader.setStorybook @storybook
 
 
   initResizable: ->

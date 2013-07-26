@@ -11,18 +11,8 @@
 
 
 #active-uploads
+  %div Uploading
   %ul
-    %li{:title => 'Uploading SomeCoolFile.png...'}
-      %table
-        %tr
-          %td{:class => 'thumb', :title => '1.2 MB'}
-            %img.asset-thumb{:src => 'http://upload.wikimedia.org/wikipedia/en/b/b2/The_Humane_Interface_book_cover.jpg'}
-          %td{:title => 'SomeCoolFile.png'}
-            .progress.progress-striped.active{:title => 'Uploading...'}
-              .bar{:style => 'width: 100%;'}
-          %td{:class => 'cancel-upload-col'}
-            %a.cancel-upload{:href => '#', :title => 'Cancel upload'}
-              %i{:class => 'icon-remove icon-black'}
 
 
 #asset-sorting.form-inline
@@ -34,9 +24,12 @@
 %ul.#asset-list.images.sounds.videos
 
 #asset-sidebar-sticky-footer
-  %button.select-file.btn.btn-success{:type => "button"}
-    %i{:class => 'icon-plus icon-white'}
-    Add File
+  %span.select-file
+    %span.btn.btn-success
+      %i.icon-plus.icon-white
+      Add
+    %input.file-upload{:type => 'file', :name => 'files[]', :multiple => 'multiple'}
+
   #asset-text-search
     .input-append
       %input#asset-search-field.input-small.span2{:type => 'text', :placeholder => 'Search media...'}
