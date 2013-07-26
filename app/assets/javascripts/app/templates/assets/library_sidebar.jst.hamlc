@@ -34,9 +34,12 @@
 %ul.#asset-list.images.sounds.videos
 
 #asset-sidebar-sticky-footer
-  %button.select-file.btn.btn-success{:type => "button"}
-    %i{:class => 'icon-plus icon-white'}
-    Add File
+  %span.select-file
+    %span.btn.btn-success
+      %i.icon-plus.icon-white
+      Add
+    %input.file-upload{:type => 'file', :name => 'files[]', :multiple => 'multiple'}
+
   #asset-text-search
     .input-append
       %input#asset-search-field.input-small.span2{:type => 'text', :placeholder => 'Search media...'}

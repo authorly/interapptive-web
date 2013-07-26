@@ -5,6 +5,8 @@ class App.Views.AssetsLibrary extends Backbone.View
   template: JST['app/templates/assets/library/index']
   tagName: 'ul'
   className: 'assets'
+  events:
+    'click .no-assets a': 'uploadRequested'
 
 
   initialize: ->
@@ -91,3 +93,6 @@ class App.Views.AssetsLibrary extends Backbone.View
   _noAssetsMessage: ->
     @_message ||= @$el.find('.no-assets')
 
+
+  uploadRequested: ->
+    @trigger 'upload'

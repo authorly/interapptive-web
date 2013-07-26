@@ -245,11 +245,27 @@
       }
     }
 
-    button.select-file.btn.btn-success {
+    .select-file {
       float: left;
-      position: absolute;
-      left: 0;
+      position: relative;
       margin: 0 0 0 3px;
+
+      .btn {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+      }
+
+      input {
+        position: relative;
+        width: 75px;
+        text-align: right;
+        -moz-opacity: 0;
+        filter: 'alpha(opacity: 0)';
+        opacity: 0;
+        z-index: 2;
+      }
     }
   }
 
@@ -257,7 +273,7 @@
     Hide elements which are not implemented yet.
    */
   #active-uploads,
-  #asset-sidebar-sticky-footer {
+  #asset-text-search {
     display: none;
   }
 }
