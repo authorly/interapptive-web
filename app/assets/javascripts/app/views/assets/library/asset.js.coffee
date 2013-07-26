@@ -2,6 +2,8 @@ class App.Views.AssetLibraryElement extends Backbone.View
   tagName:  'li'
   template: JST['app/templates/assets/library/asset']
   className: -> @type()
+  events:
+    'click .delete': 'deleteClicked'
 
   render: ->
     @$el.html @template(
@@ -19,9 +21,25 @@ class App.Views.AssetLibraryElement extends Backbone.View
   type: ->
     @model.constructor.name.toLowerCase()
 
+
   remove: ->
     super
     @_removeDraggable()
+
+
+  deleteClicked: ->
+    event.stopPropagation()
+    return unless confirm("Are you sure you want to delete this #{@type()} and corresponding #{@_assetTypeToWidgetType(@type())} from the storybook?")
+
+    @model.destroy
+      url: @model.get('delete_url')
+
+
+  _assetTypeToWidgetType: (type) ->
+    switch type
+      when 'image' then 'scene images'
+      when 'sound' then 'hotspots'
+      when 'video' then 'hotspots'
 
 
   title: ->

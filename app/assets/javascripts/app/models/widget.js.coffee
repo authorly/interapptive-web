@@ -291,13 +291,13 @@ class App.Collections.Widgets extends Backbone.Collection
   soundRemoved: (sound) ->
     @each (widget) =>
       if widget instanceof App.Models.HotspotWidget
-        @remove widget if widget.get('sound_id').toString() is sound.get('id').toString()
+        @remove widget if widget.get('sound_id')?.toString() is sound.get('id').toString()
 
 
   videoRemoved: (video) ->
     @each (widget) =>
       if widget instanceof App.Models.HotspotWidget
-        @remove widget if widget.get('video_id').toString() is video.get('id').toString()
+        @remove widget if widget.get('video_id')?.toString() is video.get('id').toString()
 
 
   fontRemoved: (font) ->
