@@ -1,6 +1,7 @@
 class App.Views.FileMenuView extends Backbone.View
   events:
-    'click .toggle-image-editor':     'toggleImageEditorPalette'
+    'click .show-storybook-settings': 'showSettings'
+    'click .show-storybook-icons':    'showAppIcons'
     'click .toggle-scene-images':     'toggleSceneImagesPalette'
     'click .compile-storybook':       'compileStorybook'
     'click .toggle-font-editor':      'toggleFontEditorPalette'
@@ -28,10 +29,6 @@ class App.Views.FileMenuView extends Backbone.View
 
   compileStorybook: (event) ->
     App.currentSelection.get('storybook').compile($(event.currentTarget).data('platform'))
-
-
-  toggleImageEditorPalette: ->
-    App.vent.trigger('toggle:palette', 'imageEditor')
 
 
   toggleSceneImagesPalette: ->

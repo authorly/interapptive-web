@@ -10,7 +10,7 @@
           %li.keyframe.disabled
             %a.add-keyframe{:href => '#'} Keyframe
 
-      %li.toolbar-group.centered
+      %li.toolbar-group
         %ul
           %li.edit-text.disabled
             = link_to "Add Text", "#"
@@ -20,6 +20,8 @@
             = link_to "Add Hotspot", "#"
           %li.background-sound.disabled
             = link_to "Background Sound", "#"
+
+      %li#context-menu-container.toolbar-group.centered
 
       %li.toolbar-group.last.right
         %ul
