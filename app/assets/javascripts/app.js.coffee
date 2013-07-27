@@ -16,7 +16,6 @@ window.App =
 
     @vent.on 'reset:palettes',           @_resetPalettes,    @
     @vent.on 'toggle:palette',           @_togglePalette,    @
-    @vent.on 'initialize:hotspotWidget', @_openHotspotModal, @
     @vent.on 'hide:modal',               @_hideModal,        @
     @vent.on 'show:imageLibrary',        @_showImageLibrary, @
     @vent.on 'show:message',             @_showToast,        @
@@ -275,11 +274,6 @@ window.App =
         break
 
     @_addNewWidget(widgetAttributes)
-
-
-  _openHotspotModal: (widget) ->
-    view = new App.Views.Hotspot(widget: widget, storybook: @currentSelection.get('storybook'))
-    @modalWithView(view: view).show()
 
 
   _resetPalettes: ->

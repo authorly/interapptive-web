@@ -114,10 +114,6 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
       super
 
 
-  doubleClick: ->
-    App.vent.trigger('initialize:hotspotWidget', @model)
-
-
   select: ->
     @selected = true
 
