@@ -50,11 +50,11 @@ class App.Views.AssetsLibrary extends Backbone.View
 
 
   nameAscendingComparator: (a1, a2) ->
-    if a1.get('name') > a2.get('name') then 1 else -1
+    if a1.get('name').toLowerCase() > a2.get('name').toLowerCase() then 1 else -1
 
 
   nameDescendingComparator: (a1, a2) ->
-    if a1.get('name') < a2.get('name') then 1 else -1
+    if a1.get('name').toLowerCase() < a2.get('name').toLowerCase() then 1 else -1
 
 
   _add: (asset) =>
