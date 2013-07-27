@@ -165,10 +165,7 @@
 
       &:hover {
         cursor: pointer;
-        .player {
-          display: block;
-        }
-        .delete {
+        .player, &.video .control {
           display: block;
         }
         .asset.sound {
@@ -186,26 +183,7 @@
         bottom: 0;
       }
 
-      .delete {
-        display: none;
-        position: absolute;
-        right: 4px;
-        top: 4px;
-        width: 17px;
-        height: 17px;
-        margin: 4px 3px 0;
-        opacity: 0.7;
-        background-size: 100%;
-        background-repeat: no-repeat;
-        background-image: asset-url('red-minus.png');
-        cursor: pointer;
-
-        &:hover {
-          opacity: 1;
-        }
-      }
-
-      .player {
+      .player, &.video .control {
         position: absolute;
         top: 20px;
         left: 35px;
