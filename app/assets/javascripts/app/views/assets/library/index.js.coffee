@@ -60,6 +60,8 @@ class App.Views.AssetsLibrary extends Backbone.View
   _add: (asset) =>
     klass = if asset instanceof App.Models.Sound
       App.Views.AssetLibrarySound
+    else if asset instanceof App.Models.Video
+      App.Views.AssetLibraryVideo
     else
       App.Views.AssetLibraryElement
 

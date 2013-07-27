@@ -312,11 +312,12 @@ window.App =
 
 
   _hideModal: ->
-    @modalWithView().hide()
+    @modalWithView()?.hide()
 
 
-  _playVideo: (video_view) ->
-    @lightboxWithView(view: video_view).show()
+  _playVideo: (videoView) ->
+    App.vent.trigger('hide:modal')
+    @lightboxWithView(view: videoView).show()
 
 
   _showImageLibrary: ->
