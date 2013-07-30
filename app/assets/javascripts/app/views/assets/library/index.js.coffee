@@ -21,9 +21,10 @@ class App.Views.AssetsLibrary extends Backbone.View
 
     @_setComparator(@comparator)
 
-    @collection.on 'add',    @_add,    @
-    @collection.on 'remove', @_remove, @
-    @collection.on 'sort',   @_sort,   @
+    @collection.on 'add',    @_add,           @
+    @collection.on 'remove', @_remove,        @
+    @collection.on 'sort',   @_sort,          @
+    @collection.on 'filter', @_assetFiltered, @
 
     if @collection.length > 0
       @collection.each @_add
@@ -47,6 +48,12 @@ class App.Views.AssetsLibrary extends Backbone.View
 
   filterBy: (filter) ->
     @$el.removeClass('images videos sounds').addClass(filter)
+
+
+  _assetFiltered: (asset, __, accepted) ->
+    @_getView(asset).$el
+      .removeClass('filter-on filter-off')
+      .addClass("filter-#{if accepted then 'on' else 'off'}")
 
 
   nameAscendingComparator: (a1, a2) ->
@@ -78,7 +85,7 @@ class App.Views.AssetsLibrary extends Backbone.View
 
 
   _remove: (asset) ->
-    view = _.find @views, (view) -> view.model == asset
+    view = @_getView(asset)
     view.remove()
     @views.splice(@views.indexOf(view), 1)
     @_noAssetsMessage().show() if @collection.length == 0
@@ -86,7 +93,7 @@ class App.Views.AssetsLibrary extends Backbone.View
 
   _sort: ->
     @collection.each (asset) =>
-      view = _.find @views, (view) -> view.model == asset
+      view = @_getView(asset)
       @$el.append view.el
 
 
@@ -96,3 +103,7 @@ class App.Views.AssetsLibrary extends Backbone.View
 
   uploadRequested: ->
     @trigger 'upload'
+
+
+  _getView: (asset) ->
+    _.find @views, (view) -> view.model == asset

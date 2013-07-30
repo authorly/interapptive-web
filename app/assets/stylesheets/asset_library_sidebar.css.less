@@ -198,9 +198,13 @@
     }
 
     &.images li.image, &.sounds li.sound, &.videos li.video {
-      display: inline-block;
+      &.filter-on {
+        display: inline-block;
+      }
+      &.filter-off {
+        display: none;
+      }
     }
-
   }
 
   /*
@@ -248,10 +252,4 @@
     }
   }
 
-  /*
-    Hide elements which are not implemented yet.
-   */
-  #asset-text-search {
-    display: none;
-  }
 }

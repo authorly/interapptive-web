@@ -14,23 +14,37 @@ class App.Views.AssetUploader extends Backbone.View
       .fileupload(
         dataType: 'json'
         acceptFileTypes: @fileTypePattern(ACCEPTED_FILE_TYPES)
-        add: (e, data) =>
-          data.context = $('<span/>')
-          @$el.append data.context
-          xhr = data.submit()
-          data.context.data 'data', xhr: xhr, id: @assetIdCounter.next()
-          @trigger 'add', data
-      ).bind('fileuploaddone', (e, data) =>
-        @trigger 'done', data
-      ).bind('fileuploadfail', (e, data) =>
-        if data.files[0].error?
-          alert "Cannot add #{data.files[0].name}"
-        @trigger 'fail', data
+        add: @_fileAdded
+      ).bind('fileuploaddone', @_uploadCompleted
+      ).bind('fileuploadfail', @_uploadFailed
       )
 
 
   showUploadUI: ->
     @$el.click()
+
+
+  _fileAdded: (e, data) =>
+    data.context = $('<span/>')
+    @$el.append data.context
+    xhr = data.submit()
+
+    data.context.data 'data', xhr: xhr, id: @assetIdCounter.next()
+    @trigger 'add', data
+
+
+  _uploadCompleted: (e, data) =>
+    @trigger 'done', data
+
+
+  _uploadFailed: (e, data) =>
+    if data.files[0].error?
+      alert "Cannot add #{data.files[0].name}"
+    @trigger 'fail', data
+
+
+  getData: (response) ->
+    response.context.data('data')
 
 
   fileTypePattern: (types) ->
