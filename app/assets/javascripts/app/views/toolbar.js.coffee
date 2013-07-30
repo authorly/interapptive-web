@@ -4,7 +4,6 @@ class App.Views.ToolbarView extends Backbone.View
     'click .keyframe'           : 'addKeyframe'
     'click .animation-keyframe' : 'addAnimationKeyframe'
     'click .edit-text'          : 'addText'
-    'click .add-hotspot'        : 'addHotspot'
     'click .sync-audio'         : 'alignAudio'
     'click .scene-options'      : 'showSettings'
     'click .background-sound'   : 'showSceneBackgroundMusic'
@@ -23,7 +22,7 @@ class App.Views.ToolbarView extends Backbone.View
     App.vent.on 'activate:scene', (scene) =>
       @$('li').removeClass 'disabled'
       if scene.isMainMenu()
-        @$('.edit-text,.touch-zones,.sync-audio,.add-hotspot').addClass 'disabled'
+        @$('.edit-text,.touch-zones,.sync-audio').addClass 'disabled'
 
 
   addScene: ->
@@ -52,13 +51,6 @@ class App.Views.ToolbarView extends Backbone.View
     return if $(event.target).hasClass('disabled')
 
     App.vent.trigger 'create:widget', type: 'TextWidget'
-
-
-  addHotspot: (event) ->
-    event.preventDefault()
-    return if $(event.target).hasClass('disabled')
-
-    App.vent.trigger('initialize:hotspotWidget')
 
 
   alignAudio: (event) ->

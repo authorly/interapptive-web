@@ -1,0 +1,4 @@
+#asset-selector
+
+#asset-options
+  %a.remove{:href => '#'} Remove
