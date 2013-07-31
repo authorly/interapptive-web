@@ -23,6 +23,10 @@
 
       %li.toolbar-group.last.right
         %ul
+          %li.compile.compile-android.disabled
+            = link_to "Compile Android", "#", "data-platform" => "android"
+          %li.compile.compile-ios.disabled
+            = link_to "Compile iOS", "#", "data-platform" => "ios"
           %li.scene-options.disabled
             = link_to "App Settings", "#"
 %nav.bottom-bar

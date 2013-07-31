@@ -8,7 +8,15 @@ class App.Views.ToolbarView extends Backbone.View
     'click .scene-options'      : 'showSettings'
     'click .background-sound'   : 'showSceneBackgroundMusic'
     'click .preview'            : 'showPreview'
+    'click .compile'            : 'compileStorybook'
 
+
+  compileStorybook: (event) ->
+    platform = $(event.currentTarget).find('a').data('platform')
+
+    if platform is 'android' then alert 'Coming soon!'; return
+
+    App.currentSelection.get('storybook').compile(platform)
 
   initialize: ->
     @_enableOnEvent 'can_add:keyframe', '.keyframe'
