@@ -306,11 +306,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         hide: @hideContextMenuEventListener
 
       items:
-        edit_image:
-          name:     'Edit Image...'
-          icon:     'edit'
-          callback: @editSpriteWithContextMenu
-
         remove_image:
           name:     'Remove Image'
           icon:     'delete'
