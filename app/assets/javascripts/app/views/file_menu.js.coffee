@@ -4,12 +4,6 @@ class App.Views.FileMenuView extends Backbone.View
     'click .compile-storybook':       'compileStorybook'
     'click .toggle-font-editor':      'toggleFontEditorPalette'
     'click .switch-storybook':        'switchStorybook'
-    'click .about-authorly':          'showAbout'
-    'click .reset-palettes':          'resetPalettes'
-    'click .images':                  'showImageLibrary'
-    'click .videos':                  'showVideoLibrary'
-    'click .fonts':                   'showFontLibrary'
-    'click .sounds':                  'showSoundLibrary'
 
 
   initialize: ->
