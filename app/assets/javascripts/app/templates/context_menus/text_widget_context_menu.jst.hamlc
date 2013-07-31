@@ -1,0 +1,26 @@
+#font-face-selector
+  %select#font-face{:readonly => ""}
+    %optgroup{:id => 'custom-fonts', :label => 'Uploaded Fonts'}
+      - if @storybook.hasCustomFonts()
+        - for font in @storybook.customFonts().models
+          %option{:value => font.get('id')}
+            = font.get('name')
+      - else
+        %option{:value => "upload-fonts"}
+          %a.upload-fonts
+            upload fonts
+    %optgroup{:id => 'system-fonts', :label => 'Standard Fonts'}
+      - for font in @storybook.fonts.system()
+        %option{:value => font.get('id')}
+          = font.get('name')
+
+#font-size-selector
+  %select#font-size{:readonly => ""}
+    - fontSizes = [24..60]
+    - for fontSize in fontSizes
+      %option{:value => "#{fontSize}"}
+        = fontSize
+
+#font-color-selector.input-append.color{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "rgb"}
+  %span.add-on
+    %i{:style => "background-color: rgb(255, 146, 180);"}
