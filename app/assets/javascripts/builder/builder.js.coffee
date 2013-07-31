@@ -7,10 +7,12 @@ class Builder extends cc.Layer
 
     @widgetLayer = new App.Builder.Widgets.WidgetLayer(App.currentWidgets)
     @canvasOverflowLayer = new App.Builder.Widgets.CanvasOverflowLayer()
-    # @widgetStore = new App.Builder.Widgets.WidgetStore
+    @workspaceBorderLayer = new App.Builder.Widgets.WorkspaceBorderLayer()
+
     #HACK should fix hardcoded CCNode tag (10)
     @addChild(@widgetLayer, 100, 10)
     @addChild(@canvasOverflowLayer, 100, 10)
+    @addChild(@workspaceBorderLayer, 100, 15)
 
 
 Builder.scene = ->

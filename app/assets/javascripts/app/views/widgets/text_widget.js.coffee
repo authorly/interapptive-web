@@ -13,10 +13,20 @@ class App.Views.TextWidget extends Backbone.View
 
   ENTER_KEYCODE = 13
 
-  SCALE = 0.494
+  CANVAS_ID = 'builder'
 
 
   initialize: ->
+    #
+    # canvas.attr('height') is scale of HTML canvas
+    #  element as set by the attribute on the element
+    #
+    # canvas.height() is the actual size of the canvas
+    #  after being scaled with CSS.
+    #
+    canvas = $('#' + CANVAS_ID)
+    @canvasScale = canvas.height() / canvas.attr('height')
+
     @model = @options.widget.model
     @model.on 'change:font_color', @setFontColor
     @model.on 'change:font_size', @setFontSize
@@ -81,9 +91,12 @@ class App.Views.TextWidget extends Backbone.View
 
 
   setPosition: ->
+    margin =
+      left: parseFloat(@$el.css('margin-left')) + @model.get('position').x * @canvasScale - parseFloat(@$el.css('padding'))
+      top:  parseFloat(@$el.css('margin-top')) - @model.get('position').y * @canvasScale
     @$el.css
-      'left': @_absolutePositionFromWidgetCoords().left
-      'top': @_absolutePositionFromWidgetCoords().top
+      'margin-left': "#{margin.left}px"
+      'margin-top': "#{margin.top}px"
 
 
   enableContentEditable: ->
@@ -93,19 +106,3 @@ class App.Views.TextWidget extends Backbone.View
   selectText: ->
     @$el.selectText()
     @$el.focus()
-
-
-  _absolutePositionFromWidgetCoords: =>
-    origin = @options.workspaceOrigin
-
-    padding =
-      left: @$el.outerWidth() - @$el.width() + 6
-      bottom: @$el.outerHeight() - @$el.innerHeight() + 1
-
-    position =
-      top:
-        origin.top - @model.get('position').y * SCALE + padding.bottom - @$el.height()
-      left:
-        origin.left + @model.get('position').x * SCALE - padding.left
-
-    position

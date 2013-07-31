@@ -29,10 +29,12 @@
 @import 'palettes.css.less';
 @import 'text_widgets.css.less';
 
-
 html, body{
   background-color: @grayDarker;
-  background: asset-url('grid.png') repeat;
+}
+
+body {
+  overflow: hidden;
 }
 
 #main {
@@ -67,49 +69,22 @@ html, body{
   cursor: url(https://mail.google.com/mail/images/2/closedhand.cur) 8 8, move;
 }
 
-
-//
-// TODO: Tem. style, remove me when JSON export button is replaced w/ simulator!
-//
-button#export {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-
-// Tablet & Builder
-.canvas-column {
-  background-repeat: no-repeat;
-  background-position: center;
-  height: @appHeight + 50px;
-  width: 100%;
-  text-align: center;
-  overflow: visible;
-}
-
-canvas#builder-canvas {
-  background: white;
-  width: 754px;
-  overflow: hidden;
+.canvas-wrapper {
   position: relative;
-  top: -20px;
 
-  &.highlight {
-    border: 1px solid blue;
+  canvas#builder {
+    position: absolute;
+    top: -350px;
+    left: 50%;
+    margin-left: -1000px; /* half of the width */
+    display: block;
+    background: white;
+    width: 2000px;
+
+    &.highlight {
+      border: 1px solid blue;
+    }
   }
-}
-
-.loading {
-  background-image: asset-url('loading-words.gif');
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.loading-book {
-  background-image: asset-url('loading-book.gif');
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 .icon-white {
@@ -183,18 +158,18 @@ header {
   z-index: 2;
   position: absolute;
   top: 0;
-}
 
-.sidebar.left {
-  width: 200px;
-  left: 0;
-}
+  &.left {
+    width: 200px;
+    left: 0;
+  }
 
-.sidebar.right {
-  min-width: 320px;
-  width: 320px;
-  background: @assetLibSidebarBgColor;
-  right: 0;
+  &.right {
+    min-width: 320px;
+    width: 320px;
+    background: @assetLibSidebarBgColor;
+    right: 0;
+  }
 }
 
 .large-modal {
@@ -240,8 +215,4 @@ header {
 
   height: 682px;
   margin-top: -341px;
-}
-
-.ui-resizable-w {
-  cursor: col-resize;
 }
