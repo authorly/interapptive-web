@@ -11,9 +11,8 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   constructor: (options) ->
     super
-
     @on 'double_click', @doubleClick
-
+    @model.on('change:font_color change:font_face change:font_size', @resetCocos2dLabel, @)
     @createLabel()
 
 
