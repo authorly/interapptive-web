@@ -73,27 +73,18 @@ window.App =
 
 
   _makeCanvasDroppable: ->
-    canvas = $('#builder-canvas')
-    canvasAttributes =
-      height: canvas.height()
-      offset: canvas.offset()
-      scale:  canvas.attr('height') / canvas.height()
-      margins:
-        top: 200
-        left: 125
+    canvas = $('#builder')
     canvas.droppable
       accept: '.asset'
       drop: (__, ui) =>
         offset = canvas.offset()
         position =
-          x: (ui.position.left - offset.left - canvasAttributes.margins.left + ui.helper.width() * 0.5) * canvasAttributes.scale
-          y: canvasAttributes.height - ((ui.position.top - offset.top - canvasAttributes.margins.top) + ui.helper.height() * 0.5) * canvasAttributes.scale
+          x: App.Config.dimensions.width / 2
+          y: App.Config.dimensions.height / 2
         @_assetDropped
           id:   ui.draggable.data('id')
           type: ui.draggable.data('type')
           position: position
-    @vent.on 'assetDrag-start', (-> canvas.addClass    'highlight')
-    @vent.on 'assetDrag-stop',  (-> canvas.removeClass 'highlight')
 
 
   saveCanvasAsPreview: ->
