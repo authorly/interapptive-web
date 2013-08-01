@@ -42,7 +42,6 @@ window.App =
     @currentWidgets = new App.Collections.CurrentWidgets()
 
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
-    @file_menu = new App.Views.FileMenuView el: $('#file-menu')
 
     @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
 
