@@ -18,6 +18,7 @@ window.App =
     @vent.on 'toggle:palette',           @_togglePalette,    @
     @vent.on 'hide:modal',               @_hideModal,        @
     @vent.on 'show:imageLibrary',        @_showImageLibrary, @
+    @vent.on 'show:fontLibrary',         @_showFontLibrary,  @
     @vent.on 'show:message',             @_showToast,        @
 
     @vent.on 'create:scene',    @_addNewScene,    @
@@ -41,9 +42,9 @@ window.App =
       text_widget: null
     @currentWidgets = new App.Collections.CurrentWidgets()
 
-    @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
-    @file_menu = new App.Views.FileMenuView el: $('#file-menu')
-
+    @toolbar      = new App.Views.ToolbarView          el: $('#toolbar')
+    @file_menu    = new App.Views.FileMenuView         el: $('#file-menu')
+    @fontCache    = new App.Views.FontCache            el: $('#storybook-font-cache')
     @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
 
     @spritesListPalette = new App.Views.PaletteContainer
@@ -52,17 +53,12 @@ window.App =
       title      : 'Active Scene Images'
       alsoResize : '#sprite-list-palette ul li span'
 
-    @textEditorPalette = new App.Views.PaletteContainer
-      title: 'Font Settings'
-      view : new App.Views.TextEditorPalette
-      el   : $('#text-editor-palette')
-
     @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
       el: $('#asset-library-sidebar')
 
     @_makeCanvasDroppable()
 
-    @palettes = [ @textEditorPalette, @spritesListPalette ]
+    @palettes = [ @spritesListPalette ]
 
     @currentSelection.on 'change:storybook', @_openStorybook,  @
     @currentSelection.on 'change:scene',     @_changeScene,    @
@@ -99,7 +95,6 @@ window.App =
     # (to avoid coupling the names)
     palette = switch palette
       when 'sceneImages' then @spritesListPalette
-      when 'fontEditor'  then @textEditorPalette
     palette.$el.toggle() if palette?
 
 
@@ -125,7 +120,7 @@ window.App =
 
     storybook.fetchCollections()
 
-    @textEditorPalette.view.openStorybook(storybook)
+    @fontCache.openStorybook(storybook)
 
     assets = new App.Lib.AggregateCollection([], collections: [storybook.images, storybook.videos, storybook.sounds])
     assets.storybook = storybook
@@ -307,6 +302,12 @@ window.App =
 
   _showImageLibrary: ->
     @file_menu.showImageLibrary()
+
+
+  _showFontLibrary: (source) ->
+    if source is 'contextMenu'
+      @currentSelection.set('widget', null)
+    @file_menu.showFontLibrary()
 
 
   _showToast: (type, message) ->

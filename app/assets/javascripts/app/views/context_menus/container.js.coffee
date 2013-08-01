@@ -2,11 +2,8 @@ class App.Views.ContextMenuContainer extends Backbone.View
 
   initialize: ->
     @widgetContextMenu = null
-    App.vent.on('activate:spriteWidget activate:hotspotWidget',  @render, @)
-    #App.vent.on('activate:textWidget',    @render, @)
-
-    App.vent.on('deactivate:spriteWidget deactivate:hotspotWidget',  @empty, @)
-    #App.vent.on('deactivate:textWidget',    @empty, @)
+    App.vent.on('activate:spriteWidget   activate:hotspotWidget   activate:textWidget',   @render, @)
+    App.vent.on('deactivate:spriteWidget deactivate:hotspotWidget deactivate:textWidget', @empty,  @)
 
 
   render: (widget) ->
