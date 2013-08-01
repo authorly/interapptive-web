@@ -1,11 +1,11 @@
 class App.Views.AssetLibraryVideo extends App.Views.AssetLibraryElement
-  events:
-    'click .control': 'play'
+  events: ->
+    _.extend {}, super, { 'click .control': 'play' }
 
 
   render: ->
     super
-    @$el.append $('<i class="control icon-play icon-black"/>')
+    @$('.asset').after $('<i class="control icon-play icon-black"/>')
     @
 
 
