@@ -1,20 +1,17 @@
 class StorybooksController < ApplicationController
+  respond_to :html, :json
+
   before_filter :find_storybook, :except => [:create, :index]
 
   # Backbone.js extraneous parameter hack
   param_protected [:action, :controller, :format, :storybook], :only => :update
 
   def index
-    @storybooks = current_user.storybooks.all
-    respond_to do |format|
-      format.json { render :json => @storybooks }
-    end
+    respond_with(@storybooks = current_user.storybooks.all)
   end
-  
+
   def show
-    respond_to do |format|
-      format.json { render :json => @storybook }
-    end
+    respond_with @storybook
   end
 
 

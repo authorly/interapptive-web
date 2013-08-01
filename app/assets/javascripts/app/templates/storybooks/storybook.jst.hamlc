@@ -1,3 +1,6 @@
-%a.storybook{"data-id" => "#{@storybook.get('id')}", :href => "#"}
+%a.storybook{"data-id" => "#{@storybook.get('id')}", :href => '#'}
+  %span.preview
+    - if @storybook.get('preview_image_url')?
+      %img{src: @storybook.get('preview_image_url')}
   = @storybook.get('title')
 %a.delete-storybook{"data-id" => "#{@storybook.get('id')}", :href => "#"}

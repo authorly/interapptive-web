@@ -1,6 +1,6 @@
 Interapptive::Application.routes.draw do
 
-  root :to => 'home#index', :constraints => lambda { |request| request.cookies['auth_token'] }
+  root :to => 'storybooks#index', :constraints => lambda { |request| request.cookies['auth_token'] }
   root :to => 'user_sessions#new'
 
   get  'users/sign_up'  => 'users#new',             :as => 'sign_up'
