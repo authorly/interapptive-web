@@ -68,6 +68,23 @@ nav.toolbar {
         white-space: nowrap;
       }
 
+      li.logo {
+        background: none !important;
+        margin: 4px 10px 0 12px;
+        top: 0;
+        opacity: 0.35;
+
+        transition:opacity .35s;
+
+        a {
+          margin-top: 0;
+        }
+      }
+
+      li.logo:hover {
+        opacity: 0.85;
+      }
+
       li.scene.active {
         background-position: 0 @toolbarHeight;
       }
