@@ -1,7 +1,10 @@
-#storybooks-index
-  %h3
-    %i.icon-book.icon-black.icon-large
-    Create or Open Existing Storybook
+%section#storybooks-index
+  %h1
+    %a{src: '/'}
+      %img{src: '/assets/authorly-icon-large.png'}
+    Authorly
+
+  %h2 Your storybooks:
   %ul#storybook-list
   #storybook-loading
     %img{src: '/assets/loading.gif'}
