@@ -28,14 +28,25 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   _initializeAssetList: ->
     # assets
-    @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list-thumb-view'))
-    @assetsView.on 'upload', (-> @uploader.showUploadUI()), @
-    @assetsView.render()
+    @thumbsView = new App.Views.AssetsLibrary(el: @$('#asset-list-thumb-view'))
+    @thumbsView.on 'upload', (-> @uploader.showUploadUI()), @
+    @thumbsView.render()
+
+    @detailsView = new App.Views.AssetsLibrary
+      el: @$('#asset-list-table tbody')
+      assetOptions:
+        tagName: 'tr'
+        template: JST['app/templates/assets/library/asset-details']
+
+    @detailsView.on 'upload', (-> @uploader.showUploadUI()), @
+    @detailsView.render()
 
     # filter by kind
     @filter = new App.Views.AssetFilter
       el: @$('#asset-type-filter')
-    @filter.on 'filter', (filter) => @assetsView.filterBy(filter)
+    @filter.on 'filter', (filter) =>
+      @thumbsView. filterBy(filter)
+      @detailsView.filterBy(filter)
     @filter.setup()
 
     # filter by name
@@ -68,8 +79,9 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @collection = assets
     @setComparator(@comparator)
 
-    @assetsView.setCollection assets
-    @nameFilter.setCollection assets
+    @thumbsView. setCollection assets
+    @detailsView.setCollection assets
+    @nameFilter. setCollection assets
 
     @storybook = assets.storybook
     @uploader.setStorybook @storybook
@@ -131,21 +143,18 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   toggleViewClicked: (event) ->
     el = $(event.currentTarget)
-    unless el.hasClass('disabled')
-      @toggleListView(el)
+    @toggleListView(el) unless el.hasClass('disabled')
 
 
   toggleListView: (toggleEl) ->
     toggleEl.addClass('disabled').siblings().removeClass('disabled')
 
-    listViewEl = @$('#asset-list-table')
-    thumbViewEl = @$('#asset-list-thumb-view')
     if toggleEl.hasClass 'thumbs'
-      thumbViewEl.hide()
-      listViewEl.show()
+      @thumbsView.$el.hide()
+      @detailsView.$el.show()
     else if toggleEl.hasClass 'list'
-      listViewEl.hide()
-      thumbViewEl.show()
+      @detailsView.$el.hide()
+      @thumbsView.$el.show()
 
 
   nameAscendingComparator: (a1, a2) ->

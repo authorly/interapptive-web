@@ -49,7 +49,7 @@ class App.Views.AssetsLibrary extends Backbone.View
     else
       App.Views.AssetLibraryElement
 
-    view = new klass(model: asset)
+    view = new klass _.extend({model: asset}, @options.assetOptions)
     viewElement = view.render().el
     @views.push view
 

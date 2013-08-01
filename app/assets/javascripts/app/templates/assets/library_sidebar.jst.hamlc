@@ -34,45 +34,6 @@
 %div#asset-list-table
   %table.table
     %tbody
-      /
-      / Image asset table row
-      /
-      %tr
-        %td.thumb
-          %a{:href => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAXmSZiiAgyhSdtRrFbD5CuvBgUqvAkkb6tWkDcjiW32LAg0NUlg',
-             :target => '_blank'}
-            %img{:src => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAXmSZiiAgyhSdtRrFbD5CuvBgUqvAkkb6tWkDcjiW32LAg0NUlg'}
-        %td ReallyCoolImage.png
-        %td.asset-size 396 KB
-        %td.delete-asset
-          %a{:href => '#',:title => 'Delete image'}
-            %i{:class => 'icon-remove icon-black'}
-
-      /
-      / Video asset table row
-      /
-      %tr
-        %td.preview-link
-          %a{:href => '#'}
-            %img{:src => '/assets/audio-icon.png'}
-        %td ExcitingMovie.mp4
-        %td.asset-size 1.4 MB
-        %td.delete-asset
-          %a{:href => '#',:title => 'Delete video'}
-            %i{:class => 'icon-remove icon-black'}
-
-      /
-      / Sound asset table row
-      /
-      %tr
-        %td.preview-link
-          %a{:href => '#'}
-            %img{:src => '/assets/video-icon.png'}
-        %td ExcitingMovie.mp3
-        %td.asset-size 1.4 MB
-        %td.delete-asset
-          %a{:href => '#',:title => 'Delete video'}
-            %i{:class => 'icon-remove icon-black'}
 
 
 #asset-sidebar-sticky-footer

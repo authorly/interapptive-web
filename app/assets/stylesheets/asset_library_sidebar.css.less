@@ -225,74 +225,69 @@
   }
 
   #asset-list-table {
-    display: none;
+    thead {
+      tr {
+        th {
+          padding-bottom: 1px;
+        }
 
-    table {
+        th.asset-thumb {
+          width: 35px;
+          height: 40px;
+        }
 
-      thead {
-        tr {
-          th {
-            padding-bottom: 1px;
+        th.asset-size {
+          width: 28px;
+        }
+      }
+    }
+
+    tbody {
+      tr:hover {
+        td.delete-asset {
+          a {
+            opacity: 0.6;
+            visibility: visible;
           }
 
-          th.asset-thumb {
-            width: 35px;
-            height: 40px;
-          }
-
-          th.asset-size {
-            width: 28px;
+          a:hover {
+            opacity: 1;
           }
         }
       }
 
-      tbody {
-        tr:hover {
-          td.delete-asset {
-            a {
-              opacity: 0.6;
-              visibility: visible;
-            }
+      tr {
+        td {
+          vertical-align: middle;
+          height: 40px;
+          max-width: 40px !important;
+        }
 
-            a:hover {
-              opacity: 1;
-            }
+        td.thumb, td.preview-link {
+          text-align: center;
+        }
+
+        td.thumb {
+          width:40px;
+
+          img {
+            max-height: 100%;
+            max-width: 100%;
           }
         }
 
-        tr {
-          td {
-            vertical-align: middle;
-            height: 40px;
-            max-width: 40px !important;
-          }
+        td.asset-size {
+          width: 40px;
+          padding-right: 0;
+          padding-left: 6px;
+        }
 
-          td.thumb, td.preview-link {
-            text-align: center;
-          }
+        td.delete-asset {
+          width: 15px;
+          padding: 6px 0 0 4px;
 
-          td.thumb {
-            width:40px;
-
-            img {
-              max-height: 100%;
-              max-width: 100%;
-            }
-          }
-
-          td.asset-size {
-            width: 40px;
-            padding-right: 0;
-            padding-left: 6px;
-          }
-
-          td.delete-asset {
-            width: 15px;
-            padding: 6px 0 0 4px;
-
-            a {
-              visibility: hidden;
-            }
+          a {
+            visibility: hidden;
           }
         }
       }
