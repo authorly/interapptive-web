@@ -134,7 +134,7 @@
     Dropdown sorting options for assets
   */
   #asset-sorting {
-    margin: 10px 15px 5px 0;
+    margin: 10px 5px 5px 0;
     text-align: right;
 
     select {
@@ -204,6 +204,9 @@
         display: none;
       }
 
+      &.hidden {
+        display: none;
+      }
     }
 
     &.images li.image, &.sounds li.sound, &.videos li.video {
@@ -212,6 +215,8 @@
   }
 
   #asset-list-table {
+    display: none;
+
     table {
 
       thead {
@@ -281,6 +286,10 @@
           }
         }
       }
+    }
+
+    &.hidden {
+      display: none;
     }
   }
 
