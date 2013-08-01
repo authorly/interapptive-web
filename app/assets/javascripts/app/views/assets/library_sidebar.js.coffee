@@ -17,8 +17,6 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
     App.vent.on 'window:resize', @adjustSize, @
 
-    $('.scene-view-toggle a').live 'click', (event) => @toggleListView(event)
-
 
   render: ->
     @$el.html(@template())
@@ -46,6 +44,9 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
     # initial sort
     @sortingChanged()
+
+    # set the right toggle
+    @toggleListView @$('#toggle-assets-view .btn.disabled').siblings().first()
 
 
   _initializeUploader: ->
@@ -113,9 +114,13 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @currentUploads.collection.remove @uploader.getData(response).id
 
 
-  toggleListView: (event) ->
-    toggleEl = $(event.currentTarget)
-    return if toggleEl.hasClass('disabled')
+  toggleViewClicked: (event) ->
+    el = $(event.currentTarget)
+    unless el.hasClass('disabled')
+      @toggleListView(el)
+
+
+  toggleListView: (toggleEl) ->
     toggleEl.addClass('disabled').siblings().removeClass('disabled')
 
     listViewEl = @$('#asset-list-table')
