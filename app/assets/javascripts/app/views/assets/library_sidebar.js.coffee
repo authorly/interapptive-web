@@ -65,11 +65,23 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
 
   setAssets: (assets) ->
+    @collection = assets
+    @setComparator(@comparator)
+
     @assetsView.setCollection assets
     @nameFilter.setCollection assets
 
     @storybook = assets.storybook
     @uploader.setStorybook @storybook
+
+
+
+  setComparator: (comparator) ->
+    @comparator = comparator
+
+    if @collection?
+      @collection.comparator = @comparator
+      @collection.sort() if @comparator?
 
 
   initResizable: ->
@@ -86,8 +98,11 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
 
   sortingChanged: ->
-    comparatorName = @$('#asset-sorting select').val()
-    @assetsView.setComparator(comparatorName)
+    selected = @$('#asset-sorting select').val()
+
+    _s = App.Lib.StringHelper
+    comparatorName = _s.decapitalize(_s.camelize(selected)) + 'Comparator'
+    @setComparator(@[comparatorName])
 
 
   _uploaderFileAdded: (response) ->
@@ -131,4 +146,14 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     else if toggleEl.hasClass 'list'
       listViewEl.hide()
       thumbViewEl.show()
+
+
+  nameAscendingComparator: (a1, a2) ->
+    if a1.get('name').toLowerCase() > a2.get('name').toLowerCase() then 1 else -1
+
+
+  nameDescendingComparator: (a1, a2) ->
+    if a1.get('name').toLowerCase() < a2.get('name').toLowerCase() then 1 else -1
+
+
 
