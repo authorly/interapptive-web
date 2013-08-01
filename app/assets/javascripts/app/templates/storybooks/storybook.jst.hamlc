@@ -1,3 +1,8 @@
-%a.storybook{"data-id" => "#{@storybook.get('id')}", :href => "#"}
-  = @storybook.get('title')
+%a.storybook{"data-id" => "#{@storybook.get('id')}", :href => '#'}
+  %span.preview
+    - if @storybook.get('preview_image_url')?
+      %img{src: @storybook.get('preview_image_url')}
+  %h3= @storybook.get('title')
+  %p created on #{App.Lib.DateTimeHelper.dateToHuman(@storybook.get('created_at'))}
+
 %a.delete-storybook{"data-id" => "#{@storybook.get('id')}", :href => "#"}
