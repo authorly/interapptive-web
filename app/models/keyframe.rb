@@ -19,6 +19,10 @@ class Keyframe < ActiveRecord::Base
     texts.order(:sync_order).collect(&:content).join(' ')
   end
 
+  def can_be_destroyed?
+    !is_animation
+  end
+
   def as_json(options)
     super.merge({
       :preview_image_url => preview_image.try(:image).try(:url),

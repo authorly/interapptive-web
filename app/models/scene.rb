@@ -14,7 +14,7 @@ class Scene < ActiveRecord::Base
   serialize :widgets
 
   before_create :create_main_menu_widgets, if: :is_main_menu
-  after_create :create_keyframe
+   after_create :create_keyframes
 
   def as_json(options)
     super.merge({
@@ -28,7 +28,11 @@ class Scene < ActiveRecord::Base
 
   private
 
-  def create_keyframe
+  def create_keyframes
+    unless is_main_menu?
+      keyframes.create(is_animation: true, position: nil, animation_duration: 0)
+    end
+
     keyframes.create(position: 0)
   end
 
