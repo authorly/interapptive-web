@@ -1,3 +1,7 @@
+# This maintains a style tag in the head with any fonts
+# uploaded by user. This way we cache the fonts in the
+# browser and when font of a text widget changes, it
+# appears visually almost instantaneously.
 class App.Views.FontCache extends Backbone.View
 
   openStorybook: (storybook) ->
