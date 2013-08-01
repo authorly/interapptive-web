@@ -6,6 +6,8 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
   template: JST['app/templates/assets/library_sidebar']
   events:
     'change #asset-sorting select': 'sortingChanged'
+    'click #asset-sorting .btn-group a': 'toggleListView'
+
 
   initialize: ->
     @render()
@@ -14,6 +16,8 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @initResizable()
 
     App.vent.on 'window:resize', @adjustSize, @
+
+    $('.scene-view-toggle a').live 'click', (event) => @toggleListView(event)
 
 
   render: ->
@@ -107,3 +111,19 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   _uploaderFileFailed: (response) ->
     @currentUploads.collection.remove @uploader.getData(response).id
+
+
+  toggleListView: (event) ->
+    toggleEl = $(event.currentTarget)
+    return if toggleEl.hasClass('disabled')
+    toggleEl.addClass('disabled').siblings().removeClass('disabled')
+
+    listViewEl = @$('#asset-list-table')
+    thumbViewEl = @$('#asset-list-thumb-view')
+    if toggleEl.hasClass 'thumbs'
+      thumbViewEl.hide()
+      listViewEl.show()
+    else if toggleEl.hasClass 'list'
+      listViewEl.hide()
+      thumbViewEl.show()
+
