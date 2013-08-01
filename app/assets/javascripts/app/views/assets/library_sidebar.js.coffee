@@ -5,8 +5,8 @@
 class App.Views.AssetLibrarySidebar extends Backbone.View
   template: JST['app/templates/assets/library_sidebar']
   events:
-    'change #asset-sorting select': 'sortingChanged'
-    'click #asset-sorting .btn-group a': 'toggleListView'
+    'change #asset-sorting select':   'sortingChanged'
+    'click #toggle-assets-view .btn': 'toggleViewClicked'
 
 
   initialize: ->
