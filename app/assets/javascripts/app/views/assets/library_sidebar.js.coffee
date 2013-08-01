@@ -36,7 +36,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
       el: @$('#asset-list-table tbody')
       assetOptions:
         tagName: 'tr'
-        template: JST['app/templates/assets/library/asset-details']
+        templateName: 'app/templates/assets/library/asset-details'
 
     @detailsView.on 'upload', (-> @uploader.showUploadUI()), @
     @detailsView.render()

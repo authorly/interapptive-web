@@ -5,7 +5,7 @@ class App.Views.AssetLibraryVideo extends App.Views.AssetLibraryElement
 
   render: ->
     super
-    @$el.append $('<i class="control icon-play icon-black"/>')
+    @$('.asset').after $('<i class="control icon-play icon-black"/>')
     @
 
 
