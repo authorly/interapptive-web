@@ -44,7 +44,7 @@ window.App =
 
     @toolbar      = new App.Views.ToolbarView          el: $('#toolbar')
     @file_menu    = new App.Views.FileMenuView         el: $('#file-menu')
-    @fontCache   = new App.Views.FontCache            el: $('#storybook-font-cache')
+    @fontCache    = new App.Views.FontCache            el: $('#storybook-font-cache')
     @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
 
     @spritesListPalette = new App.Views.PaletteContainer
