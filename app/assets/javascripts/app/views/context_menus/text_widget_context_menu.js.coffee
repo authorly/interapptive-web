@@ -5,6 +5,7 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
     'click  #font-face-selector':  'fontFaceSelectorClicked'
     'click  #font-size-selector':  'fontSizeSelectorClicked'
     'click  #font-color-selector': 'fontColorSelectorClicked'
+    'click  .remove':              'delete'
 
   template: JST["app/templates/context_menus/text_widget_context_menu"]
 
@@ -69,3 +70,8 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
     event.stopPropagation()
     font_size = @$('#font-size').val()
     @widget.set(font_size: font_size)
+
+
+  delete: (event) ->
+    event.stopPropagation()
+    @widget.collection?.remove(@widget)

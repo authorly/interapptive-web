@@ -24,3 +24,6 @@
 #font-color-selector.input-append.color{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "rgb"}
   %span.add-on
     %i{:style => "background-color: rgb(255, 146, 180);"}
+
+#text-widget-options
+  %a.remove{:href => '#'} Remove
