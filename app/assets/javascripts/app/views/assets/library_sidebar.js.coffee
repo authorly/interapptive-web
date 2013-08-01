@@ -19,7 +19,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
   render: ->
     @$el.html(@template())
 
-    @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list'))
+    @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list-thumb-view'))
     @assetsView.on 'upload', (-> @uploader.showUploadUI()), @
     @assetsView.render()
 
@@ -68,7 +68,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @$el.parent().resizable
       alsoResize:  '#asset-library-sidebar, #asset-sidebar-sticky-footer, #asset-search-field'
       maxWidth:    500
-      minWidth:    320
+      minWidth:    250
       handles:     'w'
 
 
