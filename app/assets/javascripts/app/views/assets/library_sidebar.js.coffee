@@ -26,7 +26,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   _initializeAssetList: ->
     # assets
-    @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list'))
+    @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list-thumb-view'))
     @assetsView.on 'upload', (-> @uploader.showUploadUI()), @
     @assetsView.render()
 
@@ -71,7 +71,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @$el.parent().resizable
       alsoResize:  '#asset-library-sidebar, #asset-sidebar-sticky-footer, #asset-search-field'
       maxWidth:    500
-      minWidth:    320
+      minWidth:    250
       handles:     'w'
 
 
@@ -103,7 +103,6 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
       @storybook.addAsset new App.Models[type](asset)
 
     @currentUploads.collection.remove @uploader.getData(response).id
-
 
 
   _uploaderFileFailed: (response) ->
