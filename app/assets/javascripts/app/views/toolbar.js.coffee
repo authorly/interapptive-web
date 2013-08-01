@@ -7,8 +7,8 @@ class App.Views.ToolbarView extends Backbone.View
     'click .sync-audio'         : 'alignAudio'
     'click .scene-options'      : 'showSettings'
     'click .background-sound'   : 'showSceneBackgroundMusic'
-    'click .preview'            : 'showPreview'
     'click .compile'            : 'compileStorybook'
+    'click .logo'               : 'switchStorybook'
 
 
   compileStorybook: (event) ->
@@ -22,7 +22,6 @@ class App.Views.ToolbarView extends Backbone.View
     @_enableOnEvent 'can_add:keyframe', '.keyframe'
     @_enableOnEvent 'can_add:animationKeyframe', '.animation-keyframe'
     @_enableOnEvent 'can_add:text', '.edit-text'
-    @_enableOnEvent 'can_add:voiceover', '.sync-audio'
     @_enableOnEvent 'can_add:scene', '.scene'
 
     App.vent.on 'has_background_sound:scene', @_changeBackgroundSoundIcon
@@ -76,6 +75,10 @@ class App.Views.ToolbarView extends Backbone.View
 
   showSceneBackgroundMusic: ->
     App.vent.trigger('show:scenebackgroundsoundform')
+
+
+  switchStorybook: ->
+    document.location.reload(true)
 
 
   _enableOnEvent: (event, selector) ->

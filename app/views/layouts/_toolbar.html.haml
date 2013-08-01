@@ -7,19 +7,17 @@
             = link_to image_tag( 'authorly-icon-large.png'), '#'
           %li.scene.add-scene.disabled
             %a{:href => '#'} Scene
-          %li.animation-keyframe.disabled
-            %a.add-animation-keyframe{:href => '#'} Animation intro
           %li.keyframe.disabled
             %a.add-keyframe{:href => '#'} Keyframe
 
       %li.toolbar-group
         %ul
-          %li.edit-text.disabled
-            = link_to "Add Text", "#"
-          %li.sync-audio.disabled
-            = link_to "Voiceover", "#"
-          %li.background-sound.disabled
+          %li.background-sound
             = link_to "Background Sound", "#"
+          %li.sync-audio
+            = link_to "Voiceover", "#"
+          %li.edit-text
+            = link_to "Add Text", "#"
 
       %li#context-menu-container.toolbar-group.centered
 
