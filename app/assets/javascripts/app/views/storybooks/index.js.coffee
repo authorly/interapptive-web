@@ -34,7 +34,7 @@ class App.Views.StorybookIndex extends Backbone.View
     @collection.each (storybook) => @appendStorybook(storybook)
     if App.Config.environment == 'development' && @collection.length > 0
       @selectStorybook @collection.at(@collection.length - 1)
-      @openStorybook()
+      @openStorybook(local: true)
 
 
   storybooksLoaded: ->
@@ -85,8 +85,12 @@ class App.Views.StorybookIndex extends Backbone.View
     @enableOpenStorybookButton()
 
 
-  openStorybook: ->
-    window.open(@selectedStorybook.baseUrl(), '_blank')
+  openStorybook: (options={}) ->
+    url = @selectedStorybook.baseUrl()
+    if options.local
+      window.location = url
+    else
+      window.open(url, '_blank')
 
 
   enableOpenStorybookButton: (enabling = true) ->
