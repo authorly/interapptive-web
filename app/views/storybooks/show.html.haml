@@ -1,0 +1,38 @@
+- content_for :initialization_coffee do
+  App.showStorybook(#{@storybook.id})
+
+- content_for :header do
+  = render 'layouts/toolbar'
+
+
+.container
+  .content
+    .row
+      .span2.navbar.sidebar.left
+        #scene-list
+      .span2.navbar.sidebar.right
+        #asset-library-sidebar
+      .canvas-wrapper
+        - flash.each do |name, msg|
+          %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
+            %a.close{"data-dismiss" => "alert"}
+            = msg
+        %canvas{id: 'builder', width: 3500, height: 2500}
+          %p Your browser doesn't support the technology required to run this application.
+        #context-menu
+          .sprite
+          .text
+          .hotspot
+
+      #sprite-list-palette.palette.span2
+      #text-editor-palette.palette.span2
+      #action-form-container
+
+%footer.navbar.navbar-fixed-bottom
+  %footer
+    #keyframe-list
+/ Aids w/ clipboard clean-up on paste
+%div#cleanUp{:contenteditable => 'true'}
+= render 'shared/content_modal'
+= render 'shared/lightbox_modal'
+
