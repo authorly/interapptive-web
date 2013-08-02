@@ -26,3 +26,8 @@ class App.Collections.FontsCollection extends Backbone.Collection
 
   comparator: (model) ->
     model.get('name')
+
+
+  system: ->
+    @where
+      asset_type: 'system'

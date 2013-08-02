@@ -40,6 +40,7 @@ window.App =
     @vent.on 'reset:palettes',           @_resetPalettes,    @
     @vent.on 'toggle:palette',           @_togglePalette,    @
     @vent.on 'show:imageLibrary',        @_showImageLibrary, @
+    @vent.on 'show:fontLibrary',         @_showFontLibrary,  @
 
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:keyframe', @_addNewKeyframe, @
@@ -56,7 +57,7 @@ window.App =
     @vent.on 'show:simulator', @showSimulator
 
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
-
+    @fontCache    = new App.Views.FontCache            el: $('#storybook-font-cache')
     @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
 
     @spritesListPalette = new App.Views.PaletteContainer
@@ -64,11 +65,7 @@ window.App =
       el         : $('#sprite-list-palette')
       title      : 'Active Scene Images'
       alsoResize : '#sprite-list-palette ul li span'
-    @textEditorPalette = new App.Views.PaletteContainer
-      title: 'Font Settings'
-      view : new App.Views.TextEditorPalette
-      el   : $('#text-editor-palette')
-    @palettes = [ @textEditorPalette, @spritesListPalette ]
+    @palettes = [ @spritesListPalette ]
 
     @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
       el: $('#asset-library-sidebar')
@@ -113,7 +110,6 @@ window.App =
     # (to avoid coupling the names)
     palette = switch palette
       when 'sceneImages' then @spritesListPalette
-      when 'fontEditor'  then @textEditorPalette
     palette.$el.toggle() if palette?
 
 
@@ -139,7 +135,7 @@ window.App =
 
     storybook.fetchCollections()
 
-    @textEditorPalette.view.openStorybook(storybook)
+    @fontCache.openStorybook(storybook)
 
     assets = new App.Lib.AggregateCollection([], collections: [storybook.images, storybook.videos, storybook.sounds])
     assets.storybook = storybook
@@ -320,6 +316,9 @@ window.App =
   _showImageLibrary: ->
     @file_menu.showImageLibrary()
 
+
+  _showFontLibrary: (source) ->
+    @file_menu.showFontLibrary()
 
 
   _changeWidget: (selection, widget) ->

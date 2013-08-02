@@ -11,6 +11,7 @@
     %link{:href => "favicon.ico", :rel => "icon", :type => "image/x-icon"}
 
     = stylesheet_link_tag 'application', :media => 'all'
+    %style#storybook-font-cache
     = javascript_include_tag 'application'
     = csrf_meta_tags
     = yield(:head)
