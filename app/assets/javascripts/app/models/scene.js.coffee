@@ -216,6 +216,7 @@ class App.Collections.ScenesCollection extends Backbone.Collection
       storybook_id: @storybook.id
       position: @nextPosition()
     }, {
+      parse: true
       wait: true
     }
 
