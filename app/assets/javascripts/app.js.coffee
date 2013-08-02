@@ -39,7 +39,6 @@ window.App =
 
     @vent.on 'reset:palettes',           @_resetPalettes,    @
     @vent.on 'toggle:palette',           @_togglePalette,    @
-    @vent.on 'show:imageLibrary',        @_showImageLibrary, @
     @vent.on 'show:fontLibrary',         @_showFontLibrary,  @
 
     @vent.on 'create:scene',    @_addNewScene,    @
@@ -306,19 +305,14 @@ window.App =
     @lightboxView
 
 
-
-
   _playVideo: (videoView) ->
     App.vent.trigger('hide:modal')
     @lightboxWithView(view: videoView).show()
 
 
-  _showImageLibrary: ->
-    @file_menu.showImageLibrary()
-
-
-  _showFontLibrary: (source) ->
-    @file_menu.showFontLibrary()
+  _showFontLibrary: ->
+    view = new App.Views.AssetLibrary(assetType: 'font', assets: App.currentSelection.get('storybook').customFonts())
+    App.modalWithView(view: view).show()
 
 
   _changeWidget: (selection, widget) ->
