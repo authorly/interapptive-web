@@ -366,6 +366,13 @@ window.App =
     @syncVent.on 'start', (-> @syncing.css('visibility', 'visible')), @
     @syncVent.on 'end',   (-> @syncing.css('visibility', 'hidden' )), @
 
+    window.onbeforeunload = (event) =>
+      return if @syncVent.empty()
+
+      message = "Still saving data, please wait"
+      (event || window.event).returnValue = message # Gecko + IE
+      message                                       # Webkit-based
+
 
   showStorybooks: ->
     view = new App.Views.StorybookIndex
