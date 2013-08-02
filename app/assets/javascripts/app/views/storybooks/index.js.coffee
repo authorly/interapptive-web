@@ -72,6 +72,8 @@ class App.Views.StorybookIndex extends Backbone.View
 
 
   storybookSelected: (event) ->
+    event.preventDefault()
+
     id = $(event.currentTarget).data 'id'
     @selectStorybook @collection.get(id)
 
