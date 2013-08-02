@@ -15,13 +15,18 @@ class App.Views.SpriteWidgetContextMenu extends Backbone.View
 
 
   render: ->
-    @$el.html(@template(filename: @widget.filename(), orientation: @getCurrentOrientation()))
+    @_render()
     @_addListeners()
     @
 
 
+  _render: ->
+    @$el.html(@template(filename: @widget.filename(), orientation: @getCurrentOrientation()))
+
+
   remove: ->
     @_removeMoveListener()
+    App.currentSelection.off 'change:keyframe', @_render, @
     super
 
 
@@ -50,6 +55,7 @@ class App.Views.SpriteWidgetContextMenu extends Backbone.View
     @_addNumericInputListener()
     @_addEnterKeyInputListener()
     @_addMoveListener()
+    App.currentSelection.on 'change:keyframe', @_render, @
 
 
   _addMoveListener: ->

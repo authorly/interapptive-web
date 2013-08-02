@@ -82,6 +82,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   keyframeClicked: (event) ->
+    event.stopPropagation()
+
     keyframe = @collection.get $(event.currentTarget).attr('data-id')
     @switchKeyframe(keyframe)
 
