@@ -7,7 +7,7 @@
             = font.get('name')
       %option{:value => "upload-fonts"}
         %a.upload-fonts
-          upload fonts
+          Upload Fonts
     %optgroup{:id => 'system-fonts', :label => 'Standard Fonts'}
       - for font in @storybook.fonts.system()
         %option{:value => font.get('id')}
