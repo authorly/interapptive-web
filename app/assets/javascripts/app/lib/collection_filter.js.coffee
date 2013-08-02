@@ -8,6 +8,8 @@ class App.Lib.CollectionFilter
 
   setCollection: (collection) ->
     @collection = collection
+    @collection?.on 'add', @filterOne, @
+
     @filter()
 
 
@@ -19,5 +21,8 @@ class App.Lib.CollectionFilter
 
 
   filter: ->
-    @collection?.each (model) =>
+    @collection?.each @filterOne
+
+
+  filterOne: (model) =>
       model.trigger "filter", model, @collection, @criterion.call(@, model)
