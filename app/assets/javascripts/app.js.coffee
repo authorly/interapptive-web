@@ -9,16 +9,37 @@ window.App =
   Config:      {}
 
   init: ->
+    App.version =
+      environment: $('#rails-environment').data('rails-environment'),
+      git_head:    $('#rails-environment').data('git-head')
+
     # A global vent object that allows decoupled communication between
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
 
+    @initializeGlobalSync()
+
+    @vent.on 'hide:modal',               @_hideModal,        @
+    @vent.on 'show:message',             @_showToast,        @
+
+
+  initStorybook: ->
+    @currentSelection = new Backbone.Model
+      storybook: null
+      scene: null
+      keyframe: null
+      text_widget: null
+    @currentWidgets = new App.Collections.CurrentWidgets()
+
+    @currentSelection.on 'change:storybook', @_openStorybook,  @
+    @currentSelection.on 'change:scene',     @_changeScene,    @
+    @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
+    @currentSelection.on 'change:widget',    @_changeWidget,   @
+
     @vent.on 'reset:palettes',           @_resetPalettes,    @
     @vent.on 'toggle:palette',           @_togglePalette,    @
-    @vent.on 'hide:modal',               @_hideModal,        @
     @vent.on 'show:imageLibrary',        @_showImageLibrary, @
-    @vent.on 'show:message',             @_showToast,        @
 
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:keyframe', @_addNewKeyframe, @
@@ -34,13 +55,6 @@ window.App =
 
     @vent.on 'show:simulator', @showSimulator
 
-    @currentSelection = new Backbone.Model
-      storybook: null
-      scene: null
-      keyframe: null
-      text_widget: null
-    @currentWidgets = new App.Collections.CurrentWidgets()
-
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
 
     @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
@@ -50,25 +64,26 @@ window.App =
       el         : $('#sprite-list-palette')
       title      : 'Active Scene Images'
       alsoResize : '#sprite-list-palette ul li span'
-
     @textEditorPalette = new App.Views.PaletteContainer
       title: 'Font Settings'
       view : new App.Views.TextEditorPalette
       el   : $('#text-editor-palette')
+    @palettes = [ @textEditorPalette, @spritesListPalette ]
 
     @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
       el: $('#asset-library-sidebar')
 
     @_makeCanvasDroppable()
 
-    @palettes = [ @textEditorPalette, @spritesListPalette ]
+    App.initModals()
 
-    @currentSelection.on 'change:storybook', @_openStorybook,  @
-    @currentSelection.on 'change:scene',     @_changeScene,    @
-    @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
-    @currentSelection.on 'change:widget',    @_changeWidget,   @
 
-    @initializeGlobalSync()
+  _hideModal: ->
+    @modalWithView()?.hide()
+
+
+  _showToast: (type, message) ->
+    window.toastr[type](message)
 
 
   _makeCanvasDroppable: ->
@@ -295,8 +310,6 @@ window.App =
     @lightboxView
 
 
-  _hideModal: ->
-    @modalWithView()?.hide()
 
 
   _playVideo: (videoView) ->
@@ -307,9 +320,6 @@ window.App =
   _showImageLibrary: ->
     @file_menu.showImageLibrary()
 
-
-  _showToast: (type, message) ->
-    window.toastr[type](message)
 
 
   _changeWidget: (selection, widget) ->
@@ -364,18 +374,20 @@ window.App =
     @syncVent.on 'end',   (-> @syncing.css('visibility', 'hidden' )), @
 
 
-  start: ->
-    App.version =
-      environment: $('#rails-environment').data('rails-environment'),
-      git_head:    $('#rails-environment').data('git-head')
+  showStorybooks: ->
+    view = new App.Views.StorybookIndex
+      collection: new App.Collections.StorybooksCollection()
+      el: '#main'
+    view.render()
 
-    App.init()
+    view.collection.fetch(reset: true)
 
+
+  showStorybook: (id) ->
+    @initStorybook()
     window.initBuilder()
-
     $(window).resize -> App.vent.trigger('window:resize')
-    App.initModals()
 
-    @storybooksRouter = new App.Routers.StorybooksRouter
-    Backbone.history.start()
-
+    (new App.Models.Storybook(id: id)).fetch
+      success: (storybook) ->
+        App.currentSelection.set storybook: storybook
