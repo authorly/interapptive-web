@@ -267,6 +267,13 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   addNewKeyframe: (attributes={}) ->
+    # because positions actually depend on all the requests being complete
+    # do not create unless the queue is empty
+    # the UI should take care of it, but since it relies on CSS, it looks
+    # like if you click fast enough, you can trigger a second creation request
+    # before the button becomes disabled
+    return unless @syncQueue().empty()
+
     @create _.extend(attributes, {
       scene: @scene
       position: @nextPosition(attributes)
