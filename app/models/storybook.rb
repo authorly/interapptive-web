@@ -56,7 +56,8 @@ class Storybook < ActiveRecord::Base
 
   def image_id=(image_id)
     image = images.find(image_id)
-    self.remote_icon_url = image.image.url
+    self.icon = image.image
+    store_icon!
   end
 
   SETTINGS.each do |setting, _|
