@@ -1,13 +1,13 @@
 #asset-type-filter
   %ul.nav.nav-pills
+    %li.active{:data-filter => 'images videos sounds'}
+      %a{:href => "#"} Show All
     %li{:data-filter => 'images'}
       %a{:href => "#"} Images
     %li{:data-filter => 'videos'}
       %a{:href => "#"} Videos
     %li{:data-filter => 'sounds'}
       %a{:href => "#"} Sounds
-    %li.active{:data-filter => 'images videos sounds'}
-      %a{:href => "#"} Show All
 
 
 #active-uploads
