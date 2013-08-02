@@ -12,12 +12,6 @@
   background-repeat: no-repeat;
   background-position: center center;
 
-  &.sound {
-    background-image: url(/assets/audio-icon.png);
-  }
-  &.video {
-    background-image: url(/assets/video-icon.png);
-  }
 }
 
 .removable {
@@ -56,10 +50,9 @@
 }
 
 #asset-library-sidebar {
-  min-width: 330px;
-  width: 320px;
+  min-width: 250px;
   left: 0 !important;
-  margin-top: 105px;
+  margin-top: 80px;
   padding: 0;
   font-size: 11px;
   overflow-y: scroll;
@@ -135,8 +128,15 @@
     Dropdown sorting options for assets
   */
   #asset-sorting {
-    margin: 10px 15px 5px 0;
+    display: inline-block;
+    margin: 10px 5px 5px 0;
     text-align: right;
+
+    select {
+      width: 135px;
+      margin-top: 3px;
+      height: 22px;
+    }
 
     .btn-mini.selected {
       width: 110px;
@@ -157,10 +157,14 @@
     }
   }
 
+  #toggle-assets-view {
+    display: inline-block;
+  }
+
   /*
     List of media assets on sidebar
   */
-  #asset-list {
+  #asset-list-thumb-view {
     margin: auto;
 
     li {
@@ -174,9 +178,6 @@
 
       &:hover {
         cursor: pointer;
-        .player, &.video .control {
-          display: block;
-        }
         .asset.sound {
           opacity: 0.4;
         }
@@ -191,25 +192,101 @@
         position: absolute;
         bottom: 0;
       }
+    }
+  }
 
-      .player, &.video .control {
-        position: absolute;
-        top: 20px;
-        left: 35px;
-        display: none;
+  #asset-list-table {
+    tr {
+      display: none;
+
+      td {
+        vertical-align: middle;
+        height: 40px;
+        padding: 2px;
       }
 
+      .thumb {
+        position: relative;
+      }
+
+      .asset {
+        .asset-library-image;
+        margin: 0;
+      }
+
+      .asset-size {
+        text-align: right;
+        padding-right: 0;
+        padding-left: 6px;
+      }
+
+      .delete-asset {
+        width: 15px;
+        padding: 6px 0 0 4px;
+
+        a {
+          visibility: hidden;
+        }
+      }
+
+      &:hover {
+        .delete-asset a {
+          opacity: 0.6;
+          visibility: visible;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
     }
 
-    &.images li.image, &.sounds li.sound, &.videos li.video {
+  }
+
+
+  #asset-list-thumb-view {
+    &.images .image, &.sounds .sound, &.videos .video {
       &.filter-on {
         display: inline-block;
       }
-      &.filter-off {
-        display: none;
+    }
+  }
+  #asset-list-table tbody {
+    &.images .image, &.sounds .sound, &.videos .video {
+      &.filter-on {
+        display: table-row;
       }
     }
   }
+  #asset-list-thumb-view, #asset-list-table tbody {
+    .asset.sound {
+      background-image: url(/assets/audio-icon.png);
+    }
+    .asset.video {
+      background-image: url(/assets/video-icon.png);
+    }
+    .player, .video .control {
+      position: absolute;
+      top: 20px;
+      left: 35px;
+      display: none;
+    }
+    .video .thumb .control, .sound .thumb .player {
+      left: 25px;
+    }
+    .thumb, li.video {
+      &:hover {
+        .player, .control {
+          display: block;
+        }
+      }
+    }
+    &.hidden {
+      display: none;
+    }
+
+  }
+
 
   /*
     Footer area fixed to bottom of asset library sidebar.
@@ -218,7 +295,7 @@
     position: absolute;
     bottom: 0 !important;
     right: 0;
-    width: 320px;
+    width: 250px;
     padding-top: 5px;
     background-color: #f0f0f0;
 
@@ -229,6 +306,8 @@
 
       input {
         height: 20px !important;
+
+        width: 110px;
       }
     }
 

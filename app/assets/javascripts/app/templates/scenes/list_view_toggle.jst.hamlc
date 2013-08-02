@@ -1,5 +1,5 @@
 #list-view-toggle
-  .scene-view-toggle.btn-group
+  .scene-view-toggle.btn-group.btn-group-vertical
     %a.btn.btn-mini{:href => "#", :title => 'List view'}
       %i.icon-list.icon-black
     %a.btn.btn-mini.disabled{:href => "#", :title => 'Thumbnail view'}

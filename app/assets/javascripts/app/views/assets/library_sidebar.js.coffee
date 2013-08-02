@@ -5,7 +5,9 @@
 class App.Views.AssetLibrarySidebar extends Backbone.View
   template: JST['app/templates/assets/library_sidebar']
   events:
-    'change #asset-sorting select': 'sortingChanged'
+    'change #asset-sorting select':   'sortingChanged'
+    'click #toggle-assets-view .btn': 'toggleViewClicked'
+
 
   initialize: ->
     @render()
@@ -26,14 +28,25 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   _initializeAssetList: ->
     # assets
-    @assetsView = new App.Views.AssetsLibrary(el: @$('#asset-list'))
-    @assetsView.on 'upload', (-> @uploader.showUploadUI()), @
-    @assetsView.render()
+    @thumbsView = new App.Views.AssetsLibrary(el: @$('#asset-list-thumb-view'))
+    @thumbsView.on 'upload', (-> @uploader.showUploadUI()), @
+    @thumbsView.render()
+
+    @detailsView = new App.Views.AssetsLibrary
+      el: @$('#asset-list-table tbody')
+      assetOptions:
+        tagName: 'tr'
+        templateName: 'app/templates/assets/library/asset-details'
+
+    @detailsView.on 'upload', (-> @uploader.showUploadUI()), @
+    @detailsView.render()
 
     # filter by kind
     @filter = new App.Views.AssetFilter
       el: @$('#asset-type-filter')
-    @filter.on 'filter', (filter) => @assetsView.filterBy(filter)
+    @filter.on 'filter', (filter) =>
+      @thumbsView. filterBy(filter)
+      @detailsView.filterBy(filter)
     @filter.setup()
 
     # filter by name
@@ -42,6 +55,9 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
     # initial sort
     @sortingChanged()
+
+    # set the right toggle
+    @toggleListView @$('#toggle-assets-view .btn.disabled').siblings().first()
 
 
   _initializeUploader: ->
@@ -60,18 +76,31 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
 
   setAssets: (assets) ->
-    @assetsView.setCollection assets
-    @nameFilter.setCollection assets
+    @collection = assets
+    @setComparator(@comparator)
+
+    @thumbsView. setCollection assets
+    @detailsView.setCollection assets
+    @nameFilter. setCollection assets
 
     @storybook = assets.storybook
     @uploader.setStorybook @storybook
+
+
+
+  setComparator: (comparator) ->
+    @comparator = comparator
+
+    if @collection?
+      @collection.comparator = @comparator
+      @collection.sort() if @comparator?
 
 
   initResizable: ->
     @$el.parent().resizable
       alsoResize:  '#asset-library-sidebar, #asset-sidebar-sticky-footer, #asset-search-field'
       maxWidth:    500
-      minWidth:    320
+      minWidth:    250
       handles:     'w'
 
 
@@ -81,8 +110,11 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
 
   sortingChanged: ->
-    comparatorName = @$('#asset-sorting select').val()
-    @assetsView.setComparator(comparatorName)
+    selected = @$('#asset-sorting select').val()
+
+    _s = App.Lib.StringHelper
+    comparatorName = _s.decapitalize(_s.camelize(selected)) + 'Comparator'
+    @setComparator(@[comparatorName])
 
 
   _uploaderFileAdded: (response) ->
@@ -105,6 +137,32 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @currentUploads.collection.remove @uploader.getData(response).id
 
 
-
   _uploaderFileFailed: (response) ->
     @currentUploads.collection.remove @uploader.getData(response).id
+
+
+  toggleViewClicked: (event) ->
+    el = $(event.currentTarget)
+    @toggleListView(el) unless el.hasClass('disabled')
+
+
+  toggleListView: (toggleEl) ->
+    toggleEl.addClass('disabled').siblings().removeClass('disabled')
+
+    if toggleEl.hasClass 'thumbs'
+      @thumbsView.$el.hide()
+      @detailsView.$el.show()
+    else if toggleEl.hasClass 'list'
+      @detailsView.$el.hide()
+      @thumbsView.$el.show()
+
+
+  nameAscendingComparator: (a1, a2) ->
+    if a1.get('name').toLowerCase() > a2.get('name').toLowerCase() then 1 else -1
+
+
+  nameDescendingComparator: (a1, a2) ->
+    if a1.get('name').toLowerCase() < a2.get('name').toLowerCase() then 1 else -1
+
+
+

@@ -1,15 +1,20 @@
 class App.Views.AssetLibraryElement extends Backbone.View
   tagName:  'li'
-  template: JST['app/templates/assets/library/asset']
+
+  template: (data) ->
+    JST[@options.templateName || 'app/templates/assets/library/asset'](data)
+
   className: -> @type()
-  events:
+
+  events: ->
     'click .delete': 'deleteClicked'
 
   render: ->
     @$el.html @template(
       asset: @model
-      type: @type()
+      type:  @type()
       title: @title()
+      size:  @size()
       background: @model.get('thumbnail_url')
     )
 
@@ -45,9 +50,12 @@ class App.Views.AssetLibraryElement extends Backbone.View
   title: ->
     """
     #{@model.get('name')}
-    #{App.Lib.NumberHelper.numberToHumanSize(@model.get('size'))}
+    #{@size()}
     Uploaded #{App.Lib.DateTimeHelper.timeToHuman(@model.get('created_at'))}
     """
+
+  size: ->
+    App.Lib.NumberHelper.numberToHumanSize(@model.get('size'))
 
 
   _createDraggable: ->
