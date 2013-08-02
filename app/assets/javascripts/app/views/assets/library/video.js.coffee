@@ -1,6 +1,6 @@
 class App.Views.AssetLibraryVideo extends App.Views.AssetLibraryElement
-  events:
-    'click .control': 'play'
+  events: ->
+    _.extend {}, super, { 'click .control': 'play' }
 
 
   render: ->

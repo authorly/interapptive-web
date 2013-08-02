@@ -6,7 +6,7 @@ class App.Views.AssetLibraryElement extends Backbone.View
 
   className: -> @type()
 
-  events:
+  events: ->
     'click .delete': 'deleteClicked'
 
   render: ->
