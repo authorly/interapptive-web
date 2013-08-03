@@ -251,8 +251,6 @@ window.App =
 
     collection.add widget
 
-    window.setTimeout (-> App.currentSelection.set widget: widget), 0
-
 
   # @param [Object] attributes
   # @option attributes [Integer] id
