@@ -183,11 +183,22 @@
 }
 
 #list-view-toggle {
-  .scale(0.7);
+  .scale(0.5);
+  .round-corners();
 
-  opacity: 0.7;
+  border: 1px solid #747474;
   margin-left: 134px;
   font-size: 11px;
+  position: absolute;
+  right: -7px;
+  top: -8px;
+  -webkit-transform-origin-y: 2;
+  z-index: 15;
+  opacity: 0.5;
+
+  .btn-group {
+    margin: 0;
+  }
 
   span:hover {
     cursor: pointer;
@@ -200,4 +211,12 @@
   span.active:hover {
     cursor: default;
   }
+}
+
+#list-view-toggle:hover {
+  top: -2px;
+  right: -5px;
+  -webkit-transform-origin-y: 2;
+  -webkit-transform: scale(0.8);
+  opacity: 1;
 }

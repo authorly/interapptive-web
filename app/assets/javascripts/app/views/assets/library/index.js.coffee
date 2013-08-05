@@ -19,8 +19,6 @@ class App.Views.AssetsLibrary extends Backbone.View
   setCollection: (collection) ->
     @collection = collection
 
-    @_setComparator(@comparator)
-
     @collection.on 'add',    @_add,           @
     @collection.on 'remove', @_remove,        @
     @collection.on 'sort',   @_sort,          @
@@ -31,19 +29,6 @@ class App.Views.AssetsLibrary extends Backbone.View
     else
       @_noAssetsMessage().show()
 
-
-  setComparator: (name) ->
-    _s = App.Lib.StringHelper
-    comparatorName = _s.decapitalize(_s.camelize(name)) + 'Comparator'
-    @_setComparator(@[comparatorName])
-
-
-  _setComparator: (comparator) ->
-    @comparator = comparator
-
-    if @collection?
-      @collection.comparator = @comparator
-      @collection.sort() if @comparator?
 
 
   filterBy: (filter) ->
@@ -56,14 +41,6 @@ class App.Views.AssetsLibrary extends Backbone.View
       .addClass("filter-#{if accepted then 'on' else 'off'}")
 
 
-  nameAscendingComparator: (a1, a2) ->
-    if a1.get('name').toLowerCase() > a2.get('name').toLowerCase() then 1 else -1
-
-
-  nameDescendingComparator: (a1, a2) ->
-    if a1.get('name').toLowerCase() < a2.get('name').toLowerCase() then 1 else -1
-
-
   _add: (asset) =>
     klass = if asset instanceof App.Models.Sound
       App.Views.AssetLibrarySound
@@ -72,7 +49,7 @@ class App.Views.AssetsLibrary extends Backbone.View
     else
       App.Views.AssetLibraryElement
 
-    view = new klass(model: asset)
+    view = new klass _.extend({model: asset}, @options.assetOptions)
     viewElement = view.render().el
     @views.push view
 

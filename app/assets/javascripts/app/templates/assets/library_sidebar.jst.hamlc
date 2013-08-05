@@ -21,7 +21,20 @@
     %option{:value=> "name-ascending", :selected => 'selected'} Name: ascending
     %option{:value=> "name-descending"} Name: descending
 
-%ul#asset-list.images.sounds.videos
+#toggle-assets-view.btn-group
+  %a.btn.btn-mini.assets.thumbs.disabled{:href => "#", :title => 'Thumbnail view'}
+    %i.icon-th-large.icon-black
+  %a.btn.btn-mini.assets.list{:href => "#", :title => 'List view'}
+    %i.icon-list.icon-black
+
+
+%ul#asset-list-thumb-view.images.sounds.videos
+
+
+%div#asset-list-table
+  %table.table
+    %tbody
+
 
 #asset-sidebar-sticky-footer
   %span.select-file
@@ -29,6 +42,7 @@
       %i.icon-plus.icon-white
       Add
     %input.file-upload{:type => 'file', :name => 'files[]', :multiple => 'multiple'}
+
 
   #asset-text-search
     .input-append
