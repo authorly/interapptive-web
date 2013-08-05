@@ -9,6 +9,7 @@
   %div.main{"data-id" => "#{@keyframe.get 'id'}"}
 
 %span
-  %a{:href=>"#","class" => "delete-keyframe", "data-id" => "#{@keyframe.get('id')}"}
-  %a{:href=>"#","class" => "drag-keyframe", "data-id" => "#{@keyframe.get('id')}"}
+  - unless @keyframe.get('is_animation')
+    %a{:href=>"#","class" => "delete-keyframe", "data-id" => "#{@keyframe.get('id')}"}
+    %a{:href=>"#","class" => "drag-keyframe", "data-id" => "#{@keyframe.get('id')}"}
   %span.keyframe-number= "#{if @keyframe.get('position') == null then 'pre-text' else @keyframe.get('position') + 1 }"
