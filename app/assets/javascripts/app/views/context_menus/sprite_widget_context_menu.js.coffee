@@ -3,9 +3,16 @@ class App.Views.SpriteWidgetContextMenu extends Backbone.View
   CONTROL_KEYS: _.map ['backspace', 'tab', 'enter', 'home', 'end', 'left', 'right'], (name) -> App.Lib.Keycodes[name]
 
   events:
-    'click .bring-to-front': 'bringToFront'
-    'click .put-in-back':    'putInBack'
-    'click .remove':         'deleteSprite'
+    'click .bring-to-front':                      'bringToFront'
+    'click .put-in-back':                         'putInBack'
+    'click .remove':                              'deleteSprite'
+    'click div':                                  'elementsClicked'
+    'keyup #x-coord':                             'xCoordUpDownArrow'
+    'keyup #y-coord':                             'yCoordUpDownArrow'
+    'keyup #scale-amount':                        'scaleAmountUpDownArrow'
+    'keypress #x-coord, #y-coord, #scale-amount': 'numericInputListener'
+    'keydown #x-coord, #y-coord':                 'enterKeyCoordListener'
+    'keydown #scale-amount':                      'enterKeyScaleListener'
 
   template: JST["app/templates/context_menus/sprite_widget_context_menu"]
 
@@ -49,76 +56,56 @@ class App.Views.SpriteWidgetContextMenu extends Backbone.View
     @widget.collection.remove(@widget) if @widget.collection
 
 
-  _addListeners: ->
-    @_addClickListener()
-    @_addUpDownArrowListeners()
-    @_addNumericInputListener()
-    @_addEnterKeyInputListener()
-    @_addMoveListener()
-    App.currentSelection.on 'change:keyframe', @_render, @
+  numericInputListener: ->
+    number = App.Lib.Keycodes[0] <= event.which <= App.Lib.Keycodes[9]
+    ok = not event.which or number or @CONTROL_KEYS.indexOf(event.which) > -1
+
+    switch event.currentTarget.id
+      when 'x-coord', 'y-coord'
+        ok = true if event.which == App.Lib.Keycodes.minus
+
+    event.preventDefault() unless ok
+
+  elementsClicked: (event) ->
+    event.stopPropagation()
 
 
-  _addMoveListener: ->
-    $('body').on('keyup', @_moveSpriteWithArrows)
-    @widget.on('move', @_changeCoordinates, @)
+  xCoordUpDownArrow: (event) ->
+    _kc = event.keyCode
+
+    if _kc is App.Lib.Keycodes.up
+      @_moveSprite('right', 1)
+
+    if _kc is App.Lib.Keycodes.down
+      @_moveSprite('left', 1)
 
 
-  _removeMoveListener: ->
-    $('body').off('keyup', @_moveSpriteWithArrows)
-    @widget.off('move', @_changeCoordinates, @)
+  yCoordUpDownArrow: (event) ->
+    _kc = event.keyCode
+
+    if _kc is App.Lib.Keycodes.up
+      @_moveSprite('up', 1)
+
+    if _kc is App.Lib.Keycodes.down
+      @_moveSprite('down', 1)
 
 
-  _changeCoordinates: (new_point) ->
-    return unless new_point?
-    @$('#x-coord').val(parseInt(new_point.x))
-    @$('#y-coord').val(parseInt(new_point.y))
+  scaleAmountUpDownArrow: (event) ->
+    _kc = event.keyCode
+
+    if _kc is App.Lib.Keycodes.up
+      @_changeScale(1)
+
+    if _kc is App.Lib.Keycodes.down
+      @_changeScale(-1)
 
 
-  _moveSpriteWithArrows: (event) =>
-    # Make sure we do not move the sprite in case both sprite and
-    # coordinate inputs have focus. Instead just increment pixels
-    # in coordinate inputs with _addUpDownArrowListeners().
-    return if @$('#x-coord').is(':focus') or @$('#y-coord').is(':focus') or @$('#scale-amount').is(':focus')
-
-    switch event.keyCode
-      when App.Lib.Keycodes.left  then @_moveSprite('left',  1)
-      when App.Lib.Keycodes.up    then @_moveSprite('up',    1)
-      when App.Lib.Keycodes.right then @_moveSprite('right', 1)
-      when App.Lib.Keycodes.down  then @_moveSprite('down',  1)
+  enterKeyScaleListener: (event) ->
+    @_setScale() if event.keyCode is App.Lib.Keycodes.enter
 
 
-  _addClickListener: ->
-    @$('div').find('label, input').click (event) ->
-      event.stopPropagation()
-
-
-  _addUpDownArrowListeners: ->
-    @$('#x-coord').keyup (event) =>
-      _kc = event.keyCode
-
-      if _kc is App.Lib.Keycodes.up
-        @_moveSprite('right', 1)
-
-      if _kc is App.Lib.Keycodes.down
-        @_moveSprite('left', 1)
-
-    @$('#y-coord').keyup (event) =>
-      _kc = event.keyCode
-
-      if _kc is App.Lib.Keycodes.up
-        @_moveSprite('up', 1)
-
-      if _kc is App.Lib.Keycodes.down
-        @_moveSprite('down', 1)
-
-    @$('#scale-amount').keyup (event) =>
-      _kc = event.keyCode
-
-      if _kc is App.Lib.Keycodes.up
-        @_changeScale(1)
-
-      if _kc is App.Lib.Keycodes.down
-        @_changeScale(-1)
+  enterKeyCoordListener: (event) ->
+    @_delayedSavePosition(@_position()) if event.keyCode is App.Lib.Keycodes.enter
 
 
   _moveSprite: (direction, pixels) ->
@@ -166,25 +153,38 @@ class App.Views.SpriteWidgetContextMenu extends Backbone.View
     @getCurrentOrientation().set(position: { x: parseInt(point.x), y: parseInt(point.y) })
 
 
-  _addNumericInputListener: ->
-    @$('#x-coord, #y-coord, #scale-amount').keypress (event) => # Numeric keyboard inputs only
-      number = App.Lib.Keycodes[0] <= event.which <= App.Lib.Keycodes[9]
-      ok = not event.which or number or @CONTROL_KEYS.indexOf(event.which) > -1
-
-      switch event.currentTarget.id
-        when 'x-coord', 'y-coord'
-          ok = true if event.which == App.Lib.Keycodes.minus
-
-      event.preventDefault() unless ok
+  _addListeners: ->
+    @_addMoveListener()
+    App.currentSelection.on 'change:keyframe', @_render, @
 
 
-  _addEnterKeyInputListener: ->
-    @$('#x-coord, #y-coord').keydown (e) =>
-      @_delayedSavePosition(@_position()) if e.keyCode is App.Lib.Keycodes.enter
+  _addMoveListener: ->
+    $('body').on('keyup', @_moveSpriteWithArrows)
+    @widget.on('move', @_changeCoordinates, @)
 
-    @$('#scale-amount').keydown (e) =>
-      @_setScale() if e.keyCode is App.Lib.Keycodes.enter
 
+  _removeMoveListener: ->
+    $('body').off('keyup', @_moveSpriteWithArrows)
+    @widget.off('move', @_changeCoordinates, @)
+
+
+  _changeCoordinates: (new_point) ->
+    return unless new_point?
+    @$('#x-coord').val(parseInt(new_point.x))
+    @$('#y-coord').val(parseInt(new_point.y))
+
+
+  _moveSpriteWithArrows: (event) =>
+    # Make sure we do not move the sprite in case both sprite and
+    # coordinate inputs have focus. Instead just increment pixels
+    # in coordinate inputs with _addUpDownArrowListeners().
+    return if @$('#x-coord').is(':focus') or @$('#y-coord').is(':focus') or @$('#scale-amount').is(':focus')
+
+    switch event.keyCode
+      when App.Lib.Keycodes.left  then @_moveSprite('left',  1)
+      when App.Lib.Keycodes.up    then @_moveSprite('up',    1)
+      when App.Lib.Keycodes.right then @_moveSprite('right', 1)
+      when App.Lib.Keycodes.down  then @_moveSprite('down',  1)
 
   _position: ->
     @_point(@$('#x-coord').val(), @$('#y-coord').val())
