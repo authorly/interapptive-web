@@ -42,11 +42,13 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   destroy: ->
-    super
+    throw new Error('cannot delete') if @get('is_animation')
 
     @off 'change:animation_duration', @animationDurationChanged, @
     @uninitializeWidgets()
     @uninitializePreview()
+
+    super
 
 
   initializeScene: (attributes) ->

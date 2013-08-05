@@ -111,7 +111,7 @@ describe ScenesController do
         response.should be_success
       end
 
-      it 'should not be able to destroy a scene' do
+      it 'should not be able to destroy an undestroy-able scene' do
         @scene.should_receive(:can_be_destroyed?).and_return(false)
         @scene.should_not_receive(:destroy)
 
