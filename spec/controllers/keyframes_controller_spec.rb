@@ -101,7 +101,16 @@ describe KeyframesController do
     end
 
     it 'should destroy a keyframe' do
+      @keyframe.should_receive(:can_be_destroyed?).and_return(true)
       @keyframe.should_receive(:destroy).and_return(true)
+
+      delete :destroy, :scene_id => @scene.id, :id => @keyframe.id, :format => :json
+
+      response.should be_success
+    end
+
+    it 'should not destroy undestroy-able keyframes' do
+      @keyframe.should_receive(:can_be_destroyed?).and_return(false)
 
       delete :destroy, :scene_id => @scene.id, :id => @keyframe.id, :format => :json
 

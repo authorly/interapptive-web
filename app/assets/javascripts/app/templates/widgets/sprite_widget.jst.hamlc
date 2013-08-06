@@ -1,7 +1,7 @@
 - _style =    "background-image: url(#{@widget.url()})"
 %div.sprite-image{:style => _style, :data-widget-id => @widget.id}
-%span
-  = @widget.filename()
+%span{ title: @widget.filename() }
+  = App.Lib.StringHelper.truncate(@widget.filename(), 15)
 
 - if @widget.canBeDeleted()
   .action.delete

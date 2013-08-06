@@ -1,11 +1,9 @@
-DELETE_STORYBOOK_MSG =
-  '\nYou are about to delete this storybook and all of its scenes, keyframes, and media\n\n\n' +
-  'This cannot be undone.\n\n\n' +
-  'Are you sure you want to continue?\n'
-
-
 class App.Views.StorybookIndex extends Backbone.View
   template: JST['app/templates/storybooks/index']
+  DELETE_STORYBOOK_MSG =
+    '\nYou are about to delete this storybook and all of its scenes, keyframes, and media\n\n\n' +
+    'This cannot be undone.\n\n\n' +
+    'Are you sure you want to continue?\n'
 
   events:
     'click  .storybook'         : 'storybookSelected'
@@ -17,26 +15,32 @@ class App.Views.StorybookIndex extends Backbone.View
 
 
   initialize: ->
-    @collection.on 'add'  ,  @appendStorybook, @
-    @collection.on 'remove', @removeStorybook, @
-    @collection.on 'reset',  @render         , @
+    @collection.on 'add'  ,  @appendStorybook,  @
+    @collection.on 'remove', @removeStorybook,  @
+    @collection.on 'sync',   @storybooksLoaded, @
     @selectedStorybook = null
-    App.currentSelection.on 'change:storybook', @hide
 
 
   render: ->
     @$el.html @template()
-    @collection.each (storybook) => @appendStorybook(storybook)
-    @hideLoader()
-
-    if App.Config.environment == 'development' && @collection.length > 0
-      @selectStorybook @collection.at(@collection.length - 1)
-      @openStorybook()
-
+    @renderStorybooks()
     @
 
 
   # storybooks
+
+  renderStorybooks: ->
+    @$('#storybook-list').html('')
+    @collection.each (storybook) => @appendStorybook(storybook)
+    if App.Config.environment == 'development' && @collection.length > 0
+      @selectStorybook @collection.at(@collection.length - 1)
+      # @openStorybook(local: true)
+
+
+  storybooksLoaded: ->
+    @hideLoader()
+    @renderStorybooks()
+
 
   createStorybook: (event) ->
     event.preventDefault()
@@ -68,6 +72,8 @@ class App.Views.StorybookIndex extends Backbone.View
 
 
   storybookSelected: (event) ->
+    event.preventDefault()
+
     id = $(event.currentTarget).data 'id'
     @selectStorybook @collection.get(id)
 
@@ -81,22 +87,24 @@ class App.Views.StorybookIndex extends Backbone.View
     @enableOpenStorybookButton()
 
 
-  openStorybook: ->
-    @showLoader()
-    @enableOpenStorybookButton(false)
-
-    window.setTimeout =>
-      if @selectedStorybook?
-        App.currentSelection.set(storybook: @selectedStorybook)
-    ,  650
+  openStorybook: (options={}) ->
+    url = @selectedStorybook.baseUrl()
+    if options.local
+      window.location = url
+    else
+      window.open(url, '_blank')
 
 
   enableOpenStorybookButton: (enabling = true) ->
-   el = @$('.btn-primary.open-storybook')
-   if enabling
-     el.removeClass('disabled')
-   else
-     el.addClass('disabled')
+    el = @$('.btn-primary.open-storybook')
+    if enabling
+      el.removeClass('disabled')
+    else
+      el.addClass('disabled')
+
+
+  hideLoader: ->
+    @$('#storybook-loading').css('visibility', 'hidden')
 
 
   # storybook form
@@ -111,19 +119,3 @@ class App.Views.StorybookIndex extends Backbone.View
     @$('.storybook-form input').val('')
     @$('.storybook-form').fadeOut(130)
     @$('.new-storybook-btn').delay(130).fadeIn(130)
-
-
-  # others
-
-  hideLoader: ->
-    @$('#storybook-loading').hide()
-
-
-  showLoader: ->
-    $('.modal-header, .modal-body, .modal-footer').fadeTo(155, 0.175)
-    @$('#storybook-loading').show()
-
-
-  hide: ->
-    $('#storybooks-modal').modal 'hide'
-    $('.scene').removeClass 'disabled'

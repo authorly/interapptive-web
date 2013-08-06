@@ -1,6 +1,5 @@
 .modal {
   width: 920px;
-  max-height: 100%;
   margin-left: -460px;
   overflow-x:hidden;
 
@@ -28,8 +27,16 @@
 }
 
 #image-picker {
+  margin-bottom: 25px;
+
   .modal-header {
     text-align: left !important;
+  }
+
+
+  a.btn.btn-primary {
+    float: right;
+    margin-bottom: 25px;
   }
 
   ul {
@@ -46,21 +53,6 @@
       margin: 0 50px 0 0;
     }
 
-    li.zoomable {
-      .ease();
-
-      position: relative;
-      z-index:200;
-    }
-
-    li.zoomable:hover, li.zoomed-in {
-      .scale();
-    }
-
-    li.scaled {
-      .scale();
-    }
-
     li:last {
       margin-right: 0;
     }
@@ -68,19 +60,6 @@
     a.selected {
       border-color: lighten(@blue, 25%);
     }
-  }
-
-  .btn-primary, .btn-success {
-    padding: 12px;
-  }
-
-  .use-image.disabled {
-    background-color: #C5C4C3;
-    text-shadow: none;
-  }
-
-  .use-image, .btn-success {
-    text-shadow: 1px 1px 1px @black;
   }
 
   .table-fixed {

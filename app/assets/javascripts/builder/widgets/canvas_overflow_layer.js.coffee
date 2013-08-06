@@ -1,59 +1,89 @@
+##
+# Class for drawing an "overflow" layer around
+#  the actual workspace area in the canvas.
+#
+# The workspace area is what is viewable on a
+#  device's screen when compiled.
+#
+# Overflow panel sizes are calculated dynamically
+#  based on the size of the workspace dimensions.
+#  The four panels together will automatically
+#  fill the area around the workspace, centered.
+#
+# Panels drawn as follows, around the workspace:
+#     ___________
+#    |___________|
+#    | |       | |
+#    | |       | |
+#    |_|_______|_|
+#    |___________|
+#
+# Uses rect(x, y, width, height) for panel rectangles.
+#
 class App.Builder.Widgets.CanvasOverflowLayer extends cc.Layer
-  COLOR_OUTER_STROKE: 'rgba(0, 0, 0, 0.1)'
+  COLOR_OUTER_STROKE = 'rgba(0, 0, 0, 0)'
 
-  COLOR_OUTER_FILL: 'rgba(174, 204, 246, 0.66)'
+  COLOR_OUTER_FILL = 'rgba(174, 204, 246, 0.66)'
 
-  COLOR_INNER_STROKE: 'rgba(15, 79, 168, 0.9)'
+  OVERFLOW_LAYER_COLOR = 'rgba(190, 190, 190, 0.25)'
 
-  COLOR_INNER_FILL: 'rgba(190, 190, 190, 0.75)'
-
-  LINE_WIDTH_OUTER: 2
-
-  LINE_WIDTH_INNER: 2
+  LINE_WIDTH_OUTER = 2
 
 
   constructor: ->
     super
+
+    @canvasWidth = $(cc.canvas).attr('width')
+    @canvasHeight = $(cc.canvas).attr('height')
+    @horizontalPanelHeight = (@canvasHeight - App.Config.dimensions.height) / 2
+    @verticalPanelWidth = (@canvasWidth - App.Config.dimensions.width) / 2
 
 
   draw: (ctx) ->
     ctx.save()
     ctx.globalAlpha = 255 / 255.0
 
-    @drawCanvasBorder(ctx)
     @drawPanels(ctx)
 
     ctx.restore()
 
 
-  drawCanvasBorder: (ctx) ->
-    ctx.beginPath()
-    ctx.rect(-512, -384, 1024, 768)
-    ctx.strokeStyle = @COLOR_OUTER_STROKE
-    ctx.lineWidth = @LINE_WIDTH_OUTER
-    ctx.stroke()
-    ctx.beginPath()
-    ctx.fillStyle = @COLOR_OUTER_FILL
-    ctx.fill()
-
-
   drawPanels: (ctx) ->
     ctx.beginPath()
-    ctx.fillStyle = @COLOR_INNER_FILL
+    ctx.fillStyle = OVERFLOW_LAYER_COLOR
     ctx.fill()
 
-    # Bottom panel
-    ctx.rect(-812, 384, 1824, 400)
-
     # Top panel
-    ctx.rect(-812, -784, 1824, 400)
+    ctx.rect(
+      @canvasWidth / -2,
+      App.Config.dimensions.height / -2  - @horizontalPanelHeight,
+      @canvasWidth,
+      @horizontalPanelHeight
+    )
+
+    # Bottom panel
+    ctx.rect(
+      @canvasWidth / -2,
+      App.Config.dimensions.height / 2,
+      @canvasWidth,
+      @horizontalPanelHeight
+    )
 
     # Left panel
-    ctx.rect(-812, -384, 300, 768)
+    ctx.rect(
+      App.Config.dimensions.width / -2 - @verticalPanelWidth,
+      App.Config.dimensions.height / -2,
+      @verticalPanelWidth,
+      App.Config.dimensions.height
+    )
 
     # Right panel
-    ctx.rect(512, -384, 300, 768)
+    ctx.rect(
+      App.Config.dimensions.width  / 2,
+      App.Config.dimensions.height / -2,
+      @verticalPanelWidth,
+      App.Config.dimensions.height
+    )
 
-    ctx.fillStyle = @COLOR_INNER_FILL
     ctx.fill()
 

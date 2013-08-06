@@ -5,12 +5,11 @@ class App.Views.VideoPlayer extends Backbone.View
 
 
   initialize: (video) ->
-    @video = video
     @on('pause', @_pauseVideo, @)
 
 
   render: ->
-    @$el.html @template(video: @video)
+    @$el.html @template(video: @model)
     @
 
 

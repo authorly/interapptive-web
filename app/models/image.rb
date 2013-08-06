@@ -20,7 +20,22 @@ class Image < Asset
       'delete_url'    =>    "/images/#{self.id}",
       'delete_type'   =>    'DELETE',
       'created_at'    =>    created_at
+      'type'          =>  type
     }
+  end
+
+  def image_size
+    begin
+      image.size
+    rescue => e
+      logger.info "Size of image not accessible for image: #{id}\n"
+      logger.info e.message
+      0
+    end
+  end
+
+  def self.valid_extension?(ext)
+    ImageUploader.new.extension_white_list.include? ext
   end
 
   private

@@ -51,7 +51,8 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
     # FIXME We should monkey patch cocos2d-html5 to support opacity
     ctx.save()
-    ctx.globalAlpha = @getOpacity() / 255.0
+    opacity = if @selected then @MOUSEOVER_OPACITY else @getOpacity()
+    ctx.globalAlpha = opacity / 255.0
 
     # Main Circle
     ctx.beginPath()
@@ -113,12 +114,12 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
       super
 
 
-  doubleClick: ->
-    @select()
-
-
   select: ->
-    App.vent.trigger('initialize:hotspotWidget', @model)
+    @selected = true
+
+
+  deselect: ->
+    @selected = false
 
 
   draggedTo: ->

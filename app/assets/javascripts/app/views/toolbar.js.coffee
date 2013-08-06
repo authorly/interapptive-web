@@ -4,23 +4,32 @@ class App.Views.ToolbarView extends Backbone.View
     'click .keyframe'           : 'addKeyframe'
     'click .animation-keyframe' : 'addAnimationKeyframe'
     'click .edit-text'          : 'addText'
-    'click .add-hotspot'        : 'addHotspot'
     'click .sync-audio'         : 'alignAudio'
-    'click .scene-options'      : 'showSceneOptions'
-    'click .preview'            : 'showPreview'
+    'click .scene-options'      : 'showSettings'
+    'click .background-sound'   : 'showSceneBackgroundMusic'
+    'click .compile'            : 'compileStorybook'
+    'click .logo'               : 'switchStorybook'
 
+
+  compileStorybook: (event) ->
+    platform = $(event.currentTarget).find('a').data('platform')
+
+    if platform is 'android' then alert 'Coming soon!'; return
+
+    App.currentSelection.get('storybook').compile(platform)
 
   initialize: ->
     @_enableOnEvent 'can_add:keyframe', '.keyframe'
     @_enableOnEvent 'can_add:animationKeyframe', '.animation-keyframe'
     @_enableOnEvent 'can_add:text', '.edit-text'
-    @_enableOnEvent 'can_add:voiceover', '.sync-audio'
     @_enableOnEvent 'can_add:scene', '.scene'
+
+    App.vent.on 'has_background_sound:scene', @_changeBackgroundSoundIcon
 
     App.vent.on 'activate:scene', (scene) =>
       @$('li').removeClass 'disabled'
       if scene.isMainMenu()
-        @$('.edit-text,.touch-zones,.sync-audio,.add-hotspot').addClass 'disabled'
+        @$('.edit-text,.touch-zones,.sync-audio').addClass 'disabled'
 
 
   addScene: ->
@@ -28,13 +37,6 @@ class App.Views.ToolbarView extends Backbone.View
     return if $(event.target).hasClass('disabled')
 
     App.vent.trigger 'create:scene'
-
-
-  addKeyframe: ->
-    event.preventDefault()
-    return if $(event.target).hasClass('disabled')
-
-    App.vent.trigger 'create:keyframe'
 
 
   addAnimationKeyframe: ->
@@ -51,13 +53,6 @@ class App.Views.ToolbarView extends Backbone.View
     App.vent.trigger 'create:widget', type: 'TextWidget'
 
 
-  addHotspot: (event) ->
-    event.preventDefault()
-    return if $(event.target).hasClass('disabled')
-
-    App.vent.trigger('initialize:hotspotWidget')
-
-
   alignAudio: (event) ->
     el = $(event.target)
     return if el.hasClass('disabled') or el.parent().hasClass('disabled')
@@ -67,20 +62,16 @@ class App.Views.ToolbarView extends Backbone.View
     view.enableMediaPlayer()
 
 
-  showSceneOptions: ->
-    App.vent.trigger('show:sceneform')
+  showSettings: ->
+    App.vent.trigger('show:settingsform')
 
 
-  showPreview: -> App.vent.trigger 'show:simulator'
+  showSceneBackgroundMusic: ->
+    App.vent.trigger('show:scenebackgroundsoundform')
 
 
-  # showActionLibrary: ->
-    # @actionDefinitions = new App.Collections.ActionDefinitionsCollection()
-    # @actionDefinitions.fetch
-      # success: =>
-        # activeDefinition = @actionDefinitions.first
-        # view = new App.Views.ActionFormContainer actionDefinitions: @actionDefinitions
-        # App.modalWithView(view: view).show()
+  switchStorybook: ->
+    document.location.href = '/'
 
 
   _enableOnEvent: (event, selector) ->
@@ -90,3 +81,12 @@ class App.Views.ToolbarView extends Backbone.View
         element.removeClass 'disabled'
       else
         element.addClass 'disabled'
+
+
+  _changeBackgroundSoundIcon: (hasBackgroundSound) =>
+    el = @$('.background-sound')
+    if hasBackgroundSound
+
+      el.addClass('has-sound')
+    else
+      el.removeClass('has-sound')

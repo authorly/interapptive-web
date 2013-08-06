@@ -1,22 +1,22 @@
-#storybook-loading
-  %img{src: '/assets/loading.gif'}
-.modal-header
-  %h3.modal-title
-    %i.icon-book.icon-black.icon-large
-    Create or Open Existing Storybook
-#storybooks.modal-body
-  %ul#storybook-list.disabled
-.modal-footer
-  %span.btn.btn-success.fileinput-button.new-storybook-btn.left
-    %i.icon-plus.icon-white
-    %span New Storybook App...
-  %form.form-inline.left.storybook-form{:style => "display:none"}
-    %a.close.left{:href => "#"} x
-    %input.input-medium.storybook-title{:name => "storybook-title", :placeholder => "Storybook Title", :type => "text", :maxlength => 25, :minlength => 2}
-      %button.btn{:type => "submit"} Create App
-  %a.btn{"data-method" => "post", :href => "/users/sign_out", :rel => "nofollow"}
-    %i.icon-off.icon-black
-    Exit
-  .btn.btn-primary.open-storybook.disabled
-    %i.icon-folder-open.icon-white
-    Open
+%section#storybooks-index
+  %h1
+    %a{src: '/'}
+      %img{src: '/assets/authorly-icon-large.png'}
+    Authorly
+
+  %h2 Your storybooks:
+  %ul#storybook-list
+  #storybook-loading
+    %img{src: '/assets/loading.gif'}
+  .menu.clearfix
+    .btn.btn-primary.open-storybook.disabled.left
+      %i.icon-folder-open.icon-white
+      Open
+    .right
+      %span.btn.btn-success.fileinput-button.new-storybook-btn
+        %i.icon-plus.icon-white
+        %span New Storybook App...
+    %form.form-inline.right.storybook-form{:style => "display:none"}
+      %a.close.right{:href => "#"} x
+      %input.input-medium.storybook-title{:name => "storybook-title", :placeholder => "Storybook Title", :type => "text", :maxlength => 25, :minlength => 2}
+        %button.btn{:type => "submit"} Create App

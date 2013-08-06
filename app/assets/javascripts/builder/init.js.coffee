@@ -1,7 +1,7 @@
 cc.Log = cc.LOG = console.log.bind(console)
 
 window.initBuilder = ->
-  cc.setup "builder-canvas"
+  cc.setup "builder"
 
   # Disable I-beam
   $(cc.canvas).on('mousedown', (e) ->

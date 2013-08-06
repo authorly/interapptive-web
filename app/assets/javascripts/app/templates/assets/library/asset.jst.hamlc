@@ -1,0 +1,3 @@
+%span.asset{:class => @type, :style => "#{if @background? then "background-image: url(#{@background});background-position: center center;" else ''}", :title => @title, :data-id => @asset.id, :data-type => @type }
+  %span.filename= App.Lib.StringHelper.truncate(@asset.get('name'))
+  .delete

@@ -5,7 +5,6 @@
 
 @import 'variables.css.less';
 
-@import 'file_menu.css.less';
 @import 'toolbar.css.less';
 
 @import 'user_sessions.css.less';
@@ -20,20 +19,25 @@
 @import 'voiceovers.css.less';
 
 @import 'assets.css.less';
+@import 'asset_library_sidebar.css.less';
+
+@import 'app_settings.css.less';
 
 /* Widget related */
-@import 'palettes.css.less';
+@import 'context_menu.css.less';
 @import 'text_widgets.css.less';
-@import 'hotspots.css.less';
-
 
 html, body{
-  background-color: @grayDarker;
-  background: asset-url('grid.png') repeat;
+  background-color: white;
+}
+
+body {
+  overflow: hidden;
 }
 
 #main {
   border: none;
+  padding: 20px;
 }
 
 .content {
@@ -64,45 +68,22 @@ html, body{
   cursor: url(https://mail.google.com/mail/images/2/closedhand.cur) 8 8, move;
 }
 
-
-//
-// TODO: Tem. style, remove me when JSON export button is replaced w/ simulator!
-//
-button#export {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-
-// Tablet & Builder
-.canvas-column {
-  background-repeat: no-repeat;
-  background-position: center;
-  height: @appHeight + 50px;
-  width: 100%;
-  text-align: center;
-  overflow: visible;
-}
-
-canvas#builder-canvas {
-  background: white;
-  width: 754px;
-  overflow: hidden;
+.canvas-wrapper {
   position: relative;
-  top: -20px;
-}
 
-.loading {
-  background-image: asset-url('loading-words.gif');
-  background-repeat: no-repeat;
-  background-position: center;
-}
+  canvas#builder {
+    position: absolute;
+    top: -350px;
+    left: 50%;
+    margin-left: -1000px; /* half of the width */
+    display: block;
+    background: white;
+    width: 2000px;
 
-.loading-book {
-  background-image: asset-url('loading-book.gif');
-  background-repeat: no-repeat;
-  background-position: center;
+    &.highlight {
+      border: 1px solid blue;
+    }
+  }
 }
 
 .icon-white {
@@ -122,6 +103,10 @@ canvas#builder-canvas {
   float: left;
 }
 
+.right {
+  float: right;
+}
+
 footer {
   height: 105px;
   background-color: @footerColor;
@@ -131,7 +116,7 @@ footer {
   z-index: 1 !important;
   background-image: asset-url('keyframe-list-bg.png');
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: 671px center;
 }
 
 header {
@@ -139,8 +124,7 @@ header {
     .gradient(@fileMenuBgStart, @fileMenuBgEnd);
     .drop-shadow(0, 2px, 3px, #555);
 
-    padding-top: 2px;
-    height: @fontMenuHeight;
+    height: 2px;
   }
 
   .navbar-fixed-top .container {
@@ -159,20 +143,31 @@ header {
   top: 0;
   right: 0;
   padding: 0 3px;
+  visibility: hidden;
 }
 
 .sidebar {
   .drop-shadow(1px, 0, 13px, #666);
 
-  position: absolute;
-  left: 0;
-  top: 0;
+  cursor: default;
   background-color: @sidebarColor;
   margin-left: 0;
   margin-top: 0;
   height: 100%;
-  width: 200px;
   z-index: 2;
+  position: absolute;
+  top: 0;
+
+  &.left {
+    width: 200px;
+    left: 0;
+  }
+
+  &.right {
+    min-width: 250px;
+    background: @assetLibSidebarBgColor;
+    right: 0;
+  }
 }
 
 .large-modal {

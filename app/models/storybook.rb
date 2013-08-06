@@ -56,7 +56,8 @@ class Storybook < ActiveRecord::Base
 
   def image_id=(image_id)
     image = images.find(image_id)
-    self.remote_icon_url = image.image.url
+    self.icon = image.image
+    store_icon!
   end
 
   SETTINGS.each do |setting, _|
@@ -70,7 +71,9 @@ class Storybook < ActiveRecord::Base
   end
 
   def as_json(options)
-    super({except: :settings, methods: SETTINGS.keys}.merge(options))
+    super({except: :settings, methods: SETTINGS.keys}.merge(options)).merge({
+      preview_image_url: scenes.where(is_main_menu: true)[0].try(:preview_image_url)
+    })
   end
 
   private

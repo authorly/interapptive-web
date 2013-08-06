@@ -291,13 +291,13 @@ class App.Collections.Widgets extends Backbone.Collection
   soundRemoved: (sound) ->
     @each (widget) =>
       if widget instanceof App.Models.HotspotWidget
-        @remove widget if widget.get('sound_id').toString() is sound.get('id').toString()
+        @remove widget if widget.get('sound_id')?.toString() is sound.get('id').toString()
 
 
   videoRemoved: (video) ->
     @each (widget) =>
       if widget instanceof App.Models.HotspotWidget
-        @remove widget if widget.get('video_id').toString() is video.get('id').toString()
+        @remove widget if widget.get('video_id')?.toString() is video.get('id').toString()
 
 
   fontRemoved: (font) ->
@@ -315,21 +315,32 @@ class App.Collections.Widgets extends Backbone.Collection
     @filter (w) -> w instanceof klass
 
 
-  ## All Buttons must be after all the Sprites
-  @validZOrder: (order) ->
-    z_order_array = Object.keys(order)
-    return true if z_order_array.length == 0
+  setMinZOrder: (sprite) ->
+    peers = if sprite instanceof App.Models.SpriteWidget
+      @byClass(App.Models.SpriteWidget)
+    else if sprite instanceof App.Models.ButtonWidget
+      @byClass(App.Models.ButtonWidget)
+    min = _.min _.map(peers, (widget) -> widget.get('z_order'))
+    unless min == sprite.get('z_order')
+      # increase all by 1
+      _.each peers, (widget) ->
+        widget.set 'z_order', widget.get('z_order') + 1
+      # set min to sprite
+      sprite.set 'z_order', min
 
-    firstButtonIndex = _.max(z_order_array) + 1
-    lastSpriteIndex  = _.min(z_order_array) - 1
 
-    for index, widget of order
-      if widget instanceof App.Models.SpriteWidget
-        lastSpriteIndex  = index if index > lastSpriteIndex
-      if widget instanceof App.Models.ButtonWidget
-        firstButtonIndex = index if index < firstButtonIndex
-
-    firstButtonIndex > lastSpriteIndex
+  setMaxZOrder: (sprite) ->
+    peers = if sprite instanceof App.Models.SpriteWidget
+      @byClass(App.Models.SpriteWidget)
+    else if sprite instanceof App.Models.ButtonWidget
+      @byClass(App.Models.ButtonWidget)
+    max = _.max _.map(peers, (widget) -> widget.get('z_order'))
+    unless max == sprite.get('z_order')
+      # decrease all by 1
+      _.each peers, (widget) ->
+        widget.set 'z_order', widget.get('z_order') - 1
+      # set max to sprite
+      sprite.set 'z_order', max
 
 
   @containers:

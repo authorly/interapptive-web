@@ -42,11 +42,13 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   destroy: ->
-    super
+    throw new Error('cannot delete') if @get('is_animation')
 
     @off 'change:animation_duration', @animationDurationChanged, @
     @uninitializeWidgets()
     @uninitializePreview()
+
+    super
 
 
   initializeScene: (attributes) ->
@@ -175,9 +177,12 @@ class App.Models.Keyframe extends Backbone.Model
       w.get('sprite_widget_id') == widget.id
 
 
-
   canAddText: ->
     !@isAnimation() && @scene.canAddText()
+
+
+  canAddHotspot: ->
+    !@scene.isMainMenu()
 
 
   hasText: ->
@@ -264,6 +269,13 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
 
 
   addNewKeyframe: (attributes={}) ->
+    # because positions actually depend on all the requests being complete
+    # do not create unless the queue is empty
+    # the UI should take care of it, but since it relies on CSS, it looks
+    # like if you click fast enough, you can trigger a second creation request
+    # before the button becomes disabled
+    return unless @syncQueue().empty()
+
     @create _.extend(attributes, {
       scene: @scene
       position: @nextPosition(attributes)

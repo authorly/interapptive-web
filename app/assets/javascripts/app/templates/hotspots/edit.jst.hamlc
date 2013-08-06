@@ -1,7 +1,0 @@
-%div
-  .modal-header
-    %h3.modal-title
-      %i.icon-book.icon-black.icon-large
-      = if @widget? then 'Edit ' else 'Create a'
-      hotspot
-#hotspot.modal-body
