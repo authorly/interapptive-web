@@ -39,13 +39,6 @@ class App.Views.ToolbarView extends Backbone.View
     App.vent.trigger 'create:scene'
 
 
-  addKeyframe: ->
-    event.preventDefault()
-    return if $(event.target).hasClass('disabled')
-
-    App.vent.trigger 'create:keyframe'
-
-
   addAnimationKeyframe: ->
     event.preventDefault()
     return if $(event.target).hasClass('disabled')
@@ -78,7 +71,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   switchStorybook: ->
-    document.location.reload(true)
+    document.location.href = '/'
 
 
   _enableOnEvent: (event, selector) ->

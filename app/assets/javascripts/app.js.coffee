@@ -42,7 +42,6 @@ window.App =
     @vent.on 'show:fontLibrary',         @_showFontLibrary,  @
 
     @vent.on 'create:scene',    @_addNewScene,    @
-    @vent.on 'create:keyframe', @_addNewKeyframe, @
     @vent.on 'create:widget',   @_addNewWidget,   @
 
     @vent.on 'show:settingsform',  @_showSettings, @
@@ -233,10 +232,6 @@ window.App =
 
   _addNewScene: ->
     App.currentSelection.get('storybook').addNewScene()
-
-
-  _addNewKeyframe: (attributes) ->
-    App.currentSelection.get('scene').addNewKeyframe(attributes)
 
 
   _addNewWidget: (attributes) ->
