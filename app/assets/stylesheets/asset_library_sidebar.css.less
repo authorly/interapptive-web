@@ -8,10 +8,17 @@
   width: 50px;
   height: 61px;
   margin: -1px 10px 10px;
-  background-size: 100%;
   background-repeat: no-repeat;
   background-position: center center;
-
+  &.image {
+    background-image: url(/assets/image-icon.png);
+  }
+  &.sound {
+    background-image: url(/assets/audio-icon.png);
+  }
+  &.video {
+    background-image: url(/assets/video-icon.png);
+  }
 }
 
 .removable {
@@ -111,11 +118,6 @@
         .asset {
           .asset-library-image;
           margin-left: 16px;
-          &.image {
-            background-image: url(/assets/toolbar.png);
-            background-position: -518px -9px;
-            background-size: auto;
-          }
         }
         .filename {
           position: absolute;
@@ -244,6 +246,9 @@
 
   }
 
+  #asset-list-thumb-view, #asset-list-table {
+    margin-bottom: 15px;
+  }
 
   #asset-list-thumb-view {
     &.images .image, &.sounds .sound, &.videos .video {
@@ -260,12 +265,6 @@
     }
   }
   #asset-list-thumb-view, #asset-list-table tbody {
-    .asset.sound {
-      background-image: url(/assets/audio-icon.png);
-    }
-    .asset.video {
-      background-image: url(/assets/video-icon.png);
-    }
     .player, .video .control {
       position: absolute;
       top: 20px;
