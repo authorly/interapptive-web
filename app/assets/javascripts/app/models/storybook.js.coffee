@@ -108,7 +108,10 @@ class App.Models.Storybook extends Backbone.Model
 
 
   toJSON: ->
-    _.extend super, widgets: @widgets.toJSON()
+    json = super
+    delete json.preview_image_url
+    json.widgets = @widgets.toJSON()
+    json
 
 
   fetchCollections: ->

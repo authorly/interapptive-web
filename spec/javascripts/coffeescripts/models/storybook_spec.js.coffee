@@ -48,3 +48,8 @@ describe "App.Models.Storybook", ->
       expect(@scene.widgets.length).toEqual 1
       expect(@scene.widgets.at(0).get('selected_image_id')).toEqual null
 
+
+  describe 'as json', ->
+    it 'does not send preview_image_url', ->
+      @storybook.set preview_image_url: ''
+      expect(@storybook.toJSON().preview_image_url).toBeUndefined()
