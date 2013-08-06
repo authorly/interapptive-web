@@ -23,6 +23,10 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on 'remove', @removeKeyframe
     @collection.on 'synchronization-start synchronization-end', @_toggleEnabled, @
 
+
+    $('.add-keyframe').live 'click', =>  @addKeyframe()
+
+
     App.currentSelection.on 'change:keyframe', @keyframeChanged, @
     @keyframe_views = []
 
@@ -130,6 +134,10 @@ class App.Views.KeyframeIndex extends Backbone.View
       handle      : '.main'
       opacity     : 0.6
       update      : @_numberKeyframes
+
+
+  addKeyframe: ->
+    App.currentSelection.get('scene').addNewKeyframe({})
 
 
   _numberKeyframes: =>
