@@ -20,8 +20,8 @@ window.App =
 
     @initializeGlobalSync()
 
-    @vent.on 'hide:modal',               @_hideModal,        @
-    @vent.on 'show:message',             @_showToast,        @
+    @vent.on 'hide:modal',   @_hideModal, @
+    @vent.on 'show:message', @_showToast, @
 
 
   initStorybook: ->
@@ -37,8 +37,6 @@ window.App =
     @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
     @currentSelection.on 'change:widget',    @_changeWidget,   @
 
-    @vent.on 'reset:palettes',           @_resetPalettes,    @
-    @vent.on 'toggle:palette',           @_togglePalette,    @
     @vent.on 'show:fontLibrary',         @_showFontLibrary,  @
 
     @vent.on 'create:scene',    @_addNewScene,    @
@@ -49,6 +47,8 @@ window.App =
 
     @vent.on 'change:keyframeWidgets', @_changeKeyframeWidgets, @
     @vent.on 'load:sprite',            @_changeSceneWidgets,    @
+    @vent.on 'bring_to_front:sprite', @_bringToFront, @
+    @vent.on 'put_in_back:sprite',    @_putInBack,    @
 
     @vent.on 'play:video', @_playVideo, @
 
@@ -57,13 +57,6 @@ window.App =
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
     @fontCache    = new App.Views.FontCache            el: $('#storybook-font-cache')
     @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
-
-    @spritesListPalette = new App.Views.PaletteContainer
-      view       : new App.Views.SpriteListPalette()
-      el         : $('#sprite-list-palette')
-      title      : 'Active Scene Images'
-      alsoResize : '#sprite-list-palette ul li span'
-    @palettes = [ @spritesListPalette ]
 
     @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
       el: $('#asset-library-sidebar')
@@ -101,14 +94,6 @@ window.App =
       keyframe = App.currentSelection.get('keyframe')
       App.Builder.Widgets.WidgetLayer.updateKeyframePreview(keyframe)
     ), 200 # wait for the changes to be shown in the canvas
-
-
-  _togglePalette: (palette) ->
-    # translate from generic event names to variable names in this file
-    # (to avoid coupling the names)
-    palette = switch palette
-      when 'sceneImages' then @spritesListPalette
-    palette.$el.toggle() if palette?
 
 
   _openStorybook: (__, storybook) ->
@@ -164,8 +149,6 @@ window.App =
     @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
     $('#keyframe-list').html @keyframesView.render().el
     scene.fetchKeyframes()
-
-    @spritesListPalette.view.setCollection(scene.widgets)
 
 
   _addSceneListeners: (scene) ->
@@ -270,10 +253,6 @@ window.App =
     @_addNewWidget(widgetAttributes)
 
 
-  _resetPalettes: ->
-    palette.reset() for palette in @palettes
-
-
   initModals: ->
     $('.content-modal').modal(backdrop: true).modal('hide')
     $('.lightbox-modal').modal().modal('hide')
@@ -311,8 +290,6 @@ window.App =
   _changeWidget: (selection, widget) ->
     @_triggerCurrentWidgetChangeEvent(selection, widget)
 
-    @spritesListPalette.view.spriteSelected(widget)
-
 
   # Translates an App.currentSelection.on(widget:change) event
   # to a widget specific event on App.vent.
@@ -334,6 +311,14 @@ window.App =
       previous_widget = selection.previous('widget')
       if previous_widget?
         @vent.trigger('deactivate:' + App.Lib.StringHelper.decapitalize(previous_widget.get('type')), previous_widget)
+
+
+  _bringToFront: (sprite) ->
+    sprite.collection.setMaxZOrder(sprite)
+
+
+  _putInBack: (sprite) ->
+    sprite.collection.setMinZOrder(sprite)
 
 
   showSimulator: =>
