@@ -1,0 +1,24 @@
+#sprite-filename
+  = @filename
+
+#sprite-coordinates
+  %label{:for => 'x-coord'}
+    X:
+  %input#x-coord.input-mini{:value => parseInt(@orientation.get('position').x)}
+
+  %label{:for => 'y-coord'}
+    Y:
+  %input#y-coord.input-mini{:value => parseInt(@orientation.get('position').y)}
+
+#sprite-scale
+  %label.scale-amount{:for => 'scale-amount'}
+    Scale:
+  %input#scale-amount.input-mini{:value => @orientation.get('scale') * 100}
+  &#37;
+
+#sprite-options
+  %a.bring-to-front{:href => '#'} Bring to Front
+  %br
+  %a.put-in-back{:href => '#'} Put in Back
+  %br
+  %a.remove{:href => '#'} Remove

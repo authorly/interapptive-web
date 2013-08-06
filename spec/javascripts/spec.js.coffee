@@ -7,6 +7,8 @@
 #= require_tree ../../vendor/assets/javascripts
 #= require_tree ../../app/assets/javascripts
 #
+App.init()
+
 beforeEach ->
   matchers =
     toContainWidgets: (expected) ->
@@ -24,4 +26,3 @@ afterEach ->
   distantTimeout = setTimeout('alert("x");',100000)
   clearTimeout(i) for i in [0..distantTimeout]
 
-App.start()

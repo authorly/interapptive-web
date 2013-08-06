@@ -11,21 +11,25 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   constructor: (options) ->
     super
-
     @on 'double_click', @doubleClick
-
+    @model.on('change:font_color change:font_face change:font_size', @resetCocos2dLabel, @)
     @createLabel()
 
 
   doubleClick: ->
     @setIsVisible(false)
 
-    view = new App.Views.TextWidget
-      widget: @,
-      workspaceOrigin: @getParent().workspaceOriginAbsolutePosition()
+    @editView = new App.Views.TextWidget(widget: @)
 
-    $(view.el).appendTo(cc.canvas.parentNode)
-    view.initializeEditing()
+    canvas = $(cc.canvas)
+    $(@editView.el).appendTo(canvas.parent())
+    @editView.initializeEditing()
+
+
+  deselect: ->
+    if @editView?
+      @editView.shouldSave = true
+      @editView.deselect()
 
 
   resetCocos2dLabel: ->

@@ -167,6 +167,10 @@ class App.Models.Scene extends Backbone.Model
     @widgets.imageRemoved(image)
 
 
+  hasBackgroundSound: ->
+    @has('sound_id')
+
+
 _.extend App.Models.Scene::, App.Mixins.DeferredSave
 _.extend App.Models.Scene::, App.Mixins.QueuedSync
 
@@ -207,11 +211,19 @@ class App.Collections.ScenesCollection extends Backbone.Collection
 
 
   addNewScene: ->
+    # because positions actually depend on all the requests being complete
+    # do not create unless the queue is empty
+    # the UI should take care of it, but since it relies on CSS, it looks
+    # like if you click fast enough, you can trigger a second creation request
+    # before the button becomes disabled
+    return unless @syncQueue().empty()
+
     @create {
       storybook: @storybook
       storybook_id: @storybook.id
       position: @nextPosition()
     }, {
+      parse: true
       wait: true
     }
 

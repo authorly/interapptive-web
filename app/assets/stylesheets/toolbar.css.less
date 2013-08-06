@@ -3,15 +3,11 @@ nav.toolbar {
 
   height: 71px;
   text-align: center;
+  border-top: 1px solid #ababab;
 
   ul, ul li ul {
     margin-right: 20px;
     margin-left: 10px;
-  }
-
-  ul#toolbar {
-    width: 100%;
-    margin: 0px auto;
   }
 
   ul li {
@@ -31,173 +27,120 @@ nav.toolbar {
     }
 
     ul {
-      li.scene {
-        background-position: 0 0;
+      li {
+        &.scene {
+          background-position: 0 0;
+
+          &.disabled {
+            background-position: 0 (@toolbarHeight - 2);
+          }
+        }
+
+        &.keyframe {
+          background-position: @toolbarItemWidth*-1 0;
+
+          &.disabled {
+            background-position: @toolbarItemWidth*-1 (@toolbarHeight - 1);
+          }
+        }
+
+        &.edit-text {
+          background-position: @toolbarItemWidth*-9 4px;
+
+          &.disabled {
+            background-position: (@toolbarItemWidth*-9)+3 (@toolbarHeight - 1) + 2;
+          }
+
+        }
+
+        &.sync-audio {
+          background-position: @toolbarItemWidth*-14 0;
+
+          &.disabled {
+            background-position: @toolbarItemWidth*-14 (@toolbarHeight - 1);
+          }
+
+          &.has-voiceover {
+            background-position: @toolbarItemWidth*-14 (@toolbarHeight*2);
+          }
+        }
+
+        &.background-sound {
+          line-height: 12px;
+          background-position: @toolbarItemWidth*-8 0;
+        }
+
+
+        &.compile-android {
+          background-position: @toolbarItemWidth*-12 0;
+
+          a {
+            padding-top:2px;
+            line-height: 11px;
+          }
+        }
+
+        &.compile-ios {
+          background-position: @toolbarItemWidth*-13 0;
+        }
+
+        &.background-sound.has-sound {
+          background-position: (@toolbarItemWidth*-8)-1 @toolbarHeight*2;
+
+          &.disabled {
+            background-position: @toolbarItemWidth*-4 (@toolbarHeight - 1);
+          }
+        }
+
+        &.scene-options {
+          background-position: @toolbarItemWidth*-10 0;
+          white-space: nowrap;
+        }
+
+        &.logo {
+          background: none !important;
+          margin: 4px 52px 0 12px;
+          top: 0;
+          opacity: 0.6;
+
+          transition:opacity .2s;
+
+          a {
+            margin-top: 0;
+          }
+        }
+
+        &.logo:hover {
+          opacity: 0.85;
+        }
+
+        a {
+          .horizontal-menu;
+
+          margin-top: 70px;
+          text-align: center;
+          font-family: arial, sans-serif;
+          font-size: 11px;
+          text-shadow: 0px 1px 1px #ffffff;
+          color: #333;
+          width: @toolbarItemWidth;
+
+          &.disabled a {
+            color: #888;
+          }
+
+          &.disabled:hover, li.disabled a:hover {
+            cursor: default;
+          }
+
+          &.disabled a:hover, li.disabled:hover a {
+            color:#888 !important;
+          }
+        }
       }
 
-      li.keyframe {
-        background-position: @toolbarItemWidth*-1 0;
-      }
-
-      li.animation-keyframe {
-        background-position: @toolbarItemWidth*-1 0;
-      }
-
-      li.edit-text {
-        background-position: @toolbarItemWidth*-2 0;
-      }
-
-      li.add-image {
-        background-position: @toolbarItemWidth*-4 0;
-      }
-
-      li.sync-audio {
-        background-position: @toolbarItemWidth*-2 0;
-      }
-
-      li.hotspots {
-        background-position: @toolbarItemWidth*-3 0;
-      }
-
-      li.actions {
-        background-position: @toolbarItemWidth*-5 0;
-      }
-
-      li.scene-options {
-        background-position: @toolbarItemWidth*-10 0;
-        white-space: nowrap;
-      }
-
-      li.scene.active {
-        background-position: 0 @toolbarHeight;
-      }
-
-      li.keyframe.active {
-        background-position: @toolbarItemWidth*-1 @toolbarHeight*2;
-      }
-
-      li.animation-keyframe.active {
-        background-position: @toolbarItemWidth*-1 @toolbarHeight*2;
-      }
-
-      li.edit-text.active {
-        background-position: @toolbarItemWidth*-2 @toolbarHeight*2;
-      }
-
-      li.add-image.active {
-        background-position: @toolbarItemWidth*-4 @toolbarHeight*2;
-      }
-
-      li.sync-audio.active {
-        background-position: @toolbarItemWidth*-2 @toolbarHeight*2;
-      }
-
-      li.touch-zones.active {
-        background-position: @toolbarItemWidth*-3 @toolbarHeight*2;
-      }
-
-      li.videos.active {
-        background-position: @toolbarItemWidth*-6 @toolbarHeight*2;
-      }
-
-      li.actions.active {
-        background-position: @toolbarItemWidth*-5 @toolbarHeight*2;
-      }
-
-      li.images.active {
-        background-position: @toolbarItemWidth*-7 @toolbarHeight*2;
-      }
-
-      li.sounds.active {
-        background-position: @toolbarItemWidth*-8 @toolbarHeight*2;
-      }
-
-      li.fonts.active {
-        background-position: @toolbarItemWidth*-9 @toolbarHeight*2;
-      }
-
-      li.options.active {
-        background-position: @toolbarItemWidth*-10 @toolbarHeight*2;
-      }
-
-      li.scene.disabled {
-        background-position: 0 (@toolbarHeight - 2);
-      }
-
-      li.keyframe.disabled {
-        background-position: @toolbarItemWidth*-1 (@toolbarHeight - 1);
-      }
-
-      li.animation-keyframe.disabled {
-        background-position: @toolbarItemWidth*-1 (@toolbarHeight - 1);
-      }
-
-      li.edit-text.disabled {
-        background-position: @toolbarItemWidth*-2 (@toolbarHeight - 1);
-      }
-
-      li.add-hotspot.disabled {
-        background-position: @toolbarItemWidth*0 (@toolbarHeight - 1);
-      }
-
-      li.add-image.disabled {
-        background-position: @toolbarItemWidth*-4 (@toolbarHeight - 1);
-      }
-
-      li.sync-audio.disabled {
-        background-position: @toolbarItemWidth*-2 (@toolbarHeight - 1);
-      }
-
-      li.touch-zones.disabled {
-        background-position: @toolbarItemWidth*-3 (@toolbarHeight - 2);
-      }
-
-      li.videos.disabled {
-        background-position: @toolbarItemWidth*-6 (@toolbarHeight - 2);
-      }
-
-      li.actions.disabled {
-        background-position: @toolbarItemWidth*-5 (@toolbarHeight - 2);
-      }
-
-      li.images.disabled {
-        background-position: @toolbarItemWidth*-7 (@toolbarHeight - 2);
-      }
-
-      li.sounds.disabled {
-        background-position: @toolbarItemWidth*-8 (@toolbarHeight - 2);
-      }
-
-      li.fonts.disabled {
-        background-position: @toolbarItemWidth*-9 (@toolbarHeight - 2);
-      }
-
-      li.options.disabled {
-        background-position: @toolbarItemWidth*-10 (@toolbarHeight - 2);
-      }
-
-      li.disabled a {
-        color: #888;
-      }
-
-      li.disabled:hover, li.disabled a:hover {
-        cursor: default;
-      }
-
-      li.disabled a:hover, li.disabled:hover a {
-        color:#888 !important;
-      }
-
-      li a {
-        margin-top: 70px;
-        text-align: center;
-        font-family: arial, sans-serif;
-        font-size: 11px;
-        text-shadow: 0px 1px 1px #ffffff;
-        color: #333;
-        width: @toolbarItemWidth;
-
-        .horizontal-menu;
+      li a:hover {
+        text-decoration:none;
       }
 
       li:hover {
@@ -206,10 +149,6 @@ nav.toolbar {
 
       li:hover a {
         color: #000;
-      }
-
-      li a:hover {
-        text-decoration:none;
       }
     }
   }
@@ -231,12 +170,9 @@ nav.toolbar {
   }
 
   .sync-audio a{
-    line-height: 12px;
     position: relative;
-    top: -5px;
     left: -1px;
     margin-left: 0;
     margin-right: 0;
   }
 }
-

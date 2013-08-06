@@ -1,0 +1,341 @@
+.ui-resizable-w {
+  cursor: col-resize;
+}
+
+.asset-library-image {
+  display: inline-block;
+  float: left;
+  width: 50px;
+  height: 61px;
+  margin: -1px 10px 10px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+}
+
+.removable {
+  .delete {
+   display: none;
+   position: absolute;
+   right: 4px;
+   top: 4px;
+   width: 17px;
+   height: 17px;
+   margin: 4px 3px 0;
+   opacity: 0.7;
+   background-size: 100%;
+   background-repeat: no-repeat;
+   background-image: asset-url('red-minus.png');
+   cursor: pointer;
+
+   &:hover {
+     opacity: 1;
+   }
+  }
+
+  &:hover {
+    .delete {
+      display: block;
+    }
+  }
+}
+
+// drag a sprite to the canvas
+.asset.ui-draggable-dragging {
+  .asset-library-image;
+  .filename {
+    display: none;
+  }
+}
+
+#asset-library-sidebar {
+  min-width: 170px;
+  left: 0 !important;
+  margin-top: 85px;
+  padding: 0;
+  font-size: 11px;
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-vertical;
+
+  #asset-type-filter,
+  #active-uploads,
+  #asset-list,
+  #asset-sorting {
+    padding: 0 px 0 5px;
+    select {
+      width: 130px;
+      margin-left: 5px;
+      font-size: 11px;
+    }
+  }
+
+  /*
+    Filter to show a single file type from list
+  */
+  #asset-type-filter {
+    ul.nav.nav-pills {
+      width: 100%;
+      padding-left: 10px;
+      margin-bottom: 20px;
+
+      li {
+        text-align: center;
+
+        a {
+          font-size: 10px;
+          padding: 5px 10px 5px;
+        }
+      }
+    }
+  }
+
+  /*
+    List of active uploads (uploading in-progress)
+  */
+  #active-uploads {
+    clear:both;
+
+    ul {
+      margin: auto 0;
+
+      li {
+        list-style: none;
+        font-family: 'Arial Black';
+        font-size: 10px;
+        width: 82px;
+        position: relative;
+        display: inline-block;
+        .removable;
+
+        .asset {
+          .asset-library-image;
+          margin-left: 16px;
+          &.image {
+            background-image: url(/assets/toolbar.png);
+            background-position: -518px -9px;
+            background-size: auto;
+          }
+        }
+        .filename {
+          position: absolute;
+          bottom: 0;
+        }
+      }
+    }
+  }
+
+  /*
+    Dropdown sorting options for assets
+  */
+  #asset-sorting {
+    display: inline-block;
+    margin: 10px 3px 5px 5px;
+    text-align: right;
+
+    select {
+      width: 135px;
+      margin-top: 3px;
+      height: 22px;
+    }
+
+    .btn-mini.selected {
+      width: 110px;
+      text-align: left;
+    }
+
+    .dropdown-menu {
+      .scale(0.75);
+
+      -webkit-transform-origin: 1 1;
+      top: 5px;
+      left: -12px !important;
+    }
+
+    .dropdown-label {
+      position: relative;
+      bottom: -3px;
+    }
+  }
+
+  #toggle-assets-view {
+    display: inline-block;
+  }
+
+  /*
+    List of media assets on sidebar
+  */
+  #asset-list-thumb-view {
+    margin: auto;
+
+    li {
+      list-style: none;
+      font-family: 'Arial Black';
+      font-size: 10px;
+      width: 82px;
+      display: none;
+      position: relative;
+      .removable;
+
+      &:hover {
+        cursor: pointer;
+        .asset.sound {
+          opacity: 0.4;
+        }
+      }
+
+      .asset {
+        .asset-library-image;
+        margin-left: 16px;
+      }
+
+      .filename {
+        position: absolute;
+        bottom: 0;
+      }
+    }
+  }
+
+  #asset-list-table {
+    tr {
+      display: none;
+
+      td {
+        vertical-align: middle;
+        height: 40px;
+        padding: 2px;
+      }
+
+      .thumb {
+        position: relative;
+      }
+
+      .asset {
+        .asset-library-image;
+        margin: 0;
+      }
+
+      .asset-size {
+        text-align: right;
+        padding-right: 0;
+        padding-left: 6px;
+      }
+
+      .delete-asset {
+        width: 15px;
+        padding: 6px 0 0 4px;
+
+        a {
+          visibility: hidden;
+        }
+      }
+
+      &:hover {
+        .delete-asset a {
+          opacity: 0.6;
+          visibility: visible;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+  }
+
+
+  #asset-list-thumb-view {
+    &.images .image, &.sounds .sound, &.videos .video {
+      &.filter-on {
+        display: inline-block;
+      }
+    }
+  }
+  #asset-list-table tbody {
+    &.images .image, &.sounds .sound, &.videos .video {
+      &.filter-on {
+        display: table-row;
+      }
+    }
+  }
+  #asset-list-thumb-view, #asset-list-table tbody {
+    .asset.sound {
+      background-image: url(/assets/audio-icon.png);
+    }
+    .asset.video {
+      background-image: url(/assets/video-icon.png);
+    }
+    .player, .video .control {
+      position: absolute;
+      top: 20px;
+      left: 35px;
+      display: none;
+    }
+    .video .thumb .control, .sound .thumb .player {
+      left: 25px;
+    }
+    .thumb, li.video {
+      &:hover {
+        .player, .control {
+          display: block;
+        }
+      }
+    }
+    &.hidden {
+      display: none;
+    }
+
+  }
+
+
+  /*
+    Footer area fixed to bottom of asset library sidebar.
+  */
+  #asset-sidebar-sticky-footer {
+    position: absolute;
+    bottom: 0 !important;
+    right: 0;
+    width: 100%;
+    padding-top: 5px;
+    background-color: #f0f0f0;
+
+    #asset-text-search {
+      display: inline-block;
+      float: right;
+      margin-right: 3px;
+      margin-top: 5px;
+      position: relative;
+      bottom: -5px;
+
+      input {
+        height: 20px !important;
+        width: 116px;
+      }
+    }
+
+    .select-file {
+      float: left;
+      position: relative;
+      margin: 5px 0 0 3px;
+
+      .btn {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+      }
+
+      input {
+        position: relative;
+        width: 75px;
+        text-align: right;
+        -moz-opacity: 0;
+        filter: 'alpha(opacity: 0)';
+        opacity: 0;
+        z-index: 2;
+      }
+    }
+  }
+
+}

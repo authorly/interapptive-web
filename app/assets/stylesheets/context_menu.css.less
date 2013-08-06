@@ -1,0 +1,118 @@
+nav.toolbar {
+  ul#toolbar {
+    width: 100%;
+    margin: 0px auto;
+
+    li#context-menu-container {
+      .scale(0.75);
+
+      padding-top:4px;
+
+      label {
+        display: inline-block;
+        margin-left: 3px;
+      }
+
+      input {
+        .round-corners();
+
+        border: 1px solid grey;
+        width: 35px;
+        padding-left:4px;
+      }
+
+      #sprite-filename {
+        float: left;
+      }
+
+      #sprite-scale {
+        width: 167px;
+        float: right;
+        clear: left;
+        margin-top: 5px;
+
+      }
+
+      #sprite-coordinates {
+        width: 220px;
+        float: left;
+      }
+
+      #sprite-options{
+        font-size: 10px;
+        line-height: 12px;
+        text-align: left;
+        float: left;
+      }
+
+      #asset-selector {
+        margin-top: 15px;
+        margin-right: 180px;
+
+        .form-actions, .help-inline {
+          display: none;
+        }
+      }
+
+      #asset-options {
+        float: right;
+        margin-top: -44px;
+        margin-right: 100px;
+      }
+
+      #font-face-selector{
+        margin-top: 15px;
+        margin-right: 180px;
+
+        #font-face {
+          width: 180px;
+        }
+      }
+
+      #font-size-selector {
+        margin-top: -40px;
+        margin-right: -120px;
+
+        #font-size {
+          width: 66px;
+        }
+      }
+
+      #font-color-selector {
+        margin-top: -60px;
+        margin-right: -270px;
+      }
+
+      #text-widget-options {
+        margin-top: -55px;
+        margin-right: -395px;
+      }
+
+      #button-widget-filename {
+        display: inline-block;
+        margin-top: 0;
+        cursor: pointer;
+        float: left;
+      }
+
+      #button-widget-disable {
+        background-image: asset-url('eye.png');
+        background-size: 100%;
+        width: 14px;
+        height: 14px;
+        margin-top: -16px;
+        margin-left: 25px;
+        cursor: pointer;
+      }
+
+      #button-widget-coordinates {
+        width: 220px;
+        float: left;
+      }
+
+      #button-widget-scale {
+        margin-left: 122px;
+      }
+    }
+  }
+}

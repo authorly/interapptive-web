@@ -1,7 +1,10 @@
 .keyframe-list {
+  .clearfix();
+
   counter-reset: numList;
   margin: 10px 0 0 265px;
-  .clearfix();
+  display: inline-block;
+  float: left;
 
   li {
     .round-corners();
@@ -26,9 +29,9 @@
       img {
         position: relative;
         max-width: none;
-        width: 168px;
-        left: -27px;
-        top: -41px;
+        width: 368px;
+        left: -128px;
+        top: -92px;
       }
     }
 
@@ -46,6 +49,7 @@
       left: -67px;
       top: 15px;
       text-align: center;
+      line-height: 14px;
 
       input[name='animation-duration'] {
         width: 35px;
@@ -122,5 +126,36 @@
 
   li.active:active {
     opacity: 0.9;
+  }
+}
+
+.add-keyframe {
+  .round-corners();
+  .opacity(0.55);
+
+  background-color: #696969;
+  border: 1px solid #858585;
+  width: 110px;
+  height: 81px;
+  overflow: hidden;
+  position: relative;
+  left: -43px;
+  bottom: -11px;
+  transition:opacity .2s;
+
+
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
+    border: 1px solid #3a3a3a;
+  }
+
+  span {
+    font-size: 88px;
+    display: block;
+    padding-top: 20px;
+    padding-left: 29px;
+    background-color: transparent;
+    font-weight: 900;
   }
 }

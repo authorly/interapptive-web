@@ -9,31 +9,22 @@ window.App =
   Config:      {}
 
   init: ->
+    App.version =
+      environment: $('#rails-environment').data('rails-environment'),
+      git_head:    $('#rails-environment').data('git-head')
+
     # A global vent object that allows decoupled communication between
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
 
-    @vent.on 'reset:palettes',           @_resetPalettes,    @
-    @vent.on 'toggle:palette',           @_togglePalette,    @
-    @vent.on 'initialize:hotspotWidget', @_openHotspotModal, @
-    @vent.on 'hide:modal',               @_hideModal,        @
-    @vent.on 'show:imageLibrary',        @_showImageLibrary, @
-    @vent.on 'show:message',             @_showToast,        @
+    @initializeGlobalSync()
 
-    @vent.on 'create:scene',    @_addNewScene,    @
-    @vent.on 'create:keyframe', @_addNewKeyframe, @
-    @vent.on 'create:widget',   @_addNewWidget,   @
+    @vent.on 'hide:modal',   @_hideModal, @
+    @vent.on 'show:message', @_showToast, @
 
-    @vent.on 'show:sceneform',  @_showSceneForm,  @
 
-    @vent.on 'change:keyframeWidgets', @_changeKeyframeWidgets, @
-    @vent.on 'load:sprite',            @_changeSceneWidgets,    @
-
-    @vent.on 'play:video', @_playVideo, @
-
-    @vent.on 'show:simulator', @showSimulator
-
+  initStorybook: ->
     @currentSelection = new Backbone.Model
       storybook: null
       scene: null
@@ -41,57 +32,61 @@ window.App =
       text_widget: null
     @currentWidgets = new App.Collections.CurrentWidgets()
 
-    @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
-    @file_menu = new App.Views.FileMenuView el: $('#file-menu')
-
-    @spritesListPalette = new App.Views.PaletteContainer
-      view       : new App.Views.SpriteListPalette()
-      el         : $('#sprite-list-palette')
-      title      : 'Active Scene Images'
-      alsoResize : '#sprite-list-palette ul li span'
-
-    @textEditorPalette = new App.Views.PaletteContainer
-      title: 'Font Settings'
-      view : new App.Views.TextEditorPalette
-      el   : $('#text-editor-palette')
-
-    @spriteEditorPalette = new App.Views.PaletteContainer
-      view      : new App.Views.SpriteEditorPalette
-      el        : $('#sprite-editor-palette')
-      resizable : false
-
-    @spriteLibraryPalette = new App.Views.PaletteContainer
-      title:     'Uploaded Images'
-      view:      new App.Views.SpriteLibraryPalette
-      el:        $('#sprite-library-palette')
-      resizable: true
-
-    canvas = $('#builder-canvas')
-    canvasAttributes =
-      height: canvas.height()
-      offset: canvas.offset()
-      scale:  canvas.attr('height') / canvas.height()
-      margins:
-        top: 200
-        left: 125
-    canvas.droppable
-      accept: '.sprite-image'
-      drop: (__, ui) =>
-        offset = canvas.offset()
-        @_addNewImage
-          image_id: ui.draggable.data('id')
-          position:
-            x: (ui.position.left - offset.left - canvasAttributes.margins.left + ui.helper.width() * 0.5) * canvasAttributes.scale
-            y: canvasAttributes.height - ((ui.position.top - offset.top - canvasAttributes.margins.top) + ui.helper.height() * 0.5) * canvasAttributes.scale
-
-    @palettes = [ @textEditorPalette, @spritesListPalette, @spriteEditorPalette, @spriteLibraryPalette ]
-
     @currentSelection.on 'change:storybook', @_openStorybook,  @
     @currentSelection.on 'change:scene',     @_changeScene,    @
     @currentSelection.on 'change:keyframe',  @_changeKeyframe, @
     @currentSelection.on 'change:widget',    @_changeWidget,   @
 
-    @initializeGlobalSync()
+    @vent.on 'show:fontLibrary',         @_showFontLibrary,  @
+
+    @vent.on 'create:scene',    @_addNewScene,    @
+    @vent.on 'create:widget',   @_addNewWidget,   @
+
+    @vent.on 'show:settingsform',  @_showSettings, @
+    @vent.on 'show:scenebackgroundsoundform', @_showBackgroundSoundForm, @
+
+    @vent.on 'change:keyframeWidgets', @_changeKeyframeWidgets, @
+    @vent.on 'load:sprite',            @_changeSceneWidgets,    @
+    @vent.on 'bring_to_front:sprite', @_bringToFront, @
+    @vent.on 'put_in_back:sprite',    @_putInBack,    @
+
+    @vent.on 'play:video', @_playVideo, @
+
+    @vent.on 'show:simulator', @showSimulator
+
+    @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
+    @fontCache    = new App.Views.FontCache            el: $('#storybook-font-cache')
+    @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
+
+    @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
+      el: $('#asset-library-sidebar')
+
+    @_makeCanvasDroppable()
+
+    App.initModals()
+
+
+  _hideModal: ->
+    @modalWithView()?.hide()
+
+
+  _showToast: (type, message) ->
+    window.toastr[type](message)
+
+
+  _makeCanvasDroppable: ->
+    canvas = $('#builder')
+    canvas.droppable
+      accept: '.asset'
+      drop: (__, ui) =>
+        offset = canvas.offset()
+        position =
+          x: App.Config.dimensions.width / 2
+          y: App.Config.dimensions.height / 2
+        @_assetDropped
+          id:   ui.draggable.data('id')
+          type: ui.draggable.data('type')
+          position: position
 
 
   saveCanvasAsPreview: ->
@@ -99,16 +94,6 @@ window.App =
       keyframe = App.currentSelection.get('keyframe')
       App.Builder.Widgets.WidgetLayer.updateKeyframePreview(keyframe)
     ), 200 # wait for the changes to be shown in the canvas
-
-
-  _togglePalette: (palette) ->
-    # translate from generic event names to variable names in this file
-    # (to avoid coupling the names)
-    palette = switch palette
-      when 'sceneImages' then @spritesListPalette
-      when 'imageEditor' then @spriteEditorPalette
-      when 'fontEditor'  then @textEditorPalette
-    palette.$el.toggle() if palette?
 
 
   _openStorybook: (__, storybook) ->
@@ -133,12 +118,20 @@ window.App =
 
     storybook.fetchCollections()
 
-    @textEditorPalette.view.openStorybook(storybook)
-    @spriteLibraryPalette.view.openStorybook(storybook)
+    @fontCache.openStorybook(storybook)
+
+    assets = new App.Lib.AggregateCollection([], collections: [storybook.images, storybook.videos, storybook.sounds])
+    assets.storybook = storybook
+    @assetLibrarySidebar.setAssets assets
 
 
-  _showSceneForm: ->
-    view = new App.Views.SceneForm(model: App.currentSelection.get('scene'))
+  _showSettings: ->
+    view = new App.Views.SettingsContainer(model: App.currentSelection.get('scene'))
+    App.modalWithView(view: view).show()
+
+
+  _showBackgroundSoundForm: ->
+    view = new App.Views.BackgroundSoundForm(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
 
 
@@ -150,13 +143,12 @@ window.App =
     App.vent.trigger 'activate:scene', scene
     @vent.trigger 'can_add:keyframe', scene.canAddKeyframes()
     @vent.trigger 'can_add:animationKeyframe', scene.canAddAnimationKeyframe()
+    @vent.trigger 'has_background_sound:scene', scene.hasBackgroundSound()
 
     @keyframesView.remove() if @keyframesView?
     @keyframesView = new App.Views.KeyframeIndex(collection: scene.keyframes)
     $('#keyframe-list').html @keyframesView.render().el
     scene.fetchKeyframes()
-
-    @spritesListPalette.view.setCollection(scene.widgets)
 
 
   _addSceneListeners: (scene) ->
@@ -225,40 +217,40 @@ window.App =
     App.currentSelection.get('storybook').addNewScene()
 
 
-  _addNewKeyframe: (attributes) ->
-    App.currentSelection.get('scene').addNewKeyframe(attributes)
-
-
   _addNewWidget: (attributes) ->
-    container = App.Collections.Widgets.containers[attributes.type]
-    collection = App.currentSelection.get(container).widgets
+    containerType = App.Collections.Widgets.containers[attributes.type]
+    container = App.currentSelection.get(containerType)
+    collection = container.widgets
     widget = collection.model(attributes)
-    collection.add widget
 
-    unless widget instanceof App.Models.TextWidget
-      App.currentSelection.set widget: widget
+    if widget instanceof App.Models.HotspotWidget and !container.canAddHotspot()
+      alert 'Cannot add Hotspots to this scene'
+      return
+
+    collection.add widget
 
 
   # @param [Object] attributes
-  # @option attributes [Integer] image_id
+  # @option attributes [Integer] id
+  # @option attributes [String] type ('image', 'sound' or 'video')
   # @option attributes [Object] position {x, y}
-  _addNewImage: (attributes={}) ->
+  _assetDropped: (attributes={}) ->
     scene = App.currentSelection.get('scene')
 
-    scene.widgets.add
-      type: 'SpriteWidget'
-      image_id: attributes.image_id
+    widgetAttributes =
       position: $.extend {}, attributes.position
-      scale: 1
+    widgetAttributes[attributes.type + '_id'] = attributes.id
 
+    switch attributes.type
+      when 'image'
+        widgetAttributes.type = 'SpriteWidget'
+        widgetAttributes.scale = 1
+        break
+      when 'sound', 'video'
+        widgetAttributes.type = 'HotspotWidget'
+        break
 
-  _openHotspotModal: (widget) ->
-    view = new App.Views.Hotspot(widget: widget, storybook: @currentSelection.get('storybook'))
-    @modalWithView(view: view).show()
-
-
-  _resetPalettes: ->
-    palette.reset() for palette in @palettes
+    @_addNewWidget(widgetAttributes)
 
 
   initModals: ->
@@ -285,26 +277,18 @@ window.App =
     @lightboxView
 
 
-  _hideModal: ->
-    @modalWithView().hide()
+  _playVideo: (videoView) ->
+    App.vent.trigger('hide:modal')
+    @lightboxWithView(view: videoView).show()
 
 
-  _playVideo: (video_view) ->
-    @lightboxWithView(view: video_view).show()
-
-
-  _showImageLibrary: ->
-    @file_menu.showImageLibrary()
-
-
-  _showToast: (type, message) ->
-    window.toastr[type](message)
+  _showFontLibrary: ->
+    view = new App.Views.AssetLibrary(assetType: 'font', assets: App.currentSelection.get('storybook').customFonts())
+    App.modalWithView(view: view).show()
 
 
   _changeWidget: (selection, widget) ->
     @_triggerCurrentWidgetChangeEvent(selection, widget)
-
-    @spritesListPalette.view.spriteSelected(widget)
 
 
   # Translates an App.currentSelection.on(widget:change) event
@@ -321,13 +305,20 @@ window.App =
   # event is triggered e.g. 'deactivate:textWidget'. deactivate
   # receives previous widget that was set.
   _triggerCurrentWidgetChangeEvent: (selection, widget) ->
-    if widget is null
+    if widget?
+      @vent.trigger('activate:' + App.Lib.StringHelper.decapitalize(widget.get('type')), widget)
+    else
       previous_widget = selection.previous('widget')
       if previous_widget?
         @vent.trigger('deactivate:' + App.Lib.StringHelper.decapitalize(previous_widget.get('type')), previous_widget)
-    else
-      if widget?
-        @vent.trigger('activate:' + App.Lib.StringHelper.decapitalize(widget.get('type')), widget)
+
+
+  _bringToFront: (sprite) ->
+    sprite.collection.setMaxZOrder(sprite)
+
+
+  _putInBack: (sprite) ->
+    sprite.collection.setMinZOrder(sprite)
 
 
   showSimulator: =>
@@ -353,19 +344,28 @@ window.App =
     @syncVent.on 'start', (-> @syncing.css('visibility', 'visible')), @
     @syncVent.on 'end',   (-> @syncing.css('visibility', 'hidden' )), @
 
+    window.onbeforeunload = (event) =>
+      return if @syncVent.empty()
 
-  start: ->
-    App.version =
-      environment: $('#rails-environment').data('rails-environment'),
-      git_head:    $('#rails-environment').data('git-head')
+      message = "Still saving data, please wait"
+      (event || window.event).returnValue = message # Gecko + IE
+      message                                       # Webkit-based
 
-    App.init()
 
+  showStorybooks: ->
+    view = new App.Views.StorybookIndex
+      collection: new App.Collections.StorybooksCollection()
+      el: '#main'
+    view.render()
+
+    view.collection.fetch(reset: true)
+
+
+  showStorybook: (id) ->
+    @initStorybook()
     window.initBuilder()
-
     $(window).resize -> App.vent.trigger('window:resize')
-    App.initModals()
 
-    @storybooksRouter = new App.Routers.StorybooksRouter
-    Backbone.history.start()
-
+    (new App.Models.Storybook(id: id)).fetch
+      success: (storybook) ->
+        App.currentSelection.set storybook: storybook

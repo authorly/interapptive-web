@@ -1,9 +1,7 @@
 Interapptive::Application.routes.draw do
 
-  root :to => 'home#index', :constraints => lambda { |request| request.cookies['auth_token'] }
+  root :to => 'storybooks#index', :constraints => lambda { |request| request.cookies['auth_token'] }
   root :to => 'user_sessions#new'
-
-  get 'assets/index', :as => :assets
 
   get  'users/sign_up'  => 'users#new',             :as => 'sign_up'
   get  'users/sign_in'  => 'user_sessions#new',     :as => 'sign_in'
@@ -41,6 +39,7 @@ Interapptive::Application.routes.draw do
     resources :images
     resources :videos
     resources :sounds
+    resources :assets, only: :create
   end
 
   resources :scenes do

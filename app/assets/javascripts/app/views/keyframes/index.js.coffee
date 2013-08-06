@@ -23,6 +23,10 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on 'remove', @removeKeyframe
     @collection.on 'synchronization-start synchronization-end', @_toggleEnabled, @
 
+
+    $('.add-keyframe').live 'click', =>  @addKeyframe()
+
+
     App.currentSelection.on 'change:keyframe', @keyframeChanged, @
     @keyframe_views = []
 
@@ -51,7 +55,7 @@ class App.Views.KeyframeIndex extends Backbone.View
 
     @initSortable()
 
-    @switchKeyframe @lastKeyframe()
+    @switchKeyframe(@collection.findWhere(position: 0) || @collection.at(0))
 
     if @collection.scene.isMainMenu()
       @$el.hide()
@@ -82,6 +86,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   keyframeClicked: (event) ->
+    event.stopPropagation()
+
     keyframe = @collection.get $(event.currentTarget).attr('data-id')
     @switchKeyframe(keyframe)
 
@@ -96,10 +102,6 @@ class App.Views.KeyframeIndex extends Backbone.View
       addClass('active')
 
 
-  lastKeyframe: ->
-    @collection.at(@collection.length - 1)
-
-
   destroyKeyframeClicked: (event) =>
     event.stopPropagation()
     return if @$el.hasClass('disabled')
@@ -112,8 +114,9 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   removeKeyframe: (keyframe) =>
+    index = @collection.indexOf(keyframe)
     $(".keyframe-list li[data-id=#{keyframe.id}]").remove()
-    @switchKeyframe @lastKeyframe()
+    @switchKeyframe(@collection.at(index + 1) or @collection.at(index - 1))
     @_updateDeleteButtons()
 
 
@@ -131,6 +134,10 @@ class App.Views.KeyframeIndex extends Backbone.View
       handle      : '.main'
       opacity     : 0.6
       update      : @_numberKeyframes
+
+
+  addKeyframe: ->
+    App.currentSelection.get('scene').addNewKeyframe({})
 
 
   _numberKeyframes: =>

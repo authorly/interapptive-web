@@ -33,19 +33,28 @@ class KeyframesController < ApplicationController
     @keyframe = @scene.keyframes.find params[:id]
 
     respond_to do |format|
-      if @keyframe.update_attributes params[:keyframe]
-        format.json { render :json => @keyframe }
-      else
-        format.json { render :json => @keyframe.errors, :status => :unprocessable_entity }
-      end
+      format.json {
+        if @keyframe.update_attributes params[:keyframe]
+          render :json => @keyframe
+        else
+          render :json => @keyframe.errors, :status => :unprocessable_entity
+        end
+      }
     end
   end
 
   def destroy
-    @scene.keyframes.find(params[:id]).destroy
+    keyframe = @scene.keyframes.find(params[:id])
+    keyframe.destroy if keyframe.can_be_destroyed?
 
     respond_to do |format|
-      format.json { render :json => {:status => :ok} }
+      format.json {
+        if keyframe.destroyed?
+          render :json => {:status => :ok}
+        else
+          render :json => {:status => :unprocessable_entity}
+        end
+      }
     end
   end
 

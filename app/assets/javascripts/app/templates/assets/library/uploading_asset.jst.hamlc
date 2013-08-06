@@ -1,0 +1,3 @@
+%span.asset{:class => @type}
+  %span.filename= App.Lib.StringHelper.truncate(@asset.get('name'))
+  .delete

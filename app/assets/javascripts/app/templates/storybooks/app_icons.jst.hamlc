@@ -1,15 +1,9 @@
 #image-picker
-  .modal-header
-    %h3.modal-title
-      Choose an Icon...
-    For best results, use a 1024x1024 image (see the&nbsp;
-    %a{ :href => "http://developer.apple.com/library/ios/#documentation/userexperience/conceptual/mobilehig/IconsImages/IconsImages.html"}> Apple Guidelines
-    )
+  For best results, use a 1024x1024 image (see the&nbsp;
+  %a{ :href => "http://developer.apple.com/library/ios/#documentation/userexperience/conceptual/mobilehig/IconsImages/IconsImages.html"}> Apple Guidelines
+  )
 
-  .modal-body
-    .image-selector
+  .image-selector
 
-  .modal-footer
-    %a.btn.btn-primary.use-image.disabled
-      %i.icon-plus.icon-white
-      Select
+  %a.btn.btn-primary.use-image.disabled
+    Select

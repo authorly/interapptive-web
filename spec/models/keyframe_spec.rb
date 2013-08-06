@@ -27,20 +27,25 @@ describe Keyframe do
   end
 
   describe 'animation keyframe validation' do
+    before do
+      @scene = Factory.create(:scene)
+      @scene.keyframes.destroy_all
+    end
+
     it 'should allow an animation keyframe' do
-      keyframe = Factory.create(:keyframe)
-      Factory.build(:animation_keyframe, scene_id: keyframe.scene_id).should be_valid
+      Factory.create(:keyframe, scene: @scene)
+      Factory.build(:animation_keyframe, scene: @scene).should be_valid
     end
 
     it "should not allow an animation keyframe unless its position is nil" do
-      Factory.build(:animation_keyframe, position: 0).should_not be_valid
-      Factory.build(:animation_keyframe, position: 1).should_not be_valid
-      Factory.build(:animation_keyframe, position: nil).should be_valid
+      Factory.build(:animation_keyframe, scene: @scene, position: 0).should_not be_valid
+      Factory.build(:animation_keyframe, scene: @scene, position: 1).should_not be_valid
+      Factory.build(:animation_keyframe, scene: @scene, position: nil).should be_valid
     end
 
     it 'should not allow two animation keyframes in the same scene' do
-      animation = Factory.create(:animation_keyframe)
-      Factory.build(:animation_keyframe, scene_id: animation.scene_id).should_not be_valid
+      Factory.create(:animation_keyframe, scene: @scene)
+      Factory.build(:animation_keyframe, scene: @scene).should_not be_valid
     end
   end
 
@@ -58,4 +63,13 @@ describe Keyframe do
 
   end
 
+  describe 'destroy' do
+    it 'is allowed for regular keyframe' do
+      Factory.build(:keyframe).can_be_destroyed?.should == true
+    end
+
+    it 'is not allowed for animation keyframes' do
+      Factory.build(:animation_keyframe).can_be_destroyed?.should == false
+    end
+  end
 end

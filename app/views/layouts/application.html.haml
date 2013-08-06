@@ -8,51 +8,25 @@
     %title= content_for?(:title) ? yield(:title) : 'App Builder - Authorly'
     %meta{:content => '', :name => 'description'}
     %meta{:content => '', :name => 'author'}
-    %link{:href => "favicon.ico", :rel => "icon", :type => "image/x-icon"}
+    %link{:href => "/favicon.ico", :rel => "icon", :type => "image/x-icon"}
 
     = stylesheet_link_tag 'application', :media => 'all'
+    %style#storybook-font-cache
     = javascript_include_tag 'application'
     = csrf_meta_tags
     = yield(:head)
 
   %body
-    %header.navbar.navbar-fixed-top
-      = render 'layouts/file_menu'
-      = render 'layouts/toolbar'
-      #global-sync-indicator= image_tag 'loading.gif'
-    #main{:role => "main"}
-      .container
-        .content
-          .row
-            .span2.navbar.sidebar
-              #scene-list
-            .canvas-column
-              - flash.each do |name, msg|
-                %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
-                  %a.close{"data-dismiss" => "alert"}
-                  = msg
-              %canvas{id: 'builder-canvas', width: 1524, height: 1568}
-                %p Your browser doesn't support the technology required to run this application.
-              #context-menu
-                .sprite
-                .text
-                .hotspot
-
-            #sprite-list-palette.palette.span2
-            #sprite-editor-palette.palette.span2
-            #text-editor-palette.palette.span2
-            #sprite-library-palette.palette.span2
-            #action-form-container
-
-    %footer.navbar.navbar-fixed-bottom
-      %footer
-        #keyframe-list
-    / Aids w/ clipboard clean-up on paste
-    %div#cleanUp{:contenteditable => 'true'}
-    / RFCTR: Storybooks modal should use generic modal
-    = render 'storybooks/index_modal'
-    = render 'shared/content_modal'
-    = render 'shared/lightbox_modal'
     %span#rails-environment{'data-rails-environment' => Rails.env, 'data-git-head' => Rails.application.config.git_head}
-    :javascript
-      $(document).ready(function(){ App.start() })
+
+    %header.navbar.navbar-fixed-top
+      #global-sync-indicator= image_tag 'loading.gif'
+      = yield :header
+
+    #main{ role: 'main' }
+      = yield
+
+    :coffee
+      $ ->
+        App.init()
+        #{ yield :initialization_coffee }

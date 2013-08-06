@@ -1,0 +1,52 @@
+#asset-type-filter
+  %ul.nav.nav-pills
+    %li.active{:data-filter => 'images videos sounds'}
+      %a{:href => "#"} Show All
+    %li{:data-filter => 'images'}
+      %a{:href => "#"} Images
+    %li{:data-filter => 'videos'}
+      %a{:href => "#"} Videos
+    %li{:data-filter => 'sounds'}
+      %a{:href => "#"} Sounds
+
+
+#active-uploads
+  %div Uploading
+  %ul
+
+
+#asset-sorting.form-inline
+  %span.dropdown-label Sort by:
+  %select
+    %option{:value=> "name-ascending", :selected => 'selected'} Name: ascending
+    %option{:value=> "name-descending"} Name: descending
+
+#toggle-assets-view.btn-group
+  %a.btn.btn-mini.assets.thumbs.disabled{:href => "#", :title => 'Thumbnail view'}
+    %i.icon-th-large.icon-black
+  %a.btn.btn-mini.assets.list{:href => "#", :title => 'List view'}
+    %i.icon-list.icon-black
+
+
+%ul#asset-list-thumb-view.images.sounds.videos
+
+
+%div#asset-list-table
+  %table.table
+    %tbody
+
+
+#asset-sidebar-sticky-footer
+  %span.select-file
+    %span.btn.btn-success
+      %i.icon-plus.icon-white
+      Add
+    %input.file-upload{:type => 'file', :name => 'files[]', :multiple => 'multiple'}
+
+
+  #asset-text-search
+    .input-append
+      %input#asset-search-field.input-small.span2{:type => 'text', :placeholder => 'Search media...'}
+      %button.btn{:type => 'button'}
+        %i{:class => 'icon-search icon-black'}
+
