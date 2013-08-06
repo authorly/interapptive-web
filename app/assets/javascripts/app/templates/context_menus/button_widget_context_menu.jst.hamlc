@@ -1,0 +1,19 @@
+%a#button-widget-filename
+  = @widget.filename()
+
+#button-widget-coordinates
+  %label{:for => 'x-coord'}
+    X:
+  %input#x-coord.input-mini{:value => parseInt(@widget.get('position').x)}
+
+  %label{:for => 'y-coord'}
+    Y:
+  %input#y-coord.input-mini{:value => parseInt(@widget.get('position').y)}
+
+#button-widget-scale
+  %label.scale-amount{:for => 'scale-amount'}
+    Scale:
+  %input#scale-amount.input-mini{:value => @widget.get('scale') * 100}
+  &#37;
+
+#button-widget-disable

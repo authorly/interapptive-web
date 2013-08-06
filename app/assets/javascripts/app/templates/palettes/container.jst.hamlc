@@ -1,2 +1,0 @@
-%div.handler= @title
-%div.palette-content-wrapper
