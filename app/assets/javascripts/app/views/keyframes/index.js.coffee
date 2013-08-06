@@ -117,10 +117,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   _updateDeleteButtons: ->
-    show_delete = @collection.length > 1
-
     buttons = @$('li .delete-keyframe')
-    if @collection.length > 1 then buttons.show() else buttons.hide()
+    if @collection.canDeleteKeyframes() then buttons.show() else buttons.hide()
 
 
   _removeKeyframeViews: ->

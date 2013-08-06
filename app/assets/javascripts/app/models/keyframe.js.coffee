@@ -303,10 +303,6 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     '/scenes/' + @scene.id + '/keyframes/sort.json'
 
 
-  toModdedJSON: ->
-    return {"keyframes": this.toJSON()}
-
-
   comparator: (keyframe) ->
     if keyframe.isAnimation()
       -1
@@ -334,6 +330,12 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     }), {
       wait: true
     }
+
+
+  canDeleteKeyframes: ->
+    # there is an animation keyframe, which is fixed
+    # and there should be at least one regular keyframe
+    @length > 2
 
 
   nextPosition: (options) ->
