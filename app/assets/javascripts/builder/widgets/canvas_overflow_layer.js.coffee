@@ -25,7 +25,7 @@ class App.Builder.Widgets.CanvasOverflowLayer extends cc.Layer
 
   COLOR_OUTER_FILL = 'rgba(174, 204, 246, 0.66)'
 
-  OVERFLOW_LAYER_COLOR = 'rgba(190, 190, 190, 0.13)'
+  OVERFLOW_LAYER_COLOR = 'rgba(190, 190, 190, 0.25)'
 
   LINE_WIDTH_OUTER = 2
 

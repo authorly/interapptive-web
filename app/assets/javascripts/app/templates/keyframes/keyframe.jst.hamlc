@@ -1,6 +1,9 @@
 %span.transition
   %input{type: 'number', min: '0', step: '0.1', name: 'animation-duration', value: @keyframe.get('animation_duration')}
-  %img{src: '/assets/scene-arrow.png'}
+  - if @keyframe.isAnimation()
+    delay
+  - else
+    %img{src: '/assets/scene-arrow.png'}
   seconds
 
 - if @keyframe.has "image_id"
@@ -12,4 +15,4 @@
   - unless @keyframe.get('is_animation')
     %a{:href=>"#","class" => "delete-keyframe", "data-id" => "#{@keyframe.get('id')}"}
     %a{:href=>"#","class" => "drag-keyframe", "data-id" => "#{@keyframe.get('id')}"}
-  %span.keyframe-number= "#{if @keyframe.get('position') == null then 'pre-text' else @keyframe.get('position') + 1 }"
+  %span.keyframe-number= "#{if @keyframe.get('position') == null then '' else @keyframe.get('position') + 1 }"
