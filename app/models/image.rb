@@ -19,8 +19,8 @@ class Image < Asset
       'thumbnail_url' =>    image.thumb.url,
       'delete_url'    =>    "/images/#{self.id}",
       'delete_type'   =>    'DELETE',
-      'created_at'    =>    created_at
-      'type'          =>  type
+      'created_at'    =>    created_at,
+      'type'          =>    type
     }
   end
 
