@@ -24,7 +24,12 @@ class App.Views.AssetLibraryElement extends Backbone.View
 
 
   type: ->
-    @model.constructor.name.toLowerCase()
+    if @model instanceof App.Models.Image
+      'image'
+    else if @model instanceof App.Models.Video
+      'video'
+    else if @model instanceof App.Models.Sound
+      'sound'
 
 
   remove: ->
