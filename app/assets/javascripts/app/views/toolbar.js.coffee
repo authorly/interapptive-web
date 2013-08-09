@@ -13,9 +13,6 @@ class App.Views.ToolbarView extends Backbone.View
 
   compileStorybook: (event) ->
     platform = $(event.currentTarget).find('a').data('platform')
-
-    if platform is 'android' then alert 'Coming soon!'; return
-
     App.currentSelection.get('storybook').compile(platform)
 
   initialize: ->
