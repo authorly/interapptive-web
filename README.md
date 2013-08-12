@@ -16,6 +16,11 @@
 1. `bundle exec rails server` starts the server
 
 
+## Setup for getting transcoded video versions
+
+  `bundle exec zencoder_fetcher --loop --interval 10 --url 'http://127.0.0.1:3000/zencoder' <ZENCODER_API_KEY>`
+
+
 ## Setup for creating mobile applications
 
 Install dependencies:
@@ -23,9 +28,9 @@ Install dependencies:
 1. Install [redis](http://redis.io/)
 1. Clone the mobile code
 
-       cd ../..
-       git clone git@github.com:curiousminds/interapptive.git
-	   mv interapptive Crucible
+     cd ../..
+     git clone git@github.com:curiousminds/interapptive.git
+     mv interapptive Crucible
 
 Start workers:
 

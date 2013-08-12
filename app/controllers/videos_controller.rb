@@ -3,6 +3,7 @@ class VideosController < ApplicationController
 
   def index
     videos = @storybook.videos
+    videos = videos.where(id: params[:video_ids]) if params[:video_ids].present?
 
     render :json => videos.map(&:as_jquery_upload_response).to_json
   end
@@ -24,7 +25,7 @@ class VideosController < ApplicationController
       format.json { head :ok }
     end
   end
-  
+
   private
 
   def find_storybook
