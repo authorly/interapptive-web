@@ -1,4 +1,2 @@
 .no-assets{ :style => 'display: none;' }
-  No assets have been uploaded,
-  %a.add{ :href => "#"}click here
-  to upload assets
+  Please use "Add" button below to upload assets.

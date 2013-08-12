@@ -65,16 +65,19 @@ class VideoUploader < CarrierWave::Uploader::Base
   private
 
   def zencode(*args)
+    notification_url = Rails.env.development? ?
+      'http://zencoderfetcher/':
+      zencoder_url
     params = {
       :input         => @model.video.url,
       :test          => true, # Enable Integration mode by default for all videos for now. https://app.zencoder.com/docs/guides/getting-started/test-jobs-and-integration-mode
-      :notifications => [zencoder_url],
+      :notifications => [notification_url],
       :pass_through  => @model.id,
       :outputs => [
         {
           :public      => true,
           :base_url    => base_url,
-          :filename    => 'mp4_' + filename_without_ext + '.mp4',
+          :filename    => name_for_format('mp4'),
           :label       => 'webmp4',
           :format      => 'mp4',
           :audio_codec => 'aac',
@@ -83,7 +86,7 @@ class VideoUploader < CarrierWave::Uploader::Base
         {
           :public      => true,
           :base_url    => base_url,
-          :filename    => 'webm_' + filename_without_ext + '.webm',
+          :filename    => name_for_format('webm'),
           :label       => 'webwebm',
           :format      => 'webm',
           :audio_codec => 'vorbis',
@@ -92,7 +95,7 @@ class VideoUploader < CarrierWave::Uploader::Base
         {
           :public      => true,
           :base_url    => base_url,
-          :filename    => 'ogv_' + filename_without_ext + '.ogv',
+          :filename    => name_for_format('ogv'),
           :label       => 'webogv',
           :format      => 'ogv',
           :audio_codec => 'vorbis',
@@ -102,7 +105,7 @@ class VideoUploader < CarrierWave::Uploader::Base
          :thumbnails => {
            :public      => true,
            :base_url    => base_url,
-           :filename    => "thumbnail_" + filename_without_ext,
+           :filename    => name_for_format('thumbnail', nil, false),
            :times       => [4],
            :aspect_mode => 'preserve',
            :width       => '100',
@@ -125,8 +128,13 @@ class VideoUploader < CarrierWave::Uploader::Base
     @base_url ||= File.dirname(@model.video.url)
   end
 
-  def url_for_format(prefix, extension = nil)
-    extension ||= prefix 
-    base_url + '/' + prefix + '_' + filename_without_ext + '.' + extension
+  def url_for_format(format, extension=nil)
+    base_url + '/' + name_for_format(format, extension)
+  end
+
+  def name_for_format(format, extension=nil, with_extension=true)
+    name = format + '_' + filename_without_ext
+    name += ".#{extension || format}" if with_extension
+    name
   end
 end

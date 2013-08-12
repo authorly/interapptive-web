@@ -18,5 +18,7 @@ class App.Views.AssetLibrarySound extends App.Views.AssetLibraryElement
   title: ->
     title = super
 
-    return unless (duration = @model.get('duration'))?
-    title.replace("\n", "\n#{@model.get('duration').toFixed(2)} seconds\n")
+    if (duration = @model.get('duration'))?
+      title = title.replace("\n", "\n#{@model.get('duration').toFixed(2)} seconds\n")
+
+    title
