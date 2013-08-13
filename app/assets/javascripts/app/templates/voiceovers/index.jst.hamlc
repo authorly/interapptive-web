@@ -9,7 +9,6 @@
     #voiceover-selector-container
 
   .modal-body
-    %i.icon-arrow-right.icon-black.disabled
     %ul#words
       - for widget in _.sortBy(@keyframe.textWidgets(), (w) -> w.get('z_order'))
         %li{ data-id: widget.id }
