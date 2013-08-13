@@ -77,10 +77,10 @@ class App.Views.ButtonWidgetContextMenu extends Backbone.View
     _kc = event.keyCode
 
     if _kc is App.Lib.Keycodes.up
-      @_changeScale(1)
+      @_setScale(1)
 
     if _kc is App.Lib.Keycodes.down
-      @_changeScale(-1)
+      @_setScale(-1)
 
 
   numericInputListener: ->
@@ -166,12 +166,6 @@ class App.Views.ButtonWidgetContextMenu extends Backbone.View
     @_delayedSavePosition(point) if point?
 
 
-  _changeScale: (scale_by) ->
-    scale = @widget.get('scale') * 100
-    @$('#scale-amount').val(scale + scale_by)
-    @_setScale()
-
-
   _point: (x, y) ->
     new cc.Point(x, y)
 
@@ -189,9 +183,27 @@ class App.Views.ButtonWidgetContextMenu extends Backbone.View
     @widget.set(position: { x: parseInt(point.x), y: parseInt(point.y) })
 
 
-  _setScale: ->
+  _setScale: (scale_by) =>
+    scale = @widget.get('scale') * 100
+    if scale_by?
+      if parseInt(scale) + scale_by < 10
+        @_scaleCantBeSet()
+        @$('#scale-amount').val(parseInt(scale))
+        return
+      else
+        @$('#scale-amount').val(parseInt(scale) + scale_by)
+
+    else
+      if parseInt(@_currentScale()) < 10
+        @_scaleCantBeSet()
+        @$('#scale-amount').val(parseInt(scale))
+        return
     @widget.set(scale: @_currentScale() / 100)
 
 
   _currentScale: ->
     window.parseFloat(@$('#scale-amount').val())
+
+
+  _scaleCantBeSet: ->
+    App.vent.trigger('show:message', 'warning', 'Scale can not be set to less than ten.')
