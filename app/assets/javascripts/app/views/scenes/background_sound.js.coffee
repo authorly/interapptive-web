@@ -28,7 +28,6 @@ class App.Views.BackgroundSoundForm extends App.Views.AbstractFormView
       loop_sound:
         type: "Checkbox"
         title: "Loop sound?"
-        help: "Enter \"0\" to play once or \"1\" to loop continuously."
         validators:    [
           checkRepetation = (value, formValues) ->
             err =
