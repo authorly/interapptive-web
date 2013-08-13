@@ -23,9 +23,9 @@
 
 #toggle-assets-view.btn-group
   %a.btn.btn-mini.assets.thumbs.disabled{:href => "#", :title => 'Thumbnail view'}
-    %i.icon-th-large.icon-black
-  %a.btn.btn-mini.assets.list{:href => "#", :title => 'List view'}
     %i.icon-list.icon-black
+  %a.btn.btn-mini.assets.list{:href => "#", :title => 'List view'}
+    %i.icon-th-large.icon-black
 
 
 %ul#asset-list-thumb-view.images.sounds.videos
