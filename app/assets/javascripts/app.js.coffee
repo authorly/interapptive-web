@@ -150,6 +150,10 @@ window.App =
     $('#keyframe-list').html @keyframesView.render().el
     scene.fetchKeyframes()
 
+    @newKeyframeView.remove() if @newKeyframeView?
+    @newKeyframeView = new App.Views.NewKeyframe(scene: scene)
+    $('#keyframe-list').append @newKeyframeView.render().el
+
 
   _addSceneListeners: (scene) ->
     if scene?

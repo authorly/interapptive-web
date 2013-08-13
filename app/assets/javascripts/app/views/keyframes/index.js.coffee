@@ -23,8 +23,8 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.on 'remove', @removeKeyframe
     @collection.on 'synchronization-start synchronization-end', @_toggleEnabled, @
 
-
-    $('.add-keyframe').live 'click', =>  @addKeyframe()
+    # Put in its own view
+    App.vent.on 'window:resize', @adjustSize, @
 
 
     App.currentSelection.on 'change:keyframe', @keyframeChanged, @
@@ -42,6 +42,7 @@ class App.Views.KeyframeIndex extends Backbone.View
     @collection.off 'remove', @removeKeyframe
 
     App.currentSelection.off 'change:keyframe', @keyframeChanged, @
+
     @_removeKeyframeViews()
 
 
@@ -54,6 +55,8 @@ class App.Views.KeyframeIndex extends Backbone.View
       @_updateDeleteButtons()
 
     @initSortable()
+
+    @adjustSize()
 
     @switchKeyframe(@collection.findWhere(position: 0) || @collection.at(0))
 
@@ -136,8 +139,9 @@ class App.Views.KeyframeIndex extends Backbone.View
       update      : @_numberKeyframes
 
 
-  addKeyframe: ->
-    App.currentSelection.get('scene').addNewKeyframe({})
+  adjustSize: =>
+    maxWidth = $(window).width() - $('.new-keyframe').outerWidth() - $('#scene-list').width() - $('#asset-library-sidebar').width() - 20
+    @$el.css "max-width", "#{maxWidth}px"
 
 
   _numberKeyframes: =>

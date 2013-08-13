@@ -2,17 +2,18 @@
   .clearfix();
 
   counter-reset: numList;
-  margin: 10px 0 0 265px;
+  margin: 10px 0 0 202px;
   display: inline-block;
   float: left;
+  overflow-x: scroll;
+  white-space: nowrap;
 
   li {
     .round-corners();
 
-    display: inline;
-    float: left;
-    margin-left: 12px;
-    margin-right: 60px;
+    display: inline-block;
+    margin-left: 65px;
+    margin-right: 0;
     z-index: 1000 !important;
     position: relative;
     background-color: @white;
@@ -45,23 +46,52 @@
 
     .transition {
       position: absolute;
-      width: 60px;
-      left: -67px;
-      top: 15px;
+      width: 50px;
+      left: -57px;
+      top: 18px;
       text-align: center;
       line-height: 14px;
 
       input[name='animation-duration'] {
-        width: 35px;
-        margin-bottom: 5px;
+        width: 28px;
         background-color: lightgrey;
+        height: 14px;
+        font-size: 11px;
+        padding: 0 2px 4px 5px;
+        float: left;
+        margin-bottom: 5px;
+        margin-left: 4px;
       }
 
       img {
         display: block;
-        width: 80%;
+        width: 85%;
         height: 10px;
         margin: 0 auto;
+        padding-bottom: 5px;
+
+      }
+
+      img:hover {
+        cursor: default;
+      }
+
+      div {
+        float: left;
+        clear: both;
+        text-align: left;
+        font-size: 9px;
+        margin: -4px 0 0 4px;
+
+        span.intro-delay-text {
+          position: relative;
+          top: 2px;
+        }
+
+        span:last-child {
+          float:left;
+          clear: both;
+        }
       }
     }
 
@@ -129,7 +159,7 @@
   }
 }
 
-.add-keyframe {
+.new-keyframe {
   .round-corners();
   .opacity(0.55);
 
@@ -139,7 +169,7 @@
   height: 81px;
   overflow: hidden;
   position: relative;
-  left: -43px;
+  left: 11px;
   bottom: -11px;
   transition:opacity .2s;
 
