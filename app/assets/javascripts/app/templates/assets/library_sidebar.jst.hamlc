@@ -1,3 +1,7 @@
+#active-uploads
+  %div Uploading
+  %ul
+
 #asset-type-filter
   %ul.nav.nav-pills
     %li.active{:data-filter => 'images videos sounds'}
@@ -8,11 +12,6 @@
       %a{:href => "#"} Videos
     %li{:data-filter => 'sounds'}
       %a{:href => "#"} Sounds
-
-
-#active-uploads
-  %div Uploading
-  %ul
 
 
 #asset-sorting.form-inline
