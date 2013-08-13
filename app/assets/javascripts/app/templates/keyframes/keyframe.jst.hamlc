@@ -1,10 +1,11 @@
-%span.transition
-  %input{type: 'number', min: '0', step: '0.1', name: 'animation-duration', value: @keyframe.get('animation_duration')}
-  - if @keyframe.isAnimation()
-    delay
-  - else
+.transition
+  - if not @keyframe.isAnimation()
     %img{src: '/assets/scene-arrow.png'}
-  seconds
+  %input{type: 'number', min: '0', step: '0.1', name: 'animation-duration', value: @keyframe.get('animation_duration')}
+  %div
+    - if @keyframe.isAnimation()
+      %span.intro-delay-text intro delay
+    %span seconds
 
 .main{"data-id" => "#{@keyframe.get 'id'}"}
   - if @keyframe?.preview?.src()?
