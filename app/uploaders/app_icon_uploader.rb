@@ -55,7 +55,7 @@ class AppIconUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   def extension_white_list
-    %w(jpg jpeg gif png)
+    %w(jpg JPG jpeg JPEG gif GIF png PNG)
   end
 
   # Override the filename of the uploaded files:
