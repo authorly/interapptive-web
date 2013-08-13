@@ -37,7 +37,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @_initVoiceoverSelector()
     @_initSorting()
     @_attachKeyframEvents()
-    @pulsateArrowIcon()
     @_findExistingVoiceover()
     @
 
@@ -123,7 +122,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
   stopAlignment: =>
     @player.pause(@player.duration())
     @enablePreview()
-    @disableHelperArrow()
     @removeWordHighlights()
 
 
@@ -137,7 +135,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
     @$('#countdown').remove()
     @$('.word').removeClass('disabled')
-    @$('i.icon-arrow-right.icon-black').removeClass('disabled')
     @_showStopHighlightingButton()
 
 
@@ -164,22 +161,9 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
     $wordEl = @$(event.currentTarget)
     if @canHighlightEl($wordEl)
-      @disableHelperArrow() if @isFirstWord($wordEl)
       $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
 
     false
-
-
-  disableHelperArrow: ->
-    @$('i.icon-arrow-right.icon-black').addClass('disabled')
-
-
-  pulsateArrowIcon: ->
-    speed = 900
-    @$('i.icon-arrow-right.icon-black').effect 'pulsate',
-      times: 1
-    , speed, =>
-      @pulsateArrowIcon()
 
 
   isFirstWord: (el) ->
