@@ -16,9 +16,10 @@
           - for word, index in words
             %span.word
               = word + " "
-    #reorder-text
-      %a.reorder{href: '#'} Text not in correct order?
-      %a.done{href: '#', style: 'display: none' } Done reordering
+    - if @keyframe.textWidgets().length > 1
+      #reorder-text
+        %a.reorder{href: '#'} Text not in correct order?
+        %a.done{href: '#', style: 'display: none' } Done reordering
     #controls
       %button#begin-alignment.btn.disabled
         %i.icon-exclamation-sign.icon-black
@@ -32,6 +33,6 @@
         Oops! looks like there's an issue with your alignment.
 
   .modal-footer
-    %button#accept-alignment.btn.btn-large.btn-primary.disabled
+    %button#accept-alignment.btn.btn-large.btn-primary
       %i.icon-check.icon-white
-      Accept Alignment
+      Accept
