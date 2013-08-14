@@ -102,6 +102,10 @@ class App.Models.Keyframe extends Backbone.Model
     @scene.storybook.sounds.get(@get('voiceover_id'))
 
 
+  hasVoiceover: ->
+    @voiceover()?
+
+
   autoplayDuration: ->
     texts = @textWidgets()
     voiceover = @voiceover()
