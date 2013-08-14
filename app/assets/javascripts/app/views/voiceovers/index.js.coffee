@@ -43,20 +43,34 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   clickBeginAlignment: (event) =>
     event.preventDefault()
+    return unless @keyframe.hasText()
+    return unless @keyframe.hasVoiceover()
 
     if @_alignmentInProgress then @stopAlignment() else @startCountdown()
 
 
   acceptAlignment: (event) ->
-    return if @$(event.currentTarget).hasClass('disabled')
+    unless @keyframe.hasText()
+      App.vent.trigger('show:message', 'info', "Please add some texts and highlight them before accepting.")
+      return
 
-    @keyframe.updateContentHighlightTimes @_collectTimeIntervals(),
+    unless @keyframe.hasVoiceover()
+      App.vent.trigger('show:message', 'info', "Please select a voiceover and highlight your texts before accepting.")
+      return
+
+    if (intervals = @_collectTimeIntervals()).length == 0
+      App.vent.trigger('show:message', 'info', "Please highlight your texts before accepting.")
+      return
+
+    @keyframe.updateContentHighlightTimes intervals,
       # TODO replace this with a 'done' event that the parent listens to
       # 2013-05-07 @dira
       success: -> App.vent.trigger 'hide:modal'
 
 
   clickPreviewAlignment: (event) =>
+    return unless @keyframe.hasText()
+    return unless @keyframe.hasVoiceover()
     @previewOrStopPreview(event)
     @setHighlightTimesForWordEls()
 
@@ -204,7 +218,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   enableMediaPlayer: =>
-    @player = Popcorn('audio')
+    @player = Popcorn('#media-player')
     @player.on 'ended', =>
       @disableHelperArrow()
 
@@ -329,7 +343,9 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   _collectTimeIntervals: ->
-    _.map @$('.word'), (el) -> @$(el).data('start')
+    intervals = _.map @$('.word'), (el) -> @$(el).data('start')
+    return intervals if _.every(intervals, (interval) -> interval?)
+    []
 
 
   _showStopButton: ($button) ->
