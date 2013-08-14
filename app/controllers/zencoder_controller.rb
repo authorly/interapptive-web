@@ -3,11 +3,7 @@ class ZencoderController < ApplicationController
 
   def create
     video = Video.find_by_id(params[:job][:pass_through])
-    if video && params[:job][:state] == 'finished'
-      video.meta_info[:response] = params[:zencoder]
-      video.save
-    end
-
+    video.store_transcoding_result(params[:zencoder])
     render :nothing => true
   end
 end
