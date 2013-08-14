@@ -47,3 +47,7 @@ class App.Collections.VideosCollection extends Backbone.Collection
 
   unTranscoded: ->
     @where(transcode_complete: false)
+
+
+  hasOnlyTranscodedVideos: ->
+    @unTranscoded().length == 0
