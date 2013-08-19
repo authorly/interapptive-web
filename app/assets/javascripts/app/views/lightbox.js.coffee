@@ -1,9 +1,9 @@
 class App.Views.Lightbox extends Backbone.View
-  events:
-    'click .lightbox-modal a.btn': 'hide'
 
   initialize: ->
     @modal = $('.lightbox-modal')
+    @modal.on 'click', 'a.btn', @hide
+    @modal.on 'hide', @hidden
 
 
   render: ->
@@ -16,7 +16,11 @@ class App.Views.Lightbox extends Backbone.View
     @render()
 
 
-  hide: (event) ->
+  hide: (event) =>
     event.stopPropagation()
-    @options.view.hideCallback() if @options.view.hideCallback?
     @modal.modal 'hide'
+
+
+  hidden: =>
+    @options.view.hideCallback() if @options.view.hideCallback?
+    @modal.off 'click', 'a.btn', @hide
