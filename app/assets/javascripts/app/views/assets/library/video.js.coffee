@@ -1,6 +1,6 @@
 class App.Views.AssetLibraryVideo extends App.Views.AssetLibraryElement
   events: ->
-    _.extend {}, super, { 'click .control': 'play' }
+    _.extend {}, super, { 'click': 'play' }
 
 
   initialize: ->
@@ -12,10 +12,11 @@ class App.Views.AssetLibraryVideo extends App.Views.AssetLibraryElement
     super
 
     html = if @model.get('transcode_complete')
-      '<i class="control icon-play icon-black"/>'
+      '<div class="player"><i class="control icon-play icon-black"/></div>'
     else
-      '<i class="info icon-time icon-white" title="This video is being processed."/>'
-    @$('.thumb').after $(html)
+      '<div class="info"><i class="icon-time icon-white" title="This video is being processed."/></div>'
+
+    @$('.thumb').append $(html)
 
     @
 
@@ -26,6 +27,8 @@ class App.Views.AssetLibraryVideo extends App.Views.AssetLibraryElement
 
 
   play: (em) ->
+    return unless @model.get('transcode_complete')
+
     view = new App.Views.VideoPlayer(model: @model)
     App.vent.trigger('play:video', view)
 
