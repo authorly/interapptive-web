@@ -1,3 +1,4 @@
-%span.asset{:class => @type}
+.asset
+  %span.thumb{:class => @type}
   %span.filename= App.Lib.StringHelper.truncate(@asset.get('name'))
-  .delete
+  %span.delete
