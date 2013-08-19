@@ -4,7 +4,7 @@ class App.Views.AssetLibrarySound extends App.Views.AssetLibraryElement
     super
 
     @player = new App.Views.SoundPlayer(model: @model, className: 'player')
-    @$('.thumb').after @player.render().el
+    @$('.thumb').append @player.render().el
 
     @
 
