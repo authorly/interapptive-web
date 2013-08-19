@@ -10,10 +10,12 @@ class App.Views.AssetLibraryVideo extends App.Views.AssetLibraryElement
 
   render: ->
     super
-    if @model.get('transcode_complete')
-      @$('.asset').after $('<i class="control icon-play icon-black"/>')
+
+    html = if @model.get('transcode_complete')
+      '<i class="control icon-play icon-black"/>'
     else
-      @$('.asset').after $('<i class="info icon-time icon-white" title="This video is being processed."/>')
+      '<i class="info icon-time icon-white" title="This video is being processed."/>'
+    @$('.thumb').after $(html)
 
     @
 

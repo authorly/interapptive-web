@@ -1,5 +1,5 @@
-%td.thumb
-  %span.asset{:class => @type, :style => "#{if @background? then "background-image: url(#{@background});background-position: center center;" else ''}", :data-id => @asset.id, :data-type => @type }
+%td.asset
+  %span.thumb{:class => @type, :style => "#{if @background? then "background-image: url(#{@background});background-size: 100%;" else ''}", :data-id => @asset.id, :data-type => @type }
 %td= App.Lib.StringHelper.truncate(@asset.get('name'), 20)
 %td.asset-size= @size
 %td.delete-asset

@@ -77,15 +77,16 @@ window.App =
   _makeCanvasDroppable: ->
     canvas = $('#builder')
     canvas.droppable
-      accept: '.asset'
+      accept: '.js-draggable'
       drop: (__, ui) =>
         offset = canvas.offset()
         position =
           x: App.Config.dimensions.width / 2
           y: App.Config.dimensions.height / 2
+        element = ui.helper
         @_assetDropped
-          id:   ui.draggable.data('id')
-          type: ui.draggable.data('type')
+          id:   element.data('id')
+          type: element.data('type')
           position: position
 
 
