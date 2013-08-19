@@ -2,12 +2,10 @@
   cursor: col-resize;
 }
 
-.asset-library-image {
+.thumb-definition {
   display: inline-block;
-  float: left;
   width: 50px;
   height: 61px;
-  margin: -1px 10px 10px;
   background-repeat: no-repeat;
   background-position: center center;
   &.image {
@@ -25,7 +23,7 @@
   .delete {
    display: none;
    position: absolute;
-   right: 4px;
+   right: -2px;
    top: 4px;
    width: 17px;
    height: 17px;
@@ -49,11 +47,8 @@
 }
 
 // drag a sprite to the canvas
-.asset.ui-draggable-dragging {
-  .asset-library-image;
-  .filename {
-    display: none;
-  }
+.thumb.ui-draggable-dragging {
+  .thumb-definition;
 }
 
 #asset-library-sidebar {
@@ -107,21 +102,22 @@
       margin: auto 0;
 
       li {
+        position: relative;
+        margin: 10px 5px;
+        padding-bottom: 1.1em;
         list-style: none;
         font-family: 'Arial Black';
         font-size: 10px;
-        width: 82px;
-        position: relative;
         display: inline-block;
         .removable;
 
-        .asset {
-          .asset-library-image;
-          margin-left: 16px;
+        .thumb {
+          .thumb-definition;
         }
         .filename {
           position: absolute;
           bottom: 0;
+          left: 0
         }
       }
     }
@@ -171,13 +167,14 @@
     margin: auto;
 
     li {
+      .removable;
+      margin: 10px 5px;
+      padding-bottom: 1.1em;
+      display: none;
+      position: relative;
       list-style: none;
       font-family: 'Arial Black';
       font-size: 10px;
-      width: 82px;
-      display: none;
-      position: relative;
-      .removable;
 
       &:hover {
         cursor: pointer;
@@ -186,14 +183,22 @@
         }
       }
 
-      .asset {
-        .asset-library-image;
-        margin-left: 16px;
+      .thumb {
+        .thumb-definition;
       }
 
       .filename {
         position: absolute;
         bottom: 0;
+        left: 0;
+        line-height: 1;
+      }
+    }
+    .js-draggable {
+      border: 1px solid transparent;
+      &:hover {
+        border: 1px solid rgb(75, 215, 110);
+        cursor: pointer;
       }
     }
   }
@@ -203,6 +208,7 @@
       display: none;
 
       td {
+        position: relative;
         vertical-align: middle;
         height: 40px;
         padding: 2px;
@@ -216,9 +222,8 @@
         }
       }
 
-      .asset {
-        .asset-library-image;
-        margin: 0;
+      .thumb {
+        .thumb-definition;
       }
 
       .asset-size {
@@ -249,11 +254,18 @@
         }
       }
     }
-
+    .js-draggable:hover {
+      cursor: pointer;
+      td {
+        border-top: 1px solid rgb(75, 215, 110);
+        border-bottom: 1px solid rgb(75, 215, 110);
+      }
+    }
   }
 
   #asset-list-thumb-view, #asset-list-table {
     padding-bottom: 10px;
+
   }
 
   #asset-list-thumb-view {
@@ -286,26 +298,23 @@
 
   }
   #asset-list-thumb-view, #asset-list-table tbody {
+    &.hidden {
+      display: none;
+    }
+
     .player, .video .control, .video .info {
       position: absolute;
       top: 20px;
-      left: 35px;
+      left: 19px;
       display: none;
     }
-    .video .thumb .control, .video .thumb .info, .sound .thumb .player {
-      left: 25px;
-    }
-    .thumb, li.sound, li.video {
-      &:hover {
+    .video, .sound {
+      .asset:hover {
         .player, .control, .info {
           display: block;
         }
       }
     }
-    &.hidden {
-      display: none;
-    }
-
   }
 
 

@@ -36,6 +36,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
       el: @$('#asset-list-table tbody')
       assetOptions:
         tagName: 'tr'
+        className: 'js-draggable'
         templateName: 'app/templates/assets/library/asset-details'
 
     @detailsView.on 'upload', (-> @uploader.showUploadUI()), @
