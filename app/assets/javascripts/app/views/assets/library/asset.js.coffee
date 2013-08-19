@@ -4,7 +4,6 @@ class App.Views.AssetLibraryElement extends Backbone.View
   template: (data) ->
     JST[@options.templateName || 'app/templates/assets/library/asset'](data)
 
-  className: -> @type()
 
   events: ->
     'click .delete': 'deleteClicked'
@@ -18,6 +17,7 @@ class App.Views.AssetLibraryElement extends Backbone.View
       background: @model.get('thumbnail_url')
     )
 
+    @$el.addClass @type()
     @_createDraggable()
 
     @
@@ -64,10 +64,26 @@ class App.Views.AssetLibraryElement extends Backbone.View
 
 
   _createDraggable: ->
-    @$('.asset').draggable
-      helper: 'clone'
+    if @$el.hasClass('js-draggable')
+      element = @$el
+      helper = (event) ->
+        $('.thumb', $(event.currentTarget)).clone()
+
+      # couldn't figure out how to get this dynamically
+      # @dira 2013-08-19
+      cursorAt =
+        top:  30
+        left: 25
+    else
+      element = @$('.js-draggable')
+      helper = 'clone'
+      cursorAt = false
+
+    element.draggable
+      helper: helper
       appendTo: 'body'
       cursor: 'move'
+      cursorAt: cursorAt
       zIndex: 10000
       opacity: 0.5
       scroll: false

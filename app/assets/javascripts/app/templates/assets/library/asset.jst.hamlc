@@ -1,3 +1,4 @@
-%span.asset{:class => @type, :style => "#{if @background? then "background-image: url(#{@background});background-size: 100%;" else ''}", :title => @title, :data-id => @asset.id, :data-type => @type }
+.asset{:title => @title}
+  %span.js-draggable.thumb{:class => @type, :style => "#{if @background? then "background-image: url(#{@background});background-size: 100%;" else ''}", :data-id => @asset.id, :data-type => @type}
   %span.filename= App.Lib.StringHelper.truncate(@asset.get('name'))
-  .delete
+  %span.delete
