@@ -220,7 +220,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
   enableMediaPlayer: =>
     @player = Popcorn('#media-player')
     @player.on 'ended', =>
-      @disableHelperArrow()
 
       if @_previewingAlignment
         @previewingEnded()
@@ -344,7 +343,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   _collectTimeIntervals: ->
     intervals = _.map @$('.word'), (el) -> @$(el).data('start')
-    return intervals if _.every(intervals, (interval) -> interval?)
+    return intervals if _.every(intervals, (interval) -> interval? && interval != "undefined" && interval != "null")
     []
 
 
