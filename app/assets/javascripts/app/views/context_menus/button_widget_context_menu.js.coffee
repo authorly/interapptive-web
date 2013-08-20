@@ -87,7 +87,7 @@ class App.Views.ButtonWidgetContextMenu extends Backbone.View
     number = App.Lib.Keycodes[0] <= event.which <= App.Lib.Keycodes[9]
     ok = not event.which or number or @CONTROL_KEYS.indexOf(event.which) > -1
 
-    switch event.currentTarget.id
+    switch event.target.id
       when 'x-coord', 'y-coord'
         ok = true if event.which == App.Lib.Keycodes.minus
 
