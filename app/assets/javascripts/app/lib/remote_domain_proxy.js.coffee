@@ -17,7 +17,7 @@ class App.Lib._RemoteDomainProxy
 
 
   load: (url) ->
-    @remote_domain = url.match(/https:\/\/[^/]+/)[0]
+    @remote_domain = url.match(/https?:\/\/[^/]+/)[0]
 
     loader = document.createElement 'iframe'
     loader.setAttribute 'style', 'display:none'
