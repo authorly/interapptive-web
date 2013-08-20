@@ -1,7 +1,10 @@
 %td.asset
   %span.thumb{:class => @type, :style => "#{if @background? then "background-image: url(#{@background});background-size: 100%;" else ''}", :data-id => @asset.id, :data-type => @type }
-%td= App.Lib.StringHelper.truncate(@asset.get('name'), 20)
-%td.asset-size= @size
+%td.asset-details
+  %p{title: @asset.get('name')}=App.Lib.StringHelper.truncate(@asset.get('name'), 20)
+  - if @duration?
+    %p= "#{@duration.toFixed(2)} seconds"
+%td.asset-size= @size.replace(' ', '')
 %td.delete-asset
   %a.delete{:href => '#',:title => "Delete #{@type}"}
     %i{:class => 'icon-remove icon-black'}

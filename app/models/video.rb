@@ -7,7 +7,6 @@ class Video < Asset
         'id'                 => id,
         'name'               => read_attribute(:video),
         'size'               => video.size,
-        'duration'           => duration,
         'url'                => video.url,
         'delete_url'         => "/videos/#{self.id}",
         'delete_type'        => 'DELETE',
@@ -21,6 +20,7 @@ class Video < Asset
         'mp4url'             => video.mp4_url,
         'webmurl'            => video.webm_url,
         'ogvurl'             => video.ogv_url,
+        'duration'           => duration,
       })
     end
     json

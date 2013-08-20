@@ -15,6 +15,7 @@ class App.Views.AssetLibraryElement extends Backbone.View
       title: @title()
       size:  @size()
       background: @model.get('thumbnail_url')
+      duration: @model.get('duration')
     )
 
     @$el.addClass @type()
