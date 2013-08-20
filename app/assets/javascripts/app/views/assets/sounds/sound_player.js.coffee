@@ -5,7 +5,7 @@ class App.Views.SoundPlayer extends Backbone.View
   template: JST['app/templates/assets/library/sound_player']
 
   events:
-    'click .control': '_controlClicked'
+    'click': '_controlClicked'
 
 
   initialize: ->
