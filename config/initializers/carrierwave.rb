@@ -8,7 +8,7 @@ CarrierWave.configure do |config|
 
   config.fog_directory  = Rails.application.config.s3_bucket
   # Forcing use of HTTP
-  config.asset_host = "http://#{config.fog_directory}.s3.amazonaws.com"
+  config.asset_host = "http://#{config.fog_directory}.s3.amazonaws.com" unless Rails.env.development?
 end
 
 if Rails.env.test?
