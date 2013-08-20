@@ -27,6 +27,7 @@ class App.Views.AssetLibraryVideo extends App.Views.AssetLibraryElement
 
 
   play: (em) ->
+    return unless $(em.target).closest('.player').length > 0
     return unless @model.get('transcode_complete')
 
     view = new App.Views.VideoPlayer(model: @model)
