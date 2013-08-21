@@ -9,7 +9,10 @@ class App.Views.ContextMenuContainer extends Backbone.View
   render: (widget) ->
     @widgetContextMenu?.remove()
 
-    @widgetContextMenu = new App.Views[widget.get('type') + 'ContextMenu'](widget: widget, id: 'context-menu')
+    @widgetContextMenu = new App.Views[widget.get('type') + 'ContextMenu']
+      widget: widget
+      id: 'context-menu'
+      keyframe: App.currentSelection.get('keyframe')
     @$el.append(@widgetContextMenu.render().el)
     @
 
