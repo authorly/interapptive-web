@@ -88,7 +88,7 @@ class App.Views.AssetLibrary extends Backbone.View
 
 
   _toggleUploadedAssetsHeader: (delta=0)=>
-    nr = @fileUpload.data('fileupload').options.filesContainer.children().length + delta
+    nr = @fileUpload.find('.files tr').length + delta
     uploadableAssets = @fileUpload.find('.toUpload thead')
     if nr > 0
       uploadableAssets.show()

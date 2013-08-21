@@ -7,9 +7,16 @@
 #= require bootstrap
 #= require underscore
 #= require backbone
-#= require jquery-fileupload
 #= require jquery.dataTables.min
 #= require jquery.voiceover-uploader
+
+#= require jquery-file-upload/jquery.iframe-transport
+#= require jquery-file-upload/jquery.ui.widget
+#= require jquery-file-upload/jquery.fileupload
+#= require jquery-file-upload/jquery.fileupload-process
+#= require jquery-file-upload/jquery.fileupload-validate
+#= require jquery-file-upload/jquery.fileupload-ui
+#= require jquery-file-upload/jquery.fileupload-jquery-ui
 
 #= require popcorn-complete
 #= require jquery.countdown

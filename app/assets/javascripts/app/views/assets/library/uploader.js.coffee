@@ -14,6 +14,7 @@ class App.Views.AssetUploader extends Backbone.View
       .fileupload(
         dataType: 'json'
         acceptFileTypes: @fileTypePattern(ACCEPTED_FILE_TYPES)
+        limitConcurrentUploads: 15
         add: @_fileAdded
       ).bind('fileuploaddone', @_uploadCompleted
       ).bind('fileuploadfail', @_uploadFailed

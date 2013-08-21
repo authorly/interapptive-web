@@ -10,15 +10,6 @@ GIT
       rest-client (~> 1.6.1)
       uuid (~> 2.3.1)
 
-GIT
-  remote: git://github.com/whitmanc/jquery-fileupload-rails.git
-  revision: e07e8fdff79922b8c72fc78c28933961ea1a370e
-  ref: e07e8fdff79922b8c72fc78c28933961ea1a370e
-  specs:
-    jquery-fileupload-rails (0.3.0)
-      actionpack (>= 3.1)
-      railties (>= 3.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -351,7 +342,6 @@ DEPENDENCIES
   haml-rails
   haml_coffee_assets
   jasminerice
-  jquery-fileupload-rails!
   jquery-rails
   launchy
   less-rails
