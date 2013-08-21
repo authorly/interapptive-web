@@ -14,7 +14,7 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   initialize: ->
-    @collection.on 'add'             , @appendSceneElement, @
+    @collection.on 'add'             , @sceneAdded        , @
     @collection.on 'reset'           , @render            , @
     @collection.on 'remove'          , @sceneRemoved      , @
     @collection.on 'change:positions', @_updatePositions  , @
@@ -41,6 +41,11 @@ class App.Views.SceneIndex extends Backbone.View
 
   renderListViewToggle: ->
     @$el.parent().prepend(@listViewToggleTemplate())
+
+
+  sceneAdded: (scene) ->
+    @appendSceneElement(scene)
+    @switchScene(scene)
 
 
   appendSceneElement: (scene) =>

@@ -15,8 +15,11 @@ App.Mixins.QueuedSync =
     syncQueue = syncWith?.syncQueue() || @syncQueue()
     deferred = $.Deferred()
 
+    attrs = options.attrs
+    attrs ||= model.toJSON() if model instanceof Backbone.Model
+    newOptions = _.extend {}, options, attrs: attrs
     syncQueue.enqueue  =>
-      Backbone.sync(method, model, options)
+      Backbone.sync(method, model, newOptions)
         .done(deferred.resolve)
         .fail(deferred.reject)
         .always => syncQueue.dequeue()

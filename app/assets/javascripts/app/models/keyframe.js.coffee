@@ -81,12 +81,12 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   widgetsChanged: ->
-    App.vent.trigger 'change:keyframeWidgets', @
     @save()
 
 
   animationDurationChanged: ->
     @save()
+
 
   toJSON: ->
     _.extend super, widgets: @widgets.toJSON()
@@ -123,12 +123,10 @@ class App.Models.Keyframe extends Backbone.Model
   initializePreview: ->
     attributes = App.Lib.AttributesHelper.filterByPrefix @attributes, 'preview_image_'
     @preview = new App.Models.Preview(attributes, storybook: @scene.storybook)
-    @preview.on 'change:data_url change:url', @_previewChanged, @
     @preview.on 'change:id', @_previewIdChanged, @
 
 
   uninitializePreview: ->
-    @preview.off 'change:data_url change:url', @_previewChanged, @
     @preview.off 'change:id', @_previewIdChanged, @
 
 
@@ -142,10 +140,6 @@ class App.Models.Keyframe extends Backbone.Model
 
   fontRemoved: (font) ->
     @widgets.fontRemoved(font)
-
-
-  _previewChanged: ->
-    @trigger 'change:preview', @
 
 
   _previewIdChanged: ->

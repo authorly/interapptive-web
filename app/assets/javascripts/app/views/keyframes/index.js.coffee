@@ -18,7 +18,6 @@ class App.Views.KeyframeIndex extends Backbone.View
   initialize: ->
     @collection.on 'reset',            @render,                 @
     @collection.on 'change:positions', @_updatePositions,       @
-    @collection.on 'change:preview',   @keyframePreviewChanged, @
     @collection.on 'add',    @appendKeyframe
     @collection.on 'remove', @removeKeyframe
     @collection.on 'synchronization-start synchronization-end', @_toggleEnabled, @
@@ -37,7 +36,6 @@ class App.Views.KeyframeIndex extends Backbone.View
     super
 
     @collection.off 'change:positions reset', @render, @
-    @collection.off 'change:preview', @keyframePreviewChanged, @
     @collection.off 'add'   , @appendKeyframe
     @collection.off 'remove', @removeKeyframe
 
@@ -82,7 +80,6 @@ class App.Views.KeyframeIndex extends Backbone.View
       @$el.append  viewElement
 
     @keyframe_views.push(view)
-    @keyframePreviewChanged(keyframe)
 
 
   keyframeClicked: (event) ->
@@ -118,12 +115,6 @@ class App.Views.KeyframeIndex extends Backbone.View
     $(".keyframe-list li[data-id=#{keyframe.id}]").remove()
     @switchKeyframe(@collection.at(index + 1) or @collection.at(index - 1))
     @_updateDeleteButtons()
-
-
-  keyframePreviewChanged: (keyframe) ->
-    src = keyframe.preview.src()
-    if src?
-      @$("div[data-id=#{keyframe.id}]").html("<img src='#{src}'/>")
 
 
   initSortable: =>
