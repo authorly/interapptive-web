@@ -1,7 +1,7 @@
 - for file, index in @files
-  %tr.template-upload.fade
+  %tr.template-upload
     %td.preview
-      %span.fade
+      %span
         %td.name #{file.name}
     %td.size
       %span
@@ -9,12 +9,11 @@
 
     - if file.error
       %td.error
-        %span.label.label-important
-          = locale.fileupload.error
-        = locale.fileupload.errors[file.error] || file.error
+        %span.label.label-important Error:
+        = file.error
       %td
 
-    - else if @files.valid and not index
+    - else if not index
       %td
         .progress.progress-success.progress-striped.active
           .bar{:style => "width:0%;"}
@@ -30,4 +29,4 @@
       - if not index
         %button.btn.btn-warning
           %i.icon-ban-circle.icon-white
-          %span= locale.fileupload.cancel
+          %span Cancel

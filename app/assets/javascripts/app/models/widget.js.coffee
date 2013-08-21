@@ -305,9 +305,9 @@ class App.Collections.Widgets extends Backbone.Collection
 
 
   fontRemoved: (font) ->
-    default_font_id = widget.defaultFontId()
     @each (widget) =>
       if widget instanceof App.Models.TextWidget
+        default_font_id = @keyframe.scene.storybook.defaultFont().id
         if widget.get('font_id').toString() is font.get('id').toString()
           if default_font_id?
             widget.set(font_id: default_font_id)
