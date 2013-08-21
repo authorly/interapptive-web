@@ -144,7 +144,7 @@ class App.Models.Scene extends Backbone.Model
 
 
   previewDataUrlChanged: ->
-    @trigger 'change:preview', @
+    @trigger 'change:preview_data_url', @
 
 
   spriteWidgets: ->

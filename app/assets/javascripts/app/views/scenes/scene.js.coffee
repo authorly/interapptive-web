@@ -5,8 +5,14 @@ class App.Views.Scene extends Backbone.View
 
 
   initialize: ->
-    @model.on 'change:preview change:preview_image_id', @updatePreview, @
-    @model.on 'destroy', @remove, @
+    @model.on  'change:preview_data_url', @updatePreview, @
+    @model.on  'destroy', @remove, @
+
+
+  remove: ->
+    @model.off 'change:preview_data_url', @updatePreview, @
+    @model.off 'destroy', @remove, @
+    super
 
 
   render: ->
@@ -19,7 +25,4 @@ class App.Views.Scene extends Backbone.View
 
 
   updatePreview:  =>
-    src = @model.preview.src()
-    @$('.scene-frame img').remove()
-    if src?
-      @$('.scene-frame').append "<img src='#{src}'/>"
+    @$('.scene-frame img')[0].src = @model.preview.src()

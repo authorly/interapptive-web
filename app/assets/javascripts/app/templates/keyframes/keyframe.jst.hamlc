@@ -6,10 +6,9 @@
     %img{src: '/assets/scene-arrow.png'}
   seconds
 
-- if @keyframe.has "image_id"
-  %div.main{"data-id" => "#{@keyframe.get 'id'}", "data-image-id" => "#{@keyframe.get 'image_id'}"}
-- else
-  %div.main{"data-id" => "#{@keyframe.get 'id'}"}
+.main{"data-id" => "#{@keyframe.get 'id'}"}
+  - if @keyframe?.preview?.src()?
+    %img{ src: @keyframe.preview.src() }
 
 %span
   - unless @keyframe.get('is_animation')

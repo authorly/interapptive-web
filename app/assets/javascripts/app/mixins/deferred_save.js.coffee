@@ -8,7 +8,11 @@ App.Mixins.DeferredSave =
   # This does not take into account any parameters. Use `set` to change the
   # attributes, followed by a call to `save` without parameters.
   deferredSave: ->
-    if @isNew() and !@_duringFirstSave
+    if @isNew()
+      if @_duringFirstSave
+        window.clearTimeout @_SAVE_TIMER
+        @_SAVE_TIMER = window.setTimeout(@deferredSave.bind(@), 500)
+      else
         @_duringFirstSave = true
         @_actualSave()
     else
