@@ -23,19 +23,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
 
-    @_getImage()
-
-
-  constructorContinuation: (dataUrl) =>
-    @model.dataUrl = dataUrl
-
-    cc.TextureCache.sharedTextureCache().addImageAsync @model.dataUrl, @, ( ->
+    cc.TextureCache.sharedTextureCache().addImageAsync @model.url(), @, ( ->
       window.setTimeout @_imageLoadedInSprite, 0
     )
 
 
   _imageLoadedInSprite: =>
-      @sprite.initWithFile @model.dataUrl
+      @sprite.initWithFile @model.url()
 
       if @model instanceof App.Models.SpriteWidget
         currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
@@ -85,9 +79,9 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   @_changeScale: (__, scale) ->
     @setScale scale
 
+
   @_changePosition: (__, position) ->
     @setPosition position
-
 
 
   select: ->
@@ -154,21 +148,3 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     ctx.restore()
 
-
-  from_proxy: (message) =>
-    if message.action == 'loaded' && message.path == @model.url()
-      App.Lib.RemoteDomainProxy.instance().unbind 'message', @from_proxy
-      @constructorContinuation(message.bits)
-
-
-  _getImage: ->
-    url = @model.url()
-    if url.indexOf('/') == 0
-      @constructorContinuation(url)
-    else
-      proxy = App.Lib.RemoteDomainProxy.instance()
-
-      proxy.bind 'message', @from_proxy
-      proxy.send
-        action: 'load'
-        path:   url

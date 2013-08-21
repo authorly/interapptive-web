@@ -19,6 +19,8 @@ class App.Views.Keyframe extends Backbone.View
     @$el.html(@template(keyframe: @model)).attr('data-id', @model.id)
     if @model.isAnimation()
       @$el.attr('data-is_animation', '1').addClass('animation')
+    if @model.preview.isNew()
+      @renderPreview()
 
     @
 

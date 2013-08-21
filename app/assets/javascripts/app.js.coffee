@@ -45,8 +45,6 @@ window.App =
     @vent.on 'show:settingsform',  @_showSettings, @
     @vent.on 'show:scenebackgroundsoundform', @_showBackgroundSoundForm, @
 
-    @vent.on 'change:keyframeWidgets', @_changeKeyframeWidgets, @
-    @vent.on 'load:sprite',            @_changeSceneWidgets,    @
     @vent.on 'bring_to_front:sprite', @_bringToFront, @
     @vent.on 'put_in_back:sprite',    @_putInBack,    @
 
@@ -96,24 +94,9 @@ window.App =
           position: position
 
 
-  saveCanvasAsPreview: ->
-    window.setTimeout ( ->
-      keyframe = App.currentSelection.get('keyframe')
-      App.Builder.Widgets.WidgetLayer.updateKeyframePreview(keyframe)
-    ), 200 # wait for the changes to be shown in the canvas
-
-
   _openStorybook: (__, storybook) ->
     scenesIndex = new App.Views.SceneIndex(collection: storybook.scenes)
     $('#scene-list').html(scenesIndex.render().el)
-
-    storybook.widgets.on 'change', =>
-      keyframe = App.currentSelection.get('keyframe')
-      @saveCanvasAsPreview()
-
-    storybook.scenes.on 'change:widgets', =>
-      keyframe = App.currentSelection.get('keyframe')
-      @saveCanvasAsPreview()
 
     storybook.scenes.on 'synchronization-start synchronization-end', (__, synchronizing) =>
       @vent.trigger 'can_add:scene', !synchronizing
@@ -197,7 +180,6 @@ window.App =
     if keyframe?
       App.vent.trigger 'can_add:text', keyframe.canAddText()
       keyframe.announceVoiceover()
-      @saveCanvasAsPreview() if keyframe.preview.isNew()
 
 
   _addKeyframeListeners: (keyframe) ->
@@ -210,14 +192,6 @@ window.App =
     if keyframe?
       keyframe.widgets.off 'remove', @_checkCurrentWidgetRemoved, @
       keyframe.widgets.off 'reset add remove', keyframe.announceVoiceover, keyframe
-
-
-  _changeKeyframeWidgets: (keyframe) ->
-    @saveCanvasAsPreview() if App.currentSelection.get('keyframe') == keyframe
-
-
-  _changeSceneWidgets: ->
-    @saveCanvasAsPreview()
 
 
   _addNewScene: ->

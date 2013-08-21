@@ -1,4 +1,4 @@
-App.Config.remote_domain_proxy_url = 'http://<%= Rails.application.config.s3_bucket %>.s3.amazonaws.com/proxy.html'
+App.Config.remote_domain_proxy_url = '<%= Rails.env.development? ? "http://localhost:3000/proxy-development.html" : "http://#{Rails.application.config.s3_bucket}.s3.amazonaws.com/proxy.html" %>'
 App.Config.environment = '<%= Rails.env.to_s %>'
 App.Config.dimensions =
     width:  1024

@@ -118,13 +118,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     view = _.find @views, (view) -> view.model == widget
 
 
-  @updateKeyframePreview: (keyframe) ->
-    canvas = document.getElementById CANVAS_ID
-    image = Canvas2Image.saveAsPNG canvas, true, 525, 375
-
-    keyframe.setPreviewDataUrl image.src
-
-
   widgetAtPoint: (point) ->
     widgets = []
     for widget,i in @views
