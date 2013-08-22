@@ -30,9 +30,11 @@ class AndroidStorybookApplication < AbstractStorybookApplication
   private
 
   def build_application
+    logger.info("Going to build android application for storybook: #{@storybook.id}")
     Open3.popen3('./build_native.sh', :chdir => CRUCIBLE_ANDROID_DIR) do |i, o, e, t|
       logger.info o.read.chomp
       logger.info e.read.chomp
     end
+    logger.info("Done building android application for storybook: #{@storybook.id}")
   end
 end
