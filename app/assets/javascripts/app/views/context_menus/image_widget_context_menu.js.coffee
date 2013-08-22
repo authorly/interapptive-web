@@ -146,6 +146,28 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
     @_point(@$('#x-coord').val(), @$('#y-coord').val())
 
 
+  _setObjectPosition: (object, point) ->
+    object.set(position: { x: parseInt(point.x), y: parseInt(point.y) })
+
+
+  _setObjectScale: (object, scale_by) ->
+    scale = object.get('scale') * 100
+    if scale_by?
+      if parseInt(scale) + scale_by < 10
+        @_scaleCantBeSet()
+        @$('#scale-amount').val(parseInt(scale))
+        return
+      else
+        @$('#scale-amount').val(parseInt(scale) + scale_by)
+
+    else
+      if parseInt(@_currentScale()) < 10
+        @_scaleCantBeSet()
+        @$('#scale-amount').val(parseInt(scale))
+        return
+    object.set(scale: @_currentScale() / 100)
+
+
   _delayedSavePosition: (point) ->
     window.clearTimeout(@POSITION_TIMER)
     @POSITION_TIMER = window.setTimeout((=> @_setPosition(point)), 400)

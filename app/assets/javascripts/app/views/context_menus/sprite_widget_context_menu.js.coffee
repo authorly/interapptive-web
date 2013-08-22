@@ -18,7 +18,7 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   getCurrentOrientation: ->
-    @widget.getOrientationFor(App.currentSelection.get('keyframe'))
+    @_currentOrientation ||= @widget.getOrientationFor(App.currentSelection.get('keyframe'))
 
 
   bringToFront: (e) ->
@@ -46,22 +46,8 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   _setPosition: (point) ->
-    @getCurrentOrientation().set(position: { x: parseInt(point.x), y: parseInt(point.y) })
+    @_setObjectPosition(@getCurrentOrientation(), point)
 
 
   _setScale: (scale_by) =>
-    scale = @getCurrentOrientation().get('scale') * 100
-    if scale_by?
-      if parseInt(scale) + scale_by < 10
-        @_scaleCantBeSet()
-        @$('#scale-amount').val(parseInt(scale))
-        return
-      else
-        @$('#scale-amount').val(parseInt(scale) + scale_by)
-
-    else
-      if parseInt(@_currentScale()) < 10
-        @_scaleCantBeSet()
-        @$('#scale-amount').val(parseInt(scale))
-        return
-    @getCurrentOrientation().set(scale: @_currentScale() / 100)
+    @_setObjectScale(@getCurrentOrientation(), scale_by)

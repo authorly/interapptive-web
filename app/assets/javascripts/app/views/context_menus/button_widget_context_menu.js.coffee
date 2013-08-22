@@ -44,22 +44,8 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   _setPosition: (point) ->
-    @widget.set(position: { x: parseInt(point.x), y: parseInt(point.y) })
+    @_setObjectPosition(@widget, point)
 
 
   _setScale: (scale_by) =>
-    scale = @widget.get('scale') * 100
-    if scale_by?
-      if parseInt(scale) + scale_by < 10
-        @_scaleCantBeSet()
-        @$('#scale-amount').val(parseInt(scale))
-        return
-      else
-        @$('#scale-amount').val(parseInt(scale) + scale_by)
-
-    else
-      if parseInt(@_currentScale()) < 10
-        @_scaleCantBeSet()
-        @$('#scale-amount').val(parseInt(scale))
-        return
-    @widget.set(scale: @_currentScale() / 100)
+    @_setObjectScale(@widget, scale_by)
