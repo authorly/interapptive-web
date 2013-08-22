@@ -14,9 +14,6 @@ NUM_WORKERS.times do |num|
     w.start           = "cd #{RAILS_ROOT} && bundle exec rake -f #{RAILS_ROOT}/Rakefile environment resque:work --trace"
     w.stop_timeout    = 20.seconds
 
-    w.uid = 'rails'
-    w.gid = 'rails'
-
     w.behavior(:clean_pid_file)
 
     # restart if memory gets too high
