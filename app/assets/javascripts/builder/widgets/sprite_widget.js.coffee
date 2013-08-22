@@ -39,7 +39,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
       if @model instanceof App.Models.SpriteWidget
         currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
-        @applyOrientation(currentOrientation)
+        # if the user switched to another scene while the image was loading, the orientation
+        # will not exist
+        if currentOrientation?
+          @applyOrientation(currentOrientation)
       else
         @applyOrientation(@model)
 
