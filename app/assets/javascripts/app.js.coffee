@@ -78,7 +78,13 @@ window.App =
     canvas = $('#builder')
     canvas.droppable
       accept: '.js-draggable'
-      drop: (__, ui) =>
+      drop: (event, ui) =>
+        onOtherElements = $('.navbar, .sidebar').filter (__, el) ->
+          el = $(el)
+          x = el.offset().left; y = el.offset().top
+          x <= event.pageX && event.pageX <= x + el.outerWidth() && y <= event.pageY && event.pageY <= y + el.outerHeight()
+        return if onOtherElements.length > 0
+
         offset = canvas.offset()
         position =
           x: App.Config.dimensions.width / 2
