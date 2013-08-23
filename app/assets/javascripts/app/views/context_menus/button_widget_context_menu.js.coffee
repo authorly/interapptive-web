@@ -4,8 +4,8 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   events: ->
     _.extend({}, super, {
-      'click #button-widget-filename':              'showUpdateModal'
-      'click #button-widget-disable':               'toggleDisable'
+      'click #button-widget-filename': 'showUpdateModal'
+      'click #button-widget-disable':  'toggleDisable'
     })
 
 

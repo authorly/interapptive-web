@@ -10,6 +10,8 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
     'keypress #x-coord, #y-coord, #scale-amount': 'numericInputListener'
     'keydown #x-coord, #y-coord':                 'enterKeyCoordListener'
     'keydown #scale-amount':                      'enterKeyScaleListener'
+    'click .bring-to-front':                      'bringToFront'
+    'click .put-in-back':                         'putInBack'
 
 
   initialize: ->
@@ -26,6 +28,16 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
     @_removeMoveListener()
     App.currentSelection.off 'change:keyframe', @_render, @
     super
+
+
+  bringToFront: (e) ->
+    e.stopPropagation()
+    App.vent.trigger('bring_to_front:sprite', @widget)
+
+
+  putInBack:(e) ->
+    e.stopPropagation()
+    App.vent.trigger('put_in_back:sprite', @widget)
 
 
   elementsClicked: (event) ->
