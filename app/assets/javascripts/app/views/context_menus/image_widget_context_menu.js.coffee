@@ -19,7 +19,8 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
 
 
   render: ->
-    @_render()
+    okay = @_render()
+    return @ unless okay?
     @_addListeners()
     @
 

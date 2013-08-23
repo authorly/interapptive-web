@@ -204,6 +204,10 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
     @selectedImage()?.get('url') || @url()
 
 
+  displayName: ->
+    @_displayName ||= App.Lib.StringHelper.capitalize(@get('name').replace(/_/g, ' '))
+
+
   _defaultImageUrl: ->
     '/assets/sprites/' + @_defaultFilename()
 

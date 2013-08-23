@@ -11,12 +11,14 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   _render: ->
+    orientation = @getCurrentOrientation()
+    return false unless orientation?
     @$el.html(@template(filename: @widget.filename(), orientation: @getCurrentOrientation()))
     @
 
 
   getCurrentOrientation: ->
-    @_currentOrientation ||= @widget.getOrientationFor(App.currentSelection.get('keyframe'))
+    @widget.getOrientationFor(App.currentSelection.get('keyframe'))
 
 
   deleteSprite: (e) ->
