@@ -1,0 +1,24 @@
+%h1 Users
+
+= paginate(@users)
+%table#users
+  %tr
+    %th
+      ID
+    %th
+      Email
+    %th
+      Is Admin?
+    %th
+      Actions
+  - for user in @users
+    %tr
+      %td
+        = user.id
+      %td
+        = user.email
+      %td
+        = yes_or_no(user.is_admin?)
+      %td
+        %a{ :href => "#{admin_user_path(user)}" }
+          Edit

@@ -10,6 +10,7 @@ describe UserSessionsController do
       User.should_receive(:find_by_email).with('foo@bar.com').and_return(@user)
       @user.should_receive(:authenticate).with('foo').and_return(true)
       @user.stub(:auth_token).and_return('blah')
+      @user.stub(:is_admin?).and_return(false)
 
       post :create, :email => 'foo@bar.com', :password => 'foo'
       response.should be_redirect
