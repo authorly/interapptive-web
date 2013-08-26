@@ -16,29 +16,16 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
 
   initialize: ->
     @widget = @options.widget
+    @_addListeners()
 
 
   render: ->
-    okay = @_render()
-    return @ unless okay?
-    @_addListeners()
-    @
+    # override
 
 
   remove: ->
-    @_removeMoveListener()
-    App.currentSelection.off 'change:keyframe', @_render, @
+    @_removeListeners()
     super
-
-
-  bringToFront: (e) ->
-    e.stopPropagation()
-    App.vent.trigger('bring_to_front:sprite', @widget)
-
-
-  putInBack:(e) ->
-    e.stopPropagation()
-    App.vent.trigger('put_in_back:sprite', @widget)
 
 
   elementsClicked: (event) ->
@@ -95,18 +82,21 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
 
 
   _addListeners: ->
-    @_addMoveListener()
-    App.currentSelection.on 'change:keyframe', @_render, @
-
-
-  _addMoveListener: ->
     $('body').on('keyup', @_moveSpriteWithArrows)
     @widget.on('move', @_changeCoordinates, @)
 
+    App.currentSelection.on 'change:keyframe', @_keyframeChanged, @
 
-  _removeMoveListener: ->
+
+  _removeListeners: ->
     $('body').off('keyup', @_moveSpriteWithArrows)
     @widget.off('move', @_changeCoordinates, @)
+
+    App.currentSelection.off 'change:keyframe', @_keyframeChanged, @
+
+
+  _keyframeChanged: (keyframe) ->
+    @render()
 
 
   _changeCoordinates: (new_point) ->

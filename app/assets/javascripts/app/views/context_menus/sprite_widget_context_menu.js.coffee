@@ -10,15 +10,31 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
   template: JST["app/templates/context_menus/sprite_widget_context_menu"]
 
 
-  _render: ->
-    orientation = @getCurrentOrientation()
-    return false unless orientation?
-    @$el.html(@template(filename: @widget.filename(), orientation: @getCurrentOrientation()))
+  initialize: (options) ->
+    super
+    @_setOrientation options.keyframe
+
+
+  _keyframeChanged: (__, keyframe) ->
+    @_setOrientation(keyframe)
+    super
+
+
+  _setOrientation: (keyframe) ->
+    @orientation = @widget.getOrientationFor(keyframe)
+
+
+  render: ->
+    html = if @orientation?
+      @template
+        filename: @widget.filename()
+        orientation: @orientation
+    else
+      ''
+    @$el.html(html)
+
     @
 
-
-  getCurrentOrientation: ->
-    @widget.getOrientationFor(App.currentSelection.get('keyframe'))
 
 
   deleteSprite: (e) ->
@@ -27,17 +43,16 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   _moveSprite: (direction, pixels) ->
-    current_orientation = @getCurrentOrientation()
-    x_oord = current_orientation.get('position').x
-    y_oord = current_orientation.get('position').y
+    x_oord = @orientation.get('position').x
+    y_oord = @orientation.get('position').y
     point = @_measurePoint(direction, pixels, x_oord, y_oord)
 
     @_delayedSavePosition(point) if point?
 
 
   _setPosition: (point) ->
-    @_setObjectPosition(@getCurrentOrientation(), point)
+    @_setObjectPosition @orientation, point
 
 
   _setScale: (scale_by) =>
-    @_setObjectScale(@getCurrentOrientation(), scale_by)
+    @_setObjectScale @orientation, scale_by

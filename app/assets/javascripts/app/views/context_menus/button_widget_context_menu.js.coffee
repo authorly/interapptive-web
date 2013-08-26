@@ -12,7 +12,7 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
   template: JST["app/templates/context_menus/button_widget_context_menu"]
 
 
-  _render: ->
+  render: ->
     @$el.html(@template(widget: @widget))
     @
 
