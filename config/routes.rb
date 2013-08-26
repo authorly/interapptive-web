@@ -1,5 +1,6 @@
 Interapptive::Application.routes.draw do
 
+  root :to => 'admin::users#index', :constraints => lambda { |request| request.cookies['auth_token'] && request.cookies['is_admin'] }
   root :to => 'storybooks#index', :constraints => lambda { |request| request.cookies['auth_token'] }
   root :to => 'user_sessions#new'
 
@@ -53,4 +54,8 @@ Interapptive::Application.routes.draw do
   resources :keyframes
 
   resource :zencoder, :controller => :zencoder, :only => :create
+
+  namespace :admin do
+    resources :users
+  end
 end
