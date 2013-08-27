@@ -7,7 +7,7 @@ class App.Views.ContextMenuContainer extends Backbone.View
 
 
   render: (widget) ->
-    @widgetContextMenu?.remove()
+    @empty()
 
     @widgetContextMenu = new App.Views[widget.get('type') + 'ContextMenu']
       widget: widget
@@ -18,5 +18,5 @@ class App.Views.ContextMenuContainer extends Backbone.View
 
 
   empty: ->
-    @widgetContextMenu.remove()
+    @widgetContextMenu?.remove()
     @widgetContextMenu = null
