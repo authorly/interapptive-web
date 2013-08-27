@@ -1,0 +1,21 @@
+%h1
+  Editing User
+  = @user.id
+#user.well
+  #email
+    Email:
+    = @user.email
+  %br
+
+  = form_for @user, :url => admin_user_path(@user) do |f|
+    %p
+      = f.number_field :allowed_storybooks_count, :placeholder => 'Allowed number of storybooks'
+      %span Allowed Storybooks
+
+    %p
+      Is Admin?
+      = f.check_box :is_admin
+
+    = f.submit 'Update', :class => 'btn'
+
+  = link_to('Users List', admin_users_path)
