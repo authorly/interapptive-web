@@ -5,6 +5,7 @@ Factory.define :user do |f|
   f.username 'user%d'
   f.email    'user%d@example.com'
   f.password f.password_confirmation('supersecret')
+  f.allowed_storybooks_count 100
 end
 
 Factory.define :storybook do |f|
@@ -12,6 +13,7 @@ Factory.define :storybook do |f|
   f.author 'Charles Bukowski'
   f.description 'This book is for true champions'
   f.price 20.00
+  f.user Factory(:user)
 end
 
 Factory.define :sound do |f|

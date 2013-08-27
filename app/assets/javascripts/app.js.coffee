@@ -376,3 +376,7 @@ window.App =
     (new App.Models.Storybook(id: id)).fetch
       success: (storybook) ->
         App.currentSelection.set storybook: storybook
+
+  setCurrentUser: (user_id) ->
+    @currentUser = new App.Models.User(id: user_id)
+    @currentUser.fetch()

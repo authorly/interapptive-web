@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def show
     respond_to do |format|
-      format.json { render :json => current_user }
+      format.json { render :json => current_user.backbone_response }
     end
   end
 

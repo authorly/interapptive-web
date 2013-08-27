@@ -12,7 +12,7 @@ describe UsersController do
 
     context '#show' do
       it 'should render a user' do
-        @user.stub(:as_json).and_return(:id => @user.id)
+        @user.stub(:backbone_response).and_return(:id => @user.id)
         get :show, :format => :json
         response.should be_success
         response.body.should eql({ :id => @user.id }.to_json)

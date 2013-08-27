@@ -44,10 +44,13 @@ class App.Views.StorybookIndex extends Backbone.View
 
   createStorybook: (event) ->
     event.preventDefault()
+    if App.currentUser.get('storybooks_count') >= App.currentUser.get('allowed_storybooks_count')
+      App.vent.trigger('show:message', 'warning', 'You are not allowed to create any more storybooks.')
+      return
 
     @collection.create { title: @$('.storybook-title').val() },
       wait:    true
-      error:    -> alert 'Please properly fill in fields!'
+      error:    -> App.vent.trigger('show:message', 'warning', 'Please properly fill in fields!')
       success: @closeStorybookForm
 
 

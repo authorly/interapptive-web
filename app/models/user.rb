@@ -23,6 +23,17 @@ class User < ActiveRecord::Base
 
   def developer?() role == 'developer' end
 
+  def backbone_response
+    {
+        'id'                       => id,
+        'email'                    => email,
+        'is_admin'                 => is_admin,
+        'allowed_storybooks_count' => allowed_storybooks_count,
+        'storybooks_count'         => storybooks.count,
+        'created_at'               => created_at
+    }
+  end
+
   def generate_token(column)
     begin
       self[column] = SecureRandom.urlsafe_base64
@@ -34,5 +45,15 @@ class User < ActiveRecord::Base
     self.password_reset_sent_at = Time.zone.now
     save!
     UserMailer.password_reset(self).deliver
+  end
+
+  def save_by_admin
+    pass = SecureRandom.base64(32).gsub(/[=+$\/]/, '').first(9)
+    self.password = pass
+    self.password_confirmation = pass
+    if save
+      Resque.enqueue(MailerQueue, 'UserMailer', 'password_creation_by_admin_notification', @user.id, pass)
+      return true
+    end
   end
 end

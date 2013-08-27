@@ -1,0 +1,28 @@
+%h1
+  Creating User
+
+= form_for @user, :url => admin_users_path, :html => { :class => 'well' } do |f|
+  - if @user.errors.any?
+    .errors
+      %h2 There were problems with user data
+
+      %ul
+        - @user.errors.full_messages.each do |message|
+          %li= message
+
+  %p
+    = f.text_field :email, :placeholder => 'email'
+  %p
+    = f.number_field :allowed_storybooks_count, :placeholder => 'Allowed number of storybooks'
+    %span Allowed Storybooks
+
+  %p
+    Is Admin?
+    = f.check_box :is_admin
+
+  %br/
+
+  = f.submit 'Create', :class => 'btn'
+  %br/
+
+  = link_to('Users List', admin_users_path)
