@@ -9,10 +9,6 @@ describe Storybook do
 
     specify { should be_an_instance_of(Storybook) }
 
-    it "increments storybook count" do
-      expect { Storybook.create :title => "New Storybook" }.to change { Storybook.count }.by(1)
-    end
-
     # it "can be created"
     # it "creates a storybook"
     # it "requires a title"

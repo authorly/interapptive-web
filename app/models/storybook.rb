@@ -22,8 +22,10 @@ class Storybook < ActiveRecord::Base
   serialize :settings, Hash
 
   before_validation :set_default_settings, on: :create
-  before_create :create_widgets
-  after_create :create_default_scene
+  before_create     :create_widgets
+  after_create      :create_default_scene
+
+  validate       :validate_allowed_storybooks_count, :before => :create
 
   validates_presence_of :title
   SETTINGS.each do |setting, _|
@@ -100,7 +102,9 @@ class Storybook < ActiveRecord::Base
     ]
   end
 
-
-
-
+  def validate_allowed_storybooks_count
+    if self.user.storybooks.count >= self.user.allowed_storybooks_count
+      errors[:base] << "You are not allowed to create any more storybooks."
+    end
+  end
 end
