@@ -23,7 +23,7 @@ class App.Views.ImageSelector extends Backbone.View
     @imagesView.render()
 
 
-    @selectedImageView = new App.Views.SelectedImage
+    @selectedImageView = new App.Views[@options.selectedImageViewClass]
       image: @options.image
       el: @$('.selected-image')
     @selectedImageView.render()

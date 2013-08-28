@@ -1,7 +1,6 @@
 class AbstractStorybookApplication
-  CRUCIBLE_RESOURCES_DIR = File.join(Rails.root,
-                                     Rails.env.test? ? 'tmp' : '../..',
-                                     '/Crucible/HelloWorld/Resources')
+  CRUCIBLE_RESOURCES_DIR = File.join(Rails.root, Rails.env.test? ? 'tmp' : '../..', '/Crucible/HelloWorld/Resources')
+  CRUCIBLE_TMP_RESOURCES_DIR = File.join(Rails.root, Rails.env.test? ? 'tmp' : '../../Crucible/HelloWorld/tmpresources')
 
   @downloadable_file_extension_regex = nil
   @fog_directory                     = nil

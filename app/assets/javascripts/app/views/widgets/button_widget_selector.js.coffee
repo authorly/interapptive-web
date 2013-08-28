@@ -21,6 +21,7 @@ class App.Views.ButtonWidgetImagesSelector extends Backbone.View
       image: @baseImage
       defaultImage: @widget.defaultImage()
       el: @$('.base-image-selector')
+      selectedImageViewClass: 'SelectedSprite'
     @listenTo @baseImageSelector, 'select', (image) => @baseImage = image
     @baseImageSelector.render()
 
@@ -29,6 +30,7 @@ class App.Views.ButtonWidgetImagesSelector extends Backbone.View
       image: @tappedImage
       defaultImage: @widget.defaultSelectedImage()
       el: @$('.tapped-image-selector')
+      selectedImageViewClass: 'SelectedSprite'
     @listenTo @tappedImageSelector, 'select', (image) => @tappedImage = image
     @tappedImageSelector.render()
 
