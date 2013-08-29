@@ -23,7 +23,8 @@
     %input#scale-amount.input-mini{:value => @widget.get('scale') * 100}
     &#37;
 
-#button-options
-  %a.bring-to-front{:href => '#'} Bring to Front
-  %br
-  %a.put-in-back{:href => '#'} Put in Back
+- unless  @widget.isHomeButton()
+  #button-options
+    %a.bring-to-front{:href => '#'} Bring to Front
+    %br
+    %a.put-in-back{:href => '#'} Put in Back
