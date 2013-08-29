@@ -276,8 +276,10 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       event.preventDefault()
       selector = ''
-      if widget.isImageWidget()
+      if widget.isSpriteWidget()
         selector = '.sprite'
+      else if widget.isButtonWidget()
+        selector = '.button'
       else if widget.isTextWidget()
         selector = '.text'
       else if widget.isHotspotWidget()
@@ -310,6 +312,29 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
           name:     'Remove Image'
           icon:     'delete'
           callback: @removeSpriteWithContextMenu
+
+        seperator:  "---------",
+
+        bring_to_front:
+          name:     'Bring to Front'
+          callback: @bringSpriteToFront
+
+        put_in_back:
+          name:     'Put in Back'
+          callback: @putSpriteInBack
+
+    $.contextMenu
+      selector: '#context-menu .button'
+
+      zIndex: 100
+
+      events:
+        hide: @hideContextMenuEventListener
+
+      items:
+        remove_image:
+          name:     'Enable/Disable'
+          callback: @changeButtonStateWithContextMenu
 
         seperator:  "---------",
 
@@ -363,6 +388,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   putSpriteInBack: =>
     App.vent.trigger 'put_in_back:sprite', @_capturedWidget.model
     @_capturedWidget = null
+
+
+  changeButtonStateWithContextMenu: =>
+    model = @_capturedWidget.model
+    if model.disabled()
+      model.enable()
+    else
+      model.disable()
 
 
   removeSpriteWithContextMenu: =>
