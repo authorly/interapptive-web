@@ -223,6 +223,10 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
     @_displayName ||= App.Lib.StringHelper.capitalize(@get('name').replace(/_/g, ' '))
 
 
+  isHomeButton: ->
+    @get('name') == 'home'
+
+
   _defaultImageUrl: ->
     '/assets/sprites/' + @_defaultFilename()
 

@@ -81,6 +81,16 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
     @_setScale() if event.keyCode is App.Lib.Keycodes.enter
 
 
+  bringToFront: (e) ->
+    e.stopPropagation()
+    App.vent.trigger('bring_to_front:sprite', @widget)
+
+
+  putInBack: (e) ->
+    e.stopPropagation()
+    App.vent.trigger('put_in_back:sprite', @widget)
+
+
   _addListeners: ->
     $('body').on('keyup', @_moveSpriteWithArrows)
     @widget.on('move', @_changeCoordinates, @)
