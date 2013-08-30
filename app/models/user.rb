@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
     self.password = pass
     self.password_confirmation = pass
     if save
-      Resque.enqueue(MailerQueue, 'UserMailer', 'password_creation_by_admin_notification', @user.id, pass)
+      Resque.enqueue(MailerQueue, 'UserMailer', 'password_creation_by_admin_notification', self.id, pass)
       return true
     end
   end
