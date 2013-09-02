@@ -4,6 +4,10 @@
       %img{src: '/assets/authorly-icon-large.png'}
     Authorly
 
+  %h4
+    %a.sign-out{:href => '/users/sign_out'}
+      Sign Out
+
   %h2 Your storybooks:
   %ul#storybook-list
   #storybook-loading
