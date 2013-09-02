@@ -9,17 +9,21 @@ class App.Views.AssetIndex extends Backbone.View
   initialize: ->
     @assetType = @options.assetType # infer from collection type
     @allowDelete = @options.allowDelete
+    @defaultAsset = @options.default
     @_addListeners()
 
 
   remove: ->
-    super
     @_removeListeners()
+    super
 
 
   render: ->
+    models = if @defaultAsset? then [@defaultAsset] else []
+    models = models.concat(@collection.models)
+    data = _.map models, @_getData
     @table = @$el.dataTable
-      aaData:    @collection.map(@_getData)
+      aaData: data
       aoColumns: @_getColumns()
       aaSorting: [[@_getFields().indexOf('created_at'), 'asc']]
       bLengthChange: false
@@ -38,11 +42,11 @@ class App.Views.AssetIndex extends Backbone.View
     @collection.off 'remove', @_assetRemoved, @
 
 
-  _getData: (asset, fields) =>
+  _getData: (asset) =>
     fields = @_getFields()
     row = DT_RowId: 'asset_' + asset.id
     _.each fields, (field, index) ->
-      row[index] = asset.get(field)
+      row[index] = asset.get(field) || null
     row
 
 
@@ -63,7 +67,10 @@ class App.Views.AssetIndex extends Backbone.View
         bSearchable: false
         mRender: (data, operation, row) =>
           if operation == 'display'
-            App.Lib.DateTimeHelper.timeToHuman(data)
+            if data?
+              App.Lib.DateTimeHelper.timeToHuman(data)
+            else
+              ''
           else
             data
       }
@@ -87,7 +94,7 @@ class App.Views.AssetIndex extends Backbone.View
         bSortable: false
         mRender: (data, operation, row) =>
           if operation == 'display' && @assetType == 'image'
-            "<img src='#{data}'/>"
+            "<img src='#{data}' class='preview'/>"
           else
             data
       }].concat(columns)

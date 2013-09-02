@@ -14,4 +14,5 @@ class App.Views.Modal extends Backbone.View
 
 
   hide: ->
+    @options.view.remove()
     @modal.modal 'hide'
