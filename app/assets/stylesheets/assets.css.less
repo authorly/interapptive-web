@@ -2,6 +2,34 @@
   .selected-image {
     clear: both;
     padding: 15px;
+
+    .image {
+      display: inline-block;
+      position: relative;
+    }
+
+    img {
+      max-width: 400px;
+      max-height: 300px;
+    }
+
+    .delete{
+      display: block;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      padding: 5px;
+      z-index: 90 !important;
+      background: asset-url('red-minus.png') no-repeat center;
+      background-size: 55%;
+    }
+
+  }
+
+  .images .preview {
+      max-width: 100px;
   }
 
   tr.selected {
