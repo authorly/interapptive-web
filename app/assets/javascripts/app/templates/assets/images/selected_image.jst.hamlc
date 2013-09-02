@@ -1,6 +1,9 @@
 - if @url?
   %p Selected image:
-  %img{:src => "#{@url}"}
+  .image
+    %img{:src => "#{@url}"}
+    - if @removable
+      %a.delete{ href: '#' }
 
 - else
   Please select an image.

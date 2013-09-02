@@ -13,8 +13,8 @@ class App.Views.AssetIndex extends Backbone.View
 
 
   remove: ->
-    super
     @_removeListeners()
+    super
 
 
   render: ->
