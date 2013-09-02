@@ -44,8 +44,8 @@ class App.Views.StorybookIndex extends Backbone.View
 
   createStorybook: (event) ->
     event.preventDefault()
-    if App.currentUser.get('storybooks_count') >= App.currentUser.get('allowed_storybooks_count')
-      App.vent.trigger('show:message', 'warning', 'You are not allowed to create any more storybooks.')
+    if App.currentUser.canMakeMoreStorybooks()
+      App.vent.trigger('show:message', 'warning', "You are not allowed to create more than #{App.currentUser.get('allowed_storybooks_count')} storybooks.")
       return
 
     @collection.create { title: @$('.storybook-title').val() },
