@@ -35,19 +35,23 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new params[:user]
-
     respond_to do |format|
-      if @user.save
-        cookies.permanent[:auth_token] = @user.auth_token
-        
-        format.html { redirect_to root_path }
-        format.json { render :json => @user, :status => :created }
-      else
-        format.html { render :action => 'new', :layout => 'user_sessions' }
-        format.json { render :json => @user.errors, :status => :unprocessable_entity }
-      end
+      format.html { render :action => 'new', :layout => 'user_sessions' }
+      format.json { render :json => {}, :status => :unprocessable_entity }
     end
+    #@user = User.new params[:user]
+
+    #respond_to do |format|
+      #if @user.save
+        #cookies.permanent[:auth_token] = @user.auth_token
+        
+        #format.html { redirect_to root_path }
+        #format.json { render :json => @user, :status => :created }
+      #else
+        #format.html { render :action => 'new', :layout => 'user_sessions' }
+        #format.json { render :json => @user.errors, :status => :unprocessable_entity }
+      #end
+    #end
   end
 
   def destroy
