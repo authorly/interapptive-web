@@ -4,7 +4,7 @@ Interapptive::Application.routes.draw do
   root :to => 'storybooks#index', :constraints => lambda { |request| request.cookies['auth_token'] }
   root :to => 'user_sessions#new'
 
-  get  'users/sign_up'  => 'users#new',             :as => 'sign_up'
+  #get  'users/sign_up'  => 'users#new',             :as => 'sign_up'
   get  'users/sign_in'  => 'user_sessions#new',     :as => 'sign_in'
   post 'users/sign_in'  => 'user_sessions#create',  :as => ''
   match 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
