@@ -13,24 +13,41 @@ class App.Lib._ImageCache
   constructor: ->
     @cache = {}
     @proxy = App.Lib.RemoteDomainProxy.instance()
-    @proxy.bind 'message', @from_proxy
+    @proxy.bind 'message', @fromProxy
 
 
   get: (url) ->
-    @load(url) unless @cache[url]?
+    unless @cache[url]?
+      @cache[url] = $.Deferred()
+      @_load(url)
+
     @cache[url].promise()
 
 
-  load: (url) ->
+  _load: (url) ->
+    if @isRelative(url)
+      @storeImage url, url
+    else
+      @loadViaProxy(url)
+
+
+  loadViaProxy: (url) ->
     @proxy.send
       action: 'load'
       path:   url
-    @cache[url] = $.Deferred()
 
 
-  from_proxy: (message) =>
+  fromProxy: (message) =>
     if message.action == 'loaded'
-      image = new Image
-      image.onload = =>
-        @cache[message.path].resolve(message.path, image)
-      image.src = message.bits
+      @storeImage message.path, message.bits
+
+
+  storeImage: (url, src) ->
+    image = new Image
+    image.onload = =>
+      @cache[url].resolve(url, image)
+    image.src = src
+
+
+  isRelative: (url) ->
+    url.indexOf('/') == 0
