@@ -7,7 +7,7 @@ class UserMailer < ActionMailer::Base
     mail :to => user.email, :subject => "Password Reset"
   end
 
-  def password_creation_by_admin_notification(user_id, pass)
+  def password_reset_notification(user_id, pass)
     @user = User.find_by_id(user_id)
     @pass = pass
     @url = "http://#{Rails.env.production? ? 'beta' : 'staging'}.authorly.com"

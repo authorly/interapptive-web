@@ -47,12 +47,12 @@ class User < ActiveRecord::Base
     UserMailer.password_reset(self).deliver
   end
 
-  def save_by_admin
+  def reset_password
     pass = SecureRandom.base64(32).gsub(/[=+$\/]/, '').first(9)
     self.password = pass
     self.password_confirmation = pass
     if save
-      Resque.enqueue(MailerQueue, 'UserMailer', 'password_creation_by_admin_notification', self.id, pass)
+      Resque.enqueue(MailerQueue, 'UserMailer', 'password_reset_notification', self.id, pass)
       return true
     end
   end
