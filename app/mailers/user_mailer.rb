@@ -10,8 +10,9 @@ class UserMailer < ActionMailer::Base
   def password_creation_by_admin_notification(user_id, pass)
     @user = User.find_by_id(user_id)
     @pass = pass
+    @url = "http://#{Rails.env.production? ? 'beta' : 'staging'}.authorly.com"
     if @user
-      mail :to => @user.email, :subject => "Authorly - You are invited!"
+      mail :to => @user.email, :subject => "You are invited to use Authorly!"
     end
   end
 
@@ -19,12 +20,12 @@ class UserMailer < ActionMailer::Base
     @index_url = index_url
     @ipa_url   = ipa_url
 
-    mail :to => to, :subject => "Authorly - Your iOS app is ready for testing!"
+    mail :to => to, :subject => "Your iOS app is ready for testing!"
   end
 
   def android_compilation_completion_notification(to, apk_url)
     @apk_url   = apk_url
 
-    mail :to => to, :subject => "Authorly - Your Android app is ready for testing!"
+    mail :to => to, :subject => "Your Android app is ready for testing!"
   end
 end
