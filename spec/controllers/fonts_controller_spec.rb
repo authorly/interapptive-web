@@ -23,29 +23,17 @@ describe FontsController do
   end
 
   context "#create" do
-    it 'should create a font' do
+    it 'should create multiple fonts' do
       fake_font = "font.wav"
       @user.stub(:storybooks).and_return(Storybook)
       Storybook.stub(:find).with(@storybook.id.to_s).and_return(@storybook)
-      Font.should_receive(:create).with({:font => fake_font, :storybook_id => @storybook.id }).exactly(1).times.and_return(@font)
+      Font.should_receive(:create).with({:font => fake_font, :storybook_id => @storybook.id }).exactly(2).times.and_return(@font)
 
-      post :create, :font => { :files => [fake_font] }, :storybook_id => @storybook.id, :format => :json
+      post :create, :font => { :files => [fake_font, fake_font] }, :storybook_id => @storybook.id, :format => :json
 
       response.should be_success
-      response.body.should eql([{ :id => @font.id, :font => @font.font }].to_json)
+      response.body.should eql([{ :id => @font.id, :font => @font.font }, { :id => @font.id, :font => @font.font }].to_json)
     end
-
-    # it 'should create multiple fonts' do
-      # fake_font = "font.wav"
-      # @user.stub(:storybooks).and_return(Storybook)
-      # Storybook.stub(:find).with(@storybook.id.to_s).and_return(@storybook)
-      # Font.should_receive(:create).with({:font => fake_font, :storybook_id => @storybook.id }).exactly(2).times.and_return(@font)
-
-      # post :create, :font => { :files => [fake_font, fake_font] }, :storybook_id => @storybook.id, :format => :json
-
-      # response.should be_success
-      # response.body.should eql([{ :id => @font.id, :font => @font.font }, { :id => @font.id, :font => @font.font }].to_json)
-    # end
   end
 
   context "#destroy" do

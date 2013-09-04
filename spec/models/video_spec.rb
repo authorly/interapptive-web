@@ -12,7 +12,6 @@ describe Video do
 
   context "#as_jquery_upload_response" do
     it 'should be valid response' do
-      @video.stub(:transcode_complete?).and_return(true)
       response = {
         'id'                 => @video.id,
         'name'               => @video.read_attribute(:video),
@@ -40,7 +39,7 @@ describe Video do
     end
 
     it 'should return duration' do
-      @video.meta_info[:response] = { 'input' => { 'duration_in_ms' => 1000 } }
+      @video.meta_info[:response] = { :input => { :duration_in_ms => 1000 } }
       @video.duration.should eql(1)
     end
 
