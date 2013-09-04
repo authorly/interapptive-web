@@ -56,6 +56,10 @@ Interapptive::Application.routes.draw do
   resource :zencoder, :controller => :zencoder, :only => :create
 
   namespace :admin do
-    resources :users
+    resources :users do
+      member do
+        post 'send_invitation'
+      end
+    end
   end
 end
