@@ -9,6 +9,9 @@
 
   = form_for @user, :url => admin_user_path(@user) do |f|
     %p
+      = f.text_field :email, :placeholder => "Email"
+
+    %p
       = f.number_field :allowed_storybooks_count, :placeholder => 'Allowed number of storybooks'
       %span Allowed Storybooks
 

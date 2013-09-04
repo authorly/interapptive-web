@@ -10,7 +10,7 @@ module Admin
 
     def update
       @user = User.find(params[:id])
-      params[:user].slice!(:is_admin, :allowed_storybooks_count)
+      params[:user].slice!(:is_admin, :allowed_storybooks_count, :email)
 
       @user.update_attributes(params[:user])
       respond_to do |format|
