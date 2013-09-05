@@ -6,19 +6,18 @@ class App.Views.StorybookIndex extends Backbone.View
     'Are you sure you want to continue?\n'
 
   events:
-    'click  .storybook'         : 'storybookSelected'
-    'click  .open-storybook'    : 'openStorybook'
+    'click  .storybook'         : 'openStorybook'
+    'click  .delete-storybook'  : 'deleteStorybook'
+
     'click  .new-storybook-btn' : 'showStorybookForm'
     'click  .close'             : 'closeStorybookForm'
     'submit .storybook-form'    : 'createStorybook'
-    'click  .delete-storybook'  : 'deleteStorybook'
 
 
   initialize: ->
     @collection.on 'add'  ,  @appendStorybook,  @
     @collection.on 'remove', @removeStorybook,  @
     @collection.on 'sync',   @storybooksLoaded, @
-    @selectedStorybook = null
 
 
   render: ->
@@ -32,9 +31,6 @@ class App.Views.StorybookIndex extends Backbone.View
   renderStorybooks: ->
     @$('#storybook-list').html('')
     @collection.each (storybook) => @appendStorybook(storybook)
-    if App.Config.environment == 'development' && @collection.length > 0
-      @selectStorybook @collection.at(@collection.length - 1)
-      # @openStorybook(local: true)
 
 
   storybooksLoaded: ->
@@ -58,8 +54,6 @@ class App.Views.StorybookIndex extends Backbone.View
     view = new App.Views.Storybook(model: storybook)
     @$('#storybook-list').prepend(view.render().el)
 
-    @selectStorybook storybook
-
 
   deleteStorybook: (event) ->
     event.preventDefault()
@@ -71,31 +65,15 @@ class App.Views.StorybookIndex extends Backbone.View
 
   removeStorybook: (storybook) =>
     @$(".storybook[data-id=#{storybook.id}]").parent().remove()
-    @enableOpenStorybookButton(false)
 
 
-  storybookSelected: (event) ->
+  openStorybook: (event) ->
     event.preventDefault()
 
     id = $(event.currentTarget).data 'id'
-    @selectStorybook @collection.get(id)
-
-
-  selectStorybook: (storybook) ->
-    @selectedStorybook = storybook
-
-    @$('.storybook').removeClass('active alert alert-info').
-      filter("[data-id=#{storybook.id}]").addClass('active alert alert-info')
-
-    @enableOpenStorybookButton()
-
-
-  openStorybook: (options={}) ->
-    url = @selectedStorybook.baseUrl()
-    if options.local
-      window.location = url
-    else
-      window.open(url, '_blank')
+    storybook = @collection.get(id)
+    url = storybook.baseUrl()
+    window.open(url, '_blank')
 
 
   enableOpenStorybookButton: (enabling = true) ->
