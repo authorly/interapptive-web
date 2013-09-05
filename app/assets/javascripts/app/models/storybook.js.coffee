@@ -117,11 +117,14 @@ class App.Models.Storybook extends Backbone.Model
 
   fetchCollections: ->
     # TODO use deferreds to load assets in parallel and load scenes afterwards
-    @images.fetch(async: false, reset: true)
-    @sounds.fetch(async: false, reset: true)
-    @videos.fetch(async: false, reset: true)
-    @fonts.fetch(async: false, reset: true)
-    @scenes.fetch(reset: true)
+    $.when(
+      @images.fetch(),
+      @sounds.fetch(),
+      @videos.fetch(),
+      @fonts .fetch()
+    ).then( =>
+      @scenes.fetch()
+    )
 
 
   addAsset: (asset) ->
