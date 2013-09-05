@@ -48,6 +48,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   checkLoadedStatus: =>
     if @isLoaded()
       @setContentSize @sprite.getContentSize()
+      @setOpacity()
     else
       window.setTimeout @checkLoadedStatus, 200
 
@@ -115,9 +116,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_border
 
 
-  setOpacity: (opacity) ->
+  setOpacity: (opacity=@_lastOpacity) ->
     super
     @sprite?.setOpacity(opacity)
+    @_lastOpacity = opacity
 
 
   draw: (ctx) ->
