@@ -27,3 +27,16 @@ describe "App.Models.ButtonWidget", ->
       it 'gets the url based on the image, if provided', ->
         @widget = new App.Models.ButtonWidget({image_id: 13}, collection: @collection)
         expect(@widget.url()).toEqual 'image.url'
+
+    describe 'disabled', ->
+      it "cannot be disabled if it's read it myself", ->
+        @widget = new App.Models.ButtonWidget(name: 'read_it_myself')
+        expect(@widget.canBeDisabled()).not.toBeTruthy()
+
+      it "can be disabled if it's read to me", ->
+        @widget = new App.Models.ButtonWidget(name: 'read_to_me')
+        expect(@widget.canBeDisabled()).toBeTruthy()
+
+      it "can be disabled if it's autoplay", ->
+        @widget = new App.Models.ButtonWidget(name: 'auto_play')
+        expect(@widget.canBeDisabled()).toBeTruthy()
