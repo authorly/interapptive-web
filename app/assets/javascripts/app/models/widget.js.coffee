@@ -191,7 +191,11 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
 
 
   defaultImage: ->
-    @_defaultImage ||= new App.Models.Image(url: @_defaultImageUrl())
+    @_defaultImage ||= new App.Models.Image(
+      url:           @_defaultImageUrl()
+      thumbnail_url: @_defaultImageUrl()
+      name:          @_defaultFilename()
+    )
 
 
   url: ->
@@ -204,7 +208,11 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
 
 
   defaultSelectedImage: ->
-    @_defaultSelectedImage ||= new App.Models.Image(url: @_defaultSelectedImageUrl())
+    @_defaultSelectedImage ||= new App.Models.Image(
+      url:           @_defaultSelectedImageUrl()
+      thumbnail_url: @_defaultSelectedImageUrl()
+      name:          @_defaultSelectedFilename()
+    )
 
 
   selectedUrl: ->

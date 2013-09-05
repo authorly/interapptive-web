@@ -17,6 +17,7 @@ class App.Views.ImageSelector extends Backbone.View
 
     @imagesView = new App.Views.AssetIndex
       collection: @collection
+      default: @options.defaultImage
       assetType: 'image'
       el: @$('.images')
     @imagesView.render()
@@ -24,10 +25,7 @@ class App.Views.ImageSelector extends Backbone.View
 
     @selectedImageView = new App.Views.SelectedImage
       image: @options.image
-      default: @options.defaultImage
       el: @$('.selected-image')
-    @listenTo @selectedImageView, 'remove', =>
-      @setImage @options.defaultImage
     @selectedImageView.render()
 
 
@@ -42,7 +40,7 @@ class App.Views.ImageSelector extends Backbone.View
     row = @$(event.currentTarget)
     row.addClass('selected').siblings().removeClass 'selected'
 
-    image = @collection.get(@imagesView.getId(row))
+    image = @collection.get(@imagesView.getId(row)) || @options.defaultImage
     @setImage(image)
 
 
