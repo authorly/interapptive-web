@@ -20,6 +20,7 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   render: ->
     @$el.html(@template(widget: @widget))
+    @_disabledChanged()
     @
 
 
