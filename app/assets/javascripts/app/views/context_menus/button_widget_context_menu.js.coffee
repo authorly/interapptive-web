@@ -12,9 +12,20 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
   template: JST["app/templates/context_menus/button_widget_context_menu"]
 
 
+  initialize: ->
+    super
+    @widget.on 'change:disabled', @_disabledChanged, @
+
+
   render: ->
     @$el.html(@template(widget: @widget))
+    @_disabledChanged()
     @
+
+
+  remove: ->
+    @widget.off 'change:disabled', @_disabledChanged, @
+    super
 
 
   showUpdateModal: (event) ->
@@ -49,3 +60,11 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   _setScale: (scale_by) =>
     @_setObjectScale(@widget, scale_by)
+
+
+  _disabledChanged: ->
+    button = @$('#button-widget-disable')
+    if @widget.get('disabled')
+      button.removeClass('enable')
+    else
+      button.addClass('enable')
