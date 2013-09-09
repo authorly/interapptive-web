@@ -94,7 +94,7 @@ class App.Views.AssetIndex extends Backbone.View
         bSortable: false
         mRender: (data, operation, row) =>
           if operation == 'display' && @assetType == 'image'
-            "<img src='#{data}'/>"
+            "<img src='#{data}' class='preview'/>"
           else
             data
       }].concat(columns)
