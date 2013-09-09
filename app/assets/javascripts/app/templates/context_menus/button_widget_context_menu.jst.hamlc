@@ -1,8 +1,8 @@
 #button-widget-name
   = @widget.displayName()
 
-#button-widget-disable
-  &nbsp;&nbsp;
+- if @widget.canBeDisabled()
+  #button-widget-disable
 
 %a#button-widget-filename
   = @widget.filename()
