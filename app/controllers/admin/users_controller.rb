@@ -12,7 +12,11 @@ module Admin
       @user = User.find(params[:id])
       params[:user].slice!(:is_admin, :allowed_storybooks_count, :email)
 
-      @user.update_attributes(params[:user])
+      if @user.update_attributes(params[:user])
+        flash[:notice] = "User details were updated."
+      else
+        flash[:error] = "There was a problem updating user details. Please try again."
+      end
       respond_to do |format|
         format.html { redirect_to :action => :edit }
       end
