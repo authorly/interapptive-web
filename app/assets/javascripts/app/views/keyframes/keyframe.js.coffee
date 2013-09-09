@@ -7,12 +7,12 @@ class App.Views.Keyframe extends Backbone.View
 
   initialize: ->
     @model.widgets.on        'add remove change:position change:scale change:radius',  @widgetsChanged, @
-    @model.scene.widgets.on  '           change:position change:scale change:z_order', @widgetsChanged, @
+    @model.scene.widgets.on  '           change:position change:scale change:z_order change:disabled', @widgetsChanged, @
 
 
   remove: ->
     @model.widgets.off       'add remove change:position change:chale change:radius',  @widgetsChanged, @
-    @model.scene.widgets.off '           change:position change:scale change:z_order', @widgetsChanged, @
+    @model.scene.widgets.off '           change:position change:scale change:z_order change:disabled', @widgetsChanged, @
 
 
   render: ->
@@ -108,8 +108,10 @@ class App.Views.Keyframe extends Backbone.View
 
 
   _allWidgets: ->
+    mainMenuButtons = @model.scene.widgets.byClass(App.Models.ButtonWidget)
     [].concat @model.widgets.byClass(App.Models.SpriteOrientation),
-              @model.scene.widgets.byClass(App.Models.ButtonWidget)
+              _.reject(mainMenuButtons, (button) -> button.get('disabled'))
+
 
 
   _getImageWidget: (widget) ->
