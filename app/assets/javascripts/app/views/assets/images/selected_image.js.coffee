@@ -1,5 +1,6 @@
 ##
 # A view that shows an image or a text indicating that no image is selected.
+# It also allows removing the image.
 
 class App.Views.SelectedImage extends Backbone.View
   template: JST['app/templates/assets/images/selected_image']
@@ -9,7 +10,8 @@ class App.Views.SelectedImage extends Backbone.View
 
 
   render: ->
-    @$el.html(@template(url: @image?.get('url')))
+    @$el.html @template
+      url: @image?.get('url')
     @
 
 

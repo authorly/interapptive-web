@@ -19,25 +19,38 @@ class App.Views.ButtonWidgetImagesSelector extends Backbone.View
     @baseImageSelector = new App.Views.ImageSelector
       collection: @collection
       image: @baseImage
+      defaultImage: @widget.defaultImage()
       el: @$('.base-image-selector')
-    @baseImageSelector.on 'select', (image) => @baseImage = image
+    @listenTo @baseImageSelector, 'select', (image) => @baseImage = image
     @baseImageSelector.render()
 
     @tappedImageSelector = new App.Views.ImageSelector
       collection: @collection
       image: @tappedImage
+      defaultImage: @widget.defaultSelectedImage()
       el: @$('.tapped-image-selector')
-    @tappedImageSelector.on 'select', (image) => @tappedImage = image
+    @listenTo @tappedImageSelector, 'select', (image) => @tappedImage = image
     @tappedImageSelector.render()
-
-    @delegateEvents()
 
     @
 
 
+  remove: ->
+    @stopListening @baseImageSelector
+    @baseImageSelector.remove()
+
+    @stopListening @tappedImageSelector
+    @tappedImageSelector.remove()
+
+    super
+
+
   useSelectedImages: ->
-    @widget.set
+    attributes =
       image_id:          @baseImage?.id
       selected_image_id: @tappedImage?.id
+    unless attributes.image_id?
+      attributes.scale = 1
+    @widget.set attributes
 
     App.vent.trigger('hide:modal')
