@@ -333,6 +333,35 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
         seperator:  "---------",
 
+        restore_default:
+          name:     'Use default image'
+          callback: @restoreDefaultMainMenuButtonImage
+
+        seperator2:  "---------",
+
+        bring_to_front:
+          name:     'Bring to Front'
+          callback: @bringSpriteToFront
+
+        put_in_back:
+          name:     'Put in Back'
+          callback: @putSpriteInBack
+
+    $.contextMenu
+      selector: '#context-menu .button.without-disable'
+
+      zIndex: 100
+
+      events:
+        hide: @hideContextMenuEventListener
+
+      items:
+        restore_default:
+          name:     'Use default image'
+          callback: @restoreDefaultMainMenuButtonImage
+
+        seperator2:  "---------",
+
         bring_to_front:
           name:     'Bring to Front'
           callback: @bringSpriteToFront
@@ -391,6 +420,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       model.enable()
     else
       model.disable()
+
+
+  restoreDefaultMainMenuButtonImage: =>
+    model = @_capturedWidget.model
+    model.useDefaultImage()
 
 
   removeSpriteWithContextMenu: =>

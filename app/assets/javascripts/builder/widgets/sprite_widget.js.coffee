@@ -23,6 +23,10 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
 
+    @loadImage()
+
+
+  loadImage: ->
     cc.TextureCache.sharedTextureCache().addImageAsync @model.url(), @, ( ->
       window.setTimeout @_imageLoadedInSprite, 0
     )

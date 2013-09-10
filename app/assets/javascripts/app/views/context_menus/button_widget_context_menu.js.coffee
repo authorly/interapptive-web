@@ -6,15 +6,26 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
     _.extend({}, super, {
       'click #button-widget-filename': 'showUpdateModal'
       'click #button-widget-disable':  'toggleDisable'
+      'click .use-default':            'useDefaultImage'
     })
 
 
   template: JST["app/templates/context_menus/button_widget_context_menu"]
 
 
+  initialize: ->
+    super
+    @widget.on 'change', @render, @
+
+
   render: ->
     @$el.html(@template(widget: @widget))
     @
+
+
+  remove: ->
+    @widget.off 'change', @render, @
+    super
 
 
   showUpdateModal: (event) ->
@@ -35,6 +46,11 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
       @widget.disable()
 
 
+  useDefaultImage: (event) ->
+    event.stopPropagation()
+    @widget.useDefaultImage()
+
+
   _moveSprite: (direction, pixels) ->
     x_oord = @widget.get('position').x
     y_oord = @widget.get('position').y
@@ -49,3 +65,4 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   _setScale: (scale_by) =>
     @_setObjectScale(@widget, scale_by)
+
