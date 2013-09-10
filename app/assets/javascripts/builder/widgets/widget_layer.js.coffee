@@ -271,6 +271,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       selector = ''
       if widget.isSpriteWidget()
         selector = '.sprite'
+      else if widget.model.isHomeButton()
+        return
       else if widget.isButtonWidget()
         if widget.model.canBeDisabled()
           selector = '.button.with-disable'
