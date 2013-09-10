@@ -413,15 +413,15 @@ class App.Collections.CurrentWidgets extends App.Collections.Widgets
 
 
   updateStorybookWidgets: (keyframe) ->
-    return unless @currentKeyframe?.scene != keyframe?.scene
+    return if @currentKeyframe?.scene == keyframe?.scene
 
-    if @currentKeyframe?.scene.isMainMenu()
-      widgets = @currentKeyframe.scene.storybook.widgets
-      @add(widgets.models) if widgets?
+    widgets = keyframe?.scene.storybook.widgets
+    return unless widgets?
 
     if keyframe?.scene.isMainMenu()
-      widgets = keyframe.scene.storybook.widgets
-      @remove(widgets.models) if widgets?
+      @remove(widgets.models)
+    else
+      @add(widgets.models)
 
 
   updateSceneWidgets: (keyframe) ->
