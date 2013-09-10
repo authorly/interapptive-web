@@ -11,7 +11,7 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
 
 
   refresh: ->
-    @_getImage()
+    @loadImage()
 
 
   _disabledChanged: ->

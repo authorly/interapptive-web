@@ -2,7 +2,7 @@
   = @widget.displayName()
 
 - if @widget.canBeDisabled()
-  #button-widget-disable
+  #button-widget-disable{ class: if @widget.get('disabled') then '' else 'enable' }
 
 %a#button-widget-filename
   = @widget.filename()
@@ -24,6 +24,7 @@
     &#37;
 
 #button-options
-  %a.bring-to-front{:href => '#'} Bring to Front
+  %a.use-default{:href => '#'} Use default image
   %br
+  %a.bring-to-front{:href => '#'} Bring to Front
   %a.put-in-back{:href => '#'} Put in Back

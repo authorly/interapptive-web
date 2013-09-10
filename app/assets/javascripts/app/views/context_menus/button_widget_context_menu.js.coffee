@@ -6,6 +6,7 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
     _.extend({}, super, {
       'click #button-widget-filename': 'showUpdateModal'
       'click #button-widget-disable':  'toggleDisable'
+      'click .use-default':            'useDefaultImage'
     })
 
 
@@ -14,17 +15,16 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   initialize: ->
     super
-    @widget.on 'change:disabled', @_disabledChanged, @
+    @widget.on 'change', @render, @
 
 
   render: ->
     @$el.html(@template(widget: @widget))
-    @_disabledChanged()
     @
 
 
   remove: ->
-    @widget.off 'change:disabled', @_disabledChanged, @
+    @widget.off 'change', @render, @
     super
 
 
@@ -46,6 +46,11 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
       @widget.disable()
 
 
+  useDefaultImage: (event) ->
+    event.stopPropagation()
+    @widget.useDefaultImage()
+
+
   _moveSprite: (direction, pixels) ->
     x_oord = @widget.get('position').x
     y_oord = @widget.get('position').y
@@ -61,10 +66,3 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
   _setScale: (scale_by) =>
     @_setObjectScale(@widget, scale_by)
 
-
-  _disabledChanged: ->
-    button = @$('#button-widget-disable')
-    if @widget.get('disabled')
-      button.removeClass('enable')
-    else
-      button.addClass('enable')
