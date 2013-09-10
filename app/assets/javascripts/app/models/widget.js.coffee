@@ -207,6 +207,12 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
     @images().get(@get('selected_image_id')) || @defaultSelectedImage()
 
 
+  useDefaultImage: ->
+    @set
+      image_id: @defaultImage().id
+      scale: 1
+
+
   defaultSelectedImage: ->
     @_defaultSelectedImage ||= new App.Models.Image(
       url:           @_defaultSelectedImageUrl()
