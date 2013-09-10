@@ -272,7 +272,10 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       if widget.isSpriteWidget()
         selector = '.sprite'
       else if widget.isButtonWidget()
-        selector = '.button'
+        if widget.model.canBeDisabled()
+          selector = '.button.with-disable'
+        else
+          selector = '.button.without-disable'
       else if widget.isTextWidget()
         selector = '.text'
       else if widget.isHotspotWidget()
@@ -317,7 +320,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
           callback: @putSpriteInBack
 
     $.contextMenu
-      selector: '#context-menu .button'
+      selector: '#context-menu .button.with-disable'
 
       zIndex: 100
 
@@ -331,6 +334,23 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
         seperator:  "---------",
 
+        bring_to_front:
+          name:     'Bring to Front'
+          callback: @bringSpriteToFront
+
+        put_in_back:
+          name:     'Put in Back'
+          callback: @putSpriteInBack
+
+    $.contextMenu
+      selector: '#context-menu .button.without-disable'
+
+      zIndex: 100
+
+      events:
+        hide: @hideContextMenuEventListener
+
+      items:
         bring_to_front:
           name:     'Bring to Front'
           callback: @bringSpriteToFront
