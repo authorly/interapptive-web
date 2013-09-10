@@ -20,5 +20,8 @@
   %a.bring-to-front{:href => '#'} Bring to Front
   %br
   %a.put-in-back{:href => '#'} Put in Back
+  - if App.currentSelection.get('keyframe').previous()?
+    %br
+    %a.as-previous{:href => '#'} As in previous keyframe
   %br
   %a.remove{:href => '#'} Remove
