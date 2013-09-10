@@ -142,11 +142,16 @@ class App.Models.SpriteWidget extends App.Models.ImageWidget
     keyframe.getOrientationFor(@)
 
 
-  applyOrientationFrom: (keyframe) ->
-    orientation = getOrientationFor(keyframe)
-    @set
-      scale:    orientation.scale
-      position: orientation.position
+  asPreviousKeyframe: (keyframe) ->
+    previous = keyframe.previous()
+    return unless previous?
+
+    oldOrientation = @getOrientationFor(keyframe)
+    newOrientation = @getOrientationFor(previous)
+    oldOrientation.set
+      scale:    newOrientation.get('scale')
+      position: _.extend {}, newOrientation.get('position')
+
 
 
 # The association between a SpriteWidget and a Keyframe; it stores the position

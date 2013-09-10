@@ -187,6 +187,10 @@ class App.Models.Keyframe extends Backbone.Model
     @textWidgets().length > 0
 
 
+  previous: ->
+    @collection.at(@collection.indexOf(@) - 1)
+
+
   isAnimation: ->
     @get('is_animation')
 

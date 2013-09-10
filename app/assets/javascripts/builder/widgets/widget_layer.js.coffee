@@ -303,12 +303,20 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         hide: @hideContextMenuEventListener
 
       items:
+        as_previous:
+          name:     'As in previous keyframe'
+          disabled: (key, options) ->
+            !App.currentSelection.get('keyframe').previous()?
+          callback: @asInPreviousKeyframe
+
+        seperator1:  "---------",
+
         remove_image:
           name:     'Remove Image'
           icon:     'delete'
           callback: @removeSpriteWithContextMenu
 
-        seperator:  "---------",
+        seperator2:  "---------",
 
         bring_to_front:
           name:     'Bring to Front'
@@ -443,6 +451,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     view = @_getView(widgetModel)
     view.setScale(scale)
+
+
+  asInPreviousKeyframe: =>
+    keyframe = App.currentSelection.get('keyframe')
+    @_capturedWidget.model.asPreviousKeyframe keyframe
 
 
   _getTouchCoordinates: (touch) ->
