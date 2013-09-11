@@ -3,9 +3,10 @@
 class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   events: ->
-    _.extend({}, super, {
-      'click .remove': 'deleteSprite'
-    })
+    _.extend {}, super, {
+      'click .remove':      'deleteSprite'
+      'click .as-previous': 'asPreviousKeyframe'
+    }
 
   template: JST["app/templates/context_menus/sprite_widget_context_menu"]
 
@@ -56,3 +57,9 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   _setScale: (scale_by) =>
     @_setObjectScale @orientation, scale_by
+
+
+  asPreviousKeyframe: (e) ->
+    e.stopPropagation()
+
+    @widget.asPreviousKeyframe App.currentSelection.get('keyframe')
