@@ -7,12 +7,12 @@ class App.Views.Keyframe extends Backbone.View
 
   initialize: ->
     @model.widgets.on        'add remove change:position change:scale change:radius',  @widgetsChanged, @
-    @model.scene.widgets.on  '           change:position change:scale change:z_order change:disabled', @widgetsChanged, @
+    @model.scene.widgets.on  '           change:position change:scale change:z_order change:disabled change:image_id', @widgetsChanged, @
 
 
   remove: ->
     @model.widgets.off       'add remove change:position change:chale change:radius',  @widgetsChanged, @
-    @model.scene.widgets.off '           change:position change:scale change:z_order change:disabled', @widgetsChanged, @
+    @model.scene.widgets.off '           change:position change:scale change:z_order change:disabled change:image_id', @widgetsChanged, @
 
 
   render: ->
