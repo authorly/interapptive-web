@@ -23,9 +23,9 @@
     %input#scale-amount.input-mini{:value => @widget.get('scale') * 100}
     &#37;
 
-- unless  @widget.isHomeButton()
-  #button-options
-    %a.use-default{:href => '#'} Use default image
+#button-options
+  %a.use-default{:href => '#'} Use default image
+  - unless  @widget.isHomeButton()
     %br
     %a.bring-to-front{:href => '#'} Bring to Front
     %a.put-in-back{:href => '#'} Put in Back

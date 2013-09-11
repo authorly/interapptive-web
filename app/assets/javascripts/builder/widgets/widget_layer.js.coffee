@@ -272,7 +272,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       if widget.isSpriteWidget()
         selector = '.sprite'
       else if widget.model.isHomeButton()
-        return
+        selector = '.button.home'
       else if widget.isButtonWidget()
         if widget.model.canBeDisabled()
           selector = '.button.with-disable'
@@ -380,6 +380,19 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         put_in_back:
           name:     'Put in Back'
           callback: @putSpriteInBack
+
+    $.contextMenu
+      selector: '#context-menu .button.home'
+
+      zIndex: 100
+
+      events:
+        hide: @hideContextMenuEventListener
+
+      items:
+        restore_default:
+          name:     'Use default image'
+          callback: @restoreDefaultMainMenuButtonImage
 
     $.contextMenu
       selector: '#context-menu .text'
