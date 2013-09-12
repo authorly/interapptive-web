@@ -271,8 +271,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       selector = ''
       if widget.isSpriteWidget()
         selector = '.sprite'
-      else if widget.model.isHomeButton()
-        selector = '.button.home'
       else if widget.isButtonWidget()
         selector = '.button'
       else if widget.isTextWidget()
@@ -305,7 +303,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       items:
         as_previous:
           name:     'As in previous keyframe'
-          disabled: (key, options) ->
+          disabled:  ->
             !App.currentSelection.get('keyframe').previous()?
           callback: @asInPreviousKeyframe
 
@@ -335,9 +333,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         hide: @hideContextMenuEventListener
 
       items:
-        remove_image:
+        enable_disable:
           name:     'Enable/Disable'
           callback: @changeButtonStateWithContextMenu
+          disabled:  =>
+            !@_capturedWidget.model.canBeDisabled()
 
         seperator:  "---------",
 
@@ -350,46 +350,15 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         bring_to_front:
           name:     'Bring to Front'
           callback: @bringSpriteToFront
+          disabled:  =>
+            @_capturedWidget.model.isHomeButton()
 
         put_in_back:
           name:     'Put in Back'
           callback: @putSpriteInBack
+          disabled:  =>
+            @_capturedWidget.model.isHomeButton()
 
-    $.contextMenu
-      selector: '#context-menu .button.without-disable'
-
-      zIndex: 100
-
-      events:
-        hide: @hideContextMenuEventListener
-
-      items:
-        restore_default:
-          name:     'Use default image'
-          callback: @restoreDefaultMainMenuButtonImage
-
-        seperator2:  "---------",
-
-        bring_to_front:
-          name:     'Bring to Front'
-          callback: @bringSpriteToFront
-
-        put_in_back:
-          name:     'Put in Back'
-          callback: @putSpriteInBack
-
-    $.contextMenu
-      selector: '#context-menu .button.home'
-
-      zIndex: 100
-
-      events:
-        hide: @hideContextMenuEventListener
-
-      items:
-        restore_default:
-          name:     'Use default image'
-          callback: @restoreDefaultMainMenuButtonImage
 
     $.contextMenu
       selector: '#context-menu .text'
