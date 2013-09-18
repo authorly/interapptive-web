@@ -21,13 +21,18 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   COUNTDOWN_LENGTH_IN_SECONDS: 5
 
+  DEFAULT_PLAYBACK_RATE: 0.5
+
 
   initialize: (keyframe) ->
     @keyframe = keyframe
     @player = null
+    @playbackRate = @DEFAULT_PLAYBACK_RATE
 
     @_alignmentInProgress = false
     @_mouseDown = false
+
+    App.vent.on 'changed:voiceover_playback_rate', @_voiceoverPlaybackRateChanged, @
 
     $(document).mouseup => @_mouseDown = false
 
@@ -35,6 +40,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
   render: ->
     @$el.html(@template(keyframe: @keyframe))
     @_initVoiceoverSelector()
+    @_initVoiceoverPlaybackRateSlider()
     @_initSorting()
     @_attachKeyframEvents()
     @_findExistingVoiceover()
@@ -145,7 +151,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @removeWordHighlights()
 
     @player.play()
-    @player.playbackRate(0.6)
+    @player.playbackRate(@playbackRate)
 
     @$('#countdown').remove()
     @$('.word').removeClass('disabled')
@@ -323,6 +329,14 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @voiceoverSelector.render()
 
 
+  _initVoiceoverPlaybackRateSlider: ->
+    @voiceoverPlaybackRateSlider = new App.Views.VoiceoverPlaybackRateSlider
+      playbackRate: @playbackRate
+      el: @$('#voiceover-playback-rate-slider-container')
+
+    @voiceoverPlaybackRateSlider.render()
+
+
   _attachKeyframEvents: ->
     @keyframe.on('change:voiceover_id', @_findExistingVoiceover, @)
 
@@ -384,3 +398,8 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @$('#words').after('<div id="countdown"></div>')
       .find('span.word')
       .addClass('disabled')
+
+
+  _voiceoverPlaybackRateChanged: (value) ->
+    @playbackRate = value
+    @player.playbackRate(value)
