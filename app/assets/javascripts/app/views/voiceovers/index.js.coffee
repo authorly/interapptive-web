@@ -400,6 +400,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
       .addClass('disabled')
 
 
-  _voiceoverPlaybackRateChanged: (value) =>
+  _voiceoverPlaybackRateChanged: (value) ->
     @playbackRate = value
     @player.playbackRate(value)
