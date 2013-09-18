@@ -332,7 +332,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
   _initVoiceoverPlaybackRateSlider: ->
     @voiceoverPlaybackRateSlider = new App.Views.VoiceoverPlaybackRateSlider
       playbackRate: @playbackRate
-      player: @player
       el: @$('#voiceover-playback-rate-slider-container')
 
     @voiceoverPlaybackRateSlider.render()
