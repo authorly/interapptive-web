@@ -61,5 +61,7 @@ Interapptive::Application.routes.draw do
         post 'send_invitation'
       end
     end
+
+    resources :storybook_assignments, :only => [:edit, :update]
   end
 end
