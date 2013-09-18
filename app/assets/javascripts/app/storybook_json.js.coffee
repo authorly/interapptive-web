@@ -9,6 +9,7 @@ class App.JSON
   constructor: (storybook) ->
     @spriteIdCounter = new App.Lib.Counter
     @actionIdCounter = new App.Lib.Counter
+    @hotspotIdCounter = new App.Lib.Counter
 
     @app =
       Configurations: @configurationNode(storybook)
@@ -67,7 +68,7 @@ class App.JSON
         hash =
           glitterIndicator: true
           stopEffectIndicator: false
-          touchFlag: 1
+          touchFlag: @hotspotIdCounter.next()
           position: @_getPosition(position)
           radius:   Math.round(widget.get('radius'))
         assetKey = if widget.hasSound() then 'soundToPlay' else 'videoToPlay'
