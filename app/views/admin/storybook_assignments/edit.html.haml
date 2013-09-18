@@ -1,0 +1,19 @@
+%h1
+  Assign a Storybook to User
+  = @user.id
+
+.well
+  #email
+    Email:
+    = @user.email
+  %br
+
+  = form_tag(admin_storybook_assignment_path(:id => @user.id), :method => :put) do
+    %p
+      Storybook ID: 
+      = text_field_tag(:storybook_id)
+
+    %p
+      = submit_tag("Assign")
+
+  = link_to('Users List', admin_users_path)
