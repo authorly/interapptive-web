@@ -20,6 +20,7 @@
       #reorder-text
         %a.reorder{href: '#'} Text not in correct order?
         %a.done{href: '#', style: 'display: none' } Done reordering
+    #voiceover-playback-rate-slider-container
     #controls
       %button#begin-alignment.btn.disabled
         %i.icon-exclamation-sign.icon-black
