@@ -18,7 +18,7 @@ class VideosController < ApplicationController
 
   def destroy
     video = Video.find(params[:id])
-    raise ActiveRecord::RecordNotFound unless video.storybook.owned_by?(current_user)
+    raise ActiveRecord::RecordNotFound unless video.storybook.owned_by?(signed_in_as_user)
     video.destroy
 
     respond_to do |format|
@@ -29,6 +29,6 @@ class VideosController < ApplicationController
   private
 
   def find_storybook
-    @storybook = current_user.storybooks.find(params[:storybook_id])
+    @storybook = signed_in_as_user.storybooks.find(params[:storybook_id])
   end
 end

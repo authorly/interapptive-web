@@ -1,6 +1,6 @@
 class CompilersController < ApplicationController
   def create
-    storybook = current_user.storybooks.find(params[:storybook_id])
+    storybook = signed_in_as_user.storybooks.find(params[:storybook_id])
     storybook.enqueue_for_compilation(params[:platform], params[:storybook_json])
 
     respond_to do |format|

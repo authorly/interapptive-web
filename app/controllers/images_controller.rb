@@ -2,14 +2,14 @@ require "base64"
 
 class ImagesController < ApplicationController
   def index
-    images = current_user.storybooks.find(params[:storybook_id]).images.where(:generated => false)
+    images = signed_in_as_user.storybooks.find(params[:storybook_id]).images.where(:generated => false)
 
     render :json => images.map(&:as_jquery_upload_response).to_json
   end
 
   def show
     scene = Scene.find params[:scene_id]
-    raise ActiveRecord::RecordNotFound unless scene.storybook.owned_by?(current_user)
+    raise ActiveRecord::RecordNotFound unless scene.storybook.owned_by?(signed_in_as_user)
     image = scene.images.find(params[:id])
 
     respond_to do |format|
@@ -18,7 +18,7 @@ class ImagesController < ApplicationController
   end
 
   def create
-    storybook = current_user.storybooks.find(params[:storybook_id])
+    storybook = signed_in_as_user.storybooks.find(params[:storybook_id])
 
     respond_to do |format|
       if params[:preview]
@@ -33,7 +33,7 @@ class ImagesController < ApplicationController
 
   def update
     image = Image.find params[:id]
-    raise ActiveRecord::RecordNotFound unless image.storybook.owned_by?(current_user)
+    raise ActiveRecord::RecordNotFound unless image.storybook.owned_by?(signed_in_as_user)
 
     data = params[:base64] ? file : params[:data_url]
     image.update_attribute(:data_encoded_image, data)
@@ -45,7 +45,7 @@ class ImagesController < ApplicationController
 
   def destroy
     image = Image.find(params[:id])
-    raise ActiveRecord::RecordNotFound unless image.storybook.owned_by?(current_user)
+    raise ActiveRecord::RecordNotFound unless image.storybook.owned_by?(signed_in_as_user)
     image.try(:destroy)
 
     respond_to do |format|

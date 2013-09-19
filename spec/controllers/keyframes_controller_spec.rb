@@ -9,6 +9,7 @@ describe KeyframesController do
     @keyframe = mock_model(Keyframe, :id => 1)
     Scene.stub(:find).with(@scene.id.to_s).and_return(@scene)
     @storybook.stub(:owned_by?).with(@user).and_return(true)
+    @user.stub(:is_admin?).and_return(false)
     test_sign_in(@user)
   end
 

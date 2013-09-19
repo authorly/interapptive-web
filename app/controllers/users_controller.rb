@@ -7,6 +7,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def show_signed_in_as_user
+    respond_to do |format|
+      format.json { render :json => signed_in_as_user.backbone_response }
+    end
+  end
+
   def new
     @user = User.new
 
@@ -39,19 +45,6 @@ class UsersController < ApplicationController
       format.html { render :action => 'new', :layout => 'user_sessions' }
       format.json { render :json => {}, :status => :unprocessable_entity }
     end
-    #@user = User.new params[:user]
-
-    #respond_to do |format|
-      #if @user.save
-        #cookies.permanent[:auth_token] = @user.auth_token
-        
-        #format.html { redirect_to root_path }
-        #format.json { render :json => @user, :status => :created }
-      #else
-        #format.html { render :action => 'new', :layout => 'user_sessions' }
-        #format.json { render :json => @user.errors, :status => :unprocessable_entity }
-      #end
-    #end
   end
 
   def destroy
