@@ -26,20 +26,52 @@ class AppIconUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
   version :app_icon do
-    version :app_icon_114_114 do
-      process :resize_to_fill => [114, 114]
+    version :app_icon_20_20 do
+      process :resize_to_fill => [20, 20]
+    end
+
+    version :app_icon_29_29 do
+      process :resize_to_fill => [29, 29]
+    end
+
+    version :app_icon_30_30 do
+      process :resize_to_fill => [30, 30]
+    end
+
+    version :app_icon_40_40 do
+      process :resize_to_fill => [40, 40]
+    end
+
+    version :app_icon_50_50 do
+      process :resize_to_fill => [50, 50]
     end
 
     version :app_icon_57_57 do
       process :resize_to_fill => [57, 57]
     end
 
-    version :app_icon_144_144 do
-      process :resize_to_fill => [144, 144]
+    version :app_icon_58_58 do
+      process :resize_to_fill => [58, 58]
+    end
+
+    version :app_icon_60_60 do
+      process :resize_to_fill => [60, 60]
     end
 
     version :app_icon_72_72 do
       process :resize_to_fill => [72, 72]
+    end
+
+    version :app_icon_100_100 do
+      process :resize_to_fill => [100, 100]
+    end
+
+    version :app_icon_114_114 do
+      process :resize_to_fill => [114, 114]
+    end
+
+    version :app_icon_144_144 do
+      process :resize_to_fill => [144, 144]
     end
   end
 

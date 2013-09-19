@@ -3,8 +3,6 @@
 # It also allows removing the image.
 
 class App.Views.SelectedImage extends Backbone.View
-  template: JST['app/templates/assets/images/selected_image']
-
   initialize: (options) ->
     @image = options.image
 
