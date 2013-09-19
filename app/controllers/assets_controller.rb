@@ -11,7 +11,7 @@ class AssetsController < ApplicationController
   private
 
   def find_storybook
-    @storybook = current_user.storybooks.find(params[:storybook_id])
+    @storybook = signed_in_as_user.storybooks.find(params[:storybook_id])
   end
 
 end

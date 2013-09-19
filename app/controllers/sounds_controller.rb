@@ -17,7 +17,7 @@ class SoundsController < ApplicationController
 
   def destroy
     sound = Sound.find(params[:id])
-    raise ActiveRecord::RecordNotFound unless sound.storybook.owned_by?(current_user)
+    raise ActiveRecord::RecordNotFound unless sound.storybook.owned_by?(signed_in_as_user)
     sound.destroy
 
     respond_to do |format|

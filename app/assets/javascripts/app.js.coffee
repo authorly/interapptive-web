@@ -358,3 +358,8 @@ window.App =
   setCurrentUser: (user_id) ->
     @currentUser = new App.Models.User(id: user_id)
     @currentUser.fetch()
+
+
+  setSignedInAsUser: (user_id) ->
+    @signedInAsUser = new App.Models.SignedInAsUser(id: user_id)
+    @signedInAsUser.fetch()

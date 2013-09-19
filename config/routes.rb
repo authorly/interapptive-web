@@ -10,7 +10,9 @@ Interapptive::Application.routes.draw do
   match 'users/sign_out' => 'user_sessions#destroy', :as => 'sign_out'
   get  'users/settings'  => 'users#edit'
 
-  resource :user
+  resource :user do
+    collection { get :show_effective_user }
+  end
 
   get  'password_reset'      => 'password_resets#new',   :as => :new_password_reset
   get  'password_resets/:id' => 'password_resets#edit',  :as => :edit_password_reset

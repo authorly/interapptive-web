@@ -4,6 +4,7 @@ describe StorybooksController do
   before(:each) do
     @user = mock_model(User)
     @storybook = mock_model(Storybook, :title => "Some title")
+    @user.stub(:is_admin?).and_return(false)
     test_sign_in(@user)
   end
 

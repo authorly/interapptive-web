@@ -6,6 +6,7 @@ describe ScenesController do
     @user = mock_model(User)
     @storybook = mock_model(Storybook)
     @scene = mock_model(Scene)
+    @user.stub(:is_admin?).and_return(false)
     test_sign_in(@user)
   end
 
