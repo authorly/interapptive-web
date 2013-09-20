@@ -27,7 +27,7 @@ class App.Views.SceneIndex extends Backbone.View
 
   render: ->
     @$el.empty()
-    @collection.each @appendSceneElement
+    @collection.each @renderScene
     @switchScene(@collection.at(0)) if @collection.length > 0
 
     @renderListViewToggle()
@@ -44,13 +44,18 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   sceneAdded: (scene) ->
-    @appendSceneElement(scene)
+    @renderScene(scene)
     @switchScene(scene)
 
 
-  appendSceneElement: (scene) =>
+  renderScene: (scene) =>
     view = new App.Views.Scene(model: scene)
-    @$el.append view.render().el
+    index = @collection.indexOf(scene)
+    viewElement = view.render().el
+    if index == 0
+      @$el.prepend viewElement
+    else
+      @$el.children().eq(index-1).after(viewElement)
 
 
   deleteScene: (event) =>

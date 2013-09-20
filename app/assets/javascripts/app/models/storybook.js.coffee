@@ -123,7 +123,10 @@ class App.Models.Storybook extends Backbone.Model
       @videos.fetch(),
       @fonts .fetch()
     ).then( =>
-      @scenes.fetch()
+      # 2013-09-20 @dira
+      # TODO Use `reset: true` until the fix for backbone#2513 is released.
+      # https://github.com/jashkenas/backbone/issues/2513
+      @scenes.fetch(reset: true)
     )
 
 
