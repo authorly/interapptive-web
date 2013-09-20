@@ -9,7 +9,7 @@ Factory.define :user do |f|
 end
 
 Factory.define :storybook do |f|
-  f.title 'Test Title'
+  f.title 'Test Title%d'
   f.author 'Charles Bukowski'
   f.description 'This book is for true champions'
   f.price 20.00
