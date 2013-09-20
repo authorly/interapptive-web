@@ -1,3 +1,4 @@
 - content_for :initialization_coffee do
   App.setCurrentUser("#{current_user.id}")
+  App.setSignedInAsUser("#{signed_in_as_user.id}")
   App.showStorybooks()

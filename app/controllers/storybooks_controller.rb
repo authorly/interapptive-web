@@ -7,7 +7,8 @@ class StorybooksController < ApplicationController
   param_protected [:action, :controller, :format, :storybook], :only => :update
 
   def index
-    respond_with(@storybooks = current_user.storybooks.all)
+    set_signed_in_as_user
+    respond_with(@storybooks = signed_in_as_user.storybooks.all)
   end
 
   def show
@@ -16,7 +17,7 @@ class StorybooksController < ApplicationController
 
 
   def create
-    @storybook = current_user.storybooks.new(params[:storybook])
+    @storybook = signed_in_as_user.storybooks.new(params[:storybook])
 
     respond_to do |format|
       if @storybook.save
@@ -53,6 +54,6 @@ class StorybooksController < ApplicationController
   private
 
   def find_storybook
-    @storybook = current_user.storybooks.find params[:id]
+    @storybook = signed_in_as_user.storybooks.find params[:id]
   end
 end

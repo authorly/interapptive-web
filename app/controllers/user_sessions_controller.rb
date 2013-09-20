@@ -24,6 +24,7 @@ class UserSessionsController < ApplicationController
   def destroy
     cookies.delete :auth_token
     cookies.delete :is_admin
+    cookies.delete :signed_in_as_user_id
     redirect_to root_path, :notice => "Signed out."
   end
 end

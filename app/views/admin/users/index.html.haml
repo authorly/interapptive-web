@@ -2,7 +2,7 @@
 
 = link_to("Create New User", new_admin_user_path)
 |
-= link_to("My Storybooks", '/storybooks')
+= link_to("My Storybooks", '/storybooks?reset_user=true')
 
 = paginate(@users)
 %table#users.well
@@ -35,3 +35,5 @@
               = link_to("Resend Invite", send_invitation_admin_user_path(:id => user.id), :method => :post, :remote => true, :confirm => "This will change password of this user.")
             %li
               = link_to("Assign a Storybook", edit_admin_storybook_assignment_path(:id => user.id))
+            %li
+              = link_to("Sign In Like this User", storybooks_path(:signed_in_as_user_id => user.id))
