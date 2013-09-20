@@ -67,20 +67,20 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   appendKeyframe: (keyframe) =>
-    @renderKeyframe(keyframe, @collection.indexOf(keyframe))
+    @renderKeyframe(keyframe)
     @_updateDeleteButtons()
 
     @switchKeyframe(keyframe)
 
 
-  renderKeyframe: (keyframe, index) =>
+  renderKeyframe: (keyframe) =>
     view = new App.Views.Keyframe(model: keyframe)
     viewElement = view.render().el
+    index = @collection.indexOf(keyframe)
     if index == 0
       @$el.prepend viewElement
-
     else
-      @$el.append  viewElement
+      @$el.children().eq(index-1).after(viewElement)
 
     @keyframe_views.push(view)
 
