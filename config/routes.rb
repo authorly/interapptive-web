@@ -11,7 +11,7 @@ Interapptive::Application.routes.draw do
   get  'users/settings'  => 'users#edit'
 
   resource :user do
-    collection { get :show_effective_user }
+    collection { get :show_signed_in_as_user }
   end
 
   get  'password_reset'      => 'password_resets#new',   :as => :new_password_reset
