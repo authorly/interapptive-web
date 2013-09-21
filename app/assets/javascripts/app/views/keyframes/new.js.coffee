@@ -14,3 +14,6 @@ class App.Views.NewKeyframe extends Backbone.View
 
   newKeyframe: ->
     @options.scene.addNewKeyframe({})
+    @$el.siblings('ul').animate
+      scrollLeft: 99999
+    , 'fast'
