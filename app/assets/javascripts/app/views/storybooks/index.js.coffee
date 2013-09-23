@@ -44,7 +44,13 @@ class App.Views.StorybookIndex extends Backbone.View
       App.vent.trigger('show:message', 'warning', "You are not allowed to create more than #{App.currentUser.get('allowed_storybooks_count')} storybooks.")
       return
 
-    @collection.create { title: @$('.storybook-title').val() },
+    title = @$('.storybook-title').val()
+
+    if @collection.hasStorybookWithTitle(title)
+      App.vent.trigger('show:message', 'error', "You can not create two storybooks with same title.")
+      return
+
+    @collection.create { title: title },
       wait:    true
       error:    -> App.vent.trigger('show:message', 'warning', 'Please properly fill in fields!')
       success: @closeStorybookForm
