@@ -195,8 +195,3 @@ class App.Collections.StorybooksCollection extends Backbone.Collection
 
   comparator: (storybook) ->
     new Date(storybook.get('created_at'))
-
-
-  hasStorybookWithTitle: (title) ->
-    @findWhere(title: title)
-

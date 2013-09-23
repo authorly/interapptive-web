@@ -4,4 +4,12 @@ class App.Models.User extends Backbone.Model
     '/user'
 
   canMakeMoreStorybooks: ->
-    @get('storybooks_count') >= @get('allowed_storybooks_count')
+    @storybooks().length >= @get('allowed_storybooks_count')
+
+
+  storybooks: ->
+    @_storybooks ||= new App.Collections.StorybooksCollection()
+
+
+  hasStorybookWithTitle: (title) ->
+    @storybooks().findWhere(title: title)
