@@ -22,7 +22,10 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   _setOrientation: (keyframe) ->
+    @orientation.off('change:scale change:position', @render, @) if @orientation?
+
     @orientation = @widget.getOrientationFor(keyframe)
+    @orientation.on('change:scale change:position', @render, @) if @orientation?
 
 
   render: ->
@@ -37,6 +40,9 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
     @
 
 
+  getObject: ->
+    @orientation
+
 
   deleteSprite: (e) ->
     e.stopPropagation()
@@ -49,14 +55,6 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
     point = @_measurePoint(direction, pixels, x_oord, y_oord)
 
     @_delayedSavePosition(point) if point?
-
-
-  _setPosition: (point) ->
-    @_setObjectPosition @orientation, point
-
-
-  _setScale: (scale_by) =>
-    @_setObjectScale @orientation, scale_by
 
 
   asPreviousKeyframe: (e) ->

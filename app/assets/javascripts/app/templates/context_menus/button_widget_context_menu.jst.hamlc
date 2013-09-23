@@ -18,9 +18,16 @@
     %input#y-coord.input-mini{:value => parseInt(@widget.get('position').y)}
 
   #button-widget-scale
-    %label.scale-amount{:for => 'scale-amount'}
-      Scale:
-    %input#scale-amount.input-mini{:value => @widget.get('scale') * 100}
+    Scale:
+    %br
+    %label{:for => 'horizontal-scale'}
+      Horizontal:
+    %input#horizontal-scale.input-mini{value: Math.round(@widget.get('scale').horizontal * 100), data-direction: 'horizontal'}
+    &#37;
+
+    %label{:for => 'vertical-scale'}
+      Vertical:
+    %input#vertical-scale.input-mini{value: Math.round(@widget.get('scale').vertical * 100), data-direction: 'vertical'}
     &#37;
 
 #button-options

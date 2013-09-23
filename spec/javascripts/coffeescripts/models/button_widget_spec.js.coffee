@@ -1,14 +1,16 @@
 describe "App.Models.ButtonWidget", ->
 
-  describe 'initialization', ->
-    beforeEach ->
-      @imageId = 13
-      image = new Backbone.Model(id: @imageId, name: 'image.png', url: 'image.url')
-      @collection = {storybook: {images: new Backbone.Collection(image)}}
+  beforeEach ->
+    @imageId = 13
+    image = new Backbone.Model(id: @imageId, name: 'image.png', url: 'image.url')
+    @collection = {storybook: {images: new Backbone.Collection(image)}}
 
+  describe 'initialization', ->
     it 'has the right defaults', ->
       @widget = new App.Models.ButtonWidget
       expect(@widget.get('type')).toEqual 'ButtonWidget'
+
+  describe 'properties', ->
 
     describe 'filename', ->
       it 'gets the filename based on the name, if image is not present', ->
@@ -40,3 +42,14 @@ describe "App.Models.ButtonWidget", ->
       it "can be disabled if it's autoplay", ->
         @widget = new App.Models.ButtonWidget(name: 'auto_play')
         expect(@widget.canBeDisabled()).toBeTruthy()
+
+  describe 'back to default', ->
+    beforeEach ->
+      @widget = new App.Models.ButtonWidget(scale: {horizontal: 0.5, vertical: 2})
+      @widget.useDefaultImage()
+
+    it 'sets the scale to 100%', ->
+      expect(@widget.get('scale')).toEqual {horizontal: 1, vertical: 1}
+
+    it 'removes the image', ->
+      expect(@widget.get('image_id')).toBeUndefined()

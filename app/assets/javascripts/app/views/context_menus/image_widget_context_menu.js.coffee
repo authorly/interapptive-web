@@ -3,15 +3,19 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
   CONTROL_KEYS: _.map ['backspace', 'tab', 'enter', 'home', 'end', 'left', 'right'], (name) -> App.Lib.Keycodes[name]
 
   events: ->
-    'click div':                                  'elementsClicked'
-    'keyup #x-coord':                             'xCoordUpDownArrow'
-    'keyup #y-coord':                             'yCoordUpDownArrow'
-    'keyup #scale-amount':                        'scaleAmountUpDownArrow'
-    'keypress #x-coord, #y-coord, #scale-amount': 'numericInputListener'
-    'keydown #x-coord, #y-coord':                 'enterKeyCoordListener'
-    'keydown #scale-amount':                      'enterKeyScaleListener'
-    'click .bring-to-front':                      'bringToFront'
-    'click .put-in-back':                         'putInBack'
+    'click div':                                   'elementsClicked'
+
+    'keydown  #x-coord, #y-coord':                 'enterKeyCoordListener'
+    'keyup    #x-coord':                           'xCoordUpDownArrow'
+    'keyup    #y-coord':                           'yCoordUpDownArrow'
+    'keypress #x-coord, #y-coord':                 'numericInputListener'
+
+    'keyup    #horizontal-scale, #vertical-scale': 'scaleAmountUpDownArrow'
+    'keydown  #horizontal-scale, #vertical-scale': 'enterKeyScaleListener'
+    'keypress #horizontal-scale, #vertical-scale': 'numericInputListener'
+
+    'click .bring-to-front':                       'bringToFront'
+    'click .put-in-back':                          'putInBack'
 
 
   initialize: ->
@@ -53,13 +57,17 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
 
 
   scaleAmountUpDownArrow: (event) ->
-    _kc = event.keyCode
+    event.preventDefault()
+    event.stopPropagation()
 
-    if _kc is App.Lib.Keycodes.up
-      @_setScale(1)
+    delta = switch event.keyCode
+      when App.Lib.Keycodes.up   then 1
+      when App.Lib.Keycodes.down then -1
 
-    if _kc is App.Lib.Keycodes.down
-      @_setScale(-1)
+    if delta?
+      @_setScale
+        direction: $(event.currentTarget).data('direction')
+        delta:     delta
 
 
   numericInputListener: ->
@@ -74,11 +82,14 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
 
 
   enterKeyCoordListener: (event) ->
-    @_delayedSavePosition(@_position()) if event.keyCode is App.Lib.Keycodes.enter
+    if event.keyCode is App.Lib.Keycodes.enter
+      @_delayedSavePosition(@_position())
 
 
   enterKeyScaleListener: (event) ->
-    @_setScale() if event.keyCode is App.Lib.Keycodes.enter
+    if event.keyCode is App.Lib.Keycodes.enter
+      @_setScale
+        direction: $(event.currentTarget).data('direction')
 
 
   bringToFront: (e) ->
@@ -119,7 +130,8 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
     # Make sure we do not move the sprite in case both sprite and
     # coordinate inputs have focus. Instead just increment pixels
     # in coordinate inputs with _addUpDownArrowListeners().
-    return if @$('#x-coord').is(':focus') or @$('#y-coord').is(':focus') or @$('#scale-amount').is(':focus')
+    for id in ['x-coord', 'y-coord', 'horizontal-scale', 'vertical-scale']
+      return if @$('#' + id).is(':focus')
 
     switch event.keyCode
       when App.Lib.Keycodes.left  then @_moveSprite('left',  1)
@@ -159,35 +171,36 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
     @_point(@$('#x-coord').val(), @$('#y-coord').val())
 
 
-  _setObjectPosition: (object, point) ->
-    object.set(position: { x: parseInt(point.x), y: parseInt(point.y) })
+  _setPosition: (point) ->
+    @getObject().set
+      position:
+        x: parseInt(point.x)
+        y: parseInt(point.y)
 
 
-  _setObjectScale: (object, scale_by) ->
-    scale = object.get('scale') * 100
-    if scale_by?
-      if parseInt(scale) + scale_by < 10
-        @_scaleCantBeSet()
-        @$('#scale-amount').val(parseInt(scale))
-        return
-      else
-        @$('#scale-amount').val(parseInt(scale) + scale_by)
-
+  _setScale: (options) ->
+    object = @getObject()
+    input = @$("##{options.direction}-scale")
+    scale = parseInt(object.get('scale')[options.direction] * 100)
+    target = if options.delta?
+      scale + options.delta
     else
-      if parseInt(@_currentScale()) < 10
-        @_scaleCantBeSet()
-        @$('#scale-amount').val(parseInt(scale))
-        return
-    object.set(scale: @_currentScale() / 100)
+      parseFloat(input.val())
+
+    if target < 10
+      @_scaleCantBeSet()
+      input.val(scale)
+    else
+      input.val(target)
+
+      newScale = _.extend {}, object.get('scale')
+      newScale[options.direction] = target/100
+      object.set scale: newScale
 
 
   _delayedSavePosition: (point) ->
     window.clearTimeout(@POSITION_TIMER)
     @POSITION_TIMER = window.setTimeout((=> @_setPosition(point)), 400)
-
-
-  _currentScale: ->
-    window.parseFloat(@$('#scale-amount').val())
 
 
   _scaleCantBeSet: ->

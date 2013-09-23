@@ -76,12 +76,14 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     position = orientation.get('position')
     @setPosition(new cc.Point(position.x, position.y))
 
-    scale = parseFloat(orientation.get('scale'))
-    @setScale scale
+    scale = orientation.get('scale')
+    @setScaleX parseFloat(scale.horizontal)
+    @setScaleY parseFloat(scale.vertical)
 
 
   @_changeScale: (__, scale) ->
-    @setScale scale
+    @setScaleX parseFloat(scale.horizontal)
+    @setScaleY parseFloat(scale.vertical)
 
 
   @_changePosition: (__, position) ->
@@ -136,14 +138,16 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     ctx.beginPath()
 
-    x =     (@sprite.getContentSize().width * @sprite.getScale()) * (@sprite.getAnchorPoint().x * -1)
-    y =     (@sprite.getContentSize().height * @sprite.getScale()) * (@sprite.getAnchorPoint().x * -1)
-    width =  @sprite.getContentSize().width * @sprite.getScale()
-    height = @sprite.getContentSize().height * @sprite.getScale()
+    scaleX = @sprite.getScaleX()
+    scaleY = @sprite.getScaleY()
+    x = (@sprite.getContentSize().width  * scaleX) * (@sprite.getAnchorPoint().x * -1)
+    y = (@sprite.getContentSize().height * scaleY) * (@sprite.getAnchorPoint().y * -1)
+    width =  @sprite.getContentSize().width  * scaleX
+    height = @sprite.getContentSize().height * scaleY
     ctx.rect(x, y, width, height)
 
     ctx.strokeStyle = COLOR_OUTER_STROKE
-    ctx.lineWidth = Math.round(LINE_WIDTH_OUTER * @sprite.getScale())
+    ctx.lineWidth = Math.round(LINE_WIDTH_OUTER * (scaleX + scaleY) / 2)
     ctx.stroke()
 
     ctx.beginPath()

@@ -95,13 +95,12 @@ class App.Builder.Widgets.Widget extends cc.Node
     p = @getPosition()
     s = @getContentSize()
     a = @getAnchorPoint()
-    scale = @getScale()
 
     cc.RectMake(
       p.x - s.width  * a.x
       p.y - s.height * a.y
-      s.width  * scale
-      s.height * scale
+      s.width  * @getScaleX()
+      s.height * @getScaleY()
     )
 
 

@@ -42,8 +42,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.on 'change:position change:scale', @updateWidget, @
     @widgets.on 'change:z_order', @reorderWidget, @
 
-    App.vent.on 'scale:sprite_widget', @scaleSpriteWidgetFromModel, @
-
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
 
@@ -408,14 +406,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   editSpriteWithContextMenu: =>
     App.currentSelection.set widget: @_capturedWidget.model
     @_capturedWidget = null
-
-
-  scaleSpriteWidgetFromModel: (modelAndScaleData) ->
-    widgetModel = modelAndScaleData.model
-    scale = modelAndScaleData.scale
-
-    view = @_getView(widgetModel)
-    view.setScale(scale)
 
 
   asInPreviousKeyframe: =>

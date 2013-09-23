@@ -10,7 +10,7 @@ describe "App.Models.SpriteWidget", ->
         id: 13
         image_id: 1
         position: {x: 2, y: 3}
-        scale: 1.7
+        scale: { horizontal: 1.7, vertical: 3 }
       }, parse: true)
 
     it 'stores the id', ->
@@ -25,5 +25,5 @@ describe "App.Models.SpriteWidget", ->
 
     it 'stores the scale in a local variable, not in the attributes', ->
       expect(@widget.get('scale')).toBeUndefined()
-      expect(@widget.scale).toEqual 1.7
+      expect(@widget.scale).toEqual { horizontal: 1.7, vertical: 3 }
 

@@ -228,7 +228,7 @@ class App.JSON
         normalStateImage : home.url()
         tappedStateImage : home.selectedUrl()
         position: @_getPosition(homeButtonPosition)
-        scale: home.get('scale')
+        scale: _.extend {}, home.get('scale')
     node
 
 
@@ -260,7 +260,7 @@ class App.JSON
             tappedStateImage: button.selectedUrl() || button.url()
             storyMode: str.decapitalize(str.camelize(button.get('name')))
             position: @_getPosition(button.get('position'))
-            scale: button.get('scale')
+            scale: _.extend {}, button.get('scale')
             zOrder: parseInt(button.get('z_order'))
           }
 
@@ -272,7 +272,7 @@ class App.JSON
       spriteNode =
         image:     spriteWidget.url()
         spriteTag: spriteId
-        scale:     orientation.get('scale')
+        scale:     _.extend {}, orientation.get('scale')
         position:  @_getPosition(orientation.get('position'))
         visible:   true
         zOrder:   parseInt(spriteWidget.get('z_order'))

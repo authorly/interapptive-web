@@ -47,9 +47,9 @@ class Scene < ActiveRecord::Base
     # [5000..6000) for hotspots and [6000...) for texts. Main menu buttons have
     # z_order wihtin [4000..4010)
     self.widgets = [
-      {type: 'ButtonWidget', id: 2, scale: 1, position: {x:512, y:200}, name: 'read_it_myself', z_order: 4001 },
-      {type: 'ButtonWidget', id: 3, scale: 1, position: {x:177, y:200}, name: 'read_to_me',     z_order: 4002 },
-      {type: 'ButtonWidget', id: 4, scale: 1, position: {x:844, y:200}, name: 'auto_play',      z_order: 4003 },
+      {type: 'ButtonWidget', id: 2, scale: {horizontal: 1, vertical: 1}, position: {x:512, y:200}, name: 'read_it_myself', z_order: 4001 },
+      {type: 'ButtonWidget', id: 3, scale: {horizontal: 1, vertical: 1}, position: {x:177, y:200}, name: 'read_to_me',     z_order: 4002 },
+      {type: 'ButtonWidget', id: 4, scale: {horizontal: 1, vertical: 1}, position: {x:844, y:200}, name: 'auto_play',      z_order: 4003 },
     ]
   end
 

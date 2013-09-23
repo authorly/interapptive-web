@@ -166,7 +166,7 @@ class App.Models.Keyframe extends Backbone.Model
       keyframe_id:      @id
       sprite_widget_id: spriteWidget.id
       position:         $.extend {}, spriteWidget.position
-      scale:            spriteWidget.scale
+      scale:            $.extend {}, spriteWidget.scale
 
 
   getOrientationFor: (widget) ->
