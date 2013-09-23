@@ -20,7 +20,7 @@
       %td
         = user.id
       %td
-        = user.email
+        = link_to(user.email, admin_user_path(user))
       %td
         = yes_or_no(user.is_admin?)
       %td

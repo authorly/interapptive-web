@@ -8,6 +8,10 @@ module Admin
       @user = User.find(params[:id])
     end
 
+    def show
+      @user = User.find(params[:id])
+    end
+
     def update
       @user = User.find(params[:id])
       params[:user].slice!(:is_admin, :allowed_storybooks_count, :email)
