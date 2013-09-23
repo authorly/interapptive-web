@@ -29,7 +29,6 @@ class User < ActiveRecord::Base
         'email'                    => email,
         'is_admin'                 => is_admin,
         'allowed_storybooks_count' => allowed_storybooks_count,
-        'storybooks_count'         => storybooks.count,
         'created_at'               => created_at
     }
   end

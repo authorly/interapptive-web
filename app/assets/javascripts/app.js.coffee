@@ -339,7 +339,7 @@ window.App =
 
   showStorybooks: ->
     view = new App.Views.StorybookIndex
-      collection: new App.Collections.StorybooksCollection()
+      collection: App.signedInAsUser.storybooks()
       el: '#main'
     view.render()
 
@@ -362,4 +362,4 @@ window.App =
 
   setSignedInAsUser: (user_id) ->
     @signedInAsUser = new App.Models.SignedInAsUser(id: user_id)
-    @signedInAsUser.fetch()
+    @signedInAsUser.fetch(async: false)

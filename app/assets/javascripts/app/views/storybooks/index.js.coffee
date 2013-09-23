@@ -41,13 +41,13 @@ class App.Views.StorybookIndex extends Backbone.View
   createStorybook: (event) ->
     event.preventDefault()
     if App.signedInAsUser.canMakeMoreStorybooks()
-      App.vent.trigger('show:message', 'warning', "You are not allowed to create more than #{App.currentUser.get('allowed_storybooks_count')} storybooks.")
+      App.vent.trigger('show:message', 'warning', "You are not allowed to create more than #{App.signedInAsUser.get('allowed_storybooks_count')} storybooks.")
       return
 
     title = @$('.storybook-title').val()
 
-    if @collection.hasStorybookWithTitle(title)
-      App.vent.trigger('show:message', 'error', "You can not create two storybooks with same title.")
+    if App.signedInAsUser.hasStorybookWithTitle(title)
+      App.vent.trigger('show:message', 'warning', "You can not create two storybooks with same title.")
       return
 
     @collection.create { title: title },
