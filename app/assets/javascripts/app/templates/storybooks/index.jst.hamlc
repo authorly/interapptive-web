@@ -1,6 +1,6 @@
 %section#storybooks-index
   %h1
-    %a{src: '/'}
+    %a{href: '/'}
       %img{src: '/assets/authorly-icon-large.png'}
     Authorly
 
