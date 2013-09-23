@@ -1,0 +1,28 @@
+%h1 Showing User
+
+#user.well
+  %p
+    %strong
+      ID:
+    = @user.id
+  %p
+    %strong
+      Email:
+    = @user.email
+  %p
+    %strong
+      Is Admin: 
+    = yes_or_no(@user.is_admin?)
+  %p
+    %strong
+      Allowed Storybooks count: 
+    = @user.allowed_storybooks_count
+  %p
+    %strong
+      Stroybooks: 
+    %ol
+      - @user.storybooks.each do |storybook|
+        %li
+          = "(" + storybook.id.to_s +  ") " + storybook.title
+
+  = link_to('Users List', admin_users_path)
