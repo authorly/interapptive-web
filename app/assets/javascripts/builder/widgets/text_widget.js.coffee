@@ -11,15 +11,15 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   constructor: (options) ->
     super
-    @on 'double_click', @doubleClick
-    @model.on('change:font_color change:font_face change:font_size', @resetCocos2dLabel, @)
     @createLabel()
+    @model.on 'change:font_color change:font_id change:font_size', @recreateLabel, @
 
 
-  doubleClick: ->
+  select: ->
     @setIsVisible(false)
 
     @editView = new App.Views.TextWidget(widget: @)
+    @editView.on 'done', @doneEditing, @
 
     canvas = $(cc.canvas)
     $(@editView.el).appendTo(canvas.parent())
@@ -28,14 +28,20 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   deselect: ->
     if @editView?
-      @editView.shouldSave = true
+      @editView.shouldSave = true unless @editView.shouldSave?
       @editView.deselect()
+      @setIsVisible(true)
 
 
-  resetCocos2dLabel: ->
+  doneEditing: ->
+    @recreateLabel()
+    @setIsVisible(true)
+    @trigger 'deselect', @
+
+
+  recreateLabel: ->
     @label.removeFromParentAndCleanup()
     @createLabel()
-    @setIsVisible(true)
 
 
   stringChanged: (model) ->
