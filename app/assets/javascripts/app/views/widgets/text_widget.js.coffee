@@ -28,9 +28,10 @@ class App.Views.TextWidget extends Backbone.View
     @canvasScale = canvas.height() / canvas.attr('height')
 
     @model = @options.widget.model
-    @model.on 'change:font_color', @setFontColor
-    @model.on 'change:font_size', @setFontSize
-    @model.on 'change:font_face', @setFontFamily
+    @model.on 'change:font_color',        @fontColorChanged, @
+    @model.on 'change:visual_font_color', @setFontColor,     @
+    @model.on 'change:font_size',         @setFontSize,      @
+    @model.on 'change:font_id',           @setFontFamily,    @
 
     App.vent.on 'activate:scene', @deselect
     App.currentSelection.on 'change:keyframe', @deselect
@@ -50,6 +51,7 @@ class App.Views.TextWidget extends Backbone.View
         @shouldSave = true
         @deselect()
       when ESCAPE_KEYCODE
+        @shouldSave = false
         @deselect()
 
 
@@ -58,7 +60,7 @@ class App.Views.TextWidget extends Backbone.View
     @setFontFamily()
     @setFontSize()
     @setElementString()
-    @setFontColor()
+    @fontColorChanged()
     @setPosition()
     @selectText()
 
@@ -68,7 +70,7 @@ class App.Views.TextWidget extends Backbone.View
       @model.set('string', @$el.text())
       @shouldSave = false
 
-    App.vent.trigger 'done_editing:text_widget', @model
+    @trigger 'done'
 
     @remove()
 
@@ -77,16 +79,20 @@ class App.Views.TextWidget extends Backbone.View
     @$el.text @model.get('string')
 
 
-  setFontColor: =>
+  fontColorChanged: ->
     rgb = @model.get('font_color')
+    @setFontColor(rgb)
+
+
+  setFontColor: (rgb) ->
     @$el.css "color", "rgb(#{rgb.r}, #{rgb.g}, #{rgb.b})"
 
 
-  setFontFamily: =>
+  setFontFamily: ->
     @$el.css('font-family', @model.font())
 
 
-  setFontSize: =>
+  setFontSize: ->
     @$el.css("font-size",  "#{@model.get('font_size')}px")
 
 
