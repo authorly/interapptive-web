@@ -9,8 +9,9 @@
     %meta{:content => "", :name => "description"}
     %meta{:content => "", :name => "author"}
     = stylesheet_link_tag("application", :media => "all")
+    = javascript_include_tag('administration')
     = csrf_meta_tags
-  %body
+  %body.administration
     .container-fluid
       .row-fluid
         .span3 &nbsp;
