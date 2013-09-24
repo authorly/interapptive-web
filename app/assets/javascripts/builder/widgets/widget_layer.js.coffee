@@ -126,6 +126,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     @_capturedWidget = widget
     @_previousPoint = new cc.Point(point.x, point.y)
+    @_startPoint = @_previousPoint
 
 
   ccTouchesMoved: (touches) ->
@@ -140,11 +141,20 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     touch = touches[0]
     point = @_getTouchCoordinates(touch)
 
-    if @_capturedWidget
-      @_capturedWidget.mouseUp
-        touch: touch
-        canvasPoint: point
+    if @_capturedWidget?
+      if @_samePoint(@_startPoint, point)
+        # click
+        widget = @widgetAtPoint(point)
+        App.currentSelection.set widget: widget?.model
+      else
+        # drag
+        @_capturedWidget.mouseUp
+          touch: touch
+          canvasPoint: point
+    else
+      App.currentSelection.set widget: null
 
+    delete @_startPoint
     delete @_previousPoint
     delete @_capturedWidget
 
@@ -182,6 +192,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         previousWidget: @_mouseOverWidget
 
       @_mouseOverWidget = widget
+
+
+  _samePoint: (p1, p2) ->
+    eps = 0.1
+    Math.abs(p1.x - p2.x) < eps and Math.abs(p1.y - p2.y) < eps
 
 
   widgetSelected: (__, widget) ->
