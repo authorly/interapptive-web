@@ -1,6 +1,6 @@
 module Admin
   class BaseController < ApplicationController
-    layout 'user_sessions'
+    layout 'administration'
 
     before_filter :authorize_admin
 
