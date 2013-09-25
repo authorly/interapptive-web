@@ -61,7 +61,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
       return
 
     unless @keyframe.hasVoiceover()
-      App.vent.trigger('show:message', 'info', "Please select a voiceover and highlight your texts before accepting.")
+      App.vent.trigger('hide:modal')
       return
 
     if (intervals = @_collectTimeIntervals()).length == 0
