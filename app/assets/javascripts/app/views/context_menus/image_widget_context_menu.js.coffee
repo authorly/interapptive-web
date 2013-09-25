@@ -181,11 +181,11 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
   _setScale: (options) ->
     object = @getObject()
     input = @$("##{options.direction}-scale")
-    scale = parseInt(object.get('scale')[options.direction] * 100)
+    scale = object.get('scale')[options.direction]
     target = if options.delta?
       scale + options.delta
     else
-      parseFloat(input.val())
+      parseInt(input.val())
 
     if target < 10
       @_scaleCantBeSet()
@@ -194,7 +194,7 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
       input.val(target)
 
       newScale = _.extend {}, object.get('scale')
-      newScale[options.direction] = target/100
+      newScale[options.direction] = target
       object.set scale: newScale
 
 
@@ -204,4 +204,4 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
 
 
   _scaleCantBeSet: ->
-    App.vent.trigger('show:message', 'warning', 'Scale can not be set to less than ten.')
+    App.vent.trigger('show:message', 'warning', 'Scale can not be set to less than 10.')

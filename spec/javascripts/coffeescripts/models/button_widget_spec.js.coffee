@@ -45,11 +45,11 @@ describe "App.Models.ButtonWidget", ->
 
   describe 'back to default', ->
     beforeEach ->
-      @widget = new App.Models.ButtonWidget(scale: {horizontal: 0.5, vertical: 2})
+      @widget = new App.Models.ButtonWidget(scale: {horizontal: 50, vertical: 200})
       @widget.useDefaultImage()
 
     it 'sets the scale to 100%', ->
-      expect(@widget.get('scale')).toEqual {horizontal: 1, vertical: 1}
+      expect(@widget.get('scale')).toEqual {horizontal: 100, vertical: 100}
 
     it 'removes the image', ->
       expect(@widget.get('image_id')).toBeUndefined()

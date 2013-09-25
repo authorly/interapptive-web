@@ -215,7 +215,7 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
   useDefaultImage: ->
     @set
       image_id: @defaultImage().id
-      scale: {horizontal: 1, vertical: 1}
+      scale: {horizontal: 100, vertical: 100}
 
 
   defaultSelectedImage: ->

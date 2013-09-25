@@ -69,6 +69,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   applyOrientation: (orientation) ->
     if @currentOrientation != orientation
       @currentOrientation?.off('change:scale', @_changeScale, @)
+      @currentOrientation?.off('change:position', @_changePosition, @)
       @currentOrientation = orientation
       @currentOrientation.on('change:scale', @_changeScale, @)
       @currentOrientation.on('change:position', @_changePosition, @)
@@ -76,17 +77,15 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     position = orientation.get('position')
     @setPosition(new cc.Point(position.x, position.y))
 
-    scale = orientation.get('scale')
-    @setScaleX parseFloat(scale.horizontal)
-    @setScaleY parseFloat(scale.vertical)
+    @_changeScale null, orientation.get('scale')
 
 
-  @_changeScale: (__, scale) ->
-    @setScaleX parseFloat(scale.horizontal)
-    @setScaleY parseFloat(scale.vertical)
+  _changeScale: (__, scale) ->
+    @setScaleX scale.horizontal / 100
+    @setScaleY scale.vertical   / 100
 
 
-  @_changePosition: (__, position) ->
+  _changePosition: (__, position) ->
     @setPosition position
 
 

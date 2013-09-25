@@ -22,12 +22,12 @@
     %br
     %label{:for => 'horizontal-scale'}
       Horizontal:
-    %input#horizontal-scale.input-mini{value: Math.round(@widget.get('scale').horizontal * 100), data-direction: 'horizontal'}
+    %input#horizontal-scale.input-mini{value: @widget.get('scale').horizontal, data-direction: 'horizontal'}
     &#37;
 
     %label{:for => 'vertical-scale'}
       Vertical:
-    %input#vertical-scale.input-mini{value: Math.round(@widget.get('scale').vertical * 100), data-direction: 'vertical'}
+    %input#vertical-scale.input-mini{value: @widget.get('scale').vertical, data-direction: 'vertical'}
     &#37;
 
 #button-options

@@ -13,7 +13,7 @@ describe "App.JSON", ->
       autoplayPageTurnDelay: 3
       autoplayKeyframeDelay: 4
       widgets: [
-        {'type':'ButtonWidget', image_id: null,'id':40,'name':'home', position: {x: 200, y: 400}, scale: { horizontal: 2.7, vertical: 1.3 } },
+        {'type':'ButtonWidget', image_id: null,'id':40,'name':'home', position: {x: 200, y: 400}, scale: { horizontal: 270, vertical: 130 } },
       ]
     }
 
@@ -33,9 +33,9 @@ describe "App.JSON", ->
     @storybook.images.add @main_menu_image
 
 
-    @rim = new App.Models.ButtonWidget {'type':'ButtonWidget', image_id: null,'id':1,'name':'read_it_myself', selected_image_id: @rim_selected_image.id, position: {x: 200, y: 100}, scale: {horizontal: 1.7, vertical: 1.2}}
-    @rtm = new App.Models.ButtonWidget {'type':'ButtonWidget', image_id: null,'id':2,'name':'read_to_me', position: {x: 200, y: 200}, scale: {horizontal: 1.2, vertical: 1.8}}
-    @auto = new App.Models.ButtonWidget {'type':'ButtonWidget', image_id: null,'id':3,'name':'auto_play', position: {x: 200, y: 300}, scale: {horizontal: 1, vertical: 3}}
+    @rim = new App.Models.ButtonWidget {'type':'ButtonWidget', image_id: null,'id':1,'name':'read_it_myself', selected_image_id: @rim_selected_image.id, position: {x: 200, y: 100}, scale: {horizontal: 170, vertical: 120}}
+    @rtm = new App.Models.ButtonWidget {'type':'ButtonWidget', image_id: null,'id':2,'name':'read_to_me', position: {x: 200, y: 200}, scale: {horizontal: 120, vertical: 180}}
+    @auto = new App.Models.ButtonWidget {'type':'ButtonWidget', image_id: null,'id':3,'name':'auto_play', position: {x: 200, y: 300}, scale: {horizontal: 100, vertical: 300}}
     @mainMenu = new App.Models.Scene {
       id: 2
       storybook: @storybook
@@ -53,7 +53,7 @@ describe "App.JSON", ->
       scene: @mainMenu,
       position: null,
       widgets: [
-        {type: 'SpriteOrientation', sprite_widget_id: 4, position: {x:200, y:10}, scale: { horizontal: 1, vertical: 1.2}}
+        {type: 'SpriteOrientation', sprite_widget_id: 4, position: {x:200, y:10}, scale: { horizontal: 100, vertical: 120}}
       ]
     }, parse: true
     @mainMenu.keyframes.add @mainMenuKeyframe
@@ -76,8 +76,8 @@ describe "App.JSON", ->
     it 'has the home menu', ->
       menu = @configuration.homeMenuForPages
       expect(menu).toBeDefined()
-      expect(menu.scale.horizontal).toEqual 2.7
-      expect(menu.scale.vertical).toEqual 1.3
+      expect(menu.scale.horizontal).toEqual 270
+      expect(menu.scale.vertical).toEqual 130
       expect(menu.position).toEqual [200, 400]
       expect(menu.normalStateImage).toEqual '/assets/sprites/home.png'
       expect(menu.tappedStateImage).toEqual '/assets/sprites/home-over.png'
@@ -96,8 +96,8 @@ describe "App.JSON", ->
       expect(sprite.spriteTag).toEqual 14
       expect(sprite.image).toEqual @main_menu_image.get('url')
       expect(sprite.position).toEqual [200, 10]
-      expect(sprite.scale.horizontal).toEqual 1
-      expect(sprite.scale.vertical).toEqual 1.2
+      expect(sprite.scale.horizontal).toEqual 100
+      expect(sprite.scale.vertical).toEqual 120
       expect(sprite.visible).toEqual true
 
       expect(menu.fallingPhysicsSettings).toBeDefined()
@@ -115,8 +115,8 @@ describe "App.JSON", ->
       item = items[0]
       expect(item.normalStateImage).toEqual '/assets/sprites/read_it_myself.png'
       expect(item.tappedStateImage).toEqual 'http://authorly.dev/read_it_myself-over.png'
-      expect(item.scale.horizontal).toEqual 1.7
-      expect(item.scale.vertical).toEqual 1.2
+      expect(item.scale.horizontal).toEqual 170
+      expect(item.scale.vertical).toEqual 120
       expect(item.position).toEqual [200, 100]
       expect(item.storyMode).toEqual 'readItMyself'
 
@@ -124,8 +124,8 @@ describe "App.JSON", ->
       item = items[1]
       expect(item.normalStateImage).toEqual '/assets/sprites/read_to_me.png'
       expect(item.tappedStateImage).toEqual '/assets/sprites/read_to_me-over.png'
-      expect(item.scale.horizontal).toEqual 1.2
-      expect(item.scale.vertical).toEqual 1.8
+      expect(item.scale.horizontal).toEqual 120
+      expect(item.scale.vertical).toEqual 180
       expect(item.position).toEqual [200, 200]
       expect(item.storyMode).toEqual 'readToMe'
 
@@ -134,8 +134,8 @@ describe "App.JSON", ->
       expect(item.normalStateImage).toEqual '/assets/sprites/auto_play.png'
       expect(item.tappedStateImage).toEqual '/assets/sprites/auto_play-over.png'
       expect(item.position).toEqual [200, 300]
-      expect(item.scale.horizontal).toEqual 1
-      expect(item.scale.vertical).toEqual 3
+      expect(item.scale.horizontal).toEqual 100
+      expect(item.scale.vertical).toEqual 300
       expect(item.storyMode).toEqual 'autoPlay'
 
     it 'does not include entries for disabled main menu entries', ->
@@ -190,7 +190,7 @@ describe "App.JSON", ->
         position: 0,
         animation_duration: 3,
         widgets: [
-          { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 9, position: { x: 400, y: 200}, scale: 1.5 }
+          { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 9, position: { x: 400, y: 200}, scale: { horizontal: 150, vertical: 120 } }
           { 'type': 'TextWidget', 'id': 12, 'font_id': 13, 'position': {'x': 120, 'y': 330}, 'string': 'Some text' },
           { 'type': 'TextWidget', 'id': 13, 'font_id': 14, 'position': {'x': 150, 'y': 370}, 'string': 'Some other text' },
           { 'type': 'HotspotWidget', 'id': 7, 'position': {'x': 510, 'y': 310}, 'radius': 60, 'sound_id': @sound.id },
@@ -208,7 +208,7 @@ describe "App.JSON", ->
         position: 1,
         animation_duration: 2.7,
         widgets: [
-          { 'type': 'SpriteOrientation', 'id': 14, keyframe_id: 2, sprite_widget_id: 9, position: { x: 500, y: 300}, scale: 1 },
+          { 'type': 'SpriteOrientation', 'id': 14, keyframe_id: 2, sprite_widget_id: 9, position: { x: 500, y: 300}, scale: { horizontal: 100, vertical: 200} },
           { 'type': 'HotspotWidget', 'id': 8, 'position': {'x': 410, 'y': 210}, 'radius': 20, 'video_id': @video.id }
         ]
       }, parse: true
@@ -314,12 +314,12 @@ describe "App.JSON", ->
         expect(api.CCScaleTo).toBeDefined()
         expect(api.CCScaleTo.length).toEqual 2
         scale = api.CCScaleTo[0]
-        expect(scale.intensity).toEqual 1.5
+        expect(scale.intensity).toEqual {horizontal: 150, vertical: 120}
         expect(scale.duration).toEqual 0
         k1ScaleId = scale.actionTag
 
         scale = api.CCScaleTo[1]
-        expect(scale.intensity).toEqual 1
+        expect(scale.intensity).toEqual {horizontal: 100, vertical: 200}
         expect(scale.duration).toEqual 2.7
         k2ScaleId = scale.actionTag
 

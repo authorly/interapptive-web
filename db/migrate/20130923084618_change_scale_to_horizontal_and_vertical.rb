@@ -49,13 +49,13 @@ class ChangeScaleToHorizontalAndVertical < ActiveRecord::Migration
 
   def scale_to_horizontal_and_vertical(widget)
     widget['scale'] = {
-      'horizontal' => widget['scale'],
-      'vertical'   => widget['scale'],
+      'horizontal' => (widget['scale'] * 100).to_i,
+      'vertical'   => (widget['scale'] * 100).to_i,
     }
   end
 
   def horizontal_and_vertical_to_scale(widget)
-    widget['scale'] = widget['scale']['horizontal']
+    widget['scale'] = widget['scale']['horizontal'] * 0.01
   end
 
 end

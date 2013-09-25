@@ -98,7 +98,7 @@ class Storybook < ActiveRecord::Base
     # [5000..6000) for hotspots and [6000...) for texts. Main menu buttons have
     # z_order wihtin [4000..4010)
     self.widgets = [
-      {type: 'ButtonWidget', id: 1, name: 'home', z_order: 4010, scale: {horizontal: 1, vertical: 1}, position: {y: 400, x: 200} },
+      {type: 'ButtonWidget', id: 1, name: 'home', z_order: 4010, scale: {horizontal: 100, vertical: 100}, position: {y: 400, x: 200} },
     ]
   end
 
