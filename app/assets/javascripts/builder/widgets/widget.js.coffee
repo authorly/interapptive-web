@@ -81,9 +81,6 @@ class App.Builder.Widgets.Widget extends cc.Node
   mouseMove: ->
 
 
-  doubleClick: ->
-
-
   select: ->
 
 

@@ -6,13 +6,6 @@
 #   @_capturedWidget - the widget on which mouse down was triggered (before other UI events)
 #
 #
-# Methods:
-#   _calculateTouchFrom(event)  - Calculates the touch point relative to the canvas
-#
-#   addClickOutsideCanvasEventListener - Listens for a click off of the selected sprite,
-#                                        but only within the canvas
-#
-
 class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
   CANVAS_ID = 'builder'
@@ -38,7 +31,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @setIsTouchEnabled(true)
     @isKeyboardEnabled = true
 
-    @addDoubleClickEventListener()
     @addClickOutsideCanvasEventListener()
     @addCanvasMouseLeaveListener()
 
@@ -51,7 +43,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.on 'change:z_order', @reorderWidget, @
 
     App.vent.on 'scale:sprite_widget', @scaleSpriteWidgetFromModel, @
-    App.vent.on 'done_editing:text_widget', @resetCocos2dLabel, @
 
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
@@ -65,10 +56,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       @addChild(view)
       @views.push view
       view.on 'deselect', @_viewDeselected, @
-
-      currentWidget = App.currentSelection.get('widget')
-      if view.shouldBeEditable?() and (currentWidget == widget or not currentWidget?)
-        @_widgetDoubleClicked(view)
 
 
   removeWidget: (widget) ->
@@ -253,15 +240,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       unless inCanvas or inContextMenu
         App.currentSelection.set widget: null
-
-
-  addDoubleClickEventListener: ->
-    cc.canvas.addEventListener 'dblclick', (event) =>
-      touch = @_calculateTouchFrom(event)
-      point = @_getTouchCoordinates(touch)
-
-      widget = @widgetAtPoint(point)
-      widget.doubleClick(touch: touch, point: point) if widget?
 
 
   addContextMenuEventListener: ->
@@ -474,10 +452,4 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     cc.TouchDispatcher.preTouchPoint.y = mouseY
 
     touch
-
-
-  resetCocos2dLabel: (textWidgetModel) ->
-    view = @_getView(textWidgetModel)
-    return if view is undefined
-    view.resetCocos2dLabel()
 
