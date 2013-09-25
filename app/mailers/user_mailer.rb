@@ -4,7 +4,7 @@ class UserMailer < ActionMailer::Base
   def password_reset(user_id)
     @user = User.find(user_id)
 
-    mail :to => user.email, :subject => "Password Reset"
+    mail :to => @user.email, :subject => "Password Reset"
   end
 
   def password_reset_notification(user_id, pass)
