@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
         'email'                    => email,
         'is_admin'                 => is_admin,
         'allowed_storybooks_count' => allowed_storybooks_count,
+        'storybooks_count'         => storybooks.count,
         'created_at'               => created_at
     }
   end
@@ -43,7 +44,7 @@ class User < ActiveRecord::Base
     generate_token :password_reset_token
     self.password_reset_sent_at = Time.zone.now
     save!
-    UserMailer.password_reset(self).deliver
+    Resque.enqueue(MailerQueue, 'UserMailer', 'password_reset', self.id)
   end
 
   def reset_password
