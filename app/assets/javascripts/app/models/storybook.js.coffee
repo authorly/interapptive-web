@@ -187,6 +187,10 @@ class App.Models.Storybook extends Backbone.Model
       App.vent.trigger('show:message', 'info', 'Some of the videos that you uploaded are still being transcoded. Please compile your application once the transcoding is complete.')
 
 
+  previewUrl: ->
+    @get('preview_image_url') || '/assets/default_storybook_preview.png'
+
+
 class App.Collections.StorybooksCollection extends Backbone.Collection
   model: App.Models.Storybook
 
