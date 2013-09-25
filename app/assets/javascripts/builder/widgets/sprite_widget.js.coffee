@@ -15,6 +15,8 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   LINE_WIDTH_OUTER = 2
 
+  CONTROL_SIZE = 10
+
 
   constructor: (options) ->
     super
@@ -44,7 +46,9 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       else
         @applyOrientation(@model)
 
-      @addChild @sprite
+      # negative z-order, so the contents of this node (the highlight border)
+      # are drawn on top of the sprite
+      @addChild @sprite, -1
 
       window.setTimeout @checkLoadedStatus, 0
 
@@ -135,23 +139,32 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     ctx.save()
     ctx.globalAlpha = @getOpacity() / 255.0
 
-    ctx.beginPath()
-
     scaleX = @sprite.getScaleX()
     scaleY = @sprite.getScaleY()
-    x = (@sprite.getContentSize().width  * scaleX) * (@sprite.getAnchorPoint().x * -1)
-    y = (@sprite.getContentSize().height * scaleY) * (@sprite.getAnchorPoint().y * -1)
-    width =  @sprite.getContentSize().width  * scaleX
-    height = @sprite.getContentSize().height * scaleY
-    ctx.rect(x, y, width, height)
+    size = @sprite.getContentSize()
+    anchor = @sprite.getAnchorPoint()
 
+    width =  size.width  * scaleX
+    height = size.height * scaleY
+    x = width  * (anchor.x * -1)
+    y = height * (anchor.y * -1)
+
+    # border
+    ctx.beginPath()
     ctx.strokeStyle = COLOR_OUTER_STROKE
     ctx.lineWidth = Math.round(LINE_WIDTH_OUTER * (scaleX + scaleY) / 2)
+    ctx.rect(x, y, width, height)
     ctx.stroke()
 
-    ctx.beginPath()
-    ctx.fillStyle = COLOR_OUTER_FILL
-    ctx.fill()
+    if @selected
+      # corners
+      ctx.beginPath()
+      ctx.fillStyle = COLOR_INNER_FILL
+      cornerSize = CONTROL_SIZE
+      for [dx, dy] in [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
+        ctx.rect(x + (dx+1) * width * 0.5 - cornerSize * 0.5, y + (dy+1) * height * 0.5 - cornerSize * 0.5, cornerSize, cornerSize)
+      ctx.stroke()
+      ctx.fill()
 
     ctx.restore()
 
