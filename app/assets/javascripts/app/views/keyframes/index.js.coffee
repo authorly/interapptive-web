@@ -16,10 +16,10 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   initialize: ->
-    @collection.on 'reset',            @render,                 @
-    @collection.on 'change:positions', @_updatePositions,       @
-    @collection.on 'add',    @appendKeyframe
-    @collection.on 'remove', @removeKeyframe
+    @collection.on 'reset',            @render,           @
+    @collection.on 'change:positions', @_updatePositions, @
+    @collection.on 'add',              @appendKeyframe,   @
+    @collection.on 'remove',           @removeKeyframe,   @
     @collection.on 'synchronization-start synchronization-end', @_toggleEnabled, @
 
     # Put in its own view
@@ -122,12 +122,13 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   initSortable: =>
     @$el.sortable
-      cancel      : ''
-      containment : 'footer'
-      items       : 'li[data-is_animation!="1"]'
-      handle      : '.main'
-      opacity     : 0.6
-      update      : @_numberKeyframes
+      axis:        'x'
+      cancel:      ''
+      containment: 'footer'
+      items:       'li[data-is_animation!="1"]'
+      handle:      '.main'
+      opacity:     0.6
+      update:      @_numberKeyframes
 
 
   adjustSize: =>
