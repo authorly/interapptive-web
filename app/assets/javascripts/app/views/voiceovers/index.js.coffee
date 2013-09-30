@@ -380,7 +380,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
   _showStopHighlightingButton: ->
     @$('#begin-alignment').removeClass('disabled')
       .find('span')
-      .text('Stop Highlighting')
+      .text('Cancel Highlighting')
       .parent().find('i')
       .removeClass('icon-exclamation-sign')
       .addClass('icon-stop')
