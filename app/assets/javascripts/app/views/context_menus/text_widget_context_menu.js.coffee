@@ -54,6 +54,7 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
 
 
   fontColorSelected: (color) ->
+    return unless color?
     @widget.set('font_color', {r: color.r, g: color.g, b: color.b})
 
 
@@ -70,6 +71,11 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
     event.stopPropagation()
     font_size = @$('#font-size').val()
     @widget.set(font_size: font_size)
+
+
+  remove: ->
+    $('div.colorpicker').hide()
+    super
 
 
   delete: (event) ->
