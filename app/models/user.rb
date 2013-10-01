@@ -17,12 +17,6 @@ class User < ActiveRecord::Base
   has_many :storybooks, :dependent => :destroy
   has_many :fonts, :through => :storybooks
 
-  ROLES = %w( user developer admin )
-
-  def admin?() role == 'admin' end
-
-  def developer?() role == 'developer' end
-
   def backbone_response
     {
         'id'                       => id,
