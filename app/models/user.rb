@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
   validates :password, :length => { :minimum => 6 }, 
             :on => :update,
             :if => :password_digest_changed?
-  validates :company, :presence => true, :length => { :minimum => 3 }
 
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates_uniqueness_of :email, :case_sensitive => false, :message => 'is in use.'
@@ -25,7 +24,9 @@ class User < ActiveRecord::Base
         'is_admin'                 => is_admin,
         'allowed_storybooks_count' => allowed_storybooks_count,
         'storybooks_count'         => storybooks.count,
-        'created_at'               => created_at
+        'created_at'               => created_at,
+        'company'                  => company,
+        'name'                     => name
     }
   end
 

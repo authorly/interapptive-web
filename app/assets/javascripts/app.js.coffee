@@ -116,11 +116,15 @@ window.App =
 
 
   _showSettings: ->
+    mixpanel.track "Click app settings"
+
     view = new App.Views.SettingsContainer(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
 
 
   _showBackgroundSoundForm: ->
+    mixpanel.track "Click background sound"
+
     view = new App.Views.BackgroundSoundForm(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
 
@@ -357,9 +361,18 @@ window.App =
 
   setCurrentUser: (user_id) ->
     @currentUser = new App.Models.User(id: user_id)
-    @currentUser.fetch()
+    @currentUser.fetch(async: false)
+    @setMixpanelUserProfile()
 
 
   setSignedInAsUser: (user_id) ->
     @signedInAsUser = new App.Models.SignedInAsUser(id: user_id)
     @signedInAsUser.fetch(async: false)
+
+
+  setMixpanelUserProfile: ->
+    mixpanel.identify(@currentUser.get('id'))
+    mixpanel.people.set
+      "$email": @currentUser.get('email')
+      "Company": @currentUser.get('company') || n/a
+      "$name": @currentUser.get('name') || n/a

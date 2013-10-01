@@ -4,7 +4,6 @@ require 'forgery'
 Factory.define :user do |f|
   f.username 'user%d'
   f.email    'user%d@example.com'
-  f.company  'Authorly'
   f.password f.password_confirmation('supersecret')
   f.allowed_storybooks_count 100
 end
