@@ -44,6 +44,8 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addText: (event) ->
+    mixpanel.track "Add text to a scene"
+
     event.preventDefault()
     return if $(event.target).hasClass('disabled')
 
@@ -58,6 +60,8 @@ class App.Views.ToolbarView extends Backbone.View
     App.modalWithView(view: view).show().modal.on('hide', view.stopVoiceover)
     view.enableMediaPlayer()
 
+    mixpanel.track "Click voiceover button"
+
 
   showSettings: ->
     App.vent.trigger('show:settingsform')
@@ -68,6 +72,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   switchStorybook: ->
+    mixpanel.track "Switch storybook"
     document.location.href = '/'
 
 

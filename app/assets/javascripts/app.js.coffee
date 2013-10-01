@@ -116,11 +116,15 @@ window.App =
 
 
   _showSettings: ->
+    mixpanel.track "Click app settings"
+
     view = new App.Views.SettingsContainer(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
 
 
   _showBackgroundSoundForm: ->
+    mixpanel.track "Click background sound"
+
     view = new App.Views.BackgroundSoundForm(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
 

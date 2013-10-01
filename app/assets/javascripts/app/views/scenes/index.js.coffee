@@ -44,6 +44,8 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   sceneAdded: (scene) ->
+    mixpanel.track "Add scene"
+
     @renderScene(scene)
     @switchScene(scene)
 
@@ -59,6 +61,8 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   deleteScene: (event) =>
+    mixpanel.track "Delete scene"
+
     event.stopPropagation()
     return if @$el.hasClass('disabled')
 
@@ -68,6 +72,8 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   onSceneClick: (event) =>
+    mixpanel.track "Selected a scene"
+
     sceneId = $(event.currentTarget).data 'id'
     scene = @collection.get(sceneId)
     @switchScene(scene)

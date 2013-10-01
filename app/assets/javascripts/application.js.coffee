@@ -7,6 +7,7 @@
 #= require bootstrap
 #= require underscore
 #= require backbone
+#= require mixpanel
 #= require jquery.dataTables.min
 #= require jquery.voiceover-uploader
 

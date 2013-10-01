@@ -40,6 +40,9 @@ class App.Views.StorybookIndex extends Backbone.View
 
   createStorybook: (event) ->
     event.preventDefault()
+
+    mixpanel.track "Create storybook"
+
     if App.signedInAsUser.canMakeMoreStorybooks()
       App.vent.trigger('show:message', 'warning', "You are not allowed to create more than #{App.signedInAsUser.get('allowed_storybooks_count')} storybooks.")
       return
@@ -64,6 +67,8 @@ class App.Views.StorybookIndex extends Backbone.View
   deleteStorybook: (event) ->
     event.preventDefault()
 
+    mixpanel.track "Delete storybook"
+
     if confirm(DELETE_STORYBOOK_MSG)
       storybook = @collection.get $(event.currentTarget).data('id')
       storybook.destroy()
@@ -75,6 +80,8 @@ class App.Views.StorybookIndex extends Backbone.View
 
   openStorybook: (event) ->
     event.preventDefault()
+
+    mixpanel.track "Open storybook"
 
     id = $(event.currentTarget).data 'id'
     storybook = @collection.get(id)
@@ -97,12 +104,16 @@ class App.Views.StorybookIndex extends Backbone.View
   # storybook form
 
   showStorybookForm: ->
+    mixpanel.track "Show storybook form"
+
     @$('.new-storybook-btn').fadeOut(70)
     @$('.storybook-form').delay(70).fadeIn()
     window.setTimeout (=> @$('.storybook-form .storybook-title').focus()), 71
 
 
   closeStorybookForm: =>
+    mixpanel.track "Hide storybook form"
+
     @$('.storybook-form input').val('')
     @$('.storybook-form').fadeOut(130)
     @$('.new-storybook-btn').delay(130).fadeIn(130)
