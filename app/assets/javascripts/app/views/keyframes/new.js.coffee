@@ -13,6 +13,7 @@ class App.Views.NewKeyframe extends Backbone.View
 
 
   newKeyframe: ->
+    mixpanel.track "Added a keyframe"
     @options.scene.addNewKeyframe({})
     @$el.siblings('ul').animate
       scrollLeft: 99999
