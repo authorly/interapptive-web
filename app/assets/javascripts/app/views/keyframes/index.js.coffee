@@ -110,6 +110,7 @@ class App.Views.KeyframeIndex extends Backbone.View
       keyframe = @collection.get $(event.currentTarget).attr('data-id')
       keyframe.destroy
         success: =>
+          mixpanel.track "Deleted keyframe"
           @collection.remove(keyframe)
 
 
