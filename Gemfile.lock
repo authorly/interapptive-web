@@ -49,7 +49,6 @@ GEM
       coffee-script (~> 2.2)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
-    cancan (1.6.9)
     capistrano (2.14.2)
       highline
       net-scp (>= 1.0.0)
@@ -325,7 +324,6 @@ DEPENDENCIES
   barista
   bcrypt-ruby
   betabuilder!
-  cancan
   capistrano
   carrierwave
   coffee-rails (~> 3.2.1)
