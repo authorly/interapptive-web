@@ -53,7 +53,6 @@ class App.Views.VoiceoverIndex extends Backbone.View
     return unless @keyframe.hasText()
     return unless @keyframe.hasVoiceover()
 
-
     mixpanel.track "Began highlighting"
 
     if @_alignmentInProgress then @stopAlignment() else @startCountdown()
