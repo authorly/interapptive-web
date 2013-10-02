@@ -41,8 +41,6 @@ class App.Views.StorybookIndex extends Backbone.View
   createStorybook: (event) ->
     event.preventDefault()
 
-    mixpanel.track "Create storybook"
-
     if App.signedInAsUser.canMakeMoreStorybooks()
       App.vent.trigger('show:message', 'warning', "You are not allowed to create more than #{App.signedInAsUser.get('allowed_storybooks_count')} storybooks.")
       return
@@ -56,7 +54,9 @@ class App.Views.StorybookIndex extends Backbone.View
     @collection.create { title: title },
       wait:    true
       error:    -> App.vent.trigger('show:message', 'warning', 'Please properly fill in fields!')
-      success: @closeStorybookForm
+      success:
+        mixpanel.track "Created storybook"
+        @closeStorybookForm
 
 
   appendStorybook: (storybook) ->
@@ -66,12 +66,10 @@ class App.Views.StorybookIndex extends Backbone.View
 
   deleteStorybook: (event) ->
     event.preventDefault()
-
-    mixpanel.track "Delete storybook"
-
     if confirm(DELETE_STORYBOOK_MSG)
       storybook = @collection.get $(event.currentTarget).data('id')
-      storybook.destroy()
+      storybook.destroy
+        success: -> mixpanel.track "Deleted a storybook"
 
 
   removeStorybook: (storybook) =>

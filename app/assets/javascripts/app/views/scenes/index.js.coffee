@@ -61,14 +61,14 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   deleteScene: (event) =>
-    mixpanel.track "Delete scene"
-
     event.stopPropagation()
     return if @$el.hasClass('disabled')
 
     if confirm(@DELETE_SCENE_MSG)
       scene = @collection.get $(event.currentTarget).attr('data-id')
-      scene.destroy()
+      scene.destroy
+        success: -> mixpanel.track "Deleted scene"
+
 
 
   onSceneClick: (event) =>

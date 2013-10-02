@@ -274,6 +274,8 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     # before the button becomes disabled
     return unless @syncQueue().empty()
 
+    mixpanel.track "Added a keyframe"
+
     @create _.extend(attributes, {
       scene: @scene
       position: @nextPosition(attributes)

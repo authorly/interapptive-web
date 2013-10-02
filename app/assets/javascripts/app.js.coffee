@@ -361,9 +361,15 @@ window.App =
 
   setCurrentUser: (user_id) ->
     @currentUser = new App.Models.User(id: user_id)
-    @currentUser.fetch()
+    @currentUser.fetch(async: false)
+    @setMixpanelUserProfile()
 
 
   setSignedInAsUser: (user_id) ->
     @signedInAsUser = new App.Models.SignedInAsUser(id: user_id)
     @signedInAsUser.fetch(async: false)
+
+
+  setMixpanelUserProfile: ->
+    mixpanel.identify()
+    mixpanel.people.set "$email": @currentUser.get('email')
