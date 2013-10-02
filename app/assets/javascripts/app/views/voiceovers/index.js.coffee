@@ -49,18 +49,23 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
   clickBeginAlignment: (event) =>
     event.preventDefault()
+
     return unless @keyframe.hasText()
     return unless @keyframe.hasVoiceover()
+
+    mixpanel.track "Began highlighting"
 
     if @_alignmentInProgress then @stopAlignment() else @startCountdown()
 
 
   acceptAlignment: (event) ->
     unless @keyframe.hasText()
+      mixpanel.track "Attempted to highlight (no text)"
       App.vent.trigger('show:message', 'info', "Please add some texts and highlight them before accepting.")
       return
 
     unless @keyframe.hasVoiceover()
+      mixpanel.track "Cancelled highlighting (no audio)"
       App.vent.trigger('hide:modal')
       return
 
@@ -71,7 +76,9 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @keyframe.updateContentHighlightTimes intervals,
       # TODO replace this with a 'done' event that the parent listens to
       # 2013-05-07 @dira
-      success: -> App.vent.trigger 'hide:modal'
+      success: ->
+        App.vent.trigger 'hide:modal'
+        mixpanel.track "Completed highlighting"
 
 
   clickPreviewAlignment: (event) =>
