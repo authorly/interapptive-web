@@ -176,17 +176,16 @@ class App.Models.Storybook extends Backbone.Model
 
   compile: (platform) ->
     if @canBeCompiled()
-      mixpanel.track "Compile an app", platform: platform
-
       $.post('/compiler',
         storybook_json: JSON.stringify(new App.JSON(@).app)
         storybook_id: @get('id')
         platform: platform
         ->
+          mixpanel.track 'Enqueued an app for compilation', platform: platform
           App.vent.trigger('show:message', 'success', "Your application is under compilation. You will shortly receive a link to download your compiled application via email.")
       'json')
     else
-      mixpanel.track "Failed to compile #{platform} app (videos not transcoded)"
+      mixpanel.track "Failed to enqueue app (videos not transcoded)", platform: platform
       App.vent.trigger('show:message', 'info', 'Some of the videos that you uploaded are still being transcoded. Please compile your application once the transcoding is complete.')
 
 

@@ -42,10 +42,11 @@ class App.Views.AssetLibraryElement extends Backbone.View
     event.stopPropagation()
     return unless confirm("Are you sure you want to delete this #{@type()} and corresponding #{@_assetTypeToWidgetType(@type())} from the storybook?")
 
-    mixpanel.track "Delete asset", type: @type()
-
     @model.destroy
       url: @model.get('delete_url')
+      success: ->
+        alert 'hey'
+        mixpanel.track "Deleted asset", type: @type()
 
 
   _assetTypeToWidgetType: (type) ->

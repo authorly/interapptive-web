@@ -53,8 +53,8 @@ class App.Views.StorybookIndex extends Backbone.View
 
     @collection.create { title: title },
       wait:    true
-      error:    -> App.vent.trigger('show:message', 'warning', 'Please properly fill in fields!')
-      success:
+      error:   -> App.vent.trigger('show:message', 'warning', 'Please properly fill in fields!')
+      success: ->
         mixpanel.track "Created storybook"
         @closeStorybookForm
 
