@@ -11,7 +11,13 @@
           %li= message
 
   %p
-    = f.text_field :email, :placeholder => 'email'
+    = f.text_field     :name,     :placeholder => 'name'
+  %p
+    = f.text_field     :company,  :placeholder => 'company'
+  %p
+    = f.text_field     :city,     :placeholder => 'city'
+  %p
+    = f.text_field     :email,    :placeholder => 'email'
   %p
     = f.password_field :password, :placeholder => 'password'
   %p
