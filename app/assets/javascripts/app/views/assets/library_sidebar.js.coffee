@@ -142,7 +142,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
 
   _uploaderFileFailed: (response) ->
-    mixpanel.track "Upload failed", type: type
+    mixpanel.track "Upload failed"
     @currentUploads.collection.remove @uploader.getData(response).id
 
 
