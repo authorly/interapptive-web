@@ -45,7 +45,6 @@ class App.Views.AssetLibraryElement extends Backbone.View
     @model.destroy
       url: @model.get('delete_url')
       success: ->
-        alert 'hey'
         mixpanel.track "Deleted asset", type: @type()
 
 
