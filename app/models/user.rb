@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   validates :password, :length => { :minimum => 6 }, 
             :on => :update,
             :if => :password_digest_changed?
+  validates :company, :presence => true, :length => { :minimum => 3 }
 
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates_uniqueness_of :email, :case_sensitive => false, :message => 'is in use.'
