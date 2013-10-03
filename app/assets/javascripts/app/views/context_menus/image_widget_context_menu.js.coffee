@@ -105,6 +105,7 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
   _addListeners: ->
     $('body').on('keyup', @_moveSpriteWithArrows)
     @widget.on('move', @_changeCoordinates, @)
+    @widget.on('change:visualScale', @_changeScale, @)
 
     App.currentSelection.on 'change:keyframe', @_keyframeChanged, @
 
@@ -112,6 +113,7 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
   _removeListeners: ->
     $('body').off('keyup', @_moveSpriteWithArrows)
     @widget.off('move', @_changeCoordinates, @)
+    @widget.off('change:visualScale', @_changeScale, @)
 
     App.currentSelection.off 'change:keyframe', @_keyframeChanged, @
 
@@ -125,6 +127,11 @@ class App.Views.ImageWidgetContextMenu extends Backbone.View
     @$('#x-coord').val(parseInt(new_point.x))
     @$('#y-coord').val(parseInt(new_point.y))
 
+
+  _changeScale: (scale) ->
+    return unless scale?
+    @$('#horizontal-scale').val(scale.horizontal) if scale.horizontal?
+    @$('#vertical-scale').  val(scale.vertical)   if scale.vertical?
 
   _moveSpriteWithArrows: (event) =>
     # Make sure we do not move the sprite in case both sprite and

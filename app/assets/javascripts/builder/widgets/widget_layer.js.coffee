@@ -164,8 +164,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     delta = cc.ccpSub(point, @_previousPoint)
     newPosition = cc.ccpAdd(delta, @_capturedWidget.getPosition())
 
-    @_capturedWidget.draggedTo(newPosition)
-    @_capturedWidget.model.trigger('move', newPosition)
+    if @_capturedWidget.draggedTo(newPosition)
+      @_capturedWidget.model.trigger('move', newPosition)
+
     @_previousPoint = newPoint
 
 

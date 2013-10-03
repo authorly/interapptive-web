@@ -30,6 +30,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @_border = false
 
     @sprite = new App.Builder.Widgets.Lib.Sprite(options)
+    @model.on 'change:visualScale', @visualScaleChanged, @
 
     @loadImage()
 
@@ -116,38 +117,40 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   mouseMove: (options) ->
     point = @pointToLocal(options.canvasPoint)
-
     control = @controlFor(point)
-    @parent.setCursor CURSORS[control]
-
-
-  controlFor: (point) ->
-    return null unless @selected
-
     r = @rect()
-    cornerSize = CONTROL_SIZE
+    if @resizing
+      width  = true
+      height = true
+      switch @resizeData.direction
+        when 'n', 's'
+          width = false
+        when 'e', 'w'
+          height = false
+      if width
+        dw = Math.abs(point.x - (r.origin.x + (r.size.width) * 0.5))
+        sx = dw  * 2 / @resizeData.size.width * @resizeData.scale.horizontal
+        @model.trigger 'change:visualScale', horizontal: Math.round(sx * 100)
+      if height
+        dh = Math.abs(point.y - (r.origin.y + (r.size.height) * 0.5))
+        sy = dh * 2 / @resizeData.size.height * @resizeData.scale.vertical
+        @model.trigger 'change:visualScale', vertical: Math.round(sy * 100)
+    else
+      @parent.setCursor CURSORS[control]
 
-    hash =
-      sw: [-1, -1]
-      s:  [ 0, -1]
-      se: [ 1, -1]
-      e:  [ 1,  0]
-      ne: [ 1,  1]
-      n:  [ 0,  1]
-      nw: [-1,  1]
-      w:  [-1,  0]
 
-    for dir, [dx, dy] of hash
+  visualScaleChanged: (scale) ->
+    if scale.horizontal
+      @sprite.setScaleX scale.horizontal * 0.01
+    if scale.vertical
+      @sprite.setScaleY scale.vertical * 0.01
 
-      rect = cc.RectMake(
-        r.origin.x + (dx+1) * 0.5 * (r.size.width  - cornerSize)
-        r.origin.y + (dy+1) * 0.5 * (r.size.height - cornerSize)
-        cornerSize
-        cornerSize
-      )
-      return dir if cc.Rect.CCRectContainsPoint(rect, point)
 
-    null
+  draggedTo: ->
+    if @resizing
+      return false
+    else
+      super
 
 
   mouseOver: ->
@@ -158,6 +161,30 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   mouseOut: ->
     @parent.setCursor('default')
     @hideBorder() unless @selected
+
+
+  mouseDown: (options) ->
+    point = @pointToLocal(options.canvasPoint)
+    if (control = @controlFor(point))?
+      @resizing = true
+      rect = @rect()
+      @resizeData =
+        direction: control
+        scale:
+          horizontal: @sprite.getScaleX()
+          vertical:   @sprite.getScaleY()
+        size: rect.size
+
+
+  mouseUp: (options) ->
+    if @resizing
+      @resizing = false
+      @model.set
+        scale:
+          horizontal: Math.round(@sprite.getScaleX() * 100)
+          vertical:   Math.round(@sprite.getScaleY() * 100)
+    else
+      super
 
 
   showBorder: =>
@@ -228,3 +255,34 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       )
     else
       r
+
+
+  controlFor: (point) ->
+    return null unless @selected
+
+    r = @rect()
+    cornerSize = CONTROL_SIZE
+
+    hash =
+      sw: [-1, -1]
+      s:  [ 0, -1]
+      se: [ 1, -1]
+      e:  [ 1,  0]
+      ne: [ 1,  1]
+      n:  [ 0,  1]
+      nw: [-1,  1]
+      w:  [-1,  0]
+
+    for dir, [dx, dy] of hash
+
+      rect = cc.RectMake(
+        r.origin.x + (dx+1) * 0.5 * (r.size.width  - cornerSize)
+        r.origin.y + (dy+1) * 0.5 * (r.size.height - cornerSize)
+        cornerSize
+        cornerSize
+      )
+      return dir if cc.Rect.CCRectContainsPoint(rect, point)
+
+    null
+
+

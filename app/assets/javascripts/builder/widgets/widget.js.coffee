@@ -89,6 +89,7 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   draggedTo: (position) ->
     @setPosition(position, false)
+    return true
 
 
   rect: ->

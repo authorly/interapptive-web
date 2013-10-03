@@ -123,7 +123,10 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
 
 
   draggedTo: ->
-    super unless @resizing
+    if @resizing
+      return false
+    else
+      super
 
 
   mouseMove: (options) ->
