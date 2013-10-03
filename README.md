@@ -84,6 +84,8 @@ Write your model, view or collections tests under corresponding directories insi
 
 Builder is a custom widget framework/base class that provides a relevant API for making and running different type of widgets, which are objects that can be  added to the canvas. Builder abstracts cocos2d-js which is a two-dimensional drawing library that's primarily used functionally. In this way, Builder provides a nice inheritable OO interface, which is great for testing and great for reuse.
 
+Find it in `app/assets/javascripts/builder/`.
+
 ### Some important Cocos2d Concepts
 
 First, you should see [this link](http://www.cocos2d.org/doc/programming_guide/basic_concepts.html) for more information about the core concepts of Cocos.
@@ -98,55 +100,28 @@ To summarize, however:
     - Cocos uses events to specify user input, window status change, and to communicate across parts of a framework (decoupling).
 - **CocosNode** is the superclass of the above (omitting the director?), and provides some default common functionality like positioning, controlling child elements, time management, and rendering.
 
-### Where to find Builder
-
-Find it in `app/assets/javascripts/builder/`.
-
-### How it loads
-
-(Note: all paths are relative to `app/assets/javascripts` unless otherwise
-specified.)
-
-1. Its dependencies are loaded by application.js and then `builder/index` is loaded.
-2. This loads some hotpatches for cocos2d, and requires `builder/init`.
-3. `builder/init` creates an `initBuilder` function on `window` that is presumably called later.
-4. `builder/app_delegate` sets up a namespace for Builder's instantiated classes and deals with setting up the AppDelegate for cocos2d (why? what purpose does this serve?)
-5. `builder/builder` does the following:
-    - it defines Builder, which is a subclass of cc.Layer;
-    - it instantiates a new widget layer as its child;
-    - it sets builder's scene to the present scene, and sets builder as the child of the scene;
-    - sets Builder.node to an instance of Builder if #new and #init succeed;
-    - sets window.Builder to Builder.
+`cc` is the Cocos2d namespace.
 
 ### Widgets
 
+`WidgetLayer` manages the widget space and mouse/touch interactions.
+
 Widgets are represented by two classes - a Backbone Model (that stores and manages the widget data) and a Builder View (which takes care of representing it on the UI and managing events).
 
-### How widgets work
+Widget states:
 
-1. The WidgetLayer manages widget space. It performs the following tasks too:
-    - sets up a double-click watcher for the canvas;
-    - defines methods for adding and removing widgets;
-    - defines a method for getting a widget at a point
-    - handles touch behaviour/moving and translates that into mouse behaviour.
+* `default` The widget is displayed in its regular state
+* `selected` The widget is selected to be edited. Hotspots and sprites can be resized, Text allows changing the text. The widget is displayed in a distinctive way (blue border around hotspots and sprites, together with resize controls; text widgets have a dashed border and allow entering text.
+* `hovered` The widget is the top-most widget under the mouse. It can be moved by dragging (and this does not affect the selected widget). It cannot be resized or edited in other ways. It is displayed in a distinctive way (blue border around hotspots and sprites, different color for text).
 
-2. The Widget parent class is what all widgets inherit from. It defines:
-    - a newFromHash method that allows invocation with options and sets positioning based on hash.position{.x,.y};
-    - abstract mouseover/mouseout/dblclick responses;
-    - abstract highlighting
-    - opacity setters and getters
-    - toHash, a serializer;
+There can be at most one `selected` and at most one `hovered` widget at a time.
 
-### How widgets are instantiated
+Widget state transitions:
 
-- Widget instantiation happens (at this moment) through `app/assets/javascripts/app/views/toolbar.js.coffee`. Each button has its own method that creates an appropriate instance.
-
-### FAQ
-
-#### What is cc?
-
-`cc` is the Cocos2d namespace.
-
+* Clicking on a widget gets it to `selected` (and puts the previously selected widget, it present, into `default`).
+* Clicking in the canvas, but not on a widget, puts the previously selected widget, it present, into `default`.
+* Moving the mouse over a widget gets it to `hovered` (and puts the previously hovered widget, it present, into `default`).
+* Moving the mouse within the canvas, but not on a widget, puts the previously hovered widget, it present, into `default`.
 
 ### Fixtures
 
