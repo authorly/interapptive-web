@@ -76,8 +76,8 @@ describe "App.JSON", ->
     it 'has the home menu', ->
       menu = @configuration.homeMenuForPages
       expect(menu).toBeDefined()
-      expect(menu.scale.horizontal).toEqual 270
-      expect(menu.scale.vertical).toEqual 130
+      expect(menu.scale.sx).toEqual 270
+      expect(menu.scale.sy).toEqual 130
       expect(menu.position).toEqual [200, 400]
       expect(menu.normalStateImage).toEqual '/assets/sprites/home.png'
       expect(menu.tappedStateImage).toEqual '/assets/sprites/home-over.png'
@@ -96,8 +96,8 @@ describe "App.JSON", ->
       expect(sprite.spriteTag).toEqual 14
       expect(sprite.image).toEqual @main_menu_image.get('url')
       expect(sprite.position).toEqual [200, 10]
-      expect(sprite.scale.horizontal).toEqual 100
-      expect(sprite.scale.vertical).toEqual 120
+      expect(sprite.scale.sx).toEqual 100
+      expect(sprite.scale.sy).toEqual 120
       expect(sprite.visible).toEqual true
 
       expect(menu.fallingPhysicsSettings).toBeDefined()
@@ -115,8 +115,8 @@ describe "App.JSON", ->
       item = items[0]
       expect(item.normalStateImage).toEqual '/assets/sprites/read_it_myself.png'
       expect(item.tappedStateImage).toEqual 'http://authorly.dev/read_it_myself-over.png'
-      expect(item.scale.horizontal).toEqual 170
-      expect(item.scale.vertical).toEqual 120
+      expect(item.scale.sx).toEqual 170
+      expect(item.scale.sy).toEqual 120
       expect(item.position).toEqual [200, 100]
       expect(item.storyMode).toEqual 'readItMyself'
 
@@ -124,8 +124,8 @@ describe "App.JSON", ->
       item = items[1]
       expect(item.normalStateImage).toEqual '/assets/sprites/read_to_me.png'
       expect(item.tappedStateImage).toEqual '/assets/sprites/read_to_me-over.png'
-      expect(item.scale.horizontal).toEqual 120
-      expect(item.scale.vertical).toEqual 180
+      expect(item.scale.sx).toEqual 120
+      expect(item.scale.sy).toEqual 180
       expect(item.position).toEqual [200, 200]
       expect(item.storyMode).toEqual 'readToMe'
 
@@ -134,8 +134,8 @@ describe "App.JSON", ->
       expect(item.normalStateImage).toEqual '/assets/sprites/auto_play.png'
       expect(item.tappedStateImage).toEqual '/assets/sprites/auto_play-over.png'
       expect(item.position).toEqual [200, 300]
-      expect(item.scale.horizontal).toEqual 100
-      expect(item.scale.vertical).toEqual 300
+      expect(item.scale.sx).toEqual 100
+      expect(item.scale.sy).toEqual 300
       expect(item.storyMode).toEqual 'autoPlay'
 
     it 'does not include entries for disabled main menu entries', ->
@@ -314,12 +314,14 @@ describe "App.JSON", ->
         expect(api.CCScaleTo).toBeDefined()
         expect(api.CCScaleTo.length).toEqual 2
         scale = api.CCScaleTo[0]
-        expect(scale.intensity).toEqual {horizontal: 150, vertical: 120}
+        expect(scale.sx).toEqual 150
+        expect(scale.sy).toEqual 120
         expect(scale.duration).toEqual 0
         k1ScaleId = scale.actionTag
 
         scale = api.CCScaleTo[1]
-        expect(scale.intensity).toEqual {horizontal: 100, vertical: 200}
+        expect(scale.sx).toEqual 100
+        expect(scale.sy).toEqual 200
         expect(scale.duration).toEqual 2.7
         k2ScaleId = scale.actionTag
 
