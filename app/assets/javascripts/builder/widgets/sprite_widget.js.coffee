@@ -7,16 +7,11 @@
 # _border
 #
 class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
-  COLOR_OUTER_STROKE = 'rgba(15, 79, 168, 0.8)'
-
-  COLOR_OUTER_FILL = 'rgba(174, 204, 246, 0.66)'
-
-  COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
-
-  LINE_WIDTH_OUTER = 2
+  BORDER_WIDTH = 4
+  BORDER_COLOR = 'rgba(15, 79, 168, 0.8)'
 
   CONTROL_SIZE = 12
-
+  CONTROL_FILL_COLOR = 'rgba(255, 255, 255, 1)'
 
   constructor: (options) ->
     super
@@ -156,15 +151,15 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     # border
     ctx.beginPath()
-    ctx.strokeStyle = COLOR_OUTER_STROKE
-    ctx.lineWidth = LINE_WIDTH_OUTER
+    ctx.strokeStyle = BORDER_COLOR
+    ctx.lineWidth = BORDER_WIDTH
     ctx.rect(x, y, width, height)
     ctx.stroke()
 
     if @selected
       # corners
       ctx.beginPath()
-      ctx.fillStyle = COLOR_INNER_FILL
+      ctx.fillStyle = CONTROL_FILL_COLOR
       cornerSize = CONTROL_SIZE
       for [dx, dy] in [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
         ctx.rect(x + (dx+1) * width * 0.5 - cornerSize * 0.5, y + (dy+1) * height * 0.5 - cornerSize * 0.5, cornerSize, cornerSize)
