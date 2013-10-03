@@ -220,10 +220,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     cursor = switch name
       when 'resize'
         'se-resize'
-      when 'move'
-        'move'
-      when 'default'
-        'default'
+      else
+        name
     document.body.style.cursor = cursor
 
 

@@ -13,6 +13,17 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   CONTROL_SIZE = 12
   CONTROL_FILL_COLOR = 'rgba(255, 255, 255, 1)'
 
+  CURSORS =
+    null: 'move'
+    nw:   'nwse-resize'
+    n:    'ns-resize'
+    ne:   'nesw-resize'
+    e:    'ew-resize'
+    se:   'nwse-resize'
+    s:    'ns-resize'
+    sw:   'nesw-resize'
+    w:    'ew-resize'
+
   constructor: (options) ->
     super
 
@@ -103,6 +114,42 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @hideBorder()
 
 
+  mouseMove: (options) ->
+    point = @pointToLocal(options.canvasPoint)
+
+    control = @controlFor(point)
+    @parent.setCursor CURSORS[control]
+
+
+  controlFor: (point) ->
+    return null unless @selected
+
+    r = @rect()
+    cornerSize = CONTROL_SIZE
+
+    hash =
+      sw: [-1, -1]
+      s:  [ 0, -1]
+      se: [ 1, -1]
+      e:  [ 1,  0]
+      ne: [ 1,  1]
+      n:  [ 0,  1]
+      nw: [-1,  1]
+      w:  [-1,  0]
+
+    for dir, [dx, dy] of hash
+
+      rect = cc.RectMake(
+        r.origin.x + (dx+1) * 0.5 * (r.size.width  - cornerSize)
+        r.origin.y + (dy+1) * 0.5 * (r.size.height - cornerSize)
+        cornerSize
+        cornerSize
+      )
+      return dir if cc.Rect.CCRectContainsPoint(rect, point)
+
+    null
+
+
   mouseOver: ->
     @parent.setCursor('move')
     @showBorder()
@@ -168,3 +215,16 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
     ctx.restore()
 
+
+  rect: ->
+    r = super
+    if @selected
+      # Center anchor point => the origin does not need to be changed
+      cc.RectMake(
+        r.origin.x
+        r.origin.y
+        r.size.width  + CONTROL_SIZE
+        r.size.height + CONTROL_SIZE
+      )
+    else
+      r
