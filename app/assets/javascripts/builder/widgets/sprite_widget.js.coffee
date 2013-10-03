@@ -15,7 +15,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   LINE_WIDTH_OUTER = 2
 
-  CONTROL_SIZE = 10
+  CONTROL_SIZE = 12
 
 
   constructor: (options) ->
@@ -55,7 +55,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   checkLoadedStatus: =>
     if @isLoaded()
-      @setContentSize @sprite.getContentSize()
+      @applyOrientation(@currentOrientation)
       @setOpacity()
     else
       window.setTimeout @checkLoadedStatus, 200
@@ -85,8 +85,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   _changeScale: (__, scale) ->
-    @setScaleX scale.horizontal / 100
-    @setScaleY scale.vertical   / 100
+    @sprite.setScaleX scale.horizontal * 0.01
+    @sprite.setScaleY scale.vertical   * 0.01
+
+    size = @sprite.getContentSize()
+    size.width  = Math.round(size.width  * scale.horizontal * 0.01)
+    size.height = Math.round(size.height * scale.vertical   * 0.01)
+    @setContentSize size
 
 
   _changePosition: (__, position) ->
@@ -152,7 +157,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     # border
     ctx.beginPath()
     ctx.strokeStyle = COLOR_OUTER_STROKE
-    ctx.lineWidth = Math.round(LINE_WIDTH_OUTER * (scaleX + scaleY) / 2)
+    ctx.lineWidth = LINE_WIDTH_OUTER
     ctx.rect(x, y, width, height)
     ctx.stroke()
 

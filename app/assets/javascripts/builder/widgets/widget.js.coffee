@@ -96,11 +96,13 @@ class App.Builder.Widgets.Widget extends cc.Node
     s = @getContentSize()
     a = @getAnchorPoint()
 
+    # TODO upgrade (to what version?) and get @getBoundingBox()
+    # 2013-10-03 @dira
     cc.RectMake(
       p.x - s.width  * a.x
       p.y - s.height * a.y
-      s.width  * @getScaleX()
-      s.height * @getScaleY()
+      s.width
+      s.height
     )
 
 
