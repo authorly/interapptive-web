@@ -374,5 +374,5 @@ window.App =
     mixpanel.identify(@currentUser.get('id'))
     mixpanel.people.set
       "$email": @currentUser.get('email')
-      "Company": @currentUser.get('company') || n/a
-      "$name": @currentUser.get('name') || n/a
+      "Company": @currentUser.get('company') || "n/a"
+      "$name": @currentUser.get('name') || "n/a"
