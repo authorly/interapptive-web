@@ -84,6 +84,11 @@ class App.Models.HotspotWidget extends App.Models.Widget
 
   assetUrl: ->
     @asset()?.get('url')
+    if @hasSound()
+      @asset().get('url')
+    else if @hasVideo()
+      asset = @asset()
+      asset.get('mp4url') || asset.get('url')
 
 
   assetFilename: ->
