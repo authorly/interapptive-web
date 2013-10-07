@@ -22,9 +22,9 @@ class AndroidStorybookApplication < AbstractStorybookApplication
     true
   end
 
-  def send_notification
+  def send_notification(recipient_email)
     logger.info "Enqueuing notificatoin email for storybook #{@storybook.id}"
-    Resque.enqueue(MailerQueue, 'UserMailer', 'android_compilation_completion_notification', @storybook.user.email, @storybook.android_application.url)
+    Resque.enqueue(MailerQueue, 'UserMailer', 'android_compilation_completion_notification', recipient_email, @storybook.android_application.url)
   end
 
   private

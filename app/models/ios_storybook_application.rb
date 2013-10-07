@@ -66,8 +66,8 @@ class IosStorybookApplication < AbstractStorybookApplication
     true
   end
 
-  def send_notification
-    Resque.enqueue(MailerQueue, 'UserMailer', 'ios_compilation_completion_notification', @storybook.user.email, @storybook.compiled_application.index_html_url, @storybook.compiled_application.url)
+  def send_notification(recipient_email)
+    Resque.enqueue(MailerQueue, 'UserMailer', 'ios_compilation_completion_notification', recipient_email, @storybook.compiled_application.index_html_url, @storybook.compiled_application.url)
   end
 
   def download_icons
