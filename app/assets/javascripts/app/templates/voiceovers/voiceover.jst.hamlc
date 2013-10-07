@@ -1,0 +1,40 @@
+#voiceovers
+  %h3 Voiceover and text highlighting
+  #sync-player
+    %audio{:id => "media-player", :controls => "controls", :class => "disabled"}
+      Your browser does not support the audio element.
+    %span
+      %a{:href => '#'}
+  #voiceover-selector-container
+
+  .highlight
+    %button#begin-alignment.btn.disabled{title: 'Drag over the text, selecting each word as it you hear it in the voiceover sound'}
+      %i.icon-exclamation-sign.icon-black
+      %span Begin Highlighting
+    #voiceover-playback-rate-slider-container
+
+  %ul#words
+    - for widget in _.sortBy(@keyframe.textWidgets(), (w) -> w.get('z_order'))
+      %li{ data-id: widget.id }
+        - words = widget.get('string').split(' ')
+        - for word, index in words
+          %span.word
+            = word + " "
+  - if @keyframe.textWidgets().length > 1
+    #reorder-text
+      %a.reorder{href: '#'} Text not in correct order?
+      %span.done{style: 'display: none'}
+        Drag text fragments to put them in the right order
+        %a{href: '#'} Done reordering
+
+
+  #controls
+    %button#preview-alignment.btn.disabled
+      %i.icon-play.icon-black
+      %span Preview
+    #alignment-errors.alert.alert-error
+      Oops! looks like there's an issue with your alignment.
+
+    %button#accept-alignment.btn.btn-large.btn-success
+      %i.icon-check.icon-white
+      Accept

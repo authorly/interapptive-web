@@ -1,4 +1,4 @@
-describe "App.Views.VoiceoverIndex", ->
+describe "App.Views.Voiceover", ->
 
   beforeEach ->
     @server = sinon.fakeServer.create()
@@ -27,7 +27,7 @@ describe "App.Views.VoiceoverIndex", ->
       ]
     })
 
-    @voiceover_index = new App.Views.VoiceoverIndex(@keyframe)
+    @voiceover_index = new App.Views.Voiceover(model: @keyframe)
     sinon.spy App.vent, 'trigger'
 
   afterEach ->

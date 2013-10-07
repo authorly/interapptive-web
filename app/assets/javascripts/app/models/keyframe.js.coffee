@@ -32,10 +32,12 @@ class App.Models.Keyframe extends Backbone.Model
 
     attributes
 
+
   initialize: (attributes) ->
     @parse(attributes)
 
-    @on 'change:animation_duration', @animationDurationChanged, @
+    @listenTo @, 'change:autoplay_duration', @autoplayDurationChanged
+    @on  'change:animation_duration change:autoplay_duration', @_onChange, @
     @initializeScene(attributes)
     @initializeWidgets(attributes)
     @initializePreview()
@@ -44,7 +46,8 @@ class App.Models.Keyframe extends Backbone.Model
   destroy: ->
     throw new Error('cannot delete') if @get('is_animation')
 
-    @off 'change:animation_duration', @animationDurationChanged, @
+    @stopListening()
+    @off 'change:animation_duration change:autoplay_duration', @_onChange, @
     @uninitializeWidgets()
     @uninitializePreview()
 
@@ -84,8 +87,21 @@ class App.Models.Keyframe extends Backbone.Model
     @save()
 
 
-  animationDurationChanged: ->
+  _onChange: ->
     @save()
+
+
+  # preferred this manual validation out of fear of not being able to save
+  # keyframes at all, if this value gets set wrongly
+  # @dira 2013-10-29
+  autoplayDurationChanged: ->
+    duration = @get('autoplay_duration')
+    if @constructor.isValidAutoplayDuration(duration)
+      @save { autoplay_duration: duration }, patch: true
+    else
+      @trigger 'invalid:autoplay_duration', duration
+      @set
+        autoplay_duration: @previousAttributes()['autoplay_duration']
 
 
   toJSON: ->
@@ -107,17 +123,27 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   autoplayDuration: ->
-    texts = @textWidgets()
-    voiceover = @voiceover()
-    if texts.length == 0
-      8
-    else if voiceover? and (duration = voiceover.get('duration'))?
-      duration
+    switch @autoplaySource()
+      when 'field' then @get('autoplay_duration')
+      when 'voiceover' then @voiceover().get('duration')
+      when 'text'
+        wordCount = _.map @textWidgets(), (widget) -> widget.wordCount()
+        nrWords = _.reduce wordCount, ((sum, count) -> sum + count), 0
+        speed = 45/60
+        Math.round(nrWords / speed)
+      when 'default' then 12
+
+
+  autoplaySource: ->
+    if @get('autoplay_duration')?
+      'field'
     else
-      wordCount = _.map texts, (widget) -> widget.wordCount()
-      nrWords = _.reduce wordCount, ((sum, count) -> sum + count), 0
-      speed = 45/60
-      Math.round(nrWords / speed)
+      if @voiceover()?.get('duration')?
+        'voiceover'
+      else if @textWidgets().length > 0
+        'text'
+      else
+        'default'
 
 
   initializePreview: ->
@@ -227,6 +253,13 @@ class App.Models.Keyframe extends Backbone.Model
       App.Models.HotspotWidget.prototype.defaults().z_order
 
 
+  @isValidAutoplayDuration: (duration) ->
+    return false unless Number(duration) == duration and duration >= 0
+    onlyOneDecimal = duration * 10 == Math.round (duration * 10)
+    return false unless onlyOneDecimal
+    true
+
+_.extend App.Models.Keyframe::, App.Mixins.DeferredSave
 _.extend App.Models.Keyframe::, App.Mixins.QueuedSync
 
 ##
