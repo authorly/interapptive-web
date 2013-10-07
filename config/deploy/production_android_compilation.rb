@@ -3,6 +3,7 @@ set :deploy_to,       "/home/#{user}/apps/#{application}"
 set :bundle_flags,    '--deployment'
 set :bundle_without,  [:development, :test, :assets, :osx]
 set :rails_env,       "production"
+set :branch,          "production"
 
 role :production_android_compilation, "ec2-54-211-199-222.compute-1.amazonaws.com"
 
