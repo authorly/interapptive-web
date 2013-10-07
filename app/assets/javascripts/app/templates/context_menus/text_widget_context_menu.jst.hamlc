@@ -1,5 +1,5 @@
 #font-face-selector
-  %select#font-face{:readonly => ""}
+  %select#font-face
     %optgroup{:id => 'custom-fonts', :label => 'Uploaded Fonts'}
       - if @storybook.hasCustomFonts()
         - for font in @storybook.customFonts().models
@@ -14,7 +14,7 @@
           = font.get('name')
 
 #font-size-selector
-  %select#font-size{:readonly => ""}
+  %select#font-size
     - fontSizes = [24..60]
     - for fontSize in fontSizes
       %option{:value => "#{fontSize}"}
