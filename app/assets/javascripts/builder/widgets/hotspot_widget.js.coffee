@@ -65,17 +65,18 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     ctx.fillStyle = @OUTER_STROKE_FILL
     ctx.fill()
 
-    # Resizer
-    center = @getControlCenter()
-    ctx.beginPath()
-    ctx.arc(center.x, center.y, cr, 0, Math.PI * 2, false)
-    ctx.strokeStyle = @INNER_STROKE_COLOR
-    ctx.lineWidth = @INNER_STROKE_WIDTH
-    ctx.stroke()
-    ctx.beginPath()
-    ctx.arc(center.x, center.y, cr - (@INNER_STROKE_WIDTH / 2), 0, Math.PI * 2, false)
-    ctx.fillStyle = @INNER_STROKE_FILL
-    ctx.fill()
+    if @canResize()
+      # Resizer
+      center = @getControlCenter()
+      ctx.beginPath()
+      ctx.arc(center.x, center.y, cr, 0, Math.PI * 2, false)
+      ctx.strokeStyle = @INNER_STROKE_COLOR
+      ctx.lineWidth = @INNER_STROKE_WIDTH
+      ctx.stroke()
+      ctx.beginPath()
+      ctx.arc(center.x, center.y, cr - (@INNER_STROKE_WIDTH / 2), 0, Math.PI * 2, false)
+      ctx.fillStyle = @INNER_STROKE_FILL
+      ctx.fill()
 
     ctx.restore()
 
@@ -85,6 +86,10 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
       (@radius - @CONTROL_RADIUS) *  Math.sin(cc.DEGREES_TO_RADIANS(135))
       (@radius - @CONTROL_RADIUS) * -Math.cos(cc.DEGREES_TO_RADIANS(135))
     )
+
+
+  canResize: ->
+    @selected
 
 
   mouseOver: ->
@@ -104,7 +109,8 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     point = options.canvasPoint
     inControl = @_isPointInsideControl(point)
 
-    @_startResize(options) if inControl
+    if @canResize() and inControl
+      @_startResize(options)
 
 
   mouseUp: (options) ->
@@ -129,7 +135,7 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
   mouseMove: (options) ->
     point = options.canvasPoint
 
-    inControl = @resizing or @_isPointInsideControl(point)
+    inControl = @resizing or @canResize() and @_isPointInsideControl(point)
     @parent.setCursor(if inControl then 'resize' else 'move')
 
     @_resizeRadius(point) if @resizing
