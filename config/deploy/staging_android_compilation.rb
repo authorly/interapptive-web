@@ -6,6 +6,7 @@ set :bundle_flags,    '--deployment'
 set :bundle_without,  [:development, :test, :assets, :osx]
 set :rvm_ruby_string, '1.9.3'
 set :rails_env,       "staging"
+set :branch,          "master"
 
 role :staging_android_compilation, "173.255.214.98"
 
