@@ -1,18 +1,27 @@
 class App.Views.Keyframe extends Backbone.View
+  DELETE_KEYFRAME_MSG:
+    '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
+
   template: JST["app/templates/keyframes/keyframe"]
   tagName: 'li'
 
   events:
-    "change [name='animation-duration']": "updateAnimationDuration"
+    'click  .main':                       '_clicked'
+    'click  .delete-keyframe':            '_deleteClicked'
+    'change [name="animation-duration"]': '_animationDurationChanged'
+    'click  .keyframe-configuration':     '_configurationClicked'
+
 
   initialize: ->
-    @model.widgets.on        'add remove change:position change:scale change:radius',  @widgetsChanged, @
-    @model.scene.widgets.on  '           change:position change:scale change:z_order change:disabled change:image_id', @widgetsChanged, @
+    @listenTo @model.widgets, 'add remove change:position change:scale change:radius',  @widgetsChanged
+    @listenTo @model.scene.widgets,      'change:position change:scale change:z_order change:disabled change:image_id', @widgetsChanged
+
+    @listenTo App.currentSelection, 'change:keyframe', @_activeKeyframeChanged
 
 
   remove: ->
-    @model.widgets.off       'add remove change:position change:chale change:radius',  @widgetsChanged, @
-    @model.scene.widgets.off '           change:position change:scale change:z_order change:disabled change:image_id', @widgetsChanged, @
+    @stopListening()
+    super
 
 
   render: ->
@@ -25,8 +34,26 @@ class App.Views.Keyframe extends Backbone.View
     @
 
 
-  updateAnimationDuration: (event) ->
-    @model.set animation_duration: Number($(event.currentTarget).val())
+  _clicked: ->
+    App.currentSelection.set
+      keyframe: @model
+
+
+  _deleteClicked: (event) =>
+    event.stopPropagation()
+    return if @$el.hasClass('disabled')
+
+    if confirm(@DELETE_KEYFRAME_MSG)
+      collection = @model.collection
+      @model.destroy
+        success: =>
+          mixpanel.track "Deleted keyframe"
+          collection.remove(@model)
+
+
+  _animationDurationChanged: (event) ->
+    @model.set
+      animation_duration: Number($(event.currentTarget).val())
 
 
   widgetsChanged: (model) ->
@@ -34,6 +61,20 @@ class App.Views.Keyframe extends Backbone.View
        model instanceof App.Models.SpriteOrientation or
        model instanceof App.Models.ImageWidget
       @renderPreview()
+
+
+  _configurationClicked: ->
+    view = new App.Views.KeyframeSettings
+      model: @model
+    App.modalWithView(view: view).show()
+
+
+  _activeKeyframeChanged: (__, keyframe) ->
+    klass = 'active'
+    if keyframe == @model
+      @$el.addClass klass
+    else
+      @$el.removeClass klass
 
 
   renderPreview: =>

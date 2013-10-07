@@ -9,6 +9,7 @@ describe Keyframe do
     it 'should be valid response' do
       response = {
           'animation_duration' => keyframe.animation_duration,
+          'autoplay_duration'  => keyframe.autoplay_duration,
           'content_highlight_times' => [],
           'created_at'         => keyframe.created_at,
           'id'                 => keyframe.id,

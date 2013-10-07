@@ -54,21 +54,17 @@ nav.toolbar {
 
         }
 
-        &.sync-audio {
-          background-position: @toolbarItemWidth*-14 0;
-
-          &.disabled {
-            background-position: @toolbarItemWidth*-14 (@toolbarHeight - 1);
-          }
-
-          &.has-voiceover {
-            background-position: @toolbarItemWidth*-14 (@toolbarHeight*2);
-          }
-        }
-
         &.background-sound {
           line-height: 12px;
           background-position: @toolbarItemWidth*-8 0;
+
+          &.has-sound {
+            background-position: (@toolbarItemWidth*-8)-1 @toolbarHeight*2;
+
+            &.disabled {
+              background-position: @toolbarItemWidth*-4 (@toolbarHeight - 1);
+            }
+          }
         }
 
 
@@ -85,13 +81,6 @@ nav.toolbar {
           background-position: @toolbarItemWidth*-13 0;
         }
 
-        &.background-sound.has-sound {
-          background-position: (@toolbarItemWidth*-8)-1 @toolbarHeight*2;
-
-          &.disabled {
-            background-position: @toolbarItemWidth*-4 (@toolbarHeight - 1);
-          }
-        }
 
         &.scene-options {
           background-position: @toolbarItemWidth*-10 0;

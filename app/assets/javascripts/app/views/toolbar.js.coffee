@@ -1,10 +1,7 @@
 class App.Views.ToolbarView extends Backbone.View
   events:
     'click .scene'              : 'addScene'
-    'click .keyframe'           : 'addKeyframe'
-    'click .animation-keyframe' : 'addAnimationKeyframe'
     'click .edit-text'          : 'addText'
-    'click .sync-audio'         : 'alignAudio'
     'click .scene-options'      : 'showSettings'
     'click .background-sound'   : 'showSceneBackgroundMusic'
     'click .compile'            : 'compileStorybook'
@@ -16,8 +13,6 @@ class App.Views.ToolbarView extends Backbone.View
     App.currentSelection.get('storybook').compile(platform)
 
   initialize: ->
-    @_enableOnEvent 'can_add:keyframe', '.keyframe'
-    @_enableOnEvent 'can_add:animationKeyframe', '.animation-keyframe'
     @_enableOnEvent 'can_add:text', '.edit-text'
     @_enableOnEvent 'can_add:scene', '.scene'
 
@@ -26,7 +21,7 @@ class App.Views.ToolbarView extends Backbone.View
     App.vent.on 'activate:scene', (scene) =>
       @$('li').removeClass 'disabled'
       if scene.isMainMenu()
-        @$('.edit-text,.touch-zones,.sync-audio').addClass 'disabled'
+        @$('.edit-text').addClass 'disabled'
 
 
   addScene: (event) ->
@@ -34,13 +29,6 @@ class App.Views.ToolbarView extends Backbone.View
     return if $(event.target).hasClass('disabled')
 
     App.vent.trigger 'create:scene'
-
-
-  addAnimationKeyframe: ->
-    event.preventDefault()
-    return if $(event.target).hasClass('disabled')
-
-    App.vent.trigger 'create:keyframe', is_animation: true
 
 
   addText: (event) ->
@@ -51,16 +39,6 @@ class App.Views.ToolbarView extends Backbone.View
 
     App.vent.trigger 'create:widget', type: 'TextWidget'
 
-
-  alignAudio: (event) ->
-    el = $(event.target)
-    return if el.hasClass('disabled') or el.parent().hasClass('disabled')
-
-    view = new App.Views.VoiceoverIndex App.currentSelection.get('keyframe')
-    App.modalWithView(view: view).show().modal.on('hide', view.stopVoiceover)
-    view.enableMediaPlayer()
-
-    App.trackUserAction "Click voiceover button"
 
 
   showSettings: ->
@@ -87,8 +65,8 @@ class App.Views.ToolbarView extends Backbone.View
 
   _changeBackgroundSoundIcon: (hasBackgroundSound) =>
     el = @$('.background-sound')
+    klass = 'has-sound'
     if hasBackgroundSound
-
-      el.addClass('has-sound')
+      el.addClass klass
     else
-      el.removeClass('has-sound')
+      el.removeClass klass

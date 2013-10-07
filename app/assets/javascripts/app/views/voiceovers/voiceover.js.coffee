@@ -6,8 +6,8 @@
 # word-by-word.
 # RFCTR Create a Voiceover Backbone model and move model related things.
 # @author dira, @date 2013-01-14
-class App.Views.VoiceoverIndex extends Backbone.View
-  template: JST['app/templates/voiceovers/index']
+class App.Views.Voiceover extends Backbone.View
+  template: JST['app/templates/voiceovers/voiceover']
 
   events:
     'mousedown .word':          'mouseDownOnWord'
@@ -17,15 +17,15 @@ class App.Views.VoiceoverIndex extends Backbone.View
     'click #preview-alignment': 'clickPreviewAlignment'
     'click #accept-alignment':  'acceptAlignment'
     'click #reorder-text .reorder': 'enableSorting'
-    'click #reorder-text .done':    'disableSorting'
+    'click #reorder-text .done a':  'disableSorting'
 
   COUNTDOWN_LENGTH_IN_SECONDS: 5
 
   DEFAULT_PLAYBACK_RATE: 0.5
 
 
-  initialize: (keyframe) ->
-    @keyframe = keyframe
+  initialize: ->
+    @keyframe = @model
     @player = null
     @playbackRate = @DEFAULT_PLAYBACK_RATE
 
@@ -45,6 +45,12 @@ class App.Views.VoiceoverIndex extends Backbone.View
     @_attachKeyframEvents()
     @_findExistingVoiceover()
     @
+
+
+  remove: ->
+    console.log 'remove voiceover'
+    @stopVoiceover()
+    super
 
 
   clickBeginAlignment: (event) =>

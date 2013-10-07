@@ -135,8 +135,6 @@ window.App =
     @_addSceneListeners(scene)
 
     App.vent.trigger 'activate:scene', scene
-    @vent.trigger 'can_add:keyframe', scene.canAddKeyframes()
-    @vent.trigger 'can_add:animationKeyframe', scene.canAddAnimationKeyframe()
     @vent.trigger 'has_background_sound:scene', scene.hasBackgroundSound()
 
     @keyframesView.remove() if @keyframesView?
@@ -152,25 +150,11 @@ window.App =
   _addSceneListeners: (scene) ->
     if scene?
       scene.widgets.on    'remove', @_checkCurrentWidgetRemoved, @
-      scene.keyframes.on  'reset add remove', @_announceSceneAnimation, @
-      scene.keyframes.on  'synchronization-start synchronization-end', @_keyframesSynchronization, @
 
 
   _removeSceneListeners: (scene) ->
     if scene?
       scene.widgets.off   'remove', @_checkCurrentWidgetRemoved, @
-      scene.keyframes.off 'reset add remove', @_announceSceneAnimation, @
-      scene.keyframes.off 'synchronization-start synchronization-end', @_keyframesSynchronization, @
-
-
-  _keyframesSynchronization: (__, synchronizing) ->
-    scene = App.currentSelection.get('scene')
-    @vent.trigger 'can_add:keyframe', !synchronizing && scene.canAddKeyframes()
-    @vent.trigger 'can_add:animationKeyframe', !synchronizing && scene.canAddAnimationKeyframe()
-
-
-  _announceSceneAnimation: (keyframes) ->
-    App.vent.trigger 'can_add:animationKeyframe', keyframes.scene.canAddAnimationKeyframe()
 
 
   _checkCurrentWidgetRemoved: (widget) ->
@@ -243,7 +227,9 @@ window.App =
 
 
   initModals: ->
-    $('.content-modal').modal(backdrop: true).modal('hide')
+    $('.content-modal').modal(backdrop: true).modal('hide').on('hidden.bs.modal', =>
+      @modalView.onHidden()
+    )
     $('.lightbox-modal').modal().modal('hide')
 
     # RFCTR: Should use generic modal view
@@ -253,11 +239,11 @@ window.App =
       keyboard : false
 
 
-  modalWithView: (view) ->
-    if view?
-      @view = new App.Views.Modal view, className: 'content-modal'
+  modalWithView: (options) ->
+    if options?
+      @modalView = new App.Views.Modal _.extend {}, options, el: $('.content-modal')
 
-    @view
+    @modalView
 
 
   lightboxWithView: (view) ->
