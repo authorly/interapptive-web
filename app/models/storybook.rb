@@ -32,24 +32,24 @@ class Storybook < ActiveRecord::Base
     validates setting, numericality: { greater_than_or_equal_to: 0 }
   end
 
-  def enqueue_for_compilation(platform, json)
+  def enqueue_for_compilation(platform, json, recipient)
     case platform
     when 'ios'
-      enqueue_for_ios_compilation(json)
+      enqueue_for_ios_compilation(json, recipient)
     when 'android'
-      enqueue_for_android_compilation(json)
+      enqueue_for_android_compilation(json, recipient)
     end
   end
 
-  def enqueue_for_ios_compilation(json)
+  def enqueue_for_ios_compilation(json, recipient)
     # WA: TODO: Implement a storybook application JSON
     # verifier. Enqueue it for compilation only after
     # it is verified.
-    Resque.enqueue(IosCompilationQueue, self.id, json)
+    Resque.enqueue(IosCompilationQueue, self.id, json, recipient.email)
   end
 
-  def enqueue_for_android_compilation(json)
-    Resque.enqueue(AndroidCompilationQueue, self.id, json)
+  def enqueue_for_android_compilation(json, recipient)
+    Resque.enqueue(AndroidCompilationQueue, self.id, json, recipient.email)
   end
 
   def owned_by?(other_user)
