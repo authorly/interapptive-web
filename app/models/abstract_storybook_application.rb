@@ -148,7 +148,7 @@ class AbstractStorybookApplication
   end
 
   def fetch_file(url, ext)
-    new_file_name = SecureRandom.base64(32).gsub(/[=+$0-9\/]/, '')
+    new_file_name = SecureRandom.hex(64).gsub(/[0-9]/, '')
     File.open(File.join(CRUCIBLE_RESOURCES_DIR, new_file_name + ext), 'wb+') do |asset|
       open(url, 'rb') do |read_file|
         asset << read_file.read
