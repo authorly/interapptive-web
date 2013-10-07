@@ -44,8 +44,8 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
   initColorPicker: ->
     @rgb = null
 
-    colorPickerEl = @$('#font-color-selector')
-    colorPickerEl.colorpicker()
+    @colorPickerEl = @$('#font-color-selector')
+    @colorPickerEl.colorpicker()
       .on('changeColor', (event) =>
         @rgb = event.color.toRGB()
         @widget.trigger('change:visual_font_color', @rgb))
@@ -74,7 +74,8 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
 
 
   remove: ->
-    $('div.colorpicker').hide()
+    @colorPickerEl.colorpicker('hide')
+    @colorPickerEl.data('colorpicker').picker.remove()
     super
 
 
