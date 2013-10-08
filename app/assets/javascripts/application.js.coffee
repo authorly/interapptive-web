@@ -27,8 +27,7 @@
 #= require base64.js
 #= require canvas2image.js
 #= require form-templates/bootstrap
-#= require form-editors/currency
-#= require form-editors/buttons
+# https://github.com/powmedia/backbone-forms/blob/v0.10.0/distribution/editors/jquery-ui.js
 #= require form-editors/jquery.ui
 #= require backbone-deepmodel
 #= require bootstrap-colorpicker
@@ -49,3 +48,4 @@
 #= require_tree ./app/views
 
 #= require builder
+

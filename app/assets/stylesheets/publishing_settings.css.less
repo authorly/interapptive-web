@@ -1,0 +1,131 @@
+#publishing-settings {
+  .modal-header{
+    h3 {
+      display: inline;
+    }
+
+    .nav {
+      width: 300px;
+      float: right;
+
+      li {
+        float: right
+      }
+    }
+  }
+
+  .modal-body {
+    max-height: 550px;
+    width: 675px;
+    margin-left: 25px;
+
+    form {
+      .form-actions {
+        background-color: @white;
+        border-top: none;
+        padding-right: 0;
+        padding-top: 5px;
+        margin-top: 15px;
+        margin-bottom: 5px;
+      }
+
+      fieldset {
+        margin-top: 15px;
+        margin-left: 0;
+        border-bottom: 1px solid #F0F0F0;
+        .control-group {
+          margin-bottom: 28px;
+        }
+      }
+
+      .bbf-list li {
+        list-style-type: decimal;
+        position: relative;
+        margin-bottom: 10px;
+
+        [data-action="remove"] {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+      }
+
+      [name="content_description"] {
+        li {
+          list-style-type: none;
+        }
+        label {
+          display: inline-block;
+        }
+
+        .bbf-editor {
+          display: inline-block;
+        }
+
+        .bbf-field > label {
+          width: 280px;
+          font-size: .85em;
+          font-weight: bold;
+        }
+
+        .bbf-radio li {
+          display: inline-block;
+          margin-right: 30px;
+
+          input {
+            margin-right: 5px;
+            vertical-align: baseline;
+          }
+
+          label {
+            font-size: .85em;
+          }
+        }
+
+        .form-actions {
+          display: none;
+        }
+      }
+
+      [name="available_from"] input {
+        width: 220px;
+      }
+
+      .selector {
+        border: 1px solid #999;
+        padding: 10px 20px;
+
+        .selected-image img {
+          max-width: 150px;
+          max-height: 150px;
+        }
+        .images img {
+          max-width: 100px;
+          max-height: 50px;
+        }
+      }
+    }
+
+  }
+
+  [name="available_from"] input {
+    z-index: 2000;
+  }
+
+  [name="description"] {
+    width: 640px;
+    height: 170px;
+  }
+
+  .made-for-kids {
+    .clearfix;
+    label, input {
+      float: left;
+    }
+    label {
+      margin-right: 5px;
+    }
+  }
+}
+
+
