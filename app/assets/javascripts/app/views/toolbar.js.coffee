@@ -2,7 +2,9 @@ class App.Views.ToolbarView extends Backbone.View
   events:
     'click .scene'              : 'addScene'
     'click .edit-text'          : 'addText'
-    'click .scene-options'      : 'showSettings'
+    'click .sync-audio'         : 'alignAudio'
+    'click .app-settings'       : 'showSettings'
+    'click .publish-settings'   : 'showPublishSettings'
     'click .background-sound'   : 'showSceneBackgroundMusic'
     'click .compile'            : 'compileStorybook'
     'click .logo'               : 'switchStorybook'
@@ -43,6 +45,10 @@ class App.Views.ToolbarView extends Backbone.View
 
   showSettings: ->
     App.vent.trigger('show:settingsform')
+
+
+  showPublishSettings: ->
+    App.vent.trigger('show:publishSettings')
 
 
   showSceneBackgroundMusic: ->

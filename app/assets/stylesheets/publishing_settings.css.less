@@ -1,4 +1,4 @@
-#settings {
+#publishing-settings {
   .modal-header{
     h3 {
       display: inline;
@@ -33,15 +33,6 @@
         margin-top: 15px;
         margin-left: 0;
         border-bottom: 1px solid #F0F0F0;
-
-        input[type=number] {
-          width: 45px;
-        }
-
-        input#c13_title {
-          width: 140px;
-        }
-
         .control-group {
           margin-bottom: 28px;
 
@@ -63,5 +54,10 @@
         }
       }
     }
+
+  }
+
+  [name="available_from"] input {
+    z-index: 2000;
   }
 }

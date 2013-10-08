@@ -43,7 +43,8 @@ window.App =
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:widget',   @_addNewWidget,   @
 
-    @vent.on 'show:settingsform',  @_showSettings, @
+    @vent.on 'show:settingsform',    @_showSettings, @
+    @vent.on 'show:publishSettings', @_showPublishSettings, @
     @vent.on 'show:scenebackgroundsoundform', @_showBackgroundSoundForm, @
 
     @vent.on 'bring_to_front:sprite', @_bringToFront, @
@@ -120,6 +121,13 @@ window.App =
     App.trackUserAction 'Click app settings'
 
     view = new App.Views.SettingsContainer(model: App.currentSelection.get('storybook'))
+    App.modalWithView(view: view).show()
+
+
+  _showPublishSettings: ->
+    mixpanel.track "Click publishing settings"
+
+    view = new App.Views.Publishing(model: App.currentSelection.get('storybook'))
     App.modalWithView(view: view).show()
 
 
