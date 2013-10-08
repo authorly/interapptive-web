@@ -42,7 +42,8 @@ window.App =
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:widget',   @_addNewWidget,   @
 
-    @vent.on 'show:settingsform',  @_showSettings, @
+    @vent.on 'show:settingsform',    @_showSettings, @
+    @vent.on 'show:publishSettings', @_showPublishSettings, @
     @vent.on 'show:scenebackgroundsoundform', @_showBackgroundSoundForm, @
 
     @vent.on 'bring_to_front:sprite', @_bringToFront, @
@@ -123,7 +124,14 @@ window.App =
   _showSettings: ->
     App.trackUserAction 'Opened app settings'
 
-    view = new App.Views.SettingsContainer(model: App.currentSelection.get('scene'))
+    view = new App.Views.SettingsContainer(model: App.currentSelection.get('storybook'))
+    App.modalWithView(view: view).show()
+
+
+  _showPublishSettings: ->
+    App.trackUserAction "Click publishing settings"
+
+    view = new App.Views.Publishing(model: App.currentSelection.get('storybook'))
     App.modalWithView(view: view).show()
 
 

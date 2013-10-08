@@ -1,0 +1,11 @@
+%p Select the date of availability and price tier for your app:
+
+%div
+  %label{ for: 'available-from' } Available from:
+  %input#available-from.input-medium{:name => "available_from", :type => "text"}
+
+%div
+  %label{ for: 'price-tier' } Price:
+  %select
+    - for tier in [1..15]
+      %option{:value=> "tier_#{tier}"}= "$#{tier - 1}.99"

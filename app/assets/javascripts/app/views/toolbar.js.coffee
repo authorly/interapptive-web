@@ -2,7 +2,8 @@ class App.Views.ToolbarView extends Backbone.View
   events:
     'click .scene'              : 'addScene'
     'click .edit-text'          : 'addText'
-    'click .settings'           : 'showSettings'
+    'click .app-settings'       : 'showSettings'
+    'click .publish-settings'   : 'showPublishSettings'
     'click .background-sound'   : 'showSceneBackgroundMusic'
     'click .compile'            : 'compileStorybook'
     'click .logo'               : 'switchStorybook'
@@ -46,6 +47,10 @@ class App.Views.ToolbarView extends Backbone.View
     return if $(event.target).hasClass('disabled')
 
     App.vent.trigger('show:settingsform')
+
+
+  showPublishSettings: ->
+    App.vent.trigger('show:publishSettings')
 
 
   showSceneBackgroundMusic: ->

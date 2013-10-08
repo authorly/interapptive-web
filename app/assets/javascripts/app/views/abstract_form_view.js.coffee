@@ -1,18 +1,17 @@
-DELETE_MSG =
-  '\nYou are about to delete this. This cannot be undone.\n\n\n' +
-  'Are you sure you wish to continue?'
-
-
 class App.Views.AbstractFormView extends Backbone.View
+  DELETE_MSG =
+    '\nYou are about to delete this. This cannot be undone.\n\n\n' +
+    'Are you sure you wish to continue?'
+
 
   events: ->
-    'click .btn-submit-cancel' : 'cancel'
-    'click .btn-submit'        : 'updateAttributes'
-    'click .btn-danger'        : 'delete'
+    'click .btn-submit':        'submit'
+    'submit form':              'submit'
+    'click .btn-submit-cancel': 'cancel'
 
 
   initialize: ->
-    @form = new Backbone.Form(@formOptions()).render()
+    @listenTo @model, 'error', @onError
 
 
   formOptions: ->
@@ -23,36 +22,52 @@ class App.Views.AbstractFormView extends Backbone.View
     DELETE_MSG
 
   render: ->
+    @form = new Backbone.Form(@formOptions()).render()
     @$el.append @form.el
     @
 
 
-  updateAttributes: (event) ->
+  submit: (event) ->
     event.preventDefault()
 
+    @$('.help-error').val('')
     errors = @form.commit()
-    return if errors
+    if errors?
+      @goToFirstError()
+      return
 
     @model.save {},
       success: ->
         App.vent.trigger 'hide:modal'
 
 
+  onError: (model, xhr) ->
+    errors = jQuery.parseJSON(xhr.responseText)
+    form = @form.$el
+
+    for field of errors
+      id = '#' + model.cid + '_' + field
+      control_group = $(id).parents('.control-group')
+
+      if control_group.length > 0
+        control_group.addClass('error').
+          find('.help-error').html(errors[field].join(', '))
+
+    @goToFirstError()
+
+
+  goToFirstError: ->
+    @$('.error')[0].scrollIntoView(true)
+
+
   delete: (event) ->
     event.preventDefault()
 
-    if confirm DELETE_MSG
+    if confirm @deleteMessage()
       @form.model.destroy() and document.location.reload true
 
 
   cancel: (event) ->
     event.preventDefault()
-    @resetValues()
     App.vent.trigger 'hide:modal'
 
-
-  # Defines jquery actions to reset the form to its default 
-  # (since we use M/V bindings we have to reset it or 
-  resetValues: ->
-    # e.g.
-    # $('#c9_title').val App.currentStorybook().get('title')

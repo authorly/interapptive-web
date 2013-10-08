@@ -25,6 +25,7 @@
 @import 'asset_library_sidebar.css.less';
 
 @import 'app_settings.css.less';
+@import 'publishing_settings.css.less';
 
 /* Widget related */
 @import 'context_menu.css.less';
@@ -251,4 +252,19 @@ header {
 
   height: 682px;
   margin-top: -341px;
+}
+
+form {
+  .help-error, .help-inline {
+    font-style: italic;
+    font-size: 10px;
+  }
+
+  .help-error {
+    color: #b94a48;
+  }
+
+  .control-group.error .help-inline {
+    color: inherit;
+  }
 }

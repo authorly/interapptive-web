@@ -29,6 +29,8 @@ class App.Views.ImageSelector extends Backbone.View
     @listenTo @selectedImageView, 'select', @setImage
     @selectedImageView.render()
 
+    @
+
 
   remove: ->
     @imagesView.remove()
