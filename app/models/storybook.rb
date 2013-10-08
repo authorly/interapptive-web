@@ -4,12 +4,12 @@ class Storybook < ActiveRecord::Base
   mount_uploader :android_application,  AndroidApplicationUploader
 
   belongs_to :user
-  has_many :scenes, :dependent => :destroy
+  has_many :scenes, dependent: :destroy
 
-  has_many :images, :dependent => :destroy
-  has_many :sounds, :dependent => :destroy
-  has_many :videos, :dependent => :destroy
-  has_many :fonts,  :dependent => :destroy
+  has_many :images, dependent: :destroy
+  has_many :sounds, dependent: :destroy
+  has_many :videos, dependent: :destroy
+  has_many :fonts,  dependent: :destroy
 
   serialize :widgets
 
@@ -25,8 +25,9 @@ class Storybook < ActiveRecord::Base
   before_create     :create_widgets
   after_create      :create_default_scene
 
-  validate  :validate_allowed_storybooks_count, :on => :create
-  validates :title, :presence => true, :uniqueness => { :scope => :user_id }
+  validates :user, presence: true
+  validate  :validate_allowed_storybooks_count, before: :create
+  validates :title, presence: true, uniqueness: { scope: :user_id }
 
   SETTINGS.each do |setting, _|
     validates setting, numericality: { greater_than_or_equal_to: 0 }
@@ -103,8 +104,10 @@ class Storybook < ActiveRecord::Base
   end
 
   def validate_allowed_storybooks_count
-    if self.user.storybooks.count >= self.user.allowed_storybooks_count
-      errors[:base] << "You are not allowed to create any more storybooks."
+    if user.present?
+      if user.storybooks.count >= user.allowed_storybooks_count
+        errors[:base] << "You are not allowed to create any more storybooks."
+      end
     end
   end
 end
