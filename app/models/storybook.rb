@@ -1,15 +1,17 @@
 class Storybook < ActiveRecord::Base
-  mount_uploader :icon, AppIconUploader
   mount_uploader :compiled_application, IosApplicationUploader
   mount_uploader :android_application,  AndroidApplicationUploader
 
   belongs_to :user
+
   has_many :scenes, dependent: :destroy
 
   has_many :images, dependent: :destroy
   has_many :sounds, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :fonts,  dependent: :destroy
+
+  has_one :application_information
 
   serialize :widgets
 
@@ -55,12 +57,6 @@ class Storybook < ActiveRecord::Base
 
   def owned_by?(other_user)
     other_user == user
-  end
-
-  def image_id=(image_id)
-    image = images.find(image_id)
-    self.icon = image.image
-    store_icon!
   end
 
   SETTINGS.each do |setting, _|
