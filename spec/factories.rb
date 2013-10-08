@@ -9,10 +9,8 @@ Factory.define :user do |f|
 end
 
 Factory.define :storybook do |f|
-  f.title 'Test Title%d'
+  f.title 'Storybook %d'
   f.author 'Charles Bukowski'
-  f.description 'This book is for true champions'
-  f.price 20.00
   f.user Factory(:user)
 end
 

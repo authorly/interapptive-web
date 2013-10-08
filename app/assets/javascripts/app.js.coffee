@@ -119,7 +119,7 @@ window.App =
   _showSettings: ->
     App.trackUserAction 'Click app settings'
 
-    view = new App.Views.SettingsContainer(model: App.currentSelection.get('scene'))
+    view = new App.Views.SettingsContainer(model: App.currentSelection.get('storybook'))
     App.modalWithView(view: view).show()
 
 

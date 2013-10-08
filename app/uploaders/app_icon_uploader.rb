@@ -21,7 +21,7 @@ class AppIconUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "app_icons/#{model.id}"
+    "app_icons/#{model.storybook.id}"
   end
 
   # Create different versions of your uploaded files:
