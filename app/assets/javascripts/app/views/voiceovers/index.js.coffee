@@ -178,7 +178,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
     $wordEl = @$(event.currentTarget)
     if @_mouseDown and @canHighlightEl($wordEl)
-      $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
+      $wordEl.addClass('highlighted processed').attr('data-start', @_playerCurrentTimeInSeconds())
 
 
   mouseDownOnWord: (event) =>
@@ -188,7 +188,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
     $wordEl = @$(event.currentTarget)
     if @canHighlightEl($wordEl)
-      $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
+      $wordEl.addClass('highlighted processed').attr('data-start', @_playerCurrentTimeInSeconds())
 
     false
 
@@ -200,7 +200,7 @@ class App.Views.VoiceoverIndex extends Backbone.View
   prevElHighlighted: (el) ->
     lastElWasHighlighted =
       el.is('span:first-child') and el.parent().prev().find('span:last-child').hasClass('highlighted')
-    el.prev().hasClass('highlighted') or lastElWasHighlighted
+    el.prev().hasClass('processed') or lastElWasHighlighted
 
 
   canHighlightEl: (el) ->
