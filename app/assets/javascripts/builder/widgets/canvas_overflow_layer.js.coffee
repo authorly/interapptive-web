@@ -21,7 +21,7 @@
 # Uses rect(x, y, width, height) for panel rectangles.
 #
 class App.Builder.Widgets.CanvasOverflowLayer extends cc.Layer
-  COLOR_OUTER_STROKE = 'rgba(0, 0, 0, 0)'
+  COLOR_OUTER_STROKE = 'rgba(0, 0, 0, 1)'
 
   COLOR_OUTER_FILL = 'rgba(174, 204, 246, 0.66)'
 
@@ -44,9 +44,21 @@ class App.Builder.Widgets.CanvasOverflowLayer extends cc.Layer
     ctx.globalAlpha = 255 / 255.0
 
     @drawPanels(ctx)
+    @drawCanvasBorder(ctx)
 
     ctx.restore()
 
+
+
+  drawCanvasBorder: (ctx) ->
+    ctx.beginPath()
+    ctx.rect(-512, -384, 1024, 768)
+    ctx.strokeStyle = COLOR_OUTER_STROKE
+    ctx.lineWidth = LINE_WIDTH_OUTER
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.fillStyle = COLOR_OUTER_STROKE
+    ctx.fill()
 
   drawPanels: (ctx) ->
     ctx.beginPath()
