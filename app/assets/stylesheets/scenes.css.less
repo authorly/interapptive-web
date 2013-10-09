@@ -19,12 +19,13 @@
   top: -8px;
 
   li {
+    .round-corners();
+
     position: relative;
     list-style: none;
     z-index: 10 !important;
     margin-top: 10px;
     padding: @slidePreviewPadding;
-    .round-corners();
     background-color: @grayDark;
 
     .scene-frame {
@@ -116,6 +117,7 @@
 .scene-list.list-view {
   li {
     height: 12px;
+    line-height: 9px;
     background-image: none;
     padding: 0;
 
