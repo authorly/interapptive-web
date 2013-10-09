@@ -157,10 +157,12 @@ class App.JSON
         scaleId = null
         unless previousOrientation? && previousOrientation.get('scale') == orientation.get('scale')
           scaleId = @actionIdCounter.next()
+          scale = orientation.get('scale')
           page.API.CCScaleTo.push
             actionTag: scaleId
             duration: duration
-            intensity: orientation.get('scale')
+            sx: scale.horizontal
+            sy: scale.vertical
 
           if keyframeIsAnimation and duration == 0
             initialScaleActionId = scaleId
@@ -228,7 +230,9 @@ class App.JSON
         normalStateImage : home.url()
         tappedStateImage : home.selectedUrl()
         position: @_getPosition(homeButtonPosition)
-        scale: home.get('scale')
+        scale:
+          sx: home.get('scale').horizontal
+          sy: home.get('scale').vertical
     node
 
 
@@ -260,7 +264,9 @@ class App.JSON
             tappedStateImage: button.selectedUrl() || button.url()
             storyMode: str.decapitalize(str.camelize(button.get('name')))
             position: @_getPosition(button.get('position'))
-            scale: button.get('scale')
+            scale:
+              sx: button.get('scale').horizontal
+              sy: button.get('scale').vertical
             zOrder: parseInt(button.get('z_order'))
           }
 
@@ -272,7 +278,9 @@ class App.JSON
       spriteNode =
         image:     spriteWidget.url()
         spriteTag: spriteId
-        scale:     orientation.get('scale')
+        scale:
+          sx: orientation.get('scale').horizontal
+          sy: orientation.get('scale').vertical
         position:  @_getPosition(orientation.get('position'))
         visible:   true
         zOrder:   parseInt(spriteWidget.get('z_order'))

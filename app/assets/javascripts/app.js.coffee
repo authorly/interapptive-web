@@ -233,7 +233,7 @@ window.App =
     switch attributes.type
       when 'image'
         widgetAttributes.type = 'SpriteWidget'
-        widgetAttributes.scale = 1
+        widgetAttributes.scale = {horizontal: 100, vertical: 100}
         break
       when 'sound', 'video'
         widgetAttributes.type = 'HotspotWidget'

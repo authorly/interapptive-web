@@ -96,10 +96,10 @@ class App.Views.Keyframe extends Backbone.View
       # images are center-anchored, so half of their width/height is substracted
       # to get the top-left corner, required for `drawImage`
       @previewCtx.drawImage img,
-        (position.x - img.width * scale/2) * @previewScale,
-        @previewHeight - (position.y + img.height * scale/2) * @previewScale,
-        img.width  * scale * @previewScale,
-        img.height * scale * @previewScale
+        (position.x - img.width * scale.horizontal/100/2) * @previewScale,
+        @previewHeight - (position.y + img.height * scale.vertical/100/2) * @previewScale,
+        img.width  * scale.horizontal /100 * @previewScale,
+        img.height * scale.vertical   /100 * @previewScale
 
 
   _exportPreview: ->

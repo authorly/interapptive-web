@@ -11,9 +11,16 @@
   %input#y-coord.input-mini{:value => parseInt(@orientation.get('position').y)}
 
 #sprite-scale
-  %label.scale-amount{:for => 'scale-amount'}
-    Scale:
-  %input#scale-amount.input-mini{:value => @orientation.get('scale') * 100}
+  Scale:
+  %br
+  %label{:for => 'horizontal-scale'}
+    Horizontal:
+  %input#horizontal-scale.input-mini{value: @orientation.get('scale').horizontal, data-direction: 'horizontal'}
+  &#37;
+
+  %label{:for => 'vertical-scale'}
+    Vertical:
+  %input#vertical-scale.input-mini{value: @orientation.get('scale').vertical, data-direction: 'vertical'}
   &#37;
 
 #sprite-options

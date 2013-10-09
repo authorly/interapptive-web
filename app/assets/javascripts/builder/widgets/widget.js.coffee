@@ -89,19 +89,21 @@ class App.Builder.Widgets.Widget extends cc.Node
 
   draggedTo: (position) ->
     @setPosition(position, false)
+    return true
 
 
   rect: ->
     p = @getPosition()
     s = @getContentSize()
     a = @getAnchorPoint()
-    scale = @getScale()
 
+    # TODO upgrade (to what version?) and get @getBoundingBox()
+    # 2013-10-03 @dira
     cc.RectMake(
       p.x - s.width  * a.x
       p.y - s.height * a.y
-      s.width  * scale
-      s.height * scale
+      s.width
+      s.height
     )
 
 
@@ -111,18 +113,15 @@ class App.Builder.Widgets.Widget extends cc.Node
     # Fix bug in cocos2d-html5; It doesn't convert to local space correctly
     r = @rect()
     root = @parent.getPosition()
+    # 2013-10-03 @dira do not understand why it's the anchor point of the parent
+    # and not of self
     anchor = @parent.getAnchorPoint()
-    new cc.Point(-root.x - r.origin.x + point.x + anchor.x * r.size.width,
-                 -root.y - r.origin.y + point.y + anchor.y * r.size.height)
+    new cc.Point(-root.x + point.x + anchor.x * r.size.width,
+                 -root.y + point.y + anchor.y * r.size.height)
 
 
   isPointInside: (point) ->
-    local = @pointToLocal(point)
-
-    r = @rect()
-    r.origin = new cc.Point(0, 0)
-
-    cc.Rect.CCRectContainsPoint(r, local)
+    cc.Rect.CCRectContainsPoint @rect(), @pointToLocal(point)
 
 
   isSpriteWidget: ->

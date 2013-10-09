@@ -42,8 +42,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @widgets.on 'change:position change:scale', @updateWidget, @
     @widgets.on 'change:z_order', @reorderWidget, @
 
-    App.vent.on 'scale:sprite_widget', @scaleSpriteWidgetFromModel, @
-
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
 
@@ -166,8 +164,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     delta = cc.ccpSub(point, @_previousPoint)
     newPosition = cc.ccpAdd(delta, @_capturedWidget.getPosition())
 
-    @_capturedWidget.draggedTo(newPosition)
-    @_capturedWidget.model.trigger('move', newPosition)
+    if @_capturedWidget.draggedTo(newPosition)
+      @_capturedWidget.model.trigger('move', newPosition)
+
     @_previousPoint = newPoint
 
 
@@ -222,10 +221,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     cursor = switch name
       when 'resize'
         'se-resize'
-      when 'move'
-        'move'
-      when 'default'
-        'default'
+      else
+        name
     document.body.style.cursor = cursor
 
 
@@ -408,14 +405,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   editSpriteWithContextMenu: =>
     App.currentSelection.set widget: @_capturedWidget.model
     @_capturedWidget = null
-
-
-  scaleSpriteWidgetFromModel: (modelAndScaleData) ->
-    widgetModel = modelAndScaleData.model
-    scale = modelAndScaleData.scale
-
-    view = @_getView(widgetModel)
-    view.setScale(scale)
 
 
   asInPreviousKeyframe: =>

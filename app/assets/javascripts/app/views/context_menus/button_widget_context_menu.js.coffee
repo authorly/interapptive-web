@@ -51,18 +51,13 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
     @widget.useDefaultImage()
 
 
+  getObject: ->
+    @widget
+
+
   _moveSprite: (direction, pixels) ->
     x_oord = @widget.get('position').x
     y_oord = @widget.get('position').y
     point = @_measurePoint(direction, pixels, x_oord, y_oord)
 
     @_delayedSavePosition(point) if point?
-
-
-  _setPosition: (point) ->
-    @_setObjectPosition(@widget, point)
-
-
-  _setScale: (scale_by) =>
-    @_setObjectScale(@widget, scale_by)
-

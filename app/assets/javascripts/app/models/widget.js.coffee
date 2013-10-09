@@ -153,7 +153,7 @@ class App.Models.SpriteWidget extends App.Models.ImageWidget
     oldOrientation = @getOrientationFor(keyframe)
     newOrientation = @getOrientationFor(previous)
     oldOrientation.set
-      scale:    newOrientation.get('scale')
+      scale:    _.extend {}, newOrientation.get('scale')
       position: _.extend {}, newOrientation.get('position')
 
 
@@ -161,7 +161,7 @@ class App.Models.SpriteWidget extends App.Models.ImageWidget
 # The association between a SpriteWidget and a Keyframe; it stores the position
 # and scale of the SpriteWidget in that Keyframe.
 class App.Models.SpriteOrientation extends Backbone.Model
-  # attributes: keyframe_id sprite_widget_id position scale
+  # attributes: keyframe_id sprite_widget_id position{x, y} scale{horizontal, vertical}
   defaults:
     type: 'SpriteOrientation'
 
@@ -182,7 +182,7 @@ class App.Models.SpriteOrientation extends Backbone.Model
 # the UI.
 #
 class App.Models.ButtonWidget extends App.Models.ImageWidget
-  # attributes: name selected_image_id position scale disabled
+  # attributes: name selected_image_id position{x, y} scale{horizontal, vertical} disabled
 
   defaults:
     type: 'ButtonWidget'
@@ -219,7 +219,7 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
   useDefaultImage: ->
     @set
       image_id: @defaultImage().id
-      scale: 1
+      scale: {horizontal: 100, vertical: 100}
 
 
   defaultSelectedImage: ->
