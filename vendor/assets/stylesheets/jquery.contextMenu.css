@@ -38,7 +38,7 @@
 
 .context-menu-item {
     width: 88% !important;
-    padding: 2px 2px 2px 24px;
+    padding: 2px 15px 2px 22px;
     background-color: #EEE;
     position: relative;
     -webkit-user-select: none;
