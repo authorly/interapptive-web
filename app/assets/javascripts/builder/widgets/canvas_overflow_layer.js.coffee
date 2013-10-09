@@ -49,16 +49,21 @@ class App.Builder.Widgets.CanvasOverflowLayer extends cc.Layer
     ctx.restore()
 
 
-
   drawCanvasBorder: (ctx) ->
     ctx.beginPath()
-    ctx.rect(-512, -384, 1024, 768)
-    ctx.strokeStyle = COLOR_OUTER_STROKE
-    ctx.lineWidth = LINE_WIDTH_OUTER
+
+    ctx.rect(
+      App.Config.dimensions.width / -2,
+      App.Config.dimensions.height / -2,
+      App.Config.dimensions.width,
+      App.Config.dimensions.height
+    )
+
     ctx.stroke()
     ctx.beginPath()
     ctx.fillStyle = COLOR_OUTER_STROKE
     ctx.fill()
+
 
   drawPanels: (ctx) ->
     ctx.beginPath()
