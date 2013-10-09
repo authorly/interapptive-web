@@ -197,7 +197,11 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   canHighlightEl: (el) ->
-    @prevElHighlighted(el) or @isFirstWord(el)
+    not @alreadyHighlighted(el) and (@prevElHighlighted(el) or @isFirstWord(el))
+
+
+  alreadyHighlighted: (el) ->
+    el.hasClass('highlighted')
 
 
   findExistingHighlightTimes: ->
