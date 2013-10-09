@@ -285,7 +285,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       items:
         as_previous:
-          name:     'As in previous keyframe'
+          name:     'As in previous scene frame'
           disabled:  ->
             !App.currentSelection.get('keyframe').previous()?
           callback: @asInPreviousKeyframe

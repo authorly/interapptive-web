@@ -22,6 +22,6 @@
   %a.put-in-back{:href => '#'} Put in Back
   - if App.currentSelection.get('keyframe').previous()?
     %br
-    %a.as-previous{:href => '#'} As in previous keyframe
+    %a.as-previous{:href => '#'} As in previous scene frame
   %br
   %a.remove{:href => '#'} Remove
