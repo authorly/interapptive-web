@@ -1,8 +1,10 @@
 class App.Views.HotspotWidgetContextMenu extends Backbone.View
   events:
-    'click  .remove':         'delete'
-    'click  #asset-selector': 'assetSelectorClicked'
-    'change #asset_id':       'assetSelected'
+    'click  .remove':                 'delete'
+    'click  #asset-selector':         'assetSelectorClicked'
+    'change #asset_id':               'assetSelected'
+    'click  #asset-glitter':          'glitterCheckboxClicked'
+    'change #asset-glitter-checkbox': 'changeGlitterState'
 
   template: JST["app/templates/context_menus/hotspot_widget_context_menu"]
 
@@ -21,6 +23,7 @@ class App.Views.HotspotWidgetContextMenu extends Backbone.View
 
     @form = new Backbone.Form(@_formOptions()).render()
     @$el.find('#asset-selector').append(@form.el)
+    @_setGlitterState()
 
     @_selectAsset()
 
@@ -37,6 +40,14 @@ class App.Views.HotspotWidgetContextMenu extends Backbone.View
     event.stopPropagation()
 
 
+  glitterCheckboxClicked: (event) ->
+    event.stopPropagation()
+
+
+  changeGlitterState: (event) ->
+    @widget.set('glitter', !@widget.get('glitter'))
+
+
   assetSelected: (event) =>
     event.stopPropagation()
     @_setAssetId @form.getValue()?.asset_id
@@ -45,6 +56,11 @@ class App.Views.HotspotWidgetContextMenu extends Backbone.View
   remove: ->
     @form.remove()
     super
+
+
+  _setGlitterState: ->
+    if @widget.get('glitter')
+      @$el.find('#asset-glitter-checkbox').attr('checked', 'checked')
 
 
   _formOptions: ->
