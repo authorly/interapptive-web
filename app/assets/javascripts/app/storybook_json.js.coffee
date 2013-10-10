@@ -175,7 +175,7 @@ class App.JSON
           delayId = @actionIdCounter.next()
           page.API.CCDelayTime.push
             actionTag: delayId
-            duration: 3
+            duration: keyframe.get('animation_duration')
 
           spawnId = @actionIdCounter.next()
           animationNode =
