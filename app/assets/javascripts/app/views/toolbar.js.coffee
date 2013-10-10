@@ -29,7 +29,7 @@ class App.Views.ToolbarView extends Backbone.View
         @$('.edit-text,.touch-zones,.sync-audio').addClass 'disabled'
 
 
-  addScene: ->
+  addScene: (event) ->
     event.preventDefault()
     return if $(event.target).hasClass('disabled')
 
