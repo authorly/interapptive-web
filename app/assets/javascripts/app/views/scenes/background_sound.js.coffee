@@ -11,7 +11,7 @@ class App.Views.BackgroundSoundForm extends App.Views.AbstractFormView
 
     @model.save {},
       success: =>
-        mixpanel.track "Successfully added background sound"
+        App.trackUserAction 'Successfully added background sound'
         App.vent.trigger 'has_background_sound:scene', @model.hasBackgroundSound()
         App.vent.trigger 'hide:modal'
 
