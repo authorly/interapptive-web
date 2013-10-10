@@ -66,7 +66,7 @@ class App.JSON
       hotspots: keyframe.hotspotWidgets().map (widget) =>
         position = widget.get('position')
         hash =
-          glitterIndicator: true
+          glitterIndicator: widget.get('glitter')
           stopEffectIndicator: false
           touchFlag: @hotspotIdCounter.next()
           position: @_getPosition(position)
