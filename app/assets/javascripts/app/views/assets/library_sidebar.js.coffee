@@ -113,7 +113,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
   sortingChanged: ->
     selected = @$('#asset-sorting select').val()
 
-    mixpanel.track "Sorted assets"
+    App.trackUserAction 'Sorted assets'
 
     _s = App.Lib.StringHelper
     comparatorName = _s.decapitalize(_s.camelize(selected)) + 'Comparator'
@@ -136,13 +136,13 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     for asset in response.result
       type = asset.type; delete asset.type
       @storybook.addAsset new App.Models[type](asset)
-      mixpanel.track "Uploaded a file", type: type
+      App.trackUserAction 'Uploaded a file', type: type
 
     @currentUploads.collection.remove @uploader.getData(response).id
 
 
   _uploaderFileFailed: (response) ->
-    mixpanel.track "Upload failed"
+    App.trackUserAction 'Upload failed'
     @currentUploads.collection.remove @uploader.getData(response).id
 
 
@@ -157,11 +157,11 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     if toggleEl.hasClass 'thumbs'
       @thumbsView.$el.hide()
       @detailsView.$el.show()
-      mixpanel.track 'Click asset list view'
+      App.trackUserAction 'Click asset list view'
     else if toggleEl.hasClass 'list'
       @detailsView.$el.hide()
       @thumbsView.$el.show()
-      mixpanel.track 'Click asset thumb view'
+      App.trackUserAction 'Click asset thumb view'
 
 
   nameAscendingComparator: (a1, a2) ->
