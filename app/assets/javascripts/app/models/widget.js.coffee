@@ -50,6 +50,7 @@ class App.Models.HotspotWidget extends App.Models.Widget
     radius: 48
     z_order: 5000
     position: @defaultPosition()
+    glitter: true
 
 
   asset: ->
