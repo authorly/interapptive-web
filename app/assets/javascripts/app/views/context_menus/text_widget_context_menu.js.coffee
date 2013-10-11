@@ -1,22 +1,22 @@
-class App.Views.TextWidgetContextMenu extends Backbone.View
-  events:
-    'change #font-face':           'fontFaceChanged'
-    'change #font-size':           'fontSizeChanged'
-    'click  #font-face-selector':  'fontFaceSelectorClicked'
-    'click  #font-size-selector':  'fontSizeSelectorClicked'
-    'click  #font-color-selector': 'fontColorSelectorClicked'
-    'click  .remove':              'delete'
-
+class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
   template: JST["app/templates/context_menus/text_widget_context_menu"]
 
+  events: ->
+    _.extend {}, super,
+      'change #font-face':           'fontFaceChanged'
+      'change #font-size':           'fontSizeChanged'
+
+
   initialize: ->
-    @widget = @options.widget
+    super
     @storybook = @widget.collection.keyframe.scene.storybook
 
 
   render: ->
     @$el.html(@template(storybook: @storybook, widget: @widget))
+
     @initColorPicker()
+    @_renderCoordinates @$('#text-widget-coordinates')
 
     # Following is much easier to do here than in the template
     @$('#font-face').val(@widget.font()?.get('id'))
@@ -24,21 +24,6 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
     color = @widget.get('font_color')
     @$('#font-color-selector span i').css('background-color', "rgb(#{color.r}, #{color.g}, #{color.b})")
     @
-
-
-  fontFaceSelectorClicked: (event) ->
-    # Stop the event, so the text widget stays in context
-    event.stopPropagation()
-
-
-  fontSizeSelectorClicked: (event) ->
-    # Stop the event, so the text widget stays in context
-    event.stopPropagation()
-
-
-  fontColorSelectorClicked: (event) ->
-    # Stop the event, so the text widget stays in context
-    event.stopPropagation()
 
 
   initColorPicker: ->
@@ -63,7 +48,6 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
     if font_id is 'upload-fonts'
       App.vent.trigger('show:fontLibrary')
     else
-      event.stopPropagation()
       @widget.set(font_id: font_id)
 
 
@@ -75,9 +59,8 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
   remove: ->
     @colorPickerEl.colorpicker('hide')
     @colorPickerEl.data('colorpicker').picker.remove()
+
+    @_removeCoordinates()
+
     super
 
-
-  delete: (event) ->
-    event.stopPropagation()
-    @widget.collection?.remove(@widget)

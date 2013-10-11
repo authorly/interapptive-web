@@ -1,16 +1,17 @@
-class App.Views.HotspotWidgetContextMenu extends Backbone.View
-  events:
-    'click  .remove':                 'delete'
-    'click  #asset-selector':         'assetSelectorClicked'
-    'change #asset_id':               'assetSelected'
-    'click  #asset-glitter':          'glitterCheckboxClicked'
-    'change #asset-glitter-checkbox': 'changeGlitterState'
+#= require ./context_menu
+
+class App.Views.HotspotWidgetContextMenu extends App.Views.ContextMenu
+
+  events: ->
+    _.extend {}, super,
+      'change #asset_id':               'assetSelected'
+      'change #asset-glitter-checkbox': 'changeGlitterState'
 
   template: JST["app/templates/context_menus/hotspot_widget_context_menu"]
 
 
   initialize: ->
-    @widget = @options.widget
+    super
     storybook = @widget.collection.keyframe.scene.storybook
 
     @collections =
@@ -25,23 +26,11 @@ class App.Views.HotspotWidgetContextMenu extends Backbone.View
     @$el.find('#asset-selector').append(@form.el)
     @_setGlitterState()
 
+    @_renderCoordinates @$('#hotspot-coordinates')
+
     @_selectAsset()
 
     @
-
-
-  delete: (event) ->
-    event.stopPropagation()
-    @widget.collection?.remove(@widget)
-
-
-  assetSelectorClicked: (event) ->
-    # Stop the event, so the hotspot stays in context
-    event.stopPropagation()
-
-
-  glitterCheckboxClicked: (event) ->
-    event.stopPropagation()
 
 
   changeGlitterState: (event) ->
@@ -49,12 +38,12 @@ class App.Views.HotspotWidgetContextMenu extends Backbone.View
 
 
   assetSelected: (event) =>
-    event.stopPropagation()
     @_setAssetId @form.getValue()?.asset_id
 
 
   remove: ->
     @form.remove()
+    @_removeCoordinates()
     super
 
 

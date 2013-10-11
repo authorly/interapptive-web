@@ -83,7 +83,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   widgetsChanged: ->
-    @save()
+    @deferredSave()
 
 
   # preferred this manual validation out of fear of not being able to save
