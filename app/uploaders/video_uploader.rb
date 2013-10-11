@@ -70,7 +70,7 @@ class VideoUploader < CarrierWave::Uploader::Base
       zencoder_url
     params = {
       :input         => @model.video.url,
-      :test          => true, # Enable Integration mode by default for all videos for now. https://app.zencoder.com/docs/guides/getting-started/test-jobs-and-integration-mode
+      :test          => false, # Zencoder Integration mode. https://app.zencoder.com/docs/guides/getting-started/test-jobs-and-integration-mode
       :notifications => [notification_url],
       :pass_through  => @model.id,
       :outputs => [
