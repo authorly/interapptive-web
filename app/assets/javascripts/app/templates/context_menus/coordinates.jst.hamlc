@@ -1,0 +1,7 @@
+%label{:for => 'x-coord'}
+  X:
+%input#x-coord.input-mini{:value => parseInt(@model.get('position').x)}
+
+%label{:for => 'y-coord'}
+  Y:
+%input#y-coord.input-mini{:value => parseInt(@model.get('position').y)}

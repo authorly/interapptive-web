@@ -7,3 +7,5 @@
   %input#asset-glitter-checkbox{:type => 'checkbox'}
   %label{:for => 'asset-glitter-checkbox'}
     Show glitter
+
+#hotspot-coordinates
