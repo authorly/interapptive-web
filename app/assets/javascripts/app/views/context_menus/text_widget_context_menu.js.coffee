@@ -52,7 +52,7 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
 
 
   fontSizeChanged: (event) ->
-    font_size = @$('#font-size').val()
+    font_size = parseInt(@$('#font-size').val())
     @widget.set(font_size: font_size)
 
 
