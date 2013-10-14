@@ -24,5 +24,7 @@
   %span.add-on
     %i{:style => "background-color: rgb(255, 146, 180);"}
 
+#text-widget-coordinates
+
 #text-widget-options
   %a.remove{:href => '#'} Remove

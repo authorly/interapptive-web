@@ -15,21 +15,21 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   initialize: ->
     super
-    @widget.on 'change', @render, @
+    @widget.on 'change:image_id', @render, @
 
 
   render: ->
-    @$el.html(@template(widget: @widget))
+    @$el.html @template(widget: @widget)
+    @_renderCoordinates @$('#button-widget-coordinates')
     @
 
 
   remove: ->
-    @widget.off 'change', @render, @
+    @widget.off 'change:image_id', @render, @
     super
 
 
   showUpdateModal: (event) ->
-    event.stopPropagation()
     view = new App.Views.ButtonWidgetImagesSelector
       widget:     @widget
       collection: @widget.collection.storybook.images
@@ -39,7 +39,6 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   toggleDisable: (event) ->
-    event.stopPropagation()
     if @widget.disabled()
       @widget.enable()
     else
@@ -47,22 +46,5 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   useDefaultImage: (event) ->
-    event.stopPropagation()
     @widget.useDefaultImage()
-
-
-  _moveSprite: (direction, pixels) ->
-    x_oord = @widget.get('position').x
-    y_oord = @widget.get('position').y
-    point = @_measurePoint(direction, pixels, x_oord, y_oord)
-
-    @_delayedSavePosition(point) if point?
-
-
-  _setPosition: (point) ->
-    @_setObjectPosition(@widget, point)
-
-
-  _setScale: (scale_by) =>
-    @_setObjectScale(@widget, scale_by)
 

@@ -81,7 +81,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   widgetsChanged: ->
-    @save()
+    @deferredSave()
 
 
   animationDurationChanged: ->
@@ -227,6 +227,7 @@ class App.Models.Keyframe extends Backbone.Model
       App.Models.HotspotWidget.prototype.defaults().z_order
 
 
+_.extend App.Models.Keyframe::, App.Mixins.DeferredSave
 _.extend App.Models.Keyframe::, App.Mixins.QueuedSync
 
 ##

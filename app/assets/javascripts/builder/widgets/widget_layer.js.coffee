@@ -165,9 +165,15 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     delta = cc.ccpSub(point, @_previousPoint)
     newPosition = cc.ccpAdd(delta, @_capturedWidget.getPosition())
+    newPosition.x = Math.round(newPosition.x)
+    newPosition.y = Math.round(newPosition.y)
 
     @_capturedWidget.draggedTo(newPosition)
-    @_capturedWidget.model.trigger('move', newPosition)
+    model = @_capturedWidget.model
+    if model instanceof App.Models.SpriteWidget
+      model = @_capturedWidget.currentOrientation
+    model.trigger 'move', newPosition
+
     @_previousPoint = newPoint
 
 

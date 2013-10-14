@@ -32,8 +32,6 @@ class App.Models.Scene extends Backbone.Model
     @initializeWidgets()
     @initializeKeyframes()
 
-    @on 'change:preview_image_id change:widgets', @deferredSave
-
     @storybook.images.on 'remove', @imageRemoved, @
 
 
@@ -48,8 +46,7 @@ class App.Models.Scene extends Backbone.Model
       if widget instanceof App.Models.SpriteWidget
         widget.set z_order: @nextSpriteZOrder(widget)
 
-    @widgets.on 'reset add remove change', =>
-      @trigger 'change:widgets change'
+    @widgets.on 'reset add remove change', @deferredSave, @
 
 
   initializeKeyframes: ->
