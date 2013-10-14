@@ -68,8 +68,7 @@ class App.Views.TextWidgetContextMenu extends Backbone.View
 
 
   fontSizeChanged: (event) ->
-    event.stopPropagation()
-    font_size = @$('#font-size').val()
+    font_size = parseInt(@$('#font-size').val())
     @widget.set(font_size: font_size)
 
 
