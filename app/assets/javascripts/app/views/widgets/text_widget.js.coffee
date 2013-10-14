@@ -99,15 +99,17 @@ class App.Views.TextWidget extends Backbone.View
 
   setFontSize: ->
     @$el.css("font-size",  "#{@model.get('font_size')}px")
+    @setPosition() # update position to keep it vertically centered
 
 
   setPosition: ->
+    canvasHalfWidth = -292
     margin =
-      left: parseFloat(@$el.css('margin-left')) + @model.get('position').x * @canvasScale - parseFloat(@$el.css('padding'))
-      top:  parseFloat(@$el.css('margin-top')) - @model.get('position').y * @canvasScale
+      left: canvasHalfWidth + (@model.get('position').x - parseFloat(@$el.css('padding-left')) - parseFloat(@$el.css('border-left'))) * @canvasScale
+      top:  ( -@model.get('position').y - parseFloat(@$el.css('padding-top')) - parseFloat(@$el.css('border-top'))) * @canvasScale - @$el.height() * 0.5
     @$el.css
-      'margin-left': "#{margin.left}px"
-      'margin-top': "#{margin.top}px"
+      'margin-left': "#{Math.round(margin.left)}px"
+      'margin-top':  "#{Math.round(margin.top)}px"
 
 
   enableContentEditable: ->
