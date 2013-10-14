@@ -44,7 +44,7 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   sceneAdded: (scene) ->
-    mixpanel.track "Add scene"
+    App.trackUserAction 'Add scene'
 
     @renderScene(scene)
     @switchScene(scene)
@@ -67,12 +67,12 @@ class App.Views.SceneIndex extends Backbone.View
     if confirm(@DELETE_SCENE_MSG)
       scene = @collection.get $(event.currentTarget).attr('data-id')
       scene.destroy
-        success: -> mixpanel.track "Deleted scene"
+        success: -> App.trackUserAction 'Deleted scene'
 
 
 
   onSceneClick: (event) =>
-    mixpanel.track "Selected a scene"
+    App.trackUserAction 'Selected a scene'
 
     sceneId = $(event.currentTarget).data 'id'
     scene = @collection.get(sceneId)

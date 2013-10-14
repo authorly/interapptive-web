@@ -116,14 +116,14 @@ window.App =
 
 
   _showSettings: ->
-    mixpanel.track "Click app settings"
+    App.trackUserAction 'Click app settings'
 
     view = new App.Views.SettingsContainer(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
 
 
   _showBackgroundSoundForm: ->
-    mixpanel.track "Click background sound"
+    App.trackUserAction 'Click background sound'
 
     view = new App.Views.BackgroundSoundForm(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
@@ -370,7 +370,20 @@ window.App =
     @signedInAsUser.fetch(async: false)
 
 
+  useMixpanel: ->
+    App.Config.environment != 'development' and App.Config.environment != 'test'
+
+
+  trackUserAction: ->
+    if @useMixpanel()
+      mixpanel.track arguments
+    else
+      # console.log 'track', arguments
+
+
   setMixpanelUserProfile: ->
+    return unless @useMixpanel()
+
     mixpanel.identify(@currentUser.get('id'))
     mixpanel.people.set
       "$email": @currentUser.get('email')

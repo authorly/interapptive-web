@@ -55,7 +55,7 @@ class App.Views.StorybookIndex extends Backbone.View
       wait:    true
       error:   -> App.vent.trigger('show:message', 'warning', 'Please properly fill in fields!')
       success: ->
-        mixpanel.track "Created storybook"
+        App.trackUserAction 'Created storybook'
         @closeStorybookForm
 
 
@@ -69,7 +69,7 @@ class App.Views.StorybookIndex extends Backbone.View
     if confirm(DELETE_STORYBOOK_MSG)
       storybook = @collection.get $(event.currentTarget).data('id')
       storybook.destroy
-        success: -> mixpanel.track "Deleted a storybook"
+        success: -> App.trackUserAction 'Deleted a storybook'
 
 
   removeStorybook: (storybook) =>
@@ -79,7 +79,7 @@ class App.Views.StorybookIndex extends Backbone.View
   openStorybook: (event) ->
     event.preventDefault()
 
-    mixpanel.track "Open storybook"
+    App.trackUserAction 'Open storybook'
 
     id = $(event.currentTarget).data 'id'
     storybook = @collection.get(id)
@@ -102,7 +102,7 @@ class App.Views.StorybookIndex extends Backbone.View
   # storybook form
 
   showStorybookForm: ->
-    mixpanel.track "Show storybook form"
+    App.trackUserAction 'Show storybook form'
 
     @$('.new-storybook-btn').fadeOut(70)
     @$('.storybook-form').delay(70).fadeIn()
@@ -110,7 +110,7 @@ class App.Views.StorybookIndex extends Backbone.View
 
 
   closeStorybookForm: =>
-    mixpanel.track "Hide storybook form"
+    App.trackUserAction 'Hide storybook form'
 
     @$('.storybook-form input').val('')
     @$('.storybook-form').fadeOut(130)
