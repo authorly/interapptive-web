@@ -166,14 +166,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   mouseDown: (options) ->
     point = @pointToLocal(options.canvasPoint)
     if (control = @controlFor(point))?
-      @resizing = true
-      rect = @rect()
-      @resizeData =
-        direction: control
-        scale:
-          horizontal: @sprite.getScaleX()
-          vertical:   @sprite.getScaleY()
-        size: rect.size
+      @_startResize(control)
 
 
   mouseUp: (options) ->
@@ -216,7 +209,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     scaleX = @sprite.getScaleX()
     scaleY = @sprite.getScaleY()
     size = @sprite.getContentSize()
-    anchor = @sprite.getAnchorPoint()
+    anchor = x: 0.5, y: 0.5
 
     width =  size.width  * scaleX
     height = size.height * scaleY
@@ -286,3 +279,30 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     null
 
 
+  _startResize: (control) ->
+    @resizing = true
+    rect = @rect()
+    @resizeData =
+      direction: control
+      scale:
+        horizontal: @sprite.getScaleX()
+        vertical:   @sprite.getScaleY()
+      size: rect.size
+
+    ax = switch control
+      when 'sw', 'w', 'nw' then 1
+      when 'se', 'e', 'ne' then 0
+      else 0
+    ay = switch control
+      when 'sw', 's', 'se' then 1
+      when 'nw', 'n', 'ne' then 0
+      else 0
+
+    currentAnchor = @sprite.getAnchorPoint()
+    @sprite.setAnchorPoint
+      x: ax
+      y: ay
+    currentPosition = @sprite.getPosition()
+    @sprite.setPosition
+      x: currentPosition.x - (currentAnchor.x - ax) * rect.size.width
+      y: currentPosition.y - (currentAnchor.y - ay) * rect.size.height
