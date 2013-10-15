@@ -91,6 +91,7 @@ class App.Models.Storybook extends Backbone.Model
     @scenes = new App.Collections.ScenesCollection([], storybook: @)
     @images = new App.Collections.ImagesCollection([], storybook: @)
     @sounds = new App.Collections.SoundsCollection([], storybook: @)
+    @sounds.on 'add reset', @soundsChanged, @
     @videos = new App.Collections.VideosCollection([], storybook: @)
     @videos.on 'add reset', @videosChanged, @
     @fonts  = new App.Collections.FontsCollection( [], storybook: @)
@@ -141,6 +142,10 @@ class App.Models.Storybook extends Backbone.Model
 
   videosChanged: ->
     @videos.pollUntilTranscoded()
+
+
+  soundsChanged: ->
+    @sounds.pollUntilTranscoded()
 
 
   addNewScene: ->

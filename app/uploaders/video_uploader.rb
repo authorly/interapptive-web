@@ -14,12 +14,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   # include Sprockets::Helpers::IsolatedHelper
 
   # Choose what kind of storage to use for this uploader:
-  if Rails.env.development?
-    storage :fog
-  else
-    # In test environment, we have mocked fog storage
-    storage :fog
-  end
+  storage :fog
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -72,7 +67,7 @@ class VideoUploader < CarrierWave::Uploader::Base
       :input         => @model.video.url,
       :test          => ['development', 'test'].include?(Rails.env), # Zencoder Integration mode. https://app.zencoder.com/docs/guides/getting-started/test-jobs-and-integration-mode
       :notifications => [notification_url],
-      :pass_through  => @model.id,
+      :pass_through  => 'Video_' + @model.id.to_s,
       :outputs => [
         {
           :public      => true,

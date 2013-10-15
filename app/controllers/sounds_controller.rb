@@ -3,6 +3,7 @@ class SoundsController < ApplicationController
 
   def index
     sounds = @storybook.sounds
+    sounds = sounds.where(:id => params[:sound_ids]) if params[:sound_ids].present?
 
     render :json => sounds.map(&:as_jquery_upload_response).to_json
   end
