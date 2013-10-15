@@ -376,7 +376,7 @@ window.App =
 
   trackUserAction: ->
     if @useMixpanel()
-      mixpanel.track arguments
+      mixpanel.track arguments...
     else
       # console.log 'track', arguments
 
