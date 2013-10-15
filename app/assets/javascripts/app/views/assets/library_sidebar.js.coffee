@@ -113,8 +113,6 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
   sortingChanged: ->
     selected = @$('#asset-sorting select').val()
 
-    App.trackUserAction 'Sorted assets'
-
     _s = App.Lib.StringHelper
     comparatorName = _s.decapitalize(_s.camelize(selected)) + 'Comparator'
     @setComparator(@[comparatorName])
