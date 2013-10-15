@@ -179,7 +179,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   mouseUp: (options) ->
     if @resizing
       @resizing = false
-      @model.set
+      @currentOrientation.set
         scale:
           horizontal: Math.round(@sprite.getScaleX() * 100)
           vertical:   Math.round(@sprite.getScaleY() * 100)
