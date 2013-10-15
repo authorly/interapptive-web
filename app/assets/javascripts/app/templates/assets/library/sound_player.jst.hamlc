@@ -1,3 +1,8 @@
-%audio{id: @sound.cid, preload: 'none'}
-  %source{ :src => @sound.get('url') }
-%i.control.icon-play.icon-black
+%audio{id: 'mp3-' + @sound.cid, preload: 'none'}
+  %source{ :src => @sound.get('mp3url') }
+%audio{id: 'ogg-' + @sound.cid, preload: 'none'}
+  %source{ :src => @sound.get('oggurl') }
+- if @sound.get('transcode_complete')
+  %i.control.icon-play.icon-black
+- else
+  %i.control.icon-time.icon-black

@@ -1,7 +1,9 @@
 #voiceovers
   %h3 Voiceover and text highlighting
   #sync-player
-    %audio{:id => "media-player", :controls => "controls", :class => "disabled"}
+    %audio{:id => "media-player-mp3", :controls => "controls", :class => "disabled"}
+      Your browser does not support the audio element.
+    %audio{:id => "media-player-ogg", :controls => "controls", :class => "disabled"}
       Your browser does not support the audio element.
     %span
       %a{:href => '#'}

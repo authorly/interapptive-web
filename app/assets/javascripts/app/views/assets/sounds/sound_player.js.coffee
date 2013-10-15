@@ -24,6 +24,7 @@ class App.Views.SoundPlayer extends Backbone.View
 
   _controlClicked: (event) ->
     event.stopPropagation()
+    return unless @model.get('transcode_complete')
 
     @_ensurePlayerCreated()
 
@@ -38,7 +39,10 @@ class App.Views.SoundPlayer extends Backbone.View
   _ensurePlayerCreated: ->
     return if @player?
 
-    @player = Popcorn("##{@model.cid}")
+    if App.Lib.BrowserHelper.canPlayVorbis()
+      @player = Popcorn("#ogg-#{@model.cid}")
+    else
+      @player = Popcorn("#mp3-#{@model.cid}")
     @player.on 'ended', @_showPlay, @
 
 

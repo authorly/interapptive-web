@@ -221,18 +221,22 @@ class App.Views.Voiceover extends Backbone.View
 
 
   setExistingVoiceover: (voiceover) ->
-    @setAudioPlayerSrc(voiceover.get('url'))
+    @setAudioPlayerSrc(voiceover)
     @enableHighlighting()
 
 
   noVoiceoverFound: ->
-    @setAudioPlayerSrc('')
+    @setAudioPlayerSrc()
     @disablePreview()
     @disableBeginAlignment()
 
 
   enableMediaPlayer: =>
-    @player = Popcorn('#media-player')
+    if App.Lib.BrowserHelper.canPlayVorbis()
+      @player = Popcorn('#media-player-ogg')
+    else
+      @player = Popcorn('#media-player-mp3')
+
     @player.on 'ended', =>
 
       if @_previewingAlignment
@@ -303,8 +307,12 @@ class App.Views.Voiceover extends Backbone.View
     @$('#begin-alignment').addClass('disabled')
 
 
-  setAudioPlayerSrc: (voiceoverUrl) ->
-    @$('audio').attr('src', voiceoverUrl)
+  setAudioPlayerSrc: ->
+    if arguments.length > 0
+      @$('audio#media-player-mp3').attr('src', arguments[0].get('mp3url'))
+      @$('audio#media-player-ogg').attr('src', arguments[0].get('oggurl'))
+    else
+      @$('audio').attr('src', '')
 
 
   showControls: ->

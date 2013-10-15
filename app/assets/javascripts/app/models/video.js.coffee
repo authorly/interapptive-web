@@ -4,14 +4,9 @@ class App.Models.Video extends Backbone.Model
     @get('name')
 
 
-class App.Collections.VideosCollection extends Backbone.Collection
+class App.Collections.VideosCollection extends App.Lib.TranscodeableCollection
   model: App.Models.Video
   _POLL_TIMER: null
-
-  initialize: (models, attributes) ->
-    super
-    @storybook = attributes.storybook
-
 
   baseUrl: ->
     @storybook.baseUrl() + "/videos"
@@ -19,10 +14,6 @@ class App.Collections.VideosCollection extends Backbone.Collection
 
   url: ->
     @baseUrl() + '.json'
-
-
-  pollUntilTranscoded: ->
-    @_POLL_TIMER ||= window.setTimeout @_poll, 5000
 
 
   _poll: =>
@@ -38,16 +29,3 @@ class App.Collections.VideosCollection extends Backbone.Collection
           video_ids: ids
         success: @_repoll
         error: @_repoll
-
-
-  _repoll: =>
-    @_POLL_TIMER = null
-    @pollUntilTranscoded()
-
-
-  unTranscoded: ->
-    @where(transcode_complete: false)
-
-
-  hasOnlyTranscodedVideos: ->
-    @unTranscoded().length == 0
