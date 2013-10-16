@@ -14,7 +14,7 @@ module Admin
 
     def update
       @user = User.find(params[:id])
-      params[:user].slice!(:is_admin, :allowed_storybooks_count, :email)
+      params[:user].slice!(:name, :city, :company, :email, :is_admin, :allowed_storybooks_count)
 
       @user.update_attributes(params[:user])
       respond_to do |format|
@@ -27,7 +27,7 @@ module Admin
     end
 
     def create
-      params[:user].slice!(:email, :is_admin, :allowed_storybooks_count)
+      params[:user].slice!(:name, :city, :company, :email, :is_admin, :allowed_storybooks_count)
       @user = User.new(params[:user])
 
       if @user.reset_password
