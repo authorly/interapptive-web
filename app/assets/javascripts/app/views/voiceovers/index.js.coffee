@@ -59,21 +59,12 @@ class App.Views.VoiceoverIndex extends Backbone.View
 
 
   acceptAlignment: (event) ->
-    unless @keyframe.hasText()
-      App.trackUserAction 'Attempted to highlight (no text)'
-      App.vent.trigger('show:message', 'info', "Please add some texts and highlight them before accepting.")
-      return
-
     unless @keyframe.hasVoiceover()
       App.trackUserAction 'Cancelled highlighting (no audio)'
       App.vent.trigger('hide:modal')
       return
 
-    if (intervals = @_collectTimeIntervals()).length == 0
-      App.vent.trigger('show:message', 'info', "Please highlight your texts before accepting.")
-      return
-
-    @keyframe.updateContentHighlightTimes intervals,
+    @keyframe.updateContentHighlightTimes @_collectTimeIntervals(),
       # TODO replace this with a 'done' event that the parent listens to
       # 2013-05-07 @dira
       success: ->
