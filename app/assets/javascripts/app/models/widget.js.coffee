@@ -236,7 +236,10 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
 
 
   displayName: ->
-    @_displayName ||= App.Lib.StringHelper.capitalize(@get('name').replace(/_/g, ' '))
+    @_displayName ||= switch name=@get('name')
+      when 'home' then 'Home button'
+      else
+        App.Lib.StringHelper.capitalize(@get('name').replace(/_/g, ' '))
 
 
   isHomeButton: ->
