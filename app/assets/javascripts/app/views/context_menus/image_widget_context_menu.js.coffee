@@ -12,8 +12,13 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
       'click .put-in-back':      'putInBack'
 
 
+  initialize: ->
+    super
+    @_addListeners()
+
+
   remove: ->
-    @_removeCoordinates()
+    @stopListening()
     super
 
 
@@ -45,13 +50,7 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
 
 
   _addListeners: ->
-    super
-    App.currentSelection.on  'change:keyframe', @_keyframeChanged, @
-
-
-  _removeListeners: ->
-    super
-    App.currentSelection.off 'change:keyframe', @_keyframeChanged, @
+    @listenTo App.currentSelection, 'change:keyframe', @_keyframeChanged
 
 
   # is overridden

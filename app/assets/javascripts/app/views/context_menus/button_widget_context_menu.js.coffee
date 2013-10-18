@@ -15,7 +15,7 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   initialize: ->
     super
-    @widget.on 'change:image_id', @render, @
+    @listenTo @widget, 'change:image_id', @render
 
 
   render: ->
@@ -25,7 +25,7 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   remove: ->
-    @widget.off 'change:image_id', @render, @
+    @_removeCoordinates()
     super
 
 

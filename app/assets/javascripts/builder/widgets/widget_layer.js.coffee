@@ -19,6 +19,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     verticalPanelWidth = ($(cc.canvas).attr('width') - App.Config.dimensions.width) / 2
     @setPosition new cc.Point(verticalPanelWidth, horizontalPanelHeight)
 
+    $('body').on  'keyup', @_arrowPressed
+
     # Collection (array) of Backbone models
     @widgets = widgetsCollection
 
