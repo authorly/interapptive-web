@@ -202,6 +202,27 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       @_mouseOverWidget = widget
 
 
+  _arrowPressed: (event) =>
+    return unless @_selectedWidget?
+    return unless event.target == document.body
+
+    delta = 10
+    dx = 0; dy = 0
+    switch event.keyCode
+      when App.Lib.Keycodes.left  then dx = -delta
+      when App.Lib.Keycodes.up    then dy =  delta
+      when App.Lib.Keycodes.right then dx =  delta
+      when App.Lib.Keycodes.down  then dy = -delta
+      else return
+
+    model = @_selectedWidget.getModelForPositioning()
+    position = model.get('position')
+    model.set
+      position:
+        x: position.x + dx
+        y: position.y + dy
+
+
   _samePoint: (p1, p2) ->
     eps = 0.1
     Math.abs(p1.x - p2.x) < eps and Math.abs(p1.y - p2.y) < eps
