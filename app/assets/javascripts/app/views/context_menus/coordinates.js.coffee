@@ -1,13 +1,10 @@
 class App.Views.Coordinates extends Backbone.View
-  CONTROL_KEYS: _.map ['backspace', 'tab', 'enter', 'home', 'end', 'left', 'right'], (name) -> App.Lib.Keycodes[name]
 
   template: JST["app/templates/context_menus/coordinates"]
 
   events: ->
-    'keyup    #x-coord':           'xCoordUpDownArrow'
-    'keyup    #y-coord':           'yCoordUpDownArrow'
-    'keypress #x-coord, #y-coord': 'numericInputListener'
-    'keydown  #x-coord, #y-coord': 'enterKeyCoordListener'
+    'keypress #x-coord, #y-coord': 'keyPressed'
+    'keyup    #x-coord, #y-coord': 'keyUp'
 
 
   initialize: ->
@@ -24,53 +21,55 @@ class App.Views.Coordinates extends Backbone.View
     @$el.html @template(model: @model)
 
 
-  xCoordUpDownArrow: (event) ->
-    _kc = event.keyCode
-
-    if _kc is App.Lib.Keycodes.up
-      delta = 1
-    else if _kc is App.Lib.Keycodes.down
-      delta = -1
-    else
-      return
-
-    position = @model.get('position')
-    @model.set
-      position:
-        x: position.x + delta
-        y: position.y
+  keyUp: (event) ->
+    @_removeInnerMinus event
+    @_moveByKeys       event
+    @_setPosition      event
 
 
-  yCoordUpDownArrow: (event) ->
-    _kc = event.keyCode
+  _removeInnerMinus: (event) ->
+    return unless event.keyCode in App.Lib.KeyCodes.minus
 
-    if _kc is App.Lib.Keycodes.up
-      delta = 1
-    else if _kc is App.Lib.Keycodes.down
-      delta = -1
-    else
-      return
+    element = @$(event.target)
+    value = element.val()
+
+    if "" + parseInt(value) != value
+      newValue = value.replace(/-/g, '') # remove all '-'
+      newValue = -newValue if value.charAt(0) == '-'
+      element.val newValue
+
+
+  _moveByKeys: (event) ->
+    switch event.keyCode
+      when App.Lib.KeyCodes.up   then delta =  1
+      when App.Lib.KeyCodes.down then delta = -1
+      else
+        return
 
     position = @model.get('position')
+    newPosition = _.extend {}, position
+    switch event.currentTarget.id
+      when 'x-coord' then newPosition.x += delta
+      when 'y-coord' then newPosition.y += delta
+
+    @model.set
+      position: newPosition
+
+
+  _setPosition: (event) ->
+    return unless event.keyCode is App.Lib.KeyCodes.enter
+
     @model.set
       position:
-        x: position.x
-        y: position.y + delta
+        x: Number(@$('#x-coord').val()) || 0
+        y: Number(@$('#y-coord').val()) || 0
 
 
-  enterKeyCoordListener: (event) ->
-    if event.keyCode is App.Lib.Keycodes.enter
-      @model.set
-        position:
-          # Math.round('49-2') is NaN - assign 0
-          x: Math.round(@$('#x-coord').val()) || 0
-          y: Math.round(@$('#y-coord').val()) || 0
-
-
-  numericInputListener: (event) ->
-    number = App.Lib.Keycodes[0] <= event.which <= App.Lib.Keycodes[9]
-    ok = not event.which or number or @CONTROL_KEYS.indexOf(event.which) > -1 or
-      event.which == App.Lib.Keycodes.minus
+  keyPressed: (event) ->
+    code = event.charCode
+    isNumber = App.Lib.CharCodes[0] <= code <= App.Lib.CharCodes[9]
+    isMinus = code == App.Lib.CharCodes.minus
+    ok = not code or isNumber or isMinus
 
     event.preventDefault() unless ok
 
