@@ -23,8 +23,7 @@
       #global-sync-indicator= image_tag 'loading.gif'
       = yield :header
 
-    #main{ role: 'main' }
-      = yield
+    #main= yield
 
     :coffee
       $ ->
