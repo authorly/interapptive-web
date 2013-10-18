@@ -35,5 +35,3 @@ class App.Views.ContextMenu extends Backbone.View
 
   _removeCoordinates: ->
     @coordinates.remove()
-
-

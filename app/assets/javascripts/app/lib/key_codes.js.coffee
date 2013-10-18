@@ -1,4 +1,4 @@
-App.Lib.Keycodes =
+App.Lib.KeyCodes =
   backspace:   8
   tab:         9
   enter:      13
@@ -9,6 +9,4 @@ App.Lib.Keycodes =
   up:         38
   right:      39
   down:       40
-  minus:      45
-  0:          48
-  9:          57
+  minus:     [189, 109, 173]
