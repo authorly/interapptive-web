@@ -37,7 +37,7 @@ class App.Models.Keyframe extends Backbone.Model
     @parse(attributes)
 
     @listenTo @, 'change:autoplay_duration', @autoplayDurationChanged
-    @on  'change:animation_duration change:autoplay_duration', @_onChange, @
+    @listenTo @, 'change:animation_duration', @animationDurationChanged
     @initializeScene(attributes)
     @initializeWidgets(attributes)
     @initializePreview()
@@ -47,7 +47,6 @@ class App.Models.Keyframe extends Backbone.Model
     throw new Error('cannot delete') if @get('is_animation')
 
     @stopListening()
-    @off 'change:animation_duration change:autoplay_duration', @_onChange, @
     @uninitializeWidgets()
     @uninitializePreview()
 
@@ -87,8 +86,17 @@ class App.Models.Keyframe extends Backbone.Model
     @save()
 
 
-  _onChange: ->
-    @save()
+  # preferred this manual validation out of fear of not being able to save
+  # keyframes at all, if this value gets set wrongly
+  # @dira 2013-1018
+  animationDurationChanged: ->
+    duration = @get('animation_duration')
+    if @constructor.isValidAnimationDuration(duration)
+      @save { animation_duration: duration }, patch: true
+    else
+      @trigger 'invalid:animation_duration', duration
+      @set
+        animation_duration: @previousAttributes()['animation_duration']
 
 
   # preferred this manual validation out of fear of not being able to save
@@ -258,6 +266,13 @@ class App.Models.Keyframe extends Backbone.Model
     onlyOneDecimal = duration * 10 == Math.round (duration * 10)
     return false unless onlyOneDecimal
     true
+
+  @isValidAnimationDuration: (duration) ->
+    return false unless Number(duration) == duration and duration >= 0
+    onlyOneDecimal = duration * 10 == Math.round (duration * 10)
+    return false unless onlyOneDecimal
+    true
+
 
 _.extend App.Models.Keyframe::, App.Mixins.DeferredSave
 _.extend App.Models.Keyframe::, App.Mixins.QueuedSync
