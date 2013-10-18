@@ -7,11 +7,9 @@ class App.Views.ContextMenu extends Backbone.View
 
   initialize: ->
     @widget = @options.widget
-    @_addListeners()
 
 
   remove: ->
-    @_removeListeners()
     super
 
 
@@ -21,14 +19,6 @@ class App.Views.ContextMenu extends Backbone.View
 
   _clicked: (event) ->
     event.stopPropagation() # for widget layer #TODO refactor
-
-
-  _addListeners: ->
-    $('body').on  'keyup', @_arrowPressed
-
-
-  _removeListeners: ->
-    $('body').off 'keyup', @_arrowPressed
 
 
   _removeClicked: (e) ->
@@ -45,24 +35,5 @@ class App.Views.ContextMenu extends Backbone.View
 
   _removeCoordinates: ->
     @coordinates.remove()
-
-
-  _arrowPressed: (event) =>
-    return unless event.target == document.body
-
-    delta = 10
-    dx = 0; dy = 0
-    switch event.keyCode
-      when App.Lib.Keycodes.left  then dx = -delta
-      when App.Lib.Keycodes.up    then dy =  delta
-      when App.Lib.Keycodes.right then dx =  delta
-      when App.Lib.Keycodes.down  then dy = -delta
-      else return
-
-    position = @getModel().get('position')
-    @getModel().set
-      position:
-        x: position.x + dx
-        y: position.y + dy
 
 

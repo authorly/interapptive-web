@@ -57,6 +57,13 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       window.setTimeout @checkLoadedStatus, 200
 
 
+  getModelForPositioning: ->
+    if @model instanceof App.Models.SpriteWidget
+      @currentOrientation
+    else
+      @model
+
+
   # NOTE:
   #    There addImageSync() from Cocos2d, used in the constructor,
   #    may be worth using instead of this?

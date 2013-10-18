@@ -96,7 +96,7 @@ class App.Models.Storybook extends Backbone.Model
     @videos.on 'add reset', @videosChanged, @
     @fonts  = new App.Collections.FontsCollection( [], storybook: @)
 
-    @widgets.on 'change', => @save()
+    @widgets.on 'change', @deferredSave, @
 
 
   baseUrl: ->
@@ -196,6 +196,9 @@ class App.Models.Storybook extends Backbone.Model
 
   previewUrl: ->
     @get('preview_image_url') || '/assets/default_storybook_preview.png'
+
+_.extend App.Models.Storybook::, App.Mixins.DeferredSave
+_.extend App.Models.Storybook::, App.Mixins.QueuedSync
 
 
 class App.Collections.StorybooksCollection extends Backbone.Collection
