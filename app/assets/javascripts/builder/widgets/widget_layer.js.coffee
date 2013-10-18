@@ -19,6 +19,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     verticalPanelWidth = ($(cc.canvas).attr('width') - App.Config.dimensions.width) / 2
     @setPosition new cc.Point(verticalPanelWidth, horizontalPanelHeight)
 
+    $('body').on  'keyup', @_arrowPressed
+
     # Collection (array) of Backbone models
     @widgets = widgetsCollection
 
@@ -198,6 +200,27 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         previousWidget: @_mouseOverWidget
 
       @_mouseOverWidget = widget
+
+
+  _arrowPressed: (event) =>
+    return unless @_selectedWidget?
+    return unless event.target == document.body
+
+    delta = 10
+    dx = 0; dy = 0
+    switch event.keyCode
+      when App.Lib.Keycodes.left  then dx = -delta
+      when App.Lib.Keycodes.up    then dy =  delta
+      when App.Lib.Keycodes.right then dx =  delta
+      when App.Lib.Keycodes.down  then dy = -delta
+      else return
+
+    model = if @_selectedWidget.getModelForPositioning? then @_selectedWidget.getModelForPositioning() else @_selectedWidget.model
+    position = model.get('position')
+    model.set
+      position:
+        x: position.x + dx
+        y: position.y + dy
 
 
   _samePoint: (p1, p2) ->
