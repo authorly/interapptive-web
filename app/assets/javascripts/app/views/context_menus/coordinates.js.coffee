@@ -67,7 +67,7 @@ class App.Views.Coordinates extends Backbone.View
           y: Math.round(@$('#y-coord').val()) || 0
 
 
-  numericInputListener: ->
+  numericInputListener: (event) ->
     number = App.Lib.Keycodes[0] <= event.which <= App.Lib.Keycodes[9]
     ok = not event.which or number or @CONTROL_KEYS.indexOf(event.which) > -1 or
       event.which == App.Lib.Keycodes.minus

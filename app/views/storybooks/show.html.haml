@@ -5,32 +5,30 @@
   = render 'layouts/toolbar'
 
 
-.container
-  .content
-    .span2.navbar.sidebar.left
-      #scene-list
-    .span2.navbar.sidebar.right
-      #asset-library-sidebar
-    .canvas-wrapper
-      - flash.each do |name, msg|
-        %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
-          %a.close{"data-dismiss" => "alert"}
-          = msg
-      %canvas{id: 'builder', width: 3500, height: 2500}
-        %p Your browser doesn't support the technology required to run this application.
-      #context-menu
-        .sprite
-        .button
-        .text
-        .hotspot
+.content
+  .navbar.sidebar.left
+    #scene-list
+  .navbar.sidebar.right
+    #asset-library-sidebar
+  - flash.each do |name, msg|
+    %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
+      %a.close{"data-dismiss" => "alert"}
+      = msg
+  %canvas{id: 'builder', width: 3500, height: 2500}
+    %p Your browser doesn't support the technology required to run this application.
+  #context-menu
+    .sprite
+    .button
+    .text
+    .hotspot
 
-    #action-form-container
+  #action-form-container
 
-  -# preload icons for the asset library
-  .hidden
-    %img{ src: '/assets/image-icon.png' }
-    %img{ src: '/assets/audio-icon.png' }
-    %img{ src: '/assets/video-icon.png' }
+-# preload icons for the asset library
+.hidden
+  %img{ src: '/assets/image-icon.png' }
+  %img{ src: '/assets/audio-icon.png' }
+  %img{ src: '/assets/video-icon.png' }
 
 %footer.navbar.navbar-fixed-bottom
   %footer
