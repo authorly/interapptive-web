@@ -32,7 +32,12 @@ class App.Models.Scene extends Backbone.Model
     @initializeWidgets()
     @initializeKeyframes()
 
-    @storybook.images.on 'remove', @imageRemoved, @
+    @listenTo @storybook.images, 'remove', @imageRemoved
+
+
+  destroy: ->
+    @stopListening()
+    super
 
 
   sound: ->
@@ -42,19 +47,19 @@ class App.Models.Scene extends Backbone.Model
   initializeWidgets: ->
     @widgets.storybook ||= @storybook
 
-    @widgets.on 'add', (widget) =>
+    @listenTo @widgets, 'add', (widget) =>
       if widget instanceof App.Models.SpriteWidget
         widget.set z_order: @nextSpriteZOrder(widget)
 
-    @widgets.on 'reset add remove change', @deferredSave, @
+    @listenTo @widgets, 'reset add remove change', @deferredSave
 
 
   initializeKeyframes: ->
     @_keyframesFetched = false
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
 
-    @keyframes.on 'add', @addOrientations, @
-    @keyframes.on 'reset add remove change:positions', @updatePreview, @
+    @listenTo @keyframes, 'add', @addOrientations
+    @listenTo @keyframes, 'reset add remove change:positions', @updatePreview
 
 
   fetchKeyframes: ->
@@ -126,8 +131,8 @@ class App.Models.Scene extends Backbone.Model
 
 
   addPreviewListeners: ->
-    @preview.on  'change:id change:url', @previewChanged,        @
-    @preview.on  'change:data_url',      @previewDataUrlChanged, @
+    @listenTo @preview, 'change:id change:url', @previewChanged,        @
+    @listenTo @preview, 'change:data_url',      @previewDataUrlChanged, @
 
 
   removePreviewListeners: ->

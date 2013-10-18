@@ -4,12 +4,7 @@ describe "App.Models.Scene", ->
     @server = sinon.fakeServer.create()
     @storybook = new App.Models.Storybook(id: 1)
 
-    @scene = new App.Models.Scene({
-        image_id: 1,
-        sound_id: 2,
-        preview_image_id: 3,
-        page_number: 1
-      },
+    @scene = new App.Models.Scene({},
       {
         collection: @storybook.scenes
       })
@@ -96,4 +91,11 @@ describe "App.Models.Scene", ->
         @scene.set is_main_menu: true
         expect(@scene.canAddAnimationKeyframe()).toEqual false
 
+
+  describe 'listeners', ->
+
+    it 'proxies image removal to the widgets', ->
+      listener = sinon.spy @scene.widgets, 'imageRemoved'
+      @storybook.images.trigger 'remove'
+      expect(listener).toHaveBeenCalled()
 
