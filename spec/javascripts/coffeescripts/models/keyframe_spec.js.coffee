@@ -114,3 +114,31 @@ describe "App.Models.Keyframe", ->
 
           expect(@keyframe.autoplayDuration()).toEqual 20
 
+
+  describe 'animation duration validation', ->
+
+    beforeEach ->
+      @validationFunction = App.Models.Keyframe.isValidAnimationDuration
+
+    describe 'positive number', ->
+      it 'allows 0', ->
+        expect(@validationFunction(0)).toBeTruthy()
+
+      it 'allows 3', ->
+        expect(@validationFunction(3)).toBeTruthy()
+
+      it 'allows 3.0', ->
+        expect(@validationFunction(3.0)).toBeTruthy()
+
+      it 'allows 3.1', ->
+        expect(@validationFunction(3.1)).toBeTruthy()
+
+    it 'does not allow non-numbers', ->
+        expect(@validationFunction(NaN)).toBeFalsy()
+
+    it 'does not allow negative numbers', ->
+        expect(@validationFunction(-1)).toBeFalsy()
+
+    it 'does not allow more than one decimal', ->
+        expect(@validationFunction(2.21)).toBeFalsy()
+
