@@ -48,11 +48,8 @@ class App.Views.ButtonWidgetImagesSelector extends Backbone.View
 
 
   useSelectedImages: ->
-    attributes =
+    @widget.set
       image_id:          @baseImage?.id
       selected_image_id: @tappedImage?.id
-    unless attributes.image_id?
-      attributes.scale = 1
-    @widget.set attributes
 
     App.vent.trigger('hide:modal')

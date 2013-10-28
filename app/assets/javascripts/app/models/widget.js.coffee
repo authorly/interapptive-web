@@ -189,6 +189,11 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
     type: 'ButtonWidget'
 
 
+  initialize: ->
+    super
+    @listenTo @, 'change:image_id', @resetScale
+
+
   filename: ->
     if @get('image_id')?
       super
@@ -220,7 +225,10 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
   useDefaultImage: ->
     @set
       image_id: @defaultImage().id
-      scale: 1
+
+
+  resetScale: ->
+    @set scale: 1
 
 
   defaultSelectedImage: ->
