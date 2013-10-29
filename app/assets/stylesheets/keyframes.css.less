@@ -56,6 +56,32 @@
       font-family: 'Arial Black';
     }
 
+    .keyframe-configuration {
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      width: 20px;
+      height: 20px;
+      padding: 5px;
+      background: asset-url('icons/action.png') no-repeat center;
+      background-size: 60%;
+      display: none;
+    }
+
+
+    .delete-keyframe {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      width: 20px;
+      height: 20px;
+      padding: 5px;
+      z-index: 90 !important;
+      background: asset-url('red-minus.png') no-repeat center;
+      background-size: 55%;
+      visibility: hidden;
+    }
+
     .transition {
       position: absolute;
       width: 50px;
@@ -138,42 +164,28 @@
       opacity: 1.0;
     }
 
-    a.delete-keyframe {
-      opacity: 0;
+    .keyframe-configuration {
       display: block;
-      width: 20px;
-      height: 20px;
-      position: absolute;
-      top: 0px;
-      right: 0px;
-      padding: 5px;
-      z-index: 90 !important;
-      background: asset-url('red-minus.png') no-repeat center;
-      background-size: 55%;
-    }
-
-    a.delete-keyframe:hover {
-      opacity: 0.9;
-      cursor: hand;
-    }
-
-    a.delete-keyframe:active {
-      opacity: 0.9;
-    }
-  }
-
-  li.active:hover {
-    opacity: 0.9;
-
-    a.delete-keyframe {
       opacity: 0.45;
-      cursor: pointer;
+    }
+
+    .keyframe-configuration:hover {
+      opacity: 1;
+    }
+
+    .delete-keyframe {
+      visibility: visible;
+      opacity: 0.45;
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    &:hover, &:active {
+      opacity: 0.9;
     }
   }
 
-  li.active:active {
-    opacity: 0.9;
-  }
 }
 
 .new-keyframe {

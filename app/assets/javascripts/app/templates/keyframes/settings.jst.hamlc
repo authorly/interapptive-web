@@ -1,0 +1,13 @@
+.modal-header.inline
+  %i{:class => 'icon-cog icon-black'}
+  %h3.modal-title Scene keyframe configuration
+  %ul.nav.nav-pills
+    %li.autoplay
+      %a{:href => "#"} Autoplay
+    %li.voiceover.active
+      %a{:href => "#"} Voiceover
+.modal-body
+  .tab.voiceover
+    voiceover
+  .tab.autoplay
+    autoplay

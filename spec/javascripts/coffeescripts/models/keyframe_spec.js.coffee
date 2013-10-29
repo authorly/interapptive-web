@@ -55,35 +55,62 @@ describe "App.Models.Keyframe", ->
 
   describe 'autoplay duration', ->
 
-    it 'is 8 seconds if there is no text', ->
-      expect(@keyframe.autoplayDuration()).toEqual 8
+    describe 'when the autoplay duration is set', ->
 
-    describe 'when there is text', ->
-
-      it 'is computed from the text widgets, at 45 words/minute reading speed, if there is no voiceover', ->
+      it 'is that duration', ->
+        @keyframe.set 'autoplay_duration', 2002
+        # add a voiceover
+        @storybook.sounds.add(voiceover = new App.Models.Sound(duration: 17.2, id: 1981))
+        @keyframe.set voiceover_id: voiceover.id
+        # and text
         @keyframe.widgets.add [
           {type: 'TextWidget'},
-          {type: 'TextWidget'},
-          {type: 'TextWidget'}
         ]
         sinon.stub(@keyframe.widgets.at(0), 'wordCount').returns(2)
-        sinon.stub(@keyframe.widgets.at(1), 'wordCount').returns(9)
-        sinon.stub(@keyframe.widgets.at(2), 'wordCount').returns(5)
-        expect(@keyframe.autoplayDuration()).toEqual 21
+
+        expect(@keyframe.autoplayDuration()).toEqual 2002
 
 
-      it 'is the duration of the voiceover sound, if the sound exists', ->
-        @storybook.sounds.add(voiceover = new App.Models.Sound(duration: 17.2, id: 1981))
-        @keyframe.widgets.add type: 'TextWidget'
-        @keyframe.set voiceover_id: voiceover.id
+    describe 'when the autoplay duration is not set', ->
 
-        expect(@keyframe.autoplayDuration()).toEqual 17.2
+      describe 'when there is no text', ->
+        it 'is the duration of the voiceover sound, if the sound exists', ->
+          @storybook.sounds.add(voiceover = new App.Models.Sound(duration: 17.2, id: 1981))
+          @keyframe.set voiceover_id: voiceover.id
 
-      it "is is computed from the text widgets if the voiceover sound exists but its duration isn't available", ->
-        @storybook.sounds.add(voiceover = new App.Models.Sound(duration: null, id: 1981))
-        @keyframe.set voiceover_id: voiceover.id
-        @keyframe.widgets.add type: 'TextWidget'
-        sinon.stub(@keyframe.widgets.at(0), 'wordCount').returns(15)
+          expect(@keyframe.autoplayDuration()).toEqual 17.2
 
-        expect(@keyframe.autoplayDuration()).toEqual 20
+
+        it 'is 8 seconds if there is no voiceover', ->
+          expect(@keyframe.autoplayDuration()).toEqual 12
+
+
+      describe 'when there is text', ->
+
+        it 'is computed from the text widgets, at 45 words/minute reading speed, if there is no voiceover', ->
+          @keyframe.widgets.add [
+            {type: 'TextWidget'},
+            {type: 'TextWidget'},
+            {type: 'TextWidget'}
+          ]
+          sinon.stub(@keyframe.widgets.at(0), 'wordCount').returns(2)
+          sinon.stub(@keyframe.widgets.at(1), 'wordCount').returns(9)
+          sinon.stub(@keyframe.widgets.at(2), 'wordCount').returns(5)
+          expect(@keyframe.autoplayDuration()).toEqual 21
+
+
+        it 'is the duration of the voiceover sound, if the sound exists', ->
+          @storybook.sounds.add(voiceover = new App.Models.Sound(duration: 17.2, id: 1981))
+          @keyframe.widgets.add type: 'TextWidget'
+          @keyframe.set voiceover_id: voiceover.id
+
+          expect(@keyframe.autoplayDuration()).toEqual 17.2
+
+        it "is is computed from the text widgets if the voiceover sound exists but its duration isn't available", ->
+          @storybook.sounds.add(voiceover = new App.Models.Sound(duration: null, id: 1981))
+          @keyframe.set voiceover_id: voiceover.id
+          @keyframe.widgets.add type: 'TextWidget'
+          sinon.stub(@keyframe.widgets.at(0), 'wordCount').returns(15)
+
+          expect(@keyframe.autoplayDuration()).toEqual 20
 

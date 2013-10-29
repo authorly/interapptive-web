@@ -12,7 +12,9 @@
     %img{ src: @keyframe.preview.src() }
 
 %span
+  %span.keyframe-number= "#{if @keyframe.get('position') == null then '' else @keyframe.get('position') + 1 }"
+
   - unless @keyframe.get('is_animation')
     %a{:href=>"#","class" => "delete-keyframe", "data-id" => "#{@keyframe.get('id')}"}
     %a{:href=>"#","class" => "drag-keyframe", "data-id" => "#{@keyframe.get('id')}"}
-  %span.keyframe-number= "#{if @keyframe.get('position') == null then '' else @keyframe.get('position') + 1 }"
+    %span.keyframe-configuration

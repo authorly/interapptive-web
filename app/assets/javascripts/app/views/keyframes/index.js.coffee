@@ -7,41 +7,23 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   className: 'keyframe-list'
 
-  events:
-    'click  .main': 'keyframeClicked'
-    'click  .delete-keyframe': 'destroyKeyframeClicked'
-
-  DELETE_KEYFRAME_MSG:
-    '\nYou are about to delete a keyframe.\n\n\nAre you sure you want to continue?\n'
-
-
   initialize: ->
-    @collection.on 'reset',            @render,           @
-    @collection.on 'change:positions', @_updatePositions, @
-    @collection.on 'add',              @appendKeyframe,   @
-    @collection.on 'remove',           @removeKeyframe,   @
-    @collection.on 'synchronization-start synchronization-end', @_toggleEnabled, @
+    @listenTo @collection, 'reset',            @render
+    @listenTo @collection, 'add',              @appendKeyframe
+    @listenTo @collection, 'remove',           @removeKeyframe
+    @listenTo @collection, 'change:positions', @_updatePositions
+    @listenTo @collection, 'synchronization-start synchronization-end', @_toggleEnabled
 
     # Put in its own view
-    App.vent.on 'window:resize', @adjustSize, @
+    @listenTo App.vent, 'window:resize', @adjustSize
+
+    @keyframeViews = []
 
 
-    App.currentSelection.on 'change:keyframe', @keyframeChanged, @
-    @keyframe_views = []
-
-
-  # TODO RFCTR upgrate to Backbone 0.9.9 and use `listeTo` and `stopListening`
-  # instead of `on` and `off`
   remove: ->
-    super
-
-    @collection.off 'change:positions reset', @render, @
-    @collection.off 'add'   , @appendKeyframe
-    @collection.off 'remove', @removeKeyframe
-
-    App.currentSelection.off 'change:keyframe', @keyframeChanged, @
-
+    @stopListening()
     @_removeKeyframeViews()
+    super
 
 
   render: ->
@@ -82,42 +64,17 @@ class App.Views.KeyframeIndex extends Backbone.View
     else
       @$el.children().eq(index-1).after(viewElement)
 
-    @keyframe_views.push(view)
-
-
-  keyframeClicked: (event) ->
-    event.stopPropagation()
-
-    keyframe = @collection.get $(event.currentTarget).attr('data-id')
-    @switchKeyframe(keyframe)
+    @keyframeViews.push(view)
 
 
   switchKeyframe: (newKeyframe) ->
-    App.currentSelection.set keyframe: newKeyframe
+    App.currentSelection.set
+      keyframe: newKeyframe
 
 
-  keyframeChanged: (__, keyframe) ->
-    @$('li').removeClass('active').
-      filter("[data-id=#{keyframe?.id}]").
-      addClass('active')
-
-
-  destroyKeyframeClicked: (event) =>
-    event.stopPropagation()
-    return if @$el.hasClass('disabled')
-
-    if confirm(@DELETE_KEYFRAME_MSG)
-      keyframe = @collection.get $(event.currentTarget).attr('data-id')
-      keyframe.destroy
-        success: =>
-          App.trackUserAction 'Deleted keyframe'
-          @collection.remove(keyframe)
-
-
-  removeKeyframe: (keyframe) =>
-    index = @collection.indexOf(keyframe)
-    $(".keyframe-list li[data-id=#{keyframe.id}]").remove()
-    @switchKeyframe(@collection.at(index + 1) or @collection.at(index - 1))
+  removeKeyframe: (keyframe, __, options) =>
+    _.find(@keyframeViews, (k) -> k.model == keyframe).remove()
+    @switchKeyframe(@collection.at(options.index) or @collection.at(options.index - 1))
     @_updateDeleteButtons()
 
 
@@ -165,8 +122,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   _removeKeyframeViews: ->
-    _.each(@keyframe_views, (kv) -> kv.remove())
-    @keyframe_views.length = 0
+    _.each(@keyframeViews, (kv) -> kv.remove())
+    @keyframeViews.length = 0
 
 
   _toggleEnabled: (__, synchronizing) ->

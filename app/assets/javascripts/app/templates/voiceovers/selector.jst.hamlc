@@ -1,4 +1,5 @@
 - if @sounds.length > 0
+  %labe{for: 'voiceover-selector'} Voiceover sound:
   %select#voiceover-selector
     %option{:value => 'none'}
       None

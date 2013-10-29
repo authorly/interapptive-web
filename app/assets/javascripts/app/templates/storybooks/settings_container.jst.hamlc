@@ -1,5 +1,5 @@
 #settings
-  .modal-header
+  .modal-header.inline
     %i{:class => 'icon-cog icon-black'}
     %h3.modal-title App Settings
     %ul.nav.nav-pills
