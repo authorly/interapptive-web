@@ -70,13 +70,6 @@ class IosStorybookApplication < AbstractStorybookApplication
     Resque.enqueue(MailerQueue, 'UserMailer', 'ios_compilation_completion_notification', recipient_email, @storybook.compiled_application.index_html_url, @storybook.compiled_application.url)
   end
 
-  def download_icons
-    if @storybook.icon.present?
-      move_default_icons_to_tmp
-      save_icon_files
-    end
-  end
-
   def move_default_icons_to_resources
     if @storybook.icon.present?
       move_default_icons(CRUCIBLE_TMP_RESOURCES_DIR, CRUCIBLE_RESOURCES_DIR)

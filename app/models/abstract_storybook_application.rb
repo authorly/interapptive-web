@@ -98,6 +98,13 @@ class AbstractStorybookApplication
 
   private
 
+  def download_icons
+    if @storybook.icon.present?
+      move_default_icons_to_tmp
+      save_icon_files
+    end
+  end
+
   def stage_for_move(file_name)
     if self.class.system_font_names.include?(file_name)
       @used_file_names << file_name if @used_file_names.exclude?(file_name)

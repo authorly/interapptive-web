@@ -38,8 +38,16 @@ class AppIconUploader < CarrierWave::Uploader::Base
       process :resize_to_fill => [30, 30]
     end
 
+    version :app_icon_32_32 do
+      process :resize_to_fill => [32, 32]
+    end
+
     version :app_icon_40_40 do
       process :resize_to_fill => [40, 40]
+    end
+
+    version :app_icon_48_48 do
+      process :resize_to_fill => [48, 48]
     end
 
     version :app_icon_50_50 do
@@ -60,6 +68,10 @@ class AppIconUploader < CarrierWave::Uploader::Base
 
     version :app_icon_72_72 do
       process :resize_to_fill => [72, 72]
+    end
+
+    version :app_icon_96_96 do
+      process :resize_to_fill => [96, 96]
     end
 
     version :app_icon_100_100 do
