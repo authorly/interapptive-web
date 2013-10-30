@@ -18,6 +18,7 @@ window.App =
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
 
+    @initializeMixpanel()
     @initializeGlobalSync()
 
     @vent.on 'hide:modal',   @_hideModal, @
@@ -302,6 +303,12 @@ window.App =
     console.log JSON.stringify(json)
     # @simulator ||= new App.Views.Simulator(json: App.storybookJSON.toString())
 
+
+  initializeMixpanel: ->
+    if App.Config.environment == 'production'
+      mixpanel.init('bdaad5956eae058c3127a805145c1f6b')
+    else
+      mixpanel.init('aaef6f73b0358f52df08753974da8f34')
 
   initializeGlobalSync: ->
     # A global vent for synchronization events
