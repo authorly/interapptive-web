@@ -40,7 +40,7 @@ class App.JSON
   addTextNodeFor: (keyframe, page) =>
     return if keyframe.isAnimation()
 
-    textWidgets = keyframe.textWidgets()
+    textWidgets = _.sortBy(keyframe.textWidgets(), (w) -> w.get('z_order'))
 
     voiceoverNeeded = keyframe.scene.storybook.voiceoverNeeded()
     keyframeHighlightTimes = keyframe.get('content_highlight_times') if voiceoverNeeded
