@@ -167,7 +167,7 @@ class App.Models.Storybook extends Backbone.Model
     menu = @scenes.detect (scene) -> scene.isMainMenu()
     rtm  = menu.widgets.detect (w) -> w.get('name') == 'read_to_me'
     auto = menu.widgets.detect (w) -> w.get('name') == 'auto_play'
-    !(rtm.get('disabled')? and auto.get('disabled')?)
+    !(rtm.get('disabled') and auto.get('disabled'))
 
 
   canBeCompiled: ->
