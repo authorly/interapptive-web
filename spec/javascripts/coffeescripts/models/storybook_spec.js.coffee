@@ -53,3 +53,42 @@ describe "App.Models.Storybook", ->
     it 'does not send preview_image_url', ->
       @storybook.set preview_image_url: ''
       expect(@storybook.toJSON().preview_image_url).toBeUndefined()
+
+
+  describe 'voiceoverNeeded', ->
+    beforeEach ->
+      @scene = new App.Models.Scene
+        storybook: @storybook
+        is_main_menu: true
+      @storybook.scenes.add @scene
+      @rtm = new App.Models.ButtonWidget
+        name: 'read_to_me'
+        disabled: false
+      @scene.widgets.add(@rtm)
+      @auto = new App.Models.ButtonWidget
+        name: 'auto_play'
+        disabled: false
+      @scene.widgets.add(@auto)
+
+
+    it 'should be true for enabled read to me and enabled auto play ', ->
+      expect(@storybook.voiceoverNeeded()).toBeTruthy()
+
+
+    it 'should be true for enabled read to me and disabled auto play ', ->
+      @auto.set(disabled: true)
+
+      expect(@storybook.voiceoverNeeded()).toBeTruthy()
+
+
+    it 'should be true for disabled read to me and enabled auto play ', ->
+      @rtm.set(disabled: true)
+
+      expect(@storybook.voiceoverNeeded()).toBeTruthy()
+
+
+    it 'should be false for disabled read to me and disabled auto play ', ->
+      @rtm.set(disabled: true)
+      @auto.set(disabled: true)
+
+      expect(@storybook.voiceoverNeeded()).toBeFalsy()
