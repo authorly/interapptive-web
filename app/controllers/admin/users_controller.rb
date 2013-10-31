@@ -45,6 +45,19 @@ module Admin
       end
     end
 
+    def destroy
+      user = User.find(params[:id])
+      if user.destroy
+        flash[:notice] = "User successfully deleted"
+      else
+        flash[:error] = "Something went wrong while deleting user. Please try again later."
+      end
+
+      respond_to do |format|
+        format.html { redirect_to :action => :index }
+      end
+    end
+
     def send_invitation
       @user = User.find(params[:id])
       if @user.reset_password
