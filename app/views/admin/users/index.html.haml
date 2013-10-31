@@ -44,6 +44,8 @@
             %li
               = link_to("Edit", edit_admin_user_path(user))
             %li
+              = link_to("Delete this User", admin_user_path(user), :method => :delete, :confirm => "Are you sure you want to delete this user with email #{user.email}?")
+            %li
               = link_to("Resend Invite", send_invitation_admin_user_path(:id => user.id), :method => :post, :remote => true, :confirm => "This will change password of this user.")
             %li
               = link_to("Assign a Storybook", edit_admin_storybook_assignment_path(:id => user.id))
