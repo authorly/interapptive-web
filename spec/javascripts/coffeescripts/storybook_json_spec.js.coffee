@@ -186,8 +186,10 @@ describe "App.JSON", ->
         animation_duration: 3,
         widgets: [
           { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 9, position: { x: 400, y: 200}, scale: 1.5 }
-          { 'type': 'TextWidget', 'id': 12, 'font_id': 13, 'position': {'x': 120, 'y': 330}, 'string': 'Some text' },
-          { 'type': 'TextWidget', 'id': 13, 'font_id': 14, 'position': {'x': 150, 'y': 370}, 'string': 'Some other text' },
+          { 'type': 'TextWidget', 'id': 12, 'font_id': 13, 'position': {'x': 120, 'y': 330}, 'z_order': 6000, 'string': 'Some text' },
+          { 'type': 'TextWidget', 'id': 13, 'font_id': 14, 'position': {'x': 150, 'y': 370}, 'z_order': 6002, 'string': 'Some other text' },
+          { 'type': 'TextWidget', 'id': 14, 'font_id': 13, 'position': {'x': 180, 'y': 410}, 'z_order': 6001, 'string': 'Some more text' },
+          { 'type': 'TextWidget', 'id': 15, 'font_id': 14, 'position': {'x': 190, 'y': 430}, 'z_order': 6003, 'string': 'Some less text' },
           { 'type': 'HotspotWidget', 'id': 7, 'position': {'x': 510, 'y': 310}, 'radius': 60, 'sound_id': @sound.id },
         ],
         content_highlight_times: [1, 2, 4, 5, 20]
@@ -203,7 +205,7 @@ describe "App.JSON", ->
         position: 1,
         animation_duration: 2.7,
         widgets: [
-          { 'type': 'SpriteOrientation', 'id': 14, keyframe_id: 2, sprite_widget_id: 9, position: { x: 500, y: 300}, scale: 1 },
+          { 'type': 'SpriteOrientation', 'id': 16, keyframe_id: 2, sprite_widget_id: 9, position: { x: 500, y: 300}, scale: 1 },
           { 'type': 'HotspotWidget', 'id': 8, 'position': {'x': 410, 'y': 210}, 'radius': 20, 'video_id': @video.id }
         ]
       }, parse: true
@@ -237,7 +239,7 @@ describe "App.JSON", ->
       expect(keyframes.length).toEqual(2)
 
       keyframe = keyframes[0]
-      expect(keyframe.linesOfText.length).toEqual(2)
+      expect(keyframe.linesOfText.length).toEqual(4)
 
       text = keyframe.linesOfText[0]
       expect(text.text).toEqual 'Some text'
@@ -245,9 +247,19 @@ describe "App.JSON", ->
       expect(text.yOffset).toEqual 330
 
       text = keyframe.linesOfText[1]
+      expect(text.text).toEqual 'Some more text'
+      expect(text.xOffset).toEqual 180
+      expect(text.yOffset).toEqual 410
+
+      text = keyframe.linesOfText[2]
       expect(text.text).toEqual 'Some other text'
       expect(text.xOffset).toEqual 150
       expect(text.yOffset).toEqual 370
+
+      text = keyframe.linesOfText[3]
+      expect(text.text).toEqual 'Some less text'
+      expect(text.xOffset).toEqual 190
+      expect(text.yOffset).toEqual 430
 
       expect(keyframe.voiceAudioFile).toEqual "https://interapptive.s3.amazonaws.com/sounds/11/voicemail_received.wav"
       expect(keyframe.highlightingTimes).toEqual [1, 2, 4, 5, 20]
