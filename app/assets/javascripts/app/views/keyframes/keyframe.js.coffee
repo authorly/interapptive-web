@@ -13,10 +13,11 @@ class App.Views.Keyframe extends Backbone.View
 
 
   initialize: ->
-    @listenTo @model.widgets, 'add remove change:position change:scale change:radius',  @widgetsChanged
-    @listenTo @model.scene.widgets,      'change:position change:scale change:z_order change:disabled change:image_id', @widgetsChanged
-
     @listenTo App.currentSelection, 'change:keyframe', @_activeKeyframeChanged
+    @listenTo @model, 'change:animation_duration',  @animationDurationChanged
+    @listenTo @model, 'invalid:animation_duration', @invalidAnimationDurationEntered
+    @listenTo @model.widgets,        'add remove change:position change:scale change:radius',  @widgetsChanged
+    @listenTo @model.scene.widgets,  '           change:position change:scale change:z_order change:disabled change:image_id', @widgetsChanged
 
 
   remove: ->
@@ -52,6 +53,11 @@ class App.Views.Keyframe extends Backbone.View
 
 
   _animationDurationChanged: (event) ->
+    @model.set
+      animation_duration: Number($(event.currentTarget).val())
+
+
+  updateAnimationDuration: (event) ->
     @model.set
       animation_duration: Number($(event.currentTarget).val())
 
@@ -160,3 +166,11 @@ class App.Views.Keyframe extends Backbone.View
       widget.spriteWidget()
     else
       widget
+
+
+  animationDurationChanged: ->
+    @$('[name=animation-duration]').val @model.get('animation_duration')
+
+
+  invalidAnimationDurationEntered: (duration) ->
+    alert "Please enter a positive, one-decimal number for animation duration (e.g. 0, 3, 4.5). #{@$('[name=animation-duration]').val()} is not allowed"
