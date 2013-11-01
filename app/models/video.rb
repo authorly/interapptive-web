@@ -20,7 +20,7 @@ class Video < Asset
         'mp4url'             => video.mp4_url,
         'webmurl'            => video.webm_url,
         'ogvurl'             => video.ogv_url,
-        'duration'           => duration,
+        'duration'           => duration
       })
     end
     json
@@ -31,14 +31,11 @@ class Video < Asset
   end
 
 
-  # To locally test the videos, aftetr zencoder has done
+  # To locally test the videos, after zencoder has done
   # transcoding it, do following in rails console
   #
-  # >> v = Video.find(id) # id of the video models
-  # >> v.meta_info = v.meta_info.merge(:response => { :input => { :duration_in_ms => 3000 }, :job => { :state => 'finished' }})
-  # >> v.save!
+  # `bundle exec zencoder_fetcher --loop --interval 10 --url 'http://127.0.0.1:3000/zencoder' <ZENCODER_API_KEY>`
   #
-  # Refresh the page, the video shall play.
   def duration
     ((meta_info[:response].try(:[], 'input').
       try(:[], 'duration_in_ms') || 0) / 1000.0).ceil

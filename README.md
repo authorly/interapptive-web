@@ -5,9 +5,6 @@
 ## Setup the application
 
 1. Clone the repository on your machine
-1. Install [sox](http://sox.sourceforge.net/) version 14.4.0. On ubuntu, you will have to install `libsox-fmt-mp3` to support mp3 files with sox.
-
-	If you don't want to install `sox`, or you cannot get `libmad` &amp; `sox` to play together): comment out `process :convert_audio => args` in `lib/interapptive/carrier_wave/sphinx_audio_converter.rb`
 1. Create a suitable `config/database.yml` (production will likely run on MySQL)
 1. `bundle install`
 1. `bundle exec rake db:create:all`
