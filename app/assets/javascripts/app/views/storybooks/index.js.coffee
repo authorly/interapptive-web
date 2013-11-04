@@ -18,6 +18,7 @@ class App.Views.StorybookIndex extends Backbone.View
     @collection.on 'add'  ,  @appendStorybook,  @
     @collection.on 'remove', @removeStorybook,  @
     @collection.on 'sync',   @storybooksLoaded, @
+    @collection.on 'add remove', @showListOrMessage, @
 
 
   render: ->
@@ -31,11 +32,21 @@ class App.Views.StorybookIndex extends Backbone.View
   renderStorybooks: ->
     @$('#storybook-list').html('')
     @collection.each (storybook) => @appendStorybook(storybook)
+    @showListOrMessage()
 
 
   storybooksLoaded: ->
     @hideLoader()
     @renderStorybooks()
+
+
+  showListOrMessage: ->
+    if @collection.length > 0
+      @$('.storybooks').show()
+      @$('.no-storybooks').hide()
+    else
+      @$('.storybooks').hide()
+      @$('.no-storybooks').show()
 
 
   createStorybook: (event) ->
