@@ -244,7 +244,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       # but it doesn't
       inContextMenu = target.closest('.context-menu-list').length > 0
 
-      unless inCanvas or inContextMenu
+      onEditableElement = target.attr('contentEditable')
+
+      unless inCanvas or inContextMenu or onEditableElement
         App.currentSelection.set widget: null
 
 
