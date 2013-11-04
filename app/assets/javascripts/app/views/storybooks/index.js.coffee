@@ -64,10 +64,11 @@ class App.Views.StorybookIndex extends Backbone.View
 
     @collection.create { title: title },
       wait:    true
-      error:   -> App.vent.trigger('show:message', 'warning', 'Please properly fill in fields!')
-      success: ->
+      error:   ->
+        App.vent.trigger('show:message', 'warning', 'Please properly fill in fields!')
+      success: =>
         App.trackUserAction 'Created storybook'
-        @closeStorybookForm
+        @closeStorybookForm()
 
 
   appendStorybook: (storybook) ->
