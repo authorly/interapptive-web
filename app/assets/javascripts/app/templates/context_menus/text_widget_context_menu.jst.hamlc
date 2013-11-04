@@ -15,7 +15,7 @@
 
 #font-size-selector
   %select#font-size
-    - fontSizes = [24..60]
+    - fontSizes = [12..60]
     - for fontSize in fontSizes
       %option{:value => "#{fontSize}"}
         = fontSize
