@@ -8,10 +8,16 @@
     %a.sign-out{:href => '/users/sign_out'}
       Sign Out
 
-  %h2 Your storybooks:
-  %ul#storybook-list
-  #storybook-loading
-    %img{src: '/assets/loading.gif'}
+
+  .no-storybooks
+    %h2 Create a storybook
+    %p Begin creating your storybook app by clicking the "New Storybook App..." button below.
+  .storybooks
+    %h2 Your storybooks:
+    %ul#storybook-list
+    #storybook-loading
+      %img{src: '/assets/loading.gif'}
+
   .menu
     %span.btn.btn-success.fileinput-button.new-storybook-btn
       %i.icon-plus.icon-white
