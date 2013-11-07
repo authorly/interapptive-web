@@ -215,7 +215,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       when App.Lib.Keycodes.down  then dy = -delta
       else return
 
-    model = @_selectedWidget.getModelForPositioning()
+    model = if @_selectedWidget.getModelForPositioning? then @_selectedWidget.getModelForPositioning() else @_selectedWidget.model
     position = model.get('position')
     model.set
       position:
