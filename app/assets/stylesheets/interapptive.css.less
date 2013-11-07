@@ -70,21 +70,17 @@ body.administration {
   cursor: url(https://mail.google.com/mail/images/2/closedhand.cur) 8 8, move;
 }
 
-.canvas-wrapper {
-  position: relative;
+canvas#builder {
+  position: absolute;
+  top: -350px;
+  left: 50%;
+  margin-left: -1000px; /* half of the width */
+  display: block;
+  background: white;
+  width: 2000px;
 
-  canvas#builder {
-    position: absolute;
-    top: -350px;
-    left: 50%;
-    margin-left: -1000px; /* half of the width */
-    display: block;
-    background: white;
-    width: 2000px;
-
-    &.highlight {
-      border: 1px solid blue;
-    }
+  &.highlight {
+    border: 1px solid blue;
   }
 }
 

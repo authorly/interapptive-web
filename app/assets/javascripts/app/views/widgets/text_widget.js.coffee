@@ -9,9 +9,6 @@ class App.Views.TextWidget extends Backbone.View
     'input': 'input'
     'keydown': 'keydown'
 
-  ESCAPE_KEYCODE = 27
-
-  ENTER_KEYCODE = 13
 
   CANVAS_ID = 'builder'
 
@@ -28,10 +25,11 @@ class App.Views.TextWidget extends Backbone.View
     @canvasScale = canvas.height() / canvas.attr('height')
 
     @model = @options.widget.model
-    @model.on 'change:font_color',        @fontColorChanged, @
-    @model.on 'change:visual_font_color', @setFontColor,     @
-    @model.on 'change:font_size',         @setFontSize,      @
-    @model.on 'change:font_id',           @setFontFamily,    @
+    @listenTo @model, 'change:position',          @setPosition
+    @listenTo @model, 'change:font_color',        @fontColorChanged
+    @listenTo @model, 'change:visual_font_color', @setFontColor
+    @listenTo @model, 'change:font_size',         @setFontSize
+    @listenTo @model, 'change:font_id',           @setFontFamily
 
     App.vent.on 'activate:scene', @deselect
     App.currentSelection.on 'change:keyframe', @deselect
@@ -47,10 +45,10 @@ class App.Views.TextWidget extends Backbone.View
 
   keydown: (event) ->
     switch event.keyCode
-      when ENTER_KEYCODE
+      when App.Lib.Keycodes.enter
         @shouldSave = true
         @deselect()
-      when ESCAPE_KEYCODE
+      when App.Lib.Keycodes.escape
         @shouldSave = false
         @deselect()
 
@@ -103,10 +101,11 @@ class App.Views.TextWidget extends Backbone.View
 
 
   setPosition: ->
-    canvasHalfWidth = -292
+    canvasHalfWidth = 292
+    # TODO how to get border in Firefox
     margin =
-      left: canvasHalfWidth + (@model.get('position').x - parseFloat(@$el.css('padding-left')) - parseFloat(@$el.css('border-left'))) * @canvasScale
-      top:  ( -@model.get('position').y - parseFloat(@$el.css('padding-top')) - parseFloat(@$el.css('border-top'))) * @canvasScale - @$el.height() * 0.5
+      left: -canvasHalfWidth + (@model.get('position').x - parseFloat(@$el.css('padding-left')) - parseFloat(@$el.css('border-left-width'))) * @canvasScale
+      top:  ( -@model.get('position').y - parseFloat(@$el.css('padding-top')) - parseFloat(@$el.css('border-top-width'))) * @canvasScale - @$el.height() * 0.5
     @$el.css
       'margin-left': "#{Math.round(margin.left)}px"
       'margin-top':  "#{Math.round(margin.top)}px"

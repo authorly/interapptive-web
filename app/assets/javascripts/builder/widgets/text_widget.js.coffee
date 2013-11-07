@@ -30,6 +30,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     if @editView?
       @editView.shouldSave = true unless @editView.shouldSave?
       @editView.deselect()
+      @editView = null
       @setIsVisible(true)
 
 
