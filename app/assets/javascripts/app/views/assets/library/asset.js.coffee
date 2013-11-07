@@ -38,7 +38,7 @@ class App.Views.AssetLibraryElement extends Backbone.View
     @_removeDraggable()
 
 
-  deleteClicked: ->
+  deleteClicked: (event) ->
     event.stopPropagation()
     return unless confirm("Are you sure you want to delete this #{@type()} and corresponding #{@_assetTypeToWidgetType(@type())} from the storybook?")
 
