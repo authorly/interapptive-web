@@ -38,6 +38,11 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
     @
 
 
+  remove: ->
+    @_removeCoordinates()
+    super
+
+
   getModel: ->
     @orientation
 
