@@ -8,6 +8,8 @@ class UserSessionsController < ApplicationController
     user = User.find_by_email params[:email]
 
     if user && user.authenticate(params[:password])
+      # Change ConfirmationsController#create when a change is made
+      # in cookies below.
       cookies.permanent[:auth_token] = user.auth_token
       if user.is_admin?
         cookies.permanent[:is_admin] = user.is_admin?

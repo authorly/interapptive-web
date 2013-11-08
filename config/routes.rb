@@ -22,6 +22,8 @@ Interapptive::Application.routes.draw do
   get 'simulator' => 'simulator#index', :as => 'simulator'
   resource :compiler
 
+  resource :confirmation, only: [:new, :create]
+
   resources :images
   resources :videos
   resources :sounds
