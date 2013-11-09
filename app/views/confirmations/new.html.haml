@@ -1,0 +1,19 @@
+= form_tag confirmation_path, :class => 'well' do |f|
+  %h1 Setup your password
+  %br
+
+  - if @user.errors.any?
+    .errors
+      %h2 There were problems with your password.
+
+      %ul
+        - @user.errors.full_messages.each do |message|
+          %li= message
+
+  %p
+    = password_field_tag :password,              nil, :placeholder => 'password'
+  %p
+    = password_field_tag :password_confirmation, nil, :placeholder => 'confirm password'
+    = hidden_field_tag :confirmation_token,      @user.confirmation_token
+  
+  = submit_tag 'Submit', :class => 'btn'

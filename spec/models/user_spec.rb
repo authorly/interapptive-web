@@ -42,7 +42,19 @@ describe User do
       user = Factory.build(:user, :email => '')
       user.should_not be_valid
     end
+  end
 
+  describe 'confirm' do
+    it 'should be true if already confirmed' do
+      user.update_attribute(:confirmed, true)
+      expect(user).to be_confirmed
+    end
+
+    it 'should confirm the user' do
+      expect(user).not_to be_confirmed
+      user.confirm
+      expect(user).to be_confirmed
+    end
   end
 
   context "a user (in general)" do

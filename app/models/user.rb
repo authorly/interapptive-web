@@ -30,6 +30,14 @@ class User < ActiveRecord::Base
     }
   end
 
+  def confirm
+    return true if confirmed?
+    # It should be noted that validations are skipped with ActiveRecord::Base#update_attribute
+    # because of which we do not get any errors on password of the user despite validations
+    # in place.
+    self.update_attribute(:confirmed, true)
+  end
+
   def generate_token(column)
     begin
       self[column] = SecureRandom.urlsafe_base64
