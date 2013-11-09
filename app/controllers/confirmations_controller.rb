@@ -29,8 +29,14 @@ class ConfirmationsController < ApplicationController
     @user = User.find_by_confirmation_token(params[:confirmation_token])
 
     if @user
-      @user.password = params[:password]
-      @user.password_confirmation = params[:password_confirmation]
+      # Ensure users do not submit blank passwords.
+      if params[:password].blank? || params[:password_confirmation].blank?
+        @user.password = 'a'
+        @user.password_confirmation = 'a'
+      else
+        @user.password = params[:password]
+        @user.password_confirmation = params[:password_confirmation]
+      end
 
       if @user.save
         @user.confirm
