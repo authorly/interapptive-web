@@ -209,3 +209,5 @@ class App.Collections.StorybooksCollection extends Backbone.Collection
 
   comparator: (storybook) ->
     new Date(storybook.get('created_at'))
+
+_.extend App.Collections.StorybooksCollection::, App.Mixins.QueuedSync
