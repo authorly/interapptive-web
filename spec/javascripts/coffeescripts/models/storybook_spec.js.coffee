@@ -92,3 +92,10 @@ describe "App.Models.Storybook", ->
       @auto.set(disabled: true)
 
       expect(@storybook.voiceoverNeeded()).toBeFalsy()
+
+
+  describe 'save', ->
+    it "works when using the collection's queue for sync-ing", ->
+      storybook = new App.Models.Storybook {},
+        collection: new App.Collections.StorybooksCollection
+      expect(->storybook.save()).not.toThrow()
