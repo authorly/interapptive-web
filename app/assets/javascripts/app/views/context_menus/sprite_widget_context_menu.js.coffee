@@ -5,6 +5,7 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
   events: ->
     _.extend {}, super, {
       'click .as-previous': 'asPreviousKeyframe'
+      'click .as-next':     'asNextKeyframe'
     }
 
   template: JST["app/templates/context_menus/sprite_widget_context_menu"]
@@ -49,3 +50,7 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
   asPreviousKeyframe: (e) ->
     @widget.asPreviousKeyframe App.currentSelection.get('keyframe')
+
+
+  asNextKeyframe: (e) ->
+    @widget.asNextKeyframe App.currentSelection.get('keyframe')

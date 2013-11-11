@@ -321,6 +321,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
             !App.currentSelection.get('keyframe').previous()?
           callback: @asInPreviousKeyframe
 
+        as_next:
+          name:     'As in next scene frame'
+          disabled:  ->
+            !App.currentSelection.get('keyframe').next()?
+          callback: @asInNextKeyframe
+
         seperator1:  "---------",
 
         remove_image:
@@ -452,6 +458,11 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   asInPreviousKeyframe: =>
     keyframe = App.currentSelection.get('keyframe')
     @_capturedWidget.model.asPreviousKeyframe keyframe
+
+
+  asInNextKeyframe: =>
+    keyframe = App.currentSelection.get('keyframe')
+    @_capturedWidget.model.asNextKeyframe keyframe
 
 
   _getTouchCoordinates: (touch) ->
