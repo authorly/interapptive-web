@@ -16,5 +16,8 @@
   - if App.currentSelection.get('keyframe').previous()?
     %br
     %a.as-previous{:href => '#'} As in previous scene frame
+  - if App.currentSelection.get('keyframe').next()?
+    %br
+    %a.as-next{:href => '#'} As in next scene frame
   %br
   %a.remove{:href => '#'} Remove
