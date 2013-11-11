@@ -271,7 +271,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       onEditableElement = target.attr('contentEditable')
 
-      unless inCanvas or inContextMenu or onEditableElement
+      onSidebar = target.closest('.sidebar').length > 0
+
+      unless inCanvas or inContextMenu or onEditableElement or onSidebar
         App.currentSelection.set widget: null
 
 

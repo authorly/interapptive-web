@@ -57,8 +57,9 @@ window.App =
     @fontCache    = new App.Views.FontCache            el: $('#storybook-font-cache')
     @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
 
-    @assetLibrarySidebar= new App.Views.AssetLibrarySidebar
-      el: $('#asset-library-sidebar')
+    @assetsSidebar = new App.Views.AssetsSidebar
+      el: $('.sidebar.right')
+    @assetsSidebar.render()
 
     @_makeCanvasDroppable()
 
@@ -111,9 +112,7 @@ window.App =
 
     @fontCache.openStorybook(storybook)
 
-    assets = new App.Lib.AggregateCollection([], collections: [storybook.images, storybook.videos, storybook.sounds])
-    assets.storybook = storybook
-    @assetLibrarySidebar.setAssets assets
+    @currentSelection.set assets: storybook.assets
 
 
   _showSettings: ->

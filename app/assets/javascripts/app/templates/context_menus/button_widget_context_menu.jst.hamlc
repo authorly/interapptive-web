@@ -2,7 +2,7 @@
   = @widget.displayName()
 
 - if @widget.canBeDisabled()
-  #button-widget-disable{ class: if @widget.get('disabled') then '' else 'enable' }
+  #button-widget-disable.action.disable{ class: if @widget.get('disabled') then '' else 'enable' }
 
 %a#button-widget-filename
   = @widget.filename()

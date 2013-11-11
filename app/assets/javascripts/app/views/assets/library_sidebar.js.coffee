@@ -12,11 +12,6 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
   initialize: ->
     @render()
 
-    @adjustSize()
-    @initResizable()
-
-    App.vent.on 'window:resize', @adjustSize, @
-
 
   render: ->
     @$el.html(@template())
@@ -95,19 +90,6 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     if @collection?
       @collection.comparator = @comparator
       @collection.sort() if @comparator?
-
-
-  initResizable: ->
-    @$el.parent().resizable
-      alsoResize:  '#asset-library-sidebar, #asset-sidebar-sticky-footer, #asset-search-field'
-      maxWidth:    500
-      minWidth:    250
-      handles:     'w'
-
-
-  adjustSize: ->
-    offset = @$el.offset()?.top || 128
-    @$el.css height: "#{$(window).height() - offset}px"
 
 
   sortingChanged: ->
