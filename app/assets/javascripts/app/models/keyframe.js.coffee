@@ -225,6 +225,10 @@ class App.Models.Keyframe extends Backbone.Model
     @collection.at(@collection.indexOf(@) - 1)
 
 
+  next: ->
+    @collection.at(@collection.indexOf(@) + 1)
+
+
   isAnimation: ->
     @get('is_animation')
 
