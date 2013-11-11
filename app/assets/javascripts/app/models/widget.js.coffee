@@ -1,3 +1,8 @@
+# `z_order` range:
+# [1..4000) for sprites
+# [4000-5000) buttons
+# [5000..6000) hotspots
+# [6000...) texts
 class App.Models.Widget extends Backbone.Model
   # attributes: position(attributes: x, y) z_order
   @idGenerator = new App.Lib.Counter
@@ -197,6 +202,7 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
 
   defaults:
     type: 'ButtonWidget'
+    z_order: 4000
 
 
   initialize: ->
@@ -405,6 +411,22 @@ class App.Collections.Widgets extends Backbone.Collection
         widget.set 'z_order', widget.get('z_order') - 1
       # set max to sprite
       sprite.set 'z_order', max
+
+
+  @validZOrder: (order) ->
+    return true if order.length == 0
+
+    z_order_array = _.map order, ([k, v]) -> k
+    firstButtonIndex = _.max(z_order_array) + 1
+    lastSpriteIndex  = _.min(z_order_array) - 1
+
+    for [index, widget] in order
+      if widget instanceof App.Models.SpriteWidget
+        lastSpriteIndex  = index if index > lastSpriteIndex
+      if widget instanceof App.Models.ButtonWidget
+        firstButtonIndex = index if index < firstButtonIndex
+
+    firstButtonIndex > lastSpriteIndex
 
 
   @containers:

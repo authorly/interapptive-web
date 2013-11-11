@@ -1,0 +1,30 @@
+.action {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  opacity: 0.2;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1.0;
+  }
+
+  &.delete {
+    background-image: asset-url('red-minus.png');
+  }
+
+  &.disable, &.enable {
+    background-image: asset-url('eye.png');
+  }
+
+  &.disable:hover {
+    opacity: 0.6;
+  }
+
+  &.enable {
+    opacity: 0.8;
+  }
+
+}
