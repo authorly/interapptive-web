@@ -56,10 +56,8 @@
 #asset-library-sidebar {
   min-width: 200px;
   left: 0 !important;
-  margin-top: 85px;
   padding: 0;
   font-size: 11px;
-  overflow-y: scroll;
   overflow: -moz-scrollbars-vertical;
 
   #asset-type-filter,
@@ -78,9 +76,9 @@
     Filter to show a single file type from list
   */
   #asset-type-filter {
-    ul.nav.nav-pills {
+    .nav.nav-pills {
+      .clearfix();
       width: 100%;
-      padding-left: 10px;
       margin-bottom: 7px;
 
       li {
@@ -130,7 +128,6 @@
   */
   #asset-sorting {
     display: inline-block;
-    margin: 0 3px 5px 5px;
     text-align: right;
 
     select {
@@ -170,7 +167,8 @@
 
     li {
       .removable;
-      margin: 10px 5px;
+      margin: 5px;
+      margin-left: 0;
       padding-bottom: 1.1em;
       display: none;
       position: relative;
@@ -272,7 +270,7 @@
   }
 
   #asset-list-thumb-view, #asset-list-table {
-    padding-bottom: 10px;
+    padding-bottom: 14px;
 
   }
 
@@ -346,8 +344,6 @@
       float: right;
       margin-right: 3px;
       margin-top: 5px;
-      position: relative;
-      bottom: -5px;
 
       input {
         height: 20px !important;
@@ -358,7 +354,6 @@
     .select-file {
       float: left;
       position: relative;
-      margin: 5px 0 0 3px;
 
       .btn {
         position: absolute;

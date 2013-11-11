@@ -1,12 +1,9 @@
 - _style =    "background-image: url(#{@widget.url()})"
 %div.sprite-image{:style => _style, :data-widget-id => @widget.id}
 %span{ title: @widget.filename() }
-  = App.Lib.StringHelper.truncate(@widget.filename(), 15)
+  = App.Lib.StringHelper.truncate(@widget.filename(), 20)
 
 - if @widget.canBeDeleted()
   .action.delete
 - else if @widget.canBeDisabled()
-  - if @widget.disabled()
-    .action.enable
-  - else
-    .action.disable
+  .action{ class: if @widget.disabled() then 'enable' else 'disable' }

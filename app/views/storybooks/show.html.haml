@@ -10,14 +10,32 @@
 .navbar.sidebar.left
   #scene-list
 .navbar.sidebar.right
-  #asset-library-sidebar
+  %section
+    %a.handle{ 'data-toggle' => "collapse", 'data-target' => "#sprite-list" }
+      %span.indicator
+        %span.open &#9658;
+        %span._close &#9660;
+
+      Scene images
+    #sprite-list.collapse
+
+  %section.active
+    %a.handle{ 'data-toggle' => "collapse", 'data-target' => "#asset-library-sidebar" }
+      %span.indicator
+        %span.open &#9658;
+        %span._close &#9660;
+      Media
+    #asset-library-sidebar.collapse
+
 - flash.each do |name, msg|
   %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
     %a.close{"data-dismiss" => "alert"}
     = msg
+
 .canvas-container
   %canvas{id: 'builder', width: 3500, height: 2500}
     %p Your browser doesn't support the technology required to run this application.
+
 #context-menu
   .sprite
   .button
