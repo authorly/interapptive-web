@@ -47,5 +47,22 @@ class App.Models.Preview extends App.Models.Image
     @deferredSave() # ignores arguments
 
 
+  widgetChanged: (widget) ->
+    if widget instanceof App.Models.HotspotWidget or
+       widget instanceof App.Models.SpriteOrientation or
+       widget instanceof App.Models.ImageWidget
+      @trigger 'invalid'
+      @invalid = true
+
+
+  isInvalid: ->
+    @invalid
+
+
+  setDataUrl: (dataUrl) ->
+    @invalid = false
+    @set 'data_url', dataUrl
+
+
 _.extend App.Models.Preview::, App.Mixins.DeferredSave
 _.extend App.Models.Preview::, App.Mixins.QueuedSync

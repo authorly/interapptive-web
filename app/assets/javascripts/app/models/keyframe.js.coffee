@@ -74,6 +74,8 @@ class App.Models.Keyframe extends Backbone.Model
     @scene.storybook.videos.on 'remove', @videoRemoved, @
     @scene.storybook.fonts.on  'remove', @fontRemoved, @
 
+    @listenTo @widgets,        'add remove change:position change:scale change:radius',  @widgetsChangedPreview
+    @listenTo @scene.widgets,  '           change:position change:scale change:z_order change:disabled change:image_id', @widgetsChangedPreview
 
   uninitializeWidgets: ->
     @widgets.off 'reset add remove change', @widgetsChanged, @
@@ -84,6 +86,10 @@ class App.Models.Keyframe extends Backbone.Model
 
   widgetsChanged: ->
     @deferredSave()
+
+
+  widgetsChangedPreview: (widget) ->
+    @preview.widgetChanged(widget)
 
 
   # preferred this manual validation out of fear of not being able to save
