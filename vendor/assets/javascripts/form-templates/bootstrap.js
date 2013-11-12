@@ -4,7 +4,7 @@
       <form class="form-horizontal">\
         {{fieldsets}}\
         <div class="form-actions">\
-         <button class="btn btn-submit-cancel">Cancel</button>\
+         <input type="button" class="btn btn-submit-cancel" value="Cancel"></input>\
          <button type="submit" class="btn btn-primary btn-submit">\
             Submit\
          </button>\
