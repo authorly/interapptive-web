@@ -27,8 +27,6 @@
 #= require base64.js
 #= require canvas2image.js
 #= require form-templates/bootstrap
-#= require form-editors/currency
-#= require form-editors/buttons
 #= require form-editors/jquery.ui
 #= require backbone-deepmodel
 #= require bootstrap-colorpicker
