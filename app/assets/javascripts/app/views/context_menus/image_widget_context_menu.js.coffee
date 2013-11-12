@@ -1,15 +1,13 @@
 #= require ./context_menu
 
 class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
-  CONTROL_KEYS: _.map ['backspace', 'tab', 'enter', 'home', 'end', 'left', 'right'], (name) -> App.Lib.Keycodes[name]
 
   events: ->
     _.extend {}, super,
-      'keydown  #scale-amount':  'enterKeyScaleListener'
-      'keyup    #scale-amount':  'scaleAmountUpDownArrow'
-      'keypress #scale-amount':  'numericInputListener'
-      'click .bring-to-front':   'bringToFront'
-      'click .put-in-back':      'putInBack'
+      'keypress #scale-amount':   '_keyPressedInScale'
+      'keyup    #scale-amount':   '_keyUpInScale'
+      'click    .bring-to-front': 'bringToFront'
+      'click    .put-in-back':    'putInBack'
 
 
   initialize: ->
@@ -18,27 +16,37 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
 
 
   remove: ->
-    @stopListening()
+    @_removeCoordinates()
     super
 
 
-  scaleAmountUpDownArrow: (event) ->
-    _kc = event.keyCode
-    if _kc is App.Lib.Keycodes.up
+  _keyPressedInScale: (event) ->
+    @_numericInputListener(event)
+
+
+  _keyUpInScale: (event) ->
+    @_scaleAmountUpDownArrow(event)
+    @_enterKeyScaleListener(event)
+
+
+  _scaleAmountUpDownArrow: (event) ->
+    code = event.keyCode
+    if code is App.Lib.KeyCodes.up
       @_setScale(1)
-    if _kc is App.Lib.Keycodes.down
+    if code is App.Lib.KeyCodes.down
       @_setScale(-1)
 
 
-  numericInputListener: ->
-    number = App.Lib.Keycodes[0] <= event.which <= App.Lib.Keycodes[9]
-    ok = not event.which or number or @CONTROL_KEYS.indexOf(event.which) > -1
+  _numericInputListener: (event) ->
+    code = event.charCode
+    number = App.Lib.CharCodes[0] <= code <= App.Lib.CharCodes[9]
+    ok = not event.which or number
 
     event.preventDefault() unless ok
 
 
-  enterKeyScaleListener: (event) ->
-    @_setScale() if event.keyCode is App.Lib.Keycodes.enter
+  _enterKeyScaleListener: (event) ->
+    @_setScale() if event.keyCode is App.Lib.KeyCodes.enter
 
 
   bringToFront: (e) ->
@@ -61,20 +69,18 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
   _setScale: (scale_by) ->
     object = @getModel()
     scale = object.get('scale') * 100
-    if scale_by?
-      if parseInt(scale) + scale_by < 10
-        @_scaleCantBeSet()
-        @$('#scale-amount').val(parseInt(scale))
-        return
-      else
-        @$('#scale-amount').val(parseInt(scale) + scale_by)
 
-    else
-      if parseInt(@_currentScale()) < 10
-        @_scaleCantBeSet()
-        @$('#scale-amount').val(parseInt(scale))
-        return
-    object.set(scale: @_currentScale() / 100)
+    newScale = if scale_by? then scale + scale_by else parseInt(@_currentScale())
+    if newScale < 10
+      @_scaleCantBeSet()
+      newScale = 10
+
+    object.set
+      scale: newScale / 100
+
+
+    @$('#scale-amount').val(newScale)
+
 
 
   _currentScale: ->
