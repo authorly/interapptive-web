@@ -14,7 +14,19 @@ class App.Models.ApplicationInformation extends Backbone.Model
   schema:
     available_from:
       type: 'Date'
-      validators: ['required']
+      yearStart: (new Date).getFullYear()
+      yearEnd: (new Date).getFullYear() + 100
+      validators: ['required',
+        (value, formValues) ->
+          err = {
+            type: 'available_from',
+            message: 'The application should be available starting on a date in the future'
+          }
+
+          now = new Date
+          today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+          if value < today then err else null
+      ]
     price_tier:
       type: 'Select'
       options: _.map [1..15], (tier) -> val: "tier_#{tier}", label: "$#{tier-1}.99"
