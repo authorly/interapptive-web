@@ -1,15 +1,15 @@
 class App.Models.ApplicationInformation extends Backbone.Model
-  # @contentDescriptionSchema: ->
-    # schema = {}
-    # _.each [ 'fantasy_violence', 'realistic_violence', 'sexual_content', 'profanity', 'drugs', 'mature', 'gambling', 'horror', 'prolonged_violence', 'graphical_sexual_content'], (category) ->
-      # schema[category] =
-        # type: 'Radio'
-        # options: [
-          # { val: 'none',    label: 'None' },
-          # { val: 'mild',    label: 'Infrequent/Mild' },
-          # { val: 'intense', label: 'Frequent/Intense' },
-        # ]
-    # schema
+  @contentDescriptionSchema: ->
+    schema = {}
+    _.each [ 'fantasy_violence', 'realistic_violence', 'sexual_content', 'profanity', 'drugs', 'mature', 'gambling', 'horror', 'prolonged_violence', 'graphical_sexual_content'], (category) ->
+      schema[category] =
+        type: 'Radio'
+        options: [
+          { val: 'none',    label: 'None' },
+          { val: 'mild',    label: 'Infrequent/Mild' },
+          { val: 'intense', label: 'Frequent/Intense' },
+        ]
+    schema
 
   schema:
     available_from:
@@ -30,8 +30,9 @@ class App.Models.ApplicationInformation extends Backbone.Model
     price_tier:
       type: 'Select'
       options: _.map [1..15], (tier) -> val: "tier_#{tier}", label: "$#{tier-1}.99"
-    # content_description:
-      # template: _.template('<div class="altField" data-editor></div>')
+    content_description:
+      type: 'Object'
+      subSchema: @contentDescriptionSchema()
     for_kids:
       type: 'Checkbox'
       title: 'Made for kids?'
