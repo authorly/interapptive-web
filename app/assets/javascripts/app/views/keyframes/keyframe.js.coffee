@@ -16,7 +16,9 @@ class App.Views.Keyframe extends Backbone.View
     @listenTo App.currentSelection, 'change:keyframe', @_activeKeyframeChanged
     @listenTo @model, 'change:animation_duration',  @animationDurationChanged
     @listenTo @model, 'invalid:animation_duration', @invalidAnimationDurationEntered
-    @listenTo @model.preview, 'invalid', @renderPreview
+    @listenTo @model.preview, 'invalid', ->
+      # let all the changes propagate (e.g. delete sprite -> delete orientations)
+      window.setTimeout @renderPreview, 0
 
 
   remove: ->
