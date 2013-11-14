@@ -2,5 +2,9 @@
   .modal-header.inline
     %i{:class => 'icon-cog icon-black'}
     %h3.modal-title App Settings
-
+    %ul.nav.nav-pills
+      %li.general-settings.active
+        %a{:href => "#"} General
+      %li.icons
+        %a{:href => "#"} App Icons
   .modal-body
