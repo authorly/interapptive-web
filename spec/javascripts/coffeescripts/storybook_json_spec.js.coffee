@@ -175,7 +175,7 @@ describe "App.JSON", ->
         font_size: "36"
         font_face: "Verdana"
         widgets: [
-          { 'type': 'SpriteWidget', 'id': 9, 'image_id': @sprite_image.id},
+          { 'type': 'SpriteWidget', 'id': 9, 'image_id': @sprite_image.id, 'z_order': 6004},
         ]
       }, parse: true
 
@@ -305,6 +305,9 @@ describe "App.JSON", ->
         expect(sprite.image).toEqual "https://interapptive.s3.amazonaws.com/images/4/avatar3.jpg"
         expect(sprite.spriteTag).toEqual 2 + 23 # avoid mobile bug
         expect(sprite.position).toEqual [400, 200]
+        expect(sprite.scale).toEqual 1.5
+        expect(sprite.visible).toBeTruthy()
+        expect(sprite.zOrder).toEqual 6004
 
         expect(api.CCMoveTo).toBeDefined()
         expect(api.CCMoveTo.length).toEqual 2
