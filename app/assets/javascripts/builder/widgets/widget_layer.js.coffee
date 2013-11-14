@@ -209,10 +209,10 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     delta = 10
     dx = 0; dy = 0
     switch event.keyCode
-      when App.Lib.Keycodes.left  then dx = -delta
-      when App.Lib.Keycodes.up    then dy =  delta
-      when App.Lib.Keycodes.right then dx =  delta
-      when App.Lib.Keycodes.down  then dy = -delta
+      when App.Lib.KeyCodes.left  then dx = -delta
+      when App.Lib.KeyCodes.up    then dy =  delta
+      when App.Lib.KeyCodes.right then dx =  delta
+      when App.Lib.KeyCodes.down  then dy = -delta
       else return
 
     model = if @_selectedWidget.getModelForPositioning? then @_selectedWidget.getModelForPositioning() else @_selectedWidget.model
