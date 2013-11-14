@@ -16,8 +16,7 @@ class App.Views.Keyframe extends Backbone.View
     @listenTo App.currentSelection, 'change:keyframe', @_activeKeyframeChanged
     @listenTo @model, 'change:animation_duration',  @animationDurationChanged
     @listenTo @model, 'invalid:animation_duration', @invalidAnimationDurationEntered
-    @listenTo @model.widgets,        'add remove change:position change:scale change:radius',  @widgetsChanged
-    @listenTo @model.scene.widgets,  '           change:position change:scale change:z_order change:disabled change:image_id', @widgetsChanged
+    @listenTo @model.preview, 'invalid', @renderPreview
 
 
   remove: ->
@@ -29,7 +28,7 @@ class App.Views.Keyframe extends Backbone.View
     @$el.html(@template(keyframe: @model)).attr('data-id', @model.id)
     if @model.isAnimation()
       @$el.attr('data-is_animation', '1').addClass('animation')
-    if @model.preview.isNew()
+    if @model.preview.isNew() || @model.preview.isInvalid()
       @renderPreview()
 
     @
@@ -62,11 +61,6 @@ class App.Views.Keyframe extends Backbone.View
       animation_duration: Number($(event.currentTarget).val())
 
 
-  widgetsChanged: (model) ->
-    if model instanceof App.Models.HotspotWidget or
-       model instanceof App.Models.SpriteOrientation or
-       model instanceof App.Models.ImageWidget
-      @renderPreview()
 
 
   _configurationClicked: ->
@@ -151,7 +145,7 @@ class App.Views.Keyframe extends Backbone.View
 
   _exportPreview: ->
     image = Canvas2Image.saveAsPNG @previewCanvas, true
-    @model.setPreviewDataUrl image.src
+    @model.preview.setDataUrl image.src
 
 
   _allWidgets: ->
