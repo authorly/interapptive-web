@@ -45,10 +45,10 @@ class App.Views.TextWidget extends Backbone.View
 
   keydown: (event) ->
     switch event.keyCode
-      when App.Lib.Keycodes.enter
+      when App.Lib.KeyCodes.enter
         @shouldSave = true
         @deselect()
-      when App.Lib.Keycodes.escape
+      when App.Lib.KeyCodes.escape
         @shouldSave = false
         @deselect()
 
