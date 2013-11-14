@@ -340,35 +340,32 @@ class App.Collections.Widgets extends Backbone.Collection
 
 
   imageRemoved: (image) ->
-    @each (widget) =>
-      if widget instanceof App.Models.SpriteWidget
-        @remove widget if widget.get('image_id') == image.id
-      if widget instanceof App.Models.ButtonWidget
-        widget.set(image_id: null) if widget.get('image_id') == image.id
-        widget.set(selected_image_id: null) if widget.get('selected_image_id') == image.id
+    @remove _.select @byClass(App.Models.SpriteWidget), (widget) ->
+      widget.get('image_id') == image.id
+
+    _.each @byClass(App.Models.ButtonWidget), (widget) ->
+      widget.set(image_id: null) if widget.get('image_id') == image.id
+      widget.set(selected_image_id: null) if widget.get('selected_image_id') == image.id
 
 
   soundRemoved: (sound) ->
-    @each (widget) =>
-      if widget instanceof App.Models.HotspotWidget
-        @remove widget if widget.get('sound_id')?.toString() is sound.get('id').toString()
+    @remove _.select @byClass(App.Models.HotspotWidget), (widget) ->
+      widget.get('sound_id')?.toString() is sound.get('id').toString()
 
 
   videoRemoved: (video) ->
-    @each (widget) =>
-      if widget instanceof App.Models.HotspotWidget
-        @remove widget if widget.get('video_id')?.toString() is video.get('id').toString()
+    @remove _.select @byClass(App.Models.HotspotWidget), (widget) ->
+      widget.get('video_id')?.toString() is video.get('id').toString()
 
 
   fontRemoved: (font) ->
-    @each (widget) =>
-      if widget instanceof App.Models.TextWidget
-        default_font_id = @keyframe.scene.storybook.defaultFont().id
-        if widget.get('font_id').toString() is font.get('id').toString()
-          if default_font_id?
-            widget.set(font_id: default_font_id)
-          else
-            @remove widget
+    defaultFont = @keyframe.scene.storybook.defaultFont()
+    fonts = _.select @byClass(App.Models.TextWidget), (widget) ->
+      widget.get('font_id').toString() is font.id.toString()
+    if defaultFont?
+      _.each fonts, (widget) -> widget.set(font_id: defaultFont.id)
+    else
+      @remove fonts
 
 
   byClass: (klass) ->
