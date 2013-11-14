@@ -126,14 +126,14 @@ class App.JSON
     page.API.CCSprites ||= []
 
     _.each scene.spriteWidgets(), (spriteWidget) =>
-      position = scene.keyframes.at(0).getOrientationFor(spriteWidget).get('position')
-      spriteId = @spriteIdCounter.next() * 10
-      spriteNode =
-        image:     spriteWidget.url()
-        spriteTag: spriteId
-        # TODO does the app require this? because we have a Move action for the first
-        # keyframe anyway
-        position: @_getPosition(position)
+
+      # workaround caused by #244
+      spriteId =  @spriteIdCounter.next() + 10
+      @spriteIdCounter.check(spriteId)
+
+      spriteNode = @_getSpriteNode(spriteWidget, scene)
+      spriteNode.spriteTag = spriteId
+
       page.API.CCSprites.push(spriteNode)
 
       actions = page.API.CCStorySwipeEnded.runAction
@@ -264,14 +264,10 @@ class App.JSON
 
     _.each scene.spriteWidgets(), (spriteWidget) =>
       spriteId = @spriteIdCounter.next()
-      orientation = scene.keyframes.at(0).getOrientationFor(spriteWidget)
-      spriteNode =
-        image:     spriteWidget.url()
-        spriteTag: spriteId
-        scale:     orientation.get('scale')
-        position:  @_getPosition(orientation.get('position'))
-        visible:   true
-        zOrder:   parseInt(spriteWidget.get('z_order'))
+
+      spriteNode = @_getSpriteNode(spriteWidget, scene)
+      spriteNode.spriteTag = spriteId
+
       node.CCSprites.push(spriteNode)
 
     if (sound = scene.sound())?
@@ -281,6 +277,18 @@ class App.JSON
 
     node
 
+
+  _getSpriteNode: (spriteWidget, scene) ->
+    orientation = scene.keyframes.at(0).getOrientationFor(spriteWidget)
+    node =
+      image: spriteWidget.url()
+      scale: orientation.get('scale')
+      # TODO does the app require this? because we have a Move action for the first
+      # keyframe anyway
+      position: @_getPosition(orientation.get('position'))
+      visible: true
+      zOrder: parseInt(spriteWidget.get('z_order'))
+    node
 
   _getPosition: (position) ->
     [Math.round(position.x), Math.round(position.y)]
