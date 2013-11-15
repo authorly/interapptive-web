@@ -33,6 +33,7 @@ class App.Lib.DateTimeHelper
     year = d.getFullYear()
 
     month = d.getMonth()
+    month++ # Month numbers start with 0 while day start with 1. Fucking Javascript!
     month_padding = ''
     if month < 10
       month_padding = '0'
