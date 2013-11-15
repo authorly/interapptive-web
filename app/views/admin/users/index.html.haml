@@ -20,6 +20,8 @@
     %th
       Is Admin?
     %th
+      Signed Up On
+    %th
       Actions
   - for user in @users
     %tr
@@ -35,6 +37,8 @@
         = user.city
       %td
         = yes_or_no(user.is_admin?)
+      %td
+        = user.created_at.to_s(:authorly)
       %td
         .btn-group
           %a.btn.dropdown-toggle{'data-toggle' => "dropdown", :href => "#"}
