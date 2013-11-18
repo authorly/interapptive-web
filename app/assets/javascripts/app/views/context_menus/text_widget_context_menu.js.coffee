@@ -3,8 +3,8 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
 
   events: ->
     _.extend {}, super,
-      'change #font-face':           'fontFaceChanged'
-      'change #font-size':           'fontSizeChanged'
+      'change #font-face': 'fontFaceChanged'
+      'change #font-size': 'fontSizeChanged'
 
 
   initialize: ->

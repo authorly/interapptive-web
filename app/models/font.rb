@@ -8,17 +8,12 @@ class Font < Asset
         'name'             =>   meta_info[:font_name],
         'file_name'        =>   font_file_name,
         'size'             =>   font_size,
-        'url'              =>   font_url,
+        'url'              =>   font.url,
         'delete_url'       =>   "/fonts/#{self.id}",
         'delete_type'      =>   'DELETE',
         'asset_type'       =>   asset_type,
         'created_at'       =>   created_at
     }
-  end
-
-  def font_url
-    return meta_info[:font_name] + '.ttf' if asset_type == 'system'
-    font.url
   end
 
   def font_file_name
