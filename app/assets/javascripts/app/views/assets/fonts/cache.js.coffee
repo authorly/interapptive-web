@@ -12,8 +12,6 @@ class App.Views.FontCache extends Backbone.View
 
 
   addFontToCache: (font) ->
-    return if font.isSystem()
-
     $fontFaceImportEl = "@font-face { font-family: '#{font.get('name')}'; src: url('#{font.get('url')}'); }"
     @$el.append($fontFaceImportEl)
 

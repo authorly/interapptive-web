@@ -308,8 +308,15 @@ class App.Models.TextWidget extends App.Models.Widget
   # Used to put filename of the font being used for a widget
   # in Storybook JSON.
   fontFileName: ->
-    return 'arial.ttf' if (font = @font()).get('url') == 'Arial.ttf'
-    font.get('url')
+    font = @font()
+
+    if font.isSystem()
+      # Mobile software does not pick up Arial font if it's referenced as Arial.ttf in JSON.
+      # This issue is way to convoluted to fix in the mobile software.
+      return 'arial.ttf' if font.get('file_name') == 'Arial.ttf'
+      font.get('file_name')
+    else
+      font.get('url')
 
 
   font: ->
