@@ -48,3 +48,7 @@
 #= require_tree ./app/views
 
 #= require builder
+
+#= require_self
+
+window.setTimeout (-> App.vent.trigger 'show:publishSettings'), 1000

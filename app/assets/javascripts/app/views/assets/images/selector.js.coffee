@@ -28,6 +28,8 @@ class App.Views.ImageSelector extends Backbone.View
       el: @$('.selected-image')
     @selectedImageView.render()
 
+    @
+
 
   remove: ->
     @stopListening @selectedImageView

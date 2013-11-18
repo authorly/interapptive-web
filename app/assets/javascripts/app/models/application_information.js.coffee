@@ -12,6 +12,8 @@ class App.Models.ApplicationInformation extends Backbone.Model
     schema
 
   schema:
+    large_icon_id:
+      type: 'Image'
     available_from:
       type: 'Date'
       yearStart: (new Date).getFullYear()
