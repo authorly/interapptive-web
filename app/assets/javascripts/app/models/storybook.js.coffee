@@ -179,7 +179,7 @@ class App.Models.Storybook extends Backbone.Model
     @videos.length == 0 or @videos.hasOnlyTranscodedVideos()
 
 
-  compile: (platform) ->
+  compile: (platform, user) ->
     if @canBeCompiled()
       $.post('/compiler',
         storybook_json: JSON.stringify(new App.JSON(@).app)
@@ -187,7 +187,7 @@ class App.Models.Storybook extends Backbone.Model
         platform: platform
         ->
           App.trackUserAction 'Enqueued an app for compilation', platform: platform
-          App.vent.trigger('show:message', 'success', "Your application is under compilation. You will shortly receive a link to download your compiled application via email.")
+          App.vent.trigger('show:message', 'success', "Your application is under compilation. You will shortly receive a link to download your compiled application at #{user.get('email')}.")
       'json')
     else
       App.trackUserAction 'Failed to enqueue app (videos not transcoded)', platform: platform
