@@ -60,6 +60,8 @@
             var input = $('input', this.el),
                 date = input.datepicker('getDate');
 
+            date.setMinutes(date.getMinutes()-date.getTimezoneOffset());
+
             return date;
         },
 
