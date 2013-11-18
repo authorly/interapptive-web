@@ -1,6 +1,9 @@
 class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
 
-  tagName: 'div',
+  tagName: 'div'
+
+  # so Backbone Forms does not add one item to empty arrays, by default
+  @isAsync: true
 
   # events:
       # 'change': function() {
@@ -23,8 +26,12 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
 
   initialize: ->
     super
-    @collection = @model.storybook.images
-    @setValue @model.get(@key)
+    if @model?
+      @collection = @model.storybook.images
+      @setValue @model.get(@key)
+    else
+      @collection = @options.list.model.storybook.images
+      @setValue @value
 
 
   render: () ->
@@ -37,8 +44,11 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
     selectorEl.prepend selectorEl.find('.selected-image')
     @listenTo selector, 'select', (image) ->
       @setValue image?.id
+      @trigger 'change', @
 
     @$el.append selectorEl
+    # consequence having to use `isAsync`
+    window.setTimeout (=> @trigger 'readyToAdd', @), 0
 
     @
 
@@ -51,9 +61,16 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
     @image_id = value
 
 
+  focus: ->
+
+
+
+
 # Notes:
 
 # The editor must implement getValue(), setValue(), focus() and blur() methods.
 # The editor must fire change, focus and blur events.
 # The original value is available through this.value.
 # The field schema can be accessed via this.schema. This allows you to pass in custom parameters.
+
+

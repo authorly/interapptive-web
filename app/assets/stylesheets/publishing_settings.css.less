@@ -45,6 +45,18 @@
         }
       }
 
+      .bbf-list li {
+        list-style-type: decimal;
+        position: relative;
+        margin-bottom: 10px;
+
+        [data-action="remove"] {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+      }
+
       [name="content_description"] {
         li {
           list-style-type: none;
@@ -107,3 +119,5 @@
     z-index: 2000;
   }
 }
+
+

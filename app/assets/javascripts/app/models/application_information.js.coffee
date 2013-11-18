@@ -24,10 +24,6 @@ class App.Models.ApplicationInformation extends Backbone.Model
     schema
 
   schema:
-    large_icon_id:
-      type: 'Image'
-      title: 'Large App Icon'
-      help: "A large version of your app icon that will be used on the App Store. It must be at least 72 DPI, in the RGB color space, and 1024 x 1024 pixels (it cannot be scaled up). The file type must be .jpeg, .jpg, .tif, .tiff, or .png. It must be flat artwork without rounded corners."
     available_from:
       type: 'Date'
       title: "Available from"
@@ -80,6 +76,25 @@ class App.Models.ApplicationInformation extends Backbone.Model
 
           if value.length > 100 then err else null
       ]
+    large_icon_id:
+      type: 'Image'
+      title: 'Large App Icon'
+      help: "A large version of your app icon that will be used on the App Store. It must be at least 72 DPI, in the RGB color space, and 1024 x 1024 pixels (it cannot be scaled up). The file type must be .jpeg, .jpg, .tif, .tiff, or .png. It must be flat artwork without rounded corners."
+    retina_3_5_screenshots:
+      type: 'List'
+      itemType: 'Image'
+      title: '3.5-Inch Retina Display Screenshots'
+      help: "Screenshots for 3.5-inch iPhone and iPod touch Retina display must be 960x640, 960x600, 640x960 or 640x920 pixels, at least 72 DPI, in the RGB color space, and in the JPG or PNG format."
+    retina_4_0_screenshots:
+      type: 'List'
+      itemType: 'Image'
+      title: '4-Inch Retina Display Screenshots'
+      help: "Screenshots for 4-inch iPhone 5 and iPod touch (5th generation) Retina display must be 1136x640, 1136x600, 640x1136 or 640x1096 pixels, at least 72 DPI, in the RGB color space, and in the JPG or PNG format."
+    retina_ipad_screenshots:
+      type: 'List'
+      itemType: 'Image'
+      title: 'iPad Screenshots'
+      help: "iPad Screenshots must be .jpeg, .jpg, .tif, .tiff, or .png file that is 1024x768, 1024x748, 768x1024, 768x1004, 2048x1536, 2048x1496, 1536x2048 or 1536x2008 pixels, at least 72 DPI, and in the RGB color space."
 
 
   parse: (attributes={}) ->
@@ -91,3 +106,5 @@ class App.Models.ApplicationInformation extends Backbone.Model
 
   url: ->
     "/storybooks/#{@storybook.id}/application_information.json"
+
+

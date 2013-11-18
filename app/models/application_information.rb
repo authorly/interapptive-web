@@ -9,12 +9,17 @@ class ApplicationInformation < ActiveRecord::Base
 
   serialize :content_description
 
+  before_validation :sanitize_screenshots
+
   validate :large_icon,           presence: true
-  # validates_each :retina_3_5_screenshots, :retina_4_0_screenshots, :retina_ipad_screenshots do |record, attr, value|
-     # unless (2..5).include?(value.length)
-       # record.errors.add(attr, 'length must be between 2 and 5')
-     # end
-  # end
+  validates_each :retina_3_5_screenshots, :retina_4_0_screenshots, :retina_ipad_screenshots do |record, attr, value|
+     if (value||[]).length < 2
+       record.errors.add(attr, 'please add at least 2 screenshots')
+     end
+     if (value||[]).length > 5
+       record.errors.add(attr, 'please add at most 5 screenshots')
+     end
+  end
 
   validates :available_from,      presence: true
   validates_each :available_from do |record, attr, value|
@@ -43,4 +48,14 @@ class ApplicationInformation < ActiveRecord::Base
     end
   end
 
+  def sanitize_screenshots
+    [:retina_3_5_screenshots, :retina_4_0_screenshots, :retina_ipad_screenshots].each do |key|
+      self[key] = (self[key] || []).map{|id| Image.where(id: id).first}.compact.uniq.map(&:id)
+    end
+
+  end
+
 end
+
+
+
