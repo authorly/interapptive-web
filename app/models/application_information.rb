@@ -34,7 +34,7 @@ class ApplicationInformation < ActiveRecord::Base
     if value.present?
       keys = [:fantasy_violence, :realistic_violence, :sexual_content, :profanity,
           :drugs, :mature, :gambling, :horror, :prolonged_violence,
-          :graphical_sexual_content]
+          :graphical_sexual_content].map(&:to_s)
       keys.each do |key|
         record.errors.add(attr, "must contain #{key}") unless value[key].present?
       end
