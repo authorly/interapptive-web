@@ -25,7 +25,8 @@
 
     #main= yield
 
-    :coffee
-      $ ->
+    :javascript
+      $(document).ready(function() {
         App.init()
-        #{ yield :initialization_coffee }
+        #{ yield :initialization_javascript }
+      })
