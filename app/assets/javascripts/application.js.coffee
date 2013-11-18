@@ -49,6 +49,3 @@
 
 #= require builder
 
-#= require_self
-
-window.setTimeout (-> App.vent.trigger 'show:publishSettings'), 1000
