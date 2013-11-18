@@ -82,6 +82,13 @@ class App.Models.Storybook extends Backbone.Model
       @widgets = new App.Collections.Widgets(widgets)
       @widgets.storybook = @
 
+    info = attributes.application_information; delete attributes.application_information
+    if @application_information?
+      @application_information.set(info) if info?
+    else
+      @application_information = new App.Models.ApplicationInformation(info)
+      @application_information.storybook = @
+
     attributes
 
 

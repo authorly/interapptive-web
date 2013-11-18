@@ -76,8 +76,12 @@ class Storybook < ActiveRecord::Base
     end
   end
 
-  def as_json(options)
-    super({except: :settings, methods: SETTINGS.keys}.merge(options)).merge({
+  def as_json(options={})
+    super({
+      except: :settings,
+      methods: SETTINGS.keys,
+      include: :application_information,
+    }.merge(options)).merge({
       preview_image_url: scenes.where(is_main_menu: true)[0].try(:preview_image_url)
     })
   end

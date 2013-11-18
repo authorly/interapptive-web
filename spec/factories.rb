@@ -14,27 +14,6 @@ Factory.define :storybook do |f|
   f.user Factory(:user)
 end
 
-Factory.define :application_information do |f|
-  f.storybook Factory(:storybook)
-  f.icon { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'support', 'images', '500x300.png')) }
-  f.description 'This book is for true champions'
-  f.keywords 'keyword1, keyword2'
-  f.available_from 2.days.from_now
-  f.price_tier 'tier_1'
-  f.content_description({
-      fantasy_violence:         'none',
-      realistic_violence:       'mild',
-      sexual_content:           'intense',
-      profanity:                'mild',
-      drugs:                    'none',
-      mature:                   'intense',
-      gambling:                 'none',
-      horror:                   'mild',
-      prolonged_violence:       'none',
-      graphical_sexual_content: 'none',
-  })
-end
-
 Factory.define :sound do |f|
   f.type 'Sound'
   f.sound 'audio-file.mp3'
@@ -54,6 +33,27 @@ end
 Factory.define :font do |f|
   f.type 'Font'
   f.video 'custom-font.ttf'
+end
+
+Factory.define :application_information do |f|
+  f.storybook Factory(:storybook)
+  f.large_icon Factory(:image)
+  f.description 'This book is for true champions'
+  f.keywords 'keyword1, keyword2'
+  f.available_from 2.days.from_now
+  f.price_tier 'tier_1'
+  f.content_description({
+      fantasy_violence:         'none',
+      realistic_violence:       'mild',
+      sexual_content:           'intense',
+      profanity:                'mild',
+      drugs:                    'none',
+      mature:                   'intense',
+      gambling:                 'none',
+      horror:                   'mild',
+      prolonged_violence:       'none',
+      graphical_sexual_content: 'none',
+  })
 end
 
 Factory.define :scene do |f|

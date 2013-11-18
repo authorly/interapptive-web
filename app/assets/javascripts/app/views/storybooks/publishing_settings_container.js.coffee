@@ -7,8 +7,8 @@ class App.Views.Publishing extends Backbone.View
   render: ->
     @$el.html @template()
 
-    info = new App.Models.ApplicationInformation({storybook: @model}, parse: true)
-    @$('.modal-body').html('').append new App.Views.AbstractFormView(model: info).render().el
+    view = new App.Views.AbstractFormView(model: @model.application_information)
+    @$('.modal-body').html('').append view.render().el
     @$('form').removeClass('form-horizontal')
 
     @

@@ -10,11 +10,11 @@ class ApplicationInformation < ActiveRecord::Base
   serialize :content_description
 
   validate :large_icon,           presence: true
-  validates_each :retina_3_5_screenshots, :retina_4_0_screenshots, :retina_ipad_screenshots do |record, attr, value|
-     unless (2..5).include?(value.length)
-       record.errors.add(attr, 'length must be between 2 and 5')
-     end
-  end
+  # validates_each :retina_3_5_screenshots, :retina_4_0_screenshots, :retina_ipad_screenshots do |record, attr, value|
+     # unless (2..5).include?(value.length)
+       # record.errors.add(attr, 'length must be between 2 and 5')
+     # end
+  # end
 
   validates :available_from,      presence: true
   validates_each :available_from do |record, attr, value|
