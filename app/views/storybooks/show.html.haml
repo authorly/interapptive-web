@@ -1,5 +1,7 @@
 - content_for :initialization_coffee do
   App.showStorybook(#{@storybook.id})
+  App.setCurrentUser("#{current_user.id}")
+  App.setSignedInAsUser("#{signed_in_as_user.id}")
 
 - content_for :header do
   = render 'layouts/toolbar'
