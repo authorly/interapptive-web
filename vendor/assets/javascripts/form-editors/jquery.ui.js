@@ -43,7 +43,7 @@
             input.addClass('input-small');
 
             input.datepicker({
-                dateFormat: 'MM, yy',
+                dateFormat: 'MM dd, yy',
                 showButtonPanel: false
             });
 
