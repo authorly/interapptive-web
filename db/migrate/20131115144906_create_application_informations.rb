@@ -3,12 +3,15 @@ class CreateApplicationInformations < ActiveRecord::Migration
     create_table :application_informations do |t|
       t.integer :storybook_id
       t.text    :description
-      t.string  :icon
       t.date    :available_from
       t.string  :price_tier
       t.text    :content_description
       t.boolean :for_kids
       t.string  :keywords
+      t.integer :large_icon_id
+      t.text    :retina_3_5_screenshots
+      t.text    :retina_4_0_screenshots
+      t.text    :retina_ipad_screenshots
 
       t.timestamps
     end
