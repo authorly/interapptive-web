@@ -7,24 +7,24 @@
   = render 'layouts/toolbar'
 
 
-.storybook-content
-  .navbar.sidebar.left
-    #scene-list
-  .navbar.sidebar.right
-    #asset-library-sidebar
-  - flash.each do |name, msg|
-    %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
-      %a.close{"data-dismiss" => "alert"}
-      = msg
+.navbar.sidebar.left
+  #scene-list
+.navbar.sidebar.right
+  #asset-library-sidebar
+- flash.each do |name, msg|
+  %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
+    %a.close{"data-dismiss" => "alert"}
+    = msg
+.canvas-container
   %canvas{id: 'builder', width: 3500, height: 2500}
     %p Your browser doesn't support the technology required to run this application.
-  #context-menu
-    .sprite
-    .button
-    .text
-    .hotspot
+#context-menu
+  .sprite
+  .button
+  .text
+  .hotspot
 
-  #action-form-container
+#action-form-container
 
 -# preload icons for the asset library
 .hidden
