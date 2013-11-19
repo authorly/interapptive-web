@@ -1,12 +1,29 @@
+# FOUNDATION
 #= require jquery
 #= require underscore
 #= require backbone
 #= require backbone-deepmodel
 
-#= require_tree ./
+# VENDOR
+#= require ../../vendor/assets/javascripts/bootstrap
+#= require ../../vendor/assets/javascripts/backbone-forms
+
+#= require ../../vendor/assets/javascripts/jquery-file-upload/jquery.iframe-transport
+#= require ../../vendor/assets/javascripts/jquery-file-upload/jquery.ui.widget
+#= require ../../vendor/assets/javascripts/jquery-file-upload/jquery.fileupload
+#= require ../../vendor/assets/javascripts/jquery-file-upload/jquery.fileupload-process
+#= require ../../vendor/assets/javascripts/jquery-file-upload/jquery.fileupload-validate
+#= require ../../vendor/assets/javascripts/jquery-file-upload/jquery.fileupload-ui
+#= require ../../vendor/assets/javascripts/jquery-file-upload/jquery.fileupload-jquery-ui
+
 #= require_tree ../../vendor/assets/javascripts
+
+# APP
 #= require_tree ../../app/assets/javascripts
-#
+
+# TESTS
+#= require_tree .
+
 App.init()
 
 beforeEach ->
