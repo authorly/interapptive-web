@@ -30,9 +30,11 @@ class App.Views.AbstractFormView extends Backbone.View
   submit: (event) ->
     event.preventDefault()
 
-    @$('.help-inline').val('')
+    @$('.help-error').val('')
     errors = @form.commit()
-    return if errors
+    if errors
+      @goToFirstError()
+      return
 
     @model.save {},
       success: ->
@@ -49,8 +51,13 @@ class App.Views.AbstractFormView extends Backbone.View
 
       if control_group.length > 0
         control_group.addClass('error').
-          find('.help-inline').first().
-          html(errors[field].join(', '))
+          find('.help-error').html(errors[field].join(', '))
+
+    @goToFirstError()
+
+
+  goToFirstError: ->
+    @$('.error')[0].scrollIntoView(true)
 
 
   delete: (event) ->

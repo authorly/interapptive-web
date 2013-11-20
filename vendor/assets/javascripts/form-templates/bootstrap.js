@@ -24,8 +24,8 @@
         <label class="control-label" for="{{id}}">{{title}}</label>\
         <div class="controls">\
           {{editor}}\
+          <div class="help-error"><div class="bbf-tmp-error" data-error></div></div>\
           <div class="help-inline">{{help}}</div>\
-          <div class="help-inline"><div class="bbf-tmp-error" data-error></div></div>\
         </div>\
       </div>\
     ',
@@ -35,8 +35,8 @@
         <label class="control-label" for="{{id}}">{{title}}</label>\
         <div class="controls">\
           <div class="input-prepend input-append"><span class="add-on">$</span>{{editor}}</div>\
+          <div class="help-error"><div class="bbf-tmp-error" data-error></div></div>\
           <div class="help-inline">{{help}}</div>\
-          <div class="help-inline"><div class="bbf-tmp-error" data-error></div></div>\
         </div>\
       </div>\
     '
