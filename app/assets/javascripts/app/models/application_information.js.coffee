@@ -50,10 +50,11 @@ class App.Models.ApplicationInformation extends Backbone.Model
       title: "Apple Content Descriptions"
     for_kids:
       type: 'Checkbox'
+      fieldClass: 'made-for-kids'
       title: 'Made for kids?'
       help: "Made for Kids indicates that your app has been designed for children. These apps will be part of the Kids category on the App Store and will be categorized and searchable by age range. To update existing Privacy Policy URL localizations, see the Metadata and Uploads section on the app’s Version Details page."
     description:
-      type: 'Text'
+      type: 'TextArea'
       help: "A description of the app you are adding, detailing features and functionality. Descriptions cannot be longer than 4000 characters."
       validators: [
         (value, formValues) ->
