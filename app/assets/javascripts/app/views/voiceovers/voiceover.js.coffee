@@ -1,422 +1,192 @@
-# This view is used for aligning text to audio which, in turn, allows for users
-# to create word-by-word highlighting.
-# The audio will be a voice that, when played, enables the users to drag/click
-# word-by-word. As they click/drag over each word in sync with the associated audio,
-# we accumulate an array of time intervals. Intervals are then used for highlighting
-# word-by-word.
-# RFCTR Create a Voiceover Backbone model and move model related things.
-# @author dira, @date 2013-01-14
+# Allow users to create a mapping between the text in a keyframe and
+# its voiceover sound. (aka aligning text to audio).
+#
+# It orchestrates
+# * a voiceover sound selector
+# * a highlighter view (instanceof `AbstractVoiceoverHighlighter`) that allows
+# to create the actual highlights
+# * a text reordering view
+# * previewing the result
+#
 class App.Views.Voiceover extends Backbone.View
   template: JST['app/templates/voiceovers/voiceover']
 
   events:
-    'mousedown .word':          'mouseDownOnWord'
-    'mouseover .word':          'mouseOverWord'
-    'selectstart':              'cancelNativeHighlighting'
-    'click #begin-alignment':   'clickBeginAlignment'
-    'click #preview-alignment': 'clickPreviewAlignment'
-    'click #accept-alignment':  'acceptAlignment'
-    'click #reorder-text .reorder': 'enableSorting'
-    'click #reorder-text .done a':  'disableSorting'
-
-  COUNTDOWN_LENGTH_IN_SECONDS: 5
-
-  DEFAULT_PLAYBACK_RATE: 0.5
+    'click .preview .start':   'startPreviewClicked'
+    'click .preview .stop':    'stopPreviewClicked'
+    'click .controls .accept': 'acceptClicked'
+    'click .highlighter-container .selector .alternative': 'alternativeHighlighterClicked'
 
 
   initialize: ->
     @keyframe = @model
+    @voiceover = new App.Models.Voiceover(keyframe: @model)
     @player = null
-    @playbackRate = @DEFAULT_PLAYBACK_RATE
+    @_previewFootnoteIds = []
 
-    @_alignmentInProgress = false
-    @_mouseDown = false
-
-    App.vent.on 'changed:voiceover_playback_rate', @_voiceoverPlaybackRateChanged, @
-
-    $(document).mouseup => @_mouseDown = false
+    @listenTo @keyframe, 'change:voiceover_id', @_voiceoverChanged
 
 
   render: ->
-    @$el.html(@template(keyframe: @keyframe))
+    @$el.html @template(keyframe: @keyframe)
+
     @_initVoiceoverSelector()
-    @_initVoiceoverPlaybackRateSlider()
-    @_initSorting()
-    @_attachKeyframEvents()
-    @_findExistingVoiceover()
+    @_voiceoverChanged()
+
+    if @keyframe.hasText()
+      @$('.highlighter-container .not-found').hide()
+      @_initVoiceoverHighlighter('basic')
+    else
+      @$('.highlighter-container').find('.selector, .highlighter').hide()
+
+    # it needs this view to be added to the DOM
+    window.setTimeout @_initPlayer, 0
+
     @
 
 
   remove: ->
-    @stopVoiceover()
+    @player?.pause()
+    @highlighter?.remove()
     super
 
 
-  clickBeginAlignment: (event) =>
-    event.preventDefault()
+  acceptClicked: (event) ->
+    if !@voiceover.get('valid')
+      App.vent.trigger('show:message', 'error', "Partial highlights are not acceptable. Please highlight entire text and then click on Accept button")
+    else
+      App.vent.trigger 'hide:modal'
+      App.trackUserAction 'Completed highlighting'
+      @keyframe.save {
+        content_highlight_times: voiceover.get('times').slice(0)
+      }, patch: true
 
-    return unless @keyframe.hasText()
+
+  startPreviewClicked: (event) =>
+    return if @$('.preview.start.disabled').length > 0
+
     return unless @keyframe.hasVoiceover()
 
-    App.trackUserAction 'Began highlighting'
+    @$('.preview .start').hide()
+    @$('.preview .stop').show()
 
-    if @_alignmentInProgress then @stopAlignment() else @startCountdown()
+    @player.playbackRate(1.0)
+    @player.play()
 
-
-  acceptAlignment: (event) ->
-    unless @keyframe.hasVoiceover()
-      App.trackUserAction 'Cancelled highlighting'
-      App.vent.trigger('hide:modal')
-      return
-
-    @keyframe.updateContentHighlightTimes @_collectTimeIntervals(),
-      # TODO replace this with a 'done' event that the parent listens to
-      # 2013-05-07 @dira
-      success: ->
-        App.vent.trigger 'hide:modal'
-        App.trackUserAction 'Completed highlighting'
-
-
-  clickPreviewAlignment: (event) =>
-    return unless @keyframe.hasText()
-    return unless @keyframe.hasVoiceover()
-    @previewOrStopPreview(event)
-    @setHighlightTimesForWordEls()
+    @_cleanupPreviewPlayerFootnotes()
+    @_previewFootnoteIds = @highlighter?.preparePreview() || []
+    @$('.highlighter-container .selector .alternative').hide()
 
     @_previewingAlignment = true
 
     App.trackUserAction 'Previewed highlighting'
 
 
-  previewOrStopPreview: (event) ->
-    $el = @$(event.currentTarget)
-    if $el.find('i').hasClass('icon-play')
-      @player.play()
-      @player.playbackRate(1.0)
-      @disableBeginAlignment()
-      @_showStopButton($el)
+  stopPreviewClicked: (event) =>
+    @player.pause @player.duration()
+    @enableStartPreview()
+
+
+  enableStartPreview: ->
+    @$('.preview .start').show()
+    @$('.preview .stop').hide()
+    @_cleanupPreviewPlayerFootnotes()
+    @highlighter?.cleanupPreview()
+    @$('.highlighter-container .selector .alternative').show()
+
+
+  _cleanupPreviewPlayerFootnotes: ->
+    for eventId in @_previewFootnoteIds
+      @player.removeTrackEvent eventId
+
+    @_previewFootnoteIds = []
+
+
+  _initPlayer: =>
+    id = if App.Lib.BrowserHelper.canPlayVorbis()
+      '#voiceover-ogg'
     else
-      @stopAlignment()
-      @_showPreviewButton($el)
+      '#voiceover-mp3'
+    @player = Popcorn(id)
 
-
-  setHighlightTimesForWordEls: ->
-    $words = @$('.word')
-    $words.removeClass('highlighted')
-    $.each $words, (index, word) =>
-      @$(word).attr("id", "word-#{index}")
-      startTime = @$(word).attr('data-start')
-      if startTime
-        if @$($words[index + 1]).length > 0
-          endTime = parseFloat(@$($words[index + 1]).attr('data-start'))
-
-        else
-          endTime = parseFloat(startTime) + 1
-
-        @player.footnote
-          start:      startTime
-          end:        endTime
-          text:       ''
-          target:     "word-#{index}"
-          effect:     'applyclass'
-          applyclass: 'highlighted'
-
-
-  startCountdown: ->
-    @_addCountdownDiv()
-    @disableBeginAlignment()
-
-    @disablePreview()
-    @disableAcceptAlignment()
-    @initCountdownElement()
-
-
-  initCountdownElement: ->
-    countdownEnded = false
-    endTime = (new Date()).getTime() + @COUNTDOWN_LENGTH_IN_SECONDS * 1000
-    @player.destroy()
-    @enableMediaPlayer()
-    @$('#countdown').jcountdown
-      timestamp: endTime
-      callback: (days, hours, minutes, seconds) =>
-        if seconds is 0 and not countdownEnded
-          @countdownEnded()
-          countdownEnded = true
-
-
-  stopAlignment: =>
-    @player.pause(@player.duration())
-    @enablePreview()
-    @removeWordHighlights()
-
-
-  countdownEnded: =>
-    @_alignmentInProgress = true
-
-    @removeWordHighlights()
-
-    @player.play()
-    @player.playbackRate(@playbackRate)
-
-    @$('#countdown').remove()
-    @$('.word').removeClass('disabled')
-    @_showStopHighlightingButton()
-
-
-  removeWordHighlights: =>
-    @$('span.word.highlighted').removeClass('highlighted')
-
-
-  cancelNativeHighlighting: ->
-    false
-
-
-  mouseOverWord: (event) =>
-    return false unless @_alignmentInProgress
-
-    $wordEl = @$(event.currentTarget)
-    if @_mouseDown and @canHighlightEl($wordEl)
-      $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
-
-
-  mouseDownOnWord: (event) =>
-    return false unless @_alignmentInProgress
-
-    @_mouseDown = true
-
-    $wordEl = @$(event.currentTarget)
-    if @canHighlightEl($wordEl)
-      $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
-
-    false
-
-
-  isFirstWord: (el) ->
-    el.is('span:first-child') and el.parent().is('li:first-child')
-
-
-  prevElHighlighted: (el) ->
-    lastElWasHighlighted =
-      el.is('span:first-child') and el.parent().prev().find('span:last-child').hasClass('highlighted')
-    el.prev().hasClass('highlighted') or lastElWasHighlighted
-
-
-  canHighlightEl: (el) ->
-    not @alreadyHighlighted(el) and (@prevElHighlighted(el) or @isFirstWord(el))
-
-
-  alreadyHighlighted: (el) ->
-    el.hasClass('highlighted')
-
-
-  findExistingHighlightTimes: ->
-    intervals = @keyframe.get('content_highlight_times')
-    @enablePreview()
-    return unless intervals?.length > 0
-
-    $words = @$('.word')
-    $.each $words, (index, word) =>
-      @$(word).attr("data-start", "#{intervals[index]}")
-
-    @enableAcceptAlignment()
-
-
-  setExistingVoiceover: (voiceover) ->
-    @setAudioPlayerSrc(voiceover)
-    @enableHighlighting()
-
-
-  noVoiceoverFound: ->
-    @setAudioPlayerSrc()
-    @disablePreview()
-    @disableBeginAlignment()
-
-
-  enableMediaPlayer: =>
-    if App.Lib.BrowserHelper.canPlayVorbis()
-      @player = Popcorn('#media-player-ogg')
-    else
-      @player = Popcorn('#media-player-mp3')
+    @highlighter?.player = @player
 
     @player.on 'ended', =>
+      @highlighter?.playEnded()
 
       if @_previewingAlignment
-        @previewingEnded()
+        @_previewingAlignment = false
+        @enableStartPreview()
       else
-        @enableAcceptAlignment()
-        @enablePreview()
-
-      @$('.word.highlighted').removeClass('highlighted')
-      @_showBeginHighlightingButton()
-      @_alignmentInProgress = false
+        @highlighter?.cacheHighlightTimes()
 
 
-  enableSorting: ->
-    @$('#words').sortable "option", "disabled", false
-    @$('#words li').addClass('grab')
-    @$('#reorder-text .reorder').hide()
-    @$('#reorder-text .done').show()
-    @hideControls()
-
-
-  disableSorting: ->
-    @$('#words').sortable "option", "disabled", true
-    @$('#words li').removeClass('grab')
-    @$('#reorder-text .reorder').show()
-    @$('#reorder-text .done').hide()
-    @showControls()
-
-
-  updateOrder: =>
-    zero = (new App.Models.TextWidget).get('z_order') || 0
-    @$('#words li').each (index, element) =>
-      element = $(element)
-
-      if (id = element.data('id'))? && (text = @keyframe.widgets.get(id))?
-        text.set {z_order: zero + index}, silent: true
-
-    @keyframe.widgets.trigger 'change'
-
-
-  previewingEnded: ->
-    @_previewingAlignment = false
-    @enableHighlighting()
-    @_showPreviewButton(@$('#preview-alignment'))
-
-
-  enablePreview: ->
-    @$('#preview-alignment').removeClass('disabled')
-
-
-  disablePreview: ->
-    @$('#preview-alignment').addClass('disabled')
-
-
-  enableAcceptAlignment: ->
-    @$('#accept-alignment').removeClass('disabled')
-
-
-  disableAcceptAlignment: ->
-    @$('#accept-alignment').addClass('disabled')
-
-
-  enableHighlighting: ->
-    @$('#begin-alignment').removeClass('disabled')
-
-
-  disableBeginAlignment: ->
-    @$('#begin-alignment').addClass('disabled')
-
-
-  setAudioPlayerSrc: ->
-    if arguments.length > 0
-      @$('audio#media-player-mp3').attr('src', arguments[0].get('mp3url'))
-      @$('audio#media-player-ogg').attr('src', arguments[0].get('oggurl'))
+  setAudioPlayerSrc: (sound=null) ->
+    if sound?
+      @$('#voiceover-mp3').attr('src', arguments[0].get('mp3url'))
+      @$('#voiceover-ogg').attr('src', arguments[0].get('oggurl'))
     else
       @$('audio').attr('src', '')
 
 
-  showControls: ->
-    @$('#controls').css('visibility', 'visible')
+  alternativeHighlighterClicked: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
+
+    el = @$(event.currentTarget)
+    selected = el.closest('.option').hide().siblings().show()
+    @_initVoiceoverHighlighter selected.data('type')
 
 
-  hideControls: ->
-    @$('#controls').css('visibility', 'hidden')
+
+  _initVoiceoverHighlighter: (control_type) ->
+    if @highlighter?
+      @stopListening @highlighter
+      @highlighter.remove()
+
+    klass = App.Lib.StringHelper.capitalize(control_type)
+    App.trackUserAction(klass + ' aligner clicked')
 
 
-  stopVoiceover: =>
-    @_detachKeyframeEvents()
-    @player.pause()
+    @highlighter = new App.Views[klass + 'VoiceoverHighlighter']
+      model: @voiceover
+      el: $('<div/>').appendTo(@$('.highlighter-container .highlighter'))
+      player: @player
+    @highlighter.render()
 
+    voiceover = @$('.voiceover-container')
+    controls = @$('.highlighter-container .selector .alternative, .preview, .accept')
+    @listenTo @highlighter, 'start', ->
+      voiceover.css 'visibility', 'hidden'
+      controls.css 'visibility', 'hidden'
+    @listenTo @highlighter, 'cancel done', ->
+      voiceover.css 'visibility', 'visible'
+      controls.css 'visibility', 'visible'
 
-  _findExistingVoiceover: ->
-    if (voiceover = @keyframe.voiceover())?
-      @setExistingVoiceover(voiceover)
-      @findExistingHighlightTimes()
-    else
-      @noVoiceoverFound()
+    @listenTo @highlighter, 'start:reorder', ->
+      controls.css 'visibility', 'hidden'
+    @listenTo @highlighter, 'finished:reorder', ->
+      controls.css 'visibility', 'visible'
 
 
   _initVoiceoverSelector: ->
     @voiceoverSelector = new App.Views.VoiceoverSelector
       keyframe: @keyframe
       collection: @keyframe.scene.storybook.sounds
-      el: @$('#voiceover-selector-container')
+      el: @$('.voiceover-container .selector')
 
     @voiceoverSelector.render()
 
 
-  _initVoiceoverPlaybackRateSlider: ->
-    @voiceoverPlaybackRateSlider = new App.Views.VoiceoverPlaybackRateSlider
-      playbackRate: @playbackRate
-      el: @$('#voiceover-playback-rate-slider-container')
+  _voiceoverChanged: ->
+    controls = @$('.highlighter-container, .highlighter-container, .preview')
+    warning = @$('.voiceover-container .not-found')
+    if (voiceover = @keyframe.voiceover())?
+      controls.show()
+      warning.hide()
 
-    @voiceoverPlaybackRateSlider.render()
+      @setAudioPlayerSrc(voiceover)
+    else
+      controls.hide()
+      warning.show()
 
-
-  _attachKeyframEvents: ->
-    @keyframe.on('change:voiceover_id', @_findExistingVoiceover, @)
-
-
-  _detachKeyframeEvents: ->
-    @keyframe.off('change:voiceover_id', @_findExistingVoiceover, @)
-
-
-  _initSorting: ->
-    @$('#words').sortable
-      update:   @updateOrder
-      disabled: true
-
-
-  _playerCurrentTimeInSeconds: ->
-    Math.round(1000 * @player.currentTime()) / 1000
-
-
-  _collectTimeIntervals: ->
-    intervals = _.map @$('.word'), (el) -> @$(el).data('start')
-    return intervals if _.every(intervals, (interval) -> interval? && interval != "undefined" && interval != "null")
-    []
-
-
-  _showStopButton: ($button) ->
-    $button.find('span')
-      .text('Stop')
-      .parent().find('i')
-      .removeClass('icon-play')
-      .addClass('icon-stop')
-
-
-  _showPreviewButton: ($button) ->
-    $button.find('span')
-      .text('Preview')
-      .parent().find('i')
-      .removeClass('icon-stop')
-      .addClass('icon-play')
-
-
-  _showStopHighlightingButton: ->
-    @$('#begin-alignment').removeClass('disabled')
-      .find('span')
-      .text('Cancel Highlighting')
-      .parent().find('i')
-      .removeClass('icon-exclamation-sign')
-      .addClass('icon-stop')
-
-
-  _showBeginHighlightingButton: ->
-    @$('#begin-alignment').find('span')
-      .text('Begin Highlighting')
-      .parent().find('i')
-      .removeClass('icon-stop')
-      .addClass('icon-exclamation-sign')
-
-
-  _addCountdownDiv: ->
-    @$('#words').after('<div id="countdown"></div>')
-      .find('span.word')
-      .addClass('disabled')
-
-
-  _voiceoverPlaybackRateChanged: (value) ->
-    @playbackRate = value
-    @player.playbackRate(value)

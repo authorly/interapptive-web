@@ -9,4 +9,5 @@ App.Lib.KeyCodes =
   up:         38
   right:      39
   down:       40
+  period:     46
   minus:     [189, 109, 173]

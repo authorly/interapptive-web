@@ -1,34 +1,41 @@
-#voiceovers {
-
+#voiceover {
   .disabled {
     background-color: #C5C4C3;
   }
 
-  #voiceover-selector-container label {
-    display: inline-block;
-  }
-
-  #sync-player {
+  .player {
     display: none;
 
     audio {
       display: none;
     }
+  }
 
-    audio.disabled {
-      -webkit-filter: blur(1px);
-      opacity: 0.25;
-      overflow: visible;
-      word-spacing: 1;
+
+  .voiceover-container .selector label {
+    display: inline-block;
+  }
+
+
+
+  .highlighter-container .selector{
+    .active {
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    a {
+      margin-left: 5px;
     }
   }
 
-  #reorder-text {
+
+  .reorder {
     font-size: 11px;
     margin-left: 15px;
   }
 
-  ul#words {
+  .words {
     color: #444;
     width: 30em;
     margin-top: 20px;
@@ -75,28 +82,29 @@
     }
   }
 
-  #sortable-keyframe-texts.ui-sortable li:active {
-    cursor: url(https://mail.google.com/mail/images/2/closedhand.cur) 8 8, move;
-  }
+  //#sortable-keyframe-texts.ui-sortable li:active {
+  //  cursor: url(https://mail.google.com/mail/images/2/closedhand.cur) 8 8, move;
+  //}
 
   .highlight {
-    margin-top: 20px;
-    margin-bottom: 10px;
     .clearfix();
-    #begin-alignment, #voiceover-playback-rate-slider-container {
+    .begin, .cancel, .countdown {
       float: left;
+    }
+    .playback-rate-container {
+      float: right;
     }
   }
 
-  #voiceover-playback-rate-slider-container {
+  .playback-rate-container {
     margin-left: 15px;
 
-    #playback-rate {
+    .rate {
       display: inline-block;
       width: 35px;
     }
 
-    #playback-rate-slider {
+    .slider {
       display: inline-block;
       width: 80px;
       margin-top: .2em;
@@ -105,7 +113,7 @@
     }
   }
 
-  #controls {
+  .controls {
     .clearfix();
     margin-top: 30px;
 
@@ -114,32 +122,29 @@
       cursor: not-allowed;
     }
 
-    #preview-alignment {
+    .preview {
+      display: inline-block;
       padding-right: 18px;
 
-      &.disabled {
+      .btn.disabled {
         font-weight: normal;
       }
     }
 
-    #alignment-errors {
-      position: absolute;
-      bottom: 80px;
-      width: 80px;
-      display: none;
-    }
+    //#advance-controls {
+    //  margin-left: 100px;
+    //}
 
-    #accept-alignment {
+    .accept{
       float: right;
       padding: 12px 15px 12px 10px;
     }
   }
 }
 
-#countdown {
-  position: absolute;
-  right: 15px;
-  top: 170px;
+.countdown {
+  margin-left: 20px;
+  margin-top: 4px;
 
   .countdownHolder{
     width:450px;
@@ -173,11 +178,10 @@
     .grey-button();
   }
 
-/**
-* Use these classes to hide parts of the
-* countdown that you don't need.
-*/
-
+  /**
+  * Use these classes to hide parts of the
+  * countdown that you don't need.
+  */
   .countDays{ /* display:none !important;*/ }
   .countDiv0{ /* display:none !important;*/ }
   .countHours{}
@@ -216,18 +220,18 @@
     display:none !important;
   }
 }
-
-/* Continuous blinking/fading */
-.glowing {
-  -webkit-animation-direction: normal;
-  -webkit-animation-duration: 1s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-name: colours;
-  -webkit-animation-timing-function: ease-in;
-}
-
-#player {
-  clear:both;
-  width: 320px;
-  z-index: 5;
-}
+//
+///* Continuous blinking/fading */
+//.glowing {
+//  -webkit-animation-direction: normal;
+//  -webkit-animation-duration: 1s;
+//  -webkit-animation-iteration-count: infinite;
+//  -webkit-animation-name: colours;
+//  -webkit-animation-timing-function: ease-in;
+//}
+//
+//#player {
+//  clear:both;
+//  width: 320px;
+//  z-index: 5;
+//}
