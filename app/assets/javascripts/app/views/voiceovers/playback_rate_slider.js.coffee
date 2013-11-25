@@ -36,6 +36,6 @@ class App.Views.VoiceoverPlaybackRateSlider extends Backbone.View
     valueAsPercent = "#{Math.round(value*100)}%"
     @$('#playback-rate').html(valueAsPercent)
 
-    App.vent.trigger 'changed:voiceover_playback_rate', value
+    App.vent.trigger 'change:voiceover_playback_rate', value
 
 

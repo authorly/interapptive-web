@@ -43,7 +43,7 @@ window.App =
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:widget',   @_addNewWidget,   @
 
-    @vent.on 'show:settingsform',  @_showSettings, @
+    @vent.on 'show:settingsform',             @_showSettings,            @
     @vent.on 'show:scenebackgroundsoundform', @_showBackgroundSoundForm, @
 
     @vent.on 'bring_to_front:sprite', @_bringToFront, @

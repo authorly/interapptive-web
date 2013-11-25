@@ -1,0 +1,19 @@
+.highlight
+  %button#begin-alignment.btn.disabled{title: 'Drag over the text, selecting each word as you hear it in the voiceover sound'}
+    %i.icon-exclamation-sign.icon-black
+    %span Begin Highlighting
+  #voiceover-playback-rate-slider-container
+
+%ul#words
+  - for widget in _.sortBy(@keyframe.textWidgets(), (w) -> w.get('z_order'))
+    %li{ data-id: widget.id }
+      - words = widget.get('string').split(' ')
+      - for word, index in words
+        %span.word
+          = word + " "
+- if @keyframe.textWidgets().length > 1
+  #reorder-text
+    %a.reorder{href: '#'} Text not in correct order?
+    %span.done{style: 'display: none'}
+      Drag text fragments to put them in the right order
+      %a{href: '#'} Done reordering
