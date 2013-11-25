@@ -1,0 +1,26 @@
+.highlight
+  %button.begin.btn{title: 'Drag over the text, selecting each word as you hear it in the voiceover sound'}
+    %i.icon-exclamation-sign.icon-black
+    %span Begin Highlighting
+  %button.cancel.btn{style: 'display: none'}
+    %i.icon-stop.icon-black
+    %span Cancel Highlighting
+  .playback-rate-container{ style: 'display: none' }
+  .countdown{style: 'display: none'}
+
+
+%ol.words
+  - for widget in _.sortBy(@voiceover.texts(), (w) -> w.get('z_order'))
+    %li{ data-id: widget.id }
+      - words = widget.get('string').split(' ')
+      - for word, index in words
+        %span.word
+          = word + " "
+
+- if @voiceover.text().length > 1
+  .reorder
+    %span.start
+      %a{href: '#'} Text not in correct order?
+    %span.done{style: 'display: none'}
+      Drag text fragments to put them in the right order
+      %a{href: '#'} Done reordering

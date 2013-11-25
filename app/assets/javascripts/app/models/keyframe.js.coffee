@@ -256,10 +256,6 @@ class App.Models.Keyframe extends Backbone.Model
     @widgets.byClass(App.Models.HotspotWidget)
 
 
-  updateContentHighlightTimes: (times, options={}) ->
-    @save { content_highlight_times: times }, options
-
-
   nextTextZOrder: (widget) ->
     widgets = _.reject @textWidgets(), (text) -> text == widget
     if widgets.length > 0

@@ -1,3 +1,3 @@
 %span Audio Speed:
-#playback-rate-slider
-%span#playback-rate #{(@playbackRate*100)}%
+.slider
+%span.rate #{(@playbackRate*100)}%

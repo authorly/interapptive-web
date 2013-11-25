@@ -4,21 +4,28 @@ class App.Views.VoiceoverSelector extends Backbone.View
   events:
     'change #voiceover-selector': 'voiceoverChanged'
 
+
+  initialize: ->
+    @listenTo @collection, 'change:transcode_complete', @render
+
+
   render: ->
-    @$el.html(@template(sounds: @collection))
+    @$el.html @template(sounds: @collection)
     @_selectOption()
     @
 
 
   voiceoverChanged: (event) ->
     $selectedVoiceover = $(event.currentTarget)
-    if $selectedVoiceover.val() is 'none'
-      @options.keyframe.save
-        voiceover_id: null
+    id = if $selectedVoiceover.val() is 'none'
+      null
     else
-      App.trackUserAction 'Selected voiceover file'
-      @options.keyframe.save
-        voiceover_id: $selectedVoiceover.val()
+      Number($selectedVoiceover.val())
+
+    App.trackUserAction 'Selected voiceover file'
+    @options.keyframe.save {
+      voiceover_id: id
+    }, patch: true
 
 
   _selectOption: ->
