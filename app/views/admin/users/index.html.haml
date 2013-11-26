@@ -20,7 +20,7 @@
     %th
       Is Admin?
     %th
-      Signed Up On
+      Signed Up
     %th
       Actions
   - for user in @users
@@ -38,7 +38,8 @@
       %td
         = yes_or_no(user.is_admin?)
       %td
-        = user.created_at.to_s(:authorly)
+        = time_ago_in_words(user.created_at)
+        ago
       %td
         .btn-group
           %a.btn.dropdown-toggle{'data-toggle' => "dropdown", :href => "#"}
