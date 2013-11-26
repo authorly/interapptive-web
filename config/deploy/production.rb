@@ -34,10 +34,22 @@ namespace :deploy do
     run "cd #{release_path} && #{bundle_cmd} exec rake db:migrate --trace RAILS_ENV=production"
   end
 
+  desc "Restart the unicorn"
   task :restart_unicorn do
     run "kill -s INT $(cat #{shared_path}/pids/unicorn.pid) && sleep 5 && cd #{release_path} && #{bundle_cmd} exec unicorn_rails -E #{rails_env} -D -c /home/#{user}/apps/#{application}/shared/config/unicorn-production.rb"
   end
 
+  namespace :web do
+    desc 'Put application in maintenance mode'
+    task :disable, :roles => :production do
+      run "cp #{shared_path}/system/maintenance.html #{current_path}/public/"
+    end
+
+    desc 'Bring application back from maintenance mode.'
+    task :enable, :roles => :production do
+      run "rm -f #{current_path}/public/maintenance.html"
+    end
+  end
 end
 
 
