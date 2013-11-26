@@ -12,7 +12,7 @@
     %button#preview-alignment.btn.disabled
       %i.icon-play.icon-black
       %span Preview
-    %a#controls-type{:href => '#'} Advance Controls
+    %a#highlighter-type{:href => '#'} Advance Aligner
 
     %button#accept-alignment.btn.btn-large.btn-success
       %i.icon-check.icon-white

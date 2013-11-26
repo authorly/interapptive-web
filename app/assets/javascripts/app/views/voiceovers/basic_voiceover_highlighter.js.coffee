@@ -1,7 +1,7 @@
-#= require ./abstract_voiceover_controls
+#= require ./abstract_voiceover_highlighter
 
-class App.Views.BasicVoiceoverControls extends App.Views.AbstractVoiceoverControls
-  template: JST['app/templates/voiceovers/basic_voiceover_controls']
+class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHighlighter
+  template: JST['app/templates/voiceovers/basic_voiceover_highlighter']
 
   events:
     'mousedown .word':              'mouseDownOnWord'
@@ -14,8 +14,7 @@ class App.Views.BasicVoiceoverControls extends App.Views.AbstractVoiceoverContro
   COUNTDOWN_LENGTH_IN_SECONDS: 5
 
   initialize: ->
-    @keyframe = @model
-    @playbackRate = @DEFAULT_PLAYBACK_RATE
+    super
     @_alignmentInProgress = false
     @_mouseDown = false
 
@@ -28,6 +27,10 @@ class App.Views.BasicVoiceoverControls extends App.Views.AbstractVoiceoverContro
     @_initVoiceoverPlaybackRateSlider()
     @_initSorting()
     @
+
+
+  _wordProcessor: (index, word) =>
+    @$(word).attr("data-start", "#{@intervals[index]}")
 
 
   remove: ->
@@ -116,28 +119,6 @@ class App.Views.BasicVoiceoverControls extends App.Views.AbstractVoiceoverContro
     @keyframe.widgets.trigger 'change'
 
 
-  setHighlightTimesForWordEls: ->
-    $words = @$('.word')
-    $words.removeClass('highlighted')
-    $.each $words, (index, word) =>
-      @$(word).attr("id", "word-#{index}")
-      startTime = @$(word).attr('data-start')
-      if startTime
-        if @$($words[index + 1]).length > 0
-          endTime = parseFloat(@$($words[index + 1]).attr('data-start'))
-
-        else
-          endTime = parseFloat(startTime) + 1
-
-        @player.footnote
-          start:      startTime
-          end:        endTime
-          text:       ''
-          target:     "word-#{index}"
-          effect:     'applyclass'
-          applyclass: 'highlighted'
-
-
   countdownEnded: =>
     @_alignmentInProgress = true
 
@@ -149,24 +130,6 @@ class App.Views.BasicVoiceoverControls extends App.Views.AbstractVoiceoverContro
     @$('#countdown').remove()
     @$('.word').removeClass('disabled')
     @_showStopHighlightingButton()
-
-
-  collectTimeIntervals: ->
-    intervals = _.map @$('.word'), (el) -> @$(el).data('start')
-    return intervals if _.every(intervals, (interval) -> interval? && interval != "undefined" && interval != "null")
-    []
-
-
-  findExistingHighlightTimes: ->
-    intervals = @keyframe.get('content_highlight_times')
-    App.vent.trigger('enable:voiceoverPreview')
-    return unless intervals?.length > 0
-
-    $words = @$('.word')
-    $.each $words, (index, word) =>
-      @$(word).attr("data-start", "#{intervals[index]}")
-
-    App.vent.trigger('enable:acceptVoiceoverAlignment')
 
 
   enableSorting: ->
@@ -185,16 +148,6 @@ class App.Views.BasicVoiceoverControls extends App.Views.AbstractVoiceoverContro
     App.vent.trigger('show:voiceoverControls')
 
 
-  stopAlignment: =>
-    @player.pause(@player.duration())
-    App.vent.trigger('enable:voiceoverPreview')
-    @removeWordHighlights()
-
-
-  removeWordHighlights: =>
-    @$('span.word.highlighted').removeClass('highlighted')
-
-
   disableBeginAlignment: ->
     @$('#begin-alignment').addClass('disabled')
 
@@ -204,7 +157,7 @@ class App.Views.BasicVoiceoverControls extends App.Views.AbstractVoiceoverContro
 
 
   resetHighlightControls: ->
-    @$('.word.highlighted').removeClass('highlighted')
+    super
     @_showBeginHighlightingButton()
     @_alignmentInProgress = false
 

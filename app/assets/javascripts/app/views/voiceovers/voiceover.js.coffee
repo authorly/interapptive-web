@@ -13,7 +13,7 @@ class App.Views.Voiceover extends Backbone.View
     'selectstart':                  'cancelNativeHighlighting'
     'click #preview-alignment':     'clickPreviewAlignment'
     'click #accept-alignment':      'acceptAlignment'
-    'click #controls-type':         'switchVoiceoverControls'
+    'click #highlighter-type':      'switchHighlighterType'
 
 
   initialize: ->
@@ -35,8 +35,8 @@ class App.Views.Voiceover extends Backbone.View
   render: ->
     @$el.html(@template(keyframe: @keyframe))
     @_initVoiceoverSelector()
-    @_initVoiceoverControls('basic')
-    @_toggleVoiceoverControlsSwitcher('basic')
+    @_initVoiceoverHighlighter('basic')
+    @_toggleVoiceoverHighlighterSwitcher('basic')
     @_attachKeyframEvents()
     @_findExistingVoiceover()
     @
@@ -63,7 +63,7 @@ class App.Views.Voiceover extends Backbone.View
       App.vent.trigger('hide:modal')
       return
 
-    @keyframe.updateContentHighlightTimes @voiceoverControls.collectTimeIntervals(),
+    @keyframe.updateContentHighlightTimes @voiceoverHighlighter.collectTimeIntervals(),
       # TODO replace this with a 'done' event that the parent listens to
       # 2013-05-07 @dira
       success: ->
@@ -75,7 +75,7 @@ class App.Views.Voiceover extends Backbone.View
     return unless @keyframe.hasText()
     return unless @keyframe.hasVoiceover()
     @previewOrStopPreview(event)
-    @voiceoverControls.setHighlightTimesForWordEls()
+    @voiceoverHighlighter.setHighlightTimesForWordEls()
 
     @_previewingAlignment = true
 
@@ -85,10 +85,10 @@ class App.Views.Voiceover extends Backbone.View
     if $el.find('i').hasClass('icon-play')
       @player.play()
       @player.playbackRate(1.0)
-      @voiceoverControls.disableBeginAlignment()
+      @voiceoverHighlighter.disableBeginAlignment()
       @_showStopButton($el)
     else
-      @voiceoverControls.stopAlignment()
+      @voiceoverHighlighter.stopAlignment()
       @_showPreviewButton($el)
 
 
@@ -98,13 +98,13 @@ class App.Views.Voiceover extends Backbone.View
 
   setExistingVoiceover: (voiceover) ->
     @setAudioPlayerSrc(voiceover)
-    @voiceoverControls.enableBeginAlignment()
+    @voiceoverHighlighter.enableBeginAlignment()
 
 
   noVoiceoverFound: ->
     @setAudioPlayerSrc()
     @disablePreview()
-    @voiceoverControls.disableBeginAlignment()
+    @voiceoverHighlighter.disableBeginAlignment()
 
 
   enableMediaPlayer: =>
@@ -112,7 +112,7 @@ class App.Views.Voiceover extends Backbone.View
       @player = Popcorn('#media-player-ogg')
     else
       @player = Popcorn('#media-player-mp3')
-    @voiceoverControls.player = @player
+    @voiceoverHighlighter.player = @player
 
     @player.on 'ended', =>
 
@@ -121,12 +121,12 @@ class App.Views.Voiceover extends Backbone.View
       else
         @enableAcceptAlignment()
         @enablePreview()
-      @voiceoverControls.resetHighlightControls()
+      @voiceoverHighlighter.resetHighlightControls()
 
 
   previewingEnded: ->
     @_previewingAlignment = false
-    @voiceoverControls.enableAcceptAlignment()
+    @enableAcceptAlignment()
     @_showPreviewButton(@$('#preview-alignment'))
 
 
@@ -167,38 +167,38 @@ class App.Views.Voiceover extends Backbone.View
     @player.pause()
 
 
-  switchVoiceoverControls: ->
-    control_type = $('a#controls-type').data('type')
-    @_initVoiceoverControls(control_type)
-    @_toggleVoiceoverControlsSwitcher(control_type)
+  switchHighlighterType: ->
+    highlighter_type = $('a#highlighter-type').data('type')
+    @_initVoiceoverHighlighter(highlighter_type)
+    @_toggleVoiceoverHighlighterSwitcher(highlighter_type)
 
 
-  _toggleVoiceoverControlsSwitcher: (control_type) ->
-    $element = @$('a#controls-type')
-    if control_type is 'basic'
-      $element.text('Advance Controls')
+  _toggleVoiceoverHighlighterSwitcher: (highlighter_type) ->
+    $element = @$('a#highlighter-type')
+    if highlighter_type is 'basic'
+      $element.text('Advance Aligner')
       $element.data('type', 'advance')
     else
-      $element.text('Basic Controls')
+      $element.text('Basic Aligner')
       $element.data('type', 'basic')
 
 
   _findExistingVoiceover: ->
     if (voiceover = @keyframe.voiceover())?
       @setExistingVoiceover(voiceover)
-      @voiceoverControls.findExistingHighlightTimes()
+      @voiceoverHighlighter.findExistingHighlightTimes()
     else
       @noVoiceoverFound()
 
 
-  _initVoiceoverControls: (control_type) ->
-    @voiceoverControls.remove() if @voiceoverControls?
-    @voiceoverControls = new App.Views[App.Lib.StringHelper.capitalize(control_type) + 'VoiceoverControls']
+  _initVoiceoverHighlighter: (control_type) ->
+    @voiceoverHighlighter.remove() if @voiceoverHighlighter?
+    @voiceoverHighlighter = new App.Views[App.Lib.StringHelper.capitalize(control_type) + 'VoiceoverHighlighter']
       model: @keyframe
-      id: '#voiceover-controls'
-    @voiceoverControls.player = @player
+      id: '#voiceover-highlighter'
+    @voiceoverHighlighter.player = @player
 
-    @$('#voiceover-selector-container').after(@voiceoverControls.render().el)
+    @$('#voiceover-selector-container').after(@voiceoverHighlighter.render().el)
     @_findExistingVoiceover()
 
 
