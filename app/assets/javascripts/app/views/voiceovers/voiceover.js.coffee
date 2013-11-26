@@ -193,11 +193,13 @@ class App.Views.Voiceover extends Backbone.View
 
   _initVoiceoverHighlighter: (control_type) ->
     @voiceoverHighlighter.remove() if @voiceoverHighlighter?
-    @voiceoverHighlighter = new App.Views[App.Lib.StringHelper.capitalize(control_type) + 'VoiceoverHighlighter']
+    klass = App.Lib.StringHelper.capitalize(control_type)
+    @voiceoverHighlighter = new App.Views[klass + 'VoiceoverHighlighter']
       model: @keyframe
       id: '#voiceover-highlighter'
     @voiceoverHighlighter.player = @player
 
+    App.trackUserAction(klass + ' aligner clicked')
     @$('#voiceover-selector-container').after(@voiceoverHighlighter.render().el)
     @_findExistingVoiceover()
 
