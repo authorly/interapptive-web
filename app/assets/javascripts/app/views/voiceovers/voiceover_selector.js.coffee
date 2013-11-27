@@ -2,7 +2,7 @@ class App.Views.VoiceoverSelector extends Backbone.View
   template: JST['app/templates/voiceovers/selector']
 
   events:
-    'change .voiceover-selector': 'voiceoverChanged'
+    'change #voiceover-selector': 'voiceoverChanged'
 
   render: ->
     @$el.html(@template(sounds: @collection))
