@@ -29,15 +29,15 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
   setHighlightTimesForWordEls: ->
     $words = @$('.word')
     $words.removeClass('highlighted')
+
     $.each $words, (index, word) =>
       @$(word).attr("id", "word-#{index}")
-      startTime = @$(word).attr('data-start')
+      startTime = Number(@$(word).attr('data-start'))
       if startTime
         if @$($words[index + 1]).length > 0
-          endTime = parseFloat(@$($words[index + 1]).attr('data-start'))
-
+          endTime = Number(@$($words[index + 1]).attr('data-start'))
         else
-          endTime = parseFloat(startTime) + 1
+          endTime = startTime + 1
 
         @player.footnote
           start:      startTime
