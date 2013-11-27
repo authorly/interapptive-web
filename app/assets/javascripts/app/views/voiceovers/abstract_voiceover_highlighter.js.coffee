@@ -1,4 +1,4 @@
-class App.Views.AbstractVoiceoverControls extends Backbone.View
+class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
 
   initialize: ->
     @keyframe = @model
