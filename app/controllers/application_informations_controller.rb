@@ -6,6 +6,9 @@ class ApplicationInformationsController < ApplicationController
   # Backbone.js extraneous parameter hack
   param_protected [:action, :controller, :format, :storybook], :only => :update
 
+  def create
+    update
+  end
 
   def update
     information = @storybook.application_information || @storybook.build_application_information
