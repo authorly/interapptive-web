@@ -37,7 +37,7 @@ class App.Views.Voiceover extends Backbone.View
     @_initVoiceoverSelector()
     @_initVoiceoverHighlighter('basic')
     @_toggleVoiceoverHighlighterSwitcher('basic')
-    @_attachKeyframEvents()
+    @_attachKeyframeEvents()
     @_findExistingVoiceover()
     @
 
@@ -154,7 +154,6 @@ class App.Views.Voiceover extends Backbone.View
 
 
   stopVoiceover: =>
-    @_detachKeyframeEvents()
     @player.pause()
 
 
@@ -204,12 +203,8 @@ class App.Views.Voiceover extends Backbone.View
     @voiceoverSelector.render()
 
 
-  _attachKeyframEvents: ->
-    @keyframe.on('change:voiceover_id', @_findExistingVoiceover, @)
-
-
-  _detachKeyframeEvents: ->
-    @keyframe.off('change:voiceover_id', @_findExistingVoiceover, @)
+  _attachKeyframeEvents: ->
+    @listenTo @keyframe, 'change:voiceover_id', @_findExistingVoiceover
 
 
   _showStopButton: ($button) ->
