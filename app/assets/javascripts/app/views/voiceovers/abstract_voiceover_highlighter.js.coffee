@@ -3,6 +3,7 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
   initialize: ->
     @keyframe = @model
     @playbackRate = 1
+    @footnoteEventIds = []
 
 
   collectTimeIntervals: ->
@@ -30,6 +31,11 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
     $words = @$('.word')
     $words.removeClass('highlighted')
 
+    for eventId in @footnoteEventIds
+      @player.removeTrackEvent eventId
+
+    @footnoteEventIds = []
+
     $.each $words, (index, word) =>
       @$(word).attr("id", "word-#{index}")
       startTime = Number(@$(word).attr('data-start'))
@@ -46,6 +52,8 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
           target:     "word-#{index}"
           effect:     'applyclass'
           applyclass: 'highlighted'
+
+        @footnoteEventIds.push @player.getLastTrackEventId()
 
 
   stopAlignment: =>
