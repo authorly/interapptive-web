@@ -32,7 +32,7 @@ class App.Views.AbstractFormView extends Backbone.View
 
     @$('.help-error').val('')
     errors = @form.commit()
-    if errors
+    if errors?
       @goToFirstError()
       return
 
