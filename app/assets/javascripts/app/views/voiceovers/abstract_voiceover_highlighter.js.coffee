@@ -2,7 +2,7 @@ class App.Views.AbstractVoiceoverControls extends Backbone.View
 
   initialize: ->
     @keyframe = @model
-    @playbackRate = @DEFAULT_PLAYBACK_RATE
+    @playbackRate = 1
 
 
   collectTimeIntervals: ->

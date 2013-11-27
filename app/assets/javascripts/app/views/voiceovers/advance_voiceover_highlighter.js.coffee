@@ -6,8 +6,6 @@ class App.Views.AdvanceVoiceoverHighlighter extends App.Views.AbstractVoiceoverH
   events:
     'blur input.input-mini': 'changeHighlightTime'
 
-  DEFAULT_PLAYBACK_RATE: 1
-
   render: ->
     @$el.html(@template(keyframe: @keyframe))
     @

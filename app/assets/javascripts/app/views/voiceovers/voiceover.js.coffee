@@ -44,16 +44,7 @@ class App.Views.Voiceover extends Backbone.View
 
   remove: ->
     @stopVoiceover()
-    @stopListening(App.vent, 'hide:voiceoverControls', @hideControls)
-    @stopListening(App.vent, 'show:voiceoverControls', @showControls)
-
-    @stopListening(App.vent, 'enable:voiceoverPreview', @enablePreview)
-    @stopListening(App.vent, 'disable:voiceoverPreview', @disablePreview)
-
-    @stopListening(App.vent, 'enable:acceptVoiceoverAlignment', @enableAcceptAlignment)
-    @stopListening(App.vent, 'disable:acceptVoiceoverAlignment', @disableAcceptAlignment)
-
-    @stopListening(App.vent, 'enable:voiceoverMediaPlayer', @enableMediaPlayer)
+    @voiceoverHighlighter.remove() if @voiceoverHighlighter?
     super
 
 

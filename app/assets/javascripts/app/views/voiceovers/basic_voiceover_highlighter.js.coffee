@@ -10,11 +10,11 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     'click #reorder-text .reorder': 'enableSorting'
     'click #reorder-text .done a':  'disableSorting'
 
-  DEFAULT_PLAYBACK_RATE: 0.5
   COUNTDOWN_LENGTH_IN_SECONDS: 5
 
   initialize: ->
     super
+    @playbackRate = 0.5
     @_alignmentInProgress = false
     @_mouseDown = false
 
