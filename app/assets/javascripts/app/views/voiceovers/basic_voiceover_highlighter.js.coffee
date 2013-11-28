@@ -19,7 +19,6 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @_mouseDown = false
 
     $(document).mouseup => @_mouseDown = false
-    @listenTo(App.vent, 'changed:voiceover_playback_rate', @_voiceoverPlaybackRateChanged)
 
 
   render: ->
@@ -35,7 +34,6 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
 
   remove: ->
     @voiceoverPlaybackRateSlider.remove()
-    @stopListening(App.vent, 'change:voiceover_playback_rate', @_voiceoverPlaybackRateChanged)
     super
 
 
@@ -72,8 +70,8 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @_addCountdownDiv()
     @disableBeginAlignment()
 
-    App.vent.trigger('disable:voiceoverPreview')
-    App.vent.trigger('disable:acceptVoiceoverAlignment')
+    @trigger('disable:voiceoverPreview')
+    @trigger('disable:acceptVoiceoverAlignment')
     @initCountdownElement()
 
 
@@ -81,7 +79,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     countdownEnded = false
     endTime = (new Date()).getTime() + @COUNTDOWN_LENGTH_IN_SECONDS * 1000
     @player.destroy()
-    App.vent.trigger('enable:voiceoverMediaPlayer')
+    @trigger('enable:voiceoverMediaPlayer')
     @$('#countdown').jcountdown
       timestamp: endTime
       callback: (days, hours, minutes, seconds) =>
@@ -137,7 +135,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @$('#words li').addClass('grab')
     @$('#reorder-text .reorder').hide()
     @$('#reorder-text .done').show()
-    App.vent.trigger('hide:voiceoverControls')
+    @trigger('hide:voiceoverControls')
 
 
   disableSorting: ->
@@ -145,7 +143,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @$('#words li').removeClass('grab')
     @$('#reorder-text .reorder').show()
     @$('#reorder-text .done').hide()
-    App.vent.trigger('show:voiceoverControls')
+    @trigger('show:voiceoverControls')
 
 
   disableBeginAlignment: ->
@@ -176,8 +174,13 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @voiceoverPlaybackRateSlider = new App.Views.VoiceoverPlaybackRateSlider
       playbackRate: @playbackRate
       el: @$('#voiceover-playback-rate-slider-container')
+    @_attachPlaybackSliderEvents()
 
     @voiceoverPlaybackRateSlider.render()
+
+
+  _attachPlaybackSliderEvents: ->
+    @listenTo(@voiceoverPlaybackRateSlider, 'change:voiceover_playback_rate', @_voiceoverPlaybackRateChanged)
 
 
   _voiceoverPlaybackRateChanged: (value) ->

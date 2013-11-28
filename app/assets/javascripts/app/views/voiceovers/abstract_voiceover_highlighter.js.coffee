@@ -18,13 +18,13 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
     # highlighter view and hence garbage collection of @intervals. Next time, it'd be
     # fresh.
     @intervals ||= @keyframe.get('content_highlight_times')
-    App.vent.trigger('enable:voiceoverPreview')
+    @trigger('enable:voiceoverPreview')
     return unless @intervals?.length > 0
 
     $words = @$('.word')
     $.each $words, @_wordProcessor
 
-    App.vent.trigger('enable:acceptVoiceoverAlignment')
+    @trigger('enable:acceptVoiceoverAlignment')
 
 
   setHighlightTimesForWordEls: ->
@@ -58,7 +58,7 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
 
   stopAlignment: =>
     @player.pause(@player.duration())
-    App.vent.trigger('enable:voiceoverPreview')
+    @trigger('enable:voiceoverPreview')
     @removeWordHighlights()
 
 

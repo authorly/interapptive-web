@@ -20,16 +20,6 @@ class App.Views.Voiceover extends Backbone.View
     @keyframe = @model
     @player = null
 
-    @listenTo(App.vent, 'hide:voiceoverControls', @hideControls)
-    @listenTo(App.vent, 'show:voiceoverControls', @showControls)
-
-    @listenTo(App.vent, 'enable:voiceoverPreview', @enablePreview)
-    @listenTo(App.vent, 'disable:voiceoverPreview', @disablePreview)
-
-    @listenTo(App.vent, 'enable:acceptVoiceoverAlignment', @enableAcceptAlignment)
-    @listenTo(App.vent, 'disable:acceptVoiceoverAlignment', @disableAcceptAlignment)
-
-    @listenTo(App.vent, 'enable:voiceoverMediaPlayer', @enableMediaPlayer)
 
 
   render: ->
@@ -44,7 +34,7 @@ class App.Views.Voiceover extends Backbone.View
 
   remove: ->
     @stopVoiceover()
-    @voiceoverHighlighter.remove() if @voiceoverHighlighter?
+    @voiceoverHighlighter?.remove()
     super
 
 
@@ -189,6 +179,7 @@ class App.Views.Voiceover extends Backbone.View
       id: '#voiceover-highlighter'
     @voiceoverHighlighter.player = @player
 
+    @_attachVoiceoverHighlighterEvents()
     App.trackUserAction(klass + ' aligner clicked')
     @$('#voiceover-selector-container').after(@voiceoverHighlighter.render().el)
     @_findExistingVoiceover()
@@ -201,6 +192,19 @@ class App.Views.Voiceover extends Backbone.View
       el: @$('#voiceover-selector-container')
 
     @voiceoverSelector.render()
+
+
+  _attachVoiceoverHighlighterEvents: ->
+    @listenTo(@voiceoverHighlighter, 'hide:voiceoverControls', @hideControls)
+    @listenTo(@voiceoverHighlighter, 'show:voiceoverControls', @showControls)
+
+    @listenTo(@voiceoverHighlighter, 'enable:voiceoverPreview', @enablePreview)
+    @listenTo(@voiceoverHighlighter, 'disable:voiceoverPreview', @disablePreview)
+
+    @listenTo(@voiceoverHighlighter, 'enable:acceptVoiceoverAlignment', @enableAcceptAlignment)
+    @listenTo(@voiceoverHighlighter, 'disable:acceptVoiceoverAlignment', @disableAcceptAlignment)
+
+    @listenTo(@voiceoverHighlighter, 'enable:voiceoverMediaPlayer', @enableMediaPlayer)
 
 
   _attachKeyframeEvents: ->
