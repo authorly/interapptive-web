@@ -1,3 +1,5 @@
+# This view holds the common functionalities between voiceover highlighter
+# views.
 class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
 
   initialize: ->
@@ -8,8 +10,8 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
 
   collectTimeIntervals: ->
     intervals = _.map @$('.word'), (el) -> @$(el).data('start')
-    return intervals if _.every(intervals, (interval) -> interval? && interval != "undefined" && interval != "null")
-    []
+    return [] if _.any(intervals, (interval) -> !interval or interval is "undefined" or interval is "null")
+    intervals
 
 
   findExistingHighlightTimes: ->

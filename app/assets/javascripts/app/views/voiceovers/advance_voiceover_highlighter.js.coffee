@@ -1,5 +1,8 @@
 #= require ./abstract_voiceover_highlighter
 
+# This view enables users to specify highlight times of every word separately.
+# They can specify start time of each word in an associated input.
+
 class App.Views.AdvanceVoiceoverHighlighter extends App.Views.AbstractVoiceoverHighlighter
   template: JST['app/templates/voiceovers/advance_voiceover_highlighter']
 

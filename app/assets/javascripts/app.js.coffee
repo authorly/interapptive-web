@@ -69,6 +69,12 @@ window.App =
     @modalWithView()?.hide()
 
 
+  # Shows a notification `message` on top right of the browser.
+  # type is one of:
+  # `success` - Green
+  # `info`    - Blue
+  # `warning` - Yellow
+  # `error`   - Red
   _showToast: (type, message) ->
     window.toastr[type](message)
 

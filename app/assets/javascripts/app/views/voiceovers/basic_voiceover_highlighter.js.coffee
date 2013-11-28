@@ -1,5 +1,10 @@
 #= require ./abstract_voiceover_highlighter
 
+# This view enables users to drag/click on words of the keyframe text.
+# As they click/drag over each word in sync with the associated audio,
+# we accumulate an array of time intervals. Intervals are then used for
+# highlighting word-by-word.
+
 class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHighlighter
   template: JST['app/templates/voiceovers/basic_voiceover_highlighter']
 

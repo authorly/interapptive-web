@@ -1,9 +1,17 @@
 # This view is used for aligning text to audio which, in turn, allows for users
 # to create word-by-word highlighting.
-# The audio will be a voice that, when played, enables the users to drag/click
-# word-by-word. As they click/drag over each word in sync with the associated audio,
-# we accumulate an array of time intervals. Intervals are then used for highlighting
-# word-by-word.
+#
+# To create highlights a highlighter view is used in `@voiceoverHighlighter`.
+# It takes care of the elements and method that is used to create highlights.
+# It gives an array of time intervals that is used to save 
+# `content_highlight_times` of the keyframe.
+#
+# This view provides ways to:
+# - Change the audio that will be used for highlighting
+# - Highlight Preview
+# - Acceptance of the highlights
+#
+# 
 # RFCTR Create a Voiceover Backbone model and move model related things.
 # @author dira, @date 2013-01-14
 class App.Views.Voiceover extends Backbone.View
@@ -43,13 +51,17 @@ class App.Views.Voiceover extends Backbone.View
       App.trackUserAction 'Cancelled highlighting (no audio)'
       App.vent.trigger('hide:modal')
       return
+    
+    if (intervals = @voiceoverHighlighter.collectTimeIntervals()).length is 0
+      App.vent.trigger('show:message', 'error', "Partial highlights are not acceptable. Please highlight entire text and then click on Accept button")
 
-    @keyframe.updateContentHighlightTimes @voiceoverHighlighter.collectTimeIntervals(),
-      # TODO replace this with a 'done' event that the parent listens to
-      # 2013-05-07 @dira
-      success: ->
-        App.vent.trigger 'hide:modal'
-        App.trackUserAction 'Completed highlighting'
+    else
+      @keyframe.updateContentHighlightTimes intervals,
+        # TODO replace this with a 'done' event that the parent listens to
+        # 2013-05-07 @dira
+        success: ->
+          App.vent.trigger 'hide:modal'
+          App.trackUserAction 'Completed highlighting'
 
 
   clickPreviewAlignment: (event) =>
