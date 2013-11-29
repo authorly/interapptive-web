@@ -31,18 +31,11 @@ describe Scene do
 
     context 'a normal scene' do
 
-      it 'should create an animation intro and a keyframe in the scene' do
+      it 'should a keyframe in the scene' do
         scene = Scene.create!(storybook: Factory(:storybook))
-        scene.keyframes.count.should == 2
-
-        animations = scene.keyframes.where(is_animation: true)
-        animations.count.should == 1
-        animations[0].position.should == nil
-        animations[0].animation_duration.should == 0
-
-        keyframes = scene.keyframes.where(is_animation: false)
-        keyframes.count.should == 1
-        keyframes[0].position.should == 0
+        scene.keyframes.count.should == 1
+        scene.keyframes[0].is_animation.should == false
+        scene.keyframes[0].position.should == 0
       end
 
     end

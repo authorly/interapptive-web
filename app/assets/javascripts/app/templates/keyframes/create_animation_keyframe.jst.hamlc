@@ -1,0 +1,2 @@
+.main
+  %span{title: 'Add an animation intro' } + intro
