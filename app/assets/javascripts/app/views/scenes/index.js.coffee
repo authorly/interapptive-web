@@ -6,8 +6,8 @@ class App.Views.SceneIndex extends Backbone.View
   tagName:   'ul'
 
   events:
-    'click  span':   'onSceneClick'
-    'click .delete': 'deleteScene'
+    'click .scene-frame': 'onSceneClick'
+    'click .delete':      'deleteScene'
 
 
   DELETE_SCENE_MSG: '\nYou are about to delete a scene and all its keyframes.\n\n\nAre you sure you want to continue?\n'
@@ -86,7 +86,7 @@ class App.Views.SceneIndex extends Backbone.View
   sceneChanged: (__, scene) ->
     $('li', @el)
       .removeClass('active')
-      .find("span.scene-frame[data-id=#{scene.get('id')}]")
+      .find(".scene-frame[data-id=#{scene.get('id')}]")
       .parent().addClass 'active'
 
 

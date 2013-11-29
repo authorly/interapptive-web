@@ -5,8 +5,8 @@ class App.Views.Scene extends Backbone.View
 
 
   initialize: ->
-    @listenTo @model, 'change:preview_data_url', @updatePreview
     @listenTo @model, 'destroy', @remove
+    @listenTo @model.keyframes, 'reset add remove change:positions', @_updatePreview
 
 
   render: ->
@@ -15,8 +15,37 @@ class App.Views.Scene extends Backbone.View
     if @model.isMainMenu()
       @$el.attr('data-is_main_menu', '1').addClass('main_menu')
 
+    @createPreview()
+
     @
 
 
-  updatePreview:  =>
-    @$('.scene-frame img')[0].src = @model.preview.src()
+  remove: ->
+    @preview?.remove()
+    super
+
+
+  _updatePreview: ->
+    renderedPreviewModel = @preview?.model
+    previewModel = @currentPreview()
+    return if previewModel? && renderedPreviewModel? &&
+      previewModel.cid == renderedPreviewModel.cid
+
+    @preview?.remove()
+    @createPreview()
+
+
+  createPreview: ->
+    return unless @model.keyframes.length > 0
+
+    @preview = new App.Views.Preview
+      model: @currentPreview()
+      el: @$('.scene-frame')
+      width: 150
+      height: 112
+      skipSave: true
+    @preview.render()
+
+
+  currentPreview: ->
+    @model.keyframes.at(0)?.preview
