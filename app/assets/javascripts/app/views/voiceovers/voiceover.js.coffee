@@ -184,7 +184,7 @@ class App.Views.Voiceover extends Backbone.View
 
 
   _initVoiceoverHighlighter: (control_type) ->
-    @voiceoverHighlighter.remove() if @voiceoverHighlighter?
+    @voiceoverHighlighter?.remove()
     klass = App.Lib.StringHelper.capitalize(control_type)
     @voiceoverHighlighter = new App.Views[klass + 'VoiceoverHighlighter']
       model: @keyframe

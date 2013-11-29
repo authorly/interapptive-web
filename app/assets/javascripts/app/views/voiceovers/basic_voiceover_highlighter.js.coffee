@@ -209,7 +209,8 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
 
 
   _showBeginHighlightingButton: ->
-    @$('#begin-alignment').find('span')
+    @$('#begin-alignment').removeClass('disabled')
+      .find('span')
       .text('Begin Highlighting')
       .parent().find('i')
       .removeClass('icon-stop')
