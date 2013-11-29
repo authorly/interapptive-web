@@ -28,10 +28,6 @@
     background-color: @white;
     border: 1px solid #666;
 
-    span span {
-      height: 84px;
-    }
-
     .main {
       .round-corners();
       .opacity(0.3);
@@ -129,6 +125,26 @@
       }
     }
 
+  }
+
+  li.placeholder {
+    margin-left: 10px;
+    background-color: #696969;
+    white-space: normal;
+    opacity: 0.55;
+
+    &.hidden {
+      display: none;
+    }
+    &:hover {
+      opacity: 1;
+    }
+    .main {
+      cursor: pointer;
+      text-align: center;
+      font-size: 45px;
+      line-height: .85em;
+    }
   }
 
   li.animation {

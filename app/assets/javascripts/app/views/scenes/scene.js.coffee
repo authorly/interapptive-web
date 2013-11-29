@@ -40,7 +40,7 @@ class App.Views.Scene extends Backbone.View
 
     @preview = new App.Views.Preview
       model: @currentPreview()
-      el: @$('.scene-frame')
+      el: $('<div/>').appendTo @$('.scene-frame')
       width: 150
       height: 112
       skipSave: true
