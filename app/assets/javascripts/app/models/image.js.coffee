@@ -28,7 +28,8 @@ class App.Models.Preview extends App.Models.Image
   # id, url -> from the server
   # data_url -> from the app
   initialize: (attributes, options) ->
-    @storybook = options.storybook
+    @keyframe = options.keyframe
+    @storybook = @keyframe.scene.storybook
 
     @set 'preview', true
     @on 'change:data_url', @save, @
@@ -45,6 +46,12 @@ class App.Models.Preview extends App.Models.Image
 
   save: ->
     @deferredSave() # ignores arguments
+
+
+  spritesToRender: ->
+    mainMenuButtons = @keyframe.scene.widgets.byClass(App.Models.ButtonWidget)
+    [].concat @keyframe.widgets.byClass(App.Models.SpriteOrientation),
+              _.reject(mainMenuButtons, (button) -> button.get('disabled'))
 
 
   widgetChanged: (widget) ->

@@ -59,7 +59,6 @@ class App.Models.Scene extends Backbone.Model
     @keyframes = new App.Collections.KeyframesCollection [], scene: @
 
     @listenTo @keyframes, 'add', @addOrientations
-    @listenTo @keyframes, 'reset add remove change:positions', @updatePreview
 
 
   fetchKeyframes: ->
@@ -115,41 +114,6 @@ class App.Models.Scene extends Backbone.Model
 
   canAddAnimationKeyframe: ->
     @canAddKeyframes() && !@keyframes.animationPresent()
-
-
-
-  # If a change affected which is the preview of the current scene, update
-  updatePreview: ->
-    preview = @keyframes.at(0).preview
-    return if preview? && @preview? && preview.cid == @preview.cid
-
-    @removePreviewListeners()
-    @preview = preview
-    @addPreviewListeners()
-
-    @previewChanged()
-
-
-  addPreviewListeners: ->
-    @listenTo @preview, 'change:id change:url', @previewChanged,        @
-    @listenTo @preview, 'change:data_url',      @previewDataUrlChanged, @
-
-
-  removePreviewListeners: ->
-    return unless @preview?
-
-    @preview.off 'change:id change:url', @previewChanged,        @
-    @preview.off 'change:data_url',      @previewDataUrlChanged, @
-
-
-  previewChanged: ->
-    @set
-      preview_image_id:  @preview.id
-      preview_image_url: @preview.get('url')
-
-
-  previewDataUrlChanged: ->
-    @trigger 'change:preview_data_url', @
 
 
   spriteWidgets: ->
