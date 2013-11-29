@@ -8,8 +8,6 @@
     %span seconds
 
 .main{"data-id" => "#{@keyframe.get 'id'}"}
-  - if @keyframe?.preview?.src()?
-    %img{ src: @keyframe.preview.src() }
 
 %span
   %span.keyframe-number= "#{if @keyframe.get('position') == null then '' else @keyframe.get('position') + 1 }"

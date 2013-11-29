@@ -1,5 +1,4 @@
-%span.scene-frame{"data-id" => "#{@scene.get('id')}"}
-  %img{:src=>"#{@scene.get('preview_image_url')}"}
+.scene-frame{"data-id" => "#{@scene.get('id')}"}
 %span
   - unless @scene.isMainMenu()
     %a{:href=>"#","class" => "delete", "data-id" => "#{@scene.get('id')}"}
