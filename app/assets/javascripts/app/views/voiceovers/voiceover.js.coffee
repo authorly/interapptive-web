@@ -35,6 +35,7 @@ class App.Views.Voiceover extends Backbone.View
     @_toggleVoiceoverHighlighterSwitcher('basic')
     @_attachKeyframeEvents()
     @_findExistingVoiceover()
+    @enableMediaPlayer()
     @
 
 
