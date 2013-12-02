@@ -6,13 +6,18 @@
       Your browser does not support the audio element.
     %span
       %a{:href => '#'}
+
   #voiceover-selector-container
+
+  #highlighter-selector
+    %h4.active Drag to highlight text
+    or
+    %a{:href => '#'} use the manual highlighter
 
   #controls
     %button#preview-alignment.btn.disabled
       %i.icon-play.icon-black
       %span Preview
-    %a#highlighter-type{:href => '#'} Advance Aligner
 
     %button#accept-alignment.btn.btn-large.btn-success
       %i.icon-check.icon-white
