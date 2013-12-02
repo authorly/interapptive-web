@@ -1,5 +1,7 @@
-# This view holds the common functionalities between voiceover highlighter
+# This view holds the common functionalities of voiceover highlighter
 # views.
+# It manages the elements and the method used to create highlights.
+# It produces an array of time intervals.
 class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
 
   initialize: ->
@@ -15,7 +17,7 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
 
 
   findExistingHighlightTimes: ->
-    # Cachins intervals here relies on the fact that when user 'Accepts' the highlights,
+    # Caching intervals here relies on the fact that when user 'Accepts' the highlights,
     # the highlight view along with modal is removed. This causes removal of child
     # highlighter view and hence garbage collection of @intervals. Next time, it'd be
     # fresh.

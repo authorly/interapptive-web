@@ -1,23 +1,21 @@
-# This view is used for aligning text to audio which, in turn, allows for users
-# to create word-by-word highlighting.
+# Allow users to create a mapping between the text in a keyframe and
+# its voiceover sound. (aka aligning text to audio).
 #
-# To create highlights a highlighter view is used in `@voiceoverHighlighter`.
-# It takes care of the elements and method that is used to create highlights.
-# It gives an array of time intervals that is used to save 
-# `content_highlight_times` of the keyframe.
+# It orchestrates
+# * a voiceover sound selector
+# * a highlighter view (instanceof `AbstractVoiceoverHighlighter`) that allows
+# to create the actual highlights
+# * a text reordering view
+# * previewing the result
 #
-# This view provides ways to:
-# - Change the audio that will be used for highlighting
-# - Highlight Preview
-# - Acceptance of the highlights
-#
-# 
 # RFCTR Create a Voiceover Backbone model and move model related things.
 # @author dira, @date 2013-01-14
 class App.Views.Voiceover extends Backbone.View
   template: JST['app/templates/voiceovers/voiceover']
 
   events:
+    # Prevent the browser from highlighting words when dragging over them
+    # (normal behavior), to use our own highlighting.
     'selectstart':                  'cancelNativeHighlighting'
     'click #preview-alignment':     'clickPreviewAlignment'
     'click #accept-alignment':      'acceptAlignment'
@@ -51,7 +49,7 @@ class App.Views.Voiceover extends Backbone.View
       App.trackUserAction 'Cancelled highlighting (no audio)'
       App.vent.trigger('hide:modal')
       return
-    
+
     if (intervals = @voiceoverHighlighter.collectTimeIntervals()).length is 0
       App.vent.trigger('show:message', 'error', "Partial highlights are not acceptable. Please highlight entire text and then click on Accept button")
 

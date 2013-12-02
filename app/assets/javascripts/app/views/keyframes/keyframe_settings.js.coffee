@@ -1,3 +1,5 @@
+# Keyframe configuration.
+# Manages the voiceovers configuration and the autoplay settings.
 class App.Views.KeyframeSettings extends Backbone.View
   template: JST['app/templates/keyframes/settings']
 
