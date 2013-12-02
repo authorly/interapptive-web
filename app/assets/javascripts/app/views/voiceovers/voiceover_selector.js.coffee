@@ -4,8 +4,13 @@ class App.Views.VoiceoverSelector extends Backbone.View
   events:
     'change #voiceover-selector': 'voiceoverChanged'
 
+
+  initialize: ->
+    @listenTo @collection, 'change:transcode_complete', @render
+
+
   render: ->
-    @$el.html(@template(sounds: @collection))
+    @$el.html @template(sounds: @collection)
     @_selectOption()
     @
 

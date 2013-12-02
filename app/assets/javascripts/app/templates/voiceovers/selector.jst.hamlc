@@ -4,7 +4,7 @@
     %option{:value => 'none'}
       None
     - for sound in @sounds.models
-      %option{:value => "#{sound.get('id')}"}
+      %option{:value => "#{sound.get('id')}", :disabled => !sound.get('transcode_complete')}
         = sound.get('name')
 - else
   Please upload some sounds first.
