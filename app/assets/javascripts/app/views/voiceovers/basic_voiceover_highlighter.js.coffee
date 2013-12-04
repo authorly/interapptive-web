@@ -60,13 +60,12 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
 
     return unless @keyframe.hasText()
     return unless @keyframe.hasVoiceover()
-    return if @$('.begin.disabled').length > 0
 
     App.trackUserAction 'Began highlighting'
 
-    @$('.begin').addClass 'disabled'
-    @$('.reorder').css 'visibility', 'hidden'
+    @$('.begin').hide()
     @$('.playback-rate-container').show()
+    @$('.reorder').css 'visibility', 'hidden'
     @removeWordHighlights()
     @_clearWordHighlights()
     @startCountdown()
