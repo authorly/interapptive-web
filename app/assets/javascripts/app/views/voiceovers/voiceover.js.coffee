@@ -21,6 +21,7 @@ class App.Views.Voiceover extends Backbone.View
   initialize: ->
     @keyframe = @model
     @player = null
+    @_previewFootnoteIds = []
 
     @listenTo @keyframe, 'change:voiceover_id', @_voiceoverChanged
 
@@ -74,7 +75,8 @@ class App.Views.Voiceover extends Backbone.View
     @player.playbackRate(1.0)
     @player.play()
 
-    @highlighter.preparePreview()
+    @_cleanupPreviewPlayerFootnotes()
+    @_previewFootnoteIds = @highlighter.preparePreview()
     @$('.highlighter-container .selector .alternative').hide()
 
     @_previewingAlignment = true
@@ -88,9 +90,16 @@ class App.Views.Voiceover extends Backbone.View
   enableStartPreview: ->
     @$('.preview .start').show()
     @$('.preview .stop').hide()
+    @_cleanupPreviewPlayerFootnotes()
     @highlighter.cleanupPreview()
     @$('.highlighter-container .selector .alternative').show()
 
+
+  _cleanupPreviewPlayerFootnotes: ->
+    for eventId in @_previewFootnoteIds
+      @player.removeTrackEvent eventId
+
+    @_previewFootnoteIds = []
 
 
   _initPlayer: =>

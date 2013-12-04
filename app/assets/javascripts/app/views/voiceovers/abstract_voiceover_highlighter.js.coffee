@@ -8,7 +8,6 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
     super
     @keyframe = @model
     @player = @options.player
-    @footnoteEventIds = []
     @playbackRate = 1
     @intervals ||= @keyframe.get('content_highlight_times')
 
@@ -23,15 +22,14 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
   collectTimeIntervals: ->
     intervals = _.map @$('.word'), (el) -> Number(@$(el).data('start'))
     faulty = _.any intervals, (interval) ->
-      !interval or interval is "undefined" or interval is "null"
+      !interval? or interval is "undefined" or interval is "null"
     if faulty then [] else intervals
 
 
-
   preparePreview: ->
-    @removeFootnotes()
     @removeWordHighlights()
 
+    footnoteEventIds = []
     $words = @$('.word')
     $.each $words, (index, word) =>
       id = "word-#{index}"
@@ -51,22 +49,17 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
           effect:     'applyclass'
           applyclass: 'highlighted'
 
-        @footnoteEventIds.push @player.getLastTrackEventId()
+        footnoteEventIds.push @player.getLastTrackEventId()
 
     @disableHighlightControls()
 
+    # to be used by the manager of the player
+    footnoteEventIds
+
 
   cleanupPreview: ->
-    @removeFootnotes()
     @removeWordHighlights()
     @enableHighlightControls()
-
-
-  removeFootnotes: ->
-    for eventId in @footnoteEventIds
-      @player.removeTrackEvent eventId
-
-    @footnoteEventIds = []
 
 
   # if the highlighter uses the player, this method is invoked
