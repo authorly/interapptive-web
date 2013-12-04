@@ -26,9 +26,13 @@
     .highlighter
 
   .controls
-    %button.preview.btn.disabled
-      %i.icon-play.icon-black
-      %span Preview
+    %span.preview
+      %button.start.btn
+        %i.icon-play.icon-black
+        %span Preview
+      %button.stop.btn{style: 'display: none'}
+        %i.icon-stop.icon-black
+        %span Stop
 
     %button.accept.btn.btn-large.btn-success
       %i.icon-check.icon-white

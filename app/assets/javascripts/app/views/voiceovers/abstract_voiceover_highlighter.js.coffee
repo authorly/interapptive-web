@@ -28,36 +28,54 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
 
 
 
-  # setHighlightTimesForWordEls: ->
-    # $words = @$('.word')
-    # $words.removeClass('highlighted')
+  preparePreview: ->
+    @removeFootnotes()
+    @removeWordHighlights()
 
-    # for eventId in @footnoteEventIds
-      # @player.removeTrackEvent eventId
+    $words = @$('.word')
+    $.each $words, (index, word) =>
+      id = "word-#{index}"
+      @$(word).attr('id', id)
+      startTime = Number(@$(word).data('start'))
+      if startTime
+        if @$($words[index + 1]).length > 0
+          endTime = Number(@$($words[index + 1]).data('start'))
+        else
+          endTime = startTime + 1
 
-    # @footnoteEventIds = []
+        @player.footnote
+          start:      startTime
+          end:        endTime
+          text:       ''
+          target:     id
+          effect:     'applyclass'
+          applyclass: 'highlighted'
 
-    # $.each $words, (index, word) =>
-      # @$(word).attr("id", "word-#{index}")
-      # startTime = Number(@$(word).data('start'))
-      # if startTime
-        # if @$($words[index + 1]).length > 0
-          # endTime = Number(@$($words[index + 1]).data('start'))
-        # else
-          # endTime = startTime + 1
+        @footnoteEventIds.push @player.getLastTrackEventId()
 
-        # @player.footnote
-          # start:      startTime
-          # end:        endTime
-          # text:       ''
-          # target:     "word-#{index}"
-          # effect:     'applyclass'
-          # applyclass: 'highlighted'
+    @disableHighlightControls()
 
-        # @footnoteEventIds.push @player.getLastTrackEventId()
+
+  cleanupPreview: ->
+    @removeFootnotes()
+    @removeWordHighlights()
+    @enableHighlightControls()
+
+
+  removeFootnotes: ->
+    for eventId in @footnoteEventIds
+      @player.removeTrackEvent eventId
+
+    @footnoteEventIds = []
 
 
 
   removeWordHighlights: =>
     @$('.word.highlighted').removeClass('highlighted')
 
+
+  disableHighlightControls: ->
+    # to be overridden if needed
+
+  enableHighlightControls: ->
+    # to be overridden if needed

@@ -12,11 +12,9 @@ class App.Views.Voiceover extends Backbone.View
   template: JST['app/templates/voiceovers/voiceover']
 
   events:
-    # Prevent the browser from highlighting words when dragging over them
-    # (normal behavior), to use our own highlighting.
-    'selectstart':              'cancelNativeHighlighting'
-    'click .controls .preview': 'previewClicked'
-    'click .controls .accept':  'acceptClicked'
+    'click .preview .start':   'startPreviewClicked'
+    'click .preview .stop':    'stopPreviewClicked'
+    'click .controls .accept': 'acceptClicked'
     # 'click #highlighter-type':      'switchHighlighterType'
 
 
@@ -47,7 +45,7 @@ class App.Views.Voiceover extends Backbone.View
 
 
   remove: ->
-    @player.pause()
+    @player?.pause()
     @highlighter.remove()
     super
 
@@ -64,30 +62,34 @@ class App.Views.Voiceover extends Backbone.View
       }, patch: true
 
 
-  # previewClicked: (event) =>
-    # return unless @keyframe.hasText()
-    # return unless @keyframe.hasVoiceover()
-    # @previewOrStopPreview(event)
-    # @highlighter.setHighlightTimesForWordEls()
+  startPreviewClicked: (event) =>
+    return if @$('.preview.start.disabled').length > 0
 
-    # @_previewingAlignment = true
+    return unless @keyframe.hasText()
+    return unless @keyframe.hasVoiceover()
 
+    @$('.preview .start').hide()
+    @$('.preview .stop').show()
 
-  # previewOrStopPreview: (event) ->
-    # $el = @$(event.currentTarget)
-    # if $el.find('i').hasClass('icon-play')
-      # @player.play()
-      # @player.playbackRate(1.0)
-      # @highlighter.disableBeginAlignment()
-      # @_showStopButton($el)
-    # else
-      # @highlighter.stopAlignment()
-      # @_showPreviewButton($el)
+    @player.playbackRate(1.0)
+    @player.play()
+
+    @highlighter.preparePreview()
+    @$('.highlighter-container .selector .alternative').hide()
+
+    @_previewingAlignment = true
 
 
-  # cancelNativeHighlighting: ->
-    # false
+  stopPreviewClicked: (event) =>
+    @player.pause @player.duration()
+    @enableStartPreview()
 
+
+  enableStartPreview: ->
+    @$('.preview .start').show()
+    @$('.preview .stop').hide()
+    @highlighter.cleanupPreview()
+    @$('.highlighter-container .selector .alternative').show()
 
 
 
@@ -102,31 +104,10 @@ class App.Views.Voiceover extends Backbone.View
 
     @player.on 'ended', =>
       @highlighter.playEnded()
-      console.log 'end play'
-      # if @_previewingAlignment
-        # @previewingEnded()
 
-
-  # previewingEnded: ->
-    # @_previewingAlignment = false
-    # @enableAcceptAlignment()
-    # @_showPreviewButton(@$('#preview-alignment'))
-
-
-  # enablePreview: ->
-    # @$('#preview-alignment').removeClass('disabled')
-
-
-  # disablePreview: ->
-    # @$('#preview-alignment').addClass('disabled')
-
-
-  # enableAcceptAlignment: ->
-    # @$('.controls .accept').removeClass('disabled')
-
-
-  # disableAcceptAlignment: ->
-    # @$('#accept-alignment').addClass('disabled')
+      if @_previewingAlignment
+        @_previewingAlignment = false
+        @enableStartPreview()
 
 
   setAudioPlayerSrc: (sound=null) ->
@@ -135,14 +116,6 @@ class App.Views.Voiceover extends Backbone.View
       @$('#voiceover-ogg').attr('src', arguments[0].get('oggurl'))
     else
       @$('audio').attr('src', '')
-
-
-  # showControls: ->
-    # @$('#controls').css('visibility', 'visible')
-
-
-  # hideControls: ->
-    # @$('#controls').css('visibility', 'hidden')
 
 
   # switchHighlighterType: ->
@@ -182,7 +155,6 @@ class App.Views.Voiceover extends Backbone.View
     @listenTo @highlighter, 'cancel done', ->
       voiceover.css 'visibility', 'visible'
       controls.css 'visibility', 'visible'
-      @$('.preview').removeClass 'disabled'
 
     @listenTo @highlighter, 'start:reorder', ->
       controls.css 'visibility', 'hidden'
@@ -199,20 +171,6 @@ class App.Views.Voiceover extends Backbone.View
     @voiceoverSelector.render()
 
 
-  # _attachVoiceoverHighlighterEvents: ->
-    # @listenTo(@highlighter, 'hide:voiceoverControls', @hideControls)
-    # @listenTo(@highlighter, 'show:voiceoverControls', @showControls)
-
-    # @listenTo(@highlighter, 'enable:voiceoverPreview', @enablePreview)
-    # @listenTo(@highlighter, 'disable:voiceoverPreview', @disablePreview)
-
-    # @listenTo(@highlighter, 'enable:acceptVoiceoverAlignment', @enableAcceptAlignment)
-    # @listenTo(@highlighter, 'disable:acceptVoiceoverAlignment', @disableAcceptAlignment)
-
-    # @listenTo(@highlighter, 'enable:voiceoverMediaPlayer', @enableMediaPlayer)
-
-
-
   _voiceoverChanged: ->
     controls = @$('.highlighter-container, .highlighter-container, .preview')
     warning = @$('.voiceover-container .not-found')
@@ -225,18 +183,3 @@ class App.Views.Voiceover extends Backbone.View
       controls.hide()
       warning.show()
 
-
-  # _showStopButton: ($button) ->
-    # $button.find('span')
-      # .text('Stop')
-      # .parent().find('i')
-      # .removeClass('icon-play')
-      # .addClass('icon-stop')
-
-
-  # _showPreviewButton: ($button) ->
-    # $button.find('span')
-      # .text('Preview')
-      # .parent().find('i')
-      # .removeClass('icon-stop')
-      # .addClass('icon-play')

@@ -224,3 +224,10 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @playbackRate = value
     @player.playbackRate(@playbackRate)
 
+
+  disableHighlightControls: ->
+    $('.reorder .highlight').css 'visibility', 'hidden'
+
+
+  enableHighlightControls: ->
+    $('.reorder .highlight').css 'visibility', 'visible'
