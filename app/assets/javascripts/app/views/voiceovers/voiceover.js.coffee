@@ -30,24 +30,23 @@ class App.Views.Voiceover extends Backbone.View
     @$el.html @template(keyframe: @keyframe)
 
     @_initVoiceoverSelector()
+    @_voiceoverChanged()
 
     if @keyframe.hasText()
       @$('.highlighter-container .not-found').hide()
       @_initVoiceoverHighlighter('basic')
-      # @_toggleVoiceoverHighlighterSwitcher('basic')
-      @_voiceoverChanged()
-
-      # it needs this view to be added to the DOM
-      window.setTimeout @_initPlayer, 0
     else
       @$('.highlighter-container').find('.selector, .highlighter').hide()
+
+    # it needs this view to be added to the DOM
+    window.setTimeout @_initPlayer, 0
 
     @
 
 
   remove: ->
     @player?.pause()
-    @highlighter.remove()
+    @highlighter?.remove()
     super
 
 
@@ -66,7 +65,6 @@ class App.Views.Voiceover extends Backbone.View
   startPreviewClicked: (event) =>
     return if @$('.preview.start.disabled').length > 0
 
-    return unless @keyframe.hasText()
     return unless @keyframe.hasVoiceover()
 
     @$('.preview .start').hide()
@@ -76,7 +74,7 @@ class App.Views.Voiceover extends Backbone.View
     @player.play()
 
     @_cleanupPreviewPlayerFootnotes()
-    @_previewFootnoteIds = @highlighter.preparePreview()
+    @_previewFootnoteIds = @highlighter?.preparePreview() || []
     @$('.highlighter-container .selector .alternative').hide()
 
     @_previewingAlignment = true
@@ -91,7 +89,7 @@ class App.Views.Voiceover extends Backbone.View
     @$('.preview .start').show()
     @$('.preview .stop').hide()
     @_cleanupPreviewPlayerFootnotes()
-    @highlighter.cleanupPreview()
+    @highlighter?.cleanupPreview()
     @$('.highlighter-container .selector .alternative').show()
 
 
@@ -109,10 +107,10 @@ class App.Views.Voiceover extends Backbone.View
       '#voiceover-mp3'
     @player = Popcorn(id)
 
-    @highlighter.player = @player
+    @highlighter?.player = @player
 
     @player.on 'ended', =>
-      @highlighter.playEnded()
+      @highlighter?.playEnded()
 
       if @_previewingAlignment
         @_previewingAlignment = false
