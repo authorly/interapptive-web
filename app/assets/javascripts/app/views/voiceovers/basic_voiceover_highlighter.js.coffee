@@ -9,88 +9,113 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
   template: JST['app/templates/voiceovers/basic_voiceover_highlighter']
 
   events:
-    'mousedown .word':              'mouseDownOnWord'
-    'mouseover .word':              'mouseOverWord'
-    'click #begin-alignment':       'clickBeginAlignment'
-    'click #reorder-text .reorder': 'enableSorting'
-    'click #reorder-text .done a':  'disableSorting'
+    'click .begin':       'beginClicked'
+    'click .cancel':      'cancelClicked'
+    'mousedown .word':    'mouseDownOnWord'
+    'mouseover .word':    'mouseOverWord'
+    'click .reorder .start a': 'reorderClicked'
+    'click .reorder .done  a':  'finishReorderClicked'
 
-  COUNTDOWN_LENGTH_IN_SECONDS: 5
+  COUNTDOWN_SECONDS: 5
 
   initialize: ->
     super
     @playbackRate = 0.5
-    @_alignmentInProgress = false
+    @_aligning = false
     @_mouseDown = false
 
-    $(document).mouseup => @_mouseDown = false
+    $(document).mouseup @onMouseUp
 
 
   render: ->
-    @$el.html(@template(keyframe: @keyframe))
-    @_initVoiceoverPlaybackRateSlider()
+    super
+    @words = @$('.words')
+    @_initPlaybackRate()
     @_initSorting()
     @
 
 
-  _wordProcessor: (index, word) =>
-    @$(word).attr("data-start", "#{@intervals[index]}")
-
-
   remove: ->
-    @voiceoverPlaybackRateSlider.remove()
+    @playbackRateView.remove()
+    $(document).unbind 'mouseup', @onMouseUp
     super
 
 
-  clickBeginAlignment: (event) =>
+  onMouseUp: =>
+    @_mouseDown = false
+
+
+  _initializeWordHighlights: ->
+    $.each @$('.word'), (index, word) =>
+      @$(word).data('start', "#{@intervals[index]}")
+
+
+  _clearWordHighlights: ->
+    $.each @$('.word'), (index, word) =>
+      @$(word).removeData('start')
+
+
+  beginClicked: (event) =>
     event.preventDefault()
 
     return unless @keyframe.hasText()
     return unless @keyframe.hasVoiceover()
+    return if @$('.begin.disabled').length > 0
 
     App.trackUserAction 'Began highlighting'
 
-    if @_alignmentInProgress then @stopAlignment() else @startCountdown()
+    @$('.begin').addClass 'disabled'
+    @$('.reorder').css 'visibility', 'hidden'
+    @$('.playback-rate-container').show()
+    @removeWordHighlights()
+    @_clearWordHighlights()
+    @startCountdown()
+
+    @trigger 'start'
+
+
+  cancelClicked: (event) =>
+    @_aligning = false
+    @player.pause(@player.duration())
+    @removeWordHighlights()
+    @$('.begin').show()
+    @$('.cancel').hide()
+    @$('.reorder').css 'visibility', 'visible'
+    @$('.playback-rate-container').hide()
+
+    @trigger 'cancel'
 
 
   mouseOverWord: (event) =>
-    return false unless @_alignmentInProgress
-
-    $wordEl = @$(event.currentTarget)
-    if @_mouseDown and @canHighlightEl($wordEl)
-      $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
+    return false unless @_mouseDown
+    @mouseDownOnWord(event)
+    true
 
 
   mouseDownOnWord: (event) =>
-    return false unless @_alignmentInProgress
+    return false unless @_aligning
     @_mouseDown = true
 
     $wordEl = @$(event.currentTarget)
     if @canHighlightEl($wordEl)
-      $wordEl.addClass('highlighted').attr('data-start', @_playerCurrentTimeInSeconds())
+      $wordEl.addClass('highlighted').data('start', @_playerCurrentTimeInSeconds())
     false
 
 
   startCountdown: ->
-    @_addCountdownDiv()
-    @disableBeginAlignment()
+    @words.find('.word').addClass('disabled')
 
-    @trigger('disable:voiceoverPreview')
-    @trigger('disable:acceptVoiceoverAlignment')
-    @initCountdownElement()
+    @initCountdown()
 
 
-  initCountdownElement: ->
-    countdownEnded = false
-    endTime = (new Date()).getTime() + @COUNTDOWN_LENGTH_IN_SECONDS * 1000
-    @player.destroy()
-    @trigger('enable:voiceoverMediaPlayer')
-    @$('#countdown').jcountdown
+  initCountdown: ->
+    endTime = (new Date()).getTime() + @COUNTDOWN_SECONDS * 1000
+    @$('.countdown').show().jcountdown
       timestamp: endTime
       callback: (days, hours, minutes, seconds) =>
-        if seconds is 0 and not countdownEnded
-          @countdownEnded()
-          countdownEnded = true
+        if seconds is 0
+          @$('.countdown *').remove()
+          @startAligning()
 
 
   canHighlightEl: (el) ->
@@ -113,56 +138,64 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
 
   updateOrder: =>
     zero = (new App.Models.TextWidget).get('z_order') || 0
-    @$('#words li').each (index, element) =>
+    changed = false
+    @words.find('li').each (index, element) =>
       element = $(element)
 
       if (id = element.data('id'))? && (text = @keyframe.widgets.get(id))?
-        text.set {z_order: zero + index}, silent: true
+        zOrder = zero + index
+        changed = true if text.get('z_order') != zOrder
+        text.set {z_order: zOrder}, silent: true
 
-    @keyframe.widgets.trigger 'change'
+    if changed
+      @_initializeWordHighlights()
+      @keyframe.widgets.trigger('change')
 
 
-  countdownEnded: =>
-    @_alignmentInProgress = true
+  startAligning: ->
+    @_aligning = true
+    @$('.begin').removeClass('disabled').hide()
+    @$('.cancel').show()
 
-    @removeWordHighlights()
+    @words.find('.word').removeClass('disabled')
 
     @player.play()
     @player.playbackRate(@playbackRate)
 
-    @$('#countdown').remove()
-    @$('.word').removeClass('disabled')
-    @_showStopHighlightingButton()
+
+  playEnded: ->
+    return unless @_aligning
+
+    @$('.begin').show()
+    @$('.cancel').hide()
+    @$('.reorder').css 'visibility', 'visible'
+    @$('.playback-rate-container').hide()
+    @removeWordHighlights()
+
+    @trigger 'done'
 
 
-  enableSorting: ->
-    @$('#words').sortable "option", "disabled", false
-    @$('#words li').addClass('grab')
-    @$('#reorder-text .reorder').hide()
-    @$('#reorder-text .done').show()
-    @trigger('hide:voiceoverControls')
+
+  reorderClicked: ->
+    @$('.highlight').css 'visibility', 'hidden'
+    @words.sortable 'option', 'disabled', false
+    @words.find('li').addClass('grab')
+    @$('.reorder .start').hide()
+    @$('.reorder .done').show()
+
+    @trigger 'start:reorder'
 
 
-  disableSorting: ->
-    @$('#words').sortable "option", "disabled", true
-    @$('#words li').removeClass('grab')
-    @$('#reorder-text .reorder').show()
-    @$('#reorder-text .done').hide()
-    @trigger('show:voiceoverControls')
+  finishReorderClicked: ->
+    @updateOrder()
 
+    @$('.highlight').css 'visibility', 'visible'
+    @words.sortable 'option', 'disabled', true
+    @words.find('li').removeClass('grab')
+    @$('.reorder .start').show()
+    @$('.reorder .done').hide()
 
-  disableBeginAlignment: ->
-    @$('#begin-alignment').addClass('disabled')
-
-
-  enableBeginAlignment: ->
-    @$('#begin-alignment').removeClass('disabled')
-
-
-  resetHighlightControls: ->
-    super
-    @_showBeginHighlightingButton()
-    @_alignmentInProgress = false
+    @trigger 'finished:reorder'
 
 
   _playerCurrentTimeInSeconds: ->
@@ -170,48 +203,24 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
 
 
   _initSorting: ->
-    @$('#words').sortable
-      update:   @updateOrder
+    @words.sortable
       disabled: true
 
 
-  _initVoiceoverPlaybackRateSlider: ->
-    @voiceoverPlaybackRateSlider = new App.Views.VoiceoverPlaybackRateSlider
+  _initPlaybackRate: ->
+    @playbackRateView = new App.Views.VoiceoverPlaybackRateSlider
       playbackRate: @playbackRate
-      el: @$('#voiceover-playback-rate-slider-container')
+      el: @$('.playback-rate-container')
     @_attachPlaybackSliderEvents()
 
-    @voiceoverPlaybackRateSlider.render()
+    @playbackRateView.render()
 
 
   _attachPlaybackSliderEvents: ->
-    @listenTo(@voiceoverPlaybackRateSlider, 'change:voiceover_playback_rate', @_voiceoverPlaybackRateChanged)
+    @listenTo @playbackRateView, 'change', @_playbackRateChanged
 
 
-  _voiceoverPlaybackRateChanged: (value) ->
+  _playbackRateChanged: (value) ->
     @playbackRate = value
-    @player.playbackRate(value)
+    @player.playbackRate(@playbackRate)
 
-
-  _addCountdownDiv: ->
-    @$('#words').after('<div id="countdown"></div>')
-      .find('span.word')
-      .addClass('disabled')
-
-
-  _showStopHighlightingButton: ->
-    @$('#begin-alignment').removeClass('disabled')
-      .find('span')
-      .text('Cancel Highlighting')
-      .parent().find('i')
-      .removeClass('icon-exclamation-sign')
-      .addClass('icon-stop')
-
-
-  _showBeginHighlightingButton: ->
-    @$('#begin-alignment').removeClass('disabled')
-      .find('span')
-      .text('Begin Highlighting')
-      .parent().find('i')
-      .removeClass('icon-stop')
-      .addClass('icon-exclamation-sign')

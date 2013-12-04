@@ -9,14 +9,11 @@ class App.Views.AdvanceVoiceoverHighlighter extends App.Views.AbstractVoiceoverH
   events:
     'blur input.input-mini': 'changeHighlightTime'
 
-  render: ->
-    @$el.html(@template(keyframe: @keyframe))
-    @
 
-
-  _wordProcessor: (index, word) =>
-    @$(word).attr("data-start", "#{@intervals[index]}")
-    @$(word).find('input').val(@intervals[index])
+  _processWords:
+    $.each $('.word'), (index, word) =>
+      @$(word).attr("data-start", "#{@intervals[index]}").
+        find('input').val(@intervals[index])
 
 
   changeHighlightTime: (event) ->

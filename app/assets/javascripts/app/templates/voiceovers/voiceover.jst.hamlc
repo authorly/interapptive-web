@@ -1,24 +1,35 @@
-#voiceovers
-  #sync-player
-    %audio{:id => "media-player-mp3", :controls => "controls", :class => "disabled"}
+#voiceover
+  .player
+    %audio{:id => "voiceover-mp3", :controls => "controls", :class => "disabled"}
       Your browser does not support the audio element.
-    %audio{:id => "media-player-ogg", :controls => "controls", :class => "disabled"}
+    %audio{:id => "voiceover-ogg", :controls => "controls", :class => "disabled"}
       Your browser does not support the audio element.
     %span
       %a{:href => '#'}
 
-  #voiceover-selector-container
+  .voiceover-container
+    .selector
 
-  #highlighter-selector
-    %h4.active Drag to highlight text
-    or
-    %a{:href => '#'} use the manual highlighter
+    %p.not-found
+      Please choose a voiceover sound.
 
-  #controls
-    %button#preview-alignment.btn.disabled
+  .highlighter-container
+    .selector
+      %h4.active Drag to highlight text
+      %span.alternative
+        or
+        %a{:href => '#'} use the manual highlighter
+
+    %p.not-found
+      There is no text to highlight in this keyframe.
+
+    .highlighter
+
+  .controls
+    %button.preview.btn.disabled
       %i.icon-play.icon-black
       %span Preview
 
-    %button#accept-alignment.btn.btn-large.btn-success
+    %button.accept.btn.btn-large.btn-success
       %i.icon-check.icon-white
       Accept

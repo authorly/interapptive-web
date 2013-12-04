@@ -8,231 +8,235 @@
 # * a text reordering view
 # * previewing the result
 #
-# RFCTR Create a Voiceover Backbone model and move model related things.
-# @author dira, @date 2013-01-14
 class App.Views.Voiceover extends Backbone.View
   template: JST['app/templates/voiceovers/voiceover']
 
   events:
     # Prevent the browser from highlighting words when dragging over them
     # (normal behavior), to use our own highlighting.
-    'selectstart':                  'cancelNativeHighlighting'
-    'click #preview-alignment':     'clickPreviewAlignment'
-    'click #accept-alignment':      'acceptAlignment'
-    'click #highlighter-type':      'switchHighlighterType'
+    'selectstart':              'cancelNativeHighlighting'
+    'click .controls .preview': 'previewClicked'
+    'click .controls .accept':  'acceptClicked'
+    # 'click #highlighter-type':      'switchHighlighterType'
 
 
   initialize: ->
     @keyframe = @model
     @player = null
 
+    @listenTo @keyframe, 'change:voiceover_id', @_voiceoverChanged
 
 
   render: ->
-    @$el.html(@template(keyframe: @keyframe))
+    @$el.html @template(keyframe: @keyframe)
+
     @_initVoiceoverSelector()
-    @_initVoiceoverHighlighter('basic')
-    @_toggleVoiceoverHighlighterSwitcher('basic')
-    @_attachKeyframeEvents()
-    @_findExistingVoiceover()
-    @enableMediaPlayer()
+
+    if @keyframe.hasText()
+      @$('.highlighter-container .not-found').hide()
+      @_initVoiceoverHighlighter('basic')
+      # @_toggleVoiceoverHighlighterSwitcher('basic')
+      @_voiceoverChanged()
+
+      # it needs this view to be added to the DOM
+      window.setTimeout @_initPlayer, 0
+    else
+      @$('.highlighter-container').find('.selector, .highlighter').hide()
+
     @
 
 
   remove: ->
-    @stopVoiceover()
-    @voiceoverHighlighter?.remove()
+    @player.pause()
+    @highlighter.remove()
     super
 
 
-  acceptAlignment: (event) ->
-    unless @keyframe.hasVoiceover()
-      App.trackUserAction 'Cancelled highlighting (no audio)'
-      App.vent.trigger('hide:modal')
-      return
-
-    if (intervals = @voiceoverHighlighter.collectTimeIntervals()).length is 0
+  acceptClicked: (event) ->
+    intervals = @highlighter.collectTimeIntervals()
+    if intervals.length is 0
       App.vent.trigger('show:message', 'error', "Partial highlights are not acceptable. Please highlight entire text and then click on Accept button")
-
     else
-      @keyframe.updateContentHighlightTimes intervals,
-        # TODO replace this with a 'done' event that the parent listens to
-        # 2013-05-07 @dira
-        success: ->
-          App.vent.trigger 'hide:modal'
-          App.trackUserAction 'Completed highlighting'
+      App.vent.trigger 'hide:modal'
+      App.trackUserAction 'Completed highlighting'
+      @keyframe.save {
+        content_highlight_times: intervals
+      }, patch: true
 
 
-  clickPreviewAlignment: (event) =>
-    return unless @keyframe.hasText()
-    return unless @keyframe.hasVoiceover()
-    @previewOrStopPreview(event)
-    @voiceoverHighlighter.setHighlightTimesForWordEls()
+  # previewClicked: (event) =>
+    # return unless @keyframe.hasText()
+    # return unless @keyframe.hasVoiceover()
+    # @previewOrStopPreview(event)
+    # @highlighter.setHighlightTimesForWordEls()
 
-    @_previewingAlignment = true
+    # @_previewingAlignment = true
 
 
-  previewOrStopPreview: (event) ->
-    $el = @$(event.currentTarget)
-    if $el.find('i').hasClass('icon-play')
-      @player.play()
-      @player.playbackRate(1.0)
-      @voiceoverHighlighter.disableBeginAlignment()
-      @_showStopButton($el)
+  # previewOrStopPreview: (event) ->
+    # $el = @$(event.currentTarget)
+    # if $el.find('i').hasClass('icon-play')
+      # @player.play()
+      # @player.playbackRate(1.0)
+      # @highlighter.disableBeginAlignment()
+      # @_showStopButton($el)
+    # else
+      # @highlighter.stopAlignment()
+      # @_showPreviewButton($el)
+
+
+  # cancelNativeHighlighting: ->
+    # false
+
+
+
+
+  _initPlayer: =>
+    id = if App.Lib.BrowserHelper.canPlayVorbis()
+      '#voiceover-ogg'
     else
-      @voiceoverHighlighter.stopAlignment()
-      @_showPreviewButton($el)
+      '#voiceover-mp3'
+    @player = Popcorn(id)
 
-
-  cancelNativeHighlighting: ->
-    false
-
-
-  setExistingVoiceover: (voiceover) ->
-    @setAudioPlayerSrc(voiceover)
-    @voiceoverHighlighter.enableBeginAlignment()
-
-
-  noVoiceoverFound: ->
-    @setAudioPlayerSrc()
-    @disablePreview()
-    @voiceoverHighlighter.disableBeginAlignment()
-
-
-  enableMediaPlayer: =>
-    if App.Lib.BrowserHelper.canPlayVorbis()
-      @player = Popcorn('#media-player-ogg')
-    else
-      @player = Popcorn('#media-player-mp3')
-    @voiceoverHighlighter.player = @player
+    @highlighter.player = @player
 
     @player.on 'ended', =>
-
-      if @_previewingAlignment
-        @previewingEnded()
-      else
-        @enableAcceptAlignment()
-        @enablePreview()
-      @voiceoverHighlighter.resetHighlightControls()
+      @highlighter.playEnded()
+      console.log 'end play'
+      # if @_previewingAlignment
+        # @previewingEnded()
 
 
-  previewingEnded: ->
-    @_previewingAlignment = false
-    @enableAcceptAlignment()
-    @_showPreviewButton(@$('#preview-alignment'))
+  # previewingEnded: ->
+    # @_previewingAlignment = false
+    # @enableAcceptAlignment()
+    # @_showPreviewButton(@$('#preview-alignment'))
 
 
-  enablePreview: ->
-    @$('#preview-alignment').removeClass('disabled')
+  # enablePreview: ->
+    # @$('#preview-alignment').removeClass('disabled')
 
 
-  disablePreview: ->
-    @$('#preview-alignment').addClass('disabled')
+  # disablePreview: ->
+    # @$('#preview-alignment').addClass('disabled')
 
 
-  enableAcceptAlignment: ->
-    @$('#accept-alignment').removeClass('disabled')
+  # enableAcceptAlignment: ->
+    # @$('.controls .accept').removeClass('disabled')
 
 
-  disableAcceptAlignment: ->
-    @$('#accept-alignment').addClass('disabled')
+  # disableAcceptAlignment: ->
+    # @$('#accept-alignment').addClass('disabled')
 
 
-  setAudioPlayerSrc: ->
-    if arguments.length > 0
-      @$('audio#media-player-mp3').attr('src', arguments[0].get('mp3url'))
-      @$('audio#media-player-ogg').attr('src', arguments[0].get('oggurl'))
+  setAudioPlayerSrc: (sound=null) ->
+    if sound?
+      @$('#voiceover-mp3').attr('src', arguments[0].get('mp3url'))
+      @$('#voiceover-ogg').attr('src', arguments[0].get('oggurl'))
     else
       @$('audio').attr('src', '')
 
 
-  showControls: ->
-    @$('#controls').css('visibility', 'visible')
+  # showControls: ->
+    # @$('#controls').css('visibility', 'visible')
 
 
-  hideControls: ->
-    @$('#controls').css('visibility', 'hidden')
+  # hideControls: ->
+    # @$('#controls').css('visibility', 'hidden')
 
 
-  stopVoiceover: =>
-    @player.pause()
+  # switchHighlighterType: ->
+    # highlighter_type = $('a#highlighter-type').data('type')
+    # @_initVoiceoverHighlighter(highlighter_type)
+    # @_toggleVoiceoverHighlighterSwitcher(highlighter_type)
 
 
-  switchHighlighterType: ->
-    highlighter_type = $('a#highlighter-type').data('type')
-    @_initVoiceoverHighlighter(highlighter_type)
-    @_toggleVoiceoverHighlighterSwitcher(highlighter_type)
-
-
-  _toggleVoiceoverHighlighterSwitcher: (highlighter_type) ->
-    $element = @$('a#highlighter-type')
-    if highlighter_type is 'basic'
-      $element.text('Advance Aligner')
-      $element.data('type', 'advance')
-    else
-      $element.text('Basic Aligner')
-      $element.data('type', 'basic')
-
-
-  _findExistingVoiceover: ->
-    if (voiceover = @keyframe.voiceover())?
-      @setExistingVoiceover(voiceover)
-      @voiceoverHighlighter.findExistingHighlightTimes()
-    else
-      @noVoiceoverFound()
+  # _toggleVoiceoverHighlighterSwitcher: (highlighter_type) ->
+    # $element = @$('a#highlighter-type')
+    # if highlighter_type is 'basic'
+      # $element.text('Advance Aligner')
+      # $element.data('type', 'advance')
+    # else
+      # $element.text('Basic Aligner')
+      # $element.data('type', 'basic')
 
 
   _initVoiceoverHighlighter: (control_type) ->
-    @voiceoverHighlighter?.remove()
-    klass = App.Lib.StringHelper.capitalize(control_type)
-    @voiceoverHighlighter = new App.Views[klass + 'VoiceoverHighlighter']
-      model: @keyframe
-      id: '#voiceover-highlighter'
-    @voiceoverHighlighter.player = @player
+    # @highlighter?.remove()
+    # TODO stop listening to the events
 
-    @_attachVoiceoverHighlighterEvents()
     App.trackUserAction(klass + ' aligner clicked')
-    @$('#voiceover-selector-container').after(@voiceoverHighlighter.render().el)
-    @_findExistingVoiceover()
+
+    klass = App.Lib.StringHelper.capitalize(control_type)
+    @highlighter = new App.Views[klass + 'VoiceoverHighlighter']
+      model: @keyframe
+      el: @$('.highlighter-container .highlighter')
+      player: @player
+    @highlighter.render()
+
+    voiceover = @$('.voiceover-container')
+    controls = @$('.highlighter-container .selector .alternative, .preview, .accept')
+    @listenTo @highlighter, 'start', ->
+      voiceover.css 'visibility', 'hidden'
+      controls.css 'visibility', 'hidden'
+    @listenTo @highlighter, 'cancel done', ->
+      voiceover.css 'visibility', 'visible'
+      controls.css 'visibility', 'visible'
+      @$('.preview').removeClass 'disabled'
+
+    @listenTo @highlighter, 'start:reorder', ->
+      controls.css 'visibility', 'hidden'
+    @listenTo @highlighter, 'finished:reorder', ->
+      controls.css 'visibility', 'visible'
 
 
   _initVoiceoverSelector: ->
     @voiceoverSelector = new App.Views.VoiceoverSelector
       keyframe: @keyframe
       collection: @keyframe.scene.storybook.sounds
-      el: @$('#voiceover-selector-container')
+      el: @$('.voiceover-container .selector')
 
     @voiceoverSelector.render()
 
 
-  _attachVoiceoverHighlighterEvents: ->
-    @listenTo(@voiceoverHighlighter, 'hide:voiceoverControls', @hideControls)
-    @listenTo(@voiceoverHighlighter, 'show:voiceoverControls', @showControls)
+  # _attachVoiceoverHighlighterEvents: ->
+    # @listenTo(@highlighter, 'hide:voiceoverControls', @hideControls)
+    # @listenTo(@highlighter, 'show:voiceoverControls', @showControls)
 
-    @listenTo(@voiceoverHighlighter, 'enable:voiceoverPreview', @enablePreview)
-    @listenTo(@voiceoverHighlighter, 'disable:voiceoverPreview', @disablePreview)
+    # @listenTo(@highlighter, 'enable:voiceoverPreview', @enablePreview)
+    # @listenTo(@highlighter, 'disable:voiceoverPreview', @disablePreview)
 
-    @listenTo(@voiceoverHighlighter, 'enable:acceptVoiceoverAlignment', @enableAcceptAlignment)
-    @listenTo(@voiceoverHighlighter, 'disable:acceptVoiceoverAlignment', @disableAcceptAlignment)
+    # @listenTo(@highlighter, 'enable:acceptVoiceoverAlignment', @enableAcceptAlignment)
+    # @listenTo(@highlighter, 'disable:acceptVoiceoverAlignment', @disableAcceptAlignment)
 
-    @listenTo(@voiceoverHighlighter, 'enable:voiceoverMediaPlayer', @enableMediaPlayer)
-
-
-  _attachKeyframeEvents: ->
-    @listenTo @keyframe, 'change:voiceover_id', @_findExistingVoiceover
+    # @listenTo(@highlighter, 'enable:voiceoverMediaPlayer', @enableMediaPlayer)
 
 
-  _showStopButton: ($button) ->
-    $button.find('span')
-      .text('Stop')
-      .parent().find('i')
-      .removeClass('icon-play')
-      .addClass('icon-stop')
+
+  _voiceoverChanged: ->
+    controls = @$('.highlighter-container, .highlighter-container, .preview')
+    warning = @$('.voiceover-container .not-found')
+    if (voiceover = @keyframe.voiceover())?
+      controls.show()
+      warning.hide()
+
+      @setAudioPlayerSrc(voiceover)
+    else
+      controls.hide()
+      warning.show()
 
 
-  _showPreviewButton: ($button) ->
-    $button.find('span')
-      .text('Preview')
-      .parent().find('i')
-      .removeClass('icon-stop')
-      .addClass('icon-play')
+  # _showStopButton: ($button) ->
+    # $button.find('span')
+      # .text('Stop')
+      # .parent().find('i')
+      # .removeClass('icon-play')
+      # .addClass('icon-stop')
+
+
+  # _showPreviewButton: ($button) ->
+    # $button.find('span')
+      # .text('Preview')
+      # .parent().find('i')
+      # .removeClass('icon-stop')
+      # .addClass('icon-play')

@@ -17,7 +17,7 @@ class App.Views.VoiceoverPlaybackRateSlider extends Backbone.View
 
 
   _initSlider: ->
-    @$('#playback-rate-slider').slider
+    @$('.slider').slider
       value: @defaultPlaybackRate
       step:  0.01
       max:   1.0
@@ -27,6 +27,6 @@ class App.Views.VoiceoverPlaybackRateSlider extends Backbone.View
 
   _sliderMoved: (value) ->
     valueAsPercent = "#{Math.round(value*100)}%"
-    @$('#playback-rate').html(valueAsPercent)
+    @$('.rate').html(valueAsPercent)
 
-    @trigger('change:voiceover_playback_rate', value)
+    @trigger('change', value)
