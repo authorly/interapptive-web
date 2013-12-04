@@ -16,7 +16,7 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
 
   render: ->
     @$el.html(@template(keyframe: @keyframe))
-    @_initializeWordHighlights()
+    @initializeWordHighlights()
     @
 
 
@@ -69,6 +69,15 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
     @footnoteEventIds = []
 
 
+  # if the highlighter uses the player, this method is invoked
+  # when playing is paused
+  playEnded: ->
+    # to be overridden if needed
+
+
+  initializeWordHighlights: ->
+    # to be overridden if needed
+
 
   removeWordHighlights: =>
     @$('.word.highlighted').removeClass('highlighted')
@@ -76,6 +85,7 @@ class App.Views.AbstractVoiceoverHighlighter extends Backbone.View
 
   disableHighlightControls: ->
     # to be overridden if needed
+
 
   enableHighlightControls: ->
     # to be overridden if needed

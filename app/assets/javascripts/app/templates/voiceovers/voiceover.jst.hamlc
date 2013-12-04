@@ -15,10 +15,16 @@
 
   .highlighter-container
     .selector
-      %h4.active Drag to highlight text
-      %span.alternative
-        or
-        %a{:href => '#'} use the manual highlighter
+      .drag-selector.option{'data-type' => 'basic' }
+        %h4.active Drag to highlight text
+        %span.alternative
+          or
+          %a{:href => '#'} use the manual highlighter
+      .manual-selector.option{'data-type' => 'advance', style: 'display: none'}
+        %h4.active Introduce highlight times
+        %span.alternative
+          or
+          %a{:href => '#'} use the drag-to-select highlighter
 
     %p.not-found
       There is no text to highlight in this keyframe.

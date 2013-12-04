@@ -15,7 +15,7 @@ class App.Views.Voiceover extends Backbone.View
     'click .preview .start':   'startPreviewClicked'
     'click .preview .stop':    'stopPreviewClicked'
     'click .controls .accept': 'acceptClicked'
-    # 'click #highlighter-type':      'switchHighlighterType'
+    'click .highlighter-container .selector .alternative': 'alternativeHighlighterClicked'
 
 
   initialize: ->
@@ -118,32 +118,28 @@ class App.Views.Voiceover extends Backbone.View
       @$('audio').attr('src', '')
 
 
-  # switchHighlighterType: ->
-    # highlighter_type = $('a#highlighter-type').data('type')
-    # @_initVoiceoverHighlighter(highlighter_type)
-    # @_toggleVoiceoverHighlighterSwitcher(highlighter_type)
+  alternativeHighlighterClicked: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
 
+    el = @$(event.currentTarget)
+    selected = el.closest('.option').hide().siblings().show()
+    @_initVoiceoverHighlighter selected.data('type')
 
-  # _toggleVoiceoverHighlighterSwitcher: (highlighter_type) ->
-    # $element = @$('a#highlighter-type')
-    # if highlighter_type is 'basic'
-      # $element.text('Advance Aligner')
-      # $element.data('type', 'advance')
-    # else
-      # $element.text('Basic Aligner')
-      # $element.data('type', 'basic')
 
 
   _initVoiceoverHighlighter: (control_type) ->
-    # @highlighter?.remove()
-    # TODO stop listening to the events
-
-    App.trackUserAction(klass + ' aligner clicked')
+    if @highlighter?
+      @stopListening @highlighter
+      @highlighter.remove()
 
     klass = App.Lib.StringHelper.capitalize(control_type)
+    App.trackUserAction(klass + ' aligner clicked')
+
+
     @highlighter = new App.Views[klass + 'VoiceoverHighlighter']
       model: @keyframe
-      el: @$('.highlighter-container .highlighter')
+      el: $('<div/>').appendTo(@$('.highlighter-container .highlighter'))
       player: @player
     @highlighter.render()
 

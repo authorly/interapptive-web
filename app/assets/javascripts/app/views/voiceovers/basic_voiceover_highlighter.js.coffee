@@ -45,7 +45,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @_mouseDown = false
 
 
-  _initializeWordHighlights: ->
+  initializeWordHighlights: ->
     $.each @$('.word'), (index, word) =>
       @$(word).data('start', "#{@intervals[index]}")
 
@@ -148,7 +148,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
         text.set {z_order: zOrder}, silent: true
 
     if changed
-      @_initializeWordHighlights()
+      @initializeWordHighlights()
       @keyframe.widgets.trigger('change')
 
 

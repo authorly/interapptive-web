@@ -10,9 +10,9 @@ class App.Views.AdvanceVoiceoverHighlighter extends App.Views.AbstractVoiceoverH
     'blur input.input-mini': 'changeHighlightTime'
 
 
-  _processWords:
+  initializeWordHighlights: ->
     $.each $('.word'), (index, word) =>
-      @$(word).attr("data-start", "#{@intervals[index]}").
+      @$(word).data('start', "#{@intervals[index]}").
         find('input').val(@intervals[index])
 
 
@@ -30,8 +30,7 @@ class App.Views.AdvanceVoiceoverHighlighter extends App.Views.AbstractVoiceoverH
     okay = okay && (time < next_time)     if next_time
 
     if okay
-      $current_word.attr('data-start', time)
-
+      $current_word.data('start', time)
     else
-      $current_word.find('input').val($current_word.attr('data-start'))
+      $current_word.find('input').val($current_word.data('start'))
       App.vent.trigger('show:message', 'warning', 'Time should be greater than previous word and less than next word.')
