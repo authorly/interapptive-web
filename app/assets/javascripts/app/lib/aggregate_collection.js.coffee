@@ -9,6 +9,8 @@ class App.Lib.AggregateCollection extends Backbone.Collection
 
 
   collectionEvent: (event, options...)->
+    model = options[0]
     switch event
-      when 'add'    then @add     options[0]; break
-      when 'remove' then @remove  options[0]; break
+      when 'add'    then @add    model, fromMember: true; break
+      when 'remove' then @remove model; break
+

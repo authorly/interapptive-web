@@ -89,12 +89,18 @@ class App.Models.Storybook extends Backbone.Model
     @parse(attributes)
 
     @scenes = new App.Collections.ScenesCollection([], storybook: @)
+
     @images = new App.Collections.ImagesCollection([], storybook: @)
+
     @sounds = new App.Collections.SoundsCollection([], storybook: @)
     @sounds.on 'add reset', @soundsChanged, @
+
     @videos = new App.Collections.VideosCollection([], storybook: @)
     @videos.on 'add reset', @videosChanged, @
+
     @fonts  = new App.Collections.FontsCollection( [], storybook: @)
+
+    @assets = new App.Collections.AssetsCollection([], storybook: @, collections: [@images, @videos, @sounds])
 
     @widgets.on 'change', @deferredSave, @
 
@@ -117,7 +123,6 @@ class App.Models.Storybook extends Backbone.Model
 
 
   fetchCollections: ->
-    # TODO use deferreds to load assets in parallel and load scenes afterwards
     $.when(
       @images.fetch(),
       @sounds.fetch(),
@@ -129,15 +134,6 @@ class App.Models.Storybook extends Backbone.Model
       # https://github.com/jashkenas/backbone/issues/2513
       @scenes.fetch(reset: true)
     )
-
-
-  addAsset: (asset) ->
-    if asset instanceof App.Models.Image
-      @images.add(asset)
-    else if asset instanceof App.Models.Sound
-      @sounds.add(asset)
-    if asset instanceof App.Models.Video
-      @videos.add(asset)
 
 
   videosChanged: ->

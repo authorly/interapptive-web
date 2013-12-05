@@ -3,6 +3,8 @@ class App.Views.AssetUploader extends Backbone.View
 
   initialize: ->
     @assetIdCounter = new App.Lib.Counter
+    @nrFailedUploads = 0
+
 
   setStorybook: (storybook) ->
     @$el.fileupload 'option', 'url', storybook.baseUrl() + '/assets.json'
@@ -18,6 +20,7 @@ class App.Views.AssetUploader extends Backbone.View
         add: @_fileAdded
       ).bind('fileuploaddone', @_uploadCompleted
       ).bind('fileuploadfail', @_uploadFailed
+      ).bind('fileuploadstop', @_uploadStopped
       )
 
 
@@ -39,9 +42,17 @@ class App.Views.AssetUploader extends Backbone.View
 
 
   _uploadFailed: (e, data) =>
+    @nrFailedUploads += 1
+
     if data.files[0].error?
       alert "Cannot add #{data.files[0].name}"
     @trigger 'fail', data
+
+
+  _uploadStopped: =>
+    if @nrFailedUploads > 0
+      @trigger 'fail:global', @nrFailedUploads
+      @nrFailedUploads = 0
 
 
   getData: (response) ->
