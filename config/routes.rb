@@ -44,7 +44,7 @@ Interapptive::Application.routes.draw do
     resources :images
     resources :videos
     resources :sounds
-    resources :assets, only: :create
+    resources :assets, only: [:create, :index]
   end
 
   resources :scenes do

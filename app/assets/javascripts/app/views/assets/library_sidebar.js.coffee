@@ -73,6 +73,8 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @uploader.on 'add',  @_uploaderFileAdded,    @
     @uploader.on 'done', @_uploaderFileUploaded, @
     @uploader.on 'fail', @_uploaderFileFailed,   @
+    @uploader.on 'fail:global', =>
+      @storybook.assets.fetchMissing()
     @uploader.render()
 
 
@@ -132,9 +134,8 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   _uploaderFileUploaded: (response) ->
     for asset in response.result
-      type = asset.type; delete asset.type
-      @storybook.addAsset new App.Models[type](asset)
-      App.trackUserAction 'Uploaded a file', type: type
+      @collection.add asset
+      App.trackUserAction 'Uploaded a file', type: asset.type
 
     @currentUploads.collection.remove @uploader.getData(response).id
 
