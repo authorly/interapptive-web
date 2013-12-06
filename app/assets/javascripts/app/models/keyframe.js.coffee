@@ -44,7 +44,7 @@ class App.Models.Keyframe extends Backbone.Model
 
 
   destroy: ->
-    throw new Error('cannot delete') if @get('is_animation')
+    throw new Error('cannot delete') unless @canBeDestroyed()
 
     @stopListening()
     @uninitializeWidgets()
@@ -76,6 +76,7 @@ class App.Models.Keyframe extends Backbone.Model
 
     @listenTo @widgets,        'add remove change:position change:scale change:radius',  @widgetsChangedPreview
     @listenTo @scene.widgets,  '           change:position change:scale change:z_order change:disabled change:image_id', @widgetsChangedPreview
+
 
   uninitializeWidgets: ->
     @widgets.off 'reset add remove change', @widgetsChanged, @
@@ -215,6 +216,10 @@ class App.Models.Keyframe extends Backbone.Model
       w.get('sprite_widget_id') == widget.id
 
 
+  canBeDestroyed: ->
+    @isAnimation() || @collection.canDeleteRegularKeyframes()
+
+
   canAddText: ->
     !@isAnimation() && @scene.canAddText()
 
@@ -342,10 +347,11 @@ class App.Collections.KeyframesCollection extends Backbone.Collection
     }
 
 
-  canDeleteKeyframes: ->
-    # there is an animation keyframe, which is fixed
-    # and there should be at least one regular keyframe
-    @length > 2
+  canDeleteRegularKeyframes: ->
+    iterator = (count, keyframe) ->
+      count + if keyframe.isAnimation() then 0 else 1
+
+    @reduce(iterator, 0) > 1
 
 
   nextPosition: (options) ->

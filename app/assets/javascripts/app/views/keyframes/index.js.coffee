@@ -1,6 +1,4 @@
-# Manages the list of keyframes (from the current scene).
-# Also manages the current keyframe selection and populates the WidgetLayer
-# accordingly.
+# Manages the list of keyframes of the current scene.
 class App.Views.KeyframeIndex extends Backbone.View
 
   tagName:   'ul'
@@ -21,8 +19,8 @@ class App.Views.KeyframeIndex extends Backbone.View
 
 
   remove: ->
-    @stopListening()
     @_removeKeyframeViews()
+    @createAnimationView?.remove()
     super
 
 
@@ -32,7 +30,13 @@ class App.Views.KeyframeIndex extends Backbone.View
     if @collection.length > 0
       @collection.each (keyframe) =>
         @renderKeyframe(keyframe)
-      @_updateDeleteButtons()
+
+      @createAnimationView = new App.Views.CreateAnimationKeyframe
+        collection: @collection
+      @$el.prepend @createAnimationView.render().$el
+
+      @_updateGlobalState()
+
 
     @initSortable()
 
@@ -50,19 +54,18 @@ class App.Views.KeyframeIndex extends Backbone.View
 
   appendKeyframe: (keyframe) =>
     @renderKeyframe(keyframe)
-    @_updateDeleteButtons()
-
+    @_updateGlobalState()
     @switchKeyframe(keyframe)
 
 
   renderKeyframe: (keyframe) =>
     view = new App.Views.Keyframe(model: keyframe)
     viewElement = view.render().el
-    index = @collection.indexOf(keyframe)
-    if index == 0
+    position = keyframe.get 'position'
+    if position == null
       @$el.prepend viewElement
     else
-      @$el.children().eq(index-1).after(viewElement)
+      @$el.append viewElement
 
     @keyframeViews.push(view)
 
@@ -75,7 +78,7 @@ class App.Views.KeyframeIndex extends Backbone.View
   removeKeyframe: (keyframe, __, options) =>
     _.find(@keyframeViews, (k) -> k.model == keyframe).remove()
     @switchKeyframe(@collection.at(options.index) or @collection.at(options.index - 1))
-    @_updateDeleteButtons()
+    @_updateGlobalState()
 
 
   initSortable: =>
@@ -116,9 +119,18 @@ class App.Views.KeyframeIndex extends Backbone.View
         element.find('.keyframe-number').text(keyframe.get('position') + 1)
 
 
+  _updateGlobalState: ->
+    @_updateDeleteButtons()
+    el = @createAnimationView.$el
+    if @collection.animationPresent()
+      el.addClass('hidden')
+    else
+      el.removeClass('hidden')
+
+
   _updateDeleteButtons: ->
-    buttons = @$('li .delete-keyframe')
-    if @collection.canDeleteKeyframes() then buttons.show() else buttons.hide()
+    buttons = @$('li[data-is_animation!="1"] .delete-keyframe')
+    if @collection.canDeleteRegularKeyframes() then buttons.show() else buttons.hide()
 
 
   _removeKeyframeViews: ->

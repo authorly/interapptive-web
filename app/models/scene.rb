@@ -33,10 +33,6 @@ class Scene < ActiveRecord::Base
   private
 
   def create_keyframes
-    unless is_main_menu?
-      keyframes.create(is_animation: true, position: nil, animation_duration: 0)
-    end
-
     keyframes.create(position: 0)
   end
 

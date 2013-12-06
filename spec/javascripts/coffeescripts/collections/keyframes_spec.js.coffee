@@ -36,10 +36,7 @@ describe "App.Collections.KeyframesCollection", ->
       beforeEach ->
         @server = sinon.fakeServer.create()
 
-        storybook = new App.Models.Storybook(id: 1)
-        scene = new App.Models.Scene({ id: 1 }, { collection: storybook.scenes })
-
-        @collection = new App.Collections.KeyframesCollection [], scene: scene
+        @collection = new App.Collections.KeyframesCollection [], scene: @scene
         @collection.add { title: '0', position: 0 }
         @collection.add { title: '1', position: 1 }
         @collection.add { title: '2', position: 2 }
@@ -54,3 +51,25 @@ describe "App.Collections.KeyframesCollection", ->
         expect(@collection.at(0).get('position')).toEqual null
         expect(@collection.at(1).get('position')).toEqual 0
         expect(@collection.at(2).get('position')).toEqual 1
+
+
+  describe 'delete regular keyframe', ->
+    beforeEach ->
+      @collection = new App.Collections.KeyframesCollection [{}], scene: @scene
+
+    it 'is not allowed if there is only one', ->
+      expect(@collection.canDeleteRegularKeyframes()).toEqual false
+
+    it 'is not allowed if there is only one, and one animation keyframe', ->
+      @collection.add {is_animation: true}
+      expect(@collection.canDeleteRegularKeyframes()).toEqual false
+
+    it 'is allowed if there is more than one', ->
+      @collection.add {}
+      console.log @collection.length
+      expect(@collection.canDeleteRegularKeyframes()).toEqual true, scene: @scene
+
+    it 'is allowed if there is more than one, and one animation keyframe', ->
+      @collection.add [{}, {is_animation: true}]
+      expect(@collection.canDeleteRegularKeyframes()).toEqual true, scene: @scene
+

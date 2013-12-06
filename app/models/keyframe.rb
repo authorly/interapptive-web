@@ -20,7 +20,7 @@ class Keyframe < ActiveRecord::Base
   end
 
   def can_be_destroyed?
-    !is_animation
+    is_animation || scene.keyframes.where(is_animation: false).length > 1
   end
 
   def as_json(options)
