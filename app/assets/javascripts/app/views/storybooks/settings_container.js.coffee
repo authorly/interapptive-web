@@ -1,6 +1,5 @@
 #
-# Application-wide settings for storybook where users can change
-# app name, description price, icons, etc.
+# Application-wide settings for storybook.
 #
 class App.Views.SettingsContainer extends Backbone.View
   template: JST['app/templates/storybooks/settings_container']

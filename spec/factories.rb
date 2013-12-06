@@ -9,10 +9,8 @@ Factory.define :user do |f|
 end
 
 Factory.define :storybook do |f|
-  f.title 'Test Title%d'
+  f.title 'Storybook %d'
   f.author 'Charles Bukowski'
-  f.description 'This book is for true champions'
-  f.price 20.00
   f.user Factory(:user)
 end
 
@@ -24,7 +22,7 @@ end
 
 Factory.define :image do |f|
   f.type 'Image'
-  f.image 'image.jpg'
+  f.image { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'support', 'images', '500x300.png')) }
 end
 
 Factory.define :video do |f|
@@ -35,6 +33,27 @@ end
 Factory.define :font do |f|
   f.type 'Font'
   f.video 'custom-font.ttf'
+end
+
+Factory.define :application_information do |f|
+  f.storybook Factory(:storybook)
+  f.large_icon Factory(:image)
+  f.description 'This book is for true champions'
+  f.keywords 'keyword1, keyword2'
+  f.available_from 2.days.from_now
+  f.price_tier 'tier_1'
+  f.content_description({
+      fantasy_violence:         'none',
+      realistic_violence:       'mild',
+      sexual_content:           'intense',
+      profanity:                'mild',
+      drugs:                    'none',
+      mature:                   'intense',
+      gambling:                 'none',
+      horror:                   'mild',
+      prolonged_violence:       'none',
+      graphical_sexual_content: 'none',
+  })
 end
 
 Factory.define :scene do |f|

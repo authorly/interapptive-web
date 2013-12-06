@@ -1,0 +1,81 @@
+%section
+  %h1 Maturity rating
+
+  %h2 Content description
+  %table
+    %thead
+      %tr
+        %th
+        %th None
+        %th Infrequent/Mild
+        %th Frequent/Intense
+    %tbody
+      %tr
+        %td Cartoon or Fantasy Violence
+        %td
+          %input{ type: 'radio', name: 'fantasy_violence', value: 'none' }
+        %td
+          %input{ type: 'radio', name: 'fantasy_violence', value: 'mild' }
+        %td
+          %input{ type: 'radio', name: 'fantasy_violence', value: 'intense' }
+      %tr
+        %td Realistic Violence
+        %td
+        %td
+        %td
+      %tr
+        %td Sexual Content or Nudity
+        %td
+        %td
+        %td
+      %tr
+        %td Profanity or Crude Humor
+        %td
+        %td
+        %td
+      %tr
+        %td Alcohol, Tobacco, or Drug Use or References
+        %td
+        %td
+        %td
+      %tr
+        %td Mature/Suggestive Themes
+        %td
+        %td
+        %td
+      %tr
+        %td Simulated Gambling
+        %td
+        %td
+        %td
+      %tr
+        %td Horror/Fear Themes
+        %td
+        %td
+        %td
+      %tr
+        %td Prolonged Graphic or Sadistic Realistic Violence
+        %td
+        %td
+        %td
+      %tr
+        %td Graphic Sexual Content and Nudity
+        %td
+        %td
+        %td
+
+  %h2
+  %div
+    %label{ for: 'for-kids' } Made for Kids?
+    %input#for-kids{type: 'checkbox', name: 'for_kids'}
+    .note Made for Kids indicates that your app has been designed for children. These apps will be part of the Kids category on the App Store and will be categorized and searchable by age range. To update existing Privacy Policy URL localizations, see the Metadata and Uploads section on the app’s Version Details page.
+
+  %h2 Metadata
+  %div
+    %label{ for: 'description' } Description
+    %textarea#description{ name: 'description' }
+    .note A description of the app you are adding, detailing features and functionality. Descriptions cannot be longer than 4000 characters.
+
+    %label{ for: 'keywords' } Keywords
+    %input#keywords{ type: 'text', name: 'keywords' }
+    .note One or more keywords that describe the app you are adding. When users search the App Store, the terms they enter are matched with keywords to return more accurate results. Separate multiple keywords with commas. Keywords cannot be edited once your binary is in review and cannot be longer than 100 characters.
