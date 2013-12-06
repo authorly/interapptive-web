@@ -38,6 +38,7 @@ class App.Models.ApplicationInformation extends Backbone.Model
 
           now = new Date
           today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+          today = new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)
           if value < today then err else null
       ]
     price_tier:

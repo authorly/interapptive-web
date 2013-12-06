@@ -21,6 +21,7 @@
             //Cast to Date
             if (this.value && !_.isDate(this.value)) {
                 this.value = new Date(this.value);
+                this.value = new Date(this.value.getTime() + this.value.getTimezoneOffset() * 60 * 1000)
             }
 
             //Set default date
