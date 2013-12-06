@@ -3,10 +3,4 @@
     %i{:class => 'icon-cog icon-black'}
     %h3.modal-title Publishing
 
-    %ul.nav.nav-pills
-      %li.availability.active
-        %a{ href: '#' } Availability & Price
-      %li.release-info
-        %a{ href: '#' } Release Information
-
   .modal-body
