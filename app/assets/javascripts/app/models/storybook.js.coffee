@@ -15,9 +15,9 @@ class App.Models.Storybook extends Backbone.Model
                        checkTitle = (value, formValues) ->
                          err =
                            type: "title"
-                           message: "Oops! Title must be 2-25 characters"
+                           message: "Oops! Title must be 2-50 characters"
 
-                         err  if value.length < 2 or value.length > 25
+                         err  if value.length < 2 or value.length > 50
                       ]
 
     pageFlipTransitionDuration:
