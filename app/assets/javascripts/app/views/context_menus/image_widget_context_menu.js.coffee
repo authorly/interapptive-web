@@ -21,7 +21,11 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
 
 
   _keyPressedInScale: (event) ->
-    @_numericInputListener(event)
+    code = event.charCode
+    number = App.Lib.CharCodes[0] <= code <= App.Lib.CharCodes[9]
+    ok = not event.which or number or event.which is App.Lib.KeyCodes.backspace
+
+    event.preventDefault() unless ok
 
 
   _keyUpInScale: (event) ->
@@ -35,14 +39,6 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
       @_setScale(1)
     if code is App.Lib.KeyCodes.down
       @_setScale(-1)
-
-
-  _numericInputListener: (event) ->
-    code = event.charCode
-    number = App.Lib.CharCodes[0] <= code <= App.Lib.CharCodes[9]
-    ok = not event.which or number
-
-    event.preventDefault() unless ok
 
 
   _enterKeyScaleListener: (event) ->
