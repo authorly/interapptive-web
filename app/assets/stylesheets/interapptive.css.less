@@ -6,6 +6,7 @@
 @import 'variables.css.less';
 
 @import 'toolbar.css.less';
+@import 'icons.css.less';
 
 @import 'user_sessions.css.less';
 @import 'password_resets.css.less';
@@ -19,6 +20,7 @@
 @import 'voiceovers.css.less';
 
 @import 'assets.css.less';
+@import 'sprite_list.css.less';
 @import 'asset_library_sidebar.css.less';
 
 @import 'app_settings.css.less';
@@ -155,10 +157,52 @@ header {
 
   &.right {
     min-width: 270px;
-    width: 270px;
+    width: 305px;
+    margin-top: 76px;
     background: @assetLibSidebarBgColor;
     right: 0;
+    overflow-y: auto;
+
+    section {
+      position: relative;
+      border-bottom: 1px solid #ccc;
+      padding: 5px;
+      padding-right: 0;
+    }
+
+    .handle {
+      display: block;
+      margin: 5px 0;
+      color: inherit;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    .indicator {
+      display: inline-block;
+      vertical-align: bottom;
+      font-size: 10px;
+      color: #555;
+
+      ._close {
+        display: none;
+      }
+    }
+
+    .active .indicator {
+      .open {
+        display: none;
+      }
+      ._close {
+        display: inline;
+      }
+    }
   }
+
 }
 
 .large-modal {

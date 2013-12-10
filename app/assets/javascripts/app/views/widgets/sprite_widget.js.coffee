@@ -5,5 +5,6 @@ class App.Views.SpriteWidget extends Backbone.View
 
 
   render: ->
-    @$el.html @template(widget: @model)
+    @$el.html(@template(widget: @model))
+    @$el.attr('data-id': @model.id)
     @

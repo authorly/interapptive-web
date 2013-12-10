@@ -129,6 +129,50 @@ describe "App.Collections.Widgets", ->
           for z, w of { 1: @s1, 2: @s2, 3: @s3, 4001: @b2, 4002: @b1 }
             expect(w.get('z_order')).toEqual Number(z)
 
+    describe 'z_order validation', ->
+
+      it 'does not allow button widgets before sprite widgets', ->
+        order = [
+          [1, new App.Models.ButtonWidget],
+          [2, new App.Models.SpriteWidget]
+        ]
+        expect(App.Collections.Widgets.validZOrder(order)).toEqual false
+
+
+      it 'allows a bunch of sprite widgets, followed by a bunch of button widgets', ->
+        order = [
+          [1, new App.Models.SpriteWidget],
+          [2, new App.Models.SpriteWidget],
+          [3, new App.Models.SpriteWidget],
+          [4, new App.Models.ButtonWidget],
+          [5, new App.Models.ButtonWidget]
+        ]
+
+        expect(App.Collections.Widgets.validZOrder(order)).toEqual true
+
+
+      it 'allows a bunch of sprite widgets', ->
+        order = [
+          [1, new App.Models.SpriteWidget],
+          [2, new App.Models.SpriteWidget]
+        ]
+
+        expect(App.Collections.Widgets.validZOrder(order)).toEqual true
+
+
+      it 'allows a bunch of button widgets', ->
+        order = [
+          [1, new App.Models.ButtonWidget],
+          [2, new App.Models.ButtonWidget]
+        ]
+
+        expect(App.Collections.Widgets.validZOrder(order)).toEqual true
+
+
+      it 'allows an empty collection', ->
+        order = []
+
+        expect(App.Collections.Widgets.validZOrder(order)).toEqual true
 
   describe 'remove asset', ->
     describe 'remove image', ->
@@ -212,3 +256,5 @@ describe "App.Collections.Widgets", ->
         @widgets.fontRemoved(@font)
         expect(@widgets.length).toEqual 5
         expect(@widgets.where(font_id: 4000).length).toEqual 3
+
+
