@@ -10,6 +10,7 @@ class Storybook < ActiveRecord::Base
   has_many :sounds, :dependent => :destroy
   has_many :videos, :dependent => :destroy
   has_many :fonts,  :dependent => :destroy
+  has_many :assets
 
   serialize :widgets
 

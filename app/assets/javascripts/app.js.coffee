@@ -111,9 +111,7 @@ window.App =
 
     @fontCache.openStorybook(storybook)
 
-    assets = new App.Lib.AggregateCollection([], collections: [storybook.images, storybook.videos, storybook.sounds])
-    assets.storybook = storybook
-    @assetLibrarySidebar.setAssets assets
+    @assetLibrarySidebar.setAssets storybook.assets
 
 
   _showSettings: ->
