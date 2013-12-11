@@ -54,9 +54,9 @@ Factory.define :application_information do |f|
       'prolonged_violence' =>       'none',
       'graphical_sexual_content' => 'none',
   })
-  f.retina_3_5_screenshots  { [Factory(:image).id, Factory(:image).id] }
-  f.retina_4_0_screenshots  { [Factory(:image).id, Factory(:image).id] }
-  f.retina_ipad_screenshots { [Factory(:image).id, Factory(:image).id] }
+  f.retina_3_5_screenshot_ids  { [Factory(:image).id, Factory(:image).id] }
+  f.retina_4_0_screenshot_ids  { [Factory(:image).id, Factory(:image).id] }
+  f.retina_ipad_screenshot_ids { [Factory(:image).id, Factory(:image).id] }
 end
 
 Factory.define :scene do |f|

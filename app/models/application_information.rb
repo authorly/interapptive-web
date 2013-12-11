@@ -3,16 +3,16 @@ class ApplicationInformation < ActiveRecord::Base
 
   belongs_to :large_icon, class_name: 'Image'
 
-  serialize :retina_3_5_screenshots,  Array
-  serialize :retina_4_0_screenshots,  Array
-  serialize :retina_ipad_screenshots, Array
+  serialize :retina_3_5_screenshot_ids,  Array
+  serialize :retina_4_0_screenshot_ids,  Array
+  serialize :retina_ipad_screenshot_ids, Array
 
   serialize :content_description
 
   before_validation :sanitize_screenshots
 
   validate :large_icon,           presence: true
-  validates_each :retina_3_5_screenshots, :retina_4_0_screenshots, :retina_ipad_screenshots do |record, attr, value|
+  validates_each :retina_3_5_screenshot_ids, :retina_4_0_screenshot_ids, :retina_ipad_screenshot_ids do |record, attr, value|
      if (value||[]).length < 2
        record.errors.add(attr, 'please add at least 2 screenshots')
      end
@@ -58,7 +58,7 @@ class ApplicationInformation < ActiveRecord::Base
   end
 
   def sanitize_screenshots
-    [:retina_3_5_screenshots, :retina_4_0_screenshots, :retina_ipad_screenshots].each do |key|
+    [:retina_3_5_screenshot_ids, :retina_4_0_screenshot_ids, :retina_ipad_screenshot_ids].each do |key|
       self[key] = (self[key] || []).map{|id| Image.where(id: id).first}.compact.uniq.map(&:id)
     end
 

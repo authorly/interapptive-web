@@ -9,9 +9,9 @@ class CreateApplicationInformations < ActiveRecord::Migration
       t.boolean :for_kids
       t.string  :keywords
       t.integer :large_icon_id
-      t.text    :retina_3_5_screenshots
-      t.text    :retina_4_0_screenshots
-      t.text    :retina_ipad_screenshots
+      t.text    :retina_3_5_screenshot_ids
+      t.text    :retina_4_0_screenshot_ids
+      t.text    :retina_ipad_screenshot_ids
 
       t.timestamps
     end
