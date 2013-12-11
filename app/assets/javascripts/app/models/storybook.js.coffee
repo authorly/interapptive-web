@@ -89,6 +89,14 @@ class App.Models.Storybook extends Backbone.Model
       @application_information = new App.Models.ApplicationInformation(info)
       @application_information.storybook = @
 
+    request = attributes.publish_request; delete attributes.publish_request
+    if request?
+      if @publish_request?
+        @publish_request.set(request)
+      else
+        @publish_request = new App.Models.PublishRequest(request)
+        @publish_request.storybook = @
+
     attributes
 
 
