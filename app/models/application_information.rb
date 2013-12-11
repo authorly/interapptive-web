@@ -34,29 +34,27 @@ class ApplicationInformation < ActiveRecord::Base
 
   validates :keywords,            presence: true, length: { maximum: 100 }
 
-  validates :content_description, presence: true
   validates_each :content_description do |record, attr, value|
-    if value.present?
-      labels = {
-        'fantasy_violence' =>        'Cartoon or Fantasy Violence',
-        'realistic_violence' =>      'Realistic Violence',
-        'sexual_content' =>          'Sexual Content or Nudity',
-        'profanity' =>               'Profanity or Crude Humor',
-        'drugs' =>                   'Alcohol, Tobacco, or Drug Use or References',
-        'mature' =>                  'MatureSuggestive Themes',
-        'gambling' =>                'Simulated Gambling',
-        'horror' =>                  'HorrorFear Themes',
-        'prolonged_violence' =>      'Prolonged Graphic or Sadistic Realistic Violence',
-        'graphical_sexual_content' =>'Graphical Sexual Content and Nudity',
-      }
+    value = {} unless value.present?
+    labels = {
+      'fantasy_violence' =>        'Cartoon or Fantasy Violence',
+      'realistic_violence' =>      'Realistic Violence',
+      'sexual_content' =>          'Sexual Content or Nudity',
+      'profanity' =>               'Profanity or Crude Humor',
+      'drugs' =>                   'Alcohol, Tobacco, or Drug Use or References',
+      'mature' =>                  'MatureSuggestive Themes',
+      'gambling' =>                'Simulated Gambling',
+      'horror' =>                  'HorrorFear Themes',
+      'prolonged_violence' =>      'Prolonged Graphic or Sadistic Realistic Violence',
+      'graphical_sexual_content' =>'Graphical Sexual Content and Nudity',
+    }
 
-      missing = labels.keys.reject{ |key| value[key].present? }
-      if missing.length > 0
-        record.errors.add(attr, "Please select a content description for the following section(s): #{missing.map{|key| labels[key]}.join(', ')}")
-      end
-      record.errors.add(attr, "contains unexpected keys") if (value.keys - labels.keys).length > 0
-      record.errors.add(attr, "contains unexpected values") if (value.values - ['none', 'mild', 'intense']).length > 0
+    missing = labels.keys.reject{ |key| value[key].present? }
+    if missing.length > 0
+      record.errors.add(attr, "Please select a content description for the following section(s): #{missing.map{|key| labels[key]}.join(', ')}")
     end
+    record.errors.add(attr, "contains unexpected keys") if (value.keys - labels.keys).length > 0
+    record.errors.add(attr, "contains unexpected values") if (value.values - ['none', 'mild', 'intense']).length > 0
   end
 
   def sanitize_screenshots

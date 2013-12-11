@@ -16,49 +16,49 @@ describe ApplicationInformation do
     it { should_not allow_value({}).for(:content_description) }
     it 'should allow a valid content description' do
       description = {
-        fantasy_violence:         'none',
-        realistic_violence:       'mild',
-        sexual_content:           'intense',
-        profanity:                'mild',
-        drugs:                    'none',
-        mature:                   'intense',
-        gambling:                 'none',
-        horror:                   'mild',
-        prolonged_violence:       'none',
-        graphical_sexual_content: 'none',
+        'fantasy_violence' =>         'none',
+        'realistic_violence' =>       'mild',
+        'sexual_content' =>           'intense',
+        'profanity' =>                'mild',
+        'drugs' =>                    'none',
+        'mature' =>                   'intense',
+        'gambling' =>                 'none',
+        'horror' =>                   'mild',
+        'prolonged_violence' =>       'none',
+        'graphical_sexual_content' => 'none',
       }
       should allow_value(description).for(:content_description)
     end
 
     it 'should not allow a content description with unexpected keys' do
       description = {
-        fantasy_violence:         'none',
-        realistic_violence:       'mild',
-        sexual_content:           'intense',
-        profanity:                'mild',
-        drugs:                    'none',
-        mature:                   'intense',
-        gambling:                 'none',
-        horror:                   'mild',
-        prolonged_violence:       'none',
-        graphical_sexual_content: 'none',
-        x:                        'none',
+        'fantasy_violence' =>         'none',
+        'realistic_violence' =>       'mild',
+        'sexual_content' =>           'intense',
+        'profanity' =>                'mild',
+        'drugs' =>                    'none',
+        'mature' =>                   'intense',
+        'gambling' =>                 'none',
+        'horror' =>                   'mild',
+        'prolonged_violence' =>       'none',
+        'graphical_sexual_content' => 'none',
+        'x' =>                        'none',
       }
       should_not allow_value(description).for(:content_description)
     end
 
     it 'should not allow a content description with unexpected values' do
       description = {
-        fantasy_violence:         'x',
-        realistic_violence:       'mild',
-        sexual_content:           'intense',
-        profanity:                'mild',
-        drugs:                    'none',
-        mature:                   'intense',
-        gambling:                 'none',
-        horror:                   'mild',
-        prolonged_violence:       'none',
-        graphical_sexual_content: 'none',
+        'fantasy_violence' =>         'x',
+        'realistic_violence' =>       'mild',
+        'sexual_content' =>           'intense',
+        'profanity' =>                'mild',
+        'drugs' =>                    'none',
+        'mature' =>                   'intense',
+        'gambling' =>                 'none',
+        'horror' =>                   'mild',
+        'prolonged_violence' =>       'none',
+        'graphical_sexual_content' => 'none',
       }
       should_not allow_value(description).for(:content_description)
     end
