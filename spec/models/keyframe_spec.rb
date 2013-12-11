@@ -69,8 +69,8 @@ describe Keyframe do
       Factory.build(:keyframe).can_be_destroyed?.should == true
     end
 
-    it 'is not allowed for animation keyframes' do
-      Factory.build(:animation_keyframe).can_be_destroyed?.should == false
+    it 'is allowed for animation keyframes' do
+      Factory.build(:animation_keyframe).can_be_destroyed?.should == true
     end
   end
 end
