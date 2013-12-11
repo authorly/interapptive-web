@@ -62,11 +62,15 @@ Interapptive::Application.routes.draw do
   resource :zencoder, :controller => :zencoder, :only => :create
 
   namespace :admin do
+    root :to => 'users#index'
+
     resources :users do
       member do
         post 'send_invitation'
       end
     end
+
+    resources :publish_requests, only: [:index, :show, :update]
 
     resources :storybook_assignments, :only => [:edit, :update]
   end
