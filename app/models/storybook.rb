@@ -13,6 +13,7 @@ class Storybook < ActiveRecord::Base
   has_many :fonts,  dependent: :destroy
 
   has_one :application_information
+  has_one :publish_request
 
   serialize :widgets
 

@@ -5,6 +5,8 @@ describe Storybook do
   let!(:storybook) { Factory(:storybook) }
   it { storybook.should be_valid }
 
+  it { should have_one(:publish_request) }
+
   describe 'validation' do
 
     it { should validate_presence_of :user }
