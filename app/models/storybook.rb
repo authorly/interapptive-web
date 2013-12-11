@@ -14,6 +14,7 @@ class Storybook < ActiveRecord::Base
   has_many :assets
 
   has_one :application_information
+  has_one :publish_request
 
   serialize :widgets
 
@@ -82,13 +83,18 @@ class Storybook < ActiveRecord::Base
     end
   end
 
+  def publish
+    create_publish_request unless publish_request.present?
+  end
+
   def as_json(options={})
     super({
       except: :settings,
       methods: SETTINGS.keys,
-      include: :application_information,
+      include: [:application_information],
     }.merge(options)).merge({
-      preview_image_url: scenes.where(is_main_menu: true)[0].try(:preview_image_url)
+      preview_image_url: scenes.where(is_main_menu: true)[0].try(:preview_image_url),
+      publish_request: publish_request.as_json,
     })
   end
 

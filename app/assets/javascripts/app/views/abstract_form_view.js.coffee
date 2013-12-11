@@ -21,10 +21,16 @@ class App.Views.AbstractFormView extends Backbone.View
   deleteMessage: ->
     DELETE_MSG
 
+
   render: ->
     @form = new Backbone.Form(@formOptions()).render()
     @$el.append @form.el
     @
+
+
+  remove: ->
+    @form.remove()
+    super
 
 
   submit: (event) ->
@@ -37,7 +43,8 @@ class App.Views.AbstractFormView extends Backbone.View
       return
 
     @model.save {},
-      success: ->
+      success: =>
+        @trigger 'success'
         App.vent.trigger 'hide:modal'
 
 

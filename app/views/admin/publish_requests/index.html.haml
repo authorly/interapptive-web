@@ -1,0 +1,13 @@
+%h1 Applications to publish
+
+- if @requests.present?
+  %ol
+    - @requests.each do |request|
+      %li
+        %h2
+          = link_to request.storybook.title, admin_publish_request_path(request)
+        %p
+          = time_ago_in_words request.created_at
+          ago
+- else
+  No application to process.

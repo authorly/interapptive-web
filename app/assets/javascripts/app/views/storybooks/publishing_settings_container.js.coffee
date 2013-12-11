@@ -7,39 +7,18 @@ class App.Views.Publishing extends Backbone.View
   render: ->
     @$el.html @template()
 
-    view = new App.Views.AbstractFormView(model: @model.application_information)
-    @$('.modal-body').html('').append view.render().el
-    @$('form').removeClass('form-horizontal')
+    if @model.publish_request?
+      @view = new App.Views.PublishingInformation
+        model: @model.publish_request
+        tagName: 'div'
+    else
+      @view = new App.Views.PublishingForm(model: @model.application_information)
 
+    @$('.modal-body').html('').append @view.render().el
     @
 
 
+  remove: ->
+    @view.remove()
+    super
 
-  # events:
-    # 'click .nav .availability': 'showAvailability'
-    # 'click .nav .release-info': 'showReleaseInfo'
-
-  # render: ->
-    # @$el.html @template()
-
-    # availabilty = new App.Views.Storybooks.AvailabilityForm
-      # model: @model
-    # @$('.modal-body .availability').html(availabilty.render().el)
-
-    # releaseInfo = new App.Views.Storybooks.ReleaseInfoForm
-      # model: @model
-    # @$('.modal-body .release-info').html(releaseInfo.render().el)
-
-    # @$('.nav .active').click()
-
-    # @
-
-
-  # showAvailability: ->
-    # @$('.nav .availability').addClass('active').siblings().removeClass('active')
-    # @$('.modal-body .availability').show().siblings().hide()
-
-
-  # showReleaseInfo: ->
-    # @$('.nav .release-info').addClass('active').siblings().removeClass('active')
-    # @$('.modal-body .release-info').show().siblings().hide()

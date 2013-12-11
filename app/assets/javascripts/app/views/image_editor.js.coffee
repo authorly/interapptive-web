@@ -5,24 +5,6 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
   # so Backbone Forms does not add one item to empty arrays, by default
   @isAsync: true
 
-  # events:
-      # 'change': function() {
-          # // The 'change' event should be triggered whenever something happens
-          # // that affects the result of `this.getValue()`.
-          # this.trigger('change', this);
-      # },
-      # 'focus': function() {
-          # // The 'focus' event should be triggered whenever an input within
-          # // this editor becomes the `document.activeElement`.
-          # this.trigger('focus', this);
-          # // This call automatically sets `this.hasFocus` to `true`.
-      # },
-      # 'blur': function() {
-          # // The 'blur' event should be triggered whenever an input within
-          # // this editor stops being the `document.activeElement`.
-          # this.trigger('blur', this);
-          # // This call automatically sets `this.hasFocus` to `false`.
-      # }
 
   initialize: ->
     super
@@ -47,7 +29,7 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
       @trigger 'change', @
 
     @$el.append selectorEl
-    # consequence having to use `isAsync`
+    # because we need to use `isAsync`, we simulate a 'ready'
     window.setTimeout (=> @trigger 'readyToAdd', @), 0
 
     @
@@ -59,18 +41,4 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
 
   setValue: (value) ->
     @image_id = value
-
-
-  focus: ->
-
-
-
-
-# Notes:
-
-# The editor must implement getValue(), setValue(), focus() and blur() methods.
-# The editor must fire change, focus and blur events.
-# The original value is available through this.value.
-# The field schema can be accessed via this.schema. This allows you to pass in custom parameters.
-
 

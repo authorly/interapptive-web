@@ -15,6 +15,7 @@ class ApplicationInformationsController < ApplicationController
     information.attributes = params[:application_information]
     respond_to do |format|
       if information.save
+        @storybook.publish
         format.json { render :json => information}
       else
         format.json { render :json => information.errors, :status => :unprocessable_entity }
