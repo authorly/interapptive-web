@@ -1,0 +1,16 @@
+%h4 Your application was submitted for publishing.
+
+- if @available.length > 0
+  %ol
+    It is already available on these engines:
+    - _.each @available, ([name, url]) ->
+      %li
+        = name
+        %a{href: url}= url
+
+
+- if @unavailable.length > 0
+  %ol
+    You will be notified by email when it will be available on:
+    - _.each @unavailable, (name) ->
+      %li= name

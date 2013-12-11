@@ -7,13 +7,18 @@ class App.Views.Publishing extends Backbone.View
   render: ->
     @$el.html @template()
 
-    @publishingView = new App.Views.PublishingForm(model: @model.application_information)
-    @$('.modal-body').html('').append @publishingView.render().el
+    if @model.publish_request?
+      @view = new App.Views.PublishingInformation
+        model: @model.publish_request
+        tagName: 'div'
+    else
+      @view = new App.Views.PublishingForm(model: @model.application_information)
 
+    @$('.modal-body').html('').append @view.render().el
     @
 
 
   remove: ->
-    @publishingView.remove()
+    @view.remove()
     super
 

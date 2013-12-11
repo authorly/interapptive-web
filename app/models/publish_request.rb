@@ -5,4 +5,10 @@ class PublishRequest < ActiveRecord::Base
   def done?
     applications_count < [:itunes, :google_play, :amazon].count
   end
+
+  def as_json(options={})
+    super({
+      include: :applications,
+    }.merge(options))
+  end
 end
