@@ -77,6 +77,10 @@ class Storybook < ActiveRecord::Base
     end
   end
 
+  def publish
+    create_publish_request unless publish_request.present?
+  end
+
   def as_json(options={})
     super({
       except: :settings,

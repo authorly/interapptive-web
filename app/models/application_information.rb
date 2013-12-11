@@ -65,6 +65,3 @@ class ApplicationInformation < ActiveRecord::Base
   end
 
 end
-
-
-
