@@ -273,7 +273,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       onSidebar = target.closest('.sidebar').length > 0
 
-      unless inCanvas or inContextMenu or onEditableElement or onSidebar
+      onKeyframeList = target.closest('#keyframe-list').length > 0
+
+      unless inCanvas or inContextMenu or onEditableElement or onSidebar or onKeyframeList
         App.currentSelection.set widget: null
 
 
