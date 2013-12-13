@@ -12,6 +12,10 @@ class App.Views.Preview extends Backbone.View
       @_render()
     else
       @$el.html("<img src='#{@model.src()}'/>")
+      @$('img').on 'dragstart', ->
+        # do not allow dragging images around
+        false
+    @
 
 
   _render: =>
