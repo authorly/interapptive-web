@@ -1,0 +1,12 @@
+development: &default
+  project_id: '1234'
+  project_key: 'abcd'
+
+staging:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default
