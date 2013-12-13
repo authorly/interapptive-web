@@ -25,5 +25,7 @@
   %div.content
     %img.ios_icon_144x144{:src => "#{@url}"}
 
+  %p
+    %a{href: '#'} Remove these icons
 - else
   Please select an image.

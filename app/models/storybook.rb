@@ -58,9 +58,14 @@ class Storybook < ActiveRecord::Base
   end
 
   def image_id=(image_id)
-    image = images.find(image_id)
-    self.icon = image.image
-    store_icon!
+    image = images.where(id: image_id).first
+    if image.present?
+      self.icon = image.image
+      store_icon!
+    else
+      remove_icon!
+      save
+    end
   end
 
   SETTINGS.each do |setting, _|

@@ -2,7 +2,7 @@ class App.Views.ToolbarView extends Backbone.View
   events:
     'click .scene'              : 'addScene'
     'click .edit-text'          : 'addText'
-    'click .scene-options'      : 'showSettings'
+    'click .settings'           : 'showSettings'
     'click .background-sound'   : 'showSceneBackgroundMusic'
     'click .compile'            : 'compileStorybook'
     'click .logo'               : 'switchStorybook'
@@ -15,6 +15,7 @@ class App.Views.ToolbarView extends Backbone.View
   initialize: ->
     @_enableOnEvent 'can_add:text', '.edit-text'
     @_enableOnEvent 'can_add:scene', '.scene'
+    @_enableOnEvent 'can_edit:storybook', '.settings'
 
     App.vent.on 'has_background_sound:scene', @_changeBackgroundSoundIcon
 
@@ -42,6 +43,8 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   showSettings: ->
+    return if $(event.target).hasClass('disabled')
+
     App.vent.trigger('show:settingsform')
 
 
