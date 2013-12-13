@@ -26,11 +26,11 @@ class App.Views.ImageSelector extends Backbone.View
     @selectedImageView = new App.Views[@options.selectedImageViewClass]
       image: @options.image
       el: @$('.selected-image')
+    @listenTo @selectedImageView, 'select', @setImage
     @selectedImageView.render()
 
 
   remove: ->
-    @stopListening @selectedImageView
     @imagesView.remove()
     @selectedImageView.remove()
     super

@@ -100,6 +100,9 @@ window.App =
     scenesIndex = new App.Views.SceneIndex(collection: storybook.scenes)
     $('#scene-list').html(scenesIndex.render().el)
 
+    storybook.on 'synchronization-start synchronization-end', (__, synchronizing) =>
+      @vent.trigger 'can_edit:storybook', !synchronizing
+
     storybook.scenes.on 'synchronization-start synchronization-end', (__, synchronizing) =>
       @vent.trigger 'can_add:scene', !synchronizing
 

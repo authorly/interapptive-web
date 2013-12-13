@@ -6,4 +6,4 @@
   .image-selector
 
   %a.btn.btn-primary.use-image.disabled
-    Select
+    Ok

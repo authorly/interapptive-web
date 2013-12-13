@@ -32,7 +32,5 @@ class App.Views.Storybooks.AppIcons extends Backbone.View
 
 
   setAppIcon: ->
-    return unless @image?
-
     App.vent.trigger('hide:modal')
-    @storybook.save { image_id: @image.id }, patch: true
+    @storybook.save { image_id: if @image? then @image.id else null }, patch: true
