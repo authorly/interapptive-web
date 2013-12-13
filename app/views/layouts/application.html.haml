@@ -13,6 +13,7 @@
     = stylesheet_link_tag 'application', :media => 'all'
     %style#storybook-font-cache
     = javascript_include_tag 'application'
+    = render partial: 'airbrake'
     = csrf_meta_tags
     = yield(:head)
 
@@ -27,6 +28,13 @@
 
     :javascript
       $(document).ready(function() {
-        App.init()
-        #{ yield :initialization_javascript }
+        try {
+          App.init()
+          #{ yield :initialization_javascript }
+        } catch(er) {
+          Airbrake.push({
+            error: er
+          });
+          throw er;
+        }
       })

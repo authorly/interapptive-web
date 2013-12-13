@@ -1,0 +1,33 @@
+<script data-airbrake-project-id="<%= Rails.application.config.airbrake[:project_id]%>", data-airbrake-project-key="<%= Rails.application.config.airbrake[:project_key]%>", data-airbrake-project-environment-name="<%= Rails.env %>">
+   (function(src) {
+
+  window.Airbrake = [];
+  window.Airbrake.wrap = function(fn) {
+    return function() {
+      try {
+        return fn.apply(this, arguments);
+      } catch (er) {
+        Airbrake.push({error: er});
+        throw er;
+      }
+    };
+  };
+
+  function get() {
+    var script = document.createElement('script'),
+        sibling = document.getElementsByTagName('script')[0];
+
+    script.src = src;
+    sibling.parentNode.insertBefore(script, sibling);
+  }
+
+  if (window.addEventListener) {
+    window.addEventListener('load', get, false);
+  } else {
+    window.attachEvent('onload', get);
+  }
+
+  }(
+    'https://ssljscdn.airbrake.io/airbrake-js-tracekit-sourcemap.min.js'
+  ));
+</script>
