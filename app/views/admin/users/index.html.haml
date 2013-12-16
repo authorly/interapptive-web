@@ -3,6 +3,10 @@
 = link_to("Create New User", new_admin_user_path)
 |
 = link_to("My Storybooks", '/storybooks?reset_user=true')
+= form_tag search_admin_users_path, :method => 'get', :class => 'search-box' do
+  %p
+    = text_field_tag :q, params[:q], :placeholder => 'search with email'
+    = submit_tag 'Search', :name => nil
 
 = paginate(@users)
 %table#users.well
