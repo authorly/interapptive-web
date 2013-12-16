@@ -61,6 +61,9 @@ Interapptive::Application.routes.draw do
 
   namespace :admin do
     resources :users do
+      collection do
+        get 'search'
+      end
       member do
         post 'send_invitation'
       end

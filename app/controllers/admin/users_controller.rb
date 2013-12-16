@@ -4,6 +4,11 @@ module Admin
       @users = User.order('id').page(params[:page]).per(50)
     end
 
+    def search
+      @users = User.where('email LIKE ?', '%' + params[:q] + '%').order('id').page(params[:page]).per(50)
+      render :action => :index
+    end
+
     def edit
       @user = User.find(params[:id])
     end
