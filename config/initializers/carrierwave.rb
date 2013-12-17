@@ -16,3 +16,5 @@ if Rails.env.test?
     config.enable_processing = false
   end
 end
+
+Fog.timeout = 1200 # By default it is 600 for issue #1148
