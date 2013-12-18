@@ -1,6 +1,7 @@
 class App.Views.PublishingForm extends App.Views.AbstractFormView
 
   initialize: ->
+    super
     @listenTo @, 'success', ->
       # XXX replace with proper message
       message = "Your application is going to be published. You will receive an email as soon as it is available in each app store."
