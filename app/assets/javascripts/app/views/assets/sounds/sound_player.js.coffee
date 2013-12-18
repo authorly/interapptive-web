@@ -31,6 +31,7 @@ class App.Views.SoundPlayer extends Backbone.View
     if @player.paused()
       @player.play()
       @_showStop()
+      App.trackUserAction 'Previewed sound'
     else
       @player.pause()
       @_showPlay()

@@ -20,6 +20,8 @@ class App.Views.StorybookIndex extends Backbone.View
     @collection.on 'sync',   @storybooksLoaded, @
     @collection.on 'add remove', @showListOrMessage, @
 
+    App.trackUserAction('Visited storybook list page')
+
 
   render: ->
     @$el.html @template()
@@ -81,7 +83,7 @@ class App.Views.StorybookIndex extends Backbone.View
     if confirm(DELETE_STORYBOOK_MSG)
       storybook = @collection.get $(event.currentTarget).data('id')
       storybook.destroy
-        success: -> App.trackUserAction 'Deleted a storybook'
+        success: -> App.trackUserAction 'Deleted storybook'
 
 
   removeStorybook: (storybook) =>
@@ -91,7 +93,7 @@ class App.Views.StorybookIndex extends Backbone.View
   openStorybook: (event) ->
     event.preventDefault()
 
-    App.trackUserAction 'Open storybook'
+    App.trackUserAction 'Opened storybook'
 
     id = $(event.currentTarget).data 'id'
     storybook = @collection.get(id)
@@ -114,7 +116,7 @@ class App.Views.StorybookIndex extends Backbone.View
   # storybook form
 
   showStorybookForm: ->
-    App.trackUserAction 'Show storybook form'
+    App.trackUserAction 'Opened new storybook form'
 
     @$('.new-storybook-btn').fadeOut(70)
     @$('.storybook-form').delay(70).fadeIn()
@@ -122,7 +124,7 @@ class App.Views.StorybookIndex extends Backbone.View
 
 
   closeStorybookForm: =>
-    App.trackUserAction 'Hide storybook form'
+    App.trackUserAction 'Closed new storybook form'
 
     @$('.storybook-form input').val('')
     @$('.storybook-form').fadeOut(130)

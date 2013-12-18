@@ -17,3 +17,5 @@ class App.Views.NewKeyframe extends Backbone.View
     @$el.siblings('ul').animate
       scrollLeft: 99999
     , 'fast'
+
+    App.trackUserAction 'Added keyframe'

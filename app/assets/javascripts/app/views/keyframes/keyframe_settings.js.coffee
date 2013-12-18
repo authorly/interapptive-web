@@ -6,7 +6,7 @@ class App.Views.KeyframeSettings extends Backbone.View
 
 
   render: ->
-    App.trackUserAction "Click keyframe configuration"
+    App.trackUserAction 'Opened keyframe voiceover/configuration'
 
     @$el.html @template()
     @$('.nav li.active a').click()
@@ -33,4 +33,7 @@ class App.Views.KeyframeSettings extends Backbone.View
     element.addClass('active').siblings().removeClass('active')
 
     klass = _.find ['voiceover', 'autoplay'], (kls) -> element.hasClass(kls)
+
     @$(".modal-body .tab.#{klass}").show().siblings().hide()
+
+    if klass is 'autoplay' then App.trackUserAction('Opened autoplay settings')

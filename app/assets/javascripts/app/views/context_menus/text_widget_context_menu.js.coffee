@@ -40,10 +40,12 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
 
   fontColorSelected: (color) ->
     return unless color?
+    App.trackUserAction 'Changed font color'
     @widget.set('font_color', {r: color.r, g: color.g, b: color.b})
 
 
   fontFaceChanged: (event) ->
+    App.trackUserAction 'Changed font face'
     font_id = @$('#font-face').val()
     if font_id is 'upload-fonts'
       App.vent.trigger('show:fontLibrary')
@@ -52,6 +54,7 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
 
 
   fontSizeChanged: (event) ->
+    App.trackUserAction 'Changed font size'
     font_size = parseInt(@$('#font-size').val())
     @widget.set(font_size: font_size)
 

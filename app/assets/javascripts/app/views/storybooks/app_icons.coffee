@@ -9,6 +9,8 @@ class App.Views.Storybooks.AppIcons extends Backbone.View
   initialize: ->
     @storybook = @options.storybook
 
+    App.trackUserAction 'Opened app icon selector'
+
     super
 
 
@@ -29,8 +31,10 @@ class App.Views.Storybooks.AppIcons extends Backbone.View
   imageSelected: (image) ->
     @image = image
     @$('.use-image').removeClass('disabled')
+    App.trackUserAction 'Set app icon'
 
 
   setAppIcon: ->
     App.vent.trigger('hide:modal')
     @storybook.save { image_id: if @image? then @image.id else null }, patch: true
+    App.trackUserAction 'Saved app icon'
