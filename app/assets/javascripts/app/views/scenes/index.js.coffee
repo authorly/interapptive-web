@@ -44,7 +44,7 @@ class App.Views.SceneIndex extends Backbone.View
 
 
   sceneAdded: (scene) ->
-    App.trackUserAction 'Add scene'
+    App.trackUserAction 'Added scene'
 
     @renderScene(scene)
     @switchScene(scene)
@@ -66,13 +66,13 @@ class App.Views.SceneIndex extends Backbone.View
 
     if confirm(@DELETE_SCENE_MSG)
       scene = @collection.get $(event.currentTarget).attr('data-id')
-      scene.destroy
-        success: -> App.trackUserAction 'Deleted scene'
+      scene.destroy()
+      App.trackUserAction 'Deleted scene'
 
 
 
   onSceneClick: (event) =>
-    App.trackUserAction 'Selected a scene'
+    App.trackUserAction 'Selected scene'
 
     sceneId = $(event.currentTarget).data 'id'
     scene = @collection.get(sceneId)
@@ -101,7 +101,9 @@ class App.Views.SceneIndex extends Backbone.View
       items       : 'li[data-is_main_menu!="1"]'
       axis        : 'y'
       opacity     : 0.6
-      update      : @_numberScenes
+      update      : ->
+        App.trackUserAction 'Reordered scenes'
+        @_numberScenes
 
 
   adjustSize: ->

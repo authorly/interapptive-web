@@ -1,0 +1,22 @@
+#= require kissmetrics
+
+app_env = '<%= Rails.env %>'
+
+switch app_env
+  when 'production'
+    _kms('//doug1izaerwt3.cloudfront.net/eaa44bcbccb5653fdfe62261d025ec89ee4e6802.1.js')
+    break
+  when 'staging'
+    _kms('//doug1izaerwt3.cloudfront.net/3fc435ba37085e586af817b90e0175586c3e9403.1.js')
+    break
+
+
+window.useAnalytics = ->
+  app_env != 'development' and app_env != 'test'
+
+
+window.trackUserAction = ->
+  if @useAnalytics()
+    _kmq.push ['record', arguments...]
+  else
+    # console.log 'track', arguments

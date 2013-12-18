@@ -5,9 +5,9 @@
 #= require jquery-ui-1.8.23
 #= require twitter/bootstrap
 #= require bootstrap
+#= require kissmetrics
 #= require underscore
 #= require backbone
-#= require mixpanel
 #= require jquery.dataTables.min
 #= require jquery.voiceover-uploader
 

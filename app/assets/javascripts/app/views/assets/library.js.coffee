@@ -86,6 +86,8 @@ class App.Views.AssetLibrary extends Backbone.View
     view = new App.Views.VideoPlayer(video)
     App.vent.trigger('play:video', view)
 
+    App.trackUserAction 'Previewed video'
+
 
   _toggleUploadedAssetsHeader: (delta=0)=>
     nr = @fileUpload.find('.files tr').length + delta

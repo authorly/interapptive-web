@@ -119,14 +119,14 @@ window.App =
 
 
   _showSettings: ->
-    App.trackUserAction 'Click app settings'
+    App.trackUserAction 'Opened app settings'
 
     view = new App.Views.SettingsContainer(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
 
 
   _showBackgroundSoundForm: ->
-    App.trackUserAction 'Click background sound'
+    App.trackUserAction 'Opened background sound'
 
     view = new App.Views.BackgroundSoundForm(model: App.currentSelection.get('scene'))
     App.modalWithView(view: view).show()
@@ -200,6 +200,7 @@ window.App =
     widget = collection.model(attributes)
 
     if widget instanceof App.Models.HotspotWidget and !container.canAddHotspot()
+      App.trackUserAction "Couldn't add hotspot"
       alert 'Cannot add Hotspots to this scene'
       return
 
@@ -219,10 +220,12 @@ window.App =
 
     switch attributes.type
       when 'image'
+        App.trackUserAction 'Added image'
         widgetAttributes.type = 'SpriteWidget'
         widgetAttributes.scale = 1
         break
       when 'sound', 'video'
+        App.trackUserAction 'Added hotspot', media_type: attributes.type
         widgetAttributes.type = 'HotspotWidget'
         break
 
@@ -308,9 +311,10 @@ window.App =
 
   initializeMixpanel: ->
     if App.Config.environment == 'production'
-      mixpanel.init('bdaad5956eae058c3127a805145c1f6b')
-    else
-      mixpanel.init('aaef6f73b0358f52df08753974da8f34')
+      _kms('//doug1izaerwt3.cloudfront.net/eaa44bcbccb5653fdfe62261d025ec89ee4e6802.1.js');
+    else if App.Config.environment == 'staging'
+      _kms('//doug1izaerwt3.cloudfront.net/3fc435ba37085e586af817b90e0175586c3e9403.1.js');
+
 
   initializeGlobalSync: ->
     # A global vent for synchronization events
@@ -354,10 +358,11 @@ window.App =
       success: (storybook) ->
         App.currentSelection.set storybook: storybook
 
+
   setCurrentUser: (user_id) ->
     @currentUser = new App.Models.User(id: user_id)
     @currentUser.fetch(async: false)
-    @setMixpanelUserProfile()
+    @setAnalyticsUserProfile()
 
 
   setSignedInAsUser: (user_id) ->
@@ -365,22 +370,18 @@ window.App =
     @signedInAsUser.fetch(async: false)
 
 
-  useMixpanel: ->
+  useAnalytics: ->
     App.Config.environment != 'development' and App.Config.environment != 'test'
 
 
   trackUserAction: ->
-    if @useMixpanel()
-      mixpanel.track arguments...
+    if @useAnalytics()
+      _kmq.push ['record', arguments...]
     else
       # console.log 'track', arguments
 
 
-  setMixpanelUserProfile: ->
-    return unless @useMixpanel()
+  setAnalyticsUserProfile: ->
+    return unless @useAnalytics()
 
-    mixpanel.identify(@currentUser.get('id'))
-    mixpanel.people.set
-      "$email": @currentUser.get('email')
-      "Company": @currentUser.get('company') || "n/a"
-      "$name": @currentUser.get('name') || "n/a"
+    _kmq.push ['identify', @currentUser.get('email')]

@@ -12,6 +12,9 @@ class App.Views.ButtonWidgetImagesSelector extends Backbone.View
     @baseImage   = @widget.image()
     @tappedImage = @widget.selectedImage()
 
+    @formattedWidgetName = App.Lib.StringHelper.decapitalize(@widget.displayName())
+    App.trackUserAction "Opened #{@formattedWidgetName} image selector"
+
 
   render: ->
     @$el.html(@template(widget: @widget))
@@ -47,9 +50,10 @@ class App.Views.ButtonWidgetImagesSelector extends Backbone.View
     super
 
 
-  useSelectedImages: ->
+  useSelectedImages: =>
     @widget.set
       image_id:          @baseImage?.id
       selected_image_id: @tappedImage?.id
 
     App.vent.trigger('hide:modal')
+    App.trackUserAction "Saved #{@formattedWidgetName} button"

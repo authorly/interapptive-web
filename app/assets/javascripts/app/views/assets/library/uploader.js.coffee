@@ -29,6 +29,7 @@ class App.Views.AssetUploader extends Backbone.View
 
 
   _fileAdded: (e, data) =>
+    App.trackUserAction 'Uploaded file', type: data.files[0].type
     data.context = $('<span/>')
     @$el.append data.context
     xhr = data.submit()

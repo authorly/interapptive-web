@@ -153,6 +153,8 @@ class App.Models.SpriteWidget extends App.Models.ImageWidget
 
 
   asPreviousKeyframe: (keyframe) ->
+    App.trackUserAction 'Applied "as in previous scene frame"'
+
     previous = keyframe.previous()
     return unless previous?
 
@@ -164,6 +166,8 @@ class App.Models.SpriteWidget extends App.Models.ImageWidget
 
 
   asNextKeyframe: (keyframe) ->
+    App.trackUserAction 'Applied "as in next scene frame"'
+
     next = keyframe.next()
     return unless next?
 

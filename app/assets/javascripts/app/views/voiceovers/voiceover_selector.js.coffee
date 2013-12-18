@@ -16,6 +16,7 @@ class App.Views.VoiceoverSelector extends Backbone.View
       @options.keyframe.save
         voiceover_id: null
     else
+      App.trackUserAction 'Selected voiceover file'
       @options.keyframe.save
         voiceover_id: $selectedVoiceover.val()
 

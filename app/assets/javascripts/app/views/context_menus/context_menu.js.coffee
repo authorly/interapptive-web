@@ -7,6 +7,7 @@ class App.Views.ContextMenu extends Backbone.View
 
   initialize: ->
     @widget = @options.widget
+    App.trackUserAction 'Selected widget', type: @widget.get('type')
 
 
   remove: ->
@@ -22,6 +23,9 @@ class App.Views.ContextMenu extends Backbone.View
 
 
   _removeClicked: (e) ->
+    App.trackUserAction 'Removed widget',
+      type: @widget.get('type')
+      source: 'context menu'
     @widget.collection?.remove(@widget)
 
 

@@ -33,7 +33,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   addText: (event) ->
-    App.trackUserAction "Add text to a scene"
+    App.trackUserAction 'Added text'
 
     event.preventDefault()
     return if $(event.target).hasClass('disabled')
@@ -53,7 +53,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
   switchStorybook: ->
-    App.trackUserAction 'Switch storybook'
+    App.trackUserAction 'Switched storybook'
     document.location.href = '/'
 
 

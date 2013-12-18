@@ -117,13 +117,11 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
   _uploaderFileUploaded: (response) ->
     for asset in response.result
       @collection.add asset
-      App.trackUserAction 'Uploaded a file', type: asset.type
 
     @currentUploads.collection.remove @uploader.getData(response).id
 
 
   _uploaderFileFailed: (response) ->
-    App.trackUserAction 'Upload failed'
     @currentUploads.collection.remove @uploader.getData(response).id
 
 
@@ -138,11 +136,10 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     if toggleEl.hasClass 'thumbs'
       @thumbsView.$el.hide()
       @detailsView.$el.show()
-      App.trackUserAction 'Click asset list view'
+      App.trackUserAction 'Viewed files as list'
     else if toggleEl.hasClass 'list'
       @detailsView.$el.hide()
       @thumbsView.$el.show()
-      App.trackUserAction 'Click asset thumb view'
 
 
   nameAscendingComparator: (a1, a2) ->
