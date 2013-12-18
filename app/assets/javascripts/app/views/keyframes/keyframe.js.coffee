@@ -62,10 +62,14 @@ class App.Views.Keyframe extends Backbone.View
     return if @$el.hasClass('disabled')
 
     if confirm(@DELETE_KEYFRAME_MSG)
+      if @model.isAnimation()
+        App.trackUserAction 'Removed animation intro'
+      else
+        App.trackUserAction 'Deleted keyframe'
+
       collection = @model.collection
       @model.destroy
         success: =>
-          mixpanel.track "Deleted keyframe"
           collection.remove(@model)
 
 

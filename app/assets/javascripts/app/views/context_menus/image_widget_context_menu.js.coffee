@@ -42,14 +42,18 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
 
 
   _enterKeyScaleListener: (event) ->
-    @_setScale() if event.keyCode is App.Lib.KeyCodes.enter
+    if event.keyCode is App.Lib.KeyCodes.enter
+      @_setScale()
+      App.trackUserAction 'Resized image'
 
 
   bringToFront: (e) ->
+    App.trackUserAction 'Brought image to front'
     App.vent.trigger 'bring_to_front:sprite', @widget
 
 
   putInBack: (e) ->
+    App.trackUserAction 'Put image in back'
     App.vent.trigger 'put_in_back:sprite', @widget
 
 

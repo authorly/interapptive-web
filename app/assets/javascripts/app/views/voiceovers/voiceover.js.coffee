@@ -48,7 +48,6 @@ class App.Views.Voiceover extends Backbone.View
 
 
   remove: ->
-    console.log 'remove voiceover'
     @stopVoiceover()
     super
 
@@ -66,7 +65,7 @@ class App.Views.Voiceover extends Backbone.View
 
   acceptAlignment: (event) ->
     unless @keyframe.hasVoiceover()
-      App.trackUserAction 'Cancelled highlighting (no audio)'
+      App.trackUserAction 'Cancelled highlighting'
       App.vent.trigger('hide:modal')
       return
 
@@ -85,6 +84,8 @@ class App.Views.Voiceover extends Backbone.View
     @setHighlightTimesForWordEls()
 
     @_previewingAlignment = true
+
+    App.trackUserAction 'Previewed highlighting'
 
 
   previewOrStopPreview: (event) ->

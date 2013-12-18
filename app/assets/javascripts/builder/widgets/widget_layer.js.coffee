@@ -153,6 +153,12 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         @_capturedWidget.mouseUp
           touch: touch
           canvasPoint: point
+
+        formattedWidgetName = @_capturedWidget.constructor.name
+          .replace('Widget', '')
+          .replace('Button','main menu button')
+          .replace('Sprite', 'image')
+        App.trackUserAction("Moved #{App.Lib.StringHelper.decapitalize(formattedWidgetName)}")
     else
       App.currentSelection.set widget: null
 
@@ -439,11 +445,15 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   restoreDefaultMainMenuButtonImage: =>
+    App.trackUserAction('Restored default main menu button', source: "right click menu")
     model = @_capturedWidget.model
     model.useDefaultImage()
 
 
   removeSpriteWithContextMenu: =>
+    App.trackUserAction 'Removed widget',
+      type: @_capturedWidget.constructor.name
+      source: 'right click menu'
     @_capturedWidget.model.collection.remove(@_capturedWidget.model)
     @_capturedWidget = null
 
