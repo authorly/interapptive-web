@@ -42,7 +42,7 @@ class App.Views.ToolbarView extends Backbone.View
 
 
 
-  showSettings: ->
+  showSettings: (event) ->
     return if $(event.target).hasClass('disabled')
 
     App.vent.trigger('show:settingsform')
