@@ -1,10 +1,10 @@
 - if @sounds.length > 0
-  %labe{for: 'voiceover-selector'} Voiceover sound:
+  %label{for: 'voiceover-selector'} Voiceover sound:
   %select#voiceover-selector
     %option{:value => 'none'}
       None
     - for sound in @sounds.models
-      %option{:value => "#{sound.get('id')}"}
+      %option{:value => "#{sound.get('id')}", :disabled => !sound.get('transcode_complete')}
         = sound.get('name')
 - else
   Please upload some sounds first.

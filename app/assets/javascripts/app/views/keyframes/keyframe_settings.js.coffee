@@ -1,3 +1,5 @@
+# Keyframe configuration.
+# Manages the voiceovers configuration and the autoplay settings.
 class App.Views.KeyframeSettings extends Backbone.View
   template: JST['app/templates/keyframes/settings']
 
@@ -13,8 +15,6 @@ class App.Views.KeyframeSettings extends Backbone.View
 
     @voiceoverView = new App.Views.Voiceover model: @model
     @$('.tab.voiceover').html('').append(@voiceoverView.render().el)
-    # Popcorn requires a DOM element, so the view must be added to the DOM
-    window.setTimeout (=> @voiceoverView.enableMediaPlayer()), 0
 
     @autoplayDurationView = new App.Views.AutoplayDuration model: @model
     @$('.tab.autoplay').html('').append(@autoplayDurationView.render().el)

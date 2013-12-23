@@ -43,7 +43,7 @@ window.App =
     @vent.on 'create:scene',    @_addNewScene,    @
     @vent.on 'create:widget',   @_addNewWidget,   @
 
-    @vent.on 'show:settingsform',  @_showSettings, @
+    @vent.on 'show:settingsform',             @_showSettings,            @
     @vent.on 'show:scenebackgroundsoundform', @_showBackgroundSoundForm, @
 
     @vent.on 'bring_to_front:sprite', @_bringToFront, @
@@ -70,6 +70,12 @@ window.App =
     @modalWithView()?.hide()
 
 
+  # Shows a notification `message` on top right of the browser.
+  # type is one of:
+  # `success` - Green
+  # `info`    - Blue
+  # `warning` - Yellow
+  # `error`   - Red
   _showToast: (type, message) ->
     window.toastr[type](message)
 

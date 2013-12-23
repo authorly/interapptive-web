@@ -1,0 +1,8 @@
+%ol.words
+  - for widget in _.sortBy(@keyframe.textWidgets(), (w) -> w.get('z_order'))
+    %li{ data-id: widget.id }
+      - words = widget.get('string').split(' ')
+      - for word, index in words
+        %span.word
+          = word + " "
+          %input.input-mini
