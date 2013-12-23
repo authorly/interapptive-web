@@ -1,6 +1,9 @@
 require "bundler/capistrano"
 require 'capistrano/ext/multistage'
 
+require './config/boot'
+require 'airbrake/capistrano'
+
 set :application,     'authorly'
 set :scm,             :git
 set :repository,      "git@github.com:authorly/interapptive-web.git"
