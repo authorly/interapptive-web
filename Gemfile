@@ -21,6 +21,8 @@ gem 'resque-loner'
 gem 'god'
 gem 'yaml_db'
 gem 'kaminari'
+gem 'high_voltage'
+gem 'airbrake'
 
 group :osx do
   gem 'betabuilder', :git => 'git://github.com/waseem/betabuilder.git', :branch => 'no_deploy', :ref => '1125dab2d903fb24aabef758d0f1feb22940ed6a'
