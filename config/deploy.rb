@@ -20,3 +20,6 @@ end
 
 after 'deploy:update_code', 'deploy:copy_configuration_files'
 after 'deploy:update',      'deploy:cleanup'
+
+        require './config/boot'
+        require 'airbrake/capistrano'
