@@ -22,10 +22,10 @@ set(:bundle_cmd) {
   "#{set_ruby_cmd} && exec bundle"
 }
 
-role :production, "ec2-50-16-195-156.compute-1.amazonaws.com"
-role :app, "ec2-50-16-195-156.compute-1.amazonaws.com"
-role :web, "ec2-50-16-195-156.compute-1.amazonaws.com"
-role :db, "ec2-50-16-195-156.compute-1.amazonaws.com", :primary => true
+role :production, "beta.authorly.com"
+role :app, "beta.authorly.com"
+role :web, "beta.authorly.com"
+role :db, "beta.authorly.com", :primary => true
 
 
 namespace :deploy do
