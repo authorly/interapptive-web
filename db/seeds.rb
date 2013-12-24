@@ -10,6 +10,6 @@ Font.where(:asset_type => 'system').delete_all
 system_fonts = YAML::load(ERB.new(IO.read(File.join(Rails.root, 'db', 'fixtures', 'system_fonts.yml'))).result)
 system_fonts.each do |k, v|
   f = Font.new(v.merge(:meta_info => { :font_name => k }))
-  f.font = File.open(File.join(Rails.root, 'db', 'fixtures', 'fonts', v[:font]))
+  f.font = File.open(File.join(Rails.root, 'db', 'fixtures', 'fonts', v['font']))
   f.save!
 end
