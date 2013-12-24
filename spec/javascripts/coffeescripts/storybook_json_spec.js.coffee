@@ -102,9 +102,12 @@ describe "App.JSON", ->
       # a fake entry as the IOS app needs something
       expect(menu.fallingPhysicsSettings.plistfilename).toEqual 'snowflake-main-menu.plist'
 
-      expect(menu.audio).toBeDefined()
-      expect(menu.audio.backgroundMusic).toEqual @sound.get('url')
-      expect(menu.audio.backgroundMusicLoops).toEqual 0
+      expect(menu.sounds).toBeDefined()
+      expect(menu.sounds.background).toBeDefined()
+      expect(menu.sounds.background.file).toEqual @sound.get('url')
+      expect(menu.sounds.background.loop).toEqual 0
+
+      expect(menu.sounds.effectOnEnter).toBeUndefined()
 
       items = menu.MenuItems
       expect(items.length).toEqual 3
@@ -138,6 +141,12 @@ describe "App.JSON", ->
       @json = new App.JSON(@storybook)
       items = @json.app.MainMenu.MenuItems
       expect(_.pluck(items, 'storyMode')).toEqual ['readItMyself', 'autoPlay']
+
+    it 'includes main menu sound effect', ->
+      @mainMenu.set(sound_effect_id: @sound.id)
+      @json = new App.JSON(@storybook)
+      menu = @json.app.MainMenu
+      expect(menu.sounds.effectOnEnter).toEqual(@sound.get('url'))
 
 
   describe "scenes", ->
