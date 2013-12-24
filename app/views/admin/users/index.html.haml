@@ -20,12 +20,6 @@
     %th
       Name
     %th
-      Company
-    %th
-      City
-    %th
-      Is Admin?
-    %th
       Signed Up
     %th
       Actions
@@ -37,12 +31,6 @@
         = link_to(user.email, admin_user_path(user))
       %td
         = user.name
-      %td
-        = user.company
-      %td
-        = user.city
-      %td
-        = yes_or_no(user.is_admin?)
       %td
         = time_ago_in_words(user.created_at)
         ago
