@@ -23,6 +23,6 @@
       %i.icon-plus.icon-white
       %span New Storybook App...
     %form.form-inline.storybook-form{:style => "display:none"}
-      %input.input-medium.storybook-title{:name => "storybook-title", :placeholder => "Storybook Title", :type => "text", :maxlength => 25, :minlength => 2}
+      %input.input-medium.storybook-title{:name => "storybook-title", :placeholder => "Storybook Title", :type => "text", :maxlength => 50, :minlength => 2}
         %button.btn.btn-success{:type => "submit"} Create App
       %a.close{:href => "#"} x
