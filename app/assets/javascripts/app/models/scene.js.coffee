@@ -44,6 +44,10 @@ class App.Models.Scene extends Backbone.Model
     @storybook.sounds.get(@get('sound_id'))
 
 
+  soundEffect: ->
+    @storybook.sounds.get(@get('sound_effect_id'))
+
+
   initializeWidgets: ->
     @widgets.storybook ||= @storybook
 
