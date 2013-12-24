@@ -3,7 +3,7 @@
   :javascript
     if ($.browser.mobile) {
       window.location = "#{page_path 'mobile_not_supported'}"
-    } else if !($.browser.webkit || $.browser.mozilla) {
+    } else if (!($.browser.webkit || $.browser.mozilla)) {
       window.location = "#{page_path 'browser_not_supported'}"
     }
 
