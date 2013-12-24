@@ -270,10 +270,14 @@ class App.JSON
 
       node.CCSprites.push(spriteNode)
 
+    node.sounds = {} if ((scene.sound())? || (scene.soundEffect())?)
     if (sound = scene.sound())?
-      node.audio =
-        backgroundMusic      : sound.get('url')
-        backgroundMusicLoops : if scene.get('loop_sound') then 0 else 1
+      node.sounds.background =
+        file: sound.get('url')
+        loop: if scene.get('loop_sound') then 0 else 1
+
+    if (sound_effect = scene.soundEffect())?
+      node.sounds.effectOnEnter = sound_effect.get('url')
 
     node
 
