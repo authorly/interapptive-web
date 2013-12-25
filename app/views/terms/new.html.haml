@@ -1,0 +1,33 @@
+.well.terms
+  <p>
+  Dear Authorly User,
+  </p>
+  <p>
+  We've recently updated our <a href="http://authorly.com/tos.html">Terms of Service</a>. No MAJOR changes that will affect your revenue, copyright or usage... but in an effort to show transparency, we wanted to notify you, ask you to review, and accept.
+  </p>
+  <p>
+  Thank you!
+  </p>
+
+  = form_tag term_path do
+    %br
+    %p
+      %label
+        = check_box_tag :terms, nil
+        I agree
+    %p
+      = submit_tag 'Continue', :class => 'btn', :disabled => 'disabled'
+
+:javascript
+  $(function () {
+    // TODO: WA: Needs to called using KMTS constant in controller action once
+    // interapptive-web#1212 is deployed
+    trackUserAction("Visited privacy policy agreement page");
+    $('input#terms').change(function () {
+      if (this.checked) {
+        $('input.btn').removeAttr('disabled')
+      } else {
+        $('input.btn').attr('disabled', 'disabled')
+      }
+    });
+  });
