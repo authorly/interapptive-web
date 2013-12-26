@@ -1,0 +1,20 @@
+.well.terms
+  Please agree to our <a href="http://authorly.com/tos.html">privacy policy</a> before continuing.
+
+  = form_tag term_path do
+    %br
+    %p
+      = check_box_tag :terms, nil
+      I agree
+      = submit_tag 'Continue', :class => 'btn', :disabled => 'disabled'
+
+:javascript
+  $(function () {
+    $('input#terms').change(function () {
+      if (this.checked) {
+        $('input.btn').removeAttr('disabled')
+      } else {
+        $('input.btn').attr('disabled', 'disabled')
+      }
+    });
+  });

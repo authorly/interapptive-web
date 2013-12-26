@@ -23,6 +23,7 @@ Interapptive::Application.routes.draw do
   resource :compiler
 
   resource :confirmation, only: [:new, :create]
+  resource :term,         only: [:new, :create]
 
   resources :images
   resources :videos

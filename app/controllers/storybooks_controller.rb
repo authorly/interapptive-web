@@ -8,7 +8,11 @@ class StorybooksController < ApplicationController
 
   def index
     set_signed_in_as_user
-    respond_with(@storybooks = signed_in_as_user.storybooks.all)
+    if current_user.accepted_terms?
+      respond_with(@storybooks = signed_in_as_user.storybooks.all)
+    else
+      redirect_to(new_term_url)
+    end
   end
 
   def show
