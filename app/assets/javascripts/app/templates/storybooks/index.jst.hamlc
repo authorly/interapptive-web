@@ -9,10 +9,10 @@
       Sign Out
 
 
-  .no-storybooks
+  .no-storybooks{:style => 'display:none'}}
     %h2 Create a storybook
     %p Begin creating your storybook app by clicking the "New Storybook App..." button below.
-  .storybooks
+  .storybooks{:style => 'display:none'}
     %h2 Your storybooks:
     %ul#storybook-list
     #storybook-loading
