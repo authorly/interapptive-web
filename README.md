@@ -5,7 +5,7 @@
 ## Setup the application
 
 1. Clone the repository on your machine
-1. Create a suitable `config/database.yml` (production will likely run on MySQL)
+1. Create a suitable `config/database.yml` (production runs on MySQL)
 1. `bundle install`
 1. `bundle exec rake db:create:all`
 1. `bundle exec rake db:migrate`
@@ -13,7 +13,7 @@
 1. `bundle exec rails server` starts the server
 
 
-## Setup for getting transcoded video versions
+## Setup for getting transcoded video and audio versions
 
   `bundle exec zencoder_fetcher --loop --interval 10 --url 'http://127.0.0.1:3000/zencoder' <ZENCODER_API_KEY>`
 
@@ -35,7 +35,7 @@ Start workers:
 1. `bundle exec rake environment resque:work QUEUE='ios_compilation' RAILS_ENV=development` starts the compilation queue
 
 
-Start compilation from the web application (currently: 'File' menu -> 'Compile to iOS'). Currently does not work because the code assumes it is run by a certain user, needs the keychain password in `config/keychain_password.txt`.
+Start compilation from the web application ('Compile to iOS' icon). Currently does not work because the code assumes it is run by a certain user, needs the keychain password in `config/keychain_password.txt`.
 Stopped trying to make this work on my machine. `2013-06-19` `@dira`
 
 
