@@ -3,7 +3,7 @@ require 'capistrano/ext/multistage'
 
 set :application,     'authorly'
 set :scm,             :git
-set :repository,      "git@github.com:curiousminds/interapptive-web.git"
+set :repository,      "git@github.com:authorly/interapptive-web.git"
 set :branch,          "master"
 set :use_sudo,        false
 set :deploy_via,      :remote_cache
