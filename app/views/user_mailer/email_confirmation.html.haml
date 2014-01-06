@@ -4,7 +4,7 @@ Hello,
 Please confirm your email address by clicking on the link below
 %br
 %br
-= link_to('Click Here', new_confirmation_url(:confirmation_token => @user.confirmation_token))
+= link_to(new_confirmation_url(:confirmation_token => @user.confirmation_token), new_confirmation_url(:confirmation_token => @user.confirmation_token))
 %br
 %br
 Sincerely,
