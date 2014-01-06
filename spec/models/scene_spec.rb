@@ -14,12 +14,10 @@ describe Scene do
           'is_main_menu'        => scene.is_main_menu,
           'loop_sound'          => false,
           'position'            => scene.position,
-          'preview_image_id'    => scene.preview_image.id,
           'sound_id'            => scene.sound_id,
           'storybook_id'        => scene.storybook_id,
           'updated_at'          => scene.updated_at,
           'widgets'             => nil,
-          'preview_image_url'   => scene.preview_image.image.url,
           'sound_id'           => scene.sound.id
       }.to_json
 
