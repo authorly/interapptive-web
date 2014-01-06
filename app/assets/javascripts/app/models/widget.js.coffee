@@ -304,7 +304,7 @@ class App.Models.TextWidget extends App.Models.Widget
     string:  'Click to edit or drag to move'
     z_order: 6000
     position: @defaultPosition()
-    font_size: 25
+    font_size: 34
     font_color: { 'r': 0, 'g': 0, 'b': 0 }
 
 
