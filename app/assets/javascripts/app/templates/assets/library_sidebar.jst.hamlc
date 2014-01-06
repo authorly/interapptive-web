@@ -39,13 +39,10 @@
   %span.select-file
     %span.btn.btn-success
       %i.icon-plus.icon-white
-      Add
+      Upload Files
     %input.file-upload{:type => 'file', :name => 'files[]', :multiple => 'multiple'}
 
 
   #asset-text-search
     .input-append
       %input#asset-search-field.input-small.span2{:type => 'text', :placeholder => 'Search media...'}
-      %button.btn{:type => 'button'}
-        %i{:class => 'icon-search icon-black'}
-
