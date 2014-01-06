@@ -128,15 +128,9 @@ Widgets are represented by two classes - a Backbone Model (that stores and manag
     - handles touch behaviour/moving and translates that into mouse behaviour.
 
 2. The Widget parent class is what all widgets inherit from. It defines:
-    - a newFromHash method that allows invocation with options and sets positioning based on hash.position{.x,.y};
     - abstract mouseover/mouseout/dblclick responses;
     - abstract highlighting
     - opacity setters and getters
-    - toHash, a serializer;
-
-### How widgets are instantiated
-
-- Widget instantiation happens (at this moment) through `app/assets/javascripts/app/views/toolbar.js.coffee`. Each button has its own method that creates an appropriate instance.
 
 ### FAQ
 
