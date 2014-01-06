@@ -19,6 +19,7 @@ class App.Views.StorybookIndex extends Backbone.View
     @collection.on 'remove', @removeStorybook,  @
     @collection.on 'sync',   @storybooksLoaded, @
     @collection.on 'add remove', @showListOrMessage, @
+    @collection.fetch(async: false)
 
     App.trackUserAction('Visited storybook list page')
 
