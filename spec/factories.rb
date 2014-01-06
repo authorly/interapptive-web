@@ -60,13 +60,11 @@ Factory.define :application_information do |f|
 end
 
 Factory.define :scene do |f|
-  f.preview_image Factory(:image)
   f.sound Factory(:sound)
   f.storybook Factory(:storybook)
 end
 
 Factory.define :main_menu_scene, class: Scene do |f|
-  f.preview_image Factory(:image)
   f.sound Factory(:sound)
   f.storybook { Factory(:storybook).tap{|s| s.scenes.destroy_all } }
   f.is_main_menu true

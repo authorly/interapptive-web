@@ -93,9 +93,16 @@ class Storybook < ActiveRecord::Base
       methods: SETTINGS.keys,
       include: [:application_information],
     }.merge(options)).merge({
-      preview_image_url: scenes.where(is_main_menu: true)[0].try(:preview_image_url),
+      preview_image_url: preview_image_url,
       publish_request: publish_request.as_json,
     })
+  end
+
+  def preview_image_url
+    keyframes = scenes.where(is_main_menu: true).first.keyframes
+    first_keyframe = keyframes.where(is_animation: true).first ||
+                     keyframes.where(position: 0).first
+    first_keyframe.preview_image_url
   end
 
   private
