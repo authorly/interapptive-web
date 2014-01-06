@@ -49,7 +49,6 @@ group :development do
   gem 'pry'
   gem 'pry-rails'
   gem 'haml-rails'
-  gem 'capistrano'
   gem 'debugger'
   gem 'growl'
   gem 'zencoder-fetcher'
