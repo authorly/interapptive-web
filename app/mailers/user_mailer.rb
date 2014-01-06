@@ -9,7 +9,7 @@ class UserMailer < ActionMailer::Base
 
   def email_confirmation(user_id)
     @user = User.find(user_id)
-    mail :to => @user.email, :subject => "Confirm your email address"
+    mail :to => @user.email, :subject => "You're almost there! Please confirm your email"
   end
 
   def password_reset_notification(user_id, pass)
