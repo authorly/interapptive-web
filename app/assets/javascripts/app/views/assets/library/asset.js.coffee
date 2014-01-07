@@ -7,6 +7,7 @@ class App.Views.AssetLibraryElement extends Backbone.View
 
   events: ->
     'click .delete': 'deleteClicked'
+    'click .add-to-canvas': 'addToCanvas'
 
   render: ->
     @$el.html @template(
@@ -45,6 +46,11 @@ class App.Views.AssetLibraryElement extends Backbone.View
     @model.destroy url: @model.get('delete_url')
 
     App.trackUserAction 'Deleted file', type: @type()
+
+
+  addToCanvas: (event) ->
+    $asset = @$(event.currentTarget).parent().parent().find('.thumb')
+    App.vent.trigger('canvas-add:asset', id: $asset.data('id'), type: $asset.data('type'))
 
 
   _assetTypeToWidgetType: (type) ->

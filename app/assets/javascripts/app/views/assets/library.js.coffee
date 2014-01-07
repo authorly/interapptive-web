@@ -28,17 +28,6 @@ class App.Views.AssetLibrary extends Backbone.View
     @
 
 
-  # TODO invoke this when modal is hidden
-  # close: ->
-    # @$('#fileupload').fileupload 'disable'
-    # $('.content-modal').removeClass 'asset-library-modal'
-    # @_removeListeners()
-  # closeAssetLib: ->
-    # @fileUpload.fileupload 'disable'
-    # $('.content-modal').removeClass 'asset-library-modal'
-    # @assets.off 'reset', @render, @
-
-
   initUploader: ->
     # TODO this concern belongs to the parent of the class
     $('.content-modal').addClass 'asset-library-modal'
