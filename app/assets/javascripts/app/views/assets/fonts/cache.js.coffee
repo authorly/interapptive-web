@@ -1,36 +1,47 @@
-# This maintains a style tag in the head with any fonts
-# uploaded by user. This way we cache the fonts in the
-# browser and when font of a text widget changes, it
-# appears visually almost instantaneously.
+# Cache a collection of fonts by maintaining, for each one
+# * a style tag in the head
+# * a transparent span with that font
 class App.Views.FontCache extends Backbone.View
 
-  openStorybook: (storybook) ->
-    @_removeStorybookListeners()
-    @storybook = storybook
-    @_addStorybookListeners()
-    @_cacheExistingFonts()
+  render: ->
+    @$bodyEl = $('<div class="trigger-cached-font-download" style="position:absolute;top:-50px">').appendTo('body')
+    @
 
 
-  addFontToCache: (font) ->
+  remove: ->
+    @$bodyEl.remove()
+    super
+
+
+  setCollection: (fonts) ->
+    @_removeListeners()
+    @fonts = fonts
+    @_addListeners()
+    @_cacheAll()
+
+
+  _addFont: (font) ->
     $fontFaceImportEl = "@font-face { font-family: '#{font.get('name')}'; src: url('#{font.get('url')}'); }"
-    @$el.append($fontFaceImportEl)
+    @$el.append $fontFaceImportEl
+
+    $span = $("<span style='font-family:#{font.get('name')}'>&nbsp;</span>")
+    @$bodyEl.append $span
 
 
-  removeFontFromCache: (font) ->
+  _removeFont: (font) ->
     @$el.find("option[value='#{font.get('name')}']").remove()
+    # here we should remove it from body as well, but it's not frequent enough to bother
 
 
-  _addStorybookListeners: ->
-    @storybook.fonts.on 'add',    @addFontToCache,      @
-    @storybook.fonts.on 'remove', @removeFontFromCache, @
+  _addListeners: ->
+    @listenTo @fonts, 'add',    @_addFont
+    @listenTo @fonts, 'remove', @_removeFont
 
 
-  _removeStorybookListeners: ->
-    return unless @storybook?
-    @storybook.fonts.off 'add',    @fontAdded, @
-    @storybook.fonts.off 'remove', @removeFontOption, @
+  _removeListeners: ->
+    @stopListening @fonts
 
 
-  _cacheExistingFonts: ->
+  _cacheAll: ->
     @$el.empty()
-    @addFontToCache(font) for font in @storybook.fonts.models
+    @_addFont(font) for font in @fonts.models

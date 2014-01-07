@@ -170,7 +170,7 @@ describe "App.JSON", ->
 
       @system_font = new App.Models.Font
         id: 14
-        url: 'Comic Sans MS.ttf'
+        file_name: 'Comic Sans MS.ttf'
         asset_type: 'system'
       @storybook.fonts.add @system_font
 
@@ -195,10 +195,10 @@ describe "App.JSON", ->
         animation_duration: 3,
         widgets: [
           { 'type': 'SpriteOrientation', 'id': 11, keyframe_id: 1, sprite_widget_id: 9, position: { x: 400, y: 200}, scale: 1.5 }
-          { 'type': 'TextWidget', 'id': 12, 'font_id': 13, 'position': {'x': 120, 'y': 330}, 'z_order': 6000, 'string': 'Some text' },
-          { 'type': 'TextWidget', 'id': 13, 'font_id': 14, 'position': {'x': 150, 'y': 370}, 'z_order': 6002, 'string': 'Some other text' },
-          { 'type': 'TextWidget', 'id': 14, 'font_id': 13, 'position': {'x': 180, 'y': 410}, 'z_order': 6001, 'string': 'Some more text' },
-          { 'type': 'TextWidget', 'id': 15, 'font_id': 14, 'position': {'x': 190, 'y': 430}, 'z_order': 6003, 'string': 'Some less text' },
+          { 'type': 'TextWidget', 'id': 12, 'font_id': 13, 'position': {'x': 120, 'y': 330}, 'z_order': 6000, 'string': 'Some text', 'align': 'left' },
+          { 'type': 'TextWidget', 'id': 13, 'font_id': 14, 'position': {'x': 150, 'y': 370}, 'z_order': 6002, 'string': 'Some other text', 'align': 'center' },
+          { 'type': 'TextWidget', 'id': 14, 'font_id': 13, 'position': {'x': 180, 'y': 410}, 'z_order': 6001, 'string': 'Some more text', 'align': 'right' },
+          { 'type': 'TextWidget', 'id': 15, 'font_id': 14, 'position': {'x': 190, 'y': 430}, 'z_order': 6003, 'string': 'Some less text', 'align': 'left' },
           { 'type': 'HotspotWidget', 'id': 7, 'position': {'x': 510, 'y': 310}, 'radius': 60, 'sound_id': @sound.id },
         ],
         content_highlight_times: [1, 2, 4, 5, 20]
@@ -254,22 +254,26 @@ describe "App.JSON", ->
       expect(text.text).toEqual 'Some text'
       expect(text.xOffset).toEqual 120
       expect(text.yOffset).toEqual 330
+      expect(text.anchorPoint).toEqual [0, 0]
 
       text = keyframe.linesOfText[1]
       expect(text.text).toEqual 'Some more text'
-      expect(text.fontType).toEqual 'ComicSansMS.ttf'
+      expect(text.fontType).toEqual 'https://interapptive.s3.amazonaws.com/fonts/13/Russo_One.ttf'
       expect(text.xOffset).toEqual 180
       expect(text.yOffset).toEqual 410
+      expect(text.anchorPoint).toEqual [1, 0]
 
       text = keyframe.linesOfText[2]
       expect(text.text).toEqual 'Some other text'
       expect(text.xOffset).toEqual 150
       expect(text.yOffset).toEqual 370
+      expect(text.anchorPoint).toEqual [0.5, 0]
 
       text = keyframe.linesOfText[3]
       expect(text.text).toEqual 'Some less text'
       expect(text.xOffset).toEqual 190
       expect(text.yOffset).toEqual 430
+      expect(text.anchorPoint).toEqual [0, 0]
 
       expect(keyframe.voiceAudioFile).toEqual "https://interapptive.s3.amazonaws.com/sounds/11/voicemail_received.wav"
       expect(keyframe.highlightingTimes).toEqual [1, 2, 4, 5, 20]
