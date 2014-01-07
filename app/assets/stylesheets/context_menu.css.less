@@ -60,22 +60,12 @@ nav.toolbar {
         margin-right: 100px;
       }
 
-      #font-face-selector{
-        margin-top: 15px;
-        margin-right: 180px;
-
-        #font-face {
-          width: 180px;
-        }
+      #font-face-selector, #font-size-selector, #text-widget-options, #text-widget-alignment, #text-widget-coordinates {
+        display: inline-block;
       }
 
-      #font-size-selector {
-        margin-top: -40px;
-        margin-right: -120px;
-
-        #font-size {
-          width: 66px;
-        }
+      #text-widget-options, #text-widget-alignment {
+        margin-right: 30px;
       }
 
       #font-color-selector {
@@ -93,9 +83,24 @@ nav.toolbar {
         }
       }
 
-      #text-widget-options {
-        margin-top: -55px;
-        margin-right: -395px;
+      #font-size-selector #font-size {
+        width: 66px;
+      }
+
+      #text-widget-alignment {
+        input {
+          position: absolute;
+          left: -9999px;
+        }
+        label {
+          cursor: pointer;
+        }
+        i {
+          opacity: 0.4;
+        }
+        label.active i, label i:hover {
+          opacity: 1;
+        }
       }
 
       #button-widget-filename {

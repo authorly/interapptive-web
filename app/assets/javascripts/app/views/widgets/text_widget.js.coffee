@@ -3,7 +3,8 @@
 # Uses contentEditable
 #
 class App.Views.TextWidget extends Backbone.View
-  className: 'text-widget'
+  template: JST["app/templates/widgets/text_widget_editor"]
+  className: 'text-widget-editor'
 
   events:
     'keydown': 'keydown'
@@ -25,6 +26,7 @@ class App.Views.TextWidget extends Backbone.View
 
     @model = @options.widget.model
     @listenTo @model, 'change:position',          @setPosition
+    @listenTo @model, 'change:align',             @alignChanged
     @listenTo @model, 'change:font_color',        @fontColorChanged
     @listenTo @model, 'change:visual_font_color', @setFontColor
     @listenTo @model, 'change:font_size',         @setFontSize
@@ -35,34 +37,37 @@ class App.Views.TextWidget extends Backbone.View
 
 
   render: ->
+    @$el.html @template()
+    @$editable = @$('.editable')
+
     @
 
 
   keydown: (event) ->
-    switch event.keyCode
-      when App.Lib.KeyCodes.enter
-        @shouldSave = true
-        @deselect()
-      when App.Lib.KeyCodes.escape
-        @shouldSave = false
-        @deselect()
+    if event.keyCode == App.Lib.KeyCodes.escape
+      @shouldSave = false
+      @deselect()
+    if event.keyCode == App.Lib.KeyCodes.enter && event.ctrlKey
+      @shouldSave = true
+      @deselect()
 
 
   initializeEditing: ->
-    @enableContentEditable()
     @setFontFamily()
     @setFontSize()
     @setElementString()
     @fontColorChanged()
+    @alignChanged()
     @setPosition()
     @selectText()
 
 
   deselect: =>
     if @shouldSave
-      text = $.trim(@$el.text())
-      if text.length > 0
+      text = @_getTextLines(@$editable).join("\n")
+      if $.trim(text).length > 0
         @model.set string: text
+        @model.set('string', text)
       else
         @model.collection?.remove(@model)
         removed = true
@@ -73,8 +78,54 @@ class App.Views.TextWidget extends Backbone.View
     @remove()
 
 
+  _getTextLines: (element) ->
+    lines = []
+    hadBr = false
+    element.contents().each (__, c) =>
+      if c.tagName == 'BR'
+        if hadBr
+          # skip the first <br/> in a sequence
+          lines.push ''
+        else
+          hadBr = true
+      else
+        hadBr = false
+
+        if c.tagName == 'DIV' || c.tagName == 'SPAN'
+          innerLines = @_getTextLines($(c))
+          innerLines = [''] if innerLines.length == 0
+          lines.push innerLines...
+        else if !c.tagName?
+          lines.push $(c).text()
+    _.map lines, (line) -> $.trim(line)
+
+
   setElementString: ->
-    @$el.text @model.get('string')
+    lines = @model.get('string').split('\n')
+    html = _.map lines, (line) ->
+      # add a breakline so that empty div break as well
+      "<div>#{if line == '' then '<br/>' else line}</div>"
+    @$editable.html html
+
+
+  alignChanged: ->
+    if @model.previous('align')?
+      alignAsNumber =
+        left: -1
+        center: 0
+        right: 1
+
+      delta = alignAsNumber[@model.get('align')] - alignAsNumber[@model.previous('align')]
+      if delta != 0
+        position = @model.get('position')
+        dx = @$editable.width() * delta * 0.5
+        @model.set 'position',
+          x: position.x + if dx < 0 then Math.floor(dx) else Math.ceil(dx)
+          y: position.y
+
+    @$el.removeClass('align-left').removeClass('align-center').removeClass('align-right').
+      addClass "align-#{@model.get('align')}"
+    @setPosition()
 
 
   fontColorChanged: ->
@@ -92,24 +143,32 @@ class App.Views.TextWidget extends Backbone.View
 
   setFontSize: ->
     @$el.css("font-size",  "#{@model.get('font_size')}px")
-    @setPosition() # update position to keep it vertically centered
 
 
   setPosition: ->
     canvasHalfWidth = 292
-    # TODO how to get border in Firefox
+
     margin =
-      left: -canvasHalfWidth + (@model.get('position').x - parseFloat(@$el.css('padding-left')) - parseFloat(@$el.css('border-left-width'))) * @canvasScale
-      top:  ( -@model.get('position').y - parseFloat(@$el.css('padding-top')) - parseFloat(@$el.css('border-top-width'))) * @canvasScale - @$el.height() * 0.5
+      top: ( -@model.get('position').y - parseFloat(@$editable.css('padding-top')) - parseFloat(@$editable.css('border-top-width')) ) * @canvasScale
+    switch @model.get('align')
+      when 'left'
+        margin.left  = -canvasHalfWidth + (@model.get('position').x - parseFloat(@$editable.css('padding-left')) - parseFloat(@$editable.css('border-left-width'))) * @canvasScale
+      when 'center'
+        margin.left  = -canvasHalfWidth + @model.get('position').x * @canvasScale
+      when 'right'
+        margin.right =  canvasHalfWidth - (@model.get('position').x + parseFloat(@$editable.css('padding-right')) - parseFloat(@$editable.css('border-right-width'))) * @canvasScale
+
     @$el.css
-      'margin-left': "#{Math.round(margin.left)}px"
-      'margin-top':  "#{Math.round(margin.top)}px"
-
-
-  enableContentEditable: ->
-    @$el.attr('contentEditable', 'true')
+       'margin-top': "#{Math.round(margin.top)}px"
+    if margin.left?
+      @$el.css
+       'margin-left': "#{Math.round(margin.left)}px"
+    if margin.right?
+      @$el.css
+       'margin-right': "#{Math.round(margin.right)}px"
 
 
   selectText: ->
-    @$el.selectText()
-    @$el.focus()
+    if @model.get('string') == (new App.Models.TextWidget).get('string')
+      @$editable.selectText()
+    @$editable.focus()

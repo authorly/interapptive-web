@@ -26,7 +26,22 @@
   %span.palette.add-on{:style => "background-color: #{hex_string}"}
     %i{:style => "background-color: #{hex_string};"}
 
-#text-widget-coordinates
+%br
 
 #text-widget-options
   %a.remove{:href => '#'} Remove
+
+#text-widget-alignment
+  %input{type: 'radio', name:'text-alignment', value: 'left', id: 'context-menu-align-left'}
+  %label{for: 'context-menu-align-left'}
+    %i.icon-black.icon-align-left{title: 'Left align'}
+
+  %input{type: 'radio', name:'text-alignment', value: 'center', id: 'context-menu-align-center'}
+  %label{for: 'context-menu-align-center'}
+    %i.icon-black.icon-align-center{title: 'Center align'}
+
+  %input{type: 'radio', name:'text-alignment', value: 'right', id: 'context-menu-align-right'}
+  %label{for: 'context-menu-align-right'}
+    %i.icon-black.icon-align-right{title: 'Right align'}
+
+#text-widget-coordinates

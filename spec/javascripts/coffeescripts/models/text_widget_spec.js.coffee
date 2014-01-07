@@ -6,6 +6,7 @@ describe "App.Models.TextWidget", ->
     expect(@widget.get('string')).toEqual 'Click to edit or drag to move'
     expect(@widget.get('z_order')).toEqual 6000
     expect(@widget.get('position')).toEqual { x : 512, y : 384 }
+    expect(@widget.get('align')).toEqual 'left'
 
   describe 'font', ->
     beforeEach ->
