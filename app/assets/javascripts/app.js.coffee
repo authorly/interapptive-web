@@ -51,7 +51,9 @@ window.App =
 
     @vent.on 'play:video', @_playVideo, @
 
-    @vent.on 'show:simulator', @showSimulator
+    @vent.on 'show:simulator', @showSimulator, @
+
+    @vent.on 'canvas-add:asset', @_assetDropped, @
 
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
     @fontCache    = new App.Views.FontCache            el: $('#storybook-font-cache')
@@ -85,15 +87,10 @@ window.App =
           x <= event.pageX && event.pageX <= x + el.outerWidth() && y <= event.pageY && event.pageY <= y + el.outerHeight()
         return if onOtherElements.length > 0
 
-        offset = canvas.offset()
-        position =
-          x: App.Config.dimensions.width / 2
-          y: App.Config.dimensions.height / 2
         element = ui.helper
         @_assetDropped
           id:   element.data('id')
           type: element.data('type')
-          position: position
 
 
   _openStorybook: (__, storybook) ->
@@ -212,10 +209,14 @@ window.App =
   # @option attributes [String] type ('image', 'sound' or 'video')
   # @option attributes [Object] position {x, y}
   _assetDropped: (attributes={}) ->
+    position =
+      x: App.Config.dimensions.width / 2
+      y: App.Config.dimensions.height / 2
+
     scene = App.currentSelection.get('scene')
 
     widgetAttributes =
-      position: $.extend {}, attributes.position
+      position: $.extend {}, position
     widgetAttributes[attributes.type + '_id'] = attributes.id
 
     switch attributes.type

@@ -1,4 +1,5 @@
 %td.asset
+  %span.add-to-canvas{:title => "Add #{@asset.widgetName()} to scene"}
   %span.thumb{:class => @type, :style => "#{if @background? then "background-image: url(#{@background});background-size: 100%;" else ''}", :data-id => @asset.id, :data-type => @type }
 %td.asset-details
   %p{title: @asset.get('name')}=App.Lib.StringHelper.truncate(@asset.get('name'), 20)

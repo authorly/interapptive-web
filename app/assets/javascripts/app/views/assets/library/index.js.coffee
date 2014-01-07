@@ -2,15 +2,9 @@
 # The available assets.
 #
 class App.Views.AssetsLibrary extends Backbone.View
-  template: JST['app/templates/assets/library/index']
 
   initialize: ->
     @views = []
-
-
-  render: ->
-    @$el.html(@template())
-    @
 
 
   setCollection: (collection) ->
@@ -24,8 +18,6 @@ class App.Views.AssetsLibrary extends Backbone.View
     if @collection.length > 0
       @collection.each @_add
     else
-      @_noAssetsMessage().show()
-
 
 
   filterBy: (filter) ->
@@ -55,24 +47,18 @@ class App.Views.AssetsLibrary extends Backbone.View
     else
       @$el.children().eq(index-1).after(viewElement)
 
-    @_noAssetsMessage().hide()
 
 
   _remove: (asset) ->
     view = @_getView(asset)
     view.remove()
     @views.splice(@views.indexOf(view), 1)
-    @_noAssetsMessage().show() if @collection.length == 0
 
 
   _sort: ->
     @collection.each (asset) =>
       view = @_getView(asset)
       @$el.append view.el
-
-
-  _noAssetsMessage: ->
-    @_message ||= @$el.find('.no-assets')
 
 
   _getView: (asset) ->

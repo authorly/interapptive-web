@@ -5,6 +5,10 @@ class App.Models.Image extends Backbone.Model
     @get('name')
 
 
+  widgetName: ->
+    'image'
+
+
 class App.Collections.ImagesCollection extends Backbone.Collection
 
   model: App.Models.Image

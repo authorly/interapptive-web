@@ -1,2 +1,4 @@
 .no-assets{ :style => 'display: none;' }
-  Please use "Add" button below to upload assets.
+  Please use "Upload Files" button below to upload assets.
+.some-assets{:style => 'display: none'}
+  Drag and drop file thumbnails or hit '+' icon to add it to canvas.

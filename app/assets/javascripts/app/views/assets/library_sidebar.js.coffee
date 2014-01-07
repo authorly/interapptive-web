@@ -37,6 +37,10 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @detailsView.on 'upload', (-> @uploader.showUploadUI()), @
     @detailsView.render()
 
+    @instructionsView = new App.Views.AssetsInstructions
+      el: @$('#asset-list-instructions')
+    @instructionsView.render()
+
     # filter by kind
     @filter = new App.Views.AssetFilter
       el: @$('#asset-type-filter')
@@ -77,9 +81,10 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @collection = assets
     @setComparator(@comparator)
 
-    @thumbsView. setCollection assets
+    @thumbsView.setCollection assets
     @detailsView.setCollection assets
-    @nameFilter. setCollection assets
+    @instructionsView.setCollection assets
+    @nameFilter.setCollection assets
 
     @storybook = assets.storybook
     @uploader.setStorybook @storybook
