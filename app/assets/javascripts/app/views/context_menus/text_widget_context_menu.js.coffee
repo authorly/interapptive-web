@@ -5,6 +5,7 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
     _.extend {}, super,
       'change #font-face': 'fontFaceChanged'
       'change #font-size': 'fontSizeChanged'
+      'click #text-widget-alignment label': 'clickAlignmentOption'
 
 
   initialize: ->
@@ -23,6 +24,10 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
     @$('#font-size').val(@widget.get('font_size'))
     color = @widget.get('font_color')
     @_setPaletteColor(color)
+
+    id = @$("#text-widget-alignment input[value=#{@widget.get('align')}]").attr('id')
+    @$("#text-widget-alignment label[for=#{id}]").addClass 'active'
+
     @
 
 
@@ -58,6 +63,17 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
     App.trackUserAction 'Changed font size'
     font_size = parseInt(@$('#font-size').val())
     @widget.set(font_size: font_size)
+
+
+  clickAlignmentOption: (event) ->
+    label = $(event.currentTarget)
+    label.siblings('label').removeClass('active')
+    label.addClass 'active'
+
+    input = @$('#' + label.attr('for'))[0]
+    input.checked = true
+    @widget.set align: input.value
+
 
 
   remove: ->

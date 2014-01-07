@@ -58,6 +58,17 @@
     %p Your browser doesn't support the technology required to run this application.
   #cocos2d_loadJsImg
 
+  :javascript
+    $(document).ready(function(){
+      var center = $('.align-center')
+      align = function() {
+        center.css({'margin-left': (-( center.width() / 2) + "px")})
+      }
+      center.on('input', function(){align()})
+      align()
+    })
+
+
 #context-menu
   .sprite
   .button

@@ -297,15 +297,16 @@ class App.Models.ButtonWidget extends App.Models.ImageWidget
 # Text widgets belong to keyframe
 #
 class App.Models.TextWidget extends App.Models.Widget
- # attributes: string, font, size
+ # attributes: string, font_color, font_size, align ['left', 'center', 'right']
 
   defaults: ->
     type:    'TextWidget'
-    string:  'Click to edit or drag to move'
-    z_order: 6000
     position: @defaultPosition()
+    z_order: 6000
+    string:  'Click to edit or drag to move'
     font_size: 34
     font_color: { 'r': 0, 'g': 0, 'b': 0 }
+    align: 'left'
 
 
   initialize: ->

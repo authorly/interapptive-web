@@ -34,6 +34,7 @@
 #= require jquery.contextmenu
 #= require toastr-1.0.2
 #= require backbone-rails-fixes
+#= require fontdetect.2.1
 
 #= require app
 #= require config

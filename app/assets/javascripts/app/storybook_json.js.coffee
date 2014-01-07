@@ -55,6 +55,10 @@ class App.JSON
       linesOfText: textWidgets.map (widget) ->
         color = widget.get('font_color')
         position = widget.get('position')
+        xAnchor = switch widget.get('align')
+          when 'left'   then 0
+          when 'center' then 0.5
+          when 'right'  then 1
 
         text: widget.get('string'),
         xOffset: Math.round(position.x),
@@ -63,6 +67,7 @@ class App.JSON
         fontColor: [color.r, color.g, color.b],
         fontHighlightColor: [255, 0, 0],
         fontSize: Number(widget.get('font_size'))
+        anchorPoint: [xAnchor, 0]
       hotspots: keyframe.hotspotWidgets().map (widget) =>
         position = widget.get('position')
         hash =

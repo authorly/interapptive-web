@@ -23,6 +23,9 @@ window.App =
 
     @initializeGlobalSync()
 
+    App.fontdetect = window.fontdetect
+    delete window.fontdetect
+
 
   initStorybook: ->
     @currentSelection = new Backbone.Model
@@ -56,7 +59,11 @@ window.App =
     @vent.on 'canvas-add:asset', @_assetDropped, @
 
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
-    @fontCache    = new App.Views.FontCache            el: $('#storybook-font-cache')
+
+    @fontCache = new App.Views.FontCache
+      tagName: 'style'
+    $('head').append @fontCache.render().el
+
     @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
 
     @assetsSidebar = new App.Views.AssetsSidebar
@@ -116,7 +123,7 @@ window.App =
 
     storybook.fetchCollections()
 
-    @fontCache.openStorybook(storybook)
+    @fontCache.setCollection(storybook.fonts)
 
     @currentSelection.set assets: storybook.assets
 

@@ -271,7 +271,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       # but it doesn't
       inContextMenu = target.closest('.context-menu-list').length > 0
 
-      onEditableElement = target.attr('contentEditable')
+      onEditableElement = target.attr('contentEditable') || target.closest('[contentEditable=true]').length > 0
 
       onSidebar = target.closest('.sidebar').length > 0
 

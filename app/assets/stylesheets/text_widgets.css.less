@@ -2,36 +2,56 @@
   Styles for widgets / widge-related objects on or over the DOM
 */
 
-.text-widget {
-  .scale(0.57);
-
-  /* keep text left when typing in scaled element */
-  transform-origin:0% 0%;
-  -webkit-transform-origin:0 0;
-
-  /* fix for weird border from contentEditable in some browsers */
-  outline: none;
+.text-widget-editor {
 
   position:absolute;
-  left: 50% !important;
-  top: 585px !important;
-  padding: 10px;
-  line-height: 1em;
-  min-width: 40px;
-  text-align: left;
-  border: 2px dashed #b6b6b6;
-  color: red;
+  top: 587px !important;
+
+  .editable {
+    .scale(0.57);
+    position: relative;
+    padding: 10px;
+    line-height: 1em;
+    border: 2px dashed #b6b6b6;
+    /* fix for weird border from contentEditable in some browsers */
+    outline: none;
+
+    div {
+      white-space: nowrap;
+    }
+  }
+
+  &.align-left {
+    left: 50%;
+    text-align: left;
+
+    .editable {
+      transform-origin: left top;
+      -webkit-transform-origin: left top;
+    }
+  }
+
+  &.align-center {
+    left: 50%;
+    text-align: center;
+
+    .editable {
+      left: -50%;
+      transform-origin: center top;
+      -webkit-transform-origin: center top;
+    }
+  }
+
+  &.align-right {
+    right: 50%;
+    text-align: right;
+
+    .editable {
+      transform-origin: right top;
+      -webkit-transform-origin: right top;
+    }
+  }
+
+
 }
 
-/* Helps prevent line breaks when editing text widgets */
-[contenteditable="true"].text-widget br {
-  display: none;
-}
-
-[contenteditable="true"].text-widget * {
-  display: inline;
-}
-
-.text-widget:hover {
-  cursor: text;
-}
