@@ -21,7 +21,6 @@ gem 'resque-loner'
 gem 'god'
 gem 'yaml_db'
 gem 'kaminari'
-gem 'high_voltage'
 gem 'airbrake'
 
 group :osx do
