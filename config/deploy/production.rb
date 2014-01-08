@@ -15,7 +15,7 @@ end
 
 # Use chruby to change ruby version for capistrano
 default_run_options[:shell] = '/bin/bash'
-set :ruby_version, "1.9.3-p448"
+set :ruby_version, "1.9.3-p484"
 set :chruby_config, "/usr/local/share/chruby/chruby.sh"
 set :set_ruby_cmd, "source #{chruby_config} && chruby #{ruby_version}"
 set(:bundle_cmd) {
