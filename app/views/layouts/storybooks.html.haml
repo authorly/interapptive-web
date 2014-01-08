@@ -3,7 +3,8 @@
   :javascript
     if ($.browser.mobile) {
       window.location = "#{page_path 'mobile_not_supported'}"
-    } else if (!($.browser.webkit || $.browser.mozilla)) {
+    } else if ((/Trident/).test(navigator.userAgent) || !($.browser.webkit || $.browser.mozilla)) {
+      // IE 10 and 11 try to sneak in as Mozilla
       window.location = "#{page_path 'browser_not_supported'}"
     }
 
