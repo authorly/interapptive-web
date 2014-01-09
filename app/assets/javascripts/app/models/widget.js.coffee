@@ -324,7 +324,7 @@ class App.Models.TextWidget extends App.Models.Widget
       # Mobile software does not pick up Arial font if it's referenced as Arial.ttf in JSON.
       # This issue is way to convoluted to fix in the mobile software.
       return 'arial.ttf' if font.get('file_name') == 'Arial.ttf'
-      font.get('file_name')
+      font.get('file_name').replace(/\ /g, '')
     else
       font.get('url')
 
