@@ -1,6 +1,7 @@
 class Scene < ActiveRecord::Base
   belongs_to :storybook
   belongs_to :sound
+  belongs_to :sound_effect, :class_name => 'Sound'
 
   has_many :keyframes, :dependent => :destroy
 

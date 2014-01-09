@@ -17,23 +17,32 @@ class App.Views.BackgroundSoundForm extends App.Views.AbstractFormView
 
 
   formOptions: ->
-    model: @model
+    form_schema =
+      model: @model
+      schema:
+        sound_id:
+          type: "Select"
+          help: "Each scene can have background audio specified."
+          options: [{ val: null, label: "None" }].concat(_.map(@model.storybook.sounds.models, (s) -> { val: s.id, label: s.toString() } ))
+          title: "Background Sound"
 
-    schema:
-      sound_id:
+        loop_sound:
+          type: "Checkbox"
+          title: "Loop sound?"
+          validators:    [
+            checkRepetation = (value, formValues) ->
+              err =
+                type: "sound_repeat_count"
+                message: "Must use 0 or 1."
+
+              err if value < 0 or value > 1
+          ]
+
+    if @model.isMainMenu()
+      form_schema['schema']['sound_effect_id'] =
         type: "Select"
-        help: "Each scene can have background audio specified."
+        help: "Sound effect that plays when Main Menu page flip completes."
         options: [{ val: null, label: "None" }].concat(_.map(@model.storybook.sounds.models, (s) -> { val: s.id, label: s.toString() } ))
-        title: "Background Sound"
+        title: "Main Menu Sound Effect"
 
-      loop_sound:
-        type: "Checkbox"
-        title: "Loop sound?"
-        validators:    [
-          checkRepetation = (value, formValues) ->
-            err =
-              type: "sound_repeat_count"
-              message: "Must use 0 or 1."
-
-            err if value < 0 or value > 1
-        ]
+    form_schema
