@@ -369,6 +369,8 @@ window.App =
     window.initBuilder()
     $(window).resize -> App.vent.trigger('window:resize')
 
+    App.trackUserAction "Visited app builder page"
+
     (new App.Models.Storybook(id: id)).fetch
       success: (storybook) ->
         App.currentSelection.set storybook: storybook
@@ -377,7 +379,6 @@ window.App =
   setCurrentUser: (user_id) ->
     @currentUser = new App.Models.User(id: user_id)
     @currentUser.fetch(async: false)
-    @setAnalyticsUserProfile()
 
 
   setSignedInAsUser: (user_id) ->
@@ -389,14 +390,12 @@ window.App =
     App.Config.environment != 'development' and App.Config.environment != 'test'
 
 
-  trackUserAction: ->
+  trackUserAction: (event_name, data = {}) ->
     if @useAnalytics()
-      _kmq.push ['record', arguments...]
-    else
-      # console.log 'track', arguments
-
-
-  setAnalyticsUserProfile: ->
-    return unless @useAnalytics()
-
-    _kmq.push ['identify', @currentUser.get('email')]
+      $.post('/kmetrics.json', {
+        km_event: {
+          action: 'record',
+          name: event_name,
+          data: data
+        }
+      }, 'json')

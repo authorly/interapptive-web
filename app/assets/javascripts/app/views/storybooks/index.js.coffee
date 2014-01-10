@@ -125,8 +125,6 @@ class App.Views.StorybookIndex extends Backbone.View
 
 
   closeStorybookForm: =>
-    App.trackUserAction 'Closed new storybook form'
-
     @$('.storybook-form input').val('')
     @$('.storybook-form').fadeOut(130)
     @$('.new-storybook-btn').delay(130).fadeIn(130)

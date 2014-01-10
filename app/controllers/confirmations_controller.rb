@@ -6,6 +6,7 @@ class ConfirmationsController < ApplicationController
     @user = User.find_by_confirmation_token(params[:confirmation_token])
     if @user
       if !@user.confirmed?
+        KMTS.record(@user.email, 'Visited confirmation page')
         respond_to do |format|
           format.html
         end
@@ -41,12 +42,17 @@ class ConfirmationsController < ApplicationController
       if @user.save
         @user.confirm
         flash[:notice] = "You have successfully set your password."
+        KMTS.record(@user.email, 'Confirmed account')
         # Change UserSessionsController#create when a change is made
         # in cookies below.
         cookies.permanent[:auth_token] = @user.auth_token
-        if @user.is_admin?
-          cookies.permanent[:is_admin] = @user.is_admin?
-        end
+        cookies[:email] = {
+          :value    => @user.email,
+          :expires  => 20.years.from_now,
+          :domain   => cookie_domain
+        }
+        cookies.permanent[:is_admin] = @user.is_admin? if @user.is_admin?
+
         respond_to do |format|
           format.html { redirect_to root_path }
         end

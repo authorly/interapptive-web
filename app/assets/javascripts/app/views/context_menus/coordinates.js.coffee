@@ -59,7 +59,7 @@ class App.Views.Coordinates extends Backbone.View
   _setPosition: (event) ->
     return unless event.keyCode is App.Lib.KeyCodes.enter
 
-    App.trackUserAction('Moved imaged', source: 'context menu')
+    App.trackUserAction('Moved image', source: 'context menu')
 
     @model.set
       position:
