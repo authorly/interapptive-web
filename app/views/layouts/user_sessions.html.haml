@@ -9,7 +9,6 @@
     %meta{:content => "", :name => "description"}
     %meta{:content => "", :name => "author"}
     = stylesheet_link_tag("application", :media => "all")
-    = javascript_include_tag('user_sessions')
     = csrf_meta_tags
   %body
     .container-fluid
@@ -24,5 +23,3 @@
                     = msg
           = yield
         .span3 &nbsp;
-    :javascript
-      #{ yield :analytics_javascript }

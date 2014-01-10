@@ -6,6 +6,7 @@ class ConfirmationsController < ApplicationController
     @user = User.find_by_confirmation_token(params[:confirmation_token])
     if @user
       if !@user.confirmed?
+        KMTS.record(@user.kissmetrics_identifier, 'Visited confirmation page')
         respond_to do |format|
           format.html
         end
