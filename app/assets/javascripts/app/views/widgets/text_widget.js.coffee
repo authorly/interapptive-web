@@ -6,7 +6,6 @@ class App.Views.TextWidget extends Backbone.View
   className: 'text-widget'
 
   events:
-    'input': 'input'
     'keydown': 'keydown'
 
 
@@ -37,10 +36,6 @@ class App.Views.TextWidget extends Backbone.View
 
   render: ->
     @
-
-
-  input: ->
-    return App.Lib.LinebreakFilter.filter(@$el)
 
 
   keydown: (event) ->
