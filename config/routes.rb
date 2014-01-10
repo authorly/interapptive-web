@@ -20,10 +20,11 @@ Interapptive::Application.routes.draw do
   post 'password_resets'     => 'password_resets#create'
 
   get 'simulator' => 'simulator#index', :as => 'simulator'
-  resource :compiler
 
+  resource :compiler
   resource :confirmation, only: [:new, :create]
   resource :term,         only: [:new, :create], :path_names => { :new => 'accept' }, :path => 'terms'
+  resource :kmetrics,   only: :create
 
   resources :images
   resources :videos

@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   validates_presence_of :email
 
   before_create { generate_token(:auth_token) }
+  before_create { generate_token(:kissmetrics_identifier) }
 
   has_many :storybooks, :dependent => :destroy
   has_many :fonts, :through => :storybooks
@@ -39,9 +40,14 @@ class User < ActiveRecord::Base
   end
 
   def generate_token(column)
+    self[column] = unique_token_for(column)
+  end
+
+  def unique_token_for(column)
     begin
-      self[column] = SecureRandom.urlsafe_base64
-    end while User.exists?(column => self[column])
+      token = SecureRandom.urlsafe_base64
+    end while User.exists?(column => token)
+    token
   end
 
   def send_password_reset

@@ -39,8 +39,6 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     @radius = @model.get 'radius'
     @updateContentSize()
 
-    App.trackUserAction 'Resized hotspot'
-
 
   updateContentSize: ->
     diameter = @radius * 2
