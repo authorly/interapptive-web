@@ -2,6 +2,7 @@ class UserSessionsController < ApplicationController
   skip_before_filter :authorize
 
   def new
+    KMTS.record(cookies[:km_id], 'Visited sign in page') if cookies[:km_id].present?
   end 
 
   def create
@@ -11,6 +12,7 @@ class UserSessionsController < ApplicationController
       # Change ConfirmationsController#create when a change is made
       # in cookies below.
       cookies.permanent[:auth_token] = user.auth_token
+      cookies.permanent[:km_id]      = user.kissmetrics_identifier
       if user.is_admin?
         cookies.permanent[:is_admin] = user.is_admin?
       end
