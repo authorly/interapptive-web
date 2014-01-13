@@ -5,6 +5,7 @@ class Scene < ActiveRecord::Base
 
   has_many :keyframes, :dependent => :destroy
 
+  belongs_to :preview_image, :class_name => 'Image'
   belongs_to :background_sound, :class_name => 'Sound'
 
   validates_presence_of :storybook, :storybook_id
@@ -15,6 +16,16 @@ class Scene < ActiveRecord::Base
 
   before_create :create_main_menu_widgets, if: :is_main_menu
    after_create :create_keyframes
+
+  def as_json(options)
+    super.merge({
+      preview_image_url: preview_image_url,
+    })
+  end
+
+  def preview_image_url
+    preview_image.try(:image).try(:url)
+  end
 
   def can_be_destroyed?
     !is_main_menu
