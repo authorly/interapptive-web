@@ -324,6 +324,10 @@ class App.Models.TextWidget extends App.Models.Widget
       # Mobile software does not pick up Arial font if it's referenced as Arial.ttf in JSON.
       # This issue is way to convoluted to fix in the mobile software.
       return 'arial.ttf' if font.get('file_name') == 'Arial.ttf'
+
+      # Mobile software can not handle spaces in font file names in default fonts. For user
+      # uploaded fonts. The fonts are named such that those dont have spaces in them after
+      # downloading.
       font.get('file_name').replace(/\ /g, '')
     else
       font.get('url')
