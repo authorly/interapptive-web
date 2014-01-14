@@ -25,7 +25,8 @@ class ApplicationInformation < ActiveRecord::Base
 
   before_validation :sanitize_screenshots
 
-  validate :large_icon,           presence: true
+  validates :large_icon_id, presence: true
+  validates :large_icon, presence: true
   validates_each :retina_3_5_screenshot_ids, :retina_4_0_screenshot_ids, :retina_ipad_screenshot_ids do |record, attr, value|
      if (value||[]).length < 2
        record.errors.add(attr, 'please add at least 2 screenshots')
@@ -64,7 +65,11 @@ class ApplicationInformation < ActiveRecord::Base
     [:retina_3_5_screenshot_ids, :retina_4_0_screenshot_ids, :retina_ipad_screenshot_ids].each do |key|
       self[key] = (self[key] || []).map{|id| Image.where(id: id).first}.compact.uniq.map(&:id)
     end
+  end
 
+  def display_price
+    base = price_tier.match(/_(.*)/)[1].to_i - 1
+    "#{base}.99"
   end
 
 end

@@ -64,7 +64,7 @@ class App.Views.AbstractFormView extends Backbone.View
 
 
   goToFirstError: ->
-    @$('.error')[0].scrollIntoView(true)
+    @$('.error')[0]?.scrollIntoView(true)
 
 
   delete: (event) ->
