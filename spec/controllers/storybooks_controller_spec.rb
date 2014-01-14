@@ -10,17 +10,26 @@ describe StorybooksController do
 
   context "not requiring preloaded storybook" do
     before(:each) do
-      @user.should_receive(:storybooks).and_return(Storybook)
+      @user.stub(:storybooks).and_return(Storybook)
     end
 
     context '#index' do
       it "should give all storybooks of the current user" do
+        @user.stub(:accepted_terms?).and_return(true)
         Storybook.should_receive(:all).and_return([@storybook])
         @storybook.stub(:as_json).and_return({ :id => @storybook.id, :title => @storybook.title })
         get :index, :format => :json
 
         response.should be_success
         response.body.should eql([{ :id => @storybook.id, :title => @storybook.title }].to_json)
+      end
+
+      it 'should redirect to terms acceptance page' do
+        @user.stub(:accepted_terms?).and_return(false)
+
+        get :index, :format => :json
+
+        response.should redirect_to(new_term_url)
       end
     end
 
