@@ -148,6 +148,3 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   nameDescendingComparator: (a1, a2) ->
     if a1.get('name').toLowerCase() < a2.get('name').toLowerCase() then 1 else -1
-
-
-

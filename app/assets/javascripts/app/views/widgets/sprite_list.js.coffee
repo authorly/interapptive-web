@@ -74,6 +74,7 @@ class App.Views.SpriteList extends Backbone.View
 
   removeSprite: (e) ->
     e.stopPropagation()
+    return unless confirm("Are you sure you want to remove this sprite from all the Scene Frames in current Scene?")
 
     widget = @_getWidget(e)
     widget.collection.remove(widget)
