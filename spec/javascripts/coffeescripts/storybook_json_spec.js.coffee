@@ -170,7 +170,7 @@ describe "App.JSON", ->
 
       @system_font = new App.Models.Font
         id: 14
-        url: 'Arial.ttf'
+        url: 'Comic Sans MS.ttf'
         asset_type: 'system'
       @storybook.fonts.add @system_font
 
@@ -257,6 +257,7 @@ describe "App.JSON", ->
 
       text = keyframe.linesOfText[1]
       expect(text.text).toEqual 'Some more text'
+      expect(text.fontType).toEqual 'ComicSansMS.ttf'
       expect(text.xOffset).toEqual 180
       expect(text.yOffset).toEqual 410
 
