@@ -59,24 +59,42 @@ class App.Models.ApplicationInformation extends Backbone.Model
       help: "A description of the app you are adding, detailing features and functionality. Descriptions cannot be longer than 4000 characters."
       validators: [
         (value, formValues) ->
-          err = {
+          tooLong = {
             type: 'description',
             message: 'Descriptions cannot be longer than 4000 characters.'
           }
+          required = {
+            type: 'description',
+            message: "can't be blank"
+          }
 
-          if value.length > 4000 then err else null
+          if value.length > 4000
+            tooLong
+          if value.length == 0
+            required
+          else
+            null
       ]
     keywords:
       type: 'Text'
       help: "One or more keywords that describe the app you are adding. When users search the App Store, the terms they enter are matched with keywords to return more accurate results. Separate multiple keywords with commas. Keywords cannot be edited once your binary is in review and cannot be longer than 100 characters."
       validators: [
         (value, formValues) ->
-          err = {
+          tooLong = {
             type: 'keywords',
             message: 'Keywords cannot be longer than 100 characters.'
           }
+          required = {
+            type: 'keywords',
+            message: "can't be blank"
+          }
 
-          if value.length > 100 then err else null
+          if value.length > 100
+            tooLong
+          if value.length == 0
+            required
+          else
+            null
       ]
     large_icon_id:
       type: 'Image'
@@ -105,6 +123,7 @@ class App.Models.ApplicationInformation extends Backbone.Model
       title: '4-Inch Retina Display Screenshots'
       help: "Screenshots for 4-inch iPhone 5 and iPod touch (5th generation) Retina display must be 1136x640, 1136x600, 640x1136 or 640x1096 pixels, at least 72 DPI, in the RGB color space, and in the JPG or PNG format."
       fieldClass: 'imagesEditor'
+      # validators aren't taken into account for List @dira 2014-01-15
     retina_ipad_screenshot_ids:
       type: 'List'
       itemType: 'Image'
@@ -124,6 +143,7 @@ class App.Models.ApplicationInformation extends Backbone.Model
           title: "Address"
           validators: ['required']
       title: "Payee"
+      # validators aren't taken into account for List @dira 2014-01-15
 
 
   parse: (attributes={}) ->
