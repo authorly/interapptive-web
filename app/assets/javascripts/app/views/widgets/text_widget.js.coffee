@@ -60,9 +60,9 @@ class App.Views.TextWidget extends Backbone.View
 
   deselect: =>
     if @shouldSave
-      text = @$el.text()
-      if $.trim(text).length > 0
-        @model.set('string', @$el.text())
+      text = $.trim(@$el.text())
+      if text.length > 0
+        @model.set string: text
       else
         @model.collection?.remove(@model)
         removed = true
