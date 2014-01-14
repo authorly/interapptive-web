@@ -6,7 +6,15 @@ class App.Views.PublishingForm extends App.Views.AbstractFormView
       # XXX replace with proper message
       message = "Your application is going to be published. You will receive an email as soon as it is available in each app store."
       App.vent.trigger 'show:message', 'success', message
+
+      App.trackUserAction 'Submitted app for publishing'
+
       @model.storybook.fetch()
+
+
+    @listenTo @model, 'error', (__, xhr) ->
+      errors = jQuery.parseJSON(xhr.responseText)
+      App.trackUserAction 'Failed publishing validation', errors
 
 
   render: ->
