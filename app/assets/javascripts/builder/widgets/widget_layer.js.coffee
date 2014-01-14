@@ -237,16 +237,16 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   widgetSelected: (__, widget) ->
-    view.deselect() for view in @views
+    @_selectedWidget = @_getView(widget)
+    for view in @views
+      view.deselect() unless view == @_selectedWidget
 
-    view = @_getView(widget)
-    @_selectedWidget = view
-    view?.select()
+    @_selectedWidget?.select()
 
 
   _viewDeselected: (view) ->
     if @_selectedWidget == view
-      @_selectedWidget == null
+      @_selectedWidget = null
       App.currentSelection.set widget: null
 
 
