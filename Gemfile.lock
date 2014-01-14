@@ -158,6 +158,7 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.8.0)
+    kmts (2.0.1)
     launchy (2.2.0)
       addressable (~> 2.3)
     less (2.3.1)
@@ -357,6 +358,7 @@ DEPENDENCIES
   jasminerice
   jquery-rails
   kaminari
+  kmts (~> 2.0.0)
   launchy
   less-rails
   less-rails-bootstrap

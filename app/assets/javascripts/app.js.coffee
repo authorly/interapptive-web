@@ -382,14 +382,21 @@ window.App =
     App.Config.environment != 'development' and App.Config.environment != 'test'
 
 
-  trackUserAction: ->
+  trackUserAction: (event_name, data = {}) ->
     if @useAnalytics()
-      _kmq.push ['record', arguments...]
-    else
-      # console.log 'track', arguments
+      $.post('/kissmetrics.json', {
+        km_event: {
+          action: 'record',
+          name: event_name,
+          data: data
+        }
+      }, 'json')
 
 
   setAnalyticsUserProfile: ->
     return unless @useAnalytics()
-
-    _kmq.push ['identify', @currentUser.get('email')]
+    $.post('/kissmetrics.json', {
+      km_event: {
+        action: 'set',
+      }
+    }, 'json')

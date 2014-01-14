@@ -6,6 +6,7 @@ class ConfirmationsController < ApplicationController
     @user = User.find_by_confirmation_token(params[:confirmation_token])
     if @user
       if !@user.confirmed?
+        KMTS.record(@user.kissmetrics_identifier, 'Visited confirmation page')
         respond_to do |format|
           format.html
         end
@@ -44,6 +45,7 @@ class ConfirmationsController < ApplicationController
         # Change UserSessionsController#create when a change is made
         # in cookies below.
         cookies.permanent[:auth_token] = @user.auth_token
+        cookies.permanent[:km_id]      = @user.kissmetrics_identifier
         if @user.is_admin?
           cookies.permanent[:is_admin] = @user.is_admin?
         end

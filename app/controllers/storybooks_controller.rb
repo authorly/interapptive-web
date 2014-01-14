@@ -12,6 +12,7 @@ class StorybooksController < ApplicationController
   end
 
   def show
+    KMTS.record(current_user.kissmetrics_identifier, 'Visited app builder page')
     respond_with @storybook
   end
 
