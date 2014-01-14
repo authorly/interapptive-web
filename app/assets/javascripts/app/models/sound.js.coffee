@@ -4,6 +4,9 @@ class App.Models.Sound extends Backbone.Model
     @get('name')
 
 
+  widgetName: ->
+    'sound hotspot'
+
 class App.Collections.SoundsCollection extends App.Lib.TranscodeableCollection
   model: App.Models.Sound
   _POLL_TIMER: null

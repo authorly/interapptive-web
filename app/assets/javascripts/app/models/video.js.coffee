@@ -4,6 +4,9 @@ class App.Models.Video extends Backbone.Model
     @get('name')
 
 
+  widgetName: ->
+    'video hotspot'
+
 class App.Collections.VideosCollection extends App.Lib.TranscodeableCollection
   model: App.Models.Video
   _POLL_TIMER: null
