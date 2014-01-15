@@ -31,7 +31,7 @@
         (function tick(){
 
             // Time left
-            left = Math.floor((options.timestamp - (new Date())) / 1000);
+            left = actualTimeLeft = Math.floor((options.timestamp - (new Date())) / 1000);
 
             if(left < 0){
                 left = 0;
@@ -59,8 +59,10 @@
             // Calling an optional user supplied callback
             options.callback(d, h, m, s);
 
-            // Scheduling another call of this function in 1s
-            setTimeout(tick, 1000);
+            if (actualTimeLeft > 0) {
+              // Scheduling another call of this function in 1s
+              setTimeout(tick, 1000);
+            }
         })();
 
         // This function updates two digit positions at once
