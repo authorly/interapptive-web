@@ -17,7 +17,7 @@
         %span.word
           = word + " "
 
-- if @voiceover.text().length > 1
+- if @voiceover.texts().length > 1
   .reorder
     %span.start
       %a{href: '#'} Text not in correct order?
