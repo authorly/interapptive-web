@@ -58,7 +58,7 @@ class App.Views.Voiceover extends Backbone.View
       App.vent.trigger 'hide:modal'
       App.trackUserAction 'Completed highlighting'
       @keyframe.save {
-        content_highlight_times: voiceover.get('times').slice(0)
+        content_highlight_times: _.clone(@voiceover.get('times'))
       }, patch: true
 
 
