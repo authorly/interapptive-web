@@ -52,6 +52,7 @@ class App.Views.Voiceover extends Backbone.View
 
 
   acceptClicked: (event) ->
+    @highlighter.cacheHighlightTimes()
     if !@voiceover.get('valid')
       App.vent.trigger('show:message', 'error', "Partial highlights are not acceptable. Please highlight entire text and then click on Accept button")
     else
