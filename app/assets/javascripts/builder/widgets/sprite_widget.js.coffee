@@ -8,48 +8,58 @@
 #
 class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
   COLOR_OUTER_STROKE = 'rgba(15, 79, 168, 0.8)'
-
   COLOR_OUTER_FILL = 'rgba(174, 204, 246, 0.66)'
-
   COLOR_INNER_FILL = 'rgba(255, 255, 255, 1)'
-
   LINE_WIDTH_OUTER = 2
-
+  IMAGE_RETRY_LOADING_AFTER = 5 # seconds
 
   constructor: (options) ->
     super
 
     @_border = false
+    @options = options
 
-    @sprite = new App.Builder.Widgets.Lib.Sprite(options)
-
+    @sprite = new App.Builder.Widgets.Lib.Sprite(@options)
     @loadImage()
 
 
-  loadImage: ->
-    cc.TextureCache.getInstance().addImageAsync @model.url(), @, ( ->
-      window.setTimeout @_imageLoadedInSprite, 0
-    )
+  loadImage: =>
+    cache = cc.TextureCache.getInstance()
+    texture = cache.addImageAsync @model.url(), @, @_imageLoaded
+
+    # cocos2d v2.2.2 doesn't expose an error handler, so we're going
+    # into its interanals to hook onto the `img`'s error handler
+    @image = texture._htmlElementObj
+    @image.addEventListener 'error', @_imageErrored
 
 
-  _imageLoadedInSprite: =>
-      @sprite.initWithFile @model.url()
-      @sprite.setAnchorPoint new cc.Point(0, 0)
+  onExit: ->
+    @image.removeEventListener 'error', @_imageErrored
+    super
 
-      if @model instanceof App.Models.SpriteWidget
-        currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
-        # if the user switched to another scene while the image was loading, the orientation
-        # will not exist
-        if currentOrientation?
-          @applyOrientation(currentOrientation)
-      else
-        @applyOrientation(@model)
 
-      @addChild @sprite
-      @setContentSize @sprite.getContentSize()
-      @setAnchorPoint new cc.Point(0.5, 0.5)
+  _imageLoaded: =>
+    @sprite.initWithFile @model.url()
+    @sprite.setAnchorPoint new cc.Point(0, 0)
 
-      @setOpacity()
+    if @model instanceof App.Models.SpriteWidget
+      currentOrientation = @model.getOrientationFor(App.currentSelection.get('keyframe'))
+      # if the user switched to another scene while the image was loading, the orientation
+      # will not exist
+      if currentOrientation?
+        @applyOrientation(currentOrientation)
+    else
+      @applyOrientation(@model)
+
+    @addChild @sprite
+    @setContentSize @sprite.getContentSize()
+    @setAnchorPoint new cc.Point(0.5, 0.5)
+    @setOpacity()
+
+
+  _imageErrored: =>
+    if @isRunning()
+      window.setTimeout @loadImage, IMAGE_RETRY_LOADING_AFTER * 1000
 
 
   getModelForPositioning: ->
@@ -57,15 +67,6 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
       @currentOrientation
     else
       @model
-
-
-  # NOTE:
-  #    There addImageSync() from Cocos2d, used in the constructor,
-  #    may be worth using instead of this?
-  #
-  isLoaded: ->
-    size = @sprite.getContentSize()
-    @sprite._texture.complete && (size.width + size.height > 0)
 
 
   applyOrientation: (orientation) ->

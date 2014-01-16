@@ -11,3 +11,4 @@ class App.Builder.Widgets.Lib.Sprite extends cc.Sprite
 
     throw new Error("Can not create a App.Builder.Widgets.Lib.Sprite without a url")      unless @url?
     throw new Error("Can not create a App.Builder.Widgets.Lib.Sprite without a filename") unless @filename?
+
