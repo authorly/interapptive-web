@@ -50,6 +50,18 @@
         }
       }
 
+      .imageEditor, .imagesEditor li {
+        .thumb {
+          max-width: 150px;
+          max-height: 150px;
+        }
+      }
+      .imageEditor, .imagesEditor {
+        &.error input {
+          color: #fff;
+        }
+      }
+
       [name="content_description"] {
         li {
           list-style-type: none;
@@ -95,6 +107,9 @@
         border: 1px solid #999;
         padding: 10px 20px;
 
+        .selected-image {
+          margin-bottom: 5px;
+        }
         .selected-image img {
           max-width: 150px;
           max-height: 150px;

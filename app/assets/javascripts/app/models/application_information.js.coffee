@@ -109,24 +109,26 @@ class App.Models.ApplicationInformation extends Backbone.Model
 
           if value? then null else required
       ]
+      fieldClass: 'imageEditor'
     retina_3_5_screenshot_ids:
       type: 'List'
       itemType: 'Image'
       title: '3.5-Inch Retina Display Screenshots'
       help: "Screenshots for 3.5-inch iPhone and iPod touch Retina display must be 960x640, 960x600, 640x960 or 640x920 pixels, at least 72 DPI, in the RGB color space, and in the JPG or PNG format."
       # validators aren't taken into account for List @dira 2014-01-15
+      fieldClass: 'imagesEditor'
     retina_4_0_screenshot_ids:
       type: 'List'
       itemType: 'Image'
       title: '4-Inch Retina Display Screenshots'
       help: "Screenshots for 4-inch iPhone 5 and iPod touch (5th generation) Retina display must be 1136x640, 1136x600, 640x1136 or 640x1096 pixels, at least 72 DPI, in the RGB color space, and in the JPG or PNG format."
-      # validators aren't taken into account for List @dira 2014-01-15
+      fieldClass: 'imagesEditor'
     retina_ipad_screenshot_ids:
       type: 'List'
       itemType: 'Image'
       title: 'iPad Screenshots'
       help: "iPad Screenshots must be .jpeg, .jpg, .tif, .tiff, or .png file that is 1024x768, 1024x748, 768x1024, 768x1004, 2048x1536, 2048x1496, 1536x2048 or 1536x2008 pixels, at least 72 DPI, and in the RGB color space."
-      # validators aren't taken into account for List @dira 2014-01-15
+      fieldClass: 'imagesEditor'
 
 
   parse: (attributes={}) ->
