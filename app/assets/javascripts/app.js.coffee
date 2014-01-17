@@ -130,7 +130,7 @@ window.App =
 
 
   _showPublishSettings: ->
-    App.trackUserAction "Click publishing settings"
+    App.trackUserAction 'Opened publishing window'
 
     view = new App.Views.Publishing(model: App.currentSelection.get('storybook'))
     App.modalWithView(view: view).show()
