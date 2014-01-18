@@ -274,7 +274,7 @@ class App.JSON
     if (sound = scene.sound())?
       node.sounds.background =
         file: sound.get('url')
-        loop: if scene.get('loop_sound') then 0 else 1
+        loop: scene.get('loop_sound')
 
     if (sound_effect = scene.soundEffect())?
       node.sounds.effectOnEnter = sound_effect.get('url')
