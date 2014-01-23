@@ -149,7 +149,7 @@ class App.Views.TextWidget extends Backbone.View
     canvasHalfWidth = 292
 
     margin =
-      top: ( -@model.get('position').y - parseFloat(@$editable.css('padding-top')) - parseFloat(@$editable.css('border-top-width')) ) * @canvasScale
+      top: -@model.get('position').y * @canvasScale - parseFloat(@$editable.css('padding-top')) - parseFloat(@$editable.css('border-top-width'))
     switch @model.get('align')
       when 'left'
         margin.left  = -canvasHalfWidth + (@model.get('position').x - parseFloat(@$editable.css('padding-left')) - parseFloat(@$editable.css('border-left-width'))) * @canvasScale

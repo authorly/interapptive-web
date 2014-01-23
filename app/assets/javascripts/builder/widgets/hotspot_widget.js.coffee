@@ -128,8 +128,11 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     @selected = false
 
 
-  draggedTo: ->
-    super unless @resizing
+  dragged: (previousPoint, newPoint) ->
+    if @resizing
+      @_resizeRadius(newPoint)
+    else
+      super
 
 
   mouseMove: (options) ->
@@ -138,43 +141,32 @@ class App.Builder.Widgets.HotspotWidget extends App.Builder.Widgets.Widget
     inControl = @resizing or @canResize() and @_isPointInsideControl(point)
     @parent.setCursor(if inControl then 'resize' else 'move')
 
-    @_resizeRadius(point) if @resizing
 
 
   # Overridden to make hit area circular
   isPointInside: (point) ->
-    inRect = super
-    return false unless inRect
     @_distanceFromCenter(point) < @radius
 
 
   _distanceFromCenter: (point) ->
-    # Could not figure out why using @radius makes the UI go erratic. Nor why this
-    # works.
-    # I suppose that changing @radius at the same time as computing distances based on
-    # it makes it err.
-    # @dira 2013-02-04
-    radius = @model.get('radius')
-    local = @pointToLocal(point)
+    position = @getPosition()
 
-    xLen = local.x - radius
-    yLen = local.y - radius
+    xLen = point.x - position.x
+    yLen = point.y - position.y
     Math.sqrt((xLen * xLen) + (yLen * yLen))
 
 
   _isPointInsideControl: (point) ->
-    local = @pointToLocal(point)
-
-    # Adjust origin to centre of circle
-    local.x -= @radius
-    local.y -= @radius
+    position = @getPosition()
+    x = point.x - position.x
+    y = point.y - position.y
 
     # Centre of control circle relative to parent circle's centre
     center = @getControlCenter()
 
     # Distance to centre of control
-    xLen = center.x - local.x
-    yLen = center.y + local.y # Y axis is inverted
+    xLen = center.x - x
+    yLen = center.y + y # Y axis is inverted
     dist = Math.sqrt((xLen * xLen) + (yLen * yLen))
 
     dist < @CONTROL_RADIUS

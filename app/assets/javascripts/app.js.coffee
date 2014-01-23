@@ -17,11 +17,11 @@ window.App =
     # different parts of the application. For example, the content of the
     # main view and the buttons in the toolbar.
     @vent = _.extend {}, Backbone.Events
-
-    @initializeGlobalSync()
-
     @vent.on 'hide:modal',   @_hideModal, @
     @vent.on 'show:message', @_showToast, @
+    $(window).resize => @vent.trigger('window:resize')
+
+    @initializeGlobalSync()
 
     App.fontdetect = window.fontdetect
     delete window.fontdetect
@@ -364,10 +364,6 @@ window.App =
 
 
   showStorybook: (id) ->
-    @initStorybook()
-    window.initBuilder()
-    $(window).resize -> App.vent.trigger('window:resize')
-
     App.trackUserAction "Visited app builder page"
 
     (new App.Models.Storybook(id: id)).fetch
@@ -398,3 +394,12 @@ window.App =
           data: data
         }
       }, 'json')
+    else
+      # console.log 'track', arguments
+
+
+  setAnalyticsUserProfile: ->
+    return unless @useAnalytics()
+
+    _kmq.push ['identify', @currentUser.get('email')]
+
