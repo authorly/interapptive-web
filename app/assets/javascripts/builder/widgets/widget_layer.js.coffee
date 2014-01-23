@@ -14,10 +14,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   constructor: (widgetsCollection) ->
     super
 
+    @canvas = $('#' + CANVAS_ID)
     # For overflow layer, reposition widget layer
-    horizontalPanelHeight = ($(cc.canvas).attr('height') - App.Config.dimensions.height) / 2
-    verticalPanelWidth = ($(cc.canvas).attr('width') - App.Config.dimensions.width) / 2
-    @setPosition new cc.Point(verticalPanelWidth, horizontalPanelHeight)
+    horizontalPanelHeight = (@canvas.attr('height') - App.Config.dimensions.height) / 2
+    verticalPanelWidth = (@canvas.attr('width') - App.Config.dimensions.width) / 2
+    @position = new cc.Point(verticalPanelWidth, horizontalPanelHeight)
+    @setPosition @position
+
+    @canvasScale = @canvas.height() / @canvas.attr('height')
 
     $('body').on  'keydown', @_arrowPressed
 
@@ -30,8 +34,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_capturedWidget = null
     @_selectedWidget = null
 
-    @setIsTouchEnabled(true)
-    @isKeyboardEnabled = true
+    @setKeyboardEnabled(true)
+    @setMouseEnabled(false)
+    @setTouchEnabled(false)
+    # see comment @onMouseMoved
+    # @dira 2014-02-03
+    @canvas.on 'mousemove', @onMouseMoved
+    @canvas.on 'mousedown', @onTouchesBegan
+    @canvas.on 'mouseup', @onTouchesEnded
 
     @addClickOutsideCanvasEventListener()
     @addCanvasMouseLeaveListener()
@@ -48,8 +58,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     App.currentSelection.on 'change:widget', @widgetSelected, @
 
+    background = cc.LayerColor.create(new cc.Color4B(255, 255, 255, 255),
+      App.Config.dimensions.width, App.Config.dimensions.height)
+    @addChild background
 
-  addWidget: (widget) ->
+    @widgets.each @addWidget
+
+
+  addWidget: (widget) =>
     if widget instanceof App.Models.SpriteOrientation
       @updateFromOrientation(widget)
     else
@@ -109,21 +125,47 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
   widgetAtPoint: (point) ->
     widgets = []
     for widget,i in @views
-      if widget.getIsVisible() and widget.isPointInside(point)
+      if widget.isVisible() and widget.isPointInside(point)
         widgets.push widget
 
     return null if widgets.length == 0
     _.max widgets, (widget) -> widget.model.get('z_order')
 
 
-  ccTouchesBegan: (touches) ->
-    touch = touches[0]
-    point = @_getTouchCoordinates(touch)
+  # The scrollable and context menu plugins 'steal' away
+  # the focus from the canvas. Couldn't figure out how to make it work,
+  # using jquery for all mouse events instead. @dira 2014-02-03
+  onMouseMoved: (event) =>
+    _point = @_calculateTouchPointFrom(event)
+    point = @_getLocalPoint(_point)
+
+    widget = @widgetAtPoint(point)
+
+    if widget
+      widget.mouseMove
+        canvasPoint: point
+
+    if widget isnt @_mouseOverWidget
+      @_mouseOverWidget?.mouseOut
+        canvasPoint: point
+        newWidget:   widget
+
+      widget?.mouseOver
+        canvasPoint:    point
+        previousWidget: @_mouseOverWidget
+
+      @_mouseOverWidget = widget
+
+    @moveCapturedWidget(point) if @_capturedWidget?
+
+
+  onTouchesBegan: (event) =>
+    _point = @_calculateTouchPointFrom(event)
+    point = @_getLocalPoint(_point)
     widget = @widgetAtPoint(point)
     return unless widget
 
     widget.mouseDown
-      touch: touch
       canvasPoint: point
 
     @_capturedWidget = widget
@@ -131,17 +173,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_startPoint = @_previousPoint
 
 
-  ccTouchesMoved: (touches) ->
-    touch = touches[0]
-    point = @_getTouchCoordinates(touch)
-
-    @moveCapturedWidget(point) if @_capturedWidget?
-    @mouseOverWidgetAtTouch(touch, @_capturedWidget)
-
-
-  ccTouchesEnded: (touches) ->
-    touch = touches[0]
-    point = @_getTouchCoordinates(touch)
+  onTouchesEnded: (event) =>
+    _point = @_calculateTouchPointFrom(event)
+    point = @_getLocalPoint(_point)
 
     if @_capturedWidget?
       if @_samePoint(@_startPoint, point)
@@ -151,7 +185,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       else
         # drag
         @_capturedWidget.mouseUp
-          touch: touch
           canvasPoint: point
     else
       App.currentSelection.set widget: null
@@ -162,47 +195,14 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   moveCapturedWidget: (point) ->
-    newPoint = new cc.Point(parseInt(point.x), parseInt(point.y))
-    @_previousPoint ||= newPoint
+    @_previousPoint ||= point
 
-    delta = cc.ccpSub(point, @_previousPoint)
-    newPosition = cc.ccpAdd(delta, @_capturedWidget.getPosition())
-    newPosition.x = Math.round(newPosition.x)
-    newPosition.y = Math.round(newPosition.y)
+    @_capturedWidget.dragged(@_previousPoint, point)
 
-    @_capturedWidget.draggedTo(newPosition)
-    model = @_capturedWidget.model
-    if model instanceof App.Models.SpriteWidget
-      model = @_capturedWidget.currentOrientation
-    model.trigger 'move', newPosition
-
-    @_previousPoint = newPoint
+    @_previousPoint = point
 
 
-  mouseOverWidgetAtTouch: (touch, widget=null) ->
-    point = @_getTouchCoordinates(touch)
-    widget ||= @widgetAtPoint(point)
-
-    if widget
-      widget.mouseMove
-        touch:       touch
-        canvasPoint: point
-
-    if widget isnt @_mouseOverWidget
-      @_mouseOverWidget?.mouseOut
-        touch:       touch
-        canvasPoint: point
-        newWidget:   widget
-
-      widget?.mouseOver
-        touch:          touch
-        canvasPoint:    point
-        previousWidget: @_mouseOverWidget
-
-      @_mouseOverWidget = widget
-
-
-  _arrowPressed: (event) =>
+  onKeyDown: (event) =>
     return unless @_selectedWidget?
     return unless event.target == document.body
 
@@ -223,6 +223,8 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       position:
         x: position.x + dx
         y: position.y + dy
+
+  onKeyUp: ->
 
 
   _samePoint: (p1, p2) ->
@@ -245,7 +247,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addCanvasMouseLeaveListener: ->
-    $('#' + CANVAS_ID).bind 'mouseout', (event) =>
+    @canvas.on 'mouseout', (event) =>
       @setCursor 'default'
 
 
@@ -257,7 +259,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         'move'
       when 'default'
         'default'
-    document.body.style.cursor = cursor
+    @canvas[0].style.cursor = cursor
 
 
   addClickOutsideCanvasEventListener: =>
@@ -280,9 +282,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
 
   addContextMenuEventListener: ->
-    cc.canvas.addEventListener 'contextmenu', (event) =>
-      touch = @_calculateTouchFrom(event)
-      point = @_getTouchCoordinates(touch)
+    @canvas.on 'contextmenu', (event) =>
+      _point = @_calculateTouchPointFrom(event)
+      point = @_getLocalPoint(_point)
 
       widget = @widgetAtPoint(point)
       return unless widget?
@@ -300,6 +302,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       else
         return
 
+      @_capturedWidget = widget
       $el = $('#context-menu ' + selector)
       $el.contextMenu x: event.clientX, y: event.clientY
 
@@ -475,33 +478,22 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_capturedWidget.model.asNextKeyframe keyframe
 
 
-  _getTouchCoordinates: (touch) ->
-    point = touch.locationInView()
-    point
+  _getLocalPoint: (point) ->
+    new cc.Point(
+      point.x/@canvasScale - @position.x,
+      point.y/@canvasScale - @position.y
+    )
 
 
-  _calculateTouchFrom: (event) ->
-    el = cc.canvas
-    pos =
-      height: el.height
-      top:    0
-      left:   0
-
-    while el != null
-      pos.left += el.offsetLeft
-      pos.top += el.offsetTop
-      el = el.offsetParent
+  # Get cocos2s point coordinates from a jquery event.
+  _calculateTouchPointFrom: (event) =>
+    pos = @canvas.offset()
+    pos.height = @canvas[0].height
 
     tx = event.pageX
     ty = event.pageY
 
-    mouseX = (tx - pos.left) / cc.Director.sharedDirector().getContentScaleFactor()
-    mouseY = (pos.height - (ty - pos.top)) / cc.Director.sharedDirector().getContentScaleFactor()
+    mouseX = tx - pos.left
+    mouseY = pos.height - (ty - pos.top) - 1071
 
-    touch = new cc.Touch(0, mouseX, mouseY)
-    touch._setPrevPoint(cc.TouchDispatcher.preTouchPoint.x, cc.TouchDispatcher.preTouchPoint.y)
-    cc.TouchDispatcher.preTouchPoint.x = mouseX
-    cc.TouchDispatcher.preTouchPoint.y = mouseY
-
-    touch
-
+    new cc.Point(mouseX, mouseY)

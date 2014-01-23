@@ -84,11 +84,20 @@ class App.Builder.Widgets.Widget extends cc.Node
   select: ->
 
 
-  deselect: ->
+  dragged: (previousPoint, newPoint) ->
+    delta = cc.pSub(newPoint, previousPoint)
+    newPosition = cc.pAdd(delta, @getPosition())
+    newPosition =
+      x: Math.round(newPosition.x)
+      y: Math.round(newPosition.y)
+    model =
+      if @model instanceof App.Models.SpriteWidget
+        @currentOrientation
+      else
+        @model
+    model.trigger 'move', newPosition
 
-
-  draggedTo: (position) ->
-    @setPosition(position, false)
+    @setPosition newPosition
 
 
   rect: ->
@@ -97,9 +106,9 @@ class App.Builder.Widgets.Widget extends cc.Node
     a = @getAnchorPoint()
     scale = @getScale()
 
-    cc.RectMake(
-      p.x - s.width  * a.x
-      p.y - s.height * a.y
+    cc.rect(
+      p.x - s.width  * scale * a.x
+      p.y - s.height * scale * a.y
       s.width  * scale
       s.height * scale
     )
@@ -112,17 +121,12 @@ class App.Builder.Widgets.Widget extends cc.Node
     r = @rect()
     root = @parent.getPosition()
     anchor = @parent.getAnchorPoint()
-    new cc.Point(-root.x - r.origin.x + point.x + anchor.x * r.size.width,
-                 -root.y - r.origin.y + point.y + anchor.y * r.size.height)
+    new cc.Point(-root.x - r.x + point.x + anchor.x * r.width,
+                 -root.y - r.y + point.y + anchor.y * r.height)
 
 
   isPointInside: (point) ->
-    local = @pointToLocal(point)
-
-    r = @rect()
-    r.origin = new cc.Point(0, 0)
-
-    cc.Rect.CCRectContainsPoint(r, local)
+    cc.rectContainsPoint @rect(), point
 
 
   isSpriteWidget: ->

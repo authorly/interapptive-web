@@ -16,7 +16,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
 
   select: ->
-    @setIsVisible(false)
+    @setVisible(false)
 
     @editView = new App.Views.TextWidget(widget: @)
     @editView.on 'done', @doneEditing, @
@@ -31,17 +31,17 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
       @editView.shouldSave = true unless @editView.shouldSave?
       @editView.deselect()
       @editView = null
-      @setIsVisible(true)
+      @setVisible(true)
 
 
   doneEditing: ->
     @recreateLabel()
-    @setIsVisible(true)
+    @setVisible(true)
     @trigger 'deselect', @
 
 
   recreateLabel: ->
-    @label.removeFromParentAndCleanup()
+    @label.removeFromParent()
     @createLabel()
 
 
@@ -77,10 +77,9 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
   rect: ->
     p = @getPosition()
     s = @getContentSize()
-
-    cc.RectMake(
-      p.x + s.width / 2
-      p.y + s.height / 2
+    cc.rect(
+      p.x
+      p.y
       s.width
       s.height
     )

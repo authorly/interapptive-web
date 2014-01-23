@@ -81,6 +81,8 @@ Write your model, view or collections tests under corresponding directories insi
 
 Builder is a custom widget framework/base class that provides a relevant API for making and running different type of widgets, which are objects that can be  added to the canvas. Builder abstracts cocos2d-js which is a two-dimensional drawing library that's primarily used functionally. In this way, Builder provides a nice inheritable OO interface, which is great for testing and great for reuse.
 
+Find it in `app/assets/javascripts/builder/`.
+
 ### Some important Cocos2d Concepts
 
 First, you should see [this link](http://www.cocos2d.org/doc/programming_guide/basic_concepts.html) for more information about the core concepts of Cocos.
@@ -95,25 +97,23 @@ To summarize, however:
     - Cocos uses events to specify user input, window status change, and to communicate across parts of a framework (decoupling).
 - **CocosNode** is the superclass of the above (omitting the director?), and provides some default common functionality like positioning, controlling child elements, time management, and rendering.
 
-### Where to find Builder
+`cc` is the Cocos2d namespace.
 
-Find it in `app/assets/javascripts/builder/`.
+Cocos2d-html links:
 
-### How it loads
+* [code](https://github.com/cocos2d/cocos2d-html5)
+* [download](http://www.cocos2d-x.org/download/version#Cocos2d-html5)
+* [upgrade guides](http://www.cocos2d-x.org/wiki/Upgrade_Guides_html5)
+* [docs](http://www.cocos2d-x.org/reference/html5-js/V2.2/index.html)
 
-(Note: all paths are relative to `app/assets/javascripts` unless otherwise
-specified.)
+### Loading
 
-1. Its dependencies are loaded by application.js and then `builder/index` is loaded.
-2. This loads some hotpatches for cocos2d, and requires `builder/init`.
-3. `builder/init` creates an `initBuilder` function on `window` that is presumably called later.
-4. `builder/app_delegate` sets up a namespace for Builder's instantiated classes and deals with setting up the AppDelegate for cocos2d (why? what purpose does this serve?)
-5. `builder/builder` does the following:
-    - it defines Builder, which is a subclass of cc.Layer;
-    - it instantiates a new widget layer as its child;
-    - it sets builder's scene to the present scene, and sets builder as the child of the scene;
-    - sets Builder.node to an instance of Builder if #new and #init succeed;
-    - sets window.Builder to Builder.
+1. application.js, with all generic js
+1. `/storybook/show` starts loading cocos2d
+1. the cocos2d configuration indicates that, when cocos2d is ready, `builder` should be laoded
+1. cocos2d automatically loads `/main.js`, which is redirected (from Rails) to `/assets/init_storybook.js`
+1. which initializes the builder and makes the canvas work
+
 
 ### Widgets
 
@@ -132,11 +132,6 @@ Widgets are represented by two classes - a Backbone Model (that stores and manag
     - abstract highlighting
     - opacity setters and getters
 
-### FAQ
-
-#### What is cc?
-
-`cc` is the Cocos2d namespace.
 
 
 ### Fixtures

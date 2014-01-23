@@ -1,4 +1,3 @@
-#= require cocos2d-html5
 #= require hamlcoffee
 #= require jquery
 #= require jquery_ujs
@@ -45,6 +44,3 @@
 #= require_tree ./app/templates
 #= require_tree ./app/models
 #= require_tree ./app/views
-
-#= require builder
-
