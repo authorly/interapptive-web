@@ -37,6 +37,8 @@ Interapptive::Application.routes.draw do
     #end
   #end
 
+  get '/storybooks/main', to: redirect('/assets/init_storybook.js')
+  get '/storybooks/res/:name', to: redirect('/assets/res/%{name}.png')
   resources :storybooks do
     resources :scenes do
       collection { put :sort }
