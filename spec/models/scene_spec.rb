@@ -14,6 +14,7 @@ describe Scene do
           'is_main_menu'        => scene.is_main_menu,
           'loop_sound'          => false,
           'position'            => scene.position,
+          'sound_effect_id'     => scene.sound_effect_id,
           'sound_id'            => scene.sound_id,
           'storybook_id'        => scene.storybook_id,
           'updated_at'          => scene.updated_at,
