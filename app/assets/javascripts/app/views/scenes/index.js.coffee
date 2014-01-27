@@ -101,9 +101,9 @@ class App.Views.SceneIndex extends Backbone.View
       items       : 'li[data-is_main_menu!="1"]'
       axis        : 'y'
       opacity     : 0.6
-      update      : ->
+      update      : =>
         App.trackUserAction 'Reordered scenes'
-        @_numberScenes
+        @_numberScenes()
 
 
   adjustSize: ->
