@@ -89,9 +89,9 @@ class App.Views.KeyframeIndex extends Backbone.View
       items:       'li[data-is_animation!="1"]'
       handle:      '.main'
       opacity:     0.6
-      update:      ->
+      update:      =>
         App.trackUserAction 'Reordered keyframes'
-        @_numberKeyframes
+        @_numberKeyframes()
 
 
   adjustSize: =>
