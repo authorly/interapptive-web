@@ -29,6 +29,16 @@
         </div>\
       </div>\
     ',
+        nestedField: '\
+      <div class="control-group">\
+        <label class="control-label" for="{{id}}">{{title}}</label>\
+        <div class="controls">\
+          {{editor}}\
+          <div class="help-error"><div class="bbf-tmp-error" data-error></div></div>\
+          <div class="help-inline">{{help}}</div>\
+        </div>\
+      </div>\
+    ',
 
         currencyField: '\
       <div class="control-group">\
