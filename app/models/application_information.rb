@@ -8,6 +8,7 @@ class ApplicationInformation < ActiveRecord::Base
   serialize :retina_ipad_screenshot_ids, Array
 
   serialize :content_description
+  serialize :payee
 
   before_validation :sanitize_screenshots
 
@@ -34,6 +35,8 @@ class ApplicationInformation < ActiveRecord::Base
 
   validates :keywords,            presence: true, length: { maximum: 100 }
 
+  validates :payee,               presence: true
+
   validates_each :content_description do |record, attr, value|
     value = {} unless value.present?
     labels = {
@@ -55,6 +58,19 @@ class ApplicationInformation < ActiveRecord::Base
     end
     record.errors.add(attr, "contains unexpected keys") if (value.keys - labels.keys).length > 0
     record.errors.add(attr, "contains unexpected values") if (value.values - ['none', 'mild', 'intense']).length > 0
+  end
+
+  validates_each :payee do |record, attr, value|
+    return unless value.present?
+
+    person = Person.new(value)
+    unless person.valid?
+      person.errors.each do |nested_attr|
+        person.errors[nested_attr].each do |error|
+          record.errors.add("#{attr}.#{nested_attr}", error)
+        end
+      end
+    end
   end
 
   def sanitize_screenshots

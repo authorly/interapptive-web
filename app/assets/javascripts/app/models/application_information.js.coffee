@@ -111,6 +111,19 @@ class App.Models.ApplicationInformation extends Backbone.Model
       title: 'iPad Screenshots'
       help: "iPad Screenshots must be .jpeg, .jpg, .tif, .tiff, or .png file that is 1024x768, 1024x748, 768x1024, 768x1004, 2048x1536, 2048x1496, 1536x2048 or 1536x2008 pixels, at least 72 DPI, and in the RGB color space."
       fieldClass: 'imagesEditor'
+      # validators aren't taken into account for List @dira 2014-01-15
+    payee:
+      type: 'Object'
+      subSchema:
+        name:
+          type: 'Text'
+          title: "Name"
+          validators: ['required']
+        address:
+          type: 'TextArea'
+          title: "Address"
+          validators: ['required']
+      title: "Payee"
 
 
   parse: (attributes={}) ->

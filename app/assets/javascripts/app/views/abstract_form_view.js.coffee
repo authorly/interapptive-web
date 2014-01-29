@@ -24,13 +24,19 @@ class App.Views.AbstractFormView extends Backbone.View
   render: ->
     @form = new Backbone.Form(@formOptions()).render()
     @$el.append @form.el
+
+    @$('form form').each (__, form) ->
+      $form = $(form)
+      $form.find('.form-actions').remove()
+      $form.replaceWith( -> $(@).contents())
+
     @
 
 
   submit: (event) ->
     event.preventDefault()
 
-    @$('.help-error').val('')
+    @$('.help-error, .bbf-error').val('')
     errors = @form.commit()
     if errors?
       @goToFirstError()
@@ -47,7 +53,8 @@ class App.Views.AbstractFormView extends Backbone.View
 
     for field of errors
       id = '#' + model.cid + '_' + field
-      control_group = $(id).parents('.control-group')
+      id = id.replace('.', '_') # for nested fields
+      control_group = $(id).closest('.control-group')
 
       if control_group.length > 0
         control_group.addClass('error').

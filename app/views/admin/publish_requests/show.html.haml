@@ -1,0 +1,73 @@
+- storybook = @request.storybook
+- info = storybook.application_information
+%h1= storybook.title
+
+%h2 Application information
+
+- @request.applications.each do |application|
+  = Application::PROVIDERS[application.provider.to_sym]
+  %p= link_to application.url, application.url
+
+- missing = []
+- Application::PROVIDERS.each do |provider, _|
+  - unless @request.applications.select{ |application| application.provider == provider.to_s }.present?
+    - missing << @request.applications.build(provider: provider.to_s)
+
+- if missing.present?
+  = form_for [:admin, @request] do |request_form|
+    = request_form.fields_for :applications, missing do |application_fields|
+      = application_fields.hidden_field :provider
+      = application_fields.label :url, Application::PROVIDERS[application_fields.object.provider.to_sym]
+      - if (url=application_fields.object.url).present?
+        %p= link_to url, url
+      = application_fields.text_field :url
+    %div= request_form.submit
+
+%h2 Information
+
+%h3 Price
+%p= info.display_price
+
+%h3 Content description
+%table
+  - info.content_description.each do |key, value|
+    %tr
+      %td= info.class::CONTENT_DESCRIPTION_LABELS[key]
+      %td= value
+
+
+%h3 Made for children
+%p= info.for_kids ? 'yes' : 'no'
+
+%h3 Description
+%p= info.description
+
+%h3 Keywords
+%p= info.keywords
+
+%h3 Available from
+%p= info.available_from.to_s(:long)
+
+%h3 Large icon
+%img{src: info.large_icon.image.url}
+
+%h3 3.5-Inch Retina Display Screenshots
+- info.retina_3_5_screenshot_ids.each do |id|
+  %img{src: Image.find(id).image.url}
+
+%h3 4-Inch Retina Display Screenshots
+- info.retina_4_0_screenshot_ids.each do |id|
+  %img{src: Image.find(id).image.url}
+
+%h3 iPad Retina Display Screenshots
+- info.retina_ipad_screenshot_ids.each do |id|
+  %img{src: Image.find(id).image.url}
+
+
+%h3 Payee information
+
+%h4 Name
+%p= info.payee["name"]
+
+%h4 Address
+%p= info.payee["address"]

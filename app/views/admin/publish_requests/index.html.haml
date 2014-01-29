@@ -1,0 +1,34 @@
+%h1 Applications to publish
+
+- if @requests.present?
+  %ol
+    - @requests.each do |request|
+      %li
+        %h2
+          = link_to request.storybook.title, admin_publish_request_path(request)
+        %p
+          = time_ago_in_words request.created_at
+          ago
+- else
+  No application to process.
+
+
+%h1 Published applications
+- if params["published"].present?
+  %p
+    %a{href: '?'} Hide
+    published applications
+  - if @published.present?
+    %ol
+      - @published.each do |request|
+        %li
+          = link_to request.storybook.title, admin_publish_request_path(request)
+  - else
+    No published applications.
+- else
+  %p
+    - if @published.count > 0
+      = @published.count
+      %a{href: '?published=true'}= 'published application'.pluralize(@published.count)
+    - else
+      No published applications.
