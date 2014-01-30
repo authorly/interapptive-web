@@ -153,12 +153,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
         @_capturedWidget.mouseUp
           touch: touch
           canvasPoint: point
-
-        formattedWidgetName = @_capturedWidget.constructor.name
-          .replace('Widget', '')
-          .replace('Button','main menu button')
-          .replace('Sprite', 'image')
-        App.trackUserAction("Moved #{App.Lib.StringHelper.decapitalize(formattedWidgetName)}")
     else
       App.currentSelection.set widget: null
 
