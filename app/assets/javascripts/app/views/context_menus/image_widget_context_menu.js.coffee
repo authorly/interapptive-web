@@ -44,7 +44,6 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
   _enterKeyScaleListener: (event) ->
     if event.keyCode is App.Lib.KeyCodes.enter
       @_setScale()
-      App.trackUserAction 'Resized image'
 
 
   bringToFront: (e) ->
@@ -74,6 +73,8 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
     if newScale < 10
       @_scaleCantBeSet()
       newScale = 10
+    else
+      App.trackUserAction 'Resized image'
 
     object.set
       scale: newScale / 100
