@@ -1,11 +1,11 @@
 module Admin
   class UsersController < Admin::BaseController
     def index
-      @users = User.order('id').page(params[:page]).per(50)
+      @users = User.order('id DESC').page(params[:page]).per(50)
     end
 
     def search
-      @users = User.where('email LIKE ?', '%' + params[:q] + '%').order('id').page(params[:page]).per(50)
+      @users = User.where('email LIKE ?', '%' + params[:q] + '%').order('id DESC').page(params[:page]).per(50)
       render :action => :index
     end
 
