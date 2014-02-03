@@ -38,6 +38,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
   remove: ->
     @playbackRateView.remove()
     $(document).unbind 'mouseup', @onMouseUp
+    @_removeSpacebarHandler()
     super
 
 
@@ -65,6 +66,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @$('.reorder').css 'visibility', 'hidden'
     @removeWordHighlights()
     @_clearWordHighlights()
+    $(document).keydown(@_handleSpacebarPress)
     @startCountdown()
 
     @trigger 'start'
@@ -82,6 +84,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @$('.cancel').hide()
     @$('.reorder').css 'visibility', 'visible'
     @$('.playback-rate-container').hide()
+    @_removeSpacebarHandler()
 
     @trigger 'cancel'
 
@@ -98,7 +101,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
 
     $wordEl = @$(event.currentTarget)
     if @canHighlightEl($wordEl)
-      $wordEl.addClass('highlighted').data('start', @_playerCurrentTimeInSeconds())
+      @_highlight($word)
     false
 
 
@@ -171,6 +174,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @$('.reorder').css 'visibility', 'visible'
     @$('.playback-rate-container').hide()
     @removeWordHighlights()
+    @_removeSpacebarHandler()
 
     @trigger 'done'
 
@@ -216,8 +220,22 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     super
 
 
+  _handleSpacebarPress: (event) =>
+    if event.keyCode is App.Lib.KeyCodes.space
+      $word = @_nextWordToBeHighlighted()
+      @_highlight($word) if $word
+
+
+  _removeSpacebarHandler: ->
+    $(document).unbind('keydown', @_handleSpacebarPress)
+
+
   _playerCurrentTimeInSeconds: ->
     Math.round(1000 * @player.currentTime()) / 1000
+
+
+  _highlight: ($word) ->
+    $word.addClass('highlighted').data('start', @_playerCurrentTimeInSeconds())
 
 
   _initSorting: ->
@@ -246,3 +264,9 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
   _clearWordHighlights: ->
     $.each @$('.word'), (index, word) =>
       @$(word).removeData('start')
+
+
+  _nextWordToBeHighlighted: ->
+    $words = @$('.word')
+    index = @$('.word.highlighted').length
+    $($words[index])
