@@ -16,7 +16,7 @@
   .highlighter-container
     .selector
       .drag-selector.option{'data-type' => 'basic' }
-        %h4.active Drag to highlight text
+        %h6.active Create word-by-word highlights for your text by clicking "Begin Highlighting" and dragging over each word as it's spoken, or by tapping the spacebar as each word is spoken.
         %span.alternative
           or
           %a{:href => '#'} use the manual highlighter
