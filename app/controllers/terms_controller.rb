@@ -2,6 +2,7 @@ class TermsController < ApplicationController
   layout 'user_sessions'
 
   def new
+    KMTS.record(current_user.email, "Visited privacy policy agreement page")
   end
 
   def create
