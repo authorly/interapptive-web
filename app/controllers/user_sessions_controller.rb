@@ -10,7 +10,7 @@ class UserSessionsController < ApplicationController
   end 
 
   def create
-    user = User.find_by_email params[:email]
+    user = User.find_by_email_and_is_deleted(params[:email], false)
 
     if user && user.authenticate(params[:password])
       KMTS.alias(user.email, user.kissmetrics_identifier)

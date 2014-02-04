@@ -18,9 +18,34 @@
         .span6.admin-content
           .content
             .row
-              - flash.each do |name, msg|
-                %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
-                  %a.close_f{"data-dismiss" => "alert"}
-                    = msg
-          = yield
+              = link_to("Users", admin_users_path)
+              |
+              = link_to("Deleted Users", admin_users_path(:deleted => true))
+              |
+              = link_to("Applications", admin_publish_requests_path)
+              |
+              = link_to("My Storybooks", '/storybooks?reset_user=true')
+              |
+              = link_to("Create New User", new_admin_user_path)
+
+        .span3 &nbsp;
+
+      - unless flash.empty?
+        .row-fluid
+          .span3 &nbsp;
+          .span6
+            .content
+              .row
+                - flash.each do |name, msg|
+                  %div{:class => "alert alert-#{name == :notice ? "success" : "error"}"}
+                    %a.close_f{"data-dismiss" => "alert"}
+                      = msg
+          .span3 &nbsp;
+
+      .row-fluid
+        .span3 &nbsp;
+        .span6
+          .content
+            .row
+              = yield
         .span3 &nbsp;

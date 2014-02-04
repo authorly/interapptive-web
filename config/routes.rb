@@ -68,6 +68,7 @@ Interapptive::Application.routes.draw do
       end
       member do
         post 'send_invitation'
+        post 'restore'
       end
     end
 

@@ -1,7 +1,9 @@
 module Admin
   class UsersController < Admin::BaseController
     def index
-      @users = User.order('id DESC').page(params[:page]).per(50)
+      is_deleted = false
+      is_deleted = true if params[:deleted] == 'true'
+      @users = User.where(:is_deleted => is_deleted).order('id DESC').page(params[:page]).per(50)
     end
 
     def search
@@ -52,7 +54,7 @@ module Admin
 
     def destroy
       user = User.find(params[:id])
-      if user.destroy
+      if user.update_attribute(:is_deleted, true)
         flash[:notice] = "User successfully deleted"
       else
         flash[:error] = "Something went wrong while deleting user. Please try again later."
@@ -73,6 +75,19 @@ module Admin
         respond_to do |format|
           format.js
         end
+      end
+    end
+
+    def restore
+      user = User.find(params[:id])
+      if user.update_attribute(:is_deleted, false)
+        flash[:notice] = "User successfully restored"
+      else
+        flash[:error] = "Something went wrong while restoring user. Please try again later."
+      end
+
+      respond_to do |format|
+        format.html { redirect_to :action => :index }
       end
     end
   end
