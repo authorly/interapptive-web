@@ -1,8 +1,5 @@
 %h1 Users
 
-= link_to("Create New User", new_admin_user_path)
-|
-= link_to("My Storybooks", '/storybooks?reset_user=true')
 .search-box
   = form_tag search_admin_users_path, :method => 'get' do
     %p
@@ -43,7 +40,10 @@
             %li
               = link_to("Edit", edit_admin_user_path(user))
             %li
-              = link_to("Delete this User", admin_user_path(user), :method => :delete, :confirm => "Are you sure you want to delete this user with email #{user.email}?")
+              - if user.is_deleted?
+                = link_to("Restore this User", restore_admin_user_path(user), :method => :post, :confirm => "Are you sure you want to restore this user with email #{user.email}?")
+              - else
+                = link_to("Delete this User", admin_user_path(user), :method => :delete, :confirm => "Are you sure you want to delete this user with email #{user.email}?")
             %li
               = link_to("Resend Invite", send_invitation_admin_user_path(:id => user.id), :method => :post, :remote => true, :confirm => "This will change password of this user.")
             %li

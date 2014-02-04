@@ -38,6 +38,16 @@ class ApplicationController < ActionController::Base
     redirect_to sign_in_path, :alert => "Please sign in to continue." unless signed_in?
   end
 
+  def sign_out_if_deleted
+    if current_user.is_deleted?
+      cookies.delete :auth_token
+      cookies.delete :is_admin
+      cookies.delete :signed_in_as_user_id
+      cookies.delete :km_aliased
+      redirect_to sign_in_path, :alert => "Please sign in to continue."
+    end
+  end
+
   def cookie_domain
     return '.authorly.com'     if Rails.env == 'production'
     return '.interapptive.com' if %w(development test).include?(Rails.env)
