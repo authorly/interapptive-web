@@ -1,7 +1,7 @@
 class App.Lib.ColorHelper
 
-  # Formats the bytes in +number+ into a more understandable
-  # representation e.g. (giving 1500 yields 1.5 KB).
+  # Converts given color represented in RGB format
+  # into Hex.
   @rgbToHex: (r, g, b) ->
     @_toHex(r) + @_toHex(g) + @_toHex(b)
 
