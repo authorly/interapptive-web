@@ -20,9 +20,11 @@
       %option{:value => "#{fontSize}"}
         = fontSize
 
-#font-color-selector.input-append.color{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "rgb"}
-  %span.add-on
-    %i{:style => "background-color: rgb(255, 146, 180);"}
+- hex_string = "##{App.Lib.ColorHelper.rgbToHex(@widget.get('font_color').r, @widget.get('font_color').g, @widget.get('font_color').b)}"
+#font-color-selector.input-append.color{"data-color" => hex_string, "data-color-format" => "hex"}
+  %input.hex-input{:type => 'text', :value => hex_string}
+  %span.palette.add-on{:style => "background-color: #{hex_string}"}
+    %i{:style => "background-color: #{hex_string};"}
 
 #text-widget-coordinates
 
