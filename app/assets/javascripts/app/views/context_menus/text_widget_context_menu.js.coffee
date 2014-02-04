@@ -22,7 +22,7 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
     @$('#font-face').val(@widget.font()?.get('id'))
     @$('#font-size').val(@widget.get('font_size'))
     color = @widget.get('font_color')
-    @$('#font-color-selector span i').css('background-color', "rgb(#{color.r}, #{color.g}, #{color.b})")
+    @_setPaletteColor(color)
     @
 
 
@@ -33,8 +33,9 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
     @colorPickerEl.colorpicker()
       .on('changeColor', (event) =>
         @rgb = event.color.toRGB()
+        @_setPaletteColor(@rgb)
         @widget.trigger('change:visual_font_color', @rgb))
-      .on('hide', =>
+      .on('hidePicker', =>
         @fontColorSelected(@rgb))
 
 
@@ -67,3 +68,6 @@ class App.Views.TextWidgetContextMenu extends App.Views.ContextMenu
 
     super
 
+
+  _setPaletteColor: (rgb) ->
+    @$('#font-color-selector span').css('background-color', "##{App.Lib.ColorHelper.rgbToHex(rgb.r, rgb.g, rgb.b)}")
