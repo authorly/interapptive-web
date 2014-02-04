@@ -32,9 +32,11 @@
       fieldset {
         margin-top: 15px;
         margin-left: 0;
-        border-bottom: 1px solid #F0F0F0;
         .control-group {
           margin-bottom: 28px;
+          .control-group {
+            margin-bottom: 0px;
+          }
         }
       }
 
@@ -66,18 +68,23 @@
         li {
           list-style-type: none;
         }
+
         label {
           display: inline-block;
         }
+        .control-group {
+          & > label {
+            width: 280px;
+            font-size: .85em;
+            font-weight: bold;
+          }
 
-        .bbf-editor {
-          display: inline-block;
-        }
-
-        .bbf-field > label {
-          width: 280px;
-          font-size: .85em;
-          font-weight: bold;
+          .controls {
+            display: inline-block;
+          }
+          .help-error, .help-inline {
+            display: none;
+          }
         }
 
         .bbf-radio li {
@@ -92,10 +99,6 @@
           label {
             font-size: .85em;
           }
-        }
-
-        .form-actions {
-          display: none;
         }
       }
 
@@ -117,6 +120,19 @@
         .images img {
           max-width: 100px;
           max-height: 50px;
+        }
+      }
+
+      [name="payee"] {
+        .controls {
+          display: inline-block;
+        }
+
+        label {
+          width: 80px;
+          font-size: .85em;
+          font-weight: bold;
+          vertical-align: top;
         }
       }
     }

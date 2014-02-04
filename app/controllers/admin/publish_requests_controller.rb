@@ -3,7 +3,8 @@ module Admin
     respond_to :html
 
     def index
-      respond_with @requests = PublishRequest.includes(:storybook).where('applications_count < 3').order('created_at DESC')
+      @requests = PublishRequest.includes(:storybook).where('applications_count < 3').order('created_at DESC')
+      @published = PublishRequest.includes(:storybook).where('applications_count = 3').order('created_at DESC')
     end
 
     def show

@@ -63,3 +63,11 @@
 - info.retina_ipad_screenshot_ids.each do |id|
   %img{src: Image.find(id).image.url}
 
+
+%h3 Payee information
+
+%h4 Name
+%p= info.payee["name"]
+
+%h4 Address
+%p= info.payee["address"]
