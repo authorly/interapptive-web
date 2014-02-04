@@ -22,7 +22,6 @@
   $(function () {
     // TODO: WA: Needs to called using KMTS constant in controller action once
     // interapptive-web#1212 is deployed
-    trackUserAction("Visited privacy policy agreement page");
     $('input#terms').change(function () {
       if (this.checked) {
         $('input.btn').removeAttr('disabled')
