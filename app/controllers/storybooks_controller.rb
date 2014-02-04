@@ -1,6 +1,8 @@
 class StorybooksController < ApplicationController
   respond_to :html, :json
 
+  # Sign out user on next refresh if s/he is deleted.
+  before_filter :sign_out_if_deleted, :only => [:show, :index]
   before_filter :find_storybook, :except => [:create, :index]
 
   # Backbone.js extraneous parameter hack
