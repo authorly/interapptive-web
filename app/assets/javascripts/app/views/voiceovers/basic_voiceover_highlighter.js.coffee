@@ -101,7 +101,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
 
     $wordEl = @$(event.currentTarget)
     if @canHighlightEl($wordEl)
-      @_highlight($word)
+      @_highlight($wordEl)
     false
 
 
