@@ -66,7 +66,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
     @$('.reorder').css 'visibility', 'hidden'
     @removeWordHighlights()
     @_clearWordHighlights()
-    $(document).keydown(@_handleSpacebarPress)
+    $(document).keyup(@_handleSpacebarPress)
     @startCountdown()
 
     @trigger 'start'
@@ -227,7 +227,7 @@ class App.Views.BasicVoiceoverHighlighter extends App.Views.AbstractVoiceoverHig
 
 
   _removeSpacebarHandler: ->
-    $(document).unbind('keydown', @_handleSpacebarPress)
+    $(document).unbind('keyup', @_handleSpacebarPress)
 
 
   _playerCurrentTimeInSeconds: ->
