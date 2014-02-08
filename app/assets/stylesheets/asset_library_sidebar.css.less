@@ -224,8 +224,6 @@
   }
 
   #asset-list-table {
-    padding-bottom: 30px;
-
     tr {
       display: none;
       border-bottom: 1px solid #ddd;
@@ -368,11 +366,12 @@
     Footer area fixed to bottom of asset library sidebar.
   */
   #asset-sidebar-sticky-footer {
-    position: absolute;
+    position: fixed;
     bottom: 0 !important;
     right: 0;
-    width: 100%;
+    width: 300px;
     padding-top: 5px;
+    padding-left: 5px;
     background-color: #f0f0f0;
 
     #asset-text-search {

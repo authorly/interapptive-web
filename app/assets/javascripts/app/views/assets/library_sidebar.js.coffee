@@ -28,8 +28,9 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     @thumbsView.on 'upload', (-> @uploader.showUploadUI()), @
     @thumbsView.render()
 
+    @detailsContainer = @$('#asset-list-table')
     @detailsView = new App.Views.AssetsLibrary
-      el: @$('#asset-list-table tbody')
+      el: @detailsContainer.find('tbody')
       assetOptions:
         tagName: 'tr'
         className: 'js-draggable'
@@ -141,11 +142,12 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
     if toggleEl.hasClass 'thumbs'
       @thumbsView.$el.hide()
-      @detailsView.$el.show()
+      @detailsContainer.show()
       App.trackUserAction 'Viewed files as list'
     else if toggleEl.hasClass 'list'
-      @detailsView.$el.hide()
+      @detailsContainer.hide()
       @thumbsView.$el.show()
+      App.trackUserAction 'Viewed files as details'
 
 
   # Translate the click on the 'add' button to a click on the file input field
