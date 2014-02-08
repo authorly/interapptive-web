@@ -30,12 +30,12 @@ class App.Views.ContextMenu extends Backbone.View
 
 
   _renderCoordinates: (coordinatesContainer) ->
-    @coordinates?.remove()
+    @_removeCoordinates()
 
     @coordinates = new App.Views.Coordinates
       model: @getModel()
-    coordinatesContainer.html @coordinates.render()
+    coordinatesContainer.html('').append @coordinates.render().$el
 
 
   _removeCoordinates: ->
-    @coordinates.remove()
+    @coordinates?.remove()
