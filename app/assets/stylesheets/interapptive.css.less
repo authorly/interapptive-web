@@ -7,6 +7,7 @@
 
 @import 'toolbar.css.less';
 @import 'icons.css.less';
+@import 'forms.css.less';
 
 @import 'user_sessions.css.less';
 @import 'terms.css.less';
@@ -30,6 +31,7 @@
 /* Widget related */
 @import 'context_menu.css.less';
 @import 'text_widgets.css.less';
+@import 'button_images_selector.css.less';
 
 @import 'administration.css.less';
 
@@ -89,10 +91,6 @@ canvas#builder {
   background-image: url("/assets/twitter/bootstrap/glyphicons-halflings.png") !important;
 }
 
-.form-actions {
-  margin-bottom: 0;
-  text-align: right;
-}
 
 .left {
   float: left;
@@ -252,19 +250,4 @@ header {
 
   height: 682px;
   margin-top: -341px;
-}
-
-form {
-  .help-error, .help-inline, .bbf-error {
-    font-style: italic;
-    font-size: 10px;
-  }
-
-  .help-error, .bbf-error {
-    color: #b94a48;
-  }
-
-  .control-group.error .help-inline {
-    color: inherit;
-  }
 }
