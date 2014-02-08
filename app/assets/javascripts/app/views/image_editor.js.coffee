@@ -4,6 +4,8 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
 
   events:
     'click .approve': '_approveImageClicked'
+    'click .reject':  '_rejectImageClicked'
+    'click .thumb':   '_changeImageClicked'
 
   # so Backbone Forms does not add one item to empty arrays, by default
   @isAsync: true
@@ -12,7 +14,7 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
   initialize: ->
     super
     if @model?
-      @collection = @model.storybook.images
+      @collection = @model.storybook?.images || @model.images()
       @setValue @model.get(@key)
     else
       @collection = @options.list.model.storybook.images
@@ -21,15 +23,23 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
 
   render: ->
     @selector = @_initializeSelector()
-    @approved = @_initializeApproved()
+    @buttons =  @_initializeButtons()
     @thumb =    @_initializeThumbDisplay()
 
     @$el.append @selector.$el, @thumb
+    @selector.$el.find('.selected-image').after @buttons
 
     @listenTo @selector, 'select', @_imageSelected
 
     # because we need to use `isAsync`, we simulate a 'ready'
     window.setTimeout (=> @trigger 'readyToAdd', @), 0
+
+    image = @_image()
+    @_imageSelected(image)
+    if image?
+      @_approveImageClicked()
+    else
+      @_changeImageClicked()
 
     @
 
@@ -48,37 +58,51 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
       collection: @collection
       selectedImageViewClass: 'SelectedSprite'
       className: 'selector'
+      defaultImage: @_default()
     selectorEl = selector.render().$el
     selectorEl.prepend selectorEl.find('.selected-image')
 
     selector
 
 
-  _initializeApproved: ->
-    approved = $('<input type="button" class="approve btn btn-success" value="Use this screenshot"/>')
-    @selector.$el.find('.selected-image').after approved
+  _initializeButtons: ->
+    name = @options.schema.name || 'image'
+    buttons = $("<div><input type='button' class='approve btn btn-success' value='Use this #{name}'/><input type='button' class='reject btn btn-cancel' value='Remove'/></div>")
 
-    approved.hide() unless @getValue()?
+    buttons.hide() unless @_image()?
 
-    approved
+    buttons
 
 
   _initializeThumbDisplay: ->
-    image = @collection.get(@image_id)
+    image = @_image()
     url = if image? then image.get('url') else ''
-    thumb = $("<img class='thumb' src='#{url}'/>")
+    thumb = $("<a href='#'><img class='thumb' src='#{url}'/></a>")
 
     thumb
+
+
+  _default: ->
+    @options.schema.default
+
+
+  _image: ->
+    @collection.get(@getValue()) || @_default()
 
 
   _imageSelected: (image) ->
       @setValue image?.id
 
       if image?
-        @approved.show()
-        @thumb.attr src: image.get('url')
+        @buttons.show()
+        reject = @buttons.find('.reject')
+        if image == @_default()
+          reject.hide()
+        else
+          reject.show()
+        @thumb.find('img').attr src: image.get('url')
       else
-        @approved.hide()
+        @buttons.hide()
 
       @trigger 'change', @
 
@@ -86,3 +110,12 @@ class Backbone.Form.editors.Image extends Backbone.Form.editors.Base
   _approveImageClicked: ->
     @selector.$el.hide()
     @thumb.show()
+
+
+  _rejectImageClicked: ->
+    @selector.setImage @_default()
+
+
+  _changeImageClicked: ->
+    @selector.$el.show()
+    @thumb.hide()

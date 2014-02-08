@@ -11,6 +11,7 @@ class App.Builder.Widgets.ButtonWidget extends App.Builder.Widgets.SpriteWidget
 
 
   refresh: ->
+    @removeChild @sprite
     @loadImage()
 
 

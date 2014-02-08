@@ -1,0 +1,49 @@
+form {
+  .help-error, .help-inline, .bbf-error {
+    font-style: italic;
+    font-size: 10px;
+  }
+
+  .help-error, .bbf-error {
+    color: #b94a48;
+  }
+
+  .control-group.error .help-inline {
+    color: inherit;
+  }
+  .imageEditor, .imagesEditor li {
+    .thumb {
+      max-width: 150px;
+      max-height: 150px;
+      border: 1px solid #999;
+    }
+    .selector {
+      border: 1px solid #999;
+      padding: 10px 20px;
+
+      .selected-image {
+        margin-bottom: 5px;
+        img {
+          max-width: 150px;
+          max-height: 150px;
+        }
+      }
+      .images img {
+        max-width: 100px;
+        max-height: 50px;
+      }
+      .btn {
+        margin-right: 5px;
+      }
+    }
+  }
+  .imageEditor, .imagesEditor {
+    &.error input {
+      color: #fff;
+    }
+  }
+  .form-actions {
+    margin-bottom: 0;
+    text-align: right;
+  }
+}
