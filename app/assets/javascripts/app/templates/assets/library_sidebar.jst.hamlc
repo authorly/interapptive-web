@@ -42,7 +42,7 @@
     %span.btn.btn-success
       %i.icon-plus.icon-white
       Upload Files
-    %input.file-upload{:type => 'file', :name => 'files[]', :multiple => 'multiple'}
+      %input.file-upload{:type => 'file', :name => 'files[]', :multiple => 'multiple'}
 
 
   #asset-text-search
