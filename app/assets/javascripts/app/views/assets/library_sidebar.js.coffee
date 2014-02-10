@@ -7,6 +7,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
   events:
     'change #asset-sorting select':   'sortingChanged'
     'click #toggle-assets-view .btn': 'toggleViewClicked'
+    'click .select-file .btn':        'uploadButtonClicked'
 
 
   initialize: ->
@@ -145,6 +146,13 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     else if toggleEl.hasClass 'list'
       @detailsView.$el.hide()
       @thumbsView.$el.show()
+
+
+  # Translate the click on the 'add' button to a click on the file input field
+  # This hack is needed because the cursor cannot be styled on file input fields
+  uploadButtonClicked: (event) ->
+    if $(event.target).hasClass('btn')
+      @$('#asset-sidebar-sticky-footer input').click()
 
 
   nameAscendingComparator: (a1, a2) ->
