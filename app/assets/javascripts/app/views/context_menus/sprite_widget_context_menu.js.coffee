@@ -30,7 +30,7 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
       html = @template
         filename: @widget.filename()
         orientation: @orientation
-      @$el.html
+      @$el.html html
       @_renderCoordinates @$('#sprite-coordinates')
     else
       @$el.empty()
