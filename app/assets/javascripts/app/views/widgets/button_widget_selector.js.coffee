@@ -1,59 +1,52 @@
 class App.Views.ButtonWidgetImagesSelector extends Backbone.View
-  template: JST["app/templates/widgets/button_selector"]
+  events: ->
+    'click .btn-submit':        'submit'
+    'submit form':              'submit'
+    'click .btn-submit-cancel': 'cancel'
 
-  events:
-    'click .use-images': 'useSelectedImages'
 
-  initialize: (options={}) ->
-    super
-
-    @widget = options.widget
-
-    @baseImage   = @widget.image()
-    @tappedImage = @widget.selectedImage()
-
-    @formattedWidgetName = App.Lib.StringHelper.decapitalize(@widget.displayName())
-    App.trackUserAction "Opened #{@formattedWidgetName} image selector"
+  initialize: ->
+    @formattedWidgetName = App.Lib.StringHelper.decapitalize(@model.displayName())
 
 
   render: ->
-    @$el.html(@template(widget: @widget))
+    App.trackUserAction "Opened #{@formattedWidgetName} image selector"
 
-    @baseImageSelector = new App.Views.ImageSelector
-      collection: @collection
-      image: @baseImage
-      defaultImage: @widget.defaultImage()
-      el: @$('.base-image-selector')
-      selectedImageViewClass: 'SelectedSprite'
-    @listenTo @baseImageSelector, 'select', (image) => @baseImage = image
-    @baseImageSelector.render()
-
-    @tappedImageSelector = new App.Views.ImageSelector
-      collection: @collection
-      image: @tappedImage
-      defaultImage: @widget.defaultSelectedImage()
-      el: @$('.tapped-image-selector')
-      selectedImageViewClass: 'SelectedSprite'
-    @listenTo @tappedImageSelector, 'select', (image) => @tappedImage = image
-    @tappedImageSelector.render()
+    @form = @_initializeForm()
+    @$el.append @form.el
 
     @
 
 
-  remove: ->
-    @stopListening @baseImageSelector
-    @baseImageSelector.remove()
+  submit: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
 
-    @stopListening @tappedImageSelector
-    @tappedImageSelector.remove()
-
-    super
-
-
-  useSelectedImages: =>
-    @widget.set
-      image_id:          @baseImage?.id
-      selected_image_id: @tappedImage?.id
-
-    App.vent.trigger('hide:modal')
+    @form.commit()
     App.trackUserAction "Saved #{@formattedWidgetName} button"
+    App.vent.trigger 'hide:modal'
+
+
+  cancel: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
+    App.vent.trigger 'hide:modal'
+
+
+  _initializeForm: ->
+    formOptions =
+      model: @model
+      schema:
+        image_id:
+          type: 'Image'
+          title: 'The main image:'
+          fieldClass: 'imageEditor'
+          default: @model.defaultImage()
+        selected_image_id:
+          type: 'Image'
+          title: 'The image to show when the button is pressed:'
+          fieldClass: 'imageEditor'
+          default: @model.defaultImage()
+    form = new Backbone.Form(formOptions).render()
+    form.$el.removeClass('form-horizontal')
+    form

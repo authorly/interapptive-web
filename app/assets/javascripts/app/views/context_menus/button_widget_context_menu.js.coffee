@@ -30,9 +30,8 @@ class App.Views.ButtonWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   showUpdateModal: (event) ->
-    view = new App.Views.ButtonWidgetImagesSelector
-      widget:     @widget
-      collection: @widget.collection.storybook.images
+    view = new App.Views.ButtonWidgetModal
+      model:  @widget
 
     modal = App.modalWithView(view: view)
     modal.show()
