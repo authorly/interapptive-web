@@ -26,15 +26,14 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
 
 
   render: ->
-    html = if @orientation?
-      @template
+    if @orientation?
+      html = @template
         filename: @widget.filename()
         orientation: @orientation
+      @$el.html
+      @_renderCoordinates @$('#sprite-coordinates')
     else
-      ''
-    @$el.html(html)
-
-    @_renderCoordinates @$('#sprite-coordinates')
+      @$el.empty()
 
     @
 
