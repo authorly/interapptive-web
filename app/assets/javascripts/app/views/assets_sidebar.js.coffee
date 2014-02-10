@@ -15,6 +15,8 @@ class App.Views.AssetsSidebar extends Backbone.View
       el: @$('#asset-library-sidebar')
     @assets.render()
     @_addCollapsibleListeners(@assets.$el)
+    @assets.$('#asset-sidebar-sticky-footer input').on 'focus, click', =>
+      @$('#asset-library-sidebar').collapse('show')
 
     @sceneAssets = new App.Views.SpriteList
       el: @$('#sprite-list')
@@ -27,6 +29,7 @@ class App.Views.AssetsSidebar extends Backbone.View
   initResizable: ->
     @$el.resizable
       # alsoResize:  '#asset-library-sidebar, #asset-sidebar-sticky-footer, #asset-search-field'
+      alsoResize:  '#asset-sidebar-sticky-footer'
       maxWidth:    500
       minWidth:    305
       handles:     'w'
