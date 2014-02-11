@@ -9,6 +9,7 @@
   background-repeat: no-repeat;
   background-position: center center;
   &.image {
+    z-index: -1;
     background-image: url(/assets/image-icon.png);
   }
   &.sound {
@@ -240,8 +241,8 @@
 
       .thumb {
         position: relative;
+        margin-top: -17px;
         .thumb-definition;
-
         span {
           background-size: 100%;
         }
@@ -262,7 +263,7 @@
         width: 17px;
         height: 17px;
         vertical-align: top;
-        margin: 22px 3px 0 1px;
+        margin: 3px 3px 0 1px;
         display: inline-block;
         opacity: 0.7;
         background-size: 100%;
