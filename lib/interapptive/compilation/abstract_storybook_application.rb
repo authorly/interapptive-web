@@ -8,7 +8,7 @@ class AbstractStorybookApplication
   def initialize(storybook, storybook_json, target)
     @storybook         = storybook
     @json              = storybook_json
-    @transient_files   = {}
+    @transient_files   = []
     @used_file_names = []
     @target            = target
 
@@ -43,7 +43,7 @@ class AbstractStorybookApplication
 
   def write_transient_file_names_for_deletion
     File.open(File.join(CRUCIBLE_RESOURCES_DIR, '..', 'transient_assets.txt'), 'w') do |f|
-      f.puts(@transient_files.values)
+      f.puts(@transient_files)
     end
   end
 
@@ -155,16 +155,14 @@ class AbstractStorybookApplication
   end
 
   def fetch_file(url, ext)
-    if @transient_files.keys.exclude?(url)
-      new_file_name = SecureRandom.hex(64).gsub(/[0-9]/, '')
-      File.open(File.join(CRUCIBLE_RESOURCES_DIR, new_file_name + ext), 'wb+') do |asset|
-        open(url, 'rb') do |read_file|
-          asset << read_file.read
-          @transient_files[url] = asset.path
-        end
+    new_file_name = SecureRandom.hex(64).gsub(/[0-9]/, '')
+    File.open(File.join(CRUCIBLE_RESOURCES_DIR, new_file_name + ext), 'wb+') do |asset|
+      open(url, 'rb') do |read_file|
+        asset << read_file.read
+        @transient_files << asset.path
       end
     end
-    File.basename(@transient_files[url])
+    File.basename(@transient_files.last)
   end
 
   def unused_files_movement_paths(modifier = '')
