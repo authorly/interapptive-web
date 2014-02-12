@@ -424,6 +424,7 @@ class App.Collections.Widgets extends Backbone.Collection
 
   @validZOrder: (order) ->
     return true if order.length == 0
+    return false if _.any order, ([k, v]) -> k <= 0
 
     z_order_array = _.map order, ([k, v]) -> k
     firstButtonIndex = _.max(z_order_array) + 1

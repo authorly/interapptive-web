@@ -174,6 +174,18 @@ describe "App.Collections.Widgets", ->
 
         expect(App.Collections.Widgets.validZOrder(order)).toEqual true
 
+      it 'does not allow -1 values', ->
+        # sometimes z_order gets -1 and cannot figure out how.
+        # this is a pathetic attempt to figure out (from user reporting)
+        # if this happens while sorting
+        # @dira 2014-01-31
+        order = [
+          [-1, new App.Models.SpriteWidget]
+        ]
+
+        expect(App.Collections.Widgets.validZOrder(order)).toEqual false
+
+
   describe 'remove asset', ->
     describe 'remove image', ->
       it 'removes all the corresponding sprites with that image', ->
