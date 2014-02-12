@@ -16,7 +16,7 @@ class App.Views.SpriteList extends Backbone.View
     @setCollection()
     @views = []
 
-    @listenTo App.vent, 'bring_to_front:sprite, put_in_back:sprite', @_widgetZOrderChanged
+    @listenTo App.vent, 'bring_to_front:sprite put_in_back:sprite', @_widgetZOrderChanged
     @listenTo App.currentSelection, 'change:widget', @_activeWidgetChanged
     @_activeWidgetChanged()
 
