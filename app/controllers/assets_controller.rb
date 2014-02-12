@@ -7,7 +7,7 @@ class AssetsController < ApplicationController
   end
 
   def create
-    assets = params[:files].map{ |file| Asset.create_asset(@storybook, file) }.compact
+    assets = (params[:files] || []).map{ |file| Asset.create_asset(@storybook, file) }.compact
     respond_to do |format|
       format.json { render :json => assets.map(&:as_jquery_upload_response).to_json }
     end
