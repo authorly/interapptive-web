@@ -193,14 +193,13 @@ class App.Models.Storybook extends Backbone.Model
   compile: (platform, user) ->
     if @canBeCompiled()
       App.trackUserAction 'Compiled app', platform: platform
+      App.vent.trigger('show:message', 'success', "An email will be sent to #{user.get('email')} with a link to download your app to a mobile device and test it. This may take a few minutes. If you do not receive the email within 5-10 minutes, please check your spam folder.")
 
       $.post('/compiler',
         storybook_json: JSON.stringify(new App.JSON(@).app)
         storybook_id: @get('id')
         platform: platform
-        ->
-          App.vent.trigger('show:message', 'success', "An email will be sent to #{user.get('email')} with a link to download your app to a mobile device and test it. This may take a few minutes. If you do not receive the email within 5-10 minutes, please check your spam folder.")
-      'json')
+        'json')
     else
       App.vent.trigger('show:message', 'info', 'Some of the videos that you uploaded are still being transcoded. Please compile your application once the transcoding is complete.')
 
