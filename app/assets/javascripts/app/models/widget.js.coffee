@@ -399,10 +399,11 @@ class App.Collections.Widgets extends Backbone.Collection
     else if sprite instanceof App.Models.ButtonWidget
       @byClass(App.Models.ButtonWidget)
     min = _.min _.map(peers, (widget) -> widget.get('z_order'))
-    unless min == sprite.get('z_order')
-      # increase all by 1
+    zOrder = sprite.get('z_order')
+    unless min == zOrder
       _.each peers, (widget) ->
-        widget.set 'z_order', widget.get('z_order') + 1
+        if (currentZOrder = widget.get('z_order')) < zOrder
+          widget.set 'z_order', currentZOrder + 1
       # set min to sprite
       sprite.set 'z_order', min
 
@@ -413,10 +414,11 @@ class App.Collections.Widgets extends Backbone.Collection
     else if sprite instanceof App.Models.ButtonWidget
       @byClass(App.Models.ButtonWidget)
     max = _.max _.map(peers, (widget) -> widget.get('z_order'))
-    unless max == sprite.get('z_order')
-      # decrease all by 1
+    zOrder = sprite.get('z_order')
+    unless max == zOrder
       _.each peers, (widget) ->
-        widget.set 'z_order', widget.get('z_order') - 1
+        if (currentZOrder = widget.get('z_order')) > zOrder
+          widget.set 'z_order', currentZOrder - 1
       # set max to sprite
       sprite.set 'z_order', max
 
