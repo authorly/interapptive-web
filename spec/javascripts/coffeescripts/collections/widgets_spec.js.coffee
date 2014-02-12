@@ -26,17 +26,20 @@ describe "App.Collections.Widgets", ->
         beforeEach ->
           @s1 = new App.Models.SpriteWidget(z_order: 1)
           @s2 = new App.Models.SpriteWidget(z_order: 2)
-          @widgets.add [@s1, @s2]
+          @s3 = new App.Models.SpriteWidget(z_order: 3)
+          @widgets.add [@s1, @s2, @s3]
 
         it 'changes z_order correctly', ->
-          @widgets.setMaxZOrder(@s1)
-          expect(@s1.get('z_order')).toEqual 2
-          expect(@s2.get('z_order')).toEqual 1
-
-        it 'leaves z_order if already ok', ->
           @widgets.setMaxZOrder(@s2)
           expect(@s1.get('z_order')).toEqual 1
+          expect(@s3.get('z_order')).toEqual 2
+          expect(@s2.get('z_order')).toEqual 3
+
+        it 'leaves z_order if already ok', ->
+          @widgets.setMaxZOrder(@s3)
+          expect(@s1.get('z_order')).toEqual 1
           expect(@s2.get('z_order')).toEqual 2
+          expect(@s3.get('z_order')).toEqual 3
 
       describe 'when there are only buttons', ->
         beforeEach ->
@@ -80,17 +83,20 @@ describe "App.Collections.Widgets", ->
         beforeEach ->
           @s1 = new App.Models.SpriteWidget(z_order: 1)
           @s2 = new App.Models.SpriteWidget(z_order: 2)
-          @widgets.add [@s1, @s2]
+          @s3 = new App.Models.SpriteWidget(z_order: 3)
+          @widgets.add [@s1, @s2, @s3]
 
         it 'changes z_order correctly', ->
           @widgets.setMinZOrder(@s2)
           expect(@s1.get('z_order')).toEqual 2
           expect(@s2.get('z_order')).toEqual 1
+          expect(@s3.get('z_order')).toEqual 3
 
         it 'leaves z_order if already ok', ->
           @widgets.setMinZOrder(@s1)
           expect(@s1.get('z_order')).toEqual 1
           expect(@s2.get('z_order')).toEqual 2
+          expect(@s3.get('z_order')).toEqual 3
 
       describe 'when there are only buttons', ->
         beforeEach ->
