@@ -70,6 +70,14 @@ class AppIconUploader < CarrierWave::Uploader::Base
       process :resize_to_fill => [72, 72]
     end
 
+    version :app_icon_76_76 do
+      process :resize_to_fill => [76, 76]
+    end
+
+    version :app_icon_80_80 do
+      process :resize_to_fill => [80, 80]
+    end
+
     version :app_icon_96_96 do
       process :resize_to_fill => [96, 96]
     end
@@ -82,18 +90,24 @@ class AppIconUploader < CarrierWave::Uploader::Base
       process :resize_to_fill => [114, 114]
     end
 
+    version :app_icon_120_120 do
+      process :resize_to_fill => [120, 120]
+    end
+
     version :app_icon_144_144 do
       process :resize_to_fill => [144, 144]
     end
-  end
 
-  version :app_icon_app_store do
-    version :app_icon_app_store_1024_1024 do
-      process :resize_to_fill => [1024, 1024]
+    version :app_icon_152_152 do
+      process :resize_to_fill => [152, 152]
     end
 
     version :app_icon_app_store_512_512 do
       process :resize_to_fill => [512, 512]
+    end
+
+    version :app_icon_app_store_1024_1024 do
+      process :resize_to_fill => [1024, 1024]
     end
   end
 
