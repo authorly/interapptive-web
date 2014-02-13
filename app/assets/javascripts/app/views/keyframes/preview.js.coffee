@@ -71,16 +71,17 @@ class App.Views.Preview extends Backbone.View
       scale = widget.get('scale')
       img = imagesByUrl[@_getImageUrl(widget)]
 
-      # draw the image, scaled down, using `drawImage(image, dx, dy, dw, dh)
-      # the scale is compound - the scale of the image, and the scale of the
-      # preview compared to the canvas
-      # images are center-anchored, so half of their width/height is substracted
-      # to get the top-left corner, required for `drawImage`
-      @previewCtx.drawImage img,
-        (position.x - img.width * scale/2) * @previewScale,
-        @previewHeight - (position.y + img.height * scale/2) * @previewScale,
-        img.width  * scale * @previewScale,
-        img.height * scale * @previewScale
+      if img?
+        # draw the image, scaled down, using `drawImage(image, dx, dy, dw, dh)
+        # the scale is compound - the scale of the image, and the scale of the
+        # preview compared to the canvas
+        # images are center-anchored, so half of their width/height is substracted
+        # to get the top-left corner, required for `drawImage`
+        @previewCtx.drawImage img,
+          (position.x - img.width * scale/2) * @previewScale,
+          @previewHeight - (position.y + img.height * scale/2) * @previewScale,
+          img.width  * scale * @previewScale,
+          img.height * scale * @previewScale
 
 
   _exportPreview: ->
