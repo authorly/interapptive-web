@@ -15,6 +15,9 @@
     = stylesheet_link_tag 'application', :media => 'all'
 
     = javascript_include_tag 'jquery'
+
+    - unless Rails.env.development?
+      %script{ src: '/assets/airbrake-shim.js', 'data-airbrake-project-id' => Airbrake.configuration.project_id, 'data-airbrake-project-key' => Airbrake.configuration.api_key, 'data-airbrake-environment-name' => Rails.env }
     = yield(:head)
     = javascript_include_tag 'application'
 
