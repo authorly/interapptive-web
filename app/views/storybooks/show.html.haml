@@ -25,8 +25,37 @@
     document.body.appendChild(script)
 
 - content_for :header do
-  = render 'layouts/toolbar'
-
+  .navbar-inner
+    = link_to image_tag('authorly-icon-large.png'), '/', class: 'logo'
+    %p.navbar-text.title= @storybook.title
+    .dropdown.pull-right
+      %span.current_user-user.dropdown-toggle{'data-toggle'=>"dropdown"}
+        = current_user.email
+        %span.caret
+      %ul.dropdown-menu
+        %li
+          %a{href: '/users/sign-out'} Sign out
+    %ul.menu.nav.pull-right
+      %li
+        .btn-group
+          %button.btn.dropdown-toggle{'data-toggle'=>"dropdown", href: "#"}
+            %i.icon-black.icon-play
+            Preview
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              %a{href: '#'} Test on Apple Device
+            %li
+              %a{href: '#'} Test on Android Device
+      %li
+        %button.btn{href: '#'} Publish
+      %li
+        %button.btn.btn-primary{href: '#'}
+          %i.icon-white.icon-user
+          Help
+    -# = render 'layouts/toolbar'
+  </div>
+</div>
 
 .navbar.sidebar.left
   #scene-list

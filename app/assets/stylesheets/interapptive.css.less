@@ -111,33 +111,53 @@ footer {
   background-repeat: no-repeat;
   background-position: 671px center;
 }
-
-header {
-  nav.bottom-bar {
-    .gradient(@fileMenuBgStart, @fileMenuBgEnd);
-    .drop-shadow(0, 2px, 3px, #555);
-
-    background-color: #ccc;
-    height: 2px;
-  }
-
-  .navbar-fixed-top .container {
-    width: 1125px;
-  }
-
-  .navbar-fixed-top, .navbar {
-    margin-left: 0 !important;
-    margin-right: none;
-      z-index: 3;
-  }
+.navbar-fixed-top .navbar-inner {
+  background-color: white;
+  background-image: none;
+  border-radius: 0;
+  padding: 3px 7px;
 }
 
-#global-sync-indicator {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0 3px;
-  visibility: hidden;
+header {
+  .logo {
+    float: left;
+    padding-right: 3px;
+    border-right: 1px solid #ccc;
+    img {
+      height: 50px;
+    }
+  }
+  .title {
+    float: left;
+    margin-left: 5px;
+    font-size: 30px;
+    line-height: 50px;
+    color: #333;
+  }
+
+  .menu {
+    clear: right;
+    li {
+      margin-left: 5px;
+    }
+    .btn {
+      padding: 1px 5px;
+    }
+  }
+
+  .current-user {
+    font-size: 11px;
+  }
+
+  #global-sync-indicator {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 3px;
+    visibility: hidden;
+  }
+  .navbar-inner {
+  }
 }
 
 .sidebar {

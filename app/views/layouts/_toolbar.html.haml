@@ -1,34 +1,29 @@
-%nav.toolbar
-  .container
-    %ul#toolbar
-      %li.toolbar-group.first
-        %ul
-          %li.logo
-            = link_to image_tag('authorly-icon-large.png'), '#'
-          %li.scene.add-scene.disabled
-            %a{:href => '#'} Scene
+-# %ul#toolbar
+  -# %li.toolbar-group.first
+    -# %ul
+      -# %li.logo
+      -# %li.scene.add-scene.disabled
+        -# %a{:href => '#'} Scene
 
-      %li.toolbar-group
-        %ul
-          %li.background-sound
-            = link_to "Background Sound", "#"
-          %li.edit-text
-            = link_to "Add Text", "#"
+  -# %li.toolbar-group
+    -# %ul
+      -# %li.background-sound
+        -# = link_to "Background Sound", "#"
+      -# %li.edit-text
+        -# = link_to "Add Text", "#"
 
-      %li#context-menu-container.toolbar-group.centered
+  -# %li#context-menu-container.toolbar-group.centered
 
-      %li.toolbar-group.last.right
-        %ul
-          %li.compile.compile-android.disabled
-            = link_to "Compile Android", "#", "data-platform" => "android"
-          %li.compile.compile-ios.disabled
-            = link_to "Compile iOS", "#", "data-platform" => "ios"
-          %li.app-settings.disabled
-            = link_to "App Settings", "#"
-          %li.publish-settings.disabled
-            = link_to "Publishing Info", "#"
-          %li.help.disabled
-            = link_to image_tag('toolbar-question-mark.png'), "http://help.authorly.com", 'target' => '_blank'
-            = link_to "Help", "http://help.authorly.com", 'target' => '_blank', 'class' => 'text-link'
-%nav.bottom-bar
-  %div#font-menu-buttons.container
+  -# %li.toolbar-group.last.right
+    -# %ul
+      -# %li.compile.compile-android.disabled
+        -# = link_to "Compile Android", "#", "data-platform" => "android"
+      -# %li.compile.compile-ios.disabled
+        -# = link_to "Compile iOS", "#", "data-platform" => "ios"
+      -# %li.app-settings.disabled
+        -# = link_to "App Settings", "#"
+      -# %li.publish-settings.disabled
+        -# = link_to "Publishing Info", "#"
+      -# %li.help.disabled
+        -# = link_to image_tag('toolbar-question-mark.png'), "http://help.authorly.com", 'target' => '_blank'
+        -# = link_to "Help", "http://help.authorly.com", 'target' => '_blank', 'class' => 'text-link'
