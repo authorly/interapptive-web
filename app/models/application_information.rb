@@ -30,7 +30,7 @@ class ApplicationInformation < ActiveRecord::Base
   validates :large_icon, presence: true
   validates_each :retina_3_5_screenshot_ids, :retina_4_0_screenshot_ids, :retina_ipad_screenshot_ids do |record, attr, value|
      if (value||[]).length < 2
-       record.errors.add(attr, 'please add at least 2 screenshots')
+       record.errors.add(attr, 'please add at least 2 different screenshots')
      end
      if (value||[]).length > 5
        record.errors.add(attr, 'please add at most 5 screenshots')
