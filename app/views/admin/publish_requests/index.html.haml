@@ -2,12 +2,12 @@
 
 - if @requests.present?
   %ol
-    - @requests.each do |request|
+    - @requests.each do |req|
       %li
         %h2
-          = link_to request.storybook.title, admin_publish_request_path(request)
+          = link_to request.storybook.title, admin_publish_request_path(req)
         %p
-          = time_ago_in_words request.created_at
+          = time_ago_in_words req.created_at
           ago
 - else
   No application to process.
@@ -20,9 +20,9 @@
     published applications
   - if @published.present?
     %ol
-      - @published.each do |request|
+      - @published.each do |req|
         %li
-          = link_to request.storybook.title, admin_publish_request_path(request)
+          = link_to req.storybook.title, admin_publish_request_path(req)
   - else
     No published applications.
 - else
