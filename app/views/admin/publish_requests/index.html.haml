@@ -5,7 +5,7 @@
     - @requests.each do |req|
       %li
         %h2
-          = link_to request.storybook.title, admin_publish_request_path(req)
+          = link_to req.storybook.title, admin_publish_request_path(req)
         %p
           = time_ago_in_words req.created_at
           ago
