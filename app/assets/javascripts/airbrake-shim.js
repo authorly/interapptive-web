@@ -85,8 +85,11 @@ window.setTimeout = function(fn, time) {
   } catch (exc) {
     exception = exc
   }
-  stack = Airbrake._processor(exception, function(name, errInfo) {
-    return (errInfo.backtrace)
-  })
+  stack = null;
+  if (Airbrake._processor != undefined) {
+    Airbrake._processor(exception, function(name, errInfo) {
+      return (errInfo.backtrace)
+    })
+  }
   oldTimeout(Airbrake.wrap(fn, stack), time);
 }
