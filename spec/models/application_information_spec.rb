@@ -1,6 +1,16 @@
 require 'spec_helper'
 
 describe ApplicationInformation do
+  class ApplicationInformation
+    # rspec uses `pretty_error_messages` that wants to access each
+    # error key as a field of the object
+    define_method "payee.name" do
+      (self.payee||{})["name"]
+    end
+    define_method "payee.address" do
+      (self.payee||{})["address"]
+    end
+  end
 
   it { Factory(:application_information).should be_valid }
 
@@ -69,6 +79,8 @@ describe ApplicationInformation do
 
     it { should validate_presence_of :keywords }
     it { should ensure_length_of(:keywords).is_at_most(100) }
+
+    it { should validate_presence_of :payee }
   end
 
   # TODO why it fails

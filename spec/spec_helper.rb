@@ -7,7 +7,6 @@ require 'rspec/autorun'
 require 'capybara/rails'
 require 'capybara/rspec'
 
-require 'factories'
 require 'database_cleaner'
 
 Capybara.javascript_driver = :selenium
@@ -17,6 +16,9 @@ Rails.logger.level = 4
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
+# after mocking `Fog`
+require 'factories'
 
 RSpec.configure do |config|
   require 'helpers/active_record'
