@@ -1,6 +1,6 @@
 class PublishRequest < ActiveRecord::Base
   belongs_to :storybook
-  has_many :applications
+  has_many :applications, dependent: :destroy
   accepts_nested_attributes_for :applications, reject_if: proc { |attributes| attributes['url'].blank? }
 
   def done?
