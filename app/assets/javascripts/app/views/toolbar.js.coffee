@@ -11,7 +11,7 @@ class App.Views.ToolbarView extends Backbone.View
 
   compileStorybook: (event) ->
     platform = $(event.currentTarget).find('a').data('platform')
-    App.currentSelection.get('storybook').compile(platform, App.signedInAsUser)
+    App.currentSelection.get('storybook').compile(platform, App.currentUser)
 
   initialize: ->
     @_enableOnEvent 'can_add:text', '.edit-text'
