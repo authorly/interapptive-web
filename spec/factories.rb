@@ -44,20 +44,24 @@ Factory.define :application_information do |f|
   f.available_from 2.days.from_now
   f.price_tier 'tier_1'
   f.content_description({
-      'fantasy_violence' =>         'none',
-      'realistic_violence' =>       'mild',
-      'sexual_content' =>           'intense',
-      'profanity' =>                'mild',
-      'drugs' =>                    'none',
-      'mature' =>                   'intense',
-      'gambling' =>                 'none',
-      'horror' =>                   'mild',
-      'prolonged_violence' =>       'none',
-      'graphical_sexual_content' => 'none',
+    'fantasy_violence' =>         'none',
+    'realistic_violence' =>       'mild',
+    'sexual_content' =>           'intense',
+    'profanity' =>                'mild',
+    'drugs' =>                    'none',
+    'mature' =>                   'intense',
+    'gambling' =>                 'none',
+    'horror' =>                   'mild',
+    'prolonged_violence' =>       'none',
+    'graphical_sexual_content' => 'none',
   })
   f.retina_3_5_screenshot_ids  { [Factory(:image).id, Factory(:image).id] }
   f.retina_4_0_screenshot_ids  { [Factory(:image).id, Factory(:image).id] }
   f.retina_ipad_screenshot_ids { [Factory(:image).id, Factory(:image).id] }
+  f.payee({
+    name: 'name',
+    address: 'address',
+  })
 end
 
 Factory.define :scene do |f|

@@ -22,7 +22,6 @@ class ApplicationInformation < ActiveRecord::Base
     'prolonged_violence' =>      'Prolonged Graphic or Sadistic Realistic Violence',
     'graphical_sexual_content' =>'Graphical Sexual Content and Nudity',
   }
-  attr_accessor :CONTENT_DESCRIPTION_LABELS
 
   before_validation :sanitize_screenshots
 
@@ -65,7 +64,7 @@ class ApplicationInformation < ActiveRecord::Base
   end
 
   validates_each :payee do |record, attr, value|
-    return unless value.present?
+    value = {} unless value.present?
 
     person = Person.new(value)
     unless person.valid?

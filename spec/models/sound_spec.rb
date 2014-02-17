@@ -1,7 +1,11 @@
 require 'spec_helper'
 
 describe Sound do
-  let!(:sound) { Factory(:sound, sound: File.open(Rails.root.join("spec/factories/sounds/voicemail_received.wav"))) }
+  let(:sound) { Factory(:sound, sound: File.open(Rails.root.join("spec/factories/sounds/voicemail_received.wav"))) }
+
+  before(:each) do
+    Zencoder::Job.stub_chain(:create, :body).and_return('')
+  end
 
   context "#as_jquery_upload_response" do
     let(:json) {
