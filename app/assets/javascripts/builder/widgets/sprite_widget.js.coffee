@@ -59,7 +59,15 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   _imageErrored: =>
     if @isRunning()
+      @_showImageLoadingError() unless @imageLoadingRetried
+      @imageLoadingRetried = true
+
       window.setTimeout @loadImage, IMAGE_RETRY_LOADING_AFTER * 1000
+
+
+  _showImageLoadingError: ->
+    message = "Could not load #{@model.image().get('name')}, but we keep trying"
+    App.vent.trigger 'show:message', 'warning', message
 
 
   getModelForPositioning: ->
