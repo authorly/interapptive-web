@@ -7,14 +7,14 @@ class Storybook < ActiveRecord::Base
 
   has_many :scenes, dependent: :destroy
 
-  has_many :images, :dependent => :destroy
-  has_many :sounds, :dependent => :destroy
-  has_many :videos, :dependent => :destroy
-  has_many :fonts,  :dependent => :destroy
-  has_many :assets
+  has_many :images, dependent: :destroy
+  has_many :sounds, dependent: :destroy
+  has_many :videos, dependent: :destroy
+  has_many :fonts,  dependent: :destroy
+  has_many :assets # a way to refer to all the images, sounds, videos, fonts
 
-  has_one :application_information
-  has_one :publish_request
+  has_one :application_information, dependent: :destroy
+  has_one :publish_request,         dependent: :destroy
 
   serialize :widgets
 
