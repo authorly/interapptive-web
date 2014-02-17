@@ -31,7 +31,7 @@ class Storybook < ActiveRecord::Base
   after_create      :create_default_scene
 
   validates :user, presence: true
-  validate  :validate_allowed_storybooks_count, before: :create
+  validate  :validate_allowed_storybooks_count, on: :create
   validates :title, presence: true, uniqueness: { scope: :user_id }
 
   SETTINGS.each do |setting, _|
