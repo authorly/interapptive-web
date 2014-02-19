@@ -53,7 +53,7 @@ describe AbstractStorybookApplication do
 
   context '#cleanup' do
     it 'should remove transient files' do
-      storybook_application.instance_variable_set(:@transient_files, ['foo', 'bar'])
+      storybook_application.instance_variable_set(:@transient_files, {'foo' => 'foo', 'bar' => 'bar'})
       storybook_application.write_transient_file_names_for_deletion
 
       File.should_receive(:delete).with(*['foo', 'bar'])
