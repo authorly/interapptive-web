@@ -20,11 +20,16 @@ class App.Views.Coordinates extends Backbone.View
   render: ->
     @$el.html @template(model: @model)
 
+    @x = @$('#x-coord')
+    @y = @$('#y-coord')
+
+    @
+
 
   keyUp: (event) ->
     @_removeInnerMinus event
-    @_moveByKeys       event
-    @_setPosition      event
+    unless @_moveByKeys(event)
+      @_setPosition()
 
 
   _removeInnerMinus: (event) ->
@@ -44,27 +49,25 @@ class App.Views.Coordinates extends Backbone.View
       when App.Lib.KeyCodes.up   then delta =  1
       when App.Lib.KeyCodes.down then delta = -1
       else
-        return
+        return false
 
     position = @model.get('position')
     newPosition = _.extend {}, position
     switch event.currentTarget.id
-      when 'x-coord' then newPosition.x += delta
-      when 'y-coord' then newPosition.y += delta
+      when @x[0].id then newPosition.x += delta
+      when @y[0].id then newPosition.y += delta
 
     @model.set
       position: newPosition
 
+    return true
 
-  _setPosition: (event) ->
-    return unless event.keyCode is App.Lib.KeyCodes.enter
 
-    App.trackUserAction('Moved image', source: 'context menu')
-
+  _setPosition: ->
     @model.set
       position:
-        x: Number(@$('#x-coord').val()) || 0
-        y: Number(@$('#y-coord').val()) || 0
+        x: Number(@x.val()) || 0
+        y: Number(@y.val()) || 0
 
 
   keyPressed: (event) ->
@@ -81,5 +84,7 @@ class App.Views.Coordinates extends Backbone.View
 
 
   _changeCoordinates: (position) ->
-    @$('#x-coord').val position.x
-    @$('#y-coord').val position.y
+    if parseInt(@x.val()) != position.x
+      @x.val position.x
+    if parseInt(@y.val()) != position.x
+      @y.val position.y

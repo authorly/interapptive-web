@@ -29,21 +29,18 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
 
 
   _keyUpInScale: (event) ->
-    @_scaleAmountUpDownArrow(event)
-    @_enterKeyScaleListener(event)
+    unless @_scaleAmountUpDownArrow(event)
+      @_setScale()
 
 
   _scaleAmountUpDownArrow: (event) ->
-    code = event.keyCode
-    if code is App.Lib.KeyCodes.up
-      @_setScale(1)
-    if code is App.Lib.KeyCodes.down
-      @_setScale(-1)
-
-
-  _enterKeyScaleListener: (event) ->
-    if event.keyCode is App.Lib.KeyCodes.enter
-      @_setScale()
+    switch event.keyCode
+      when App.Lib.KeyCodes.up   then delta =  1
+      when App.Lib.KeyCodes.down then delta = -1
+      else
+        return false
+    @_setScale(delta)
+    return true
 
 
   bringToFront: (e) ->
@@ -73,15 +70,13 @@ class App.Views.ImageWidgetContextMenu extends App.Views.ContextMenu
     if newScale < 10
       @_scaleCantBeSet()
       newScale = 10
-    else
-      App.trackUserAction 'Resized image'
 
     object.set
       scale: newScale / 100
 
 
-    @$('#scale-amount').val(newScale)
-
+    if parseInt(@$('#scale-amount').val()) != parseInt(newScale)
+      @$('#scale-amount').val parseInt(newScale)
 
 
   _currentScale: ->
