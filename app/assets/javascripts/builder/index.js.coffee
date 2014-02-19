@@ -2,6 +2,7 @@
 # listed below.
 #= require_self
 #= require_tree ./widgets
+#= require builder/cocos2d-overrides
 #= require builder/init
 
 window.App.Builder =
