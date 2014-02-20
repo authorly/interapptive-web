@@ -40,7 +40,6 @@ db/schema.rb
 /doc/specs.html
 /public/assets/*
 /public/assets
-/public/source_maps
 /public/cache
 /public/stylesheets/compiled
 /public/system
