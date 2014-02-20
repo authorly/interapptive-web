@@ -53,7 +53,6 @@ group :development do
   gem 'debugger'
   gem 'growl'
   gem 'zencoder-fetcher'
-  gem 'coffee-rails-source-maps'
 end
 
 group :test do
@@ -67,10 +66,6 @@ group :test do
   gem 'forgery'
   gem 'launchy'
   gem 'connection_pool'
-end
-
-group :staging do
-  gem 'coffee-rails-source-maps'
 end
 
 group :deployment do
