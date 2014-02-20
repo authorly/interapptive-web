@@ -11,7 +11,7 @@ class SourceMapUglifier
         file.write(sourcemap)
       end
 
-      sourcemap_comment = "\n//@ sourceMappingURL=/source_maps/#{source_maps_file}\n"
+      sourcemap_comment = "\n//# sourceMappingURL=/source_maps/#{source_maps_file}\n"
 
       return output + sourcemap_comment
     else
