@@ -88,7 +88,7 @@ class IosStorybookApplication < AbstractStorybookApplication
     IOS_ICON_FILE_NAMES.each do |accessor, names|
       names.each do |name|
         File.open(File.join(CRUCIBLE_RESOURCES_DIR, name), 'wb+') do |icon|
-          open(@storybook.icon.app_icon.send(accessor).path, 'rb') do |read_file|
+          open(@storybook.icon.app_icon.send(accessor).url, 'rb') do |read_file|
             icon << read_file.read
           end
         end
