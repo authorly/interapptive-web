@@ -6,24 +6,33 @@ end
 class IosStorybookApplication < AbstractStorybookApplication
   CRUCIBLE_IOS_DIR = File.join(Rails.root, '../../Crucible/HelloWorld/ios/')
   IOS_ICON_FILE_NAMES = {
-    :app_icon_72_72               => ['Icon-72.png', 'Icon@72.png'],
-    :app_icon_76_76               => ['Icon@76.png'],
-    :app_icon_80_80               => ['Icon@80.png'],
-    :app_icon_100_100             => ['Icon@100.png', 'Icon-Small-50@2x.png'],
-    :app_icon_114_114             => ['Icon@114.png', 'Icon@2x.png'],
-    :app_icon_120_120             => ['Icon@120.png'],
-    :app_icon_144_144             => ['Icon-72@2x.png', 'Icon@144.png'],
-    :app_icon_152_152             => ['Icon@152.png'],
-    :app_icon_20_20               => ['Icon-Small-20.png'],
-    :app_icon_40_40               => ['Icon-Small-20@2x.png', 'Icon@40.png'],
-    :app_icon_30_30               => ['Icon-Small-30.png'],
-    :app_icon_60_60               => ['Icon-Small-30@2x.png'],
-    :app_icon_50_50               => ['Icon-Small-50.png', 'Icon@50.png'],
-    :app_icon_29_29               => ['Icon-Small.png', 'Icon@29.png'],
-    :app_icon_58_58               => ['Icon-Small@2x.png', 'Icon@58.png'],
-    :app_icon_57_57               => ['Icon.png', 'Icon@57.png'],
-    :app_icon_app_store_512_512   => ['iTunesArtwork.png'],
-    :app_icon_app_store_1024_1024 => ['iTunesArtwork@2x.png']
+    :app_icon_72_72               => 'Icon-72.png',
+    :app_icon_72_72               => 'Icon@72.png',
+    :app_icon_76_76               => 'Icon@76.png',
+    :app_icon_80_80               => 'Icon@80.png',
+    :app_icon_100_100             => 'Icon@100.png',
+    :app_icon_114_114             => 'Icon@114.png',
+    :app_icon_120_120             => 'Icon@120.png',
+    :app_icon_144_144             => 'Icon-72@2x.png',
+    :app_icon_144_144             => 'Icon@144.png',
+    :app_icon_152_152             => 'Icon@152.png',
+    :app_icon_20_20               => 'Icon-Small-20.png',
+    :app_icon_40_40               => 'Icon-Small-20@2x.png',
+    :app_icon_40_40               => 'Icon@40.png',
+    :app_icon_30_30               => 'Icon-Small-30.png',
+    :app_icon_60_60               => 'Icon-Small-30@2x.png',
+    :app_icon_50_50               => 'Icon-Small-50.png',
+    :app_icon_50_50               => 'Icon@50.png',
+    :app_icon_100_100             => 'Icon-Small-50@2x.png',
+    :app_icon_29_29               => 'Icon-Small.png',
+    :app_icon_29_29               => 'Icon@29.png',
+    :app_icon_58_58               => 'Icon-Small@2x.png',
+    :app_icon_58_58               => 'Icon@58.png',
+    :app_icon_57_57               => 'Icon.png',
+    :app_icon_57_57               => 'Icon@57.png',
+    :app_icon_114_114             => 'Icon@2x.png',
+    :app_icon_app_store_512_512   => 'iTunesArtwork.png',
+    :app_icon_app_store_1024_1024 => 'iTunesArtwork@2x.png',
   }
 
   def initialize(*args)
@@ -85,12 +94,10 @@ class IosStorybookApplication < AbstractStorybookApplication
   private
 
   def save_icon_files
-    IOS_ICON_FILE_NAMES.each do |accessor, names|
-      names.each do |name|
-        File.open(File.join(CRUCIBLE_RESOURCES_DIR, name), 'wb+') do |icon|
-          open(@storybook.icon.app_icon.send(accessor).path, 'rb') do |read_file|
-            icon << read_file.read
-          end
+    IOS_ICON_FILE_NAMES.each do |accessor, name|
+      File.open(File.join(CRUCIBLE_RESOURCES_DIR, name), 'wb+') do |icon|
+        open(@storybook.icon.app_icon.send(accessor).url, 'rb') do |read_file|
+          icon << read_file.read
         end
       end
     end
@@ -101,10 +108,9 @@ class IosStorybookApplication < AbstractStorybookApplication
   end
 
   def move_default_icons(from_dir, to_dir)
-    file_paths = IOS_ICON_FILE_NAMES.values.flatten.map do |name|
-      File.join(from_dir, name)
+    IOS_ICON_FILE_NAMES.values.each do |name|
+      FileUtils.mv(File.join(from_dir, name), to_dir)
     end
-    FileUtils.mv(file_paths, to_dir)
   end
 
   def xbuild_application
