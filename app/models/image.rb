@@ -25,13 +25,15 @@ class Image < Asset
   end
 
   def image_size
-    begin
-      image.size
-    rescue => e
-      logger.info "Size of image not accessible for image: #{id}\n"
-      logger.info e.message
-      0
+    unless meta_info[:size].present?
+      begin
+        meta_info[:size] = image.size
+        update_attribute :meta_info, meta_info
+      rescue => e
+        logger.info "Size of image not accessible for image: #{id}, #{e.message}"
+      end
     end
+    meta_info[:size] || 0
   end
 
   def self.valid_extension?(ext)
