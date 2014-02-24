@@ -24,6 +24,8 @@ class ImageUploader < CarrierWave::Uploader::Base
     "images/#{model.id}"
   end
 
+  process :save_size
+
   # Devices upto i4 crash if they are given images of
   # height or width of greater than 2048. See #681
   version :cocos2d do
@@ -61,5 +63,9 @@ class ImageUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
+
+  def save_size
+    model.meta_info[:size] = file.size
+  end
 
 end
