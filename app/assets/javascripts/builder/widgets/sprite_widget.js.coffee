@@ -25,7 +25,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
   loadImage: =>
     cache = cc.TextureCache.getInstance()
-    texture = cache.addImageAsync @model.url(), @, @_imageLoaded
+    texture = cache.addImageAsync @_url(), @, @_imageLoaded
 
     # cocos2d v2.2.2 doesn't expose an error handler, so we're going
     # into its interanals to hook onto the `img`'s error handler
@@ -39,7 +39,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
 
 
   _imageLoaded: =>
-    @sprite.initWithFile @model.url()
+    @sprite.initWithFile @_url()
     @sprite.setAnchorPoint new cc.Point(0, 0)
 
     if @model instanceof App.Models.SpriteWidget
@@ -55,6 +55,12 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @setContentSize @sprite.getContentSize()
     @setAnchorPoint new cc.Point(0.5, 0.5)
     @setOpacity()
+
+
+  # Prevent getting images from cache, see #1235#issuecomment-35939013
+  # @2014-02-24 @dira
+  _url: =>
+    @model.url() + '?prevent-cache-lookup=1'
 
 
   _imageErrored: =>
