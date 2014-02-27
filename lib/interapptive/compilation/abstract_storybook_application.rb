@@ -118,6 +118,10 @@ class AbstractStorybookApplication
         if value.is_a?(Hash) || value.is_a?(Array)
           traverse_json_hash(value, &block)
         else
+          # The block in download_files_and_sanitize_json changes 
+          # the original json_hash_or_array passed in yield below
+          # It is necessary that we keey  return value of yeild
+          # in json_hash_or_array
           json_hash_or_array = yield(json_hash_or_array, key, value)
         end
       end
