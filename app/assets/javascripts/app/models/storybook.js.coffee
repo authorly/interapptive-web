@@ -236,9 +236,9 @@ class App.Models.Storybook extends Backbone.Model
     new App.JSON(@).app
 
 
-  compiledApplicationSize: ->
+  compiledApplicationSize: (platform = 'ios') ->
     @_prepareUniqueAssetIds()
-    @default_ios_size +
+    @['default_' + platform + '_size'] +
       @assetSizeFor('images') +
       @assetSizeFor('sounds') +
       @assetSizeFor('videos') +
