@@ -1,5 +1,11 @@
 #sprite-filename
-  = @filename
+  - if ((App.Config.environment == 'staging' && _.include([24, 1], App.currentUser.get('id'))) || (App.Config.environment == 'production' && _.include([13, 2], App.currentUser.get('id'))))
+    %select#image-id
+      - for image in @widget.collection.scene.storybook.images.models
+        %option{:value => image.get('id') }
+          = image.get('name')
+  - else
+    = @filename
 
 #sprite-coordinates
 

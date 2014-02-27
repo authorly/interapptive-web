@@ -6,6 +6,7 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
     _.extend {}, super, {
       'click .as-previous': 'asPreviousKeyframe'
       'click .as-next':     'asNextKeyframe'
+      'change #image-id':   'imageChanged'
     }
 
   template: JST["app/templates/context_menus/sprite_widget_context_menu"]
@@ -25,11 +26,17 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
     @orientation = @widget.getOrientationFor(keyframe)
 
 
+  imageChanged: ->
+    image_id = @$('#image-id').val()
+    @widget.set('image_id', image_id)
+
+
   render: ->
     if @orientation?
       html = @template
-        filename: @widget.filename()
+        filename:    @widget.filename()
         orientation: @orientation
+        widget:      @widget
       @$el.html html
       @_renderCoordinates @$('#sprite-coordinates')
     else
