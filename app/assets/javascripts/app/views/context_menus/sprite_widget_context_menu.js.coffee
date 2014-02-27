@@ -42,6 +42,9 @@ class App.Views.SpriteWidgetContextMenu extends App.Views.ImageWidgetContextMenu
     else
       @$el.empty()
 
+    if @$('#image-id').length > 0
+      @$('#image-id').val(@widget.get('image_id'))
+
     @
 
 
