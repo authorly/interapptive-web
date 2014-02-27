@@ -7,6 +7,15 @@
 # * `@fonts`.  It has many fonts.  A Backbone collection.
 # * @widgets. It has many widgets. A Backbone collection.
 class App.Models.Storybook extends Backbone.Model
+  default_ios_size:     7506170 # In Bytes
+  default_android_size: 6678924 # In Bytes
+
+  _asset_identifier_regexes:
+    images: /\/images\/(\d+)\//
+    sounds: /\/sounds\/(\d+)\//
+    videos: /\/videos\/(\d+)\//
+    fonts:  /\/fonts\/(\d+)\//
+
   schema:
     title:
       type:          "Text"
@@ -200,7 +209,7 @@ class App.Models.Storybook extends Backbone.Model
       App.vent.trigger('show:message', 'success', "An email will be sent to #{user.get('email')} with a link to download your app to a mobile device and test it. This may take a few minutes. If you do not receive the email within 5-10 minutes, please check your spam folder.")
 
       $.post('/compiler',
-        storybook_json: JSON.stringify(new App.JSON(@).app)
+        storybook_json: JSON.stringify(@jsonObject())
         storybook_id: @get('id')
         platform: platform
         'json')
@@ -221,6 +230,88 @@ class App.Models.Storybook extends Backbone.Model
 
   previewUrl: ->
     @get('preview_image_url') || '/assets/default_storybook_preview.png'
+
+
+  jsonObject: ->
+    new App.JSON(@).app
+
+
+  compiledApplicationSize: ->
+    @_prepareUniqueAssetIds()
+    @default_ios_size +
+      @assetSizeFor('images') +
+      @assetSizeFor('sounds') +
+      @assetSizeFor('videos') +
+      @assetSizeFor('fonts')
+
+
+
+  assetSizeFor: (asset_type) ->
+    assets = @[asset_type].filter((asset) => @_unique_asset_ids[asset_type].indexOf(asset.get('id') > -1))
+    _.reduce(assets, @_assetSizeSummer, 0) # Sum size of assets
+
+  _assetSizeSummer: (memo, asset) ->
+    memo + asset.get('size')
+
+
+  _prepareUniqueAssetIds: ->
+    @_unique_asset_ids = { images: [], sounds: [], videos: [], fonts: [] }
+    @_traverseJsonObject(@jsonObject(), @_enqueIdInAssetList)
+    @_unique_asset_ids
+
+
+  _enqueIdInAssetList: (transient_object_or_array, key, value) =>
+    asset = @_parseAssetUrl(value)
+
+    if asset.asset_type && _.indexOf(@_unique_asset_ids[asset.asset_type], asset.asset_id) == -1
+      @_unique_asset_ids[asset.asset_type].push(asset.asset_id)
+
+    transient_object_or_array
+
+
+  _parseAssetUrl: (url) ->
+    # URL is in the form of
+    # 'http://authorly-staging.s3.amazonaws.com/images/5393/cocos2d_090818.jpg'
+    identifier = { asset_type: null, asset_id: null }
+    return identifier unless @_parseableUrl(url)
+
+    identifier.asset_type = if url.indexOf('/images/') > -1
+      'images'
+    else if url.indexOf('/sounds/') > -1
+      'sounds'
+    else if url.indexOf('/videos/') > -1
+      'videos'
+    else if url.indexOf('/fonts/') > -1
+      'fonts'
+    else
+      null
+
+    return identifier unless identifier.asset_type
+
+    identifier.asset_id = parseInt(@_asset_identifier_regexes[identifier.asset_type].exec(url)[1])
+    identifier
+
+
+  _parseableUrl: (url) ->
+    typeof(url) == 'string' and (_.include(['development', 'test'], App.Config.environment) or url.indexOf('http') == -1)
+
+
+  _traverseJsonObject: (json_object_or_array, processor) ->
+    if json_object_or_array instanceof Array
+      for value, key in json_object_or_array
+        if value instanceof Object or value instanceof Array
+          @_traverseJsonObject(value, processor)
+        else
+          json_object_or_array = processor(json_object_or_array, key, value)
+
+    else if json_object_or_array instanceof Object
+      for own key, value of json_object_or_array
+        if value instanceof Object or value instanceof Array
+          @_traverseJsonObject(value, processor)
+        else
+          json_object_or_array = processor(json_object_or_array, key, value)
+
+    json_object_or_array
 
 _.extend App.Models.Storybook::, App.Mixins.DeferredSave
 _.extend App.Models.Storybook::, App.Mixins.QueuedSync
