@@ -20,6 +20,7 @@ class App.Builder.Widgets.SpriteWidget extends App.Builder.Widgets.Widget
     @options = options
 
     @sprite = new App.Builder.Widgets.Lib.Sprite(@options)
+    @model.on 'change:image_id', @loadImage, @
     @loadImage()
 
 
