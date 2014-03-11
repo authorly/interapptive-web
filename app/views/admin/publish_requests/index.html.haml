@@ -8,7 +8,11 @@
           = link_to req.storybook.title, admin_publish_request_path(req)
         %p
           = time_ago_in_words req.created_at
-          ago
+          ago by
+          = link_to req.storybook.user.email, admin_user_path(req.storybook.user.id)
+          (
+          = req.storybook.user.name
+          )
 - else
   No application to process.
 
@@ -23,6 +27,13 @@
       - @published.each do |req|
         %li
           = link_to req.storybook.title, admin_publish_request_path(req)
+          %p
+            by
+            = link_to req.storybook.user.email, admin_user_path(req.storybook.user.id)
+            (
+            = req.storybook.user.name
+            )
+
   - else
     No published applications.
 - else
