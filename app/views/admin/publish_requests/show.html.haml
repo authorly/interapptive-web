@@ -67,7 +67,11 @@
 %h3 Payee information
 
 %h4 Name
-%p= info.payee["name"]
+%p
+  = link_to storybook.user.email, admin_user_path(storybook.user.id)
+  (
+  = info.payee["name"]
+  )
 
 %h4 Address
 %p= info.payee["address"]
