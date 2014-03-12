@@ -20,9 +20,10 @@ class Storybook < ActiveRecord::Base
 
   SETTINGS = {
     pageFlipTransitionDuration: 0.6,
-    paragraphTextFadeDuration: 0.4,
-    autoplayPageTurnDelay: 0.2,
-    autoplayKeyframeDelay: 0.1,
+    paragraphTextFadeDuration:  0.4,
+    autoplayPageTurnDelay:      0.2,
+    autoplayKeyframeDelay:      0.1,
+    skipAnimationOnSwipe:       true
   }
   serialize :settings, Hash
 
@@ -34,9 +35,10 @@ class Storybook < ActiveRecord::Base
   validate  :validate_allowed_storybooks_count, on: :create
   validates :title, presence: true, uniqueness: { scope: :user_id }
 
-  SETTINGS.each do |setting, _|
-    validates setting, numericality: { greater_than_or_equal_to: 0 }
-  end
+  validates :pageFlipTransitionDuration, numericality: { greater_than_or_equal_to: 0 }
+  validates :paragraphTextFadeDuration,  numericality: { greater_than_or_equal_to: 0 }
+  validates :autoplayPageTurnDelay,      numericality: { greater_than_or_equal_to: 0 }
+  validates :autoplayKeyframeDelay,      numericality: { greater_than_or_equal_to: 0 }
 
   def enqueue_for_compilation(platform, json, recipient)
     case platform

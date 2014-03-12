@@ -219,7 +219,8 @@ class App.JSON
       pageFlipTransitionDuration: storybook.get('pageFlipTransitionDuration')
       paragraphTextFadeDuration:  storybook.get('paragraphTextFadeDuration')
       autoplayPageTurnDelay:      storybook.get('autoplayPageTurnDelay')
-      autoplayKeyframeDelay:     storybook.get('autoplayKeyframeDelay')
+      autoplayKeyframeDelay:      storybook.get('autoplayKeyframeDelay')
+      skipAnimationOnSwipe:       storybook.get('skipAnimationOnSwipe')
       homeMenuForPages:
         normalStateImage : home.url()
         tappedStateImage : home.selectedUrl()

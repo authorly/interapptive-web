@@ -60,7 +60,6 @@ class App.Models.Storybook extends Backbone.Model
       ]
 
     autoplayKeyframeDelay:
-      title: ''
       title: 'Additional delay between text in autoplay'
       help: 'seconds'
       type:  'Number'
@@ -72,6 +71,12 @@ class App.Models.Storybook extends Backbone.Model
 
           err if (Number(value) + "" != value + "") or value < 0
       ]
+
+    skipAnimationOnSwipe:
+      title: 'Skip animation'
+      help:  'When checked, user will be able to swipe during an animation, cusing the animation to be skipped.'
+      type:  'Checkbox'
+      validators: ['required']
 
 
   parse: (attributes={}) ->
