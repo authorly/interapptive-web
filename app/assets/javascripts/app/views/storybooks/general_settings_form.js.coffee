@@ -10,4 +10,3 @@ class App.Views.Storybooks.GeneralSettingsForm extends App.Views.AbstractFormVie
 
   formOptions: =>
     model: @model
-
