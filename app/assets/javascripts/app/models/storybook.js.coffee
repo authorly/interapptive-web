@@ -76,7 +76,6 @@ class App.Models.Storybook extends Backbone.Model
       title: 'Skip animation'
       help:  'When checked, user will be able to swipe during an animation, cusing the animation to be skipped.'
       type:  'Checkbox'
-      validators: ['required']
 
 
   parse: (attributes={}) ->
