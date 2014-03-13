@@ -13,7 +13,7 @@ gem 'unf' # http://stackoverflow.com/questions/19666226/warning-with-fog-and-aws
 gem 'mini_magick', '3.4'
 gem 'param_protected', '~> 4.0.0'
 gem 'unicorn'
-gem 'therubyracer', '~> 0.10.2'
+gem 'therubyracer', '~> 0.12.1'
 gem 'barista'
 gem 'ttfunk'
 gem 'resque'
