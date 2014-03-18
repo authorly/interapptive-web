@@ -46,21 +46,15 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
     @trigger 'deselect', @
 
 
-<<<<<<< HEAD
-  recreateLabel: ->
-    @label.removeFromParent()
-    @createLabel()
+  recreateLabel: =>
+    for label in @labels
+      label.removeFromParentAndCleanup()
+    @createLabels()
 
 
   stringChanged: (model) ->
     @label.setString(model.get('string'))
     @setContentSize @label.getContentSize()
-=======
-  recreateLabel: =>
-    for label in @labels
-      label.removeFromParentAndCleanup()
-    @createLabels()
->>>>>>> 61b46c3... Text widgets have alignment and multiple lines #1189
 
 
   createLabels: =>
