@@ -34,7 +34,7 @@ class UserMailer < ActionMailer::Base
   end
 
   def storybook_resource_archive_completion_notification(to, url)
-    @resouce_url   = url
+    @resource_url   = url
 
     mail :to => to, :subject => "Your Storybook resource archive is ready for download"
   end
