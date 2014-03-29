@@ -1,17 +1,14 @@
 class App.Views.ToolbarView extends Backbone.View
   events:
-    'click .scene'              : 'addScene'
-    'click .edit-text'          : 'addText'
-    'click .app-settings'       : 'showSettings'
-    'click .publish-settings'   : 'showPublishSettings'
-    'click .background-sound'   : 'showSceneBackgroundMusic'
-    'click .compile'            : 'compileStorybook'
-    'click .logo'               : 'switchStorybook'
+    'click .scene':            'addScene'
+    'click .edit-text':        'addText'
+    'click .app-settings':     'showSettings'
+    'click .publish-settings': 'showPublishSettings'
+    'click .background-sound': 'showSceneBackgroundMusic'
+    'click .compile':          'compileStorybook'
+    'click .logo':             'switchStorybook'
+    'click .resource-archive': 'archiveStorybookResources'
 
-
-  compileStorybook: (event) ->
-    platform = $(event.currentTarget).find('a').data('platform')
-    App.currentSelection.get('storybook').compile(platform, App.currentUser)
 
   initialize: ->
     @_enableOnEvent 'can_add:text', '.edit-text'
@@ -60,6 +57,19 @@ class App.Views.ToolbarView extends Backbone.View
   switchStorybook: ->
     App.trackUserAction 'Switched storybook'
     document.location.href = '/'
+
+
+  compileStorybook: (event) ->
+    platform = $(event.currentTarget).find('a').data('platform')
+    App.currentSelection.get('storybook').compile(platform, App.currentUser)
+
+
+  archiveStorybookResources: ->
+    if App.currentUser.get('is_admin')
+      App.currentSelection.get('storybook').archiveResources()
+
+    else
+      App.vent.trigger('show:message', 'error', "Only admin can archive resources of a storybook.")
 
 
   _enableOnEvent: (event, selector) ->

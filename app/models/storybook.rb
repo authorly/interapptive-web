@@ -2,6 +2,7 @@ class Storybook < ActiveRecord::Base
   mount_uploader :icon, AppIconUploader
   mount_uploader :compiled_application, IosApplicationUploader
   mount_uploader :android_application,  AndroidApplicationUploader
+  mount_uploader :resource_archive,     StorybookResourceArchiveUploader
 
   belongs_to :user
 
@@ -58,6 +59,10 @@ class Storybook < ActiveRecord::Base
 
   def enqueue_for_android_compilation(json, recipient)
     Resque.enqueue(AndroidCompilationQueue, self.id, json, recipient.email)
+  end
+
+  def enqueue_for_resource_archiving(json, recipient)
+    Resque.enqueue(StorybookResourceArchiveQueue, self.id, json, recipient.email)
   end
 
   def owned_by?(other_user)

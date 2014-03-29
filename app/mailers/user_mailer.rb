@@ -32,4 +32,10 @@ class UserMailer < ActionMailer::Base
 
     mail :to => to, :subject => "Your Android app is ready for testing!"
   end
+
+  def storybook_resource_archive_completion_notification(to, url)
+    @resouce_url   = url
+
+    mail :to => to, :subject => "Your Storybook resource archive is ready for download"
+  end
 end

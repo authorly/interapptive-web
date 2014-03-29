@@ -81,5 +81,6 @@ Interapptive::Application.routes.draw do
     resources :publish_requests, only: [:index, :show, :update]
 
     resources :storybook_assignments, :only => [:edit, :update]
+    resources :storybook_archives,    :only => [:create]
   end
 end

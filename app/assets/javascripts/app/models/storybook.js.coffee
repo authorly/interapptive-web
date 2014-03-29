@@ -208,6 +208,17 @@ class App.Models.Storybook extends Backbone.Model
       App.vent.trigger('show:message', 'info', 'Some of the videos that you uploaded are still being transcoded. Please compile your application once the transcoding is complete.')
 
 
+  archiveResources: ->
+    if @canBeCompiled()
+      App.vent.trigger('show:message', 'success', "We are creating an archive of resources for the storybook. You will receive an email with download link shortly.")
+      $.post('/admin/storybook_archives',
+        storybook_json: JSON.stringify(new App.JSON(@).app)
+        storybook_id: @get('id')
+       'json')
+
+    else
+      App.vent.trigger('show:message', 'info', 'Some of the videos that you uploaded are still being transcoded. Please compile your application once the transcoding is complete.')
+
   previewUrl: ->
     @get('preview_image_url') || '/assets/default_storybook_preview.png'
 
