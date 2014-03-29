@@ -269,7 +269,7 @@ GEM
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
     ruby-hmac (0.4.0)
-    rubyzip (0.9.9)
+    rubyzip (1.1.2)
     rvm-capistrano (1.2.7)
       capistrano (>= 2.0.0)
     selenium-webdriver (2.31.0)
@@ -376,6 +376,7 @@ DEPENDENCIES
   resque
   resque-loner
   rspec-rails
+  rubyzip
   rvm-capistrano
   shoulda
   shoulda-matchers

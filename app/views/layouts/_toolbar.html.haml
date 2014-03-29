@@ -19,6 +19,9 @@
 
       %li.toolbar-group.last.right
         %ul
+          - if current_user.is_admin?
+            %li.resource-archive.disabled
+              = link_to "Download Resources", "#"
           %li.compile.compile-android.disabled
             = link_to "Compile Android", "#", "data-platform" => "android"
           %li.compile.compile-ios.disabled
