@@ -9,8 +9,9 @@ class AbstractStorybookApplication
     @storybook         = storybook
     @json              = storybook_json
     @transient_files   = {}
-    @used_file_names = []
+    @used_file_names   = []
     @target            = target
+    @asset_prefix       = @storybook.title.downcase.gsub(/[ \/]/, '') + '-' + @storybook.id.to_s + '-'
 
     FileUtils.mkdir_p(CRUCIBLE_RESOURCES_DIR) if Rails.env.test?
   end
@@ -160,7 +161,7 @@ class AbstractStorybookApplication
 
   def fetch_file(url, ext)
     if @transient_files.keys.exclude?(url)
-      new_file_name = SecureRandom.hex(64).gsub(/[0-9]/, '')
+      new_file_name = @asset_prefix + SecureRandom.hex(64).gsub(/[0-9]/, '')
       File.open(File.join(CRUCIBLE_RESOURCES_DIR, new_file_name + ext), 'wb+') do |asset|
         open(url, 'rb') do |read_file|
           asset << read_file.read
