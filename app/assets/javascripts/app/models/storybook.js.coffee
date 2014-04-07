@@ -298,19 +298,15 @@ class App.Models.Storybook extends Backbone.Model
 
   _traverseJsonObject: (json_object_or_array, processor) ->
     if json_object_or_array instanceof Array
-      for value, key in json_object_or_array
-        if value instanceof Object or value instanceof Array
-          @_traverseJsonObject(value, processor)
-        else
-          json_object_or_array = processor(json_object_or_array, key, value)
-
-    else if json_object_or_array instanceof Object
-      for own key, value of json_object_or_array
-        if value instanceof Object or value instanceof Array
-          @_traverseJsonObject(value, processor)
-        else
-          json_object_or_array = processor(json_object_or_array, key, value)
-
+      _.each(json_object_or_array,
+        ((value, key, list) ->
+          if value instanceof Object or value instanceof Array
+            @_traverseJsonObject(value, processor)
+          else
+            json_object_or_array = processor(list, key, value)
+        ),
+        @
+      )
     json_object_or_array
 
 _.extend App.Models.Storybook::, App.Mixins.DeferredSave
