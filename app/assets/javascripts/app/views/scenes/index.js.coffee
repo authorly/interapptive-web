@@ -48,6 +48,7 @@ class App.Views.SceneIndex extends Backbone.View
 
     @renderScene(scene)
     @switchScene(scene)
+    @scrollUp()
 
 
   renderScene: (scene) =>
@@ -59,6 +60,12 @@ class App.Views.SceneIndex extends Backbone.View
     else
       @$el.children().eq(index-1).after(viewElement)
 
+
+  scrollUp: ->
+    console.log(@$el)
+    @$el.animate
+      scrollTop: 99999
+    , 'fast'
 
   deleteScene: (event) =>
     event.stopPropagation()
