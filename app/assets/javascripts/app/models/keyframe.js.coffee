@@ -99,7 +99,8 @@ class App.Models.Keyframe extends Backbone.Model
   animationDurationChanged: ->
     duration = @get('animation_duration')
     if @constructor.isValidAnimationDuration(duration)
-      @save { animation_duration: duration }, patch: true
+      @set animation_duration: duration
+      @deferredSave()
     else
       @trigger 'invalid:animation_duration', duration
       @set
@@ -112,7 +113,8 @@ class App.Models.Keyframe extends Backbone.Model
   autoplayDurationChanged: ->
     duration = @get('autoplay_duration')
     if @constructor.isValidAutoplayDuration(duration)
-      @save { autoplay_duration: duration }, patch: true
+      @set autoplay_duration: duration
+      @deferredSave()
     else
       @trigger 'invalid:autoplay_duration', duration
       @set
