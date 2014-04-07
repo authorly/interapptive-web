@@ -48,7 +48,7 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   recreateLabel: =>
     for label in @labels
-      label.removeFromParentAndCleanup()
+      label.removeFromParent()
     @createLabels()
 
 
@@ -94,18 +94,19 @@ class App.Builder.Widgets.TextWidget extends App.Builder.Widgets.Widget
 
   rect: ->
     p = @getPosition()
+
     fontSize = @model.get('font_size')
     width = _.max(_.map @labels, (label) -> label.getContentSize().width)
     height = @labels.length * fontSize
+
     xAnchor = switch @model.get('align')
       when 'left'   then 0
       when 'center' then 0.5
       when 'right'  then 1
-    yAnchor = @getAnchorPoint().y
 
-    cc.RectMake(
-      p.x + width  * (0.5 - xAnchor)
-      p.y - height * (0.5 - yAnchor)
+    cc.rect(
+      p.x - width  * xAnchor
+      p.y - height
       width
       height
     )
