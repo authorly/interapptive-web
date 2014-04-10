@@ -16,9 +16,9 @@ class AndroidStorybookApplication < AbstractStorybookApplication
     logger.info "Going to compile application with json:\n\n"
     logger.info @json_hash.inspect
     write_json_file
-    #move_unused_files_out_of_compilation
+    move_unused_files_out_of_compilation
     build_application
-    #move_unused_files_to_resources
+    move_unused_files_to_resources
     move_default_icons_to_android_res
     @json_hash
   end

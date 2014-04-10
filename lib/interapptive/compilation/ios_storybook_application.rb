@@ -38,11 +38,11 @@ class IosStorybookApplication < AbstractStorybookApplication
     logger.info @json_hash.inspect
     write_json_file
     write_rake_file
-    #move_unused_files_out_of_compilation
+    move_unused_files_out_of_compilation
     begin
       xbuild_application
     ensure
-      #move_unused_files_to_resources
+      move_unused_files_to_resources
       move_default_icons_to_resources
     end
     @json_hash
