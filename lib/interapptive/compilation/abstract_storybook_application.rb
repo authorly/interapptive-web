@@ -39,7 +39,9 @@ class AbstractStorybookApplication
   end
 
   def move_unused_files_to_resources
-    FileUtils.mv(self.class.system_font_names('..'), CRUCIBLE_RESOURCES_DIR)
+    files_to_be_moved_back = self.class.system_font_names('..').map { |ufn| File.join(CRUCIBLE_RESOURCES_DIR, ufn) }
+
+    FileUtils.mv(files_to_be_moved_back, CRUCIBLE_RESOURCES_DIR)
   end
 
   def write_transient_file_names_for_deletion
