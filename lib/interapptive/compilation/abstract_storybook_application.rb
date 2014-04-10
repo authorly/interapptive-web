@@ -39,7 +39,7 @@ class AbstractStorybookApplication
   end
 
   def move_unused_files_to_resources
-    FileUtils.mv(unused_files_movement_paths('..'), CRUCIBLE_RESOURCES_DIR)
+    FileUtils.mv(self.class.system_font_names('..'), CRUCIBLE_RESOURCES_DIR)
   end
 
   def write_transient_file_names_for_deletion
@@ -93,8 +93,8 @@ class AbstractStorybookApplication
   # so that these are not packged with compiled application. It
   # only returns only fonts for now but we could extend it to
   # include any other files.
-  def self.system_font_names
-    Dir.glob(File.join(CRUCIBLE_RESOURCES_DIR, '*.ttf')).map { |p| File.basename(p) }
+  def self.system_font_names(modifier = '')
+    Dir.glob(File.join(CRUCIBLE_RESOURCES_DIR, modifier, '*.ttf')).map { |p| File.basename(p) }
   end
 
   private
@@ -172,7 +172,7 @@ class AbstractStorybookApplication
     File.basename(@transient_files[url])
   end
 
-  def unused_files_movement_paths(modifier = '')
-    (self.class.system_font_names - @used_file_names).map { |ufn| File.join(CRUCIBLE_RESOURCES_DIR, modifier, ufn) }
+  def unused_files_movement_paths
+    (self.class.system_font_names - @used_file_names).map { |ufn| File.join(CRUCIBLE_RESOURCES_DIR, ufn) }
   end
 end
