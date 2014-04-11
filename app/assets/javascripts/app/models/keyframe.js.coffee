@@ -139,8 +139,9 @@ class App.Models.Keyframe extends Backbone.Model
     @voiceover()?
 
 
+  # Autoplay duration in seconds
   autoplayDuration: ->
-    switch @autoplaySource()
+    duration = switch @autoplaySource()
       when 'field' then @get('autoplay_duration')
       when 'voiceover' then @voiceover().get('duration')
       when 'text'
@@ -149,6 +150,8 @@ class App.Models.Keyframe extends Backbone.Model
         speed = 45/60
         Math.round(nrWords / speed)
       when 'default' then 12
+
+    duration + 1 # Add one second for leeway around transition time. See #1349
 
 
   autoplaySource: ->
