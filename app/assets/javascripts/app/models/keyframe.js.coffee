@@ -151,7 +151,9 @@ class App.Models.Keyframe extends Backbone.Model
         Math.round(nrWords / speed)
       when 'default' then 12
 
-    duration + 1 # Add one second for leeway around transition time. See #1349
+    # Add one second for leeway around transition time. See #1349
+    # Add animation duration as well.
+    duration + 1 + @get('animation_duration')
 
 
   autoplaySource: ->

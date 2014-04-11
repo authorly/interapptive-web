@@ -81,7 +81,7 @@ class App.JSON
         hash
 
       highlightingTimes: keyframeHighlightTimes
-      autoplayDuration: keyframe.autoplayDuration() + keyframe.get('animation_duration')
+      autoplayDuration: keyframe.autoplayDuration()
 
     paragraph.voiceAudioFile = keyframeVoiceoverUrl if voiceoverNeeded
 
