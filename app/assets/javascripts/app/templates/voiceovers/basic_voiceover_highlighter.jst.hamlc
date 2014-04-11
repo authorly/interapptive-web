@@ -12,7 +12,7 @@
 %ol.words
   - for widget in _.sortBy(@voiceover.texts(), (w) -> w.get('z_order'))
     %li{ data-id: widget.id }
-      - words = widget.get('string').replace(/\s+/g, ' ').split(' ')
+      - words = widget.get('string').replace(/(\s+|\n)/g, ' ').split(' ')
       - for word, index in words
         %span.word
           = word + " "
