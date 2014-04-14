@@ -23,7 +23,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     @canvasScale = @canvas.height() / @canvas.attr('height')
 
-    $('body').on  'keydown', @_arrowPressed
+    $('body').on  'keydown', @onKeyDown
 
     # Collection (array) of Backbone models
     @widgets = widgetsCollection
