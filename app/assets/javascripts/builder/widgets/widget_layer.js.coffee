@@ -23,7 +23,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
     @canvasScale = @canvas.height() / @canvas.attr('height')
 
-    $('body').on  'keydown', @_arrowPressed
 
     # Collection (array) of Backbone models
     @widgets = widgetsCollection
@@ -34,7 +33,9 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_capturedWidget = null
     @_selectedWidget = null
 
+    $('body').on 'keydown', @keyDown
     @setKeyboardEnabled(true)
+
     @setMouseEnabled(false)
     @setTouchEnabled(false)
     # see comment @onMouseMoved
@@ -202,15 +203,25 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
     @_previousPoint = point
 
 
-  onKeyDown: (event) =>
-    return unless @_selectedWidget?
+  # jquery keyDown handler
+  keyDown: (event) =>
     return unless event.target == document.body
 
     event.preventDefault()
+    @_onKeyDown(event.keyCode)
+
+
+  # cocos2d keyDown handler
+  onKeyDown: (keyCode) =>
+    @_onKeyDown(keyCode)
+
+
+  _onKeyDown: (keyCode) ->
+    return unless @_selectedWidget?
 
     delta = 10
     dx = 0; dy = 0
-    switch event.keyCode
+    switch keyCode
       when App.Lib.KeyCodes.left  then dx = -delta
       when App.Lib.KeyCodes.up    then dy =  delta
       when App.Lib.KeyCodes.right then dx =  delta
@@ -223,8 +234,6 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
       position:
         x: position.x + dx
         y: position.y + dy
-
-  onKeyUp: ->
 
 
   _samePoint: (p1, p2) ->
