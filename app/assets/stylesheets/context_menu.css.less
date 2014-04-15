@@ -46,18 +46,36 @@ nav.toolbar {
       }
 
       #asset-selector {
-        margin-top: 15px;
-        margin-right: 180px;
+        form {
+          margin-bottom: 0;
+        }
+
+        label {
+          display: none;
+        }
+
+        .controls{
+          margin-left: 0;
+        }
+        .control-group {
+          margin-bottom: 0;
+        }
 
         .form-actions, .help-inline {
           display: none;
         }
       }
 
-      #asset-options {
-        float: right;
-        margin-top: -44px;
-        margin-right: 100px;
+      #asset-glitter, #asset-options {
+        display: inline-block;
+      }
+
+      #asset-glitter {
+        margin-right: 10px;
+      }
+
+      #asset-glitter-checkbox {
+        width: inherit;
       }
 
       #font-face-selector, #font-size-selector, #text-widget-options, #text-widget-alignment, #text-widget-coordinates {
