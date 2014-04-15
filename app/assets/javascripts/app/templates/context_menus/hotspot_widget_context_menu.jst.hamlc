@@ -1,11 +1,11 @@
 #asset-selector
 
-#asset-options
-  %a.remove{:href => '#'} Remove
-
 #asset-glitter
   %input#asset-glitter-checkbox{:type => 'checkbox'}
   %label{:for => 'asset-glitter-checkbox'}
     Show glitter
+
+#asset-options
+  %a.remove{:href => '#'} Remove
 
 #hotspot-coordinates
