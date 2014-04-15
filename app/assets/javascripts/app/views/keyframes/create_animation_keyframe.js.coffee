@@ -13,6 +13,6 @@ class App.Views.CreateAnimationKeyframe extends Backbone.View
 
 
   _clicked: ->
-    @collection.addNewKeyframe is_animation: true
+    @collection.addNewKeyframe is_animation: true, animation_duration: 0.3
 
     App.trackUserAction 'Added animation intro'
