@@ -22,7 +22,7 @@
 class App.Models.Keyframe extends Backbone.Model
 
   defaults:
-    animation_duration: 3
+    animation_duration: 2.0
 
   parse: (attributes) ->
     widgets = attributes.widgets; delete attributes.widgets
