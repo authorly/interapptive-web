@@ -54,6 +54,7 @@ public/app_icons
 public/compiled_applications
 public/published_storybook_resources
 public/keyframe_audios
+/public/cocos2d/*
 /spec/tmp/*
 /cache
 /capybara*

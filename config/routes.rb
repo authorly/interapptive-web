@@ -19,8 +19,6 @@ Interapptive::Application.routes.draw do
   put  'password_resets/:id' => 'password_resets#update'
   post 'password_resets'     => 'password_resets#create'
 
-  get 'simulator' => 'simulator#index', :as => 'simulator'
-
   resource :compiler
   resource :confirmation, only: [:new, :create]
   resource :term,         only: [:new, :create], :path_names => { :new => 'accept' }, :path => 'terms'
@@ -52,6 +50,9 @@ Interapptive::Application.routes.draw do
 
     resource :application_information, only: [:create, :update]
     resource :subscription_publish_request, only: [:create]
+
+    get 'simulator/show' => 'simulator#show'
+    get 'simulator/main', to: redirect('/assets/simulator.js')
   end
 
   resources :scenes do

@@ -13,7 +13,7 @@ describe FontsController do
     it 'should give all the fonts' do
       @user.stub(:storybooks).and_return(Storybook)
       Storybook.stub(:find).with(@storybook.id.to_s).and_return(@storybook)
-      @storybook.stub(:fonts).and_return([@font])
+      @storybook.stub(:all_fonts).and_return([@font])
 
       get :index, :storybook_id => @storybook.id
 

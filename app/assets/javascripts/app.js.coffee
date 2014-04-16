@@ -54,14 +54,13 @@ window.App =
 
     @vent.on 'play:video', @_playVideo, @
 
-    @vent.on 'show:simulator', @showSimulator, @
+    @vent.on 'show:preview', @showSimulator, @
 
     @vent.on 'canvas-add:asset', @_assetDropped, @
 
     @toolbar   = new App.Views.ToolbarView  el: $('#toolbar')
 
     @fontCache = new App.Views.FontCache
-      tagName: 'style'
     $('head').append @fontCache.render().el
 
     @context_menu = new App.Views.ContextMenuContainer el: $('#context-menu-container')
@@ -118,8 +117,11 @@ window.App =
 
     storybook.scenes.on 'reset', (scenes) ->
       # The simulator needs all the information upfront
-      scenes.each (scene) ->
+      keyframeLoaders = scenes.map (scene) ->
         scene.fetchKeyframes()
+      $.when(keyframeLoaders...).then( ->
+        App.vent.trigger 'can_run:simulator', true
+      )
 
     storybook.fetchCollections()
 
@@ -257,6 +259,9 @@ window.App =
     $('.content-modal').modal(backdrop: true).modal('hide').on('hidden.bs.modal', =>
       @modalView.onHidden()
     )
+    $('.simulator-modal').modal(backdrop: true).modal('hide').on('hidden.bs.modal', =>
+      @modalView.onHidden()
+    )
     $('.lightbox-modal').modal().modal('hide')
 
     # RFCTR: Should use generic modal view
@@ -268,7 +273,7 @@ window.App =
 
   modalWithView: (options) ->
     if options?
-      @modalView = new App.Views.Modal _.extend {}, options, el: $('.content-modal')
+      @modalView = new App.Views.Modal _.extend {}, el: $('.content-modal'), options
 
     @modalView
 
@@ -323,11 +328,13 @@ window.App =
     sprite.collection.setMinZOrder(sprite)
 
 
-  showSimulator: =>
+  showSimulator: ->
     storybook = App.currentSelection.get('storybook')
-    json = new App.JSON(storybook).app
-    console.log JSON.stringify(json)
-    # @simulator ||= new App.Views.Simulator(json: App.storybookJSON.toString())
+    @simulator = new App.Views.Simulator
+      url:   storybook.simulatorUrl()
+      json:  JSON.stringify(storybook.jsonObject())
+      fonts: JSON.stringify(storybook.fonts.toJSON())
+    App.modalWithView(view: @simulator, el: $('.simulator-modal')).show()
 
 
   initializeGlobalSync: ->

@@ -66,13 +66,10 @@ class App.Models.Scene extends Backbone.Model
 
 
   fetchKeyframes: ->
-    return if @isNew() || @_keyframesFetchStarted
-    @_keyframesFetchStarted = true
-
       # 2013-09-20 @dira
       # TODO Use `reset: true` until the fix for backbone#2513 is released.
       # https://github.com/jashkenas/backbone/issues/2513
-    @keyframes.fetch(reset: true)
+    @_keyframesFetchRequest ||= @keyframes.fetch(reset: true)
 
 
   addNewKeyframe: (attributes) ->

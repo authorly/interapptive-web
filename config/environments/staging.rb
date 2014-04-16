@@ -50,6 +50,8 @@ Interapptive::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w(simulator.js administration.js detectmobilebrowser.js jquery.js user_sessions.js Cocos2d-html5-v2.2.2.min.js builder.js init_storybook.js)
+  config.assets.precompile += %w(simulator.js administration.js detectmobilebrowser.js jquery.js user_sessions.js Cocos2d-html5-v2.2.2.min.js builder.js init_storybook.js airbrake-shim.js)
+  config.assets.precompile += %w(simulator.js administration.js detectmobilebrowser.js jquery.js user_sessions.js Cocos2d-html5-v2.2.2.min.js builder.js init_storybook.js flower.plist)
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

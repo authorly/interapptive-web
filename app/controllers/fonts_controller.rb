@@ -1,8 +1,7 @@
 class FontsController < ApplicationController
   def index
     storybook = signed_in_as_user.storybooks.find(params[:storybook_id])
-    render :json => (Font.where(:asset_type => 'system').map(&:as_jquery_upload_response) +
-                     storybook.fonts.map(&:as_jquery_upload_response)).to_json
+    render :json => storybook.all_fonts.map(&:as_jquery_upload_response).to_json
   end
 
   def create

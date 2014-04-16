@@ -10,12 +10,14 @@ class App.Views.ToolbarView extends Backbone.View
     'click .resource-archive':                     'archiveStorybookResources'
     'click .publish-to-subscription':              'createSubscriptionPublishRequest'
     'click .enqueue-for-subscription-publication': 'enqueueForSubscriptionPublication'
+    'click .preview':          'showPreview'
 
 
   initialize: ->
     @_enableOnEvent 'can_add:text', '.edit-text'
     @_enableOnEvent 'can_add:scene', '.scene'
     @_enableOnEvent 'can_edit:storybook', '.settings'
+    @_enableOnEvent 'can_run:simulator', '.preview'
 
     App.vent.on 'has_background_sound:scene', @_changeBackgroundSoundIcon
 
@@ -39,7 +41,6 @@ class App.Views.ToolbarView extends Backbone.View
     return if $(event.target).hasClass('disabled')
 
     App.vent.trigger 'create:widget', type: 'TextWidget'
-
 
 
   showSettings: (event) ->
@@ -80,6 +81,12 @@ class App.Views.ToolbarView extends Backbone.View
 
   enqueueForSubscriptionPublication: ->
     App.currentSelection.get('storybook').enqueueForSubscriptionPublication(App.currentUser)
+
+
+  showPreview: ->
+    return if $(event.target).hasClass('disabled')
+
+    App.vent.trigger('show:preview')
 
 
   _enableOnEvent: (event, selector) ->

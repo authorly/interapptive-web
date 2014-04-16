@@ -97,6 +97,10 @@ class Storybook < ActiveRecord::Base
     end
   end
 
+  def all_fonts
+    Font.where(asset_type: 'system') + fonts
+  end
+
   SETTINGS.each do |setting, _|
     define_method(setting) do
       settings[setting]

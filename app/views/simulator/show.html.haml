@@ -1,0 +1,59 @@
+!!!
+
+%html
+  %head
+    = stylesheet_link_tag 'simulator'
+    = javascript_include_tag 'jquery'
+    :javascript
+      $(function () {
+        config = {
+          // 0 to turn debug off, 1 for basic debug, and 2 for full debug
+          COCOS2D_DEBUG:    0,
+          box2d:            false,
+          chipmunk:         false,
+          showFPS:          false,
+          loadExtension:    false,
+          frameRate:        40,
+          renderMode:       1,
+          tag:              'simulator-canvas',
+          SingleEngineFile: '/assets/Cocos2d-html5-v2.2.2.min.js',
+          // engineDir:'/cocos2d/', // uncomment this line for debugging cocos2d
+          appFiles:         [],
+        }
+
+        script = document.createElement('script')
+        script.id = 'cocos2d-html5'
+        if (config.engineDir) {
+          script.src = config.engineDir + 'jsloader.js';
+        } else {
+          script.src = config.SingleEngineFile
+        }
+
+        document.ccConfig = config
+        document.body.appendChild(script)
+      })
+
+      $(function () {
+        $('nav button').click(function(ev) {
+          if ($(ev.currentTarget).hasClass('previous-scene'))
+            Sim.storybook.previousScene()
+          if ($(ev.currentTarget).hasClass('next'))
+            Sim.storybook.next()
+        })
+      })
+
+  %body
+
+    %nav
+      %button.btn.previous-scene
+        &lt;- Previous scene
+
+      /%span{class: "page-numbers"}
+      /  Page 0 of 0
+
+      %button.btn.next
+        Next -&gt;
+
+    %canvas#simulator-canvas{width: 1024, height: 768}
+      %p Your browser doesn't support the technology required to run this application.
+

@@ -7,10 +7,14 @@ class App.Views.Simulator extends Backbone.View
 
 
   initialize: (options={}) ->
-    @json = options.json
+    @options = options
 
 
   render: =>
-    @$el.html @template(json: @json)
+    @$el.html @template(json: @options.json, fonts: @options.fonts, url: @options.url + "?timestamp=" + @timestamp())
 
-    this
+    @
+
+
+  timestamp: ->
+    (Math.random() + "").substr(-10)

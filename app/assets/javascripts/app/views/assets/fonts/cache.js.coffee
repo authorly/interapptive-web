@@ -1,7 +1,12 @@
 # Cache a collection of fonts by maintaining, for each one
 # * a style tag in the head
 # * a transparent span with that font
+#
+# Usage:
+    # cache = new App.Views.FontCache
+    # $('head').append cache.render().el
 class App.Views.FontCache extends Backbone.View
+  tagName: 'style'
 
   render: ->
     @$bodyEl = $('<div class="trigger-cached-font-download" style="position:absolute;top:-50px">').appendTo('body')

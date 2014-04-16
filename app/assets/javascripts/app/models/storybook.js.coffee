@@ -143,6 +143,10 @@ class App.Models.Storybook extends Backbone.Model
     @baseUrl() + '.json'
 
 
+  simulatorUrl: ->
+    @baseUrl() + '/simulator/show'
+
+
   toJSON: ->
     json = super
     delete json.preview_image_url

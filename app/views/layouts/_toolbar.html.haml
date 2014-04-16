@@ -19,6 +19,8 @@
 
       %li.toolbar-group.last.right
         %ul
+          %li.preview.disabled
+            %a.show-preview{:href => '#'} Preview
           - if current_user.is_admin?
             - if @storybook.requires_subscription_publication_review?
               %li.enqueue-for-subscription-publication.disabled

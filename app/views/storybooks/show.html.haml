@@ -77,6 +77,10 @@
     #keyframe-list
 / Aids w/ clipboard clean-up on paste
 %div#cleanUp{:contenteditable => 'true'}
-= render 'shared/content_modal'
-= render 'shared/lightbox_modal'
+.modal.content-modal{style: 'display: none'}
+  = image_tag 'loading.gif'
+.modal.simulator-modal{style: 'display: none'}
+  = image_tag 'loading.gif'
+.modal.lightbox-modal.in.asset-library-modal{style: 'display: none'}
+  = image_tag 'loading.gif'
 
