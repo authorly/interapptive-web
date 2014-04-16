@@ -278,7 +278,7 @@ class App.Builder.Widgets.WidgetLayer extends cc.Layer
 
       # the context menu should stop propagation on clicking on its elements
       # but it doesn't
-      inContextMenu = target.closest('.context-menu-list').length > 0
+      inContextMenu = target.closest('.context-menu-list').length > 0 || target.closest('.colorpicker').length > 0
 
       onEditableElement = target.attr('contentEditable') || target.closest('[contentEditable=true]').length > 0
 
