@@ -42,6 +42,6 @@ class UserMailer < ActionMailer::Base
   def contact_notification(name, from_email, content)
     @content = content
 
-    mail :to => 'support@authorly.com', :subject => "Dear Authorly!", :from => "\"#{name}\" <#{email}>"
+    mail :to => 'support@authorly.com', :subject => "Dear Authorly!", :from => "\"#{name}\" <#{from_email}>"
   end
 end
