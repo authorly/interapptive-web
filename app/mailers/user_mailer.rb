@@ -38,4 +38,10 @@ class UserMailer < ActionMailer::Base
 
     mail :to => to, :subject => "Your Storybook resource archive is ready for download"
   end
+
+  def contact_notification(name, from_email, content)
+    @content = content
+
+    mail :to => 'support@authorly.com', :subject => "Dear Authorly!", :from => "\"#{name}\" <#{email}>"
+  end
 end
