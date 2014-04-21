@@ -122,14 +122,10 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
 
   _uploaderFileUploaded: (response) ->
-    console.log 'done upload', response
     for asset in response.result
-      console.log('done', asset)
       @collection.add asset
 
-    console.log 'and removing', @uploader.getData(response)
     @currentUploads.collection.remove @uploader.getData(response).id
-    console.log 'and done'
 
 
   _uploaderFileFailed: (response) ->
