@@ -12,7 +12,7 @@ describe Sound do
       {
         'id'                 => sound.id,
         'name'               => sound.read_attribute(:sound),
-        'size'               => sound.sound.size,
+        'size'               => 0,
         'url'                => sound.sound.url,
         'delete_url'         => "/sounds/#{sound.id}",
         'delete_type'        => 'DELETE',
@@ -27,12 +27,14 @@ describe Sound do
     end
 
     it 'should contain more details after transcoding' do
-      sound.meta_info[:response] = {'job' => {'state' => 'finished' }, 'input' => {'duration_in_ms' => 23000}}
+      sound.meta_info[:response] = {'job' => {'state' => 'finished' }, 'input' => {'duration_in_ms' => 23000},
+        'outputs' => [{'file_size_in_bytes' => 1234}, {'file_size_in_bytes' => 7892}]}
       expected = json.merge({
         'mp3url'             => "http://authorly-test.s3.amazonaws.com/sounds/#{sound.id}/mp3_voicemail_received.mp3",
         'oggurl'             => "http://authorly-test.s3.amazonaws.com/sounds/#{sound.id}/ogg_voicemail_received.ogg",
         'duration'           => 23,
         'transcode_complete' => true,
+        'size'               => 7892, # max from transcoded ones
       })
       sound.as_jquery_upload_response.should eql(expected)
     end
