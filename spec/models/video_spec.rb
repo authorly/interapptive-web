@@ -13,10 +13,11 @@ describe Video do
   context "#as_jquery_upload_response" do
     it 'should be valid response' do
       @video.stub(:transcode_complete?).and_return(true)
+      @video.stub(:max_size).and_return(20)
       response = {
         'id'                 => @video.id,
         'name'               => @video.read_attribute(:video),
-        'size'               => @video.video.size,
+        'size'               => 20,
         'url'                => @video.video.url,
         'delete_url'         => "/videos/#{@video.id}",
         'delete_type'        => 'DELETE',
