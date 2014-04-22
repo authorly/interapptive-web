@@ -1,0 +1,23 @@
+Storybook with following details was published to subscription application:
+
+%table
+  %thead
+    %tr
+      %th
+        Storybook ID
+      %th
+        Title
+      %th
+        Owner Email
+      %th
+        Owner ID
+  %tbody
+    %tr
+      %td
+        = @storybook.id
+      %td
+        = @storybook.title
+      %td
+        = @storybook.user.email
+      %td
+        = @storybook.user_id

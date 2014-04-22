@@ -5,7 +5,14 @@
 require 'zip'
 
 class StorybookResourceDownloader
-  CRUCIBLE_RESOURCE_DOWNLOAD_DIR = File.join(Rails.root, '..', '..', 'ResourcesCrucible')
+
+  if Rails.env == 'test'
+    path_modifier = File.join('spec', 'factories')
+  else
+    path_modifier = File.join('..', '..')
+  end
+
+  CRUCIBLE_RESOURCE_DOWNLOAD_DIR = File.join(Rails.root, path_modifier, 'ResourcesCrucible')
   CRUCIBLE_DIR_TO_BE_ZIPPED      = File.join(CRUCIBLE_RESOURCE_DOWNLOAD_DIR, 'HelloWorld')
   CRUCIBLE_RESOURCES_DIR         = File.join(CRUCIBLE_DIR_TO_BE_ZIPPED, 'Resources')
   CRUCIBLE_ANDROID_DIR           = File.join(CRUCIBLE_DIR_TO_BE_ZIPPED, 'android')

@@ -14,8 +14,13 @@ class Storybook < ActiveRecord::Base
   has_many :fonts,  dependent: :destroy
   has_many :assets # a way to refer to all the images, sounds, videos, fonts
 
-  has_one :application_information, dependent: :destroy
-  has_one :publish_request,         dependent: :destroy
+  has_one :application_information,       dependent: :destroy
+  has_one :publish_request,               dependent: :destroy
+
+  has_one :subscription_publish_request,  dependent: :destroy
+  # TODO: waseem: What happens to a SubscriptionStorybook once
+  # the original storybook is destroyed?
+  has_one :subscription_storybook
 
   serialize :widgets
 
@@ -41,6 +46,17 @@ class Storybook < ActiveRecord::Base
   validates :autoplayPageTurnDelay,      numericality: { greater_than_or_equal_to: 0 }
   validates :autoplayKeyframeDelay,      numericality: { greater_than_or_equal_to: 0 }
 
+  def create_or_update_subscription_publish_request
+    spr = SubscriptionPublishRequest.find_or_initialize_by_storybook_id(self.id)
+    spr.status = SubscriptionPublishRequest::STATUSES[:review_required]
+    spr.save
+  end
+
+  def enqueue_for_subscription_publication(json, recipient)
+    self.subscription_publish_request.update_attribute(:status, SubscriptionPublishRequest::STATUSES[:ready_to_publish])
+    Resque.enqueue(SubscriptionPublicationQueue, self.id, json, recipient.email)
+  end
+
   def enqueue_for_compilation(platform, json, recipient)
     case platform
     when 'ios'
@@ -51,9 +67,6 @@ class Storybook < ActiveRecord::Base
   end
 
   def enqueue_for_ios_compilation(json, recipient)
-    # WA: TODO: Implement a storybook application JSON
-    # verifier. Enqueue it for compilation only after
-    # it is verified.
     Resque.enqueue(IosCompilationQueue, self.id, json, recipient.email)
   end
 
@@ -67,6 +80,10 @@ class Storybook < ActiveRecord::Base
 
   def owned_by?(other_user)
     other_user == user
+  end
+
+  def requires_subscription_publication_review?
+    subscription_publish_request.present? && subscription_publish_request.review_required?
   end
 
   def image_id=(image_id)

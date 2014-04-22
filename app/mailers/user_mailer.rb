@@ -39,6 +39,12 @@ class UserMailer < AbstractMailer
     mail :to => to, :subject => "Your Storybook resource archive is ready for download"
   end
 
+  def storybook_publication_completion_notification(storybook_id)
+    @storybook = Storybook.find(storybok_id)
+
+    mail :to => @storybook.user.email, :subject => "Your Storybook '#{@storybook.title}' was published to bookfair!"
+  end
+
   def contact_notification(name, from_email, content)
     @content = content
 

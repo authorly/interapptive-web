@@ -1,13 +1,15 @@
 class App.Views.ToolbarView extends Backbone.View
   events:
-    'click .scene':            'addScene'
-    'click .edit-text':        'addText'
-    'click .app-settings':     'showSettings'
-    'click .publish-settings': 'showPublishSettings'
-    'click .background-sound': 'showSceneBackgroundMusic'
-    'click .compile':          'compileStorybook'
-    'click .logo':             'switchStorybook'
-    'click .resource-archive': 'archiveStorybookResources'
+    'click .scene':                                'addScene'
+    'click .edit-text':                            'addText'
+    'click .app-settings':                         'showSettings'
+    'click .publish-settings':                     'showPublishSettings'
+    'click .background-sound':                     'showSceneBackgroundMusic'
+    'click .compile':                              'compileStorybook'
+    'click .logo':                                 'switchStorybook'
+    'click .resource-archive':                     'archiveStorybookResources'
+    'click .publish-to-subscription':              'createSubscriptionPublishRequest'
+    'click .enqueue-for-subscription-publication': 'enqueueForSubscriptionPublication'
 
 
   initialize: ->
@@ -70,6 +72,14 @@ class App.Views.ToolbarView extends Backbone.View
 
     else
       App.vent.trigger('show:message', 'error', "Only admin can archive resources of a storybook.")
+
+
+  createSubscriptionPublishRequest: ->
+    App.currentSelection.get('storybook').createSubscriptionPublishRequest()
+
+
+  enqueueForSubscriptionPublication: ->
+    App.currentSelection.get('storybook').enqueueForSubscriptionPublication(App.currentUser)
 
 
   _enableOnEvent: (event, selector) ->

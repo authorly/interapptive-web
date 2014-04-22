@@ -1,0 +1,61 @@
+%h3 Storybooks ready for review to be published on subscription platform
+
+- if @review_required.present?
+  %ol
+    - @review_required.each do |rr|
+      %li
+        %h5
+          (
+          = rr.storybook.id
+          )
+          = rr.storybook.title
+        %p
+          = time_ago_in_words(rr.updated_at)
+          ago by
+          = link_to rr.storybook.user.email, admin_user_path(rr.storybook.user.id)
+          (
+          = rr.storybook.user.name
+          )
+- else
+  No applications ready to be published.
+
+%hr
+
+%h3 Storybooks published to subscription platform
+
+- if @published.present?
+  %ol
+    - @published.each do |pu|
+      %li
+        %h5
+          (
+          = pu.storybook.id
+          )
+          = link_to(pu.storybook.title, pu.subscription_storybook.assets.url, :target => '_blank')
+        %p
+          = time_ago_in_words(pu.updated_at)
+          ago by
+          = link_to pu.storybook.user.email, admin_user_path(pu.storybook.user.id)
+          (
+          = pu.storybook.user.name
+          )
+
+%hr
+
+%h3 Storybooks being published (These storybooks are in queue being processed. Applications should move to published list after a short while.)
+
+- if @ready_to_publish.present?
+  - @ready_to_publish.each do |rtp|
+    %li
+      %h5
+        (
+        = rtp.storybook.id
+        )
+        = rtp.storybook.title
+      %p
+        = time_ago_in_words(rtp.updated_at)
+        ago by
+        = link_to rtp.storybook.user.email, admin_user_path(rtp.storybook.user.id)
+        (
+        = rtp.storybook.user.name
+        )
