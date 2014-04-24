@@ -11,7 +11,7 @@ class AbstractStorybookApplication
     @transient_files   = {}
     @used_file_names   = []
     @target            = target
-    @asset_prefix       = @storybook.title.downcase.gsub(/[^a-zA-Z]/, '') + '-' + @storybook.id.to_s + '-'
+    @asset_prefix       = @storybook.title.downcase.gsub(/[^a-zA-Z]/, '') + '_' + @storybook.id.to_s + '_'
 
     FileUtils.mkdir_p(CRUCIBLE_RESOURCES_DIR) if Rails.env.test?
   end
