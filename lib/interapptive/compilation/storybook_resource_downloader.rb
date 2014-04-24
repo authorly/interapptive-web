@@ -45,7 +45,7 @@ class StorybookResourceDownloader
     @storybook         = storybook
     @json              = storybook_json
     @transient_files   = {}
-    @asset_prefix       = @storybook.title.downcase.gsub(/[^a-zA-Z]/, '') + '-' + @storybook.id.to_s + '-'
+    @asset_prefix       = @storybook.title.downcase.gsub(/[^a-zA-Z]/, '') + '_' + @storybook.id.to_s + '_'
   end
 
   def download_resources
