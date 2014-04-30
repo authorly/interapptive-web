@@ -1,4 +1,4 @@
-class ApplicationMailer < ActionMailer::Base
+class ApplicationMailer < AbstractMailer
   default :from => '"Authorly" <no-reply@authorly.com>'
 
   def created(application_id)
