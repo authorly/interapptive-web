@@ -68,6 +68,12 @@ Interapptive::Application.routes.draw do
   namespace :admin do
     root :to => 'users#index'
 
+    resources :subscription_users do
+      collection do
+        get 'search'
+      end
+    end
+
     resources :users do
       collection do
         get 'search'

@@ -1,0 +1,29 @@
+%h1 Subscription Application Users
+
+.search-box
+  = form_tag search_admin_subscription_users_path, :method => 'get' do
+    %p
+      = text_field_tag :q, params[:q], :placeholder => 'search with email'
+      = submit_tag 'Search', :name => nil
+  = link_to("clear search parameters", admin_subscription_users_path)
+
+= paginate(@users)
+%table#users.table.table-hover.table-bordered
+  %thead
+    %tr
+      %th
+        ID
+      %th
+        Email
+      %th
+        Signed Up
+  %tbody
+    - for user in @users
+      %tr
+        %td
+          = user.id
+        %td
+          = user.email
+        %td
+          = time_ago_in_words(user.created_at)
+          ago
