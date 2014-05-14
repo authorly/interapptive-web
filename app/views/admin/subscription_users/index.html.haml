@@ -17,6 +17,8 @@
         Email
       %th
         Signed Up
+      %th
+        Last signed in at
   %tbody
     - for user in @users
       %tr
@@ -26,4 +28,7 @@
           = user.email
         %td
           = time_ago_in_words(user.created_at)
+          ago
+        %td
+          = user.last_sign_in_at && time_ago_in_words(user.last_sign_in_at)
           ago
