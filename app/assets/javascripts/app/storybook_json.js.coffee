@@ -217,6 +217,7 @@ class App.JSON
     home = storybook.widgets.at(0)
     homeButtonPosition = home.get('position')
     node =
+      storybook_id: storybook.get('id')
       retainTextScalingRatio: true
       pageFlipSound:
         forward  : 'page-flip-sound.mp3'
