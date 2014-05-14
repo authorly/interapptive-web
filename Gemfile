@@ -51,8 +51,6 @@ group :development do
   gem 'pry'
   gem 'pry-rails'
   gem 'haml-rails'
-  gem 'debugger'
-  gem 'growl'
   gem 'zencoder-fetcher'
 end
 
