@@ -25,4 +25,4 @@
         %li
           = "(" + storybook.id.to_s +  ") " + storybook.title
 
-  = link_to('Users List', admin_users_path)
+  = link_to("Sign In Like this User", storybooks_path(:signed_in_as_user_id => @user.id))
