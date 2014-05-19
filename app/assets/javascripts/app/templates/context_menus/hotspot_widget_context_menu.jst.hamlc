@@ -6,6 +6,7 @@
     Show glitter
 
 #asset-options
+  %a.duplicate{:href => '#'} Duplicate
   %a.remove{:href => '#'} Remove
 
 #hotspot-coordinates

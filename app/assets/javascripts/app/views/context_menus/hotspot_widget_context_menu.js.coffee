@@ -6,6 +6,7 @@ class App.Views.HotspotWidgetContextMenu extends App.Views.ContextMenu
     _.extend {}, super,
       'change #asset_id':               'assetSelected'
       'change #asset-glitter-checkbox': 'changeGlitterState'
+      'click  .duplicate':              'duplicate'
 
   template: JST["app/templates/context_menus/hotspot_widget_context_menu"]
 
@@ -39,6 +40,10 @@ class App.Views.HotspotWidgetContextMenu extends App.Views.ContextMenu
 
   assetSelected: (event) =>
     @_setAssetId @form.getValue()?.asset_id
+
+
+  duplicate: ->
+    App.vent.trigger('canvas-add:asset', id: @widget.assetId(), type: @widget.assetType())
 
 
   remove: ->
