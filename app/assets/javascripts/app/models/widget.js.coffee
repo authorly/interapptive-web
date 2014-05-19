@@ -88,6 +88,13 @@ class App.Models.HotspotWidget extends App.Models.Widget
     @asset()?.get('id')
 
 
+  assetType: ->
+    if @hasSound()
+      'sound'
+    else if @hasVideo()
+      'video'
+
+
   assetUrl: ->
     if @hasSound()
       @asset().get('url')
