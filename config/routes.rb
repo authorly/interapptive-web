@@ -51,6 +51,7 @@ Interapptive::Application.routes.draw do
     resources :assets, only: [:create, :index]
 
     resource :application_information, only: [:create, :update]
+    resource :subscription_publish_request, only: [:create]
   end
 
   resources :scenes do
@@ -84,8 +85,10 @@ Interapptive::Application.routes.draw do
       end
     end
 
-    resources :publish_requests, only: [:index, :show, :update]
+    resource :subscription_publisher, only: :create
 
+    resources :publish_requests, only: [:index, :show, :update]
+    resources :subscription_publish_requests, only: [:index, :show, :update]
     resources :storybook_assignments, :only => [:edit, :update]
     resources :storybook_archives,    :only => [:create]
   end

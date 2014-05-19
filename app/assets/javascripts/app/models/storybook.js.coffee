@@ -228,8 +228,27 @@ class App.Models.Storybook extends Backbone.Model
     else
       App.vent.trigger('show:message', 'info', 'Some of the videos that you uploaded are still being transcoded. Please compile your application once the transcoding is complete.')
 
+
   previewUrl: ->
     @get('preview_image_url') || '/assets/default_storybook_preview.png'
+
+
+  createSubscriptionPublishRequest: ->
+    App.vent.trigger('show:message', 'success', "We are reviewing your storybook for publishing. We will send you an email once it is ready.")
+    $.post("/storybooks/#{@get('id')}/subscription_publish_request",
+     'json').fail(-> App.vent.trigger('show:message', 'error', "Something went wrong queueing your application for publication. Please try again."))
+
+
+  enqueueForSubscriptionPublication: (user) ->
+    if @canBeCompiled()
+      App.vent.trigger('show:message', 'success', "An email will be sent to #{user.get('email')} once the storybook is published to subscription platform. This may take a few minutes. If you do not receive the email within 5-10 minutes, please check your spam folder.")
+      $.post("/admin/subscription_publisher",
+        storybook_json: JSON.stringify(@jsonObject())
+        storybook_id: @get('id')
+       'json').fail(-> App.vent.trigger('show:message', 'error', "Something went wrong queueing this application for publication. Please try again."))
+
+    else
+      App.vent.trigger('show:message', 'info', 'Some of the videos that you uploaded are still being transcoded. Please publish this application once the transcoding is complete.')
 
 
   jsonObject: ->

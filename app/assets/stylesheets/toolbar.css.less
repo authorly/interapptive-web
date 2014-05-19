@@ -98,6 +98,20 @@ nav.toolbar {
           opacity: 0.8;
         }
 
+        &.enqueue-for-subscription-publication {
+          background-image: asset-url('toolbar-enqueue-for-subscription.png');
+          background-repeat: no-repeat;
+          background-position: 50% 70%;
+          opacity: 0.8;
+        }
+
+        &.publish-to-subscription {
+          background-image: asset-url('toolbar-publish.png');
+          background-position: 50% 70%;
+          background-repeat: no-repeat;
+          opacity: 0.8;
+        }
+
         &.help {
           background-repeat: no-repeat;
           background-position: 106% 119%;
@@ -168,6 +182,10 @@ nav.toolbar {
     }
   }
 
+  ul li.toolbar-group.first {
+    margin-left: -115px;
+  }
+
   ul li.toolbar-group.centered {
     float: none !important;
     margin: 0px auto;
@@ -180,7 +198,7 @@ nav.toolbar {
 
   ul li.toolbar-group.last.right {
     float: right;
-    margin-right: 15px;
+    margin-right: -118px;
   }
 
   .sync-audio a{

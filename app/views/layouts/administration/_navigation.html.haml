@@ -1,0 +1,32 @@
+.navbar-inner
+  %a.brand{ :href => "/" }
+    Authorly Admin
+  %ul.nav
+    %li.dropdown
+      %a.dropdown-toggle{ :href => '#', 'data-toggle' => 'dropdown'}
+        Builder
+        %b.caret
+
+      %ul.dropdown-menu{ :role => 'menu'}
+        %li
+          = link_to("Users", admin_users_path)
+        %li
+          = link_to("Deleted Users", admin_users_path(:deleted => true))
+        %li
+          = link_to("Create New User", new_admin_user_path)
+        %li
+          = link_to("Applications", admin_publish_requests_path)
+  %ul.nav
+    %li.dropdown
+      %a.dropdown-toggle{ :href => '#', 'data-toggle' => 'dropdown'}
+        Bookfair
+        %b.caret
+
+      %ul.dropdown-menu{ :role => 'menu'}
+        %li
+          = link_to("Bookfair Users", admin_subscription_users_path)
+        %li
+          = link_to("Publish Requests", admin_subscription_publish_requests_path)
+  %ul.nav
+    %li
+      = link_to("My Storybooks", storybooks_path(:reset_user => 'true'))

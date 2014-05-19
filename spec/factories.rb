@@ -19,7 +19,6 @@ Factory.define :sound do |f|
   f.sound 'audio-file.mp3'
 end
 
-
 Factory.define :image do |f|
   f.type 'Image'
   f.image { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'support', 'images', '500x300.png')) }
@@ -89,4 +88,14 @@ end
 
 Factory.define :actions do |f|
   f.scene Factory(:scene)
+end
+
+
+Factory.define :subscription_storybook do |f|
+  f.storybook Factory(:storybook)
+end
+
+Factory.define :subscription_publish_request do |f|
+  f.storybook Factory(:storybook)
+  f.subscription_storybook Factory(:subscription_storybook)
 end

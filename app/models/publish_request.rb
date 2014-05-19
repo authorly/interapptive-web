@@ -4,7 +4,7 @@ class PublishRequest < ActiveRecord::Base
   accepts_nested_attributes_for :applications, reject_if: proc { |attributes| attributes['url'].blank? }
 
   def done?
-    applications_count < [:itunes, :google_play, :amazon].count
+    applications_count < Application::PROVIDERS.keys.count
   end
 
   def as_json(options={})
