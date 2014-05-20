@@ -7,7 +7,7 @@ class SubscriptionPublisher
 
   def publish
     archive_resources
-    @storybook.subscription_publish_request.update_attribute(:status, SubscriptionPublishRequest::STATUSES[:published])
+    @storybook.publish_to_subscription
     cleanup
   end
 

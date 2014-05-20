@@ -111,6 +111,12 @@ class Storybook < ActiveRecord::Base
     create_publish_request unless publish_request.present?
   end
 
+  def publish_to_subscription
+    self.subscription_publish_request.status = SubscriptionPublishRequest::STATUSES[:published]
+    self.subscription_publish_request.subscription_storybook_id = self.subscription_storybook.id
+    self.subscription_publish_request.save
+  end
+
   def as_json(options={})
     super({
       except: :settings,
