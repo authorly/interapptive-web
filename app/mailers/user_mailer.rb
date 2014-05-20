@@ -40,7 +40,7 @@ class UserMailer < AbstractMailer
   end
 
   def storybook_publication_completion_notification(storybook_id)
-    @storybook = Storybook.find(storybok_id)
+    @storybook = Storybook.find(storybook_id)
 
     mail :to => @storybook.user.email, :subject => "Your Storybook '#{@storybook.title}' was published to bookfair!"
   end
