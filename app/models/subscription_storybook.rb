@@ -7,6 +7,8 @@
 # `assets`: Has link to a zip file containing all the
 #    media files necessary for the storybook.
 class SubscriptionStorybook < ActiveRecord::Base
+  mount_uploader :assets, PublishedStorybookResourceUploader
+
   serialize :storybook_json, Hash
 
   belongs_to :storybook
