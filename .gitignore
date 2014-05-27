@@ -52,6 +52,7 @@ public/sounds
 public/android_applications
 public/app_icons
 public/compiled_applications
+public/published_storybook_resources
 public/keyframe_audios
 /spec/tmp/*
 /cache
