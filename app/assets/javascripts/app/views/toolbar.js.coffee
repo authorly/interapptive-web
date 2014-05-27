@@ -4,11 +4,12 @@ class App.Views.ToolbarView extends Backbone.View
     'click .edit-text':                            'addText'
     'click .app-settings':                         'showSettings'
     'click .publish-settings':                     'showPublishSettings'
+    'click .subscription-publish-settings':        'showSubscriptionPublishSettings'
     'click .background-sound':                     'showSceneBackgroundMusic'
     'click .compile':                              'compileStorybook'
     'click .logo':                                 'switchStorybook'
     'click .resource-archive':                     'archiveStorybookResources'
-    'click .publish-to-subscription':              'createSubscriptionPublishRequest'
+    'click .publish-to-subscription':              'publishToSubscription'
     'click .enqueue-for-subscription-publication': 'enqueueForSubscriptionPublication'
     'click .preview':          'showPreview'
 
@@ -53,6 +54,10 @@ class App.Views.ToolbarView extends Backbone.View
     App.vent.trigger('show:publishSettings')
 
 
+  showSubscriptionPublishSettings: ->
+    App.vent.trigger('show:subscriptionPublishSettings')
+
+
   showSceneBackgroundMusic: ->
     App.vent.trigger('show:scenebackgroundsoundform')
 
@@ -75,8 +80,8 @@ class App.Views.ToolbarView extends Backbone.View
       App.vent.trigger('show:message', 'error', "Only admin can archive resources of a storybook.")
 
 
-  createSubscriptionPublishRequest: ->
-    App.currentSelection.get('storybook').createSubscriptionPublishRequest()
+  publishToSubscription: ->
+    App.vent.trigger('publish:subscription')
 
 
   enqueueForSubscriptionPublication: ->

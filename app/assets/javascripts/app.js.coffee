@@ -47,6 +47,8 @@ window.App =
 
     @vent.on 'show:settingsform',    @_showSettings, @
     @vent.on 'show:publishSettings', @_showPublishSettings, @
+    @vent.on 'show:subscriptionPublishSettings', @_showSubscriptionPublishSettings, @
+    @vent.on 'publish:subscription', @_publishToSubscription, @
     @vent.on 'show:scenebackgroundsoundform', @_showBackgroundSoundForm, @
 
     @vent.on 'bring_to_front:sprite', @_bringToFront, @
@@ -142,6 +144,28 @@ window.App =
 
     view = new App.Views.Publishing(model: App.currentSelection.get('storybook'))
     App.modalWithView(view: view).show()
+
+
+  _showSubscriptionPublishSettings: ->
+    App.trackUserAction 'Opened subscription publishing information window'
+
+    view = new App.Views.SubscriptionPublishingInformation
+      model: App.currentSelection.get('storybook')
+    App.modalWithView(view: view).show()
+
+
+  _publishToSubscription: ->
+    storybook = App.currentSelection.get('storybook')
+
+    if storybook.canBePublishedToSubscription()
+      App.vent.trigger 'show:message', 'success', "We are reviewing your storybook for publishing. We will send you an email once it is ready."
+      request = App.currentSelection.get('storybook').createSubscriptionPublishRequest()
+      request.fail(->
+        App.vent.trigger('show:message', 'error', "Something went wrong queueing your application for publication. Please try again.")
+      )
+    else
+      App.vent.trigger 'show:message', 'warning', "Please select a cover for the storybook"
+      App.vent.trigger 'show:subscriptionPublishSettings'
 
 
   _showBackgroundSoundForm: ->

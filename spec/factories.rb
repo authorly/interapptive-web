@@ -93,6 +93,7 @@ end
 
 Factory.define :subscription_storybook do |f|
   f.storybook Factory(:storybook)
+  f.cover_image { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'support', 'images', '500x300.png')) }
 end
 
 Factory.define :subscription_publish_request do |f|

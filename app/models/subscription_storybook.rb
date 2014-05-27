@@ -8,10 +8,15 @@
 #    media files necessary for the storybook.
 class SubscriptionStorybook < ActiveRecord::Base
   mount_uploader :assets, PublishedStorybookResourceUploader
+  mount_uploader :cover_image, SubscriptionCoverImageUploader
 
   serialize :storybook_json, Hash
 
   belongs_to :storybook
 
   has_one :subscription_publish_request
+
+  validates :cover_image, presence: true
+  validates :storybook, presence: true
+
 end

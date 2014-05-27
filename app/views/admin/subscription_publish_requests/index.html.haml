@@ -10,6 +10,10 @@
           )
           = rr.storybook.title
         %p
+          Cover:
+          %br
+          = image_tag rr.storybook.cover_image.image.url, style: 'max-width: 300px;'
+        %p
           = time_ago_in_words(rr.updated_at)
           ago by
           = link_to rr.storybook.user.email, admin_user_path(rr.storybook.user.id)
@@ -32,6 +36,8 @@
           = pu.storybook.id
           )
           = link_to(pu.storybook.title, pu.subscription_storybook.assets.url, :target => '_blank')
+        %p
+          = image_tag pu.subscription_storybook.cover_image.standard_width.url
         %p
           = time_ago_in_words(pu.updated_at)
           ago by

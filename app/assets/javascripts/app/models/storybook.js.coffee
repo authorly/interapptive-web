@@ -110,6 +110,14 @@ class App.Models.Storybook extends Backbone.Model
         @publish_request = new App.Models.PublishRequest(request)
         @publish_request.storybook = @
 
+
+    request = { cover_image_id: attributes.cover_image_id }; delete attributes.cover_image_id
+    if request?
+      if @subscription_publish_information?
+        @subscription_publish_information.set(request)
+      else
+        @subscription_publish_information = new App.Models.SubscriptionPublishInformation(request)
+        @subscription_publish_information.storybook = @
     attributes
 
 
@@ -237,10 +245,12 @@ class App.Models.Storybook extends Backbone.Model
     @get('preview_image_url') || '/assets/default_storybook_preview.png'
 
 
+  canBePublishedToSubscription: ->
+    @subscription_publish_information.valid()
+
+
   createSubscriptionPublishRequest: ->
-    App.vent.trigger('show:message', 'success', "We are reviewing your storybook for publishing. We will send you an email once it is ready.")
-    $.post("/storybooks/#{@get('id')}/subscription_publish_request",
-     'json').fail(-> App.vent.trigger('show:message', 'error', "Something went wrong queueing your application for publication. Please try again."))
+    $.post "/storybooks/#{@get('id')}/subscription_publish_request", 'json'
 
 
   enqueueForSubscriptionPublication: (user) ->

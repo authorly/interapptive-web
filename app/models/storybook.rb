@@ -14,13 +14,16 @@ class Storybook < ActiveRecord::Base
   has_many :fonts,  dependent: :destroy
   has_many :assets # a way to refer to all the images, sounds, videos, fonts
 
+  # publishing to the mobile app stores
   has_one :application_information,       dependent: :destroy
   has_one :publish_request,               dependent: :destroy
 
+  # publishing to the subscription (bookfair) platform
   has_one :subscription_publish_request,  dependent: :destroy
   # TODO: waseem: What happens to a SubscriptionStorybook once
   # the original storybook is destroyed?
   has_one :subscription_storybook
+  belongs_to :cover_image, class_name: 'Image'
 
   serialize :widgets
 
@@ -116,9 +119,7 @@ class Storybook < ActiveRecord::Base
   end
 
   def publish_to_subscription
-    self.subscription_publish_request.status = SubscriptionPublishRequest::STATUSES[:published]
-    self.subscription_publish_request.subscription_storybook_id = self.subscription_storybook.id
-    self.subscription_publish_request.save
+    subscription_publish_request.publish(subscription_storybook)
   end
 
   def as_json(options={})

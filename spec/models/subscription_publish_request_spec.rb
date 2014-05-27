@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe SubscriptionPublishRequest do
+  it { Factory(:subscription_publish_request).should be_valid }
   let!(:subscription_publish_request) { Factory(:subscription_publish_request) }
 
   describe '#review_required?' do
@@ -19,5 +20,9 @@ describe SubscriptionPublishRequest do
         expect(subscription_publish_request.review_required?).not_to be
       end
     end
+  end
+
+  describe 'validation' do
+    it { should validate_presence_of :storybook }
   end
 end

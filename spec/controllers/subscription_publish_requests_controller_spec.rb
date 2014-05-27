@@ -10,6 +10,7 @@ describe SubscriptionPublishRequestsController do
   describe '#create' do
     it 'should create a subscription publish request for a storybook' do
       Storybook.any_instance.should_receive(:create_or_update_subscription_publish_request)
+      Storybook.any_instance.should_receive(:subscription_publish_request).and_return Factory(:subscription_publish_request)
       test_sign_in(@storybook.user)
 
       post :create, :storybook_id => @storybook.id, :format => :json

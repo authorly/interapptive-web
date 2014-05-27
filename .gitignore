@@ -55,6 +55,9 @@ public/compiled_applications
 public/published_storybook_resources
 public/keyframe_audios
 /public/cocos2d/*
+public/subscription_publish_requests
+public/subscription_publish_request_covers
+public/subscription_storybook_covers
 /spec/tmp/*
 /cache
 /capybara*

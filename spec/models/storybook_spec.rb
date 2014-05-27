@@ -89,63 +89,66 @@ describe Storybook do
     end
   end
 
-  describe '#create_or_update_subscription_publish_request' do
-    context 'when publish request is missing' do
-      it 'should create a new request' do
-        expect(storybook.subscription_publish_request).to be_blank
-        storybook.create_or_update_subscription_publish_request
-        storybook.reload
-        expect(storybook.subscription_publish_request).to be_present
-        expect(storybook.subscription_publish_request.status).to eql(SubscriptionPublishRequest::STATUSES[:review_required])
+  describe 'publishing to the subscription platform' do
+
+    describe '#create_or_update_subscription_publish_request' do
+      context 'when publish request is missing' do
+        it 'should create a new request' do
+          expect(storybook.subscription_publish_request).to be_blank
+          storybook.create_or_update_subscription_publish_request
+          storybook.reload
+          expect(storybook.subscription_publish_request).to be_present
+          expect(storybook.subscription_publish_request.status).to eql(SubscriptionPublishRequest::STATUSES[:review_required])
+        end
+      end
+
+      context 'when publish request is present' do
+        it 'should update existing request for review-required' do
+          storybook.create_or_update_subscription_publish_request
+          expect(storybook.subscription_publish_request).to be_present
+          storybook.subscription_publish_request.update_attribute(:status, SubscriptionPublishRequest::STATUSES[:published])
+          spr = storybook.subscription_publish_request
+          storybook.create_or_update_subscription_publish_request
+          expect(storybook.subscription_publish_request).to eql(spr)
+          storybook.reload
+          expect(storybook.subscription_publish_request.status).to eql(SubscriptionPublishRequest::STATUSES[:review_required])
+        end
       end
     end
 
-    context 'when publish request is present' do
-      it 'should update existing request for review-required' do
-        storybook.create_or_update_subscription_publish_request
-        expect(storybook.subscription_publish_request).to be_present
-        storybook.subscription_publish_request.update_attribute(:status, SubscriptionPublishRequest::STATUSES[:published])
-        spr = storybook.subscription_publish_request
-        storybook.create_or_update_subscription_publish_request
-        expect(storybook.subscription_publish_request).to eql(spr)
-        storybook.reload
-        expect(storybook.subscription_publish_request.status).to eql(SubscriptionPublishRequest::STATUSES[:review_required])
+    describe '#requires_subscription_publication_review?' do
+      context 'publish request is missing' do
+        it 'should be false' do
+          expect(storybook.subscription_publish_request).to be_blank
+          expect(storybook.requires_subscription_publication_review?).not_to be
+        end
       end
-    end
-  end
 
-  describe '#requires_subscription_publication_review?' do
-    context 'publish request is missing' do
-      it 'should be false' do
-        expect(storybook.subscription_publish_request).to be_blank
-        expect(storybook.requires_subscription_publication_review?).not_to be
+      context 'publish request status is review-required' do
+        it 'should be true' do
+          storybook.create_or_update_subscription_publish_request
+          expect(storybook.subscription_publish_request.status).to eql(SubscriptionPublishRequest::STATUSES[:review_required])
+          expect(storybook.requires_subscription_publication_review?).to be
+        end
       end
-    end
 
-    context 'publish request status is review-required' do
-      it 'should be true' do
-        storybook.create_or_update_subscription_publish_request
-        expect(storybook.subscription_publish_request.status).to eql(SubscriptionPublishRequest::STATUSES[:review_required])
-        expect(storybook.requires_subscription_publication_review?).to be
+      context 'publish request status is not review required' do
+        it 'should be false' do
+          storybook.create_or_update_subscription_publish_request
+          storybook.subscription_publish_request.update_attribute(:status, SubscriptionPublishRequest::STATUSES[:published])
+          expect(storybook.requires_subscription_publication_review?).not_to be
+        end
       end
     end
 
-    context 'publish request status is not review required' do
-      it 'should be false' do
+    describe '#enqueue_for_subscription_publication' do
+      it 'readies storybook for publication' do
+        user = Factory(:user)
         storybook.create_or_update_subscription_publish_request
-        storybook.subscription_publish_request.update_attribute(:status, SubscriptionPublishRequest::STATUSES[:published])
-        expect(storybook.requires_subscription_publication_review?).not_to be
+        Resque.should_receive(:enqueue).with(SubscriptionPublicationQueue, storybook.id, {}, user.email)
+        storybook.enqueue_for_subscription_publication({}, user)
+        expect(storybook.subscription_publish_request.status).to eql(SubscriptionPublishRequest::STATUSES[:ready_to_publish])
       end
-    end
-  end
-
-  describe '#enqueue_for_subscription_publication' do
-    it 'readies storybook for publication' do
-      user = Factory(:user)
-      storybook.create_or_update_subscription_publish_request
-      Resque.should_receive(:enqueue).with(SubscriptionPublicationQueue, storybook.id, {}, user.email)
-      storybook.enqueue_for_subscription_publication({}, user)
-      expect(storybook.subscription_publish_request.status).to eql(SubscriptionPublishRequest::STATUSES[:ready_to_publish])
     end
   end
 end

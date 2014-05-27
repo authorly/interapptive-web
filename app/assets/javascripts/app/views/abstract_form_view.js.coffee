@@ -55,7 +55,12 @@ class App.Views.AbstractFormView extends Backbone.View
 
 
   onError: (model, xhr) ->
-    errors = jQuery.parseJSON(xhr.responseText)
+    errors = try
+      jQuery.parseJSON(xhr.responseText)
+    catch error
+      console.log 'Cannot parse server response', xhr.responseText
+      {}
+
     form = @form.$el
 
     for field of errors

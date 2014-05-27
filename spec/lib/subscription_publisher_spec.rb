@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SubscriptionPublisher do
-  let(:storybook) { Factory(:storybook) }
+  let(:storybook) { Factory :storybook, cover_image: Factory(:image) }
   let(:storybook_json) { '{}'}
   let(:subscription_publisher) { SubscriptionPublisher.new(storybook, storybook_json)}
 
