@@ -10,6 +10,10 @@ describe SubscriptionPublisher do
   end
 
   describe '#publish' do
+    before do
+      Factory(:subscription_storybook, storybook: storybook)
+    end
+
     it 'archives and cleans up' do
       subscription_publisher.should_receive(:archive_resources).and_return(true)
       subscription_publisher.should_receive(:cleanup).and_return(true)
