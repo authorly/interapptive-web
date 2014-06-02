@@ -60,7 +60,7 @@ describe Storybook do
       home[:name].should == 'home'
       home[:z_order].should == 4010
       home[:scale].should == 1
-      home[:position].should == {y: 400, x: 200}
+      home[:position].should == {y: 736, x: 36}
     end
 
     it 'should create a default scene and a main menu scene in the storybook' do
