@@ -27,6 +27,7 @@ class SubscriptionPublisher
     subscription_storybook.storybook_json = ActiveSupport::JSON.decode(@json)
     subscription_storybook.assets = File.open(@resource_downloader.zip_file_path)
     subscription_storybook.remote_cover_image_url = @storybook.cover_image.image.url
+    subscription_storybook.title = @storybook.title
     subscription_storybook.save
   end
 

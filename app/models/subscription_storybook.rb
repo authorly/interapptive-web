@@ -18,5 +18,4 @@ class SubscriptionStorybook < ActiveRecord::Base
 
   validates :cover_image, presence: true
   validates :storybook, presence: true
-
 end
