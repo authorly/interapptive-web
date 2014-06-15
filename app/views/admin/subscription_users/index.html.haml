@@ -18,6 +18,8 @@
       %th
         Signed Up
       %th
+        Campaign
+      %th
         Last signed in at
   %tbody
     - for user in @users
@@ -29,6 +31,8 @@
         %td
           = time_ago_in_words(user.created_at)
           ago
+        %td
+          = user.campaign
         %td
           = user.last_sign_in_at && time_ago_in_words(user.last_sign_in_at)
           ago
