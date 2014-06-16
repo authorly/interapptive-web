@@ -22,6 +22,8 @@
               |
               = link_to("Subscription Users", admin_subscription_users_path)
               |
+              = link_to("Deleted Subscription Users", admin_subscription_users_path(:deleted => true))
+              |
               = link_to("Deleted Users", admin_users_path(:deleted => true))
               |
               = link_to("Applications", admin_publish_requests_path)
