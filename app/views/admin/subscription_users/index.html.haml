@@ -34,5 +34,4 @@
         %td
           = user.campaign
         %td
-          = user.last_sign_in_at && time_ago_in_words(user.last_sign_in_at)
-          ago
+          = last_signed_in_mobile_at(user.last_sign_in_at)
