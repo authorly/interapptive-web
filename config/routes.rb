@@ -72,6 +72,10 @@ Interapptive::Application.routes.draw do
       collection do
         get 'search'
       end
+
+      member do
+        post 'restore'
+      end
     end
 
     resources :users do
