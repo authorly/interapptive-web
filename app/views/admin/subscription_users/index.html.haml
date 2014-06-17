@@ -1,4 +1,12 @@
-%h1 Subscription Application Users
+%h3
+  (
+  = @users_count
+  )
+  - if params[:deleted] == 'true'
+    Deleted
+  - else
+    Undeleted
+  Subscription Application Users
 
 .search-box
   = form_tag search_admin_subscription_users_path, :method => 'get' do
