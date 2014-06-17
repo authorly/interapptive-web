@@ -46,7 +46,7 @@
         %td
           = last_signed_in_mobile_at(user.last_sign_in_at)
         %td
-          = yes_or_no(user.upfront_cc_info_required?)
+          = yes_or_no(!user.upfront_cc_info_required?)
         %td
           .btn-group
             %a.btn.dropdown-toggle{'data-toggle' => "dropdown", :href => "#"}
