@@ -5,6 +5,7 @@ module Admin
       is_deleted = true if params[:deleted] == 'true'
       @users = SubscriptionUser.order('id DESC').page(params[:page]).per(50)
       @users = SubscriptionUser.where(:is_deleted => is_deleted).order('id DESC').page(params[:page]).per(50)
+      @users_count = SubscriptionUser.where(:is_deleted => is_deleted).count
     end
 
     def search
