@@ -1,7 +1,5 @@
 %h3
-  (
-  = @users_count
-  )
+  = "(" + @users_count.to_s + ")"
   - if params[:deleted] == 'true'
     Deleted
   - else
