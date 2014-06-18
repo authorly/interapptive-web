@@ -1,15 +1,16 @@
 module Admin
   class SubscriptionUsersController < Admin::BaseController
+    helper_method :sort_column
+
     def index
       is_deleted = false
       is_deleted = true if params[:deleted] == 'true'
-      @users = SubscriptionUser.order('id DESC').page(params[:page]).per(50)
-      @users = SubscriptionUser.where(:is_deleted => is_deleted).order('id DESC').page(params[:page]).per(50)
+      @users = SubscriptionUser.where(:is_deleted => is_deleted).order(sort_column + " " + sort_direction).page(params[:page]).per(50)
       @users_count = SubscriptionUser.where(:is_deleted => is_deleted).count
     end
 
     def search
-      @users = SubscriptionUser.where('email LIKE ?', '%' + params[:q] + '%').order('id DESC').page(params[:page]).per(50)
+      @users = SubscriptionUser.where('email LIKE ?', '%' + params[:q] + '%').order(sort_column + " " + sort_direction).page(params[:page]).per(50)
       render :action => :index
     end
 
@@ -37,6 +38,12 @@ module Admin
       respond_to do |format|
         format.html { redirect_to :action => :index }
       end
+    end
+
+    private
+
+    def sort_column
+      super(SubscriptionUser, 'id')
     end
   end
 end
