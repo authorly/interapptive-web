@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
   before_filter :authorize
+  helper_method :current_user, :signed_in?, :signed_in_as_user,
+                :sort_column,  :sort_direction
 
   private
 
@@ -53,5 +55,11 @@ class ApplicationController < ActionController::Base
     return '.interapptive.com' if %w(development test).include?(Rails.env)
   end
 
-  helper_method :current_user, :signed_in?, :signed_in_as_user
+  def sort_column(model, default)
+    model.column_names.include?(params[:sort]) ? params[:sort] : default
+  end
+
+  def sort_direction
+    %w[ASC DESC].include?(params[:direction]) ? params[:direction] : "DESC"
+  end
 end
