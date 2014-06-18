@@ -6,8 +6,8 @@ module Admin
     end
 
     def sign_up_time(date_time)
-      return date_time.to_s(:us) if date_time > 24.hours.ago
-      time_ago_in_words(date_time) + "ago"
+      return time_ago_in_words(date_time) + "ago" if date_time > 24.hours.ago
+      date_time.to_s(:us)
     end
   end
 end
