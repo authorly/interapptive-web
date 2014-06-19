@@ -279,11 +279,18 @@ class App.Models.Keyframe extends Backbone.Model
       App.Models.HotspotWidget.prototype.defaults().z_order
 
 
+  getDelayBeforeShowingText: (index = 0) ->
+    keyframeIsAnimation = @isAnimation() || @get('position') == 0 and index == 0
+    return 0 if keyframeIsAnimation
+    @get('animation_duration')
+
+
   @isValidAutoplayDuration: (duration) ->
     return false unless Number(duration) == duration and duration >= 0
     onlyOneDecimal = duration * 10 == Math.round (duration * 10)
     return false unless onlyOneDecimal
     true
+
 
   @isValidAnimationDuration: (duration) ->
     return false unless Number(duration) == duration and duration >= 0

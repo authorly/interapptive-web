@@ -37,7 +37,7 @@ class App.JSON
         @addSceneNode(scene)
 
 
-  addTextNodeFor: (keyframe, page) =>
+  addTextNodeFor: (keyframe, page, idx) =>
     return if keyframe.isAnimation()
 
     textWidgets = _.sortBy(keyframe.textWidgets(), (w) -> w.get('z_order'))
@@ -82,6 +82,7 @@ class App.JSON
 
       highlightingTimes: keyframeHighlightTimes
       autoplayDuration: keyframe.autoplayDuration()
+      delayBeforeShowingText: keyframe.getDelayBeforeShowingText(idx)
 
     paragraph.voiceAudioFile = keyframeVoiceoverUrl if voiceoverNeeded
 
@@ -103,14 +104,7 @@ class App.JSON
   addSceneNode: (scene) =>
     fontColor = scene.get('font_color')
     page =
-      API:
-        CCMoveTo:    []
-        CCScaleTo:   []
-        CCSequence:  []
-        CCDelayTime: []
-        CCSpawn:     []
-        CCStorySwipeEnded:
-          runAction: []
+      API: []
       Page:
         settings:
           number: scene.get('position') + 1
@@ -120,7 +114,7 @@ class App.JSON
       page.Page.settings.backgroundMusicFile =
         loop: if scene.get('loop_sound') then 1 else 0
         audioFilePath: sound.get('url')
-    scene.keyframes.each (k) => @addTextNodeFor(k, page)
+    scene.keyframes.each (k, idx) => @addTextNodeFor(k, page, idx)
 
     @app.Pages.push(page)
 
@@ -128,8 +122,6 @@ class App.JSON
 
 
   addSpriteNodesFor: (scene, page) ->
-    page.API.CCSprites ||= []
-
     _.each scene.spriteWidgets(), (spriteWidget) =>
 
       # workaround caused by #244
@@ -139,26 +131,33 @@ class App.JSON
       spriteNode = @_getSpriteNode(spriteWidget, scene)
       spriteNode.spriteTag = spriteId
 
-      page.API.CCSprites.push(spriteNode)
+      api_node =
+        CCSprites: []
+        CCMoveTo: []
+        CCScaleTo: []
+        CCSequence: []
+        CCDelayTime: []
+        CCSpawn: []
+        CCStorySwipeEnded:
+          runAction: []
 
-      actions = page.API.CCStorySwipeEnded.runAction
+      api_node.CCSprites.push(spriteNode)
+
+      actions = api_node.CCStorySwipeEnded.runAction
       previousOrientation = null
       animationNode = null
       scene.keyframes.each (keyframe, index) =>
         orientation = keyframe.getOrientationFor(spriteWidget)
         keyframeIndex = keyframe.get('position')
 
+        duration = keyframe.getDelayBeforeShowingText(index)
         keyframeIsAnimation = keyframe.isAnimation() || keyframeIndex == 0 and index == 0
-        if keyframeIsAnimation
-          duration = 0
-        else
-          duration = keyframe.get('animation_duration')
 
         # TODO optimization: reuse actions if they are available already
         scaleId = null
         unless previousOrientation? && previousOrientation.get('scale') == orientation.get('scale')
           scaleId = @actionIdCounter.next()
-          page.API.CCScaleTo.push
+          api_node.CCScaleTo.push
             actionTag: scaleId
             duration: duration
             intensity: orientation.get('scale')
@@ -171,14 +170,14 @@ class App.JSON
         position = orientation.get('position')
         unless previousOrientation? && previousPosition.x == position.x && previousPosition.y == position.y
           moveId = @actionIdCounter.next()
-          page.API.CCMoveTo.push
+          api_node.CCMoveTo.push
             actionTag: moveId
             duration: duration
             position: @_getPosition(position)
 
         if keyframe.get('is_animation')
           delayId = @actionIdCounter.next()
-          page.API.CCDelayTime.push
+          api_node.CCDelayTime.push
             actionTag: delayId
             duration: keyframe.get('animation_duration')
 
@@ -186,10 +185,10 @@ class App.JSON
           animationNode =
             actionTag: spawnId
             actions: []
-          page.API.CCSpawn.push animationNode
+          api_node.CCSpawn.push animationNode
 
           sequenceId = @actionIdCounter.next()
-          page.API.CCSequence.push
+          api_node.CCSequence.push
             actionTag: sequenceId
             actions: [delayId, spawnId]
 
@@ -211,7 +210,7 @@ class App.JSON
               animationNode.actions = currentActions
 
           previousOrientation = orientation
-
+      page.API.push(api_node)
 
   configurationNode: (storybook) ->
     home = storybook.widgets.at(0)
