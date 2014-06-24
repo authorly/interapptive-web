@@ -197,6 +197,7 @@ class App.JSON
           page.API[API_NODE_INDICES.CCSpawnIdx].CCSpawn.push(animationNode)
 
           sequenceId = @actionIdCounter.next()
+          delayId = @actionIdCounter.next()
           page.API[API_NODE_INDICES.CCSequenceIdx].CCSequence.push
             actionTag: sequenceId
             actions: [delayId, spawnId]
