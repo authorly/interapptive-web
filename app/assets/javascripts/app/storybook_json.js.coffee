@@ -131,19 +131,20 @@ class App.JSON
       spriteNode = @_getSpriteNode(spriteWidget, scene)
       spriteNode.spriteTag = spriteId
 
-      api_node =
+      sprites_api_node =
         CCSprites: []
-        CCMoveTo: []
-        CCScaleTo: []
-        CCSequence: []
-        CCDelayTime: []
-        CCSpawn: []
+        #CCSequence: []
+        #CCDelayTime: []
+        #CCSpawn: []
+      sprites_api_node.CCSprites.push(spriteNode)
+      page.API.push(sprites_api_node)
+
+      swipe_ended_api_node =
         CCStorySwipeEnded:
           runAction: []
+      actions = swipe_ended_api_node.CCStorySwipeEnded.runAction
+      page.API.push(swipe_ended_api_node)
 
-      api_node.CCSprites.push(spriteNode)
-
-      actions = api_node.CCStorySwipeEnded.runAction
       previousOrientation = null
       animationNode = null
       scene.keyframes.each (keyframe, index) =>
@@ -155,29 +156,41 @@ class App.JSON
 
         # TODO optimization: reuse actions if they are available already
         scaleId = null
+        scale_to_api_node =
+          CCScaleTo: []
         unless previousOrientation? && previousOrientation.get('scale') == orientation.get('scale')
           scaleId = @actionIdCounter.next()
-          api_node.CCScaleTo.push
+          scale_to_api_node.CCScaleTo.push
             actionTag: scaleId
             duration: duration
             intensity: orientation.get('scale')
 
           if keyframeIsAnimation and duration == 0
             initialScaleActionId = scaleId
+        page.API.push(scale_to_api_node)
 
+        move_to_api_node =
+          CCMoveTo: []
         moveId = null
         previousPosition = previousOrientation?.get('position')
         position = orientation.get('position')
         unless previousOrientation? && previousPosition.x == position.x && previousPosition.y == position.y
           moveId = @actionIdCounter.next()
-          api_node.CCMoveTo.push
+          move_to_api_node.CCMoveTo.push
             actionTag: moveId
             duration: duration
             position: @_getPosition(position)
+        page.API.push(move_to_api_node)
 
+        delay_time_api_node =
+          CCDelayTime: []
+        spawn_api_node =
+          CCSpawn: []
+        sequence_api_node =
+          CCSequence: []
         if keyframe.get('is_animation')
           delayId = @actionIdCounter.next()
-          api_node.CCDelayTime.push
+          delay_time_api_node.CCDelayTime.push
             actionTag: delayId
             duration: keyframe.get('animation_duration')
 
@@ -185,10 +198,10 @@ class App.JSON
           animationNode =
             actionTag: spawnId
             actions: []
-          api_node.CCSpawn.push animationNode
+          spawn_api_node.CCSpawn.push animationNode
 
           sequenceId = @actionIdCounter.next()
-          api_node.CCSequence.push
+          sequence_api_node.CCSequence.push
             actionTag: sequenceId
             actions: [delayId, spawnId]
 
@@ -208,9 +221,10 @@ class App.JSON
             else
               # keyframeIndex == 0 and index > 0 - there was an animation keyframe
               animationNode.actions = currentActions
-
           previousOrientation = orientation
-      page.API.push(api_node)
+        page.API.push(delay_time_api_node)
+        page.API.push(spawn_api_node)
+        page.API.push(sequence_api_node)
 
   configurationNode: (storybook) ->
     home = storybook.widgets.at(0)
@@ -298,6 +312,7 @@ class App.JSON
       visible: true
       zOrder: parseInt(spriteWidget.get('z_order'))
     node
+
 
   _getPosition: (position) ->
     [Math.round(position.x), Math.round(position.y)]
