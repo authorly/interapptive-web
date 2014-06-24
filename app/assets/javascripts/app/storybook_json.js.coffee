@@ -5,6 +5,15 @@
 # It creates the JSON structure from scratch each time it is created.
 #
 class App.JSON
+  API_NODE_INDICES =
+    CCMoveToIdx:          0
+    CCScaleToIdx:         1
+    CCFadeToIdx:          2
+    CCSequenceIdx:        3
+    CCDelayTimeIdx:       4
+    CCSpawnIdx:           5
+    CCStorySwipeEndedIdx: 6
+    CCSpritesIdx:         7
 
   constructor: (storybook) ->
     @spriteIdCounter = new App.Lib.Counter
@@ -104,7 +113,16 @@ class App.JSON
   addSceneNode: (scene) =>
     fontColor = scene.get('font_color')
     page =
-      API: []
+      API: [
+        { CCMoveTo:          [] },
+        { CCScaleTo:         [] },
+        { CCFadeTo:          [] },
+        { CCSequence:        [] },
+        { CCDelayTime:       [] },
+        { CCSpawn:           [] },
+        { CCStorySwipeEnded: { runAction: [] } },
+        { CCSprites:         [] }
+      ]
       Page:
         settings:
           number: scene.get('position') + 1
@@ -122,6 +140,7 @@ class App.JSON
 
 
   addSpriteNodesFor: (scene, page) ->
+    page.API[API_NODE_INDICES.CCSpritesIdx].CCSprites ||= []
     _.each scene.spriteWidgets(), (spriteWidget) =>
 
       # workaround caused by #244
@@ -131,20 +150,9 @@ class App.JSON
       spriteNode = @_getSpriteNode(spriteWidget, scene)
       spriteNode.spriteTag = spriteId
 
-      sprites_api_node =
-        CCSprites: []
-        #CCSequence: []
-        #CCDelayTime: []
-        #CCSpawn: []
-      sprites_api_node.CCSprites.push(spriteNode)
-      page.API.push(sprites_api_node)
+      page.API[API_NODE_INDICES.CCSpritesIdx].CCSprites.push(spriteNode)
 
-      swipe_ended_api_node =
-        CCStorySwipeEnded:
-          runAction: []
-      actions = swipe_ended_api_node.CCStorySwipeEnded.runAction
-      page.API.push(swipe_ended_api_node)
-
+      actions = page.API[API_NODE_INDICES.CCStorySwipeEndedIdx].CCStorySwipeEnded.runAction
       previousOrientation = null
       animationNode = null
       scene.keyframes.each (keyframe, index) =>
@@ -156,41 +164,29 @@ class App.JSON
 
         # TODO optimization: reuse actions if they are available already
         scaleId = null
-        scale_to_api_node =
-          CCScaleTo: []
         unless previousOrientation? && previousOrientation.get('scale') == orientation.get('scale')
           scaleId = @actionIdCounter.next()
-          scale_to_api_node.CCScaleTo.push
+          page.API[API_NODE_INDICES.CCScaleToIdx].CCScaleTo.push
             actionTag: scaleId
             duration: duration
             intensity: orientation.get('scale')
 
           if keyframeIsAnimation and duration == 0
             initialScaleActionId = scaleId
-        page.API.push(scale_to_api_node)
 
-        move_to_api_node =
-          CCMoveTo: []
         moveId = null
         previousPosition = previousOrientation?.get('position')
         position = orientation.get('position')
         unless previousOrientation? && previousPosition.x == position.x && previousPosition.y == position.y
           moveId = @actionIdCounter.next()
-          move_to_api_node.CCMoveTo.push
+          page.API[API_NODE_INDICES.CCMoveToIdx].CCMoveTo.push
             actionTag: moveId
             duration: duration
             position: @_getPosition(position)
-        page.API.push(move_to_api_node)
 
-        delay_time_api_node =
-          CCDelayTime: []
-        spawn_api_node =
-          CCSpawn: []
-        sequence_api_node =
-          CCSequence: []
         if keyframe.get('is_animation')
           delayId = @actionIdCounter.next()
-          delay_time_api_node.CCDelayTime.push
+          page.API[API_NODE_INDICES.CCDelayTimeIdx].CCDelayTime.push
             actionTag: delayId
             duration: keyframe.get('animation_duration')
 
@@ -198,10 +194,10 @@ class App.JSON
           animationNode =
             actionTag: spawnId
             actions: []
-          spawn_api_node.CCSpawn.push animationNode
+          page.API[API_NODE_INDICES.CCSpawnIdx].CCSpawn.push(animationNode)
 
           sequenceId = @actionIdCounter.next()
-          sequence_api_node.CCSequence.push
+          page.API[API_NODE_INDICES.CCSequenceIdx].CCSequence.push
             actionTag: sequenceId
             actions: [delayId, spawnId]
 
@@ -222,9 +218,6 @@ class App.JSON
               # keyframeIndex == 0 and index > 0 - there was an animation keyframe
               animationNode.actions = currentActions
           previousOrientation = orientation
-        page.API.push(delay_time_api_node)
-        page.API.push(spawn_api_node)
-        page.API.push(sequence_api_node)
 
   configurationNode: (storybook) ->
     home = storybook.widgets.at(0)
