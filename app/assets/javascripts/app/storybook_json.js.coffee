@@ -112,16 +112,17 @@ class App.JSON
 
   addSceneNode: (scene) =>
     fontColor = scene.get('font_color')
+    # NOTE: Position of different nodes matches their position in API_NODE_INDICES
     page =
       API: [
         { CCMoveTo:          [] },
         { CCScaleTo:         [] },
         { CCFadeTo:          [] },
-        { CCSequence:        [] },
-        { CCDelayTime:       [] },
         { CCSpawn:           [] },
+        { CCDelayTime:       [] },
+        { CCSprites:         [] },
         { CCStorySwipeEnded: { runAction: [] } },
-        { CCSprites:         [] }
+        { CCSequence:        [] }
       ]
       Page:
         settings:
