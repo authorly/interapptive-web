@@ -25,7 +25,7 @@ class App.Views.ToolbarView extends Backbone.View
 
   addScene: (event) ->
     event.preventDefault()
-    return if $(event.target).hasClass('disabled')
+    return if $(event.target).parent().hasClass('disabled') or $(event.target).hasClass('disabled')
 
     App.vent.trigger 'create:scene'
 
@@ -34,14 +34,14 @@ class App.Views.ToolbarView extends Backbone.View
     App.trackUserAction 'Added text'
 
     event.preventDefault()
-    return if $(event.target).hasClass('disabled')
+    return if $(event.target).parent().hasClass('disabled') or $(event.target).hasClass('disabled')
 
     App.vent.trigger 'create:widget', type: 'TextWidget'
 
 
 
   showSettings: (event) ->
-    return if $(event.target).hasClass('disabled')
+    return if $(event.target).parent().hasClass('disabled') or $(event.target).hasClass('disabled')
 
     App.vent.trigger('show:settingsform')
 
