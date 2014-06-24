@@ -9,11 +9,11 @@ class App.JSON
     CCMoveToIdx:          0
     CCScaleToIdx:         1
     CCFadeToIdx:          2
-    CCSequenceIdx:        3
+    CCSpawnIdx:           3
     CCDelayTimeIdx:       4
-    CCSpawnIdx:           5
+    CCSpritesIdx:         5
     CCStorySwipeEndedIdx: 6
-    CCSpritesIdx:         7
+    CCSequenceIdx:        7
 
   constructor: (storybook) ->
     @spriteIdCounter = new App.Lib.Counter
