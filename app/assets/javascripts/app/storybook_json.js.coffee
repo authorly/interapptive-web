@@ -299,6 +299,7 @@ class App.JSON
     orientation = scene.keyframes.at(0).getOrientationFor(spriteWidget)
     node =
       image: spriteWidget.url()
+      _originalFileName: spriteWidget.filename()
       scale: orientation.get('scale')
       # TODO does the app require this? because we have a Move action for the first
       # keyframe anyway
