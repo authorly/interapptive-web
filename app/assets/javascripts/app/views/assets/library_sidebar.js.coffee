@@ -125,6 +125,10 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
     for asset in response.result
       @collection.add asset
 
+    # unveil method is provided by jquery.unveil.js
+    # Used to lazily load images in the sidebar.
+    # See templates/assets/library/asset.jst.hamlc for data-src
+    $('#asset-list-thumb-view img').unveil()
     @currentUploads.collection.remove @uploader.getData(response).id
 
 
