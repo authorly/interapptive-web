@@ -127,7 +127,6 @@ window.App =
 
     @currentSelection.set assets: storybook.assets
 
-
   _showSettings: ->
     App.trackUserAction 'Opened app settings'
 
@@ -165,6 +164,7 @@ window.App =
     @newKeyframeView.remove() if @newKeyframeView?
     @newKeyframeView = new App.Views.NewKeyframe(scene: scene)
     $('#keyframe-list').append @newKeyframeView.render().el
+    $('#asset-list-thumb-view img').unveil()
 
 
   _addSceneListeners: (scene) ->

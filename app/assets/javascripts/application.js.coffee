@@ -35,6 +35,7 @@
 #= require toastr-1.0.2
 #= require backbone-rails-fixes
 #= require fontdetect.2.1
+#= require jquery.unveil
 
 #= require app
 #= require config
