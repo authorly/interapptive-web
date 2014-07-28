@@ -123,12 +123,12 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   _uploaderFileUploaded: (response) ->
     for asset in response.result
+      # source lets us decide if we should show this image immediately
+      # instead of unveiling in case it is being uploaded.
+      # See templates/assets/library/asset.jst.hamlc for its use.
+      asset.source = 'uploader'
       @collection.add asset
 
-    # unveil method is provided by jquery.unveil.js
-    # Used to lazily load images in the sidebar.
-    # See templates/assets/library/asset.jst.hamlc for data-src
-    $('#asset-list-thumb-view img').unveil()
     @currentUploads.collection.remove @uploader.getData(response).id
 
 
