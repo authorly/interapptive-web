@@ -1,6 +1,9 @@
 .asset{:title => @title}
   - if @background?
-    %img.js-draggable.thumb{:class => @type, :src => '/assets/loading.gif', :data-src => "#{@background}", :data-id => @asset.id, :data-type => @type}
+    - if @asset.get('source') == 'uploader'
+      %img.js-draggable.thumb{:class => @type, :src => "#{@background}", :data-src => "#{@background}", :data-id => @asset.id, :data-type => @type}
+    - else
+      %img.js-draggable.thumb{:class => @type, :src => '/assets/loading.gif', :data-src => "#{@background}", :data-id => @asset.id, :data-type => @type}
   - else
     %span.js-draggable.thumb{:class => @type, :data-id => @asset.id, :data-type => @type}
   %span.filename= App.Lib.StringHelper.truncate(@asset.get('name'))
