@@ -5,7 +5,7 @@
     - else
       %img.js-draggable.thumb{:class => @type, :src => '/assets/loading.gif', :data-src => "#{@background}", :data-id => @asset.id, :data-type => @type}
   - else
-    %span.js-draggable.thumb{:class => @type, :data-id => @asset.id, :data-type => @type}
+    %img.js-draggable.thumb{:class => @type, :data-id => @asset.id, :data-type => @type, :src => "/assets/#{@type}-icon.png"}
   %span.filename= App.Lib.StringHelper.truncate(@asset.get('name'))
   %span.delete
   %span.add-to-canvas{:title => "Add #{@asset.widgetName()} to scene"}
