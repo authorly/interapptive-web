@@ -139,6 +139,7 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
   toggleViewClicked: (event) ->
     el = $(event.currentTarget)
     @toggleListView(el) unless el.hasClass('disabled')
+    @_revealImages()
 
 
   toggleListView: (toggleEl) ->
@@ -167,3 +168,11 @@ class App.Views.AssetLibrarySidebar extends Backbone.View
 
   nameDescendingComparator: (a1, a2) ->
     if a1.get('name').toLowerCase() < a2.get('name').toLowerCase() then 1 else -1
+
+
+  _revealImages: ->
+    # unveil method is provided by jquery.unveil.js
+    # Used to lazily load images in the sidebar.
+    # See templates/assets/library/asset.jst.hamlc for data-src
+    $('#asset-list-table img').unveil()
+    $('#asset-list-thumb-view img').unveil()

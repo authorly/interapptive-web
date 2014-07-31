@@ -164,11 +164,15 @@ window.App =
     @newKeyframeView.remove() if @newKeyframeView?
     @newKeyframeView = new App.Views.NewKeyframe(scene: scene)
     $('#keyframe-list').append @newKeyframeView.render().el
+    @_revealImages()
 
+
+  _revealImages: ->
     # unveil method is provided by jquery.unveil.js
     # Used to lazily load images in the sidebar.
     # See templates/assets/library/asset.jst.hamlc for data-src
     $('#asset-list-thumb-view img').unveil()
+    $('#asset-list-table img').unveil()
 
 
   _addSceneListeners: (scene) ->
