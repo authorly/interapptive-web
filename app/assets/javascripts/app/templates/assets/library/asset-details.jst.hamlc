@@ -1,6 +1,9 @@
 %td.asset
   %span.add-to-canvas{:title => "Add #{@asset.widgetName()} to scene"}
-  %span.thumb{:class => @type, :style => "#{if @background? then "background-image: url(#{@background});background-size: 100%;" else ''}", :data-id => @asset.id, :data-type => @type }
+  - if @background?
+    %img.thumb{:class => @type, :src => '/assets/loading.gif', :data-src => "#{@background}", :data-id => @asset.id, :data-type => @type}
+  - else
+    %img.thumb{:class => @type, :data-id => @asset.id, :data-type => @type, :src => "/assets/#{@type}-icon.png"}
 %td.asset-details
   %p{title: @asset.get('name')}=App.Lib.StringHelper.truncate(@asset.get('name'), 20)
   - if @duration?

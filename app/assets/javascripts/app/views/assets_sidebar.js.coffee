@@ -22,7 +22,7 @@ class App.Views.AssetsSidebar extends Backbone.View
       el: @$('#sprite-list')
     @sceneAssets.render()
     @_addCollapsibleListeners(@sceneAssets.$el)
-
+    @_revealImagesOnScroll()
     @$('section.active .collapse').collapse('show')
 
 
@@ -38,6 +38,15 @@ class App.Views.AssetsSidebar extends Backbone.View
   adjustSize: ->
     offset = @$el.offset()?.top || 128
     @$el.css height: "#{$(window).height() - offset}px"
+
+
+  _revealImagesOnScroll: ->
+    @$el.scroll ->
+      # unveil method is provided by jquery.unveil.js
+      # Used to lazily load images in the sidebar.
+      # See templates/assets/library/asset.jst.hamlc for data-src
+      $('#asset-list-thumb-view img').unveil()
+      $('#asset-list-table img').unveil()
 
 
   _addCollapsibleListeners: (el) ->
