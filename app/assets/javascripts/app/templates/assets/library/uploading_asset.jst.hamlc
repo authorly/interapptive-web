@@ -1,4 +1,4 @@
 .asset
-  %span.thumb{:class => @type}
+  %span.thumb.uploading-asset{:class => @type}
   %span.filename= App.Lib.StringHelper.truncate(@asset.get('name'))
   %span.delete
