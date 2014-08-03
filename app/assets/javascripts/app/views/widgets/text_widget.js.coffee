@@ -91,10 +91,12 @@ class App.Views.TextWidget extends Backbone.View
       else
         hadBr = false
 
-        if c.tagName == 'DIV' || c.tagName == 'SPAN'
+        if c.tagName == 'DIV'
           innerLines = @_getTextLines($(c))
           innerLines = [''] if innerLines.length == 0
           lines.push innerLines...
+        else if c.tagName == 'SPAN'
+          lines.splice(lines.length - 1, 1, lines[lines.length - 1] + $(c).text())
         else if !c.tagName?
           lines.push $(c).text()
     _.map lines, (line) -> $.trim(line)
