@@ -50,6 +50,8 @@ class App.Views.AssetLibraryElement extends Backbone.View
 
   addToCanvas: (event) ->
     $asset = @$(event.currentTarget).parent().parent().find('.thumb')
+    if $asset.length == 0
+      $asset = @$(event.currentTarget).parent().parent().find('.details-thumb')
     App.vent.trigger('canvas-add:asset', id: $asset.data('id'), type: $asset.data('type'))
 
 
