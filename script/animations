@@ -1,0 +1,109 @@
+#!/usr/bin/env ruby
+
+require 'active_support'
+require 'yaml'
+
+module Interapptive
+  class StorybookJsonParser
+    def initialize(json_file, target_file_path)
+      @animations = []
+      @json = ActiveSupport::JSON.decode(File.read(json_file))
+      @target_file_path = target_file_path
+    end
+
+    def humanize_animations
+      prepare_animations
+      write_animations
+    end
+
+    def prepare_animations
+      @json['Pages'].each do |page|
+        @animations << []
+
+        api = page.select do |k, _|
+          k == 'API'
+        end
+
+        sprites = api['API'].select do |action_or_sprites|
+          action_or_sprites.select do |action_or_sprite_key, _|
+            action_or_sprite_key == 'CCSprites'
+          end.present?
+        end
+
+        get_sprites(sprites, api)
+      end
+    end
+
+    def get_sprites(sprites, api)
+      #puts api.to_yaml
+      sprites[0]['CCSprites'].each do |sprite|
+        @animations.last << {}
+        @animations.last.last['_originalFileName'] = sprite['_originalFileName']
+        @animations.last.last['image'] = sprite['image']
+        @animations.last.last['spriteTag'] = sprite['spriteTag']
+        @animations.last.last['actions'] = {}
+        sprite['actions'].each do |action_tag|
+          action_name_or_more_actions = look_up_action_with_tag(action_tag, api)
+          @animations.last.last['actions'][action_tag] = [action_name_or_more_actions]
+        end
+      end
+    end
+
+    def look_up_action_with_tag(action_tag, api)
+      ret = api['API'].select do |action_or_sprites|
+        action_or_sprites.select do |action_or_sprite_key, action_or_sprite|
+          action_or_sprite_key != 'CCSprites' &&
+          action_or_sprite.select do |action_or_sprite_entity|
+            action_or_sprite_entity['actionTag'] == action_tag
+          end.present?
+        end.present?
+      end
+
+      # Return the name of action in case it does not refer to other actions
+      return ret[0].keys[0] unless ['CCSpawn', 'CCSequence', 'CCStorySwipeEnded', 'CCRepeatForever'].include?(ret[0].keys[0])
+      handle_special_actions(ret[0], action_tag, api)
+    end
+
+    def handle_special_actions(action, special_tag, api)
+      special_action = { action.keys[0] => {} }
+
+      action.each do |action_key, action_value|
+        action_value.each do |action_animation|
+          if action_animation['actionTag'] == special_tag
+            if ['CCSequence', 'CCSpawn'].include?(action_key)
+              action_animation['actions'].each do |called_action_tag|
+                special_action[action.keys[0]][called_action_tag] = look_up_action_with_tag(called_action_tag, api)
+              end
+
+            elsif action_key == 'CCRepeatForever'
+              special_action[action.keys[0]][action_animation['innerAction']] = look_up_action_with_tag(action_animation['innerAction'], api)
+            end
+          end
+        end
+      end
+
+      special_action
+    end
+
+    def write_animations
+      if @target_file_path.present?
+        File.open(@target_file_path, 'w') { |f| f.write(@animations.to_yaml) }
+      else
+        puts @animations.to_yaml
+      end
+    end
+  end
+end
+
+if ARGV.count == 0
+  abort("Usage: animations <path-to-json-file> [<path-to-target-file>]")
+end
+
+if ARGV[0] == '-h' || ARGV[0] == '--help'
+  puts "Usage: animations <path-to-json-file> [<path-to-target-file>]"
+  puts
+  puts "If <path-to-target-file> absent, the output is printed to STDOUT"
+  exit
+end
+
+Interapptive::StorybookJsonParser.new(ARGV[0], ARGV[1]).humanize_animations
