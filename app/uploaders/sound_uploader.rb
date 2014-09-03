@@ -1,6 +1,9 @@
 # encoding: utf-8
 
+require 'interapptive/carrier_wave/wav_video_converter'
+
 class SoundUploader < CarrierWave::Uploader::Base
+  include Interapptive::CarrierWave::WavVideoConverter
   include Rails.application.routes.url_helpers
   Rails.application.routes.default_url_options = ActionMailer::Base.default_url_options
 
@@ -42,9 +45,12 @@ class SoundUploader < CarrierWave::Uploader::Base
   # process :store_duration => []
 
   # Create different versions of your uploaded files:
-  # version :thumb do
-  #   process :scale => [50, 50]
-  # end
+   version :aligner_wav do
+     process :encode_to_wav => []
+     def full_filename(for_file)
+       "#{File.basename(for_file, File.extname(for_file))}.wav"
+     end
+   end
 
   # Add a white list of extensions which are allowed to be uploaded.
   def extension_white_list

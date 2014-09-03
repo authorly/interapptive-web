@@ -261,6 +261,7 @@ GEM
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
     ruby-hmac (0.4.0)
+    ruby-sox (0.0.1)
     rubyzip (1.1.2)
     rvm-capistrano (1.2.7)
       capistrano (>= 2.0.0)
@@ -366,6 +367,7 @@ DEPENDENCIES
   resque
   resque-loner
   rspec-rails
+  ruby-sox
   rubyzip
   rvm-capistrano
   shoulda
