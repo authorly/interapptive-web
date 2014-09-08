@@ -15,6 +15,10 @@ class Keyframe < ActiveRecord::Base
   validates :is_animation, uniqueness: { scope: :scene_id }, if: :is_animation
   validates :animation_duration, numericality: { greater_than_or_equal_to: 0 }
 
+  def enqueue_for_auto_alignment
+    Resque.enqueue(AutoAlignmentQueue, self.id)
+  end
+
   def audio_text
     texts.order(:sync_order).collect(&:content).join(' ')
   end
@@ -31,6 +35,10 @@ class Keyframe < ActiveRecord::Base
 
   def preview_image_url
     preview_image.try(:image).try(:url)
+  end
+
+  def text
+    self.widgets.map { |w| w['string'] if w['type'] == 'TextWidget' }
   end
 
   private

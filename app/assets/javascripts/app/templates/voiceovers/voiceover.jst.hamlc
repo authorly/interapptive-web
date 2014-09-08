@@ -40,6 +40,11 @@
         %i.icon-stop.icon-black
         %span Stop
 
+    - if @current_user.get('is_admin') && @keyframe.get('auto_align_state') != 'in-progress'
+      %button.auto-align.btn.btn-primary
+        %i.icon-forward.icon-white
+        Auto Align
+
     %button.accept.btn.btn-large.btn-success
       %i.icon-check.icon-white
       Accept

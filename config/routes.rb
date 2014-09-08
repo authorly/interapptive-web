@@ -29,12 +29,6 @@ Interapptive::Application.routes.draw do
   resources :sounds
   resources :fonts
 
-  #resources :actions do
-    #collection do
-      #get 'definitions'
-    #end
-  #end
-
   get '/storybooks/main', to: redirect('/assets/init_storybook.js')
   get '/storybooks/res/:name', to: redirect('/assets/res/%{name}.png')
   resources :storybooks do
@@ -93,9 +87,10 @@ Interapptive::Application.routes.draw do
 
     resource :subscription_publisher, only: :create
 
-    resources :publish_requests, only: [:index, :show, :update]
+    resources :publish_requests,              only: [:index, :show, :update]
     resources :subscription_publish_requests, only: [:index, :show, :update]
-    resources :storybook_assignments, :only => [:edit, :update]
-    resources :storybook_archives,    :only => [:create]
+    resources :storybook_assignments,         only: [:edit, :update]
+    resources :storybook_archives,            only: [:create]
+    resources :auto_alignments,               only: [:create]
   end
 end

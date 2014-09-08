@@ -12,9 +12,11 @@ class App.Views.Voiceover extends Backbone.View
   template: JST['app/templates/voiceovers/voiceover']
 
   events:
-    'click .preview .start':   'startPreviewClicked'
-    'click .preview .stop':    'stopPreviewClicked'
-    'click .controls .accept': 'acceptClicked'
+    'click .preview .start':        'startPreviewClicked'
+    'click .preview .stop':         'stopPreviewClicked'
+    'click .controls .accept':      'acceptClicked'
+    'click .controls .auto-align':  'autoAlign'
+
     'click .highlighter-container .selector .alternative': 'alternativeHighlighterClicked'
 
 
@@ -28,7 +30,7 @@ class App.Views.Voiceover extends Backbone.View
 
 
   render: ->
-    @$el.html @template(keyframe: @keyframe)
+    @$el.html @template(keyframe: @keyframe, current_user: App.currentUser)
 
     @_initVoiceoverSelector()
     @_voiceoverChanged()
@@ -139,6 +141,8 @@ class App.Views.Voiceover extends Backbone.View
     @_initVoiceoverHighlighter selected.data('type')
 
 
+  autoAlign: ->
+    @keyframe.autoAlign()
 
   _initVoiceoverHighlighter: (control_type) ->
     if @highlighter?

@@ -263,6 +263,13 @@ class App.Models.Keyframe extends Backbone.Model
     @widgets.byClass(App.Models.HotspotWidget)
 
 
+  autoAlign: ->
+    App.vent.trigger('show:message', 'success', "We are generating highlight times for your audio file.")
+    $.post("/admin/auto_alignments",
+      keyframe_id: @get('id')
+      'json').fail(-> App.vent.trigger('show:message', 'error', "Something went wrong queueing this keyframe for auto alignment. Please try again."))
+
+
   nextTextZOrder: (widget) ->
     widgets = _.reject @textWidgets(), (text) -> text == widget
     if widgets.length > 0
